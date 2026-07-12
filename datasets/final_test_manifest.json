@@ -1,0 +1,7 @@
+{
+  "generated_at": "2026-07-12T21:46:55",
+  "split": "final_test",
+  "note": "HELD-OUT final test set (48 exams, not yet present in the repository). These exams must remain unseen during all development: no training, validation, model selection, prompt tuning, calibration, debugging, or preprocessing decisions may use them. Populate this manifest only after the full grading configuration has been frozen (see docs/evaluation.md), and do not modify the system based on results obtained from them.",
+  "frozen_configuration": null,
+  "entries": []
+}

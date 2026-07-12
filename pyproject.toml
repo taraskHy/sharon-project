@@ -1,0 +1,29 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "autograder"
+version = "0.1.0"
+description = "Automatic grading of scanned student exams (Hebrew RTL, handwritten marks) using the Claude API"
+requires-python = ">=3.11"
+dependencies = [
+    "httpx>=0.27",
+    "numpy>=1.26",
+    "pymupdf>=1.26",
+    "pydantic>=2.7",
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=8"]
+# Development-comparison backend only — the finished system must not need it.
+anthropic = ["anthropic>=0.92.0"]
+
+[project.scripts]
+autograder = "autograder.cli:main"
+
+[tool.setuptools.packages.find]
+include = ["autograder*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

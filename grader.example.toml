@@ -1,0 +1,22 @@
+# Example configuration — copy to grader.toml and pass with --config grader.toml
+# CLI flags override these values. See docs/deployment.md.
+
+[backend]
+backend = "openai"                       # openai | mock | anthropic (dev only)
+model = "qwen3-vl:8b"
+base_url = "http://localhost:11434/v1"   # Ollama local; vLLM: http://server:8000/v1
+api_key_env = "GRADER_API_KEY"           # env var holding the key (if the server needs one)
+structured_mode = "json_schema"          # json_schema | json_object | prompt
+temperature = 0.0
+timeout_s = 1800.0                       # CPU-only local inference is slow; be generous
+transport_retries = 2
+validation_retries = 2
+concurrency = 1                          # parallel exams in eval-batch; keep 1 for local servers
+
+# Extra generation parameters passed through to the server verbatim, e.g.:
+# [backend.extra_generation]
+# top_p = 0.9
+
+[grading]
+max_image_edge = 1600                    # long-edge pixels for rendered pages
+max_tokens = 8000                        # output cap per model call

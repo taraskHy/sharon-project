@@ -1,0 +1,69 @@
+# Mistral open vision models + free API for Hebrew exam grading — research report (all sources checked live 2026-07-12)
+
+## Headline findings
+
+1. **The Mistral vision-model landscape changed drastically since 2025.** Pixtral 12B and Mistral Small 3.1/3.2 are now legacy: Mistral shipped the **Mistral 3 family (Dec 2, 2025)** — Mistral Large 3 (675B MoE) + **Ministral 3 (3B/8B/14B)** — *all* with image understanding, *all* Apache-2.0 — and **Mistral Small 4 (119B MoE, Mar 16, 2026)**, also Apache-2.0 and multimodal. The best self-host candidate for this project is **Ministral 3 14B Instruct** (vision, Apache-2.0, 256k context, fits in 24GB VRAM at FP8, GGUF Q4 ≈ 8.2GB for CPU laptop).
+2. **Mistral OCR is API-only** (now OCR 4, June 23, 2026, $4/1k pages) — weights are not open; enterprise self-host is a paid licensed container. It explicitly lists **Hebrew** among 170 supported languages and claims strong handwriting accuracy — but it cannot do the semantic judging step, and it is not license-free.
+3. **La Plateforme has a genuinely free tier** (phone verification, no credit card; ~1 RPS / 500K tokens-min / ~1B tokens-month per third-party trackers — Mistral no longer publishes exact numbers). **Critical caveat: per Mistral's Commercial Terms (effective 2026-05-28), free-subscription data MAY be used for model training unless you opt out** in the Admin Console. For scanned student exams (PII), opt-out is mandatory and even then a paid tier or self-hosting is the defensible choice.
+4. **No positive Hebrew evidence exists for any Mistral open-weight VLM.** Mistral Small 3.1's model card lists 25 languages — Hebrew is absent. Ministral 3 lists "dozens of languages" naming Arabic but not Hebrew. This is the project's main risk: Hebrew handwriting performance must be benchmarked in-house on the sample exams before committing.
+
+---
+
+## 1. Model-by-model
+
+### Pixtral 12B (2409) — legacy but still downloadable
+- **Weights:** https://huggingface.co/mistralai/Pixtral-12B-2409 — still available (5.6k downloads last month). **Apache-2.0.** 12B decoder + 400M vision encoder, 128k context, variable image resolutions, **multi-image per message** (demo shows 5). DocVQA 90.7 ANLS, ChartQA 81.8. "9 languages" — Hebrew not listed. (checked 2026-07-12)
+- **API status: retired 2025-12-02**, replacement = Ministral 3 14B, per https://docs.mistral.ai/models/overview (checked 2026-07-12). So Pixtral is self-host only now.
+- **Engines:** vLLM ≥0.6.2 (model card); llama.cpp lists official `ggml-org/pixtral-12b-GGUF` in its supported multimodal list: https://github.com/ggml-org/llama.cpp/blob/master/docs/multimodal.md (checked 2026-07-12).
+- Verdict: superseded — Ministral 3 14B beats it at the same self-host cost with a current-gen encoder and 256k context.
+- (Pixtral Large 2411 exists but is under the Mistral Research License per its HF card — *not re-verified today* — and was retired from the API 2026-02-27 per the models overview. Not license-clean for operational grading; skip.)
+
+### Mistral Small 3.1 (2503) / 3.2 (2506) — 24B dense, vision, Apache-2.0
+- **3.2 weights:** https://huggingface.co/mistralai/Mistral-Small-3.2-24B-Instruct-2506 — **Apache-2.0**, vision, 128k context, DocVQA **94.86**, ChartQA 87.4, MMMU 62.5; ~55GB GPU RAM bf16; vLLM ≥0.9.1 + mistral_common ≥1.6.2; **multi-image: vLLM config caps 10 images/prompt**. (checked 2026-07-12)
+- **3.1 languages (explicit list):** https://huggingface.co/mistralai/Mistral-Small-3.1-24B-Instruct-2503 — English, French, German, Greek, Hindi, Indonesian, Italian, Japanese, Korean, Malay, Nepali, Polish, Portuguese, Romanian, Russian, Serbian, Spanish, Swedish, Turkish, Ukrainian, Vietnamese, Arabic, Bengali, Chinese, Farsi. **Hebrew is NOT listed.** (checked 2026-07-12)
+- **API status:** 3.1 retired 2025-11-06; **3.2 retires from the API 2026-07-31 (in 19 days)** — replacement `mistral-small-latest` = Mistral Small 4 (docs.mistral.ai/models/overview, checked 2026-07-12). Weights stay on HF for self-hosting.
+- **Quantized (Unsloth GGUF):** https://huggingface.co/unsloth/Mistral-Small-3.2-24B-Instruct-2506-GGUF — Q4_K_M **14.3GB**, Q4_K_XL 14.5GB, Q8_0 25.1GB, BF16 47.2GB. llama.cpp officially supports Mistral Small 3.1 vision (`ggml-org/Mistral-Small-3.1-24B-Instruct-2503-GGUF` in multimodal.md); 3.2 shares the architecture. (checked 2026-07-12)
+- Verdict: strongest *documented* document-VQA numbers of the self-hostable set (DocVQA 94.86); runs on your 63GB-RAM laptop at Q4; needs 2×24GB or 1×48-80GB GPU (or FP8/AWQ ~24-30GB) on the server.
+
+### Ministral 3 family (2512) — the designated Pixtral successor ★ recommended self-host candidate
+- **Announcement:** https://mistral.ai/news/mistral-3/ — Dec 2, 2025; 3B/8B/14B × base/instruct/reasoning, **all 9 variants with image understanding, all Apache-2.0**; "40+ native languages" (Hebrew not specifically named). (checked 2026-07-12)
+- **14B Instruct card:** https://huggingface.co/mistralai/Ministral-3-14B-Instruct-2512 — Apache-2.0; 13.5B LM + **0.4B vision encoder**; **256k context**; vLLM ≥0.12.0; **FP8 fits in 24GB VRAM**, "less if further quantized"; languages: "dozens... including English, French, Spanish, German, Italian, Portuguese, Dutch, Chinese, Japanese, Korean, Arabic" — **Hebrew not listed**; multi-image not specified. (checked 2026-07-12) Full 9-repo list: https://huggingface.co/collections/mistralai/ministral-3
+- **Ollama:** https://ollama.com/library/ministral-3 — 3b=3.0GB / 8b=6.0GB / 14b=9.1GB, **vision supported**, 256K context, requires Ollama ≥0.13.1. (checked 2026-07-12)
+- **llama.cpp:** Ministral 3 support PR (conversion + arch, tested on 14B-Instruct, with Mistral's collaboration) merged early Dec 2025 (llama.cpp weekly report, buttondown.com, checked 2026-07-12). **Unsloth GGUF:** https://huggingface.co/unsloth/Ministral-3-14B-Instruct-2512-GGUF — Q4_K_M **8.24GB**, Q5_K_M 9.62GB, Q8_0 14.4GB, BF16 27GB; recommended temp 0.15 for Instruct (Unsloth guide, unsloth.ai/docs, checked 2026-07-12). *Caveat: I could not explicitly confirm the mmproj vision file in the GGUF repo file list from the pages fetched — Ollama vision works, but verify llama.cpp vision (mmproj present) before committing to the CPU-laptop path.*
+- Verdict: best size/capability/licensing fit for all three deployment targets; also served on the free API (`ministral-3-14b`, v25.12 current per models overview).
+
+### Mistral Small 4 (2603) — 119B MoE, Apache-2.0, multimodal
+- https://mistral.ai/news/mistral-small-4/ + https://huggingface.co/mistralai/Mistral-Small-4-119B-2603 — Mar 16, 2026; **Apache-2.0**; 128-expert MoE, 119B total / ~6B active; text+image in; 256k context; unifies Magistral(reasoning)+Pixtral(vision)+Devstral(code). Self-host minimum **4×H100 / 2×H200** class. GGUF Q4 ≈ **74GB** (unsloth) — too big for a 63GB-RAM laptop; 2-bit ~35GB is possible but risky for OCR fidelity. (checked 2026-07-12)
+- Verdict: not practical to self-host here, but it's the flagship *free-API* workhorse (`mistral-small-latest`) and the same weights are openly licensed — satisfying the "same model on free API and self-hostable in principle" requirement.
+
+### Mistral Large 3 (2512) — 675B MoE (41B active), Apache-2.0, multimodal
+- Open weights (https://huggingface.co/collections/mistralai/mistral-large-3), image understanding, 256k context (TechCrunch/Red Hat day-0 vLLM guide, checked 2026-07-12). Self-hosting is data-center scale — relevant only as a free-API judge/escalation model.
+
+### Mistral OCR — **API-only, NOT open weights**
+- **OCR 4** (June 23, 2026): https://mistral.ai/news/ocr-4/ — text + **bounding boxes, typed block classification (titles/tables/equations/signatures), per-word confidence**; **170 languages, Hebrew explicitly listed** (grouped with Georgian/Greek/Tamil); $4/1k pages API, $2/1k batch, $5/1k for Document AI structured layer; distribution via Mistral Studio API, SageMaker, MS Foundry; **enterprise self-hosted container for sovereignty — but no open weights**. OlmOCRBench 85.20, OmniDocBench 93.07. (checked 2026-07-12)
+- **OCR 3** (v25.12, superseded): internal benchmarks claimed **88.9% handwriting accuracy** vs Azure 78.2 (https://mistral.ai/news/mistral-ocr-3/ via InfoQ/PyImageSearch, checked 2026-07-12). OCR 4 announcement itself does not headline handwriting.
+- Verdict: the *only* Mistral product with explicit Hebrew + handwriting claims — but license-unclean for the "open" requirement, per-page cost, and it only transcribes/localizes; MCQ-mark interpretation, ink-color separation and semantic judging would still need a VLM/LLM pass.
+
+---
+
+## 2. La Plateforme FREE tier (Experiment plan)
+
+- **Exists and is official** since Sept 2024: "La Plateforme... now offers a free tier enabling developers to get started with experimentation, evaluation and prototyping at no cost," upgrade path to commercial tier with "full data isolation (with a free zero-retention option) and higher rate limits" — https://mistral.ai/news/september-24-release/ (checked 2026-07-12).
+- **Signup:** phone-number verification required; **no credit card / payment method** (multiple trackers + docs: https://docs.mistral.ai/admin/user-management-finops/tier "Free mode lets you create API keys and use the free tier within the limits displayed on the Limits page", checked 2026-07-12).
+- **Limits:** Mistral no longer publishes exact numbers — the docs point to Admin Console → Limits. Third-party trackers (freellm.net, updated 2026-07-07; pricepertoken.com; costbench.com — all checked 2026-07-12) converge on **~1 request/second, 500K tokens/minute, ~1B tokens/month**. Treat as approximate; read the console after signup. 1 RPS is fine for overnight batch grading of exam pages, tight for interactive use.
+- **Models on free tier:** historically "all API models"; current trackers list Mistral Small 4, Medium 3.5, Large 3, Codestral, etc. **Vision input is therefore available free** via the multimodal generalists (Small 4, Large 3, Ministral 3, Medium 3.5). **Whether the OCR endpoint is included in the free tier is NOT confirmed** — plan for OCR to be paid ($4/1k pages).
+- **Data use for training — the load-bearing citation:** Mistral Commercial Terms of Service (https://legal.mistral.ai/terms/commercial-terms-of-service, effective **May 28, 2026**): "Mistral AI will not use Customer Data or Outputs to train its artificial intelligence models **except (a) for Customer Data or Outputs used or generated in connection with the use of Mistral AI Products under a free subscription**, Vibe Pro or Vibe Teams, **where Customer has not opted-out of training**..." → **free-tier API data is trainable by default; opt out** via Admin Console → Privacy ("Allow your interactions to be used to train our models" toggle), per https://help.mistral.ai/en/articles/455207 (checked 2026-07-12). Paid **Scale** plan is opted out by default; ZDR available. Note: https://docs.mistral.ai/admin/security-access/privacy says "data sent through the API isn't used for model training" but the ToS free-subscription carve-out governs — assume trainable-unless-opted-out. **For student exam scans, opt out immediately and prefer Scale or self-hosting for production.**
+- **Same models self-hostable?** Yes for Mistral Small 4, Large 3, Ministral 3 (all Apache-2.0 on HF) and Small 3.2 until 2026-07-31 on the API. No for Medium 3.5 and OCR 4 (proprietary).
+
+## 3. Fit to the three deployment targets
+
+- **(a) Free hosted API:** Ministral 3 14B / Mistral Small 4 / Large 3 on the Experiment tier; JSON via **Custom Structured Outputs** (schema-enforced, "more reliable... recommended whenever possible" — https://docs.mistral.ai/capabilities/structured-output/custom_structured_output, checked 2026-07-12). Opt out of training before sending any exam.
+- **(b) University Linux GPU server:** Ministral 3 14B Instruct FP8 on **one 24GB GPU** (vLLM ≥0.12, guided/structured decoding for JSON); step up to Mistral Small 3.2 (DocVQA 94.86) on ~48-55GB of VRAM if 14B accuracy falls short.
+- **(c) Windows CPU laptop, 63GB RAM:** Ministral 3 14B via **Ollama ≥0.13.1 (9.1GB, vision confirmed)** or llama.cpp Q4_K_M 8.24GB (verify mmproj); fallback Mistral Small 3.2 GGUF Q4_K_M 14.3GB (llama.cpp vision path proven for the 3.1 twin) or Pixtral 12B (officially in llama.cpp multimodal list). llama.cpp/Ollama enforce JSON via grammar/format options.
+
+## 4. Gaps / risks to test in-house
+- **Hebrew is not a documented language of any Mistral open-weight VLM** (it IS documented for API-only OCR 4). Handwritten-Hebrew transcription + blue/red ink separation + MCQ-mark conventions must be validated on `sample_data/student_exam.pdf` against the known human scores (24/32, 28/32) before adoption; budget for the possibility that Qwen-family VLMs (stronger multilingual OCR reputation) win this comparison.
+- Mistral Small 3.2 disappears from the hosted API on 2026-07-31 — don't build the hosted path on it.
+- Free-tier exact limits and OCR-endpoint inclusion need confirmation from the Admin Console after signup.
+
+Key URLs (all checked 2026-07-12): mistral.ai/news/mistral-3/ · mistral.ai/news/mistral-small-4/ · mistral.ai/news/ocr-4/ · docs.mistral.ai/models/overview · docs.mistral.ai/admin/user-management-finops/tier · docs.mistral.ai/capabilities/structured-output/custom_structured_output · legal.mistral.ai/terms/commercial-terms-of-service · help.mistral.ai/en/articles/455207 · huggingface.co/mistralai/{Pixtral-12B-2409, Mistral-Small-3.2-24B-Instruct-2506, Mistral-Small-3.1-24B-Instruct-2503, Ministral-3-14B-Instruct-2512, Mistral-Small-4-119B-2603} · huggingface.co/unsloth/{Mistral-Small-3.2-24B-Instruct-2506-GGUF, Ministral-3-14B-Instruct-2512-GGUF, Mistral-Small-4-119B-2603-GGUF} · ollama.com/library/ministral-3 · github.com/ggml-org/llama.cpp/blob/master/docs/multimodal.md · mistral.ai/news/september-24-release/ · freellm.net/providers/mistral-ai (3rd-party, 2026-07-07)

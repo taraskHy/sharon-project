@@ -1,0 +1,261 @@
+{
+  "generated_at": "2026-07-12T21:46:55",
+  "split": "train",
+  "seed": 42,
+  "train_fraction": 0.6,
+  "count": 25,
+  "entries": [
+    {
+      "anon_id": "exam-005",
+      "original_path": "test/005_48.pdf",
+      "expected_grade": 48,
+      "split": "train",
+      "has_detailed_labels": false,
+      "instructor_annotations": "assumed_present",
+      "masking_status": "not_masked",
+      "warnings": []
+    },
+    {
+      "anon_id": "exam-006",
+      "original_path": "test/006_86.pdf",
+      "expected_grade": 86,
+      "split": "train",
+      "has_detailed_labels": false,
+      "instructor_annotations": "assumed_present",
+      "masking_status": "not_masked",
+      "warnings": []
+    },
+    {
+      "anon_id": "exam-011",
+      "original_path": "test/011_98.pdf",
+      "expected_grade": 98,
+      "split": "train",
+      "has_detailed_labels": false,
+      "instructor_annotations": "assumed_present",
+      "masking_status": "not_masked",
+      "warnings": []
+    },
+    {
+      "anon_id": "exam-012",
+      "original_path": "test/012_70.pdf",
+      "expected_grade": 70,
+      "split": "train",
+      "has_detailed_labels": false,
+      "instructor_annotations": "assumed_present",
+      "masking_status": "not_masked",
+      "warnings": []
+    },
+    {
+      "anon_id": "exam-013",
+      "original_path": "test/013_80.pdf",
+      "expected_grade": 80,
+      "split": "train",
+      "has_detailed_labels": false,
+      "instructor_annotations": "assumed_present",
+      "masking_status": "not_masked",
+      "warnings": []
+    },
+    {
+      "anon_id": "exam-014",
+      "original_path": "test/014_58.pdf",
+      "expected_grade": 58,
+      "split": "train",
+      "has_detailed_labels": false,
+      "instructor_annotations": "assumed_present",
+      "masking_status": "not_masked",
+      "warnings": [
+        "page count 7 differs from the expected exam form (13 pages) — possibly a partial scan"
+      ]
+    },
+    {
+      "anon_id": "exam-015",
+      "original_path": "test/015_59.pdf",
+      "expected_grade": 59,
+      "split": "train",
+      "has_detailed_labels": false,
+      "instructor_annotations": "assumed_present",
+      "masking_status": "not_masked",
+      "warnings": []
+    },
+    {
+      "anon_id": "exam-020",
+      "original_path": "test/020_60.pdf",
+      "expected_grade": 60,
+      "split": "train",
+      "has_detailed_labels": false,
+      "instructor_annotations": "assumed_present",
+      "masking_status": "not_masked",
+      "warnings": []
+    },
+    {
+      "anon_id": "exam-021",
+      "original_path": "test/021_86.pdf",
+      "expected_grade": 86,
+      "split": "train",
+      "has_detailed_labels": false,
+      "instructor_annotations": "assumed_present",
+      "masking_status": "not_masked",
+      "warnings": []
+    },
+    {
+      "anon_id": "exam-022",
+      "original_path": "test/022_76.pdf",
+      "expected_grade": 76,
+      "split": "train",
+      "has_detailed_labels": false,
+      "instructor_annotations": "assumed_present",
+      "masking_status": "not_masked",
+      "warnings": []
+    },
+    {
+      "anon_id": "exam-023",
+      "original_path": "test/023_62.pdf",
+      "expected_grade": 62,
+      "split": "train",
+      "has_detailed_labels": false,
+      "instructor_annotations": "assumed_present",
+      "masking_status": "not_masked",
+      "warnings": []
+    },
+    {
+      "anon_id": "exam-024",
+      "original_path": "test/024_54.pdf",
+      "expected_grade": 54,
+      "split": "train",
+      "has_detailed_labels": false,
+      "instructor_annotations": "assumed_present",
+      "masking_status": "not_masked",
+      "warnings": []
+    },
+    {
+      "anon_id": "exam-025",
+      "original_path": "test/025_42.pdf",
+      "expected_grade": 42,
+      "split": "train",
+      "has_detailed_labels": false,
+      "instructor_annotations": "assumed_present",
+      "masking_status": "not_masked",
+      "warnings": []
+    },
+    {
+      "anon_id": "exam-026",
+      "original_path": "test/026_88.pdf",
+      "expected_grade": 88,
+      "split": "train",
+      "has_detailed_labels": false,
+      "instructor_annotations": "assumed_present",
+      "masking_status": "not_masked",
+      "warnings": []
+    },
+    {
+      "anon_id": "exam-027",
+      "original_path": "test/027_80.pdf",
+      "expected_grade": 80,
+      "split": "train",
+      "has_detailed_labels": false,
+      "instructor_annotations": "assumed_present",
+      "masking_status": "not_masked",
+      "warnings": []
+    },
+    {
+      "anon_id": "exam-028",
+      "original_path": "test/028_52.pdf",
+      "expected_grade": 52,
+      "split": "train",
+      "has_detailed_labels": false,
+      "instructor_annotations": "assumed_present",
+      "masking_status": "not_masked",
+      "warnings": []
+    },
+    {
+      "anon_id": "exam-030",
+      "original_path": "test/030_74.pdf",
+      "expected_grade": 74,
+      "split": "train",
+      "has_detailed_labels": false,
+      "instructor_annotations": "assumed_present",
+      "masking_status": "not_masked",
+      "warnings": []
+    },
+    {
+      "anon_id": "exam-031",
+      "original_path": "test/031_48.pdf",
+      "expected_grade": 48,
+      "split": "train",
+      "has_detailed_labels": false,
+      "instructor_annotations": "assumed_present",
+      "masking_status": "not_masked",
+      "warnings": []
+    },
+    {
+      "anon_id": "exam-032",
+      "original_path": "test/032_86.pdf",
+      "expected_grade": 86,
+      "split": "train",
+      "has_detailed_labels": false,
+      "instructor_annotations": "assumed_present",
+      "masking_status": "not_masked",
+      "warnings": []
+    },
+    {
+      "anon_id": "exam-033",
+      "original_path": "test/033_76.pdf",
+      "expected_grade": 76,
+      "split": "train",
+      "has_detailed_labels": false,
+      "instructor_annotations": "assumed_present",
+      "masking_status": "not_masked",
+      "warnings": []
+    },
+    {
+      "anon_id": "exam-034",
+      "original_path": "test/034_86.pdf",
+      "expected_grade": 86,
+      "split": "train",
+      "has_detailed_labels": false,
+      "instructor_annotations": "assumed_present",
+      "masking_status": "not_masked",
+      "warnings": []
+    },
+    {
+      "anon_id": "exam-036",
+      "original_path": "test/036_75.pdf",
+      "expected_grade": 75,
+      "split": "train",
+      "has_detailed_labels": false,
+      "instructor_annotations": "assumed_present",
+      "masking_status": "not_masked",
+      "warnings": []
+    },
+    {
+      "anon_id": "exam-037",
+      "original_path": "test/037_38.pdf",
+      "expected_grade": 38,
+      "split": "train",
+      "has_detailed_labels": false,
+      "instructor_annotations": "assumed_present",
+      "masking_status": "not_masked",
+      "warnings": []
+    },
+    {
+      "anon_id": "exam-038",
+      "original_path": "test/038_32.pdf",
+      "expected_grade": 32,
+      "split": "train",
+      "has_detailed_labels": false,
+      "instructor_annotations": "assumed_present",
+      "masking_status": "not_masked",
+      "warnings": []
+    },
+    {
+      "anon_id": "exam-039",
+      "original_path": "test/039_76.pdf",
+      "expected_grade": 76,
+      "split": "train",
+      "has_detailed_labels": false,
+      "instructor_annotations": "assumed_present",
+      "masking_status": "not_masked",
+      "warnings": []
+    }
+  ]
+}
