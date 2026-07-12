@@ -32,13 +32,13 @@ tuning before batch grading.
 
 | Check | Result |
 |---|---|
-| Offline test suite (66 tests: scoring policy, version detection, ambiguity, caps, backend transport/malformed-output/truncation handling, dataset split determinism, masking, metrics, full-pipeline-with-mock, leakage, resume fingerprints, batch eval incl. failure continuation) | **66/66 pass**, no network, no API keys (`pytest`) |
+| Offline test suite (64 tests: scoring policy, version detection, ambiguity, caps, backend transport/malformed-output/truncation handling, dataset split determinism, masking, metrics, full-pipeline-with-mock, leakage, resume fingerprints, batch eval incl. failure continuation) | **64/64 pass**, no network, no API keys (`pytest`) |
 | Proof no Anthropic dependency remains | test runs the CLI + backends in a subprocess and asserts the `anthropic` package is never imported; deps moved to optional extra |
 | `autograder doctor` against local Ollama | **OK** — server reachable, model available |
 | Probe A — text-only judging of a REAL student explanation (Hebrew) against the key's reference reasoning | **PASS in 300 s**: verdict `valid` with correct, fluent Hebrew justification (recognised that "בהירות" refers to the DC component / coarsest level). JSON schema respected. |
 | Probe B — vision: printed-Hebrew MC page (page 6, 1200 px) | **FAIL (truncation)** after 1133 s: image encoded fine (~2.2 min for 1364 vision tokens), but generation consumed the whole 2000-token budget without completing the JSON; the backend raised the designed truncation error (no silent output) |
 | Probe C — vision: bubble-sheet page with X-convention note (page 13) | **FAIL (truncation)** twice: at 2000 tokens (910 s) and at 4000 tokens with `think:false` passed through (1798 s) |
-| Vision diagnostic (no constrained decoding, 800 px) | see addendum below |
+| Vision diagnostic (no constrained decoding, 800 px) | **NOT COMPLETED** — local-model experiments on this machine were stopped by the project owner before it finished; root cause of the truncation therefore remains undetermined (thinking-token consumption vs grammar loop) |
 
 Interpretation of the vision failures (evidence-based, not confirmed root
 cause): Ollama reports this model with a `thinking` capability, and
