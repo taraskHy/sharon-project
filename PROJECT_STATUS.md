@@ -17,7 +17,7 @@ PC) is superseded; its numbers must not be used.
 
 ## Test suite
 
-**116/116 offline tests pass** (no network, no keys): scoring policy,
+**122/122 offline tests pass** (no network, no keys): scoring policy,
 backend transport/malformed/truncation, dataset split determinism, masking,
 metrics, full pipeline + eval-batch on mocks, filename/grade leakage,
 resume fingerprints (incl. crash-resume mid-extraction), answer-sheet
