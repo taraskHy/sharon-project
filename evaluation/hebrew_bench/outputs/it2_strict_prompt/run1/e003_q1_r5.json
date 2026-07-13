@@ -1,0 +1,8 @@
+{
+ "cell": "e003_q1_r5",
+ "run": 1,
+ "raw": "{\"transcription\": \"GRAIN X-הַמְּרָאֵלִיְכָרְקָרְבְּרְגְּרְגְּרְגְּרְגְּרְגְּרְגְּרְגְּרְגְּרְגְּרְגְּרְגְּרְגְּרְגְּרְגְּרְגְּרְגְּרְגְּרְגְּרְגְּרְגְּרְגְּרְגְּרְגְּרְגְּרְגְּרְגְּרְגְּרְגְּרְגְּרְגְּרְגְּרְגְּרְגְּרְגְּרְגְּרְגְּרְגְּרְגְּרְגְּרְגְּרְגְּרְגְּרְגְּרְגְּר",
+ "transcription": null,
+ "error": "JSONDecodeError: Unterminated string starting at: line 1 column 19 (char 18) | body={'id': 'chatcmpl-527', 'object': 'chat.completion', 'created': 1783957075, 'model': 'qwen3-vl:8b-instruct', 'system_fingerprint': 'fp_ollama', 'choices': [{'index': 0, 'message': {'role': 'assistant',",
+ "latency_s": 30.38
+}

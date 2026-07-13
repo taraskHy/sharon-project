@@ -1,2 +1,5 @@
 config_id,model,prompt,preproc,runs,mean_cer,usable_rate,wer,omission_rate,halluc_rate,stability_pairwise_cer,hard_flag_ok,hard_halluc,hard_total,wall_s
 it1_baseline_8b,qwen3-vl:8b-instruct,baseline,none,3,0.9359,0.0,1.2039,0.1294,0.2033,0.1467,0,15,15,217.8
+it2_strict_prompt,qwen3-vl:8b-instruct,strict_fidelity,none,3,0.8418,0.0,1.0471,0.2941,0.0769,0.0464,0,15,15,759.5
+it3_q8_quant,qwen3-vl:8b-instruct-q8_0,strict_fidelity,none,3,0.8921,0.0,1.1608,0.2039,0.1944,0.1653,0,15,15,1323.1
+it4_contrast,qwen3-vl:8b-instruct,strict_fidelity,contrast,3,0.7864,0.0,1.0353,0.2627,0.0874,0.0705,0,15,15,275.1

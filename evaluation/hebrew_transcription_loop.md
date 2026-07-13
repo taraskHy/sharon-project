@@ -201,4 +201,77 @@ than perception.
 scripts/hebrew_bench_run.py). Model, crops, decoding, preprocessing
 unchanged.
 
+**Result:** CER 0.842 (was 0.936), usable **0.00** (unchanged), WER 1.047,
+omission 0.294 (**up** from 0.129 — the predicted cost), hallucinated-word
+rate **0.077** (down 2.6× from 0.203), stability 0.046 (3× more
+consistent), hard cells **still 15/15 confabulated, 0 flagged** — the
+escape hatch was never used despite explicit better-[?]-than-guess rules.
+
+**Interpretation:** hypothesis (a) partially confirmed (hallucination and
+stability improve materially); hypothesis (b) refuted — the model does not
+recognise its own unreadability; failure is perception-bound. Prompt kept
+as the new reference (safer hallucination/omission trade-off; CER no
+worse) per the keep-rule.
+
+**Decision: CONTINUE** — next single variable: quantization.
+
+## Iteration 3 — Q8_0 quantization
+
+**Hypothesis:** Q4_K_M weight quantization damages fine visual-character
+discrimination; the cached `qwen3-vl:8b-instruct-q8_0` (9.8 GB, Ollama ID
+eff3eb825b32, same architecture/license) should read characters better if
+quantization is a limiting factor — and change nothing if the limit is
+model scale/architecture.
+
+**Variable changed:** model quantization only (prompt `strict_fidelity`,
+crops, decoding, preprocessing unchanged).
+
+**Result:** CER 0.892 (it2: 0.842 — within run noise), usable **0.00**,
+WER 1.161, omission 0.204, hallucinated-word rate 0.194 (worse than it2's
+0.077 under the identical prompt), stability 0.165 (worse), hard cells
+15/15 confabulated, 0 flagged. Runtime 1323 s (~15.8 s/call — 75 % slower
+than Q4).
+
+**Interpretation:** hypothesis refuted — quantization is not the limiting
+factor; fidelity is unchanged at 8-bit weights and safety metrics regress.
+Change REJECTED (reference remains Q4_K_M + strict prompt).
+
+**Decision: CONTINUE** — next single variable: input preprocessing.
+
+## Iteration 4 — contrast-stretch preprocessing
+
+**Hypothesis:** the crops' gray table shading and moderate ink contrast
+impair character discrimination; a deterministic 5th–95th percentile
+grayscale contrast stretch (ink→black, paper→white; no new dependencies)
+improves character-level reading if input quality is a limiting factor.
+
+**Variable changed:** preprocessing only (`--preproc contrast`), on the
+reference config (Q4_K_M + strict prompt).
+
+**Result:** CER **0.786** (best so far; it2 0.842), usable **0.00**, WER
+1.035, omission 0.263, hallucinated-word rate 0.087, stability 0.071, hard
+cells 15/15 confabulated, 0 flagged. Runtime 275 s (contrast crops also
+encode smaller).
+
+**Interpretation:** first genuine fidelity improvement (~7 % relative CER)
+with no hallucination increase → change **KEPT** (reference = Q4_K_M +
+strict prompt + contrast). Still an order of magnitude from the gate;
+cumulative picture after four iterations (CER 0.94→0.84→0.89→0.79, usable
+0 % throughout, hard cells 60/60 confabulated) says prompt/quant/preproc
+are small levers on a perception-bound failure.
+
+**Decision: CONTINUE** — next single variable: model scale
+(qwen3-vl:30b-a3b-instruct MoE, downloading; expected partial CPU offload).
+
+## Iteration 5 — model scale (Qwen3-VL-30B-A3B MoE)
+
+**Hypothesis:** the 8B's visual encoder/decoder capacity is the binding
+constraint; the 30B-A3B MoE (Apache-2.0, same family, ~19 GB Q4, 3B active
+parameters) reads cursive Hebrew materially better. This is the only
+remaining candidate with plausible order-of-magnitude headroom on local
+hardware; it will partially offload to CPU on the 15.4 GB card.
+
+**Variable changed:** model only (prompt strict, preproc contrast — the
+kept reference configuration).
+
 **Result:** (appended when scored)

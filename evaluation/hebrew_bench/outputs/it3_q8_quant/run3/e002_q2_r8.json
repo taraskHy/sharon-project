@@ -1,0 +1,8 @@
+{
+ "cell": "e002_q2_r8",
+ "run": 3,
+ "raw": "{\"transcription\": \"נְדָרִי אֲשֶׁר נִתְקַבֵּל בְּסֵפֶר הַמְּגֻלָּה 2x8. סְפָרִים אֲשֶׁר נִתְקַבֵּל בְּסֵפֶר הַמְּגֻלָּה 2x8. סְפָרִים אֲשֶׁר נִתְקַבֵּל בְּסֵפֶר הַמְּגֻלָּה 2x8. סְפָרִים אֲשֶׁר נִתְקַבֵּל בְּסֵפֶר הַמְּגֻלָּה 2x8. סְפָרִים אֲשֶׁר נִתְקַבֵּל בְּסֵפֶר הַמְּגֻלָּה 2x8. סְפָרִים אֲשֶׁר נִתְקַבֵּל בְּסֵפֶר הַמְּג",
+ "transcription": null,
+ "error": "JSONDecodeError: Unterminated string starting at: line 1 column 19 (char 18) | body={'id': 'chatcmpl-748', 'object': 'chat.completion', 'created': 1783959087, 'model': 'qwen3-vl:8b-instruct-q8_0', 'system_fingerprint': 'fp_ollama', 'choices': [{'index': 0, 'message': {'role': 'assist",
+ "latency_s": 32.28
+}
