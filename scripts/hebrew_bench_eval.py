@@ -26,7 +26,9 @@ if hasattr(sys.stdout, "reconfigure"):
     sys.stdout.reconfigure(encoding="utf-8", errors="replace")
 
 BENCH = Path("evaluation/hebrew_bench")
-CSV_PATH = Path("evaluation/hebrew_transcription_results.csv")
+# argv[2] may override the results CSV (the local-HTR benchmark keeps its
+# own ledger, evaluation/local_hebrew_htr_results.csv).
+CSV_PATH = Path(sys.argv[2]) if len(sys.argv) > 2 else Path("evaluation/hebrew_transcription_results.csv")
 UNREADABLE_MARKERS = ["[unreadable]", "[?]", "לא קריא", "unreadable"]
 
 

@@ -1,0 +1,9 @@
+{
+ "config_id": "it6_hdd_words",
+ "model": "sivan22/hdd-words-ocr@e089ce717594",
+ "prompt": "n/a (dedicated HTR; greedy decode)",
+ "preproc": "gray+projection-line+word-segmentation",
+ "max_tokens": 24,
+ "runs": 2,
+ "started": "2026-07-13 20:02:58"
+}
