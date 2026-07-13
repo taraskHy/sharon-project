@@ -299,6 +299,13 @@ def _grade_sub_item(
         review_reasons.append(f"extraction uncertainty: {se.uncertainty_note}")
     elif se.confidence < 0.7:
         review_reasons.append(f"low extraction confidence ({se.confidence:.2f})")
+    if version in getattr(sub_key, "versions_unverified", []):
+        needs_review = True
+        review_reasons.append(
+            f"the answer key's value for version {version} on this sub-item is "
+            "deterministically unverified (colour-only encoding); confirm "
+            "against the official key"
+        )
 
     if se.status == "unanswered":
         return SubItemResult(

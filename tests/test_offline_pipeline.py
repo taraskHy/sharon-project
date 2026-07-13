@@ -148,6 +148,63 @@ def test_grade_and_filename_never_reach_model_input(tmp_path, no_network):
     assert result.total_awarded == EXPECTED_TOTAL
 
 
+def test_crash_during_extraction_resumes_without_redoing_survey(tmp_path, no_network):
+    """A crash after the survey stage must not discard it: each stage's
+    fingerprint is persisted the moment its file is written, so --resume
+    re-runs only the unfinished stages."""
+    exam = make_pdf(tmp_path / "01_50.pdf")
+    key_path = tmp_path / "answer_key.json"
+    save_answer_key(make_key(), key_path)
+    out = tmp_path / "out"
+
+    fixtures = {
+        "ExamSurvey": _fixture_survey(),
+        "QuestionExtraction": _fixture_extraction(),
+        "ExplanationJudgement": _fixture_judgement(),
+    }
+
+    calls = {"survey": 0, "extraction": 0}
+
+    def crashing(model, system, blocks):
+        if model.__name__ == "ExamSurvey":
+            calls["survey"] += 1
+        if model.__name__ == "QuestionExtraction":
+            raise RuntimeError("simulated crash mid-extraction")
+        return fixtures[model.__name__].model_copy(deep=True)
+
+    backend = MockBackend(
+        config=BackendConfig(backend="mock", model="crashing"), responder=crashing
+    )
+    ns = argparse.Namespace(
+        key=str(key_path), rubric=None, resume=True, version="auto", exam=str(exam)
+    )
+    try:
+        run_grade_pipeline(ns, backend, out, 800, exam_path=exam)
+        raise AssertionError("expected the simulated crash")
+    except RuntimeError:
+        pass
+    assert (out / "survey.json").exists()
+    assert calls["survey"] == 1
+    stored = json.loads((out / "fingerprint.json").read_text(encoding="utf-8"))
+    assert "survey" in stored, "survey fingerprint must be persisted before extraction"
+
+    def counting(model, system, blocks):
+        calls.setdefault(model.__name__, 0)
+        if model.__name__ == "ExamSurvey":
+            calls["survey"] += 1
+        if model.__name__ == "QuestionExtraction":
+            calls["extraction"] += 1
+        return fixtures[model.__name__].model_copy(deep=True)
+
+    backend2 = MockBackend(
+        config=BackendConfig(backend="mock", model="crashing"), responder=counting
+    )
+    result = run_grade_pipeline(ns, backend2, out, 800, exam_path=exam)
+    assert result.total_awarded == EXPECTED_TOTAL
+    assert calls["survey"] == 1, "survey must be reused from disk, not recomputed"
+    assert calls["extraction"] > 0, "extraction must run on resume"
+
+
 def test_eval_batch_offline_end_to_end(tmp_path, monkeypatch, no_network):
     monkeypatch.delenv("ANTHROPIC_API_KEY", raising=False)
     dataset = tmp_path / "dataset"
@@ -270,7 +327,7 @@ def test_resolve_config_toml_and_cli_precedence(tmp_path):
     cfg.write_text(
         '[backend]\nbackend = "openai"\nmodel = "toml-model"\n'
         'base_url = "http://toml:1234/v1"\ntimeout_s = 111.0\n'
-        "[grading]\nmax_image_edge = 1111\nmax_tokens = 2222\n",
+        "[grading]\nmax_image_edge = 1111\nmax_tokens = 2222\nsurvey_image_edge = 333\n",
         encoding="utf-8",
     )
     ns = argparse.Namespace(
@@ -286,13 +343,24 @@ def test_resolve_config_toml_and_cli_precedence(tmp_path):
         transport_retries=None,
         validation_retries=None,
         max_image_edge=None,
+        survey_image_edge=None,
     )
-    backend_config, max_edge = resolve_config(ns)
+    backend_config, max_edge, survey_edge = resolve_config(ns)
     assert backend_config.model == "cli-model"
     assert backend_config.base_url == "http://toml:1234/v1"
     assert backend_config.timeout_s == 111.0
     assert backend_config.max_tokens == 2222
     assert max_edge == 1111
+    assert survey_edge == 333
+
+    # CLI overrides TOML; absent everywhere -> library default.
+    ns.survey_image_edge = 555
+    assert resolve_config(ns)[2] == 555
+    cfg.write_text("[backend]\nbackend = \"openai\"\nmodel = \"m\"\n", encoding="utf-8")
+    ns.survey_image_edge = None
+    from autograder.config import GraderConfig
+
+    assert resolve_config(ns)[2] == GraderConfig.survey_image_long_edge
 
 
 def test_doctor_with_mock_backend(no_network):

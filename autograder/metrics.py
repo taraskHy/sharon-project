@@ -17,6 +17,9 @@ class ExamOutcome:
     runtime_s: float | None = None
     failed: bool = False
     failure_reason: str | None = None
+    detected_variant: str | None = None
+    variant_uncertain: bool = False
+    key_source: str | None = None  # cache | parsed | resume | json
 
     @property
     def error(self) -> float | None:

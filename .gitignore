@@ -4,4 +4,6 @@ __pycache__/
 .venv/
 .idea/
 out/
+eval_out*/
+key_cache/
 .pytest_cache/

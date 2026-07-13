@@ -21,15 +21,29 @@ Hardware guidance:
 | Setup | What runs | Expectation |
 |---|---|---|
 | CPU-only laptop (e.g. the dev machine: Core Ultra 7, 63 GB RAM, no discrete GPU) | Q4 8B VLM | Works, but vision prefill on 13-page exams is **slow** (minutes per call, potentially hours per exam). Good for smoke tests, not batch grading |
-| 1× 24 GB GPU (RTX 3090/4090, A10, L4) | 8B bf16 or AWQ/FP8; 14B FP8 | Comfortable; recommended minimum for real use |
+| 1× 15–16 GB GPU (RTX 2000 Ada — the validation machine) | Q4_K_M 8B (`qwen3-vl:8b-instruct`) | Measured 2026-07-13: 100 % GPU-resident, ~19–33 tok/s decode; one-page vision call 5–20 s; see context table below |
+| 1× 24 GB GPU (RTX 3090/4090, A10, L4) | 8B bf16 or AWQ/FP8; 14B FP8 | Comfortable; recommended minimum for heavy use |
 | 1× 48–80 GB GPU (A100/H100/L40S) | 32B, MoE 30B-A3B, 24B bf16 | Headroom for the stronger models if 8B accuracy is insufficient |
 | Disk | 6–20 GB per model + ~1 GB app/venv | |
 
 Ollama notes: set a large context (`OLLAMA_CONTEXT_LENGTH` or request-level
-`num_ctx`) — multi-image exam calls overflow small default contexts, which
-manifests as silently degraded output rather than an error; keep
-`--concurrency 1`; prefer `--structured-mode json_schema` (Ollama constrained
-decoding), fall back to `json_object` if a model fights the grammar.
+`num_ctx`) — multi-image exam calls overflow small default contexts (Ollama
+0.31 fails loudly with `exceed_context_size_error`; older/other stacks may
+truncate silently); keep `--concurrency 1`; prefer `--structured-mode
+json_schema` (Ollama constrained decoding), fall back to `json_object` if a
+model fights the grammar. Pull the **instruct** tag: bare `qwen3-vl:8b` is
+the thinking variant, whose reasoning tokens consume the whole `max_tokens`
+budget outside the constrained JSON (`think:false` is ineffective on 0.31.2).
+
+### Context length on a 15.4 GB card (Qwen3-VL-8B Q4_K_M, measured 2026-07-13)
+
+| `OLLAMA_CONTEXT_LENGTH` | VRAM (model+KV) | Fits which pipeline calls |
+|---|---|---|
+| 8192 | ~6.5 GiB (~10 GiB total with desktop) | single-page probes, variant detection, judging |
+| **16384 (recommended batch default)** | ~8 GiB | everything per-exam under the two-resolution architecture: survey ≤13 pages @640 px, close-read ~3 pages @1000 px, chunked extraction, judging — with ~3 GiB VRAM margin |
+| 32768 | ~10 GiB (14.7 GiB total — effectively the card's ceiling) | only the two **cached one-time** calls: the answer-key parse (~19.6 K prompt tokens) and per-variant question alignment. Run them once to seed the caches, then drop back to 16 K |
+
+Do not run parallel requests at 32 K on this card.
 
 ## 2. University Linux GPU server via vLLM — production path
 

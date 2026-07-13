@@ -11,24 +11,85 @@ answer key PDF ──► 1. KEY PARSING     structured key: questions, sub-items
                                       reference reasoning, rubric rules
 student scan  ──► 0. MASKING          red-ink instructor annotations removed
                                       from rendered pages (auditable regions)
-              ──► 2. SURVEY           whole-document pass: page inventory,
-                                      student marking-convention notes,
-                                      instructor-ink identification,
-                                      authoritative answer locations
-              ──► 3. EXTRACTION       per question, blind to correct answers:
-                                      marks observed, final answer under the
-                                      conventions, verbatim transcription,
-                                      answered / unanswered / ambiguous
+              ──► 1b. VARIANT         cover-page marker (flower) → exam
+                                      variant A1/A2/A3 per the authoritative
+                                      mapping (<key>.variants.json); never
+                                      inferred from answers or scores;
+                                      unclear marker → human review
+                                      (docs/variants.md)
+              ──► 2. SURVEY           whole-document pass at LOW resolution
+                                      (survey_image_edge, default 640px):
+                                      page classification (question pages /
+                                      dedicated answer sheets / mixed /
+                                      instructor-only) + functional regions
+                                      (answer_table, explanation_area,
+                                      scratch_work, instructor_grading,
+                                      convention_note), answer-sheet policy,
+                                      student convention notes, instructor-ink
+                                      identification, version hints
+              ──► 3. EXTRACTION       per question, blind to correct answers,
+                                      at FULL resolution but only on the
+                                      authoritative answer-sheet pages (plus
+                                      convention notes; question pages only
+                                      when no dedicated sheet exists): marks
+                                      observed, final answer under the
+                                      conventions + its origin (answer sheet
+                                      vs question page), verbatim
+                                      transcription, answered / unanswered /
+                                      ambiguous, answer-sheet condition
+              ──► 2b. ALIGNMENT       per-variant map of PRINTED sub-item
+                                      numbering onto the key's canonical
+                                      numbering (variants shuffle question/
+                                      option order); one model call per
+                                      variant, validated deterministically,
+                                      cached persistently; invalid → identity
+                                      + every sub-item review-flagged
+              ──► 3b. AUTHORITY       plain Python (autograder/authority.py):
+                                      question-page scratch never silently
+                                      overrides a usable answer sheet — such
+                                      answers are demoted to ambiguous and
+                                      routed to review; when the sheet is
+                                      missing/blank/damaged/ambiguous,
+                                      question-page evidence may stand only
+                                      as flagged secondary evidence
               ──► 4. JUDGING          model compares each written explanation
                                       against the key's reference reasoning
               ──► 5. SCORING          plain Python: normalisation, version
                                       detection, points, caps, review flags
 ```
 
-Stages 1–4 are model calls; stage 5 is deterministic and unit-tested offline.
-Every stage's output is written to the run directory as JSON, and `--resume`
-reuses a stage only when a fingerprint over *all* inputs (exam bytes, key
-bytes, rubric, backend, model, generation parameters, render size) matches.
+Stages 1–4 are model calls; stages 3b and 5 are deterministic and
+unit-tested offline. Every stage's output is written to the run directory as
+JSON, and `--resume` reuses a stage only when a fingerprint over *all*
+inputs (exam bytes, key bytes, rubric, backend, model, generation
+parameters, render sizes) matches.
+
+### Where final answers are read from
+
+Most pages of a scanned exam are the question booklet; students write
+circles, notes, calculations and tentative answers on them. Those markings
+are scratch work, not final answers. Exams in this corpus provide a small
+number of dedicated answer-sheet pages (typically near the end) carrying the
+matching answers, short explanations, the multiple-choice answer table,
+convention notes and numbering corrections — the survey DETECTS them from
+headings, instructions, table layouts, repeated question identifiers and
+position (never a hardcoded count or location), and records them in
+`answer_sheet_policy`. Extraction then reads final answers from those pages
+only, and reports per-sub-item provenance (`answer_origin`) plus the sheet's
+condition per question (`answer_sheet_status`). Exams whose printed
+instructions say booklet markings are not checked are honoured strictly;
+exams with no dedicated sheet at all use the question pages' response areas
+as the normal authoritative source. The deterministic authority pass (3b)
+enforces all of this structurally, so a prompt-ignoring model cannot smuggle
+scratch work into grades: sheet usable → question-page answers are demoted
+to ambiguous + human review; sheet broken → they stand only as
+low-confidence secondary evidence flagged for review.
+
+This split is also the inference-cost optimisation: one cheap low-resolution
+pass over everything to LOCATE, then full-resolution vision only on the few
+pages that carry gradeable content. Question pages are consulted (in full
+resolution) only for questions the survey could not place or exams without
+answer sheets — not resent for every question.
 
 ## Provider-independent inference layer
 

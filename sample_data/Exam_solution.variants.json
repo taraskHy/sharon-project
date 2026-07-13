@@ -1,0 +1,33 @@
+{
+  "marker_kind": "flower",
+  "marker_page": 1,
+  "marker_location_hint": "bottom third of the cover page, printed next to the Hebrew word 'בהצלחה!' (Good luck!)",
+  "markers": {
+    "variant_symbol_a1": {
+      "variant": "A1",
+      "aliases": ["four_petal_clover", "butterfly_flower"],
+      "description": "Four rounded heart/petal shapes arranged in an X (clover/butterfly-like), with four small pointed leaves between the petals; hollow outline print."
+    },
+    "variant_symbol_a2": {
+      "variant": "A2",
+      "aliases": ["five_petal_star", "star_flower"],
+      "description": "Five pointed petals around a small central circle (star-flower), with two leaves at the sides below; hollow outline print."
+    },
+    "variant_symbol_a3": {
+      "variant": "A3",
+      "aliases": ["many_petal_daisy", "daisy"],
+      "description": "A round daisy/chamomile with many (10+) small elongated petals around a large plain circular center; hollow outline print."
+    }
+  },
+  "mapping_source": {
+    "derived": "2026-07-13, manual inspection of authoritative printed material (not student answers); CONFIRMED by the exam owner on 2026-07-13 (four-petal flower=A1, five-petal flower=A2, daisy=A3)",
+    "evidence": [
+      "Answer key page 3 legend: 'הצבעים הם R,B,G לפי A1, A2, A3 בהתאם' — the key encodes the three variants as A1/A2/A3.",
+      "Answer key page 11, item 16 note: version 2's printed wording of the Hough-triangles question says the triangles are parallel to the x-axis (answer: minimal dimension 3); versions 1 and 3 say any orientation (answer: 4).",
+      "Exam test/003 (five_petal_star cover) prints the Hough-triangles question as #20 with the 'one side parallel to the X axis' wording -> version 2 -> A2.",
+      "Exam test/002 (many_petal_daisy cover) prints the Hough-triangles question as #18 with the 'any orientation' wording -> version 1 or 3; it is not A1 because its question order differs from the key's canonical order -> A3.",
+      "sample_data/student_exam.pdf (four_petal_clover cover) is the instructor-verified A1 exam (docs/evaluation.md ground truth); its printed question order matches the key's canonical order exactly (page 10 prints #18 Canny, #19 Harris, #20 Rectification = key items 18/19/20), and the key's own cover carries the same four-petal flower.",
+      "Question order and option order SHUFFLE between variants (Hough question printed at #16/#20/#18 in A1/A2/A3 respectively) — scoring requires the per-variant question alignment, see docs/variants.md."
+    ]
+  }
+}

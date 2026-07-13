@@ -1,0 +1,21 @@
+{
+  "_purpose": "One-time operator-supplied per-version answers for sub-items whose key encoding is colour-only (not decodable from the PDF text layer). Entries here are treated as verified and clear the versions_unverified review flag for that sub-item.",
+  "_format": "{\"<question_id>\": {\"<sub_item_id>\": {\"<version>\": [\"<letter>\", ...]}}}",
+  "_evidence_for_current_entries": [
+    "3.16 A2=B: the key's own page-11 note states that in version 2 the Hough-triangles question is worded 'parallel to the x-axis' and its answer is minimal dimension 3; variant A2's printed form (five-petal-star cover, e.g. test/003 page 10, question #20) lists option ב = 3, hence letter B. Versions 1 and 3 answer 4 = option ג = C, matching the parsed A1/A3 columns.",
+    "2.8 = G/F/F (manually verified 2026-07-13, CORRECTED): the PDF text layer fragments this item's group ('G' + '/F/F'), so its order is not deterministically decodable from text alone. INSTRUCTOR EVIDENCE settles it: on the representative A1 exam the student wrote G for this item (answer sheet p11 row 8) and the instructor's red tick marks it correct within the 28/32 total — so A1's letter is G, and the multiset {G,F,F} leaves A2=F, A3=F. The vision parse's F/F/G ordering was wrong (a caution against trusting model order for fragmented groups)."
+  ],
+  "_todo_for_instructor": "The remaining Q3 items (1-15, 17-20) are encoded by highlight colour only and stay review-flagged for ALL versions until their per-version letters are entered here from the official key. Template: \"3\": {\"1\": {\"A1\": [], \"A2\": [], \"A3\": []}, ...}",
+  "2": {
+    "8": {
+      "A1": ["G"],
+      "A2": ["F"],
+      "A3": ["F"]
+    }
+  },
+  "3": {
+    "16": {
+      "A2": ["B"]
+    }
+  }
+}

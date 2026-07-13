@@ -36,6 +36,19 @@ Conventions to watch for in answer-key documents:
   the version ("the colours are R,B,G for versions A1,A2,A3"). Look for a
   legend. Populate correct_by_version with one entry per version. If there is
   only one version, use the key "default".
+  CRITICAL DECODING RULE: when a sub-item shows a GROUP of several answer
+  letters (e.g. "F/F/G", "A/H/B", or letters printed in different colours),
+  that group IS the per-version answer list. The legend declares which
+  colour/position belongs to which version id, IN ORDER — e.g. a legend
+  "colours are R,B,G for A1,A2,A3" means the red (first) letter is A1's
+  answer, the blue (second) is A2's, the green (third) is A3's. Expand every
+  such group into correct_by_version with one entry per version.
+  WORKED EXAMPLE: item shows "F/F/G", legend says colours R,B,G correspond
+  to A1,A2,A3 → correct_by_version = {"A1": ["F"], "A2": ["F"], "A3": ["G"]}.
+  Note A3 differs — copying one letter to every version is a DECODE ERROR.
+  Preserve each position's own letter exactly; versions differ on purpose.
+  EVERY sub-item must end up with an answer for EVERY version, and version
+  notes ("in version 2 the answer is 3") override the group for that version.
 - ACCEPTED ALTERNATIVES: red or inline notes such as "we decided to accept both
   answers A and B due to imprecise wording" mean the list of accepted answers
   for that sub-item contains both. Version-dependent notes ("in version 2 the
@@ -56,41 +69,160 @@ choose the most reasonable value and record the assumption in grading_notes.
 
 SURVEY_SYSTEM = """\
 You are analysing a scanned, handwritten university exam (may be Hebrew/RTL
-with English terms). You receive ALL pages. Your job is a document-level survey
-that later passes rely on. Do NOT grade and do NOT decide final answers yet.
+with English terms). You receive ALL pages (possibly at reduced resolution —
+this survey locates things; later passes re-read the pages that matter at
+full resolution). Your job is a document-level survey that later passes rely
+on. Do NOT grade and do NOT decide final answers yet.
 
 Report:
 
-1. PAGE INVENTORY: for each page, what it contains, which question(s) it
-   belongs to, and whether it is an answer area (answer table / bubble sheet).
+1. PAGE INVENTORY & CLASSIFICATION: for each page, what it contains, which
+   question(s) it belongs to, and its role (page_kind):
+   - "question_or_instructions": printed questions/instructions. Students may
+     write circles, notes, calculations, tentative answers or other scratch
+     work here — that ink is normally NOT the final answer.
+   - "answer_sheet": a dedicated sheet the student fills in with final
+     answers (matching answers, short explanations, the multiple-choice
+     answer table, convention notes, numbering corrections). Typically few
+     pages near the end, but NEVER assume a fixed count or position: detect
+     them from headings/instructions ("answer sheet", "final answers here"),
+     table layouts with repeated question identifiers, and structure.
+   - "mixed": a page holding both printed question material and a designated
+     answer area.
+   - "instructor_only": grading grids / score boxes meant for the instructor.
+   - "other": cover, blank, unidentifiable.
+   Also list each page's functional regions (question_text, answer_table,
+   explanation_area, scratch_work, instructor_grading, convention_note) with
+   a short location description and the question ids they serve.
    CRITICAL: students sometimes fill an answer table under the wrong printed
    title and fix it by hand (crossing out the printed question number, writing
    another, adding a note like "I mixed up questions 1 and 2"). Report the
    question each answer area ACTUALLY answers after such corrections, and
    explain the evidence.
 
-2. MARKING CONVENTIONS: find every handwritten note that changes how marks
+2. ANSWER-SHEET POLICY: fill answer_sheet_policy. List the pages of the
+   dedicated answer sheet(s) in authoritative_pages (empty list when the exam
+   expects answers directly on the question pages — some exams do). Set
+   booklet_answers_not_graded=true ONLY when the exam's printed instructions
+   explicitly state that markings in the question booklet are not checked;
+   quote the instruction in policy_source. When a dedicated answer sheet
+   exists, it is the authoritative source for final answers; question-page
+   ink is scratch. If the instructions point to a separately-submitted sheet
+   that is NOT part of this scan, say so in policy_source and list the best
+   available in-scan pages instead.
+
+3. MARKING CONVENTIONS: find every handwritten note that changes how marks
    should be read anywhere in the document. Examples: "answers marked with X
    are final", "circles are not final", arrows redirecting answers, statements
    that a whole table belongs to a different question. Quote each note
    verbatim, state its interpretation and its scope.
 
-3. INK SEPARATION: describe the student's own writing (colour/style) versus
+4. INK SEPARATION: describe the student's own writing (colour/style) versus
    instructor/grader annotations (ticks, crosses, scores like "28/32", written
    comments, usually a different colour, often red). Later passes must ignore
    grader annotations entirely — they are NOT student answers.
 
-4. AUTHORITATIVE ANSWER LOCATIONS: combining the exam's printed instructions
-   (e.g. "fill answers only in the answer table; drafts in the booklet are not
-   graded") with what the student actually did, state where each question's
-   final answers must be read from. If the printed instructions point to a
-   separately-submitted sheet that is NOT part of this scan, say so and name
-   the best available in-scan source.
+5. AUTHORITATIVE ANSWER LOCATIONS: combining the printed instructions and the
+   answer-sheet policy with what the student actually did, state where each
+   question's final answers must be read from.
 
-5. VERSION HINTS: anything printed or visual that indicates the exam version,
+6. VERSION HINTS: anything printed or visual that indicates the exam version,
    if versions exist. Say "none" if nothing indicates a version.
 
 Be precise about page numbers (pages are labelled in the input).
+"""
+
+
+VARIANT_DETECT_SYSTEM = """\
+You identify which printed VARIANT MARKER (a small symbol, e.g. a flower)
+appears on the cover page of a scanned university exam. You receive the
+cover image and a catalogue of the possible markers with descriptions.
+
+Rules:
+
+1. Match the printed symbol against the catalogue by its VISUAL SHAPE
+   (petal count, petal shape, leaves, center). Report the one catalogue
+   name it matches, or null if the symbol is missing, cropped, illegible,
+   or does not clearly match exactly one entry.
+2. confident=true ONLY when the match is visually unambiguous. When two
+   catalogue entries could both fit, or the print is too damaged to count
+   petals, set matched_marker=null (or your best candidate with
+   confident=false) and explain in obstruction_note.
+3. IGNORE all ink added by hand — student writing and instructor marks
+   (often red: scores, ticks, comments). They are not the marker. If ink
+   overlaps the marker, mention it in obstruction_note.
+4. Do NOT use anything else on the page (names, dates, grades, text) to
+   guess. Only the printed marker counts.
+"""
+
+
+ALIGNMENT_SYSTEM = """\
+You align a specific printed exam FORM (one variant of several) with the
+answer key's canonical question structure. Exam variants shuffle the ORDER
+of questions and of sub-items; the answer key lists them in one canonical
+order. You receive the key's canonical ids and prompts (NO answers) and the
+variant's printed question pages.
+
+For every question and every sub-item, output printed_to_key: the sub-item
+number as PRINTED on this form mapped to the key's canonical sub-item id,
+matched by CONTENT — the topic/wording of the printed item against the
+key's prompt for it (language may differ slightly; match meaning, formulas,
+named methods).
+
+Rules:
+
+1. Map every printed sub-item exactly once; every key id must appear
+   exactly once as a target. If the form prints the key's order, the map is
+   the identity — set identical_order=true.
+2. Match by printed QUESTION CONTENT only. Never use handwritten marks,
+   student answers, or instructor ink. Never guess from position alone when
+   content is readable.
+3. If a printed item's content is unreadable or matches nothing, leave your
+   best-supported mapping for the rest, set confident=false, and explain in
+   notes which items are uncertain and why.
+"""
+
+
+SHEET_CLOSEREAD_SYSTEM = """\
+You are re-reading, at FULL resolution, ONLY the dedicated answer-sheet pages
+of a scanned handwritten university exam (Hebrew/RTL with English terms is
+common). A cheap low-resolution survey already located these pages; your job
+is the fine print it cannot see. Do NOT decide or extract final answers.
+
+Report, for each page:
+
+1. TITLE vs REALITY: what question the PRINTED title/heading claims the page
+   serves, and which question(s) it ACTUALLY serves. Students sometimes fill
+   an answer table under the wrong printed title and fix it by hand: a
+   crossed-out printed question number, a handwritten replacement number, a
+   note like "I mixed up / swapped the tables" (e.g. Hebrew "התבלבלתי בין
+   השאלות"), arrows between pages. INSPECT THE TITLE DIGITS CHARACTER BY
+   CHARACTER for strikethrough or an overwritten digit, and READ every
+   handwritten line near the page heading — these corrections are small,
+   faint, and easy to miss, and missing one misgrades two whole questions.
+   When you see such a correction, set serves_questions to the CORRECTED
+   question(s) and quote the evidence in correction_evidence. Two pages may
+   even swap roles entirely — report what the student's corrections say, not
+   the print. Without corrections, serves_questions = the printed title.
+
+2. CONDITION: 'present' (usable — even if individual rows are empty),
+   'blank' (the student left the whole page empty), 'damaged' (torn, cut
+   off, unscannable), or 'ambiguous' (markings unreadable as a whole).
+
+3. REGIONS: answer_table / explanation_area / convention_note /
+   instructor_grading areas on the page, with question ids where printed.
+
+4. MARKING-CONVENTION NOTES: transcribe verbatim every handwritten note on
+   these pages that changes how marks must be read ("answers marked with X
+   are final", "the circles are drafts", arrows redirecting a table), state
+   its interpretation and scope. If the handwriting resists exact
+   transcription, transcribe what you can and still state the note's
+   evident meaning — these notes govern extraction and must not be dropped.
+
+Instructor/grader ink (ticks, crosses, scores like "28/32", comments,
+usually a different colour such as red) is NOT the student's writing: never
+treat it as a student note or correction; do not let it influence
+serves_questions.
 """
 
 
@@ -105,9 +237,29 @@ read them from the images.
 
 Rules:
 
-1. AUTHORITATIVE SOURCE: read final answers from the location the survey marks
-   as authoritative for this question (e.g. the answer table, not draft
-   markings in the booklet). Mention which source you used.
+1. AUTHORITATIVE SOURCE: when the survey's answer_sheet_policy lists dedicated
+   answer-sheet pages for this question, the student's FINAL answers are read
+   from those pages ONLY. Ink on question/instruction pages (circles, notes,
+   calculations, tentative answers) is scratch work: never report it as the
+   final answer while the sheet is usable, and never let it override a clear
+   answer on the sheet. If the printed instructions state that booklet
+   markings are not checked, follow that strictly. Set answer_origin per
+   sub-item ("answer_sheet" / "question_page" / "both" when both exist and
+   agree) and set answer_sheet_status for the question:
+   - "present": the sheet covers this question and is readable — even if
+     individual rows are empty (an empty row on a usable sheet means the
+     student chose not to answer: status="unanswered", NOT a question-page
+     fallback).
+   - "blank"/"missing"/"damaged"/"ambiguous": the sheet (or this question's
+     part of it) is absent, empty AS A WHOLE, torn, or unreadable. Only then
+     may question-page markings serve as SECONDARY evidence: report them
+     with answer_origin="question_page", lower confidence, and an
+     uncertainty_note — they will be routed to human review.
+   - "not_applicable": ONLY for exams with no dedicated sheet for this
+     question (answers belong on the question pages). NEVER report
+     not_applicable when you just read answers off a sheet — that sheet is
+     "present".
+   Mention which source you used in authoritative_source.
 
 2. CONVENTIONS FIRST: apply the student's own convention notes (e.g. "X marks
    are final, circles are not") and the document-wide corrections (e.g. a table
@@ -137,6 +289,9 @@ Rules:
 
 7. CANONICAL ANSWERS: report final_answer as a single uppercase Latin letter
    (Hebrew option letters map א=A, ב=B, ג=C, ד=D, ה=E).
+
+8. PROVENANCE: for every sub-item set source_page (the page number you read
+   the final answer from) and source_region (e.g. 'answer table row 7').
 
 Set confidence per sub-item: 1.0 = unmistakable; below 0.7 means you should
 also set an uncertainty_note explaining what is unclear.

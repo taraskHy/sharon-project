@@ -18,6 +18,15 @@ def render_markdown(result: ExamResult) -> str:
     lines.append(f"- Graded at: {result.graded_at}")
     lines.append(f"- Model: {result.model}")
     lines.append(f"- Exam version: {result.detected_version} ({result.version_detection})")
+    if result.variant_detection:
+        vd = result.variant_detection
+        lines.append(
+            f"- Variant marker: {vd.get('marker_kind')} "
+            f"{vd.get('matched_marker') or '(unmatched: ' + str(vd.get('marker_seen')) + ')'}"
+            f" on page {vd.get('page')} ({vd.get('page_region')}); "
+            f"confident={vd.get('confident')}; mapping: {vd.get('mapping_source')}; "
+            f"alignment: {vd.get('question_alignment')}"
+        )
     lines.append("")
 
     lines.append("## Score breakdown")

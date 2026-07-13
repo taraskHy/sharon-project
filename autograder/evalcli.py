@@ -96,13 +96,18 @@ def _shared_key_path(args, backend, eval_root: Path, max_image_edge: int) -> Pat
         return key_path  # already structured; per-exam runs load it directly
     shared = eval_root / "shared"
     shared.mkdir(parents=True, exist_ok=True)
-    ns = argparse.Namespace(key=args.key, rubric=args.rubric, resume=args.resume)
+    ns = argparse.Namespace(
+        key=args.key, rubric=args.rubric, resume=args.resume,
+        key_cache_dir=getattr(args, "key_cache_dir", None),
+        no_key_cache=getattr(args, "no_key_cache", False),
+    )
     current = _fingerprints(ns, backend, max_image_edge, include_exam=False)
     stored = _stored_fingerprints(shared)
-    _get_key(
+    _, key_source = _get_key(
         ns, backend, shared, max_image_edge,
         reusable=args.resume and stored.get("key") == current["key"],
     )
+    _log(f"batch answer key source: {key_source}")
     (shared / "fingerprint.json").write_text(json.dumps(current), encoding="utf-8")
     return shared / "answer_key.json"
 
@@ -115,7 +120,7 @@ def cmd_eval_batch(args) -> int:
         run_grade_pipeline,
     )
 
-    backend_config, max_image_edge = resolve_config(args)
+    backend_config, max_image_edge, survey_image_edge = resolve_config(args)
     backend = create_backend(backend_config)
     eval_root = Path(args.out)
     eval_root.mkdir(parents=True, exist_ok=True)
@@ -126,6 +131,17 @@ def cmd_eval_batch(args) -> int:
     _log(f"evaluating {len(records)} exams from split '{args.split}'")
 
     key_json = _shared_key_path(args, backend, eval_root, max_image_edge)
+
+    # The per-exam runs receive the SHARED parsed key json, so the variant
+    # config must be resolved against the ORIGINAL key document's location.
+    from .variant import variant_config_path
+
+    variant_map = getattr(args, "variant_map", None)
+    if not variant_map:
+        auto = variant_config_path(args.key)
+        if auto.exists():
+            variant_map = str(auto)
+            _log(f"variant mapping: {variant_map}")
 
     outcomes: list[ExamOutcome] = []
     review_cases: list[dict] = []
@@ -143,13 +159,17 @@ def cmd_eval_batch(args) -> int:
                 resume=args.resume,
                 version=args.version,
                 exam=str(source),
+                key_cache_dir=getattr(args, "key_cache_dir", None),
+                no_key_cache=getattr(args, "no_key_cache", False),
+                variant_map=variant_map,
             )
             # Fast resume: reuse the finished result when inputs are unchanged.
             result: Optional[ExamResult] = None
             result_path = exam_out / "result.json"
             if args.resume and result_path.exists():
                 current = _fingerprints(
-                    ns, backend, max_image_edge, include_exam=True, exam_path=source
+                    ns, backend, max_image_edge, include_exam=True, exam_path=source,
+                    survey_image_edge=survey_image_edge,
                 )
                 if _stored_fingerprints(exam_out).get("exam") == current["exam"]:
                     _log("resume: reusing finished result")
@@ -157,6 +177,10 @@ def cmd_eval_batch(args) -> int:
                         result_path.read_text(encoding="utf-8")
                     )
             if result is None:
+                def masked_loader(edge, _src=source, _mask=args.mask):
+                    loaded = load_pages(_src, edge)
+                    return mask_pages(loaded)[0] if _mask else loaded
+
                 pages = load_pages(source, max_image_edge)
                 if args.mask:
                     pages, mask_report = mask_pages(pages)
@@ -173,10 +197,16 @@ def cmd_eval_batch(args) -> int:
                     exam_path=source,
                     exam_label=record.anon_id,
                     pages=pages,
+                    survey_image_edge=survey_image_edge,
+                    page_loader=masked_loader,
                 )
             outcome.predicted = result.total_awarded
             outcome.review_items = len(result.needs_human_review)
             outcome.unanswered_items = len(result.unanswered)
+            outcome.detected_variant = result.detected_version
+            vd = result.variant_detection or {}
+            outcome.variant_uncertain = bool(vd.get("uncertain"))
+            outcome.key_source = (result.backend_info or {}).get("answer_key_source")
             if result.needs_human_review:
                 review_cases.append(
                     {
@@ -216,6 +246,9 @@ def _write_batch_reports(eval_root: Path, args, backend, metrics, review_cases) 
                 "expected": o.expected,
                 "predicted": o.predicted,
                 "error": o.error,
+                "detected_variant": o.detected_variant,
+                "variant_uncertain": o.variant_uncertain,
+                "key_source": o.key_source,
                 "review_items": o.review_items,
                 "unanswered_items": o.unanswered_items,
                 "runtime_s": round(o.runtime_s, 1) if o.runtime_s is not None else None,
@@ -232,7 +265,8 @@ def _write_batch_reports(eval_root: Path, args, backend, metrics, review_cases) 
         writer = csv.DictWriter(
             f,
             fieldnames=[
-                "anon_id", "expected", "predicted", "error", "review_items",
+                "anon_id", "expected", "predicted", "error", "detected_variant",
+                "variant_uncertain", "key_source", "review_items",
                 "unanswered_items", "runtime_s", "failed", "failure_reason",
             ],
         )
@@ -320,7 +354,7 @@ def cmd_audit_leakage(args) -> int:
     from .cli import resolve_config
     from .ingest import labeled_page_blocks
 
-    backend_config, max_image_edge = resolve_config(args)
+    backend_config, max_image_edge, _ = resolve_config(args)
     backend = create_backend(backend_config)
     records = _load_split_records(args)[: args.limit or 5]
     eval_root = Path(args.out)

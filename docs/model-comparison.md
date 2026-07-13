@@ -6,6 +6,21 @@
 
 **Status:** Research complete (all sources verified live on **2026-07-12** unless noted; every load-bearing claim carries its URL; unverifiable claims are flagged). Decision adopted below; empirical bake-off on the graded-exam corpus still pending (see PROJECT_STATUS.md).
 
+> **Live addendum (2026-07-13, RTX 2000 Ada 15.4 GB):** the decision below is
+> confirmed workable on a 15 GB-class GPU — `qwen3-vl:8b-instruct` Q4_K_M runs
+> 100 % GPU-resident (~19–33 tok/s; single-page vision calls 5–20 s). Traps
+> measured live: (1) Ollama's bare `qwen3-vl:8b` tag is the THINKING variant —
+> reasoning tokens consume the whole `max_tokens` budget outside constrained
+> JSON, and `think:false` is ineffective on Ollama 0.31.2; always pull
+> `qwen3-vl:8b-instruct`. (2) At temperature 0 under json_schema, open-ended
+> verdict string fields can enter verbatim repetition loops on genuinely
+> conflicting inputs — schemas must put observation fields first and bound
+> every verdict with enums incl. explicit escape values
+> (docs/validation/smoke-2026-07-13-strongpc-diagnosis.md). (3) Key-parse
+> output quality varies BETWEEN runs even at temperature 0 — parsed keys are
+> validated deterministically (required versions present) and re-parsed or
+> rejected rather than trusted.
+
 ## FINAL DECISION (adopted 2026-07-12)
 
 - **Architecture: one vision-language model** end-to-end (survey → extraction →

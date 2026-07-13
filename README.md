@@ -19,9 +19,10 @@ comparison only.
 .\.venv\Scripts\python.exe -m pytest                 # 64 offline tests, no network/model needed
 
 # with a local open model (see docs/deployment.md):
-ollama pull qwen3-vl:8b
-autograder doctor --backend openai --base-url http://localhost:11434/v1 --model qwen3-vl:8b
-autograder grade  --backend openai --base-url http://localhost:11434/v1 --model qwen3-vl:8b `
+ollama pull qwen3-vl:8b-instruct    # NOT bare qwen3-vl:8b — that tag is the thinking
+                                    # variant and burns max_tokens on reasoning
+autograder doctor --backend openai --base-url http://localhost:11434/v1 --model qwen3-vl:8b-instruct
+autograder grade  --backend openai --base-url http://localhost:11434/v1 --model qwen3-vl:8b-instruct `
     --exam sample_data/student_exam.pdf --key sample_data/Exam_solution.pdf --out out
 ```
 
@@ -41,6 +42,7 @@ autograder grade  --backend openai --base-url http://localhost:11434/v1 --model 
 | Document | Contents |
 |---|---|
 | [docs/architecture.md](docs/architecture.md) | pipeline stages, backend layer, grading-policy decisions |
+| [docs/variants.md](docs/variants.md) | cover-page flower → exam variant (A1/A2/A3), question-order alignment, mapping evidence |
 | [docs/model-comparison.md](docs/model-comparison.md) | open-model research, licenses, hardware, hosted-API survey, final choice |
 | [docs/deployment.md](docs/deployment.md) | local / university-server / hosted deployment, hardware requirements |
 | [docs/datasets.md](docs/datasets.md) | dataset layout, manifests, split, label discipline |
@@ -64,3 +66,16 @@ marking-convention notes govern interpretation; instructor red-ink
 annotations are masked before inference and excluded by prompt; explanations
 gate credit where the rubric says so; answers are never invented — unclear
 items are flagged for human review.
+
+Answer-source authority: dedicated answer sheets (detected structurally,
+never by a hardcoded page count) are the only normal source of final
+answers; student ink on question pages is scratch work and can stand in
+only as review-flagged secondary evidence when the sheet is missing, blank,
+damaged, or unreadable. Exam variants are detected from the cover-page
+flower marker BEFORE grading (never from answers or score maximisation) and
+each variant grades against its own key column with per-variant question
+alignment — see [docs/variants.md](docs/variants.md).
+
+The expensive answer-key parse is cached persistently (key document +
+rubric + model + prompts + render settings fingerprint) — a batch parses
+each unique key once; `--no-key-cache` disables it.

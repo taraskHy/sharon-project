@@ -79,6 +79,36 @@ def _load_single(path: Path, start_number: int, max_long_edge: int) -> list[Page
     return pages
 
 
+def downscale_pages(pages: list[PageImage], max_long_edge: int) -> list[PageImage]:
+    """Return copies of ``pages`` re-encoded with the long edge capped at
+    ``max_long_edge``. Pages already small enough are returned as-is.
+
+    Used for the survey pass: it only LOCATES things (answer sheets,
+    conventions, ink), so it can run on cheap low-resolution renders while
+    extraction re-reads the few authoritative pages at full resolution.
+    Operates on the encoded PNG bytes — masked pages stay masked.
+    """
+    out: list[PageImage] = []
+    for p in pages:
+        long_edge = max(p.width, p.height)
+        if long_edge <= max_long_edge:
+            out.append(p)
+            continue
+        zoom = max_long_edge / long_edge
+        with fitz.open(stream=p.png_bytes, filetype="png") as doc:
+            pix = doc[0].get_pixmap(matrix=fitz.Matrix(zoom, zoom))
+        out.append(
+            PageImage(
+                page_number=p.page_number,
+                png_bytes=pix.tobytes("png"),
+                width=pix.width,
+                height=pix.height,
+                text=p.text,
+            )
+        )
+    return out
+
+
 def image_block(page: PageImage) -> dict:
     """Content block for the Messages API."""
     return {

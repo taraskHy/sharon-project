@@ -25,7 +25,7 @@ import json
 import sys
 import time
 from pathlib import Path
-from typing import Optional
+from typing import Literal, Optional
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
@@ -56,16 +56,31 @@ class PageReadProbe(BaseModel):
 
 
 class TableReadProbe(BaseModel):
+    # Field order matters: free-form observation fields come FIRST so the
+    # model reasons before committing to verdicts, and every verdict field is
+    # bounded (enum) with an explicit escape value. An early version used an
+    # open-ended string for the final answer; at temperature 0 under
+    # constrained decoding the model looped the same deliberation sentence
+    # until max_tokens on a page with conflicting marks (see
+    # docs/validation/smoke-2026-07-13-strongpc-diagnosis.md).
+    marks_description: str = Field(
+        description=(
+            "1-3 concise sentences: what kinds of marks appear in the table "
+            "(circles, X, cross-outs) and the overall pattern. Do NOT "
+            "enumerate every row."
+        )
+    )
     handwritten_note_transcription: Optional[str] = Field(
         default=None,
         description="Any handwritten note near the answer table, transcribed as written.",
     )
     note_meaning: Optional[str] = None
-    question_1_final_answer: Optional[str] = Field(
-        default=None, description="Final marked option (A-D) for row 1 under the student's convention."
-    )
-    marks_description: str = Field(
-        description="What kinds of marks appear in the table (circles, X, cross-outs)."
+    question_1_final_answer: Literal["A", "B", "C", "D", "ambiguous", "unanswered"] = Field(
+        description=(
+            "Final marked option for row 1 under the student's convention: a "
+            "single letter, or 'ambiguous' if the marks genuinely conflict, "
+            "or 'unanswered' if row 1 has no student mark."
+        )
     )
 
 

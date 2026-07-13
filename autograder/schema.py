@@ -54,6 +54,15 @@ class KeySubItem(BaseModel):
             "reference when judging student explanations."
         ),
     )
+    versions_unverified: list[str] = Field(
+        default_factory=list,
+        description=(
+            "Version ids whose answer for this sub-item could not be "
+            "verified deterministically (e.g. colour-only encoding with no "
+            "text-layer group and no operator override). Grading exams of "
+            "these versions flags the sub-item for human review."
+        ),
+    )
 
 
 class KeyQuestion(BaseModel):
@@ -126,10 +135,56 @@ class AnswerKey(BaseModel):
 # Survey (whole-document pass over the student exam)
 # --------------------------------------------------------------------------
 
+PageKind = Literal[
+    "question_or_instructions",  # printed questions/instructions; any student ink here is normally scratch
+    "answer_sheet",              # dedicated sheet the student fills in (tables, explanation lines)
+    "mixed",                     # printed question material AND a designated answer area on one page
+    "instructor_only",           # grading grid / score summary meant for the instructor
+    "other",                     # cover, blank, or unidentifiable
+]
+
+RegionKind = Literal[
+    "question_text",       # printed question/instructions/options/diagrams
+    "answer_table",        # table/bubble grid holding final selections
+    "explanation_area",    # designated space for written justifications
+    "scratch_work",        # student calculations/drafts outside designated areas
+    "instructor_grading",  # instructor-only boxes, score grids, annotations
+    "convention_note",     # student note changing how marks must be read
+    "other",
+]
+
+
+class PageRegion(BaseModel):
+    """A functional region of a page. Locations are descriptive (e.g. 'bottom
+    third', 'table under the Question 2 heading') — later passes are visual
+    and need orientation, not pixel geometry."""
+
+    kind: RegionKind
+    question_ids: list[str] = Field(
+        default_factory=list,
+        description="Question ids this region belongs to, if determinable.",
+    )
+    description: str = Field(
+        description="Where on the page the region is and what it contains."
+    )
+
 
 class PageInfo(BaseModel):
     page_number: int = Field(description="1-based page number in the scan.")
     content_summary: str
+    page_kind: PageKind = Field(
+        default="question_or_instructions",
+        description=(
+            "Classification of the page's role. Detect dedicated answer sheets "
+            "from headings/instructions, table layouts, repeated question "
+            "identifiers, and position in the document (often near the end) — "
+            "never assume a fixed count of them."
+        ),
+    )
+    regions: list[PageRegion] = Field(
+        default_factory=list,
+        description="Functional regions on this page (answer tables, explanation areas, scratch work, instructor-only areas).",
+    )
     question_ids: list[str] = Field(
         default_factory=list,
         description="Question ids that appear on this page (after resolving any student renumbering).",
@@ -152,6 +207,14 @@ class PageInfo(BaseModel):
         default=False,
         description="True if instructor marks (ticks, scores, comments, usually a different ink colour) appear.",
     )
+    sheet_condition: Optional[Literal["present", "blank", "damaged", "ambiguous"]] = Field(
+        default=None,
+        description=(
+            "For answer-sheet pages once close-read at full resolution: the "
+            "sheet's physical/legibility condition. None before close-read "
+            "or for non-sheet pages."
+        ),
+    )
 
 
 class ConventionNote(BaseModel):
@@ -167,8 +230,38 @@ class ConventionNote(BaseModel):
     )
 
 
+class AnswerSheetPolicy(BaseModel):
+    """Where the student's FINAL answers live, per the exam's own printed
+    instructions and the document's actual structure. Drives which pages
+    extraction reads at full resolution and how conflicts are resolved."""
+
+    authoritative_pages: list[int] = Field(
+        default_factory=list,
+        description=(
+            "Pages of the dedicated answer sheet(s), if any exist. Empty when "
+            "the exam expects answers directly on the question pages."
+        ),
+    )
+    booklet_answers_not_graded: bool = Field(
+        default=False,
+        description=(
+            "True when the exam's printed instructions explicitly state that "
+            "answers/markings on the question pages (the booklet) are not "
+            "checked. This rule is then followed strictly."
+        ),
+    )
+    policy_source: Optional[str] = Field(
+        default=None,
+        description=(
+            "Quote or paraphrase of the printed instruction / evidence the "
+            "policy is based on (e.g. cover-page wording, answer-sheet heading)."
+        ),
+    )
+
+
 class ExamSurvey(BaseModel):
     pages: list[PageInfo]
+    answer_sheet_policy: AnswerSheetPolicy = Field(default_factory=AnswerSheetPolicy)
     marking_conventions: list[ConventionNote] = Field(default_factory=list)
     student_ink_description: str = Field(
         description="How the student's own writing looks (colour, style)."
@@ -194,10 +287,142 @@ class ExamSurvey(BaseModel):
 
 
 # --------------------------------------------------------------------------
+# Exam-variant detection (cover-page marker) and question alignment
+# --------------------------------------------------------------------------
+
+
+class VariantDetection(BaseModel):
+    """Model output: what variant marker (e.g. flower) the cover page shows.
+
+    The model NEVER sees answers or answer keys here — only the cover image
+    and the marker descriptions. The variant must never be inferred from the
+    student's answers or from whichever key scores highest."""
+
+    marker_seen: str = Field(
+        description="Short description of the marker actually visible on the page."
+    )
+    matched_marker: Optional[str] = Field(
+        default=None,
+        description=(
+            "The name of the ONE catalogue marker this matches, or null when "
+            "the marker is missing, cropped, illegible, or matches none/"
+            "several of the catalogue entries."
+        ),
+    )
+    confident: bool = Field(
+        description="True only when the match is visually unambiguous."
+    )
+    page_region: str = Field(
+        description="Where on the page the marker was found, e.g. 'bottom third, center-left'."
+    )
+    obstruction_note: Optional[str] = Field(
+        default=None,
+        description=(
+            "Anything interfering with detection (ink over the marker, crop, "
+            "scan damage). Instructor ink must be ignored, not matched."
+        ),
+    )
+
+
+class QuestionAlignmentEntry(BaseModel):
+    question_id: str
+    printed_to_key: dict[str, str] = Field(
+        description=(
+            "Map from the sub-item number PRINTED on this variant's form to "
+            "the answer key's canonical sub-item id, matched by question "
+            "CONTENT. Identity when the variant prints the key's order."
+        )
+    )
+    identical_order: bool = False
+    notes: Optional[str] = None
+
+
+class VariantAlignment(BaseModel):
+    """Per-variant mapping of printed sub-item numbering to the key's
+    canonical numbering (variants shuffle question order)."""
+
+    variant: str
+    questions: list[QuestionAlignmentEntry]
+    confident: bool = True
+    notes: Optional[str] = None
+
+
+# --------------------------------------------------------------------------
+# Answer-sheet close-read (full-resolution second look at the sheets only)
+# --------------------------------------------------------------------------
+
+
+class SheetPageReading(BaseModel):
+    """Full-resolution reading of ONE dedicated answer-sheet page: which
+    question(s) it actually serves after student corrections, its condition,
+    and its regions. Never decides final answers."""
+
+    page_number: int
+    printed_title_question: Optional[str] = Field(
+        default=None,
+        description="Question id the PRINTED page title claims, if any.",
+    )
+    serves_questions: list[str] = Field(
+        default_factory=list,
+        description=(
+            "Question id(s) this sheet page ACTUALLY answers, after applying "
+            "handwritten corrections (crossed-out printed titles, renumbering, "
+            "notes like 'I swapped the tables'). Equal to the printed title "
+            "when no correction exists."
+        ),
+    )
+    correction_evidence: Optional[str] = Field(
+        default=None,
+        description=(
+            "Verbatim/near-verbatim evidence when serves_questions differs "
+            "from the printed title. null when there is no correction."
+        ),
+    )
+    sheet_condition: Literal["present", "blank", "damaged", "ambiguous"] = Field(
+        description=(
+            "'present' = usable; 'blank' = the student left it empty; "
+            "'damaged' = torn/cut off/unscannable; 'ambiguous' = unreadable."
+        )
+    )
+    regions: list[PageRegion] = Field(default_factory=list)
+
+
+class SheetCloseRead(BaseModel):
+    """Output of the close-read pass over the authoritative sheet pages."""
+
+    pages: list[SheetPageReading]
+    marking_conventions: list[ConventionNote] = Field(
+        default_factory=list,
+        description=(
+            "Every handwritten note ON THESE PAGES that changes how marks "
+            "must be read (e.g. 'answers marked with X are final'), verbatim "
+            "+ interpretation + scope."
+        ),
+    )
+    notes: Optional[str] = None
+
+
+# --------------------------------------------------------------------------
 # Per-question extraction
 # --------------------------------------------------------------------------
 
 AnswerStatus = Literal["answered", "unanswered", "ambiguous"]
+
+AnswerOrigin = Literal[
+    "answer_sheet",   # read from a dedicated answer sheet / answer table
+    "question_page",  # read from student ink on a question/instruction page
+    "both",           # both sources exist and agree
+    "none",           # nothing was read (unanswered) or origin not determinable
+]
+
+AnswerSheetStatus = Literal[
+    "present",         # the sheet exists and this question's part is usable
+    "missing",         # the survey expected a sheet but it is absent from the scan
+    "blank",           # the sheet exists but this question's part was left empty
+    "damaged",         # torn/cut-off/unscannable portion
+    "ambiguous",       # the sheet's markings cannot be read reliably
+    "not_applicable",  # this exam has no dedicated answer sheet for the question
+]
 
 
 class MarkObservation(BaseModel):
@@ -216,6 +441,26 @@ class MarkObservation(BaseModel):
 class SubItemExtraction(BaseModel):
     sub_item_id: str
     status: AnswerStatus
+    answer_origin: AnswerOrigin = Field(
+        default="none",
+        description=(
+            "Where the reported final answer/explanation was read from. When a "
+            "dedicated answer sheet exists, finals come from it; question-page "
+            "ink is scratch work and may serve only as flagged secondary "
+            "evidence when the sheet is missing/blank/damaged/ambiguous."
+        ),
+    )
+    source_page: Optional[int] = Field(
+        default=None,
+        description="Page number the final answer was read from (provenance).",
+    )
+    source_region: Optional[str] = Field(
+        default=None,
+        description=(
+            "Region the final answer was read from, e.g. 'answer table row 7' "
+            "or 'explanation lines under item 3' (provenance)."
+        ),
+    )
     final_answer: Optional[str] = Field(
         default=None,
         description=(
@@ -249,6 +494,15 @@ class QuestionExtraction(BaseModel):
     source_pages: list[int]
     authoritative_source: str = Field(
         description="Where the final answers were read from and why (e.g. 'answer table p.13 per exam instructions')."
+    )
+    answer_sheet_status: AnswerSheetStatus = Field(
+        default="not_applicable",
+        description=(
+            "Condition of the dedicated answer sheet for THIS question. "
+            "'present' when it exists and was readable; 'missing'/'blank'/"
+            "'damaged'/'ambiguous' route question-page evidence to human "
+            "review; 'not_applicable' when the exam has no sheet for it."
+        ),
     )
     sub_items: list[SubItemExtraction]
     notes: Optional[str] = None
@@ -347,6 +601,14 @@ class ExamResult(BaseModel):
     detected_version: Optional[str]
     version_detection: str = Field(
         description="How the exam version was determined (or why it is uncertain)."
+    )
+    variant_detection: Optional[dict] = Field(
+        default=None,
+        description=(
+            "Structured record of marker-based variant detection: detected "
+            "marker, selected variant, confidence, page/region evidence, and "
+            "the source of the marker-to-variant mapping."
+        ),
     )
     total_awarded: float
     total_max: float
