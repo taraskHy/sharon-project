@@ -417,6 +417,96 @@ def test_two_exams_with_different_flowers_use_different_key_columns(tmp_path, no
     assert a1_item.accepted_answers != a3_item.accepted_answers
 
 
+def test_alignment_override_expansion_and_strict_validation(tmp_path):
+    from autograder.variant import VariantConfigError, alignment_from_override
+
+    key = make_key()
+    data = {
+        "_path": "t",
+        "A1": {"identity": True},
+        "A2": {
+            "1": {"identity": True},
+            "3": {str(i): str(((i + 3) % 20) + 1) for i in range(1, 21)},
+        },
+    }
+    a1 = alignment_from_override(key, "A1", data)
+    assert all(e.identical_order for e in a1.questions)
+    a2 = alignment_from_override(key, "A2", data)
+    q3 = next(e for e in a2.questions if e.question_id == "3")
+    assert q3.printed_to_key["1"] == "5" and not q3.identical_order
+    assert "operator-verified" in a2.notes
+    assert alignment_from_override(key, "A3", data) is None, "no entry -> None"
+
+    # Operator data is configuration: invalid maps are hard errors.
+    bad = {"_path": "t", "A2": {"1": {"identity": True}, "3": {"1": "5"}}}
+    try:
+        alignment_from_override(key, "A2", bad)
+        raise AssertionError("expected VariantConfigError")
+    except VariantConfigError as e:
+        assert "invalid" in str(e)
+
+
+def test_malformed_printed_ids_are_normalized():
+    from autograder.variant import normalized_mapping
+
+    key = make_key()
+    entry = QuestionAlignmentEntry(
+        question_id="3",
+        printed_to_key={f".{i}": str(i) for i in range(1, 21)},  # observed live
+    )
+    assert normalized_mapping(entry)["1"] == "1"
+    assert validate_alignment(
+        key, VariantAlignment(variant="A2", questions=[
+            QuestionAlignmentEntry(
+                question_id="1", printed_to_key={s.id: s.id for s in key.question("1").sub_items}
+            ),
+            entry,
+        ])
+    ) == [], "dotted ids validate after normalization"
+
+    qx = QuestionExtraction(
+        question_id="3", source_pages=[13], authoritative_source="t",
+        sub_items=[SubItemExtraction(
+            sub_item_id="7", status="answered", final_answer="B",
+            interpretation_rationale="t", confidence=1.0,
+        )],
+    )
+    remap_extraction(qx, entry)
+    assert qx.sub_items[0].sub_item_id == "7", "'.7'->'7' lookup succeeds"
+
+
+def test_real_alignment_override_file_is_valid():
+    """The committed manually verified mapping must satisfy strict validation
+    against the real key structure (3 questions: 8+8+20 items)."""
+    import json as _json
+
+    from autograder.variant import alignment_from_override
+
+    key = make_key()
+    key.questions.insert(1, _q2_like(key))
+    data = _json.loads(
+        open("sample_data/Exam_solution.alignment.json", encoding="utf-8").read()
+    )
+    data["_path"] = "sample_data/Exam_solution.alignment.json"
+    for variant in ("A1", "A2", "A3"):
+        alignment = alignment_from_override(key, variant, data)
+        assert alignment is not None, variant
+        q3 = next(e for e in alignment.questions if e.question_id == "3")
+        targets = sorted(q3.printed_to_key.values(), key=int)
+        assert targets == [str(i) for i in range(1, 21)], f"{variant} bijection"
+    # The verified anchors: Hough (key 16) prints at 16/20/18 in A1/A2/A3.
+    a2 = alignment_from_override(key, "A2", data)
+    a3 = alignment_from_override(key, "A3", data)
+    assert next(e for e in a2.questions if e.question_id == "3").printed_to_key["20"] == "16"
+    assert next(e for e in a3.questions if e.question_id == "3").printed_to_key["18"] == "16"
+
+
+def _q2_like(key):
+    q2 = key.question("1").model_copy(deep=True)
+    q2.id = "2"
+    return q2
+
+
 def test_variant_context_enters_fingerprints(tmp_path, no_network):
     """Changing the marker config or the pinned version invalidates resume:
     artefacts graded under one variant interpretation are never reused for

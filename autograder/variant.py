@@ -242,6 +242,78 @@ def decide_version(
 # --------------------------------------------------------------------------
 
 
+def alignment_override_path(key_path: str | Path) -> Path:
+    key_path = Path(key_path)
+    return key_path.with_name(key_path.stem + ".alignment.json")
+
+
+def load_alignment_overrides(key_path: str | Path, explicit: str | Path | None = None) -> dict | None:
+    path = Path(explicit) if explicit else alignment_override_path(key_path)
+    if not path.exists():
+        return None
+    data = json.loads(path.read_text(encoding="utf-8"))
+    if not isinstance(data, dict):
+        raise VariantConfigError(f"{path} must contain a per-variant object")
+    data["_path"] = str(path)
+    return data
+
+
+def _canon_printed(s: str) -> str:
+    """Normalize a printed sub-item id: models emit artefacts like '.1'."""
+    import re as _re
+
+    return _re.sub(r"^[^0-9A-Za-z]+|[^0-9A-Za-z]+$", "", s.strip())
+
+
+def alignment_from_override(key: AnswerKey, variant: str, data: dict) -> VariantAlignment | None:
+    """Build the operator-verified alignment for ``variant``. Returns None
+    when the file has no entry for it. Invalid operator data is a HARD error
+    — it is configuration, not model output."""
+    from .schema import QuestionAlignmentEntry
+
+    entry = data.get(variant)
+    if entry is None:
+        return None
+    questions = []
+    if entry is True or (isinstance(entry, dict) and entry.get("identity") is True):
+        return identity_alignment(key, variant)
+    for q in key.questions:
+        q_map = entry.get(q.id)
+        if q_map is None:
+            raise VariantConfigError(
+                f"alignment override for {variant} lacks question {q.id}"
+            )
+        if isinstance(q_map, dict) and q_map.get("identity") is True:
+            questions.append(
+                QuestionAlignmentEntry(
+                    question_id=q.id,
+                    printed_to_key={s.id: s.id for s in q.sub_items},
+                    identical_order=True,
+                )
+            )
+            continue
+        mapping = {_canon_printed(k): str(v) for k, v in q_map.items()}
+        questions.append(
+            QuestionAlignmentEntry(
+                question_id=q.id,
+                printed_to_key=mapping,
+                identical_order=all(k == v for k, v in mapping.items()),
+            )
+        )
+    alignment = VariantAlignment(
+        variant=variant,
+        questions=questions,
+        confident=True,
+        notes=f"operator-verified alignment from {data.get('_path')}",
+    )
+    problems = validate_alignment(key, alignment)
+    if problems:
+        raise VariantConfigError(
+            f"alignment override for {variant} is invalid: {'; '.join(problems)}"
+        )
+    return alignment
+
+
 def _question_pages(qid: str, survey: ExamSurvey, pages: list[PageImage]) -> list[PageImage]:
     """The QUESTION pages for qid (booklet, not answer sheets)."""
     nums = {
@@ -296,6 +368,9 @@ def store_cached_alignment(cache_dir: Path, fingerprint: str, alignment: Variant
     return path
 
 
+ALIGN_CHUNK_SIZE = 10  # sub-items per derivation call (one 20-item call collapsed live)
+
+
 def derive_alignment(
     llm: VisionBackend,
     key: AnswerKey,
@@ -303,52 +378,89 @@ def derive_alignment(
     pages: list[PageImage],
     variant: str,
 ) -> VariantAlignment:
-    """One model call: match this variant's PRINTED question/sub-item order
-    to the key's canonical items by content. No answers are sent."""
+    """Model-derived printed→key mapping, one bounded call per question
+    (large questions in chunks of ALIGN_CHUNK_SIZE key items). Content
+    matching only — no answers are sent. The result is treated as
+    UNVERIFIED by the pipeline regardless of validity."""
+    from .schema import QuestionAlignmentEntry
+
+    questions: list[QuestionAlignmentEntry] = []
+    confident = True
+    notes: list[str] = []
+    for q in key.questions:
+        qpages = _question_pages(q.id, survey, pages)
+        if not qpages:
+            sheet = set(survey.answer_sheet_policy.authoritative_pages)
+            qpages = [p for p in pages if p.page_number not in sheet]
+        mapping: dict[str, str] = {}
+        chunks = [
+            q.sub_items[i : i + ALIGN_CHUNK_SIZE]
+            for i in range(0, len(q.sub_items), ALIGN_CHUNK_SIZE)
+        ]
+        for chunk in chunks:
+            part = _derive_question_chunk(llm, key, q, chunk, qpages, variant)
+            entry = next((e for e in part.questions if e.question_id == q.id), None)
+            if entry is None:
+                confident = False
+                notes.append(f"question {q.id}: chunk returned no entry")
+                continue
+            mapping.update(normalized_mapping(entry))
+            if not part.confident:
+                confident = False
+                if part.notes:
+                    notes.append(part.notes)
+        questions.append(
+            QuestionAlignmentEntry(
+                question_id=q.id,
+                printed_to_key=mapping,
+                identical_order=all(k == v for k, v in mapping.items()) and bool(mapping),
+            )
+        )
+    return VariantAlignment(
+        variant=variant,
+        questions=questions,
+        confident=confident,
+        notes="; ".join(notes) if notes else None,
+    )
+
+
+def _derive_question_chunk(
+    llm: VisionBackend,
+    key: AnswerKey,
+    q: KeyQuestion,
+    chunk,
+    qpages: list[PageImage],
+    variant: str,
+) -> VariantAlignment:
+    ids = [s.id for s in chunk]
     blocks: list[dict] = [
         {
             "type": "text",
             "text": (
-                "Answer key canonical structure (ids and prompts only — no "
-                "answers):\n"
+                f"Answer key question {q.id} ({q.title}) — the canonical "
+                "sub-items to locate (ids and prompts only, no answers):\n"
                 + json.dumps(
-                    [
-                        {
-                            "question_id": q.id,
-                            "title": q.title,
-                            "sub_items": [{"id": s.id, "prompt": s.prompt} for s in q.sub_items],
-                        }
-                        for q in key.questions
-                    ],
+                    [{"id": s.id, "prompt": s.prompt} for s in chunk],
                     ensure_ascii=False,
                     indent=1,
                 )
             ),
         }
     ]
-    sent_any = False
-    for q in key.questions:
-        qpages = _question_pages(q.id, survey, pages)
-        for p in qpages:
-            blocks.append({"type": "text", "text": f"--- Page {p.page_number} (question {q.id} pages) ---"})
-            blocks.append(image_block(p))
-            sent_any = True
-    if not sent_any:
-        # Survey placed no question pages — send everything except sheets.
-        sheet = set(survey.answer_sheet_policy.authoritative_pages)
-        for p in pages:
-            if p.page_number not in sheet:
-                blocks.append({"type": "text", "text": f"--- Page {p.page_number} ---"})
-                blocks.append(image_block(p))
+    for p in qpages:
+        blocks.append({"type": "text", "text": f"--- Page {p.page_number} ---"})
+        blocks.append(image_block(p))
     blocks.append(
         {
             "type": "text",
             "text": (
-                f"This exam form is variant {variant!r}. For EVERY question and "
-                "every sub-item, map the number PRINTED on these pages to the "
-                "key's canonical sub-item id by matching the CONTENT (the "
-                "wording/topic of the printed question against the key "
-                "prompts). Output the complete mapping now."
+                f"This exam form is variant {variant!r}. For EACH of the "
+                f"{len(ids)} key sub-items above (ids {', '.join(ids)}), find "
+                "the question with that CONTENT on these pages and report the "
+                "number PRINTED next to it. Output one questions[] entry for "
+                f"question {q.id!r} whose printed_to_key maps each PRINTED "
+                "number to its key id — ONLY for these key ids; other items "
+                "are handled separately."
             ),
         }
     )
@@ -356,7 +468,7 @@ def derive_alignment(
         system=ALIGNMENT_SYSTEM,
         content_blocks=blocks,
         output_model=VariantAlignment,
-        max_tokens=6000,
+        max_tokens=2500,
     )
 
 
@@ -371,7 +483,10 @@ def validate_alignment(key: AnswerKey, alignment: VariantAlignment) -> list[str]
             problems.append(f"question {q.id}: no alignment entry")
             continue
         key_ids = [s.id for s in q.sub_items]
-        targets = list(entry.printed_to_key.values())
+        mapping = normalized_mapping(entry)
+        if any(not k for k in mapping):
+            problems.append(f"question {q.id}: empty printed id after normalization")
+        targets = list(mapping.values())
         missing = [k for k in key_ids if k not in targets]
         dupes = sorted({t for t in targets if targets.count(t) > 1})
         extra = [t for t in targets if t not in key_ids]
@@ -381,9 +496,13 @@ def validate_alignment(key: AnswerKey, alignment: VariantAlignment) -> list[str]
             problems.append(f"question {q.id}: duplicate targets: {dupes}")
         if extra:
             problems.append(f"question {q.id}: unknown key ids: {extra}")
-        if len(entry.printed_to_key) != len(key_ids):
+        if len(mapping) != len(entry.printed_to_key):
             problems.append(
-                f"question {q.id}: {len(entry.printed_to_key)} printed items mapped, "
+                f"question {q.id}: printed ids collide after normalization"
+            )
+        if len(mapping) != len(key_ids):
+            problems.append(
+                f"question {q.id}: {len(mapping)} printed items mapped, "
                 f"key has {len(key_ids)}"
             )
     return problems
@@ -407,6 +526,12 @@ def identity_alignment(key: AnswerKey, variant: str) -> VariantAlignment:
     )
 
 
+def normalized_mapping(entry) -> dict[str, str]:
+    """The entry's printed→key map with printed ids normalized (models emit
+    artefacts like '.1'; operator files may have stray spaces)."""
+    return {_canon_printed(k): str(v) for k, v in entry.printed_to_key.items()}
+
+
 def printed_view(q: KeyQuestion, entry) -> KeyQuestion:
     """The key question relabeled into this variant's PRINTED numbering, so
     extraction works in the numbering the student actually saw. Prompts
@@ -415,7 +540,7 @@ def printed_view(q: KeyQuestion, entry) -> KeyQuestion:
     view = q.model_copy(deep=True)
     by_key_id = {s.id: s for s in q.sub_items}
     printed_items = []
-    for printed, key_id in sorted(entry.printed_to_key.items(), key=lambda kv: _num(kv[0])):
+    for printed, key_id in sorted(normalized_mapping(entry).items(), key=lambda kv: _num(kv[0])):
         src = by_key_id[key_id]
         item = src.model_copy(deep=True)
         item.id = printed
@@ -427,9 +552,10 @@ def printed_view(q: KeyQuestion, entry) -> KeyQuestion:
 def remap_extraction(qx: QuestionExtraction, entry) -> QuestionExtraction:
     """Rewrite extraction sub-item ids from printed numbering back to key
     numbering (provenance keeps the printed number)."""
+    mapping = normalized_mapping(entry)
     for s in qx.sub_items:
-        printed = s.sub_item_id
-        key_id = entry.printed_to_key.get(printed)
+        printed = _canon_printed(s.sub_item_id)
+        key_id = mapping.get(printed)
         if key_id is None:
             continue  # reconciliation will flag it against the key
         if key_id != printed:

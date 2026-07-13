@@ -134,7 +134,7 @@ def cmd_eval_batch(args) -> int:
 
     # The per-exam runs receive the SHARED parsed key json, so the variant
     # config must be resolved against the ORIGINAL key document's location.
-    from .variant import variant_config_path
+    from .variant import alignment_override_path, variant_config_path
 
     variant_map = getattr(args, "variant_map", None)
     if not variant_map:
@@ -142,6 +142,12 @@ def cmd_eval_batch(args) -> int:
         if auto.exists():
             variant_map = str(auto)
             _log(f"variant mapping: {variant_map}")
+    alignment_map = getattr(args, "alignment_map", None)
+    if not alignment_map:
+        auto = alignment_override_path(args.key)
+        if auto.exists():
+            alignment_map = str(auto)
+            _log(f"alignment overrides: {alignment_map}")
 
     outcomes: list[ExamOutcome] = []
     review_cases: list[dict] = []
@@ -162,6 +168,7 @@ def cmd_eval_batch(args) -> int:
                 key_cache_dir=getattr(args, "key_cache_dir", None),
                 no_key_cache=getattr(args, "no_key_cache", False),
                 variant_map=variant_map,
+                alignment_map=alignment_map,
             )
             # Fast resume: reuse the finished result when inputs are unchanged.
             result: Optional[ExamResult] = None

@@ -1,0 +1,74 @@
+{
+  "pages": [
+    {
+      "page_number": 11,
+      "printed_title_question": "1 רפסמ הלאש – הבושת תלבט",
+      "serves_questions": [
+        "1"
+      ],
+      "correction_evidence": null,
+      "sheet_condition": "present",
+      "regions": [
+        {
+          "kind": "answer_table",
+          "question_ids": [
+            "1"
+          ],
+          "description": "The answer table for Question 1, with handwritten answers in the right-hand columns."
+        },
+        {
+          "kind": "explanation_area",
+          "question_ids": [
+            "1"
+          ],
+          "description": "Handwritten explanations under each row of the answer table, corresponding to sub-items 1 through 8."
+        }
+      ]
+    },
+    {
+      "page_number": 12,
+      "printed_title_question": "2 רפסמ הלאש – הבושת תלבט",
+      "serves_questions": [
+        "2"
+      ],
+      "correction_evidence": null,
+      "sheet_condition": "present",
+      "regions": [
+        {
+          "kind": "answer_table",
+          "question_ids": [
+            "2"
+          ],
+          "description": "The answer table for Question 2, with handwritten answers in the right-hand columns."
+        },
+        {
+          "kind": "explanation_area",
+          "question_ids": [
+            "2"
+          ],
+          "description": "Handwritten explanations under each row of the answer table, corresponding to sub-items 1 through 8."
+        }
+      ]
+    },
+    {
+      "page_number": 13,
+      "printed_title_question": "3 רפסמ הלאש – הבושת תלבט",
+      "serves_questions": [
+        "3"
+      ],
+      "correction_evidence": null,
+      "sheet_condition": "present",
+      "regions": [
+        {
+          "kind": "answer_table",
+          "question_ids": [
+            "3"
+          ],
+          "description": "The multiple-choice answer table for Question 3, with handwritten selections in the circles."
+        }
+      ]
+    }
+  ],
+  "marking_conventions": [],
+  "notes": null
+}

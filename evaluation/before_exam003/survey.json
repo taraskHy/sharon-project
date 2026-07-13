@@ -1,0 +1,313 @@
+{
+  "pages": [
+    {
+      "page_number": 1,
+      "content_summary": "Cover page with exam title, course code (203.6730 / 203.3730), academic year (2025-2026), and instructions for the student.",
+      "page_kind": "question_or_instructions",
+      "regions": [
+        {
+          "kind": "question_text",
+          "question_ids": [],
+          "description": "Printed exam title, course code, academic year, and general instructions at the top of the page. The text is in Hebrew with some English terms like 'Wavelets' and 'Histogram'."
+        }
+      ],
+      "question_ids": [],
+      "is_answer_area": false,
+      "answer_area_for_question": null,
+      "has_student_writing": false,
+      "has_grader_annotations": false,
+      "sheet_condition": null
+    },
+    {
+      "page_number": 2,
+      "content_summary": "Question 1: Matching with explanation. Contains text describing the task and a list of options (Motion Blur, High Pass Filter, etc.) for sub-items 1-8.",
+      "page_kind": "question_or_instructions",
+      "regions": [
+        {
+          "kind": "question_text",
+          "question_ids": [],
+          "description": "Printed instructions for Question 1. The text is in Hebrew and includes a list of options (Motion Blur, High Pass Filter, etc.) for sub-items 1-8."
+        }
+      ],
+      "question_ids": [
+        "1"
+      ],
+      "is_answer_area": false,
+      "answer_area_for_question": null,
+      "has_student_writing": false,
+      "has_grader_annotations": false,
+      "sheet_condition": null
+    },
+    {
+      "page_number": 3,
+      "content_summary": "Question 1: Matching with explanation. Contains images labeled A-I for the student to match.",
+      "page_kind": "question_or_instructions",
+      "regions": [
+        {
+          "kind": "explanation_area",
+          "question_ids": [],
+          "description": "Images labeled A through I, which are part of Question 1's matching task."
+        }
+      ],
+      "question_ids": [
+        "1"
+      ],
+      "is_answer_area": false,
+      "answer_area_for_question": null,
+      "has_student_writing": false,
+      "has_grader_annotations": false,
+      "sheet_condition": null
+    },
+    {
+      "page_number": 4,
+      "content_summary": "Question 2: Matching with explanation. Contains text describing the task and a list of options (Canny, Histogram Equalization, etc.) for sub-items 1-8.",
+      "page_kind": "question_or_instructions",
+      "regions": [
+        {
+          "kind": "question_text",
+          "question_ids": [],
+          "description": "Printed instructions for Question 2. The text is in Hebrew and includes a list of options (Canny, Histogram Equalization, etc.) for sub-items 1-8."
+        }
+      ],
+      "question_ids": [
+        "2"
+      ],
+      "is_answer_area": false,
+      "answer_area_for_question": null,
+      "has_student_writing": false,
+      "has_grader_annotations": false,
+      "sheet_condition": null
+    },
+    {
+      "page_number": 5,
+      "content_summary": "Question 2: Matching with explanation. Contains histograms labeled A-I for the student to match.",
+      "page_kind": "question_or_instructions",
+      "regions": [
+        {
+          "kind": "explanation_area",
+          "question_ids": [],
+          "description": "Histograms labeled A through I, which are part of Question 2's matching task."
+        }
+      ],
+      "question_ids": [
+        "2"
+      ],
+      "is_answer_area": false,
+      "answer_area_for_question": null,
+      "has_student_writing": true,
+      "has_grader_annotations": false,
+      "sheet_condition": null
+    },
+    {
+      "page_number": 6,
+      "content_summary": "Question 3: Multiple choice. Contains text describing the task and a list of options for sub-items 1-20.",
+      "page_kind": "question_or_instructions",
+      "regions": [
+        {
+          "kind": "question_text",
+          "question_ids": [],
+          "description": "Printed instructions for Question 3. The text is in Hebrew and includes a list of options for sub-items 1-20."
+        }
+      ],
+      "question_ids": [
+        "3"
+      ],
+      "is_answer_area": false,
+      "answer_area_for_question": null,
+      "has_student_writing": false,
+      "has_grader_annotations": false,
+      "sheet_condition": null
+    },
+    {
+      "page_number": 7,
+      "content_summary": "Question 3: Multiple choice. Contains text describing the task and a list of options for sub-items 4-8.",
+      "page_kind": "question_or_instructions",
+      "regions": [
+        {
+          "kind": "question_text",
+          "question_ids": [],
+          "description": "Printed instructions for Question 3, continuing from page 6. The text is in Hebrew and includes a list of options for sub-items 4-8."
+        }
+      ],
+      "question_ids": [
+        "3"
+      ],
+      "is_answer_area": false,
+      "answer_area_for_question": null,
+      "has_student_writing": false,
+      "has_grader_annotations": false,
+      "sheet_condition": null
+    },
+    {
+      "page_number": 8,
+      "content_summary": "Question 3: Multiple choice. Contains text describing the task and a list of options for sub-items 9-12.",
+      "page_kind": "question_or_instructions",
+      "regions": [
+        {
+          "kind": "question_text",
+          "question_ids": [],
+          "description": "Printed instructions for Question 3, continuing from page 7. The text is in Hebrew and includes a list of options for sub-items 9-12."
+        }
+      ],
+      "question_ids": [
+        "3"
+      ],
+      "is_answer_area": false,
+      "answer_area_for_question": null,
+      "has_student_writing": false,
+      "has_grader_annotations": false,
+      "sheet_condition": null
+    },
+    {
+      "page_number": 9,
+      "content_summary": "Question 3: Multiple choice. Contains text describing the task and a list of options for sub-items 13-16.",
+      "page_kind": "question_or_instructions",
+      "regions": [
+        {
+          "kind": "question_text",
+          "question_ids": [],
+          "description": "Printed instructions for Question 3, continuing from page 8. The text is in Hebrew and includes a list of options for sub-items 13-16."
+        }
+      ],
+      "question_ids": [
+        "3"
+      ],
+      "is_answer_area": false,
+      "answer_area_for_question": null,
+      "has_student_writing": false,
+      "has_grader_annotations": false,
+      "sheet_condition": null
+    },
+    {
+      "page_number": 10,
+      "content_summary": "Question 3: Multiple choice. Contains text describing the task and a list of options for sub-items 17-20.",
+      "page_kind": "question_or_instructions",
+      "regions": [
+        {
+          "kind": "question_text",
+          "question_ids": [],
+          "description": "Printed instructions for Question 3, continuing from page 9. The text is in Hebrew and includes a list of options for sub-items 17-20."
+        }
+      ],
+      "question_ids": [
+        "3"
+      ],
+      "is_answer_area": false,
+      "answer_area_for_question": null,
+      "has_student_writing": false,
+      "has_grader_annotations": false,
+      "sheet_condition": null
+    },
+    {
+      "page_number": 11,
+      "content_summary": "Answer sheet for Question 1. Contains a table with handwritten answers (F, G, D, A, I, C, H, B) corresponding to sub-items 1-8.",
+      "page_kind": "answer_sheet",
+      "regions": [
+        {
+          "kind": "answer_table",
+          "question_ids": [
+            "1"
+          ],
+          "description": "The answer table for Question 1, with handwritten answers in the right-hand columns."
+        },
+        {
+          "kind": "explanation_area",
+          "question_ids": [
+            "1"
+          ],
+          "description": "Handwritten explanations under each row of the answer table, corresponding to sub-items 1 through 8."
+        }
+      ],
+      "question_ids": [
+        "1"
+      ],
+      "is_answer_area": true,
+      "answer_area_for_question": "1",
+      "has_student_writing": true,
+      "has_grader_annotations": false,
+      "sheet_condition": "present"
+    },
+    {
+      "page_number": 12,
+      "content_summary": "Answer sheet for Question 2. Contains a table with handwritten answers (C, E, D, A, H, B, G, F) corresponding to sub-items 1-8.",
+      "page_kind": "answer_sheet",
+      "regions": [
+        {
+          "kind": "answer_table",
+          "question_ids": [
+            "2"
+          ],
+          "description": "The answer table for Question 2, with handwritten answers in the right-hand columns."
+        },
+        {
+          "kind": "explanation_area",
+          "question_ids": [
+            "2"
+          ],
+          "description": "Handwritten explanations under each row of the answer table, corresponding to sub-items 1 through 8."
+        }
+      ],
+      "question_ids": [
+        "2"
+      ],
+      "is_answer_area": true,
+      "answer_area_for_question": "2",
+      "has_student_writing": true,
+      "has_grader_annotations": false,
+      "sheet_condition": "present"
+    },
+    {
+      "page_number": 13,
+      "content_summary": "Answer sheet for Question 3. Contains a table with handwritten answers (A, B, C, D) corresponding to sub-items 1-20.",
+      "page_kind": "answer_sheet",
+      "regions": [
+        {
+          "kind": "answer_table",
+          "question_ids": [
+            "3"
+          ],
+          "description": "The multiple-choice answer table for Question 3, with handwritten selections in the circles."
+        }
+      ],
+      "question_ids": [
+        "3"
+      ],
+      "is_answer_area": true,
+      "answer_area_for_question": "3",
+      "has_student_writing": true,
+      "has_grader_annotations": false,
+      "sheet_condition": "present"
+    },
+    {
+      "page_number": 14,
+      "content_summary": "Page with no content.",
+      "page_kind": "other",
+      "regions": [],
+      "question_ids": [],
+      "is_answer_area": false,
+      "answer_area_for_question": null,
+      "has_student_writing": false,
+      "has_grader_annotations": false,
+      "sheet_condition": null
+    }
+  ],
+  "answer_sheet_policy": {
+    "authoritative_pages": [
+      11,
+      12,
+      13
+    ],
+    "booklet_answers_not_graded": false,
+    "policy_source": null
+  },
+  "marking_conventions": [],
+  "student_ink_description": "Handwritten answers are in blue ink.",
+  "grader_annotations_description": "",
+  "authoritative_answer_locations": [
+    "1",
+    "2",
+    "3"
+  ],
+  "version_hints": "A1, A2, A3",
+  "notes": "close-read pass merged for pages 11, 12, 13"
+}

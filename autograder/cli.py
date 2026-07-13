@@ -53,11 +53,14 @@ from .ingest import IMAGE_SUFFIXES, downscale_pages, load_pages
 from .prompts import KEY_PARSER_SYSTEM
 from .variant import (
     alignment_fingerprint,
+    alignment_from_override,
+    alignment_override_path,
     config_fingerprint,
     decide_version,
     derive_alignment,
     detect_variant,
     identity_alignment,
+    load_alignment_overrides,
     load_cached_alignment,
     load_variant_config,
     store_cached_alignment,
@@ -218,6 +221,12 @@ def _fingerprints(
     if ov_path.exists():
         key_h.update(b"|overrides:")
         key_h.update(hashlib.sha256(ov_path.read_bytes()).hexdigest().encode())
+    align_path = Path(
+        getattr(args, "alignment_map", None) or alignment_override_path(Path(args.key))
+    )
+    if align_path.exists():
+        key_h.update(b"|alignmap:")
+        key_h.update(hashlib.sha256(align_path.read_bytes()).hexdigest().encode())
     pin = getattr(args, "version", None)
     if pin and pin != "auto":
         key_h.update(f"|pin:{pin}".encode())
@@ -610,31 +619,52 @@ def run_grade_pipeline(
     alignment = None
     alignment_note = None
     if variant_cfg and version_decision is not None:
-        cache_dir = Path(getattr(args, "key_cache_dir", None) or keycache.default_cache_dir())
-        align_fp = alignment_fingerprint(current["key"], version_decision.version)
-        alignment = load_cached_alignment(cache_dir, align_fp)
-        if alignment is not None:
-            _log(f"question alignment for {version_decision.version}: reused from cache")
-            alignment_note = "cache"
-        else:
-            _log(
-                f"deriving question alignment for variant {version_decision.version} "
-                "(printed order vs key order, one model call)"
-            )
-            candidate = derive_alignment(backend, key, survey, pages, version_decision.version)
-            problems = validate_alignment(key, candidate)
-            if problems:
+        # 1st choice: the operator-verified mapping shipped next to the key.
+        # Model-derived alignments are NEVER silently trusted — two live
+        # failures (incomplete map; complete-but-WRONG identity claim with
+        # malformed ids) showed a valid bijection proves nothing about
+        # correctness. Derived/fallback alignments mark every affected
+        # sub-item unresolved_alignment -> human review.
+        align_overrides = load_alignment_overrides(
+            Path(args.key), getattr(args, "alignment_map", None)
+        )
+        if align_overrides:
+            alignment = alignment_from_override(key, version_decision.version, align_overrides)
+            if alignment is not None:
                 _log(
-                    "alignment REJECTED (%s) — using identity numbering and "
-                    "flagging every sub-item for review" % "; ".join(problems)
+                    f"question alignment for {version_decision.version}: "
+                    "operator-verified override"
                 )
-                alignment = identity_alignment(key, version_decision.version)
-                alignment_note = "identity-fallback: " + "; ".join(problems)
+                alignment_note = "operator-override"
+        if alignment is None:
+            cache_dir = Path(getattr(args, "key_cache_dir", None) or keycache.default_cache_dir())
+            align_fp = alignment_fingerprint(current["key"], version_decision.version)
+            alignment = load_cached_alignment(cache_dir, align_fp)
+            if alignment is not None:
+                _log(
+                    f"question alignment for {version_decision.version}: reused "
+                    "from cache (model-derived — UNVERIFIED, review-flagged)"
+                )
+                alignment_note = "derived-unverified(cache)"
             else:
-                alignment = candidate
-                alignment_note = "derived"
-                if not getattr(args, "no_key_cache", False):
-                    store_cached_alignment(cache_dir, align_fp, alignment)
+                _log(
+                    f"deriving question alignment for variant {version_decision.version} "
+                    "(model call per question — UNVERIFIED, review-flagged)"
+                )
+                candidate = derive_alignment(backend, key, survey, pages, version_decision.version)
+                problems = validate_alignment(key, candidate)
+                if problems:
+                    _log(
+                        "alignment REJECTED (%s) — using identity numbering and "
+                        "flagging every sub-item for review" % "; ".join(problems)
+                    )
+                    alignment = identity_alignment(key, version_decision.version)
+                    alignment_note = "identity-fallback: " + "; ".join(problems)
+                else:
+                    alignment = candidate
+                    alignment_note = "derived-unverified"
+                    if not getattr(args, "no_key_cache", False):
+                        store_cached_alignment(cache_dir, align_fp, alignment)
         _write_json(alignment, out / "alignment.json")
 
     # Extraction depends on the EFFECTIVE variant (printed_view relabeling
@@ -653,14 +683,28 @@ def run_grade_pipeline(
         extraction = extract_exam(
             backend, key, survey, pages, progress=_log, alignment=alignment
         )
-        if alignment_note and alignment_note.startswith("identity-fallback"):
+        if alignment_note and alignment_note != "operator-override":
+            # Any non-operator alignment (derived, cached-derived, identity
+            # fallback) is unresolved: printed-to-key numbering is unverified
+            # and no trusted per-item score exists for shuffled questions.
+            note = (
+                "unresolved_alignment: printed-to-key numbering is not "
+                "operator-verified"
+                + (
+                    " (model-derived mapping)"
+                    if alignment_note.startswith("derived")
+                    else " (identity fallback after rejected derivation)"
+                )
+                + "; scores for this item are provisional — human review required"
+            )
+            # Applies to every question — a derived-identity claim is exactly
+            # the observed silent failure mode, so there is no exemption.
             for qx in extraction.questions:
                 for s in qx.sub_items:
-                    note = (
-                        "variant question alignment could not be derived — "
-                        "printed-to-key numbering unverified; human review required"
-                    )
-                    s.uncertainty_note = f"{s.uncertainty_note}; {note}" if s.uncertainty_note else note
+                    if note not in (s.uncertainty_note or ""):
+                        s.uncertainty_note = (
+                            f"{s.uncertainty_note}; {note}" if s.uncertainty_note else note
+                        )
                     s.confidence = min(s.confidence, 0.5)
         _write_json(extraction, extraction_path)
         _record_stage_fingerprint(out, "extraction", extraction_fp)
@@ -806,6 +850,15 @@ def build_parser() -> argparse.ArgumentParser:
             "Path to the marker-to-variant mapping JSON (default: "
             "<key>.variants.json next to the answer key; absent = legacy "
             "answer-agreement version detection)"
+        ),
+    )
+    common.add_argument(
+        "--alignment-map", default=None,
+        help=(
+            "Path to the operator-verified printed-to-key question alignment "
+            "JSON (default: <key>.alignment.json next to the answer key). "
+            "Without an entry for a variant, model-derived alignment is used "
+            "and every affected sub-item is review-flagged as unresolved"
         ),
     )
 

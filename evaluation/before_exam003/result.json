@@ -1,0 +1,970 @@
+{
+  "exam_file": "exam-003",
+  "graded_at": "2026-07-13T04:20:34",
+  "model": "openai:qwen3-vl:8b-instruct",
+  "backend_info": {
+    "backend": "openai",
+    "model": "qwen3-vl:8b-instruct",
+    "base_url": "http://localhost:11434/v1",
+    "structured_mode": "json_schema",
+    "max_tokens": 16000,
+    "temperature": 0.0,
+    "extra_generation": {},
+    "answer_key_source": "json"
+  },
+  "detected_version": "A2",
+  "version_detection": "cover-page flower 'variant_symbol_a2' (bottom third, center-left) → variant A2 per 2026-07-13, manual inspection of authoritative printed material (not student answers); CONFIRMED by the exam owner on 2026-07-13 (four-petal flower=A1, five-petal flower=A2, daisy=A3)",
+  "variant_detection": {
+    "marker_kind": "flower",
+    "marker_seen": "A flower-like symbol with five pointed petals around a central circle, and two leaves at the sides below.",
+    "matched_marker": "variant_symbol_a2",
+    "confident": true,
+    "page": 1,
+    "page_region": "bottom third, center-left",
+    "obstruction_note": null,
+    "mapping_from_authoritative_config": true,
+    "mapping_source": "2026-07-13, manual inspection of authoritative printed material (not student answers); CONFIRMED by the exam owner on 2026-07-13 (four-petal flower=A1, five-petal flower=A2, daisy=A3)",
+    "config_path": "sample_data\\Exam_solution.variants.json",
+    "config_fingerprint": "8789e05a9d660679",
+    "selected_variant": "A2",
+    "uncertain": false,
+    "question_alignment": "derived"
+  },
+  "total_awarded": 14.0,
+  "total_max": 100.0,
+  "questions": [
+    {
+      "question_id": "1",
+      "question_type": "matching_with_explanation",
+      "points_awarded": 0.0,
+      "points_max": 32.0,
+      "sub_results": [
+        {
+          "question_id": "1",
+          "sub_item_id": "1",
+          "question_type": "matching_with_explanation",
+          "status": "answered",
+          "student_answer": "F",
+          "accepted_answers": [
+            "F"
+          ],
+          "selection_correct": true,
+          "explanation_transcription": null,
+          "explanation_evaluation": {
+            "sub_item_id": "1",
+            "verdict": "missing",
+            "reasoning": "no written explanation found for this sub-item",
+            "explanation_matches_different_answer": null
+          },
+          "points_selection": 0.0,
+          "points_explanation": 0.0,
+          "points_total": 0.0,
+          "points_max": 4.0,
+          "reason": "selection 'F' is correct but the rubric awards no credit without a valid explanation (explanation judged missing)",
+          "needs_review": false,
+          "uncertainty_note": null
+        },
+        {
+          "question_id": "1",
+          "sub_item_id": "2",
+          "question_type": "matching_with_explanation",
+          "status": "answered",
+          "student_answer": "G",
+          "accepted_answers": [
+            "G"
+          ],
+          "selection_correct": true,
+          "explanation_transcription": null,
+          "explanation_evaluation": {
+            "sub_item_id": "2",
+            "verdict": "missing",
+            "reasoning": "no written explanation found for this sub-item",
+            "explanation_matches_different_answer": null
+          },
+          "points_selection": 0.0,
+          "points_explanation": 0.0,
+          "points_total": 0.0,
+          "points_max": 4.0,
+          "reason": "selection 'G' is correct but the rubric awards no credit without a valid explanation (explanation judged missing)",
+          "needs_review": false,
+          "uncertainty_note": null
+        },
+        {
+          "question_id": "1",
+          "sub_item_id": "3",
+          "question_type": "matching_with_explanation",
+          "status": "answered",
+          "student_answer": "D",
+          "accepted_answers": [
+            "E"
+          ],
+          "selection_correct": false,
+          "explanation_transcription": null,
+          "explanation_evaluation": {
+            "sub_item_id": "3",
+            "verdict": "missing",
+            "reasoning": "no written explanation found for this sub-item",
+            "explanation_matches_different_answer": null
+          },
+          "points_selection": 0.0,
+          "points_explanation": 0.0,
+          "points_total": 0.0,
+          "points_max": 4.0,
+          "reason": "selection 'D' is incorrect (accepted: E)",
+          "needs_review": false,
+          "uncertainty_note": null
+        },
+        {
+          "question_id": "1",
+          "sub_item_id": "4",
+          "question_type": "matching_with_explanation",
+          "status": "answered",
+          "student_answer": "A",
+          "accepted_answers": [
+            "A"
+          ],
+          "selection_correct": true,
+          "explanation_transcription": null,
+          "explanation_evaluation": {
+            "sub_item_id": "4",
+            "verdict": "missing",
+            "reasoning": "no written explanation found for this sub-item",
+            "explanation_matches_different_answer": null
+          },
+          "points_selection": 0.0,
+          "points_explanation": 0.0,
+          "points_total": 0.0,
+          "points_max": 4.0,
+          "reason": "selection 'A' is correct but the rubric awards no credit without a valid explanation (explanation judged missing)",
+          "needs_review": false,
+          "uncertainty_note": null
+        },
+        {
+          "question_id": "1",
+          "sub_item_id": "5",
+          "question_type": "matching_with_explanation",
+          "status": "answered",
+          "student_answer": "I",
+          "accepted_answers": [
+            "I"
+          ],
+          "selection_correct": true,
+          "explanation_transcription": null,
+          "explanation_evaluation": {
+            "sub_item_id": "5",
+            "verdict": "missing",
+            "reasoning": "no written explanation found for this sub-item",
+            "explanation_matches_different_answer": null
+          },
+          "points_selection": 0.0,
+          "points_explanation": 0.0,
+          "points_total": 0.0,
+          "points_max": 4.0,
+          "reason": "selection 'I' is correct but the rubric awards no credit without a valid explanation (explanation judged missing)",
+          "needs_review": false,
+          "uncertainty_note": null
+        },
+        {
+          "question_id": "1",
+          "sub_item_id": "6",
+          "question_type": "matching_with_explanation",
+          "status": "answered",
+          "student_answer": "C",
+          "accepted_answers": [
+            "C"
+          ],
+          "selection_correct": true,
+          "explanation_transcription": null,
+          "explanation_evaluation": {
+            "sub_item_id": "6",
+            "verdict": "missing",
+            "reasoning": "no written explanation found for this sub-item",
+            "explanation_matches_different_answer": null
+          },
+          "points_selection": 0.0,
+          "points_explanation": 0.0,
+          "points_total": 0.0,
+          "points_max": 4.0,
+          "reason": "selection 'C' is correct but the rubric awards no credit without a valid explanation (explanation judged missing)",
+          "needs_review": false,
+          "uncertainty_note": null
+        },
+        {
+          "question_id": "1",
+          "sub_item_id": "7",
+          "question_type": "matching_with_explanation",
+          "status": "answered",
+          "student_answer": "H",
+          "accepted_answers": [
+            "H"
+          ],
+          "selection_correct": true,
+          "explanation_transcription": null,
+          "explanation_evaluation": {
+            "sub_item_id": "7",
+            "verdict": "missing",
+            "reasoning": "no written explanation found for this sub-item",
+            "explanation_matches_different_answer": null
+          },
+          "points_selection": 0.0,
+          "points_explanation": 0.0,
+          "points_total": 0.0,
+          "points_max": 4.0,
+          "reason": "selection 'H' is correct but the rubric awards no credit without a valid explanation (explanation judged missing)",
+          "needs_review": false,
+          "uncertainty_note": null
+        },
+        {
+          "question_id": "1",
+          "sub_item_id": "8",
+          "question_type": "matching_with_explanation",
+          "status": "answered",
+          "student_answer": "B",
+          "accepted_answers": [
+            "B"
+          ],
+          "selection_correct": true,
+          "explanation_transcription": null,
+          "explanation_evaluation": {
+            "sub_item_id": "8",
+            "verdict": "missing",
+            "reasoning": "no written explanation found for this sub-item",
+            "explanation_matches_different_answer": null
+          },
+          "points_selection": 0.0,
+          "points_explanation": 0.0,
+          "points_total": 0.0,
+          "points_max": 4.0,
+          "reason": "selection 'B' is correct but the rubric awards no credit without a valid explanation (explanation judged missing)",
+          "needs_review": false,
+          "uncertainty_note": null
+        }
+      ],
+      "capped": false,
+      "summary": "7/8 sub-items correct; 0.0/32.0 points"
+    },
+    {
+      "question_id": "2",
+      "question_type": "matching_with_explanation",
+      "points_awarded": 0.0,
+      "points_max": 32.0,
+      "sub_results": [
+        {
+          "question_id": "2",
+          "sub_item_id": "1",
+          "question_type": "matching_with_explanation",
+          "status": "answered",
+          "student_answer": "C",
+          "accepted_answers": [
+            "C"
+          ],
+          "selection_correct": true,
+          "explanation_transcription": null,
+          "explanation_evaluation": {
+            "sub_item_id": "1",
+            "verdict": "missing",
+            "reasoning": "no written explanation found for this sub-item",
+            "explanation_matches_different_answer": null
+          },
+          "points_selection": 0.0,
+          "points_explanation": 0.0,
+          "points_total": 0.0,
+          "points_max": 4.0,
+          "reason": "selection 'C' is correct but the rubric awards no credit without a valid explanation (explanation judged missing)",
+          "needs_review": false,
+          "uncertainty_note": null
+        },
+        {
+          "question_id": "2",
+          "sub_item_id": "2",
+          "question_type": "matching_with_explanation",
+          "status": "answered",
+          "student_answer": "E",
+          "accepted_answers": [
+            "E"
+          ],
+          "selection_correct": true,
+          "explanation_transcription": null,
+          "explanation_evaluation": {
+            "sub_item_id": "2",
+            "verdict": "missing",
+            "reasoning": "no written explanation found for this sub-item",
+            "explanation_matches_different_answer": null
+          },
+          "points_selection": 0.0,
+          "points_explanation": 0.0,
+          "points_total": 0.0,
+          "points_max": 4.0,
+          "reason": "selection 'E' is correct but the rubric awards no credit without a valid explanation (explanation judged missing)",
+          "needs_review": false,
+          "uncertainty_note": null
+        },
+        {
+          "question_id": "2",
+          "sub_item_id": "3",
+          "question_type": "matching_with_explanation",
+          "status": "answered",
+          "student_answer": "D",
+          "accepted_answers": [
+            "B"
+          ],
+          "selection_correct": false,
+          "explanation_transcription": null,
+          "explanation_evaluation": {
+            "sub_item_id": "3",
+            "verdict": "missing",
+            "reasoning": "no written explanation found for this sub-item",
+            "explanation_matches_different_answer": null
+          },
+          "points_selection": 0.0,
+          "points_explanation": 0.0,
+          "points_total": 0.0,
+          "points_max": 4.0,
+          "reason": "selection 'D' is incorrect (accepted: B)",
+          "needs_review": false,
+          "uncertainty_note": null
+        },
+        {
+          "question_id": "2",
+          "sub_item_id": "4",
+          "question_type": "matching_with_explanation",
+          "status": "answered",
+          "student_answer": "A",
+          "accepted_answers": [
+            "H"
+          ],
+          "selection_correct": false,
+          "explanation_transcription": null,
+          "explanation_evaluation": {
+            "sub_item_id": "4",
+            "verdict": "missing",
+            "reasoning": "no written explanation found for this sub-item",
+            "explanation_matches_different_answer": null
+          },
+          "points_selection": 0.0,
+          "points_explanation": 0.0,
+          "points_total": 0.0,
+          "points_max": 4.0,
+          "reason": "selection 'A' is incorrect (accepted: H)",
+          "needs_review": false,
+          "uncertainty_note": null
+        },
+        {
+          "question_id": "2",
+          "sub_item_id": "5",
+          "question_type": "matching_with_explanation",
+          "status": "answered",
+          "student_answer": "H",
+          "accepted_answers": [
+            "A"
+          ],
+          "selection_correct": false,
+          "explanation_transcription": null,
+          "explanation_evaluation": {
+            "sub_item_id": "5",
+            "verdict": "missing",
+            "reasoning": "no written explanation found for this sub-item",
+            "explanation_matches_different_answer": null
+          },
+          "points_selection": 0.0,
+          "points_explanation": 0.0,
+          "points_total": 0.0,
+          "points_max": 4.0,
+          "reason": "selection 'H' is incorrect (accepted: A)",
+          "needs_review": false,
+          "uncertainty_note": null
+        },
+        {
+          "question_id": "2",
+          "sub_item_id": "6",
+          "question_type": "matching_with_explanation",
+          "status": "answered",
+          "student_answer": "G",
+          "accepted_answers": [
+            "D"
+          ],
+          "selection_correct": false,
+          "explanation_transcription": null,
+          "explanation_evaluation": {
+            "sub_item_id": "6",
+            "verdict": "missing",
+            "reasoning": "no written explanation found for this sub-item",
+            "explanation_matches_different_answer": null
+          },
+          "points_selection": 0.0,
+          "points_explanation": 0.0,
+          "points_total": 0.0,
+          "points_max": 4.0,
+          "reason": "selection 'G' is incorrect (accepted: D)",
+          "needs_review": false,
+          "uncertainty_note": null
+        },
+        {
+          "question_id": "2",
+          "sub_item_id": "7",
+          "question_type": "matching_with_explanation",
+          "status": "answered",
+          "student_answer": "F",
+          "accepted_answers": [
+            "G"
+          ],
+          "selection_correct": false,
+          "explanation_transcription": null,
+          "explanation_evaluation": {
+            "sub_item_id": "7",
+            "verdict": "missing",
+            "reasoning": "no written explanation found for this sub-item",
+            "explanation_matches_different_answer": null
+          },
+          "points_selection": 0.0,
+          "points_explanation": 0.0,
+          "points_total": 0.0,
+          "points_max": 4.0,
+          "reason": "selection 'F' is incorrect (accepted: G)",
+          "needs_review": false,
+          "uncertainty_note": null
+        },
+        {
+          "question_id": "2",
+          "sub_item_id": "8",
+          "question_type": "matching_with_explanation",
+          "status": "answered",
+          "student_answer": "B",
+          "accepted_answers": [
+            "F"
+          ],
+          "selection_correct": false,
+          "explanation_transcription": null,
+          "explanation_evaluation": {
+            "sub_item_id": "8",
+            "verdict": "missing",
+            "reasoning": "no written explanation found for this sub-item",
+            "explanation_matches_different_answer": null
+          },
+          "points_selection": 0.0,
+          "points_explanation": 0.0,
+          "points_total": 0.0,
+          "points_max": 4.0,
+          "reason": "selection 'B' is incorrect (accepted: F)",
+          "needs_review": false,
+          "uncertainty_note": null
+        }
+      ],
+      "capped": false,
+      "summary": "2/8 sub-items correct; 0.0/32.0 points"
+    },
+    {
+      "question_id": "3",
+      "question_type": "multiple_choice",
+      "points_awarded": 14.0,
+      "points_max": 36.0,
+      "sub_results": [
+        {
+          "question_id": "3",
+          "sub_item_id": "1",
+          "question_type": "multiple_choice",
+          "status": "answered",
+          "student_answer": "A",
+          "accepted_answers": [
+            "B"
+          ],
+          "selection_correct": false,
+          "explanation_transcription": null,
+          "explanation_evaluation": null,
+          "points_selection": 0.0,
+          "points_explanation": 0.0,
+          "points_total": 0.0,
+          "points_max": 2.0,
+          "reason": "selection 'A' is incorrect (accepted: B); the answer key's value for version A2 on this sub-item is deterministically unverified (colour-only encoding); confirm against the official key",
+          "needs_review": true,
+          "uncertainty_note": null
+        },
+        {
+          "question_id": "3",
+          "sub_item_id": "2",
+          "question_type": "multiple_choice",
+          "status": "answered",
+          "student_answer": "C",
+          "accepted_answers": [
+            "B"
+          ],
+          "selection_correct": false,
+          "explanation_transcription": null,
+          "explanation_evaluation": null,
+          "points_selection": 0.0,
+          "points_explanation": 0.0,
+          "points_total": 0.0,
+          "points_max": 2.0,
+          "reason": "selection 'C' is incorrect (accepted: B); the answer key's value for version A2 on this sub-item is deterministically unverified (colour-only encoding); confirm against the official key",
+          "needs_review": true,
+          "uncertainty_note": null
+        },
+        {
+          "question_id": "3",
+          "sub_item_id": "3",
+          "question_type": "multiple_choice",
+          "status": "answered",
+          "student_answer": "D",
+          "accepted_answers": [
+            "B"
+          ],
+          "selection_correct": false,
+          "explanation_transcription": null,
+          "explanation_evaluation": null,
+          "points_selection": 0.0,
+          "points_explanation": 0.0,
+          "points_total": 0.0,
+          "points_max": 2.0,
+          "reason": "selection 'D' is incorrect (accepted: B); the answer key's value for version A2 on this sub-item is deterministically unverified (colour-only encoding); confirm against the official key",
+          "needs_review": true,
+          "uncertainty_note": null
+        },
+        {
+          "question_id": "3",
+          "sub_item_id": "4",
+          "question_type": "multiple_choice",
+          "status": "answered",
+          "student_answer": "B",
+          "accepted_answers": [
+            "D"
+          ],
+          "selection_correct": false,
+          "explanation_transcription": null,
+          "explanation_evaluation": null,
+          "points_selection": 0.0,
+          "points_explanation": 0.0,
+          "points_total": 0.0,
+          "points_max": 2.0,
+          "reason": "selection 'B' is incorrect (accepted: D); the answer key's value for version A2 on this sub-item is deterministically unverified (colour-only encoding); confirm against the official key",
+          "needs_review": true,
+          "uncertainty_note": null
+        },
+        {
+          "question_id": "3",
+          "sub_item_id": "5",
+          "question_type": "multiple_choice",
+          "status": "answered",
+          "student_answer": "C",
+          "accepted_answers": [
+            "C"
+          ],
+          "selection_correct": true,
+          "explanation_transcription": null,
+          "explanation_evaluation": null,
+          "points_selection": 2.0,
+          "points_explanation": 0.0,
+          "points_total": 2.0,
+          "points_max": 2.0,
+          "reason": "selection 'C' is correct; the answer key's value for version A2 on this sub-item is deterministically unverified (colour-only encoding); confirm against the official key",
+          "needs_review": true,
+          "uncertainty_note": null
+        },
+        {
+          "question_id": "3",
+          "sub_item_id": "6",
+          "question_type": "multiple_choice",
+          "status": "answered",
+          "student_answer": "A",
+          "accepted_answers": [
+            "A"
+          ],
+          "selection_correct": true,
+          "explanation_transcription": null,
+          "explanation_evaluation": null,
+          "points_selection": 2.0,
+          "points_explanation": 0.0,
+          "points_total": 2.0,
+          "points_max": 2.0,
+          "reason": "selection 'A' is correct; the answer key's value for version A2 on this sub-item is deterministically unverified (colour-only encoding); confirm against the official key",
+          "needs_review": true,
+          "uncertainty_note": null
+        },
+        {
+          "question_id": "3",
+          "sub_item_id": "7",
+          "question_type": "multiple_choice",
+          "status": "answered",
+          "student_answer": "D",
+          "accepted_answers": [
+            "B"
+          ],
+          "selection_correct": false,
+          "explanation_transcription": null,
+          "explanation_evaluation": null,
+          "points_selection": 0.0,
+          "points_explanation": 0.0,
+          "points_total": 0.0,
+          "points_max": 2.0,
+          "reason": "selection 'D' is incorrect (accepted: B); the answer key's value for version A2 on this sub-item is deterministically unverified (colour-only encoding); confirm against the official key",
+          "needs_review": true,
+          "uncertainty_note": null
+        },
+        {
+          "question_id": "3",
+          "sub_item_id": "8",
+          "question_type": "multiple_choice",
+          "status": "answered",
+          "student_answer": "B",
+          "accepted_answers": [
+            "B"
+          ],
+          "selection_correct": true,
+          "explanation_transcription": null,
+          "explanation_evaluation": null,
+          "points_selection": 2.0,
+          "points_explanation": 0.0,
+          "points_total": 2.0,
+          "points_max": 2.0,
+          "reason": "selection 'B' is correct; the answer key's value for version A2 on this sub-item is deterministically unverified (colour-only encoding); confirm against the official key",
+          "needs_review": true,
+          "uncertainty_note": null
+        },
+        {
+          "question_id": "3",
+          "sub_item_id": "9",
+          "question_type": "multiple_choice",
+          "status": "answered",
+          "student_answer": "D",
+          "accepted_answers": [
+            "B"
+          ],
+          "selection_correct": false,
+          "explanation_transcription": null,
+          "explanation_evaluation": null,
+          "points_selection": 0.0,
+          "points_explanation": 0.0,
+          "points_total": 0.0,
+          "points_max": 2.0,
+          "reason": "selection 'D' is incorrect (accepted: B); the answer key's value for version A2 on this sub-item is deterministically unverified (colour-only encoding); confirm against the official key",
+          "needs_review": true,
+          "uncertainty_note": null
+        },
+        {
+          "question_id": "3",
+          "sub_item_id": "10",
+          "question_type": "multiple_choice",
+          "status": "answered",
+          "student_answer": "C",
+          "accepted_answers": [
+            "D"
+          ],
+          "selection_correct": false,
+          "explanation_transcription": null,
+          "explanation_evaluation": null,
+          "points_selection": 0.0,
+          "points_explanation": 0.0,
+          "points_total": 0.0,
+          "points_max": 2.0,
+          "reason": "selection 'C' is incorrect (accepted: D); the answer key's value for version A2 on this sub-item is deterministically unverified (colour-only encoding); confirm against the official key",
+          "needs_review": true,
+          "uncertainty_note": null
+        },
+        {
+          "question_id": "3",
+          "sub_item_id": "11",
+          "question_type": "multiple_choice",
+          "status": "answered",
+          "student_answer": "B",
+          "accepted_answers": [
+            "C"
+          ],
+          "selection_correct": false,
+          "explanation_transcription": null,
+          "explanation_evaluation": null,
+          "points_selection": 0.0,
+          "points_explanation": 0.0,
+          "points_total": 0.0,
+          "points_max": 2.0,
+          "reason": "selection 'B' is incorrect (accepted: C); the answer key's value for version A2 on this sub-item is deterministically unverified (colour-only encoding); confirm against the official key",
+          "needs_review": true,
+          "uncertainty_note": null
+        },
+        {
+          "question_id": "3",
+          "sub_item_id": "12",
+          "question_type": "multiple_choice",
+          "status": "answered",
+          "student_answer": "A",
+          "accepted_answers": [
+            "A"
+          ],
+          "selection_correct": true,
+          "explanation_transcription": null,
+          "explanation_evaluation": null,
+          "points_selection": 2.0,
+          "points_explanation": 0.0,
+          "points_total": 2.0,
+          "points_max": 2.0,
+          "reason": "selection 'A' is correct; the answer key's value for version A2 on this sub-item is deterministically unverified (colour-only encoding); confirm against the official key",
+          "needs_review": true,
+          "uncertainty_note": null
+        },
+        {
+          "question_id": "3",
+          "sub_item_id": "13",
+          "question_type": "multiple_choice",
+          "status": "answered",
+          "student_answer": "D",
+          "accepted_answers": [
+            "B"
+          ],
+          "selection_correct": false,
+          "explanation_transcription": null,
+          "explanation_evaluation": null,
+          "points_selection": 0.0,
+          "points_explanation": 0.0,
+          "points_total": 0.0,
+          "points_max": 2.0,
+          "reason": "selection 'D' is incorrect (accepted: B); the answer key's value for version A2 on this sub-item is deterministically unverified (colour-only encoding); confirm against the official key",
+          "needs_review": true,
+          "uncertainty_note": null
+        },
+        {
+          "question_id": "3",
+          "sub_item_id": "14",
+          "question_type": "multiple_choice",
+          "status": "answered",
+          "student_answer": "C",
+          "accepted_answers": [
+            "C"
+          ],
+          "selection_correct": true,
+          "explanation_transcription": null,
+          "explanation_evaluation": null,
+          "points_selection": 2.0,
+          "points_explanation": 0.0,
+          "points_total": 2.0,
+          "points_max": 2.0,
+          "reason": "selection 'C' is correct; the answer key's value for version A2 on this sub-item is deterministically unverified (colour-only encoding); confirm against the official key",
+          "needs_review": true,
+          "uncertainty_note": null
+        },
+        {
+          "question_id": "3",
+          "sub_item_id": "15",
+          "question_type": "multiple_choice",
+          "status": "answered",
+          "student_answer": "B",
+          "accepted_answers": [
+            "B"
+          ],
+          "selection_correct": true,
+          "explanation_transcription": null,
+          "explanation_evaluation": null,
+          "points_selection": 2.0,
+          "points_explanation": 0.0,
+          "points_total": 2.0,
+          "points_max": 2.0,
+          "reason": "selection 'B' is correct; the answer key's value for version A2 on this sub-item is deterministically unverified (colour-only encoding); confirm against the official key",
+          "needs_review": true,
+          "uncertainty_note": null
+        },
+        {
+          "question_id": "3",
+          "sub_item_id": "16",
+          "question_type": "multiple_choice",
+          "status": "answered",
+          "student_answer": "A",
+          "accepted_answers": [
+            "B"
+          ],
+          "selection_correct": false,
+          "explanation_transcription": null,
+          "explanation_evaluation": null,
+          "points_selection": 0.0,
+          "points_explanation": 0.0,
+          "points_total": 0.0,
+          "points_max": 2.0,
+          "reason": "selection 'A' is incorrect (accepted: B)",
+          "needs_review": false,
+          "uncertainty_note": null
+        },
+        {
+          "question_id": "3",
+          "sub_item_id": "17",
+          "question_type": "multiple_choice",
+          "status": "answered",
+          "student_answer": "A",
+          "accepted_answers": [
+            "D"
+          ],
+          "selection_correct": false,
+          "explanation_transcription": null,
+          "explanation_evaluation": null,
+          "points_selection": 0.0,
+          "points_explanation": 0.0,
+          "points_total": 0.0,
+          "points_max": 2.0,
+          "reason": "selection 'A' is incorrect (accepted: D); the answer key's value for version A2 on this sub-item is deterministically unverified (colour-only encoding); confirm against the official key",
+          "needs_review": true,
+          "uncertainty_note": null
+        },
+        {
+          "question_id": "3",
+          "sub_item_id": "18",
+          "question_type": "multiple_choice",
+          "status": "answered",
+          "student_answer": "B",
+          "accepted_answers": [
+            "B"
+          ],
+          "selection_correct": true,
+          "explanation_transcription": null,
+          "explanation_evaluation": null,
+          "points_selection": 2.0,
+          "points_explanation": 0.0,
+          "points_total": 2.0,
+          "points_max": 2.0,
+          "reason": "selection 'B' is correct; the answer key's value for version A2 on this sub-item is deterministically unverified (colour-only encoding); confirm against the official key",
+          "needs_review": true,
+          "uncertainty_note": null
+        },
+        {
+          "question_id": "3",
+          "sub_item_id": "19",
+          "question_type": "multiple_choice",
+          "status": "answered",
+          "student_answer": "D",
+          "accepted_answers": [
+            "C"
+          ],
+          "selection_correct": false,
+          "explanation_transcription": null,
+          "explanation_evaluation": null,
+          "points_selection": 0.0,
+          "points_explanation": 0.0,
+          "points_total": 0.0,
+          "points_max": 2.0,
+          "reason": "selection 'D' is incorrect (accepted: C); the answer key's value for version A2 on this sub-item is deterministically unverified (colour-only encoding); confirm against the official key",
+          "needs_review": true,
+          "uncertainty_note": null
+        },
+        {
+          "question_id": "3",
+          "sub_item_id": "20",
+          "question_type": "multiple_choice",
+          "status": "answered",
+          "student_answer": "A",
+          "accepted_answers": [
+            "B"
+          ],
+          "selection_correct": false,
+          "explanation_transcription": null,
+          "explanation_evaluation": null,
+          "points_selection": 0.0,
+          "points_explanation": 0.0,
+          "points_total": 0.0,
+          "points_max": 2.0,
+          "reason": "selection 'A' is incorrect (accepted: B); the answer key's value for version A2 on this sub-item is deterministically unverified (colour-only encoding); confirm against the official key",
+          "needs_review": true,
+          "uncertainty_note": null
+        }
+      ],
+      "capped": false,
+      "summary": "7/20 sub-items correct; 14.0/36.0 points"
+    }
+  ],
+  "unanswered": [],
+  "needs_human_review": [
+    {
+      "question_id": "3",
+      "sub_item_id": "1",
+      "reason": "selection 'A' is incorrect (accepted: B); the answer key's value for version A2 on this sub-item is deterministically unverified (colour-only encoding); confirm against the official key"
+    },
+    {
+      "question_id": "3",
+      "sub_item_id": "2",
+      "reason": "selection 'C' is incorrect (accepted: B); the answer key's value for version A2 on this sub-item is deterministically unverified (colour-only encoding); confirm against the official key"
+    },
+    {
+      "question_id": "3",
+      "sub_item_id": "3",
+      "reason": "selection 'D' is incorrect (accepted: B); the answer key's value for version A2 on this sub-item is deterministically unverified (colour-only encoding); confirm against the official key"
+    },
+    {
+      "question_id": "3",
+      "sub_item_id": "4",
+      "reason": "selection 'B' is incorrect (accepted: D); the answer key's value for version A2 on this sub-item is deterministically unverified (colour-only encoding); confirm against the official key"
+    },
+    {
+      "question_id": "3",
+      "sub_item_id": "5",
+      "reason": "selection 'C' is correct; the answer key's value for version A2 on this sub-item is deterministically unverified (colour-only encoding); confirm against the official key"
+    },
+    {
+      "question_id": "3",
+      "sub_item_id": "6",
+      "reason": "selection 'A' is correct; the answer key's value for version A2 on this sub-item is deterministically unverified (colour-only encoding); confirm against the official key"
+    },
+    {
+      "question_id": "3",
+      "sub_item_id": "7",
+      "reason": "selection 'D' is incorrect (accepted: B); the answer key's value for version A2 on this sub-item is deterministically unverified (colour-only encoding); confirm against the official key"
+    },
+    {
+      "question_id": "3",
+      "sub_item_id": "8",
+      "reason": "selection 'B' is correct; the answer key's value for version A2 on this sub-item is deterministically unverified (colour-only encoding); confirm against the official key"
+    },
+    {
+      "question_id": "3",
+      "sub_item_id": "9",
+      "reason": "selection 'D' is incorrect (accepted: B); the answer key's value for version A2 on this sub-item is deterministically unverified (colour-only encoding); confirm against the official key"
+    },
+    {
+      "question_id": "3",
+      "sub_item_id": "10",
+      "reason": "selection 'C' is incorrect (accepted: D); the answer key's value for version A2 on this sub-item is deterministically unverified (colour-only encoding); confirm against the official key"
+    },
+    {
+      "question_id": "3",
+      "sub_item_id": "11",
+      "reason": "selection 'B' is incorrect (accepted: C); the answer key's value for version A2 on this sub-item is deterministically unverified (colour-only encoding); confirm against the official key"
+    },
+    {
+      "question_id": "3",
+      "sub_item_id": "12",
+      "reason": "selection 'A' is correct; the answer key's value for version A2 on this sub-item is deterministically unverified (colour-only encoding); confirm against the official key"
+    },
+    {
+      "question_id": "3",
+      "sub_item_id": "13",
+      "reason": "selection 'D' is incorrect (accepted: B); the answer key's value for version A2 on this sub-item is deterministically unverified (colour-only encoding); confirm against the official key"
+    },
+    {
+      "question_id": "3",
+      "sub_item_id": "14",
+      "reason": "selection 'C' is correct; the answer key's value for version A2 on this sub-item is deterministically unverified (colour-only encoding); confirm against the official key"
+    },
+    {
+      "question_id": "3",
+      "sub_item_id": "15",
+      "reason": "selection 'B' is correct; the answer key's value for version A2 on this sub-item is deterministically unverified (colour-only encoding); confirm against the official key"
+    },
+    {
+      "question_id": "3",
+      "sub_item_id": "17",
+      "reason": "selection 'A' is incorrect (accepted: D); the answer key's value for version A2 on this sub-item is deterministically unverified (colour-only encoding); confirm against the official key"
+    },
+    {
+      "question_id": "3",
+      "sub_item_id": "18",
+      "reason": "selection 'B' is correct; the answer key's value for version A2 on this sub-item is deterministically unverified (colour-only encoding); confirm against the official key"
+    },
+    {
+      "question_id": "3",
+      "sub_item_id": "19",
+      "reason": "selection 'D' is incorrect (accepted: C); the answer key's value for version A2 on this sub-item is deterministically unverified (colour-only encoding); confirm against the official key"
+    },
+    {
+      "question_id": "3",
+      "sub_item_id": "20",
+      "reason": "selection 'A' is incorrect (accepted: B); the answer key's value for version A2 on this sub-item is deterministically unverified (colour-only encoding); confirm against the official key"
+    }
+  ],
+  "mark_interpretations": [
+    "question 1: answers read from answer table p.11 per exam instructions (dedicated answer sheet for Question 1)",
+    "question 2: answers read from answer table p.12 per exam instructions: 'השאלה דורשת להשלים טבלת תשובות בדף המבחן'",
+    "question 3: answers read from answer table p.13 per exam instructions: 'התשובות נמצאות בטופס התשובות האמריקאיות'."
+  ]
+}
