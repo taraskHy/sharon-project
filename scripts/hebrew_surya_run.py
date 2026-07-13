@@ -24,10 +24,31 @@ BENCH = Path("evaluation/hebrew_bench")
 
 
 def load_ocr():
-    """Return (name, fn(image)->text) for the installed Surya version."""
-    from PIL import Image  # noqa: F401
+    """Return (name, fn(image)->text) for the installed Surya version.
 
-    try:  # modern (v2-era) API
+    surya-ocr 0.21.1: RecognitionPredictor()([images], full_page=True) ->
+    List[PageOCRResult]; each block carries its text as HTML in
+    ``block.html`` with ``reading_order``. Detection runs internally."""
+    import re
+
+    try:  # 0.17-era in-process API: foundation + detection predictors
+        from surya.foundation import FoundationPredictor
+        from surya.detection import DetectionPredictor
+        from surya.recognition import RecognitionPredictor
+
+        det = DetectionPredictor()
+        rec = RecognitionPredictor(FoundationPredictor())
+
+        def run(img):
+            preds = rec([img], det_predictor=det)
+            lines = getattr(preds[0], "text_lines", None) or []
+            return " ".join((l.text or "").strip() for l in lines if (l.text or "").strip())
+
+        return "surya-0.17 FoundationPredictor+RecognitionPredictor(det_predictor)", run
+    except Exception:  # noqa: BLE001
+        pass
+
+    try:  # <=0.13-era API: predictors take no foundation model
         from surya.detection import DetectionPredictor
         from surya.recognition import RecognitionPredictor
 
@@ -39,24 +60,30 @@ def load_ocr():
             lines = getattr(preds[0], "text_lines", None) or []
             return " ".join((l.text or "").strip() for l in lines if (l.text or "").strip())
 
-        return "surya.recognition.RecognitionPredictor+DetectionPredictor", run
-    except Exception as e1:  # noqa: BLE001
-        try:  # foundation-model API variant
-            from surya.foundation import FoundationPredictor
-            from surya.detection import DetectionPredictor
-            from surya.recognition import RecognitionPredictor
+        return "surya<=0.13 RecognitionPredictor(det_predictor)", run
+    except Exception:  # noqa: BLE001
+        pass
 
-            det = DetectionPredictor()
-            rec = RecognitionPredictor(FoundationPredictor())
+    # 0.21-era API (requires the dockerized inference manager — kept last).
+    from surya.recognition import RecognitionPredictor
 
-            def run(img):
-                preds = rec([img], det_predictor=det)
-                lines = getattr(preds[0], "text_lines", None) or []
-                return " ".join((l.text or "").strip() for l in lines if (l.text or "").strip())
+    rec = RecognitionPredictor()
 
-            return "surya.foundation.FoundationPredictor variant", run
-        except Exception as e2:  # noqa: BLE001
-            raise RuntimeError(f"no known Surya API worked: {e1!r} / {e2!r}")
+    def run(img):
+        preds = rec([img], full_page=True)
+        blocks = list(getattr(preds[0], "blocks", None) or [])
+        blocks.sort(key=lambda b: b.reading_order if b.reading_order is not None else 0)
+        parts = []
+        for b in blocks:
+            if getattr(b, "skipped", False):
+                continue
+            txt = re.sub(r"<[^>]+>", " ", b.html or "")
+            txt = re.sub(r"\s+", " ", txt).strip()
+            if txt:
+                parts.append(txt)
+        return " ".join(parts)
+
+    return "surya-0.21 RecognitionPredictor(full_page=True) html-blocks", run
 
 
 def main() -> int:

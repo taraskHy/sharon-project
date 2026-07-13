@@ -134,3 +134,85 @@ separated by the saved crops (`segments_words/it6_hdd_words/`):
 Verdict: worse than the Qwen reference on every fidelity axis; kept as
 evidence. No segmentation rework can rescue a recognizer that misreads
 clean word crops → CONTINUE to iteration 7 (multilingual document OCR).
+
+### Iteration 7 — Surya OCR (multilingual document OCR)
+
+Hypothesis: a multilingual document-OCR stack with the best surveyed Hebrew
+score (90.9 %, printed-leaning) transfers at least partially to
+handwriting. Setup honesty trail: surya 0.21.1 requires a **Docker-spawned
+inference runtime** (system-level → not installed without owner approval);
+pinned to **0.17.1** (last documented in-process release) with
+`transformers<5` (4.57.6) in the isolated venv. Weights: Datalab S3
+checkpoints detector `2025_05_07`, recognition foundation `2025_09_23`,
+cache `%LOCALAPPDATA%\datalab\datalab\Cache\models`, OpenRAIL-family
+weights license. Whole-cell input (Surya does its own detection); no
+language hint exists in this API (verified by signature).
+
+| Metric | it7 Surya 0.17.1 | Strongest Qwen |
+|---|---|---|
+| mean CER | **0.955** | 0.786 |
+| usable rate | 0.00 | 0.00 |
+| WER | 1.129 | 1.035 |
+| omission | 0.212 | 0.263 |
+| halluc-word | 0.152 | 0.087 |
+| stability | 0.000 (deterministic) | 0.071 |
+| hard flagged/confab | 0 / 10 | 0 / 15 |
+| runtime | ~9.9 s/cell CPU | ~3 s/cell GPU |
+
+Qualitative signature: **script-level failure** — Hebrew cursive read as
+English words ("room room to work the" for e002_q1_r2). The printed-Hebrew
+benchmark number does not transfer to handwriting at all. Worse than the
+Qwen reference on every fidelity axis → REJECTED.
+
+### Iteration 8 — best-dedicated-HTR vs strongest-Qwen comparison + repeatability
+
+Best dedicated/OCR candidate by CER: none beats Qwen. Head-to-head of the
+campaign's final three:
+
+| | it4 Qwen 8B+strict+contrast | it6 hdd-words-ocr | it7 Surya 0.17.1 |
+|---|---|---|---|
+| mean CER | **0.786** | 0.963 | 0.955 |
+| usable | 0.00 | 0.00 | 0.00 |
+| omission | 0.263 | 0.565 | 0.212 |
+| halluc-word | 0.087 | 0.302 | 0.152 |
+| repeatability (pairwise CER) | 0.071 over 3 temp-0 runs (GPU nondeterminism) | 0.000 (2 runs, deterministic CPU) | 0.000 (2 runs, deterministic CPU) |
+| unreadable flagged | 0/15 | 0/10 | 0/10 |
+
+The dedicated/OCR candidates are *repeatable* but repeatably wrong; the
+Qwen reference is closest to the ink yet an order of magnitude from the
+gate and never flags unreadability.
+
+## FINAL VERDICT (owner-required failure-class distinction)
+
+1. **General-purpose VLM failure — CONFIRMED.** Five configurations
+   (prompt, quantization, preprocessing, 3.75× scale) span CER 0.79–0.94,
+   usable 0 %, hard cells 60/60 confabulated. Perception-bound; ±10 %
+   levers only.
+2. **Segmentation failure — present, not decisive.** Projection
+   segmentation collapsed on ~half the messy cells (it6), but cleanly
+   segmented word crops were still misread — recognition fails
+   independently of segmentation.
+3. **Dedicated-HTR failure — CONFIRMED for every runnable public
+   candidate.** hdd-words-ocr (modern-Hebrew forms lineage) misreads clean
+   crops; medieval kraken models are the wrong script tradition; ABBA-HTR
+   is pickle-gated; HebHTR — the one model trained on modern student exam
+   cursive — is unlicensed/archived/TF1.12-Linux-only and untestable
+   without an approved WSL2/Docker environment.
+4. **Insufficient training data — the structural diagnosis.** No runnable
+   public model was trained on modern Israeli student cursive. HebHTR's
+   self-reported 4.76 % validation CER on exactly this domain proves the
+   task is LEARNABLE; what is missing is a trained model, not a feasible
+   task.
+5. **Local hardware limitation — NOT the binding constraint.** Every
+   candidate ran locally; the 30B-scale test showed scale is not the lever;
+   a kraken/PyLaia fine-tune fits this GPU in hours.
+
+**Recommended path (fine-tuning, per the required six points):** kraken
+(`ketos train`, native RTL, line-level) first, PyLaia (MIT) second; data
+format = line images + transcriptions (PAGE/ALTO or plain pairs);
+line-level crops suffice (word-level not required); ~800–2,000 verified
+lines for a first usable model (kraken guidance ≈ 800/hand; multi-writer
+needs the upper range); the 41 development exams contain ≈ 1,000
+explanation lines — convertible via the existing crop→candidate→
+`human_verified` annotation workflow built this session; training fits the
+RTX 2000 Ada in **hours** (kraken/PyLaia-class models), no new hardware.

@@ -1,5 +1,54 @@
 # Hebrew handwriting transcription campaign — bounded loop (2026-07-13)
 
+## CAMPAIGN CLOSED — FINAL VERDICT: **STOP** (all 8 iterations completed)
+
+STOP conditions met simultaneously: **8 iterations completed**; **no
+meaningful improvement occurring** (best CER stuck at 0.786 across model
+family, scale, quantization, prompt, preprocessing, dedicated HTR, and
+multilingual OCR variables); **repeated hallucination makes the tested
+approaches unsuitable** (85/85 hard-cell evaluations across all candidates
+produced confabulated text; zero honest unreadable flags).
+
+### Required final report
+
+1. **Best pipeline:** `qwen3-vl:8b-instruct` (Q4_K_M) + strict-fidelity
+   prompt + percentile contrast stretch (iteration 4) — mean CER 0.786,
+   usable 0 %, halluc-word 8.7 %, omission 26.3 %, stability 0.071.
+2. **Metrics vs the frozen baseline:** baseline (it1) CER 0.936 / halluc
+   20.3 % / stability 0.147 → best (it4) improves every axis (CER −16 %
+   relative, halluc −57 %, stability 2×) yet remains an order of magnitude
+   from every acceptance threshold. Full per-iteration ledgers:
+   `hebrew_transcription_results.csv` (it1–5) and
+   `local_hebrew_htr_results.csv` (it6–7); head-to-head and failure-class
+   verdict in `local_hebrew_htr_benchmark.md` (iteration 8).
+3. **Safe for automatic explanation grading? NO.** No candidate approaches
+   the gate (usable ≥90 % / omission ≤5 % / halluc ≤2 % / CER ≤10 %), and
+   none ever flags unreadable text instead of guessing. The production
+   policy stands: explanation credit gates to zero with per-item human
+   review — grading policy was not modified.
+4. **Exact remaining failure modes:** (a) fluent Hebrew confabulation by
+   VLMs at every scale tested; (b) no self-detection of unreadability;
+   (c) dedicated public HTR models misread modern cursive (wrong training
+   distribution) or are unrunnable without approvals (HebHTR: WSL2/Docker +
+   no license; ABBA-HTR: pickle-only; Surya 0.21: Docker-gated);
+   (d) projection segmentation collapses on dense/messy cells.
+5. **Hardware/runtime:** all candidates ran locally. Qwen ~3 s/cell (GPU,
+   8K ctx); hdd-words ~2.3 s/cell CPU; Surya ~9.9 s/cell CPU; 30B MoE
+   ~15 s/call at 41/59 CPU/GPU. Full campaign consumed ≈ 2 GPU-hours +
+   ≈ 0.7 CPU-hours of inference across 8 iterations.
+6. **Integration plan (NOT merged; requires owner approval):** none of the
+   tested models may feed the semantic judge. The evidence-backed path is a
+   **domain fine-tune**: kraken (first choice) or PyLaia on ~800–2,000
+   owner-verified explanation lines harvested from the 41 development exams
+   via the existing annotation workflow (≈1,000 lines available); training
+   fits the local GPU in hours. HebHTR's 4.76 % self-reported CER on this
+   exact domain is the feasibility proof. Alternative pre-trained lever if
+   approved: HebHTR itself inside WSL2/Docker (license + security caveats
+   documented), or the university-server 32B bake-off for the general
+   pipeline (separate from transcription fidelity).
+
+**Verdict: STOP.**
+
 Baseline frozen at commit `d7cb2ec`. Budget: ≤8 iterations / ≤6 hours
 (campaign clock started 2026-07-13 ~13:35). Constraints honoured: no Stage
 B/C, no grading-policy changes, no held-out exams, ground truth hidden from

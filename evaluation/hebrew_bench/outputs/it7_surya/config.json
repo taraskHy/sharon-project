@@ -1,11 +1,11 @@
 {
- "config_id": "it7_surya_smoke",
+ "config_id": "it7_surya",
  "model": "surya-ocr ? (surya-0.17 FoundationPredictor+RecognitionPredictor(det_predictor))",
  "prompt": "n/a (document OCR)",
  "preproc": "none (whole cell; surya does detection)",
  "max_tokens": 0,
- "runs": 1,
- "started": "2026-07-13 20:19:17",
- "finished": "2026-07-13 20:19:27",
- "total_wall_s": 9.9
+ "runs": 2,
+ "started": "2026-07-13 20:20:46",
+ "finished": "2026-07-13 20:34:31",
+ "total_wall_s": 825.1
 }
