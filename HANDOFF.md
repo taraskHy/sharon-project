@@ -45,6 +45,9 @@ still need instructor entries — until then they are review-flagged on every
 exam). Variant detection reads the cover flower only; per-variant question
 alignment is cached next to the key cache.
 
+> **Fresh-session entry point: [evaluation/NEXT_SESSION_HANDOFF.md](evaluation/NEXT_SESSION_HANDOFF.md)**
+> (state, metrics, retained outputs, and the mandated first task).
+
 ## Known open items
 
 1. **Q3 override entries** — instructor should fill the remaining Q3

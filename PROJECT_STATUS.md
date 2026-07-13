@@ -79,6 +79,18 @@ override — review-rate metrics reflect that honestly.
 4. Key-parse output quality varies between runs at temperature 0; the
    validation+repair layer rejects/repairs rather than trusts.
 
+## Hebrew transcription campaign (2026-07-13, closed)
+
+Bounded 8-iteration campaign on a 16-cell owner-verified benchmark
+(one writer): best local result qwen3-vl:8b + strict prompt + contrast
+= CER 0.786, usable 0% - an order of magnitude from the acceptance
+gate; all candidates confabulate rather than flag unreadable text.
+Verdict STOP; structural diagnosis = insufficient training data
+(HebHTR's 4.76% CER on this exact domain proves learnability).
+Details: evaluation/hebrew_transcription_loop.md,
+evaluation/local_hebrew_htr_benchmark.md. Next session starts with
+the oracle-ensemble analysis (evaluation/NEXT_SESSION_HANDOFF.md).
+
 ## Batch evaluation (Stage A executed; full details: evaluation/)
 
 Stage A (first 5 validation exams, masked, anonymized, sequential):
