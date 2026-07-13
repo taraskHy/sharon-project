@@ -310,9 +310,75 @@ def test_uniform_collapse_is_flagged_for_review_only():
     assert all(s.status == "answered" and s.final_answer == "B" for s in ext.sub_items)
 
 
+def test_cyclic_collapse_pattern_is_flagged():
+    q = _mc_question(20)
+    ext = _extraction_for_ids("3", [str(i) for i in range(1, 21)], lambda i: "ABCD"[(int(i) - 1) % 4])
+    _flag_uniform_collapse(q, ext)
+    assert all("period-4" in (s.uncertainty_note or "") for s in ext.sub_items), (
+        "the live ABCD staircase must be flagged"
+    )
+
+
+def test_gated_zero_on_empty_transcription_is_review_flagged():
+    from autograder.config import GraderConfig
+    from autograder.grade import VersionDecision, grade_exam
+    from autograder.schema import ExamExtraction
+
+    key = make_key()
+    q1 = key.question("1")
+    extraction = ExamExtraction(
+        questions=[
+            QuestionExtraction(
+                question_id="1",
+                source_pages=[11],
+                authoritative_source="sheet",
+                answer_sheet_status="present",
+                sub_items=[
+                    SubItemExtraction(
+                        sub_item_id=s.id,
+                        status="answered",
+                        final_answer=s.correct_by_version["A1"][0],
+                        answer_origin="answer_sheet",
+                        explanation_transcription=None,  # untranscribed
+                        interpretation_rationale="read",
+                        confidence=1.0,
+                    )
+                    for s in q1.sub_items
+                ],
+            ),
+            QuestionExtraction(
+                question_id="3",
+                source_pages=[13],
+                authoritative_source="table",
+                answer_sheet_status="present",
+                sub_items=[
+                    SubItemExtraction(
+                        sub_item_id=s.id, status="unanswered",
+                        interpretation_rationale="empty", confidence=1.0,
+                    )
+                    for s in key.question("3").sub_items
+                ],
+            ),
+        ]
+    )
+    result = grade_exam(
+        key, extraction, {}, VersionDecision("A1", "pinned", False),
+        GraderConfig(), exam_file="e.pdf", graded_at="t", model="mock:m",
+    )
+    q1_res = next(q for q in result.questions if q.question_id == "1")
+    assert q1_res.points_awarded == 0.0, "gating still applies"
+    assert all(s.needs_review for s in q1_res.sub_results), (
+        "correct selections zeroed on EMPTY transcriptions must reach review"
+    )
+    assert any("untranscribed" in s.reason for s in q1_res.sub_results)
+
+
 def test_varied_answers_and_small_questions_are_not_flagged():
     q = _mc_question(20)
-    varied = _extraction_for_ids("3", [str(i) for i in range(1, 21)], lambda i: "ABCD"[int(i) % 4])
+    realistic = "BDACCABDBCADBACDDBCA"  # aperiodic, student-like
+    varied = _extraction_for_ids(
+        "3", [str(i) for i in range(1, 21)], lambda i: realistic[int(i) - 1]
+    )
     _flag_uniform_collapse(q, varied)
     assert all(s.uncertainty_note is None for s in varied.sub_items)
 

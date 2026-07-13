@@ -1,0 +1,6 @@
+anon_id,expected,predicted,error,detected_variant,variant_uncertain,key_source,review_items,unanswered_items,runtime_s,failed,failure_reason
+exam-002,76.0,30.0,-46.0,A3,False,json,36,0,728.8,False,
+exam-003,70.0,14.0,-56.0,A2,False,json,19,0,956.5,False,
+exam-004,58.0,22.0,-36.0,A1,False,json,36,0,1009.7,False,
+exam-007,48.0,22.0,-26.0,A1,False,json,19,0,1026.7,False,
+exam-008,52.0,18.0,-34.0,A2,False,json,19,0,807.4,False,

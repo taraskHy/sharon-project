@@ -1,0 +1,102 @@
+{
+  "generated_at": "2026-07-13T05:07:58",
+  "split": "validation",
+  "masking_enabled": true,
+  "backend": {
+    "backend": "openai",
+    "model": "qwen3-vl:8b-instruct",
+    "base_url": "http://localhost:11434/v1",
+    "structured_mode": "json_schema",
+    "max_tokens": 16000,
+    "temperature": 0.0,
+    "extra_generation": {}
+  },
+  "metrics": {
+    "processed": 5,
+    "failures": 0,
+    "scored": 5,
+    "exact_accuracy": 0.0,
+    "within_2": 0.0,
+    "within_5": 0.0,
+    "within_10": 0.0,
+    "mae": 39.6,
+    "median_abs_error": 36.0,
+    "rmse": 40.939,
+    "mean_signed_error": -39.6,
+    "max_abs_error": 56.0,
+    "review_rate": 1.0,
+    "mean_runtime_s": 905.8
+  },
+  "exams": [
+    {
+      "anon_id": "exam-002",
+      "expected": 76.0,
+      "predicted": 30.0,
+      "error": -46.0,
+      "detected_variant": "A3",
+      "variant_uncertain": false,
+      "key_source": "json",
+      "review_items": 36,
+      "unanswered_items": 0,
+      "runtime_s": 728.8,
+      "failed": false,
+      "failure_reason": null
+    },
+    {
+      "anon_id": "exam-003",
+      "expected": 70.0,
+      "predicted": 14.0,
+      "error": -56.0,
+      "detected_variant": "A2",
+      "variant_uncertain": false,
+      "key_source": "json",
+      "review_items": 19,
+      "unanswered_items": 0,
+      "runtime_s": 956.5,
+      "failed": false,
+      "failure_reason": null
+    },
+    {
+      "anon_id": "exam-004",
+      "expected": 58.0,
+      "predicted": 22.0,
+      "error": -36.0,
+      "detected_variant": "A1",
+      "variant_uncertain": false,
+      "key_source": "json",
+      "review_items": 36,
+      "unanswered_items": 0,
+      "runtime_s": 1009.7,
+      "failed": false,
+      "failure_reason": null
+    },
+    {
+      "anon_id": "exam-007",
+      "expected": 48.0,
+      "predicted": 22.0,
+      "error": -26.0,
+      "detected_variant": "A1",
+      "variant_uncertain": false,
+      "key_source": "json",
+      "review_items": 19,
+      "unanswered_items": 0,
+      "runtime_s": 1026.7,
+      "failed": false,
+      "failure_reason": null
+    },
+    {
+      "anon_id": "exam-008",
+      "expected": 52.0,
+      "predicted": 18.0,
+      "error": -34.0,
+      "detected_variant": "A2",
+      "variant_uncertain": false,
+      "key_source": "json",
+      "review_items": 19,
+      "unanswered_items": 0,
+      "runtime_s": 807.4,
+      "failed": false,
+      "failure_reason": null
+    }
+  ]
+}

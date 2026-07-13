@@ -79,8 +79,21 @@ override — review-rate metrics reflect that honestly.
 4. Key-parse output quality varies between runs at temperature 0; the
    validation+repair layer rejects/repairs rather than trusts.
 
-## Batch evaluation
+## Batch evaluation (Stage A executed; full details: evaluation/)
 
-Staged batch (5 → 10 → 41) per evaluation plan; results in `evaluation/`
-(appended as stages complete). Splits: train 25 / validation 16, seed 42,
-deterministic manifests (datasets/); exam IDs listed in the manifests.
+Stage A (first 5 validation exams, masked, anonymized, sequential):
+**5/5 processed, 0 failures, variant detection 5/5 correct and confident
+across all three flowers, mean 906 s/exam, GPU 98.1 % avg utilization,
+no CPU offload.** Accuracy: MAE 39.6 with uniformly NEGATIVE errors —
+under-scoring driven by two 8B perception limits measured per-item against
+owner-supplied ground truth (evaluation/exam003_audit.md): skipped Hebrew
+explanation transcriptions (rubric gate zeroes correct selections; now
+review-flagged per item) and chance-level dense bubble-grid reading (now
+tripwire-flagged, incl. cyclic patterns). The A2/A3 question-order
+misalignment found in Stage A is FIXED via operator-verified mappings.
+Leakage audit: 0/10 probes could extract instructor grades (masked or
+unmasked). Stage B/C intentionally NOT launched per the owner's audit gate
+— re-measuring known model limits adds no decision value; next lever is
+row-band crops / a dedicated transcription pass / the 32B bake-off.
+Splits: train 25 / validation 16, seed 42 (datasets/ manifests;
+evaluation/run_manifest.json lists the exact ids).

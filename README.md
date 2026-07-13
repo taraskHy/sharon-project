@@ -50,6 +50,7 @@ autograder grade  --backend openai --base-url http://localhost:11434/v1 --model 
 | [docs/training.md](docs/training.md) | training/calibration strategy comparison |
 | [docs/evaluation.md](docs/evaluation.md) | benchmarks, metrics, held-out final-test procedure and freeze |
 | [PROJECT_STATUS.md](PROJECT_STATUS.md) | what has actually been executed, verified, and what remains blocked |
+| [evaluation/](evaluation/report.md) | live validation results: Stage A batch, per-item audits vs ground truth, error taxonomy, leakage audit, performance |
 
 ## Output contract
 

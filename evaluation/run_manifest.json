@@ -1,0 +1,64 @@
+{
+  "session": "2026-07-13 strong-PC validation (RTX 2000 Ada 15.4GB)",
+  "model": {
+    "tag": "qwen3-vl:8b-instruct",
+    "ollama_id": "0533d74300e4",
+    "quantization": "Q4_K_M",
+    "license": "Apache-2.0",
+    "server": "Ollama 0.31.2",
+    "structured_mode": "json_schema",
+    "temperature": 0
+  },
+  "configuration": {
+    "context_probes": 8192,
+    "context_pipeline": 32768,
+    "context_recommended_batch_default": 16384,
+    "max_image_edge": 1000,
+    "survey_image_edge": 640,
+    "closeread_image_edge": 1400,
+    "extraction_chunk_size": 8,
+    "alignment_chunk_size": 10,
+    "timeout_s": 1800,
+    "transport_retries": 2,
+    "validation_retries": 2,
+    "masking": true
+  },
+  "splits": {
+    "seed": 42,
+    "train": ["exam-005","exam-006","exam-011","exam-012","exam-013","exam-014","exam-015","exam-020","exam-021","exam-022","exam-023","exam-024","exam-025","exam-026","exam-027","exam-028","exam-030","exam-031","exam-032","exam-033","exam-034","exam-036","exam-037","exam-038","exam-039"],
+    "validation": ["exam-002","exam-003","exam-004","exam-007","exam-008","exam-009","exam-010","exam-016","exam-017","exam-018","exam-019","exam-029","exam-035","exam-040","exam-041","exam-042"],
+    "held_out_48": "not provided; untouched per docs/evaluation.md freeze"
+  },
+  "runs": {
+    "probes": {"A_s": 4.6, "B_s": 11.1, "C_s": 4.8, "context": 8192},
+    "representative_exam": {
+      "runs": 8,
+      "final": {"total": "14/100", "review_items": 35, "swap_tripwire": "fired (crossed 7/16 vs own 1/16)"},
+      "instructor_reference": {"Q1": "24/32", "Q2": "28/32"}
+    },
+    "stage_a": {
+      "exams": ["exam-002","exam-003","exam-004","exam-007","exam-008"],
+      "processed": 5, "failures": 0,
+      "mae": 39.6, "within_5": 0.0, "review_rate": 1.0,
+      "mean_runtime_s": 906,
+      "variant_detection_correct": 5,
+      "gpu": {"avg_util_active_pct": 98.1, "peak_vram_mib": 14842, "cpu_offload": false},
+      "code_note": "ran before the operator-alignment override landed; exam-003 re-audited below"
+    },
+    "exam003_rerun": {
+      "alignment": "operator-override",
+      "reading_accuracy_vs_owner_gt": {"Q1": "8/8", "Q2": "5/8", "Q3": "4/20"},
+      "verdict": "pipeline chain correct; 8B perception limits on explanations + bubble grids; Stage B gate: not passed"
+    },
+    "leakage_audit": {"probes": 10, "leaks": 0, "file": "eval_out/leakage_audit.json"},
+    "stage_b": "not launched (owner gate: per-item audit must pass first)",
+    "stage_c_41": "not launched"
+  },
+  "caches": {
+    "answer_key": "persistent, hit-verified live (~30s vs ~12min); deterministic text-layer repair on every load",
+    "alignment": "operator-verified file for A1/A2/A3; derived alignments flagged unresolved",
+    "invalidation": "key/rubric/model/prompt/schema/render/variant-config/version-override/alignment-file/pinned-version all fingerprinted (unit-tested)"
+  },
+  "tests_passing": 122,
+  "commits": ["10e27b5", "e6d37ca", "8a5c728", "(final: see git log)"]
+}

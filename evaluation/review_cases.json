@@ -1,0 +1,672 @@
+[
+  {
+    "anon_id": "exam-002",
+    "items": [
+      {
+        "question_id": "1",
+        "sub_item_id": "1",
+        "reason": "selection 'A' is incorrect (accepted: G); extraction uncertainty: variant question alignment could not be derived — printed-to-key numbering unverified; human review required"
+      },
+      {
+        "question_id": "1",
+        "sub_item_id": "2",
+        "reason": "selection 'F' is correct but the rubric awards no credit without a valid explanation (explanation judged missing); extraction uncertainty: variant question alignment could not be derived — printed-to-key numbering unverified; human review required"
+      },
+      {
+        "question_id": "1",
+        "sub_item_id": "3",
+        "reason": "selection 'I' is correct but the rubric awards no credit without a valid explanation (explanation judged missing); extraction uncertainty: variant question alignment could not be derived — printed-to-key numbering unverified; human review required"
+      },
+      {
+        "question_id": "1",
+        "sub_item_id": "4",
+        "reason": "selection 'E' is correct but the rubric awards no credit without a valid explanation (explanation judged missing); extraction uncertainty: variant question alignment could not be derived — printed-to-key numbering unverified; human review required"
+      },
+      {
+        "question_id": "1",
+        "sub_item_id": "5",
+        "reason": "selection 'C' is correct but the rubric awards no credit without a valid explanation (explanation judged missing); extraction uncertainty: variant question alignment could not be derived — printed-to-key numbering unverified; human review required"
+      },
+      {
+        "question_id": "1",
+        "sub_item_id": "6",
+        "reason": "selection 'D' is correct but the rubric awards no credit without a valid explanation (explanation judged missing); extraction uncertainty: variant question alignment could not be derived — printed-to-key numbering unverified; human review required"
+      },
+      {
+        "question_id": "1",
+        "sub_item_id": "7",
+        "reason": "selection 'B' is correct but the rubric awards no credit without a valid explanation (explanation judged missing); extraction uncertainty: variant question alignment could not be derived — printed-to-key numbering unverified; human review required"
+      },
+      {
+        "question_id": "1",
+        "sub_item_id": "8",
+        "reason": "selection 'H' is correct but the rubric awards no credit without a valid explanation (explanation judged missing); extraction uncertainty: variant question alignment could not be derived — printed-to-key numbering unverified; human review required"
+      },
+      {
+        "question_id": "2",
+        "sub_item_id": "1",
+        "reason": "selection 'B' is correct but the rubric awards no credit without a valid explanation (explanation judged invalid); extraction uncertainty: variant question alignment could not be derived — printed-to-key numbering unverified; human review required"
+      },
+      {
+        "question_id": "2",
+        "sub_item_id": "2",
+        "reason": "selection 'D' is incorrect (accepted: B); extraction uncertainty: variant question alignment could not be derived — printed-to-key numbering unverified; human review required"
+      },
+      {
+        "question_id": "2",
+        "sub_item_id": "3",
+        "reason": "selection 'T' is incorrect (accepted: I); extraction uncertainty: variant question alignment could not be derived — printed-to-key numbering unverified; human review required"
+      },
+      {
+        "question_id": "2",
+        "sub_item_id": "4",
+        "reason": "selection 'A' is correct and the explanation was judged valid; explanation assessment: הסבר הסטודנט מציין את הפעולה (OQ עם 20 BINs) ומסביר בצורה נכונה שהбинס לא אחידים לפי צפיפות פיקסלים – מה שמתאים ל- A, גם אם הוא לא מפרט את התוצאה המדויקת של היסטוגרמה.; extraction uncertainty: variant question alignment could not be derived — printed-to-key numbering unverified; human review required"
+      },
+      {
+        "question_id": "2",
+        "sub_item_id": "5",
+        "reason": "selection 'E' is correct and the explanation was judged valid; explanation assessment: הסבר הסטודנט מציין את הפעולה (UQ עם 20 BINs) ומסביר בצורה נכונה שהбинס אחידים – מה שמתאים ל- E, גם אם הוא לא מפרט את התוצאה המדויקת של היסטוגרמה.; extraction uncertainty: variant question alignment could not be derived — printed-to-key numbering unverified; human review required"
+      },
+      {
+        "question_id": "2",
+        "sub_item_id": "6",
+        "reason": "selection 'H' is correct and the explanation was judged valid; explanation assessment: הסבר הסטודנט מציין את המסכה כמסכת ECHO ומדגיש שהפלט הוא סכום פיקסל-פיקסל – מה שמתאים ל- H, גם אם הוא לא מפרט את התוצאה המדויקת של היסטוגרמה.; extraction uncertainty: variant question alignment could not be derived — printed-to-key numbering unverified; human review required"
+      },
+      {
+        "question_id": "2",
+        "sub_item_id": "7",
+        "reason": "selection 'G' is correct and the explanation was judged valid; explanation assessment: הסבר הסטודנט מציין את השיקוף והשרשור ומדגיש שההיסטוגרמה נשארת זהה – מה שמתאים ל- G, גם אם הוא לא מפרט את התוצאה המדויקת של היסטוגרמה.; extraction uncertainty: variant question alignment could not be derived — printed-to-key numbering unverified; human review required"
+      },
+      {
+        "question_id": "2",
+        "sub_item_id": "8",
+        "reason": "selection 'F' is correct and the explanation was judged valid; explanation assessment: הסבר הסטודנט מציין שהכפלת ערכי התמונה פי 2 גורמת למתיחה של היסטוגרמה – מה שמתאים ל- F, גם אם הוא לא מפרט את התוצאה המדויקת של היסטוגרמה.; extraction uncertainty: variant question alignment could not be derived — printed-to-key numbering unverified; human review required"
+      },
+      {
+        "question_id": "3",
+        "sub_item_id": "1",
+        "reason": "selection 'D' is incorrect (accepted: B); extraction uncertainty: variant question alignment could not be derived — printed-to-key numbering unverified; human review required; the answer key's value for version A3 on this sub-item is deterministically unverified (colour-only encoding); confirm against the official key"
+      },
+      {
+        "question_id": "3",
+        "sub_item_id": "2",
+        "reason": "selection 'A' is incorrect (accepted: B); extraction uncertainty: variant question alignment could not be derived — printed-to-key numbering unverified; human review required; the answer key's value for version A3 on this sub-item is deterministically unverified (colour-only encoding); confirm against the official key"
+      },
+      {
+        "question_id": "3",
+        "sub_item_id": "3",
+        "reason": "selection 'B' is correct; extraction uncertainty: variant question alignment could not be derived — printed-to-key numbering unverified; human review required; the answer key's value for version A3 on this sub-item is deterministically unverified (colour-only encoding); confirm against the official key"
+      },
+      {
+        "question_id": "3",
+        "sub_item_id": "4",
+        "reason": "selection 'C' is incorrect (accepted: D); extraction uncertainty: variant question alignment could not be derived — printed-to-key numbering unverified; human review required; the answer key's value for version A3 on this sub-item is deterministically unverified (colour-only encoding); confirm against the official key"
+      },
+      {
+        "question_id": "3",
+        "sub_item_id": "5",
+        "reason": "selection 'A' is incorrect (accepted: C); extraction uncertainty: variant question alignment could not be derived — printed-to-key numbering unverified; human review required; the answer key's value for version A3 on this sub-item is deterministically unverified (colour-only encoding); confirm against the official key"
+      },
+      {
+        "question_id": "3",
+        "sub_item_id": "6",
+        "reason": "selection 'B' is incorrect (accepted: A); extraction uncertainty: variant question alignment could not be derived — printed-to-key numbering unverified; human review required; the answer key's value for version A3 on this sub-item is deterministically unverified (colour-only encoding); confirm against the official key"
+      },
+      {
+        "question_id": "3",
+        "sub_item_id": "7",
+        "reason": "selection 'C' is incorrect (accepted: B); extraction uncertainty: variant question alignment could not be derived — printed-to-key numbering unverified; human review required; the answer key's value for version A3 on this sub-item is deterministically unverified (colour-only encoding); confirm against the official key"
+      },
+      {
+        "question_id": "3",
+        "sub_item_id": "8",
+        "reason": "selection 'D' is incorrect (accepted: B); extraction uncertainty: variant question alignment could not be derived — printed-to-key numbering unverified; human review required; the answer key's value for version A3 on this sub-item is deterministically unverified (colour-only encoding); confirm against the official key"
+      },
+      {
+        "question_id": "3",
+        "sub_item_id": "9",
+        "reason": "selection 'D' is incorrect (accepted: B); extraction uncertainty: variant question alignment could not be derived — printed-to-key numbering unverified; human review required; the answer key's value for version A3 on this sub-item is deterministically unverified (colour-only encoding); confirm against the official key"
+      },
+      {
+        "question_id": "3",
+        "sub_item_id": "10",
+        "reason": "selection 'C' is incorrect (accepted: D); extraction uncertainty: variant question alignment could not be derived — printed-to-key numbering unverified; human review required; the answer key's value for version A3 on this sub-item is deterministically unverified (colour-only encoding); confirm against the official key"
+      },
+      {
+        "question_id": "3",
+        "sub_item_id": "11",
+        "reason": "selection 'B' is incorrect (accepted: C); extraction uncertainty: variant question alignment could not be derived — printed-to-key numbering unverified; human review required; the answer key's value for version A3 on this sub-item is deterministically unverified (colour-only encoding); confirm against the official key"
+      },
+      {
+        "question_id": "3",
+        "sub_item_id": "12",
+        "reason": "selection 'A' is correct; extraction uncertainty: variant question alignment could not be derived — printed-to-key numbering unverified; human review required; the answer key's value for version A3 on this sub-item is deterministically unverified (colour-only encoding); confirm against the official key"
+      },
+      {
+        "question_id": "3",
+        "sub_item_id": "13",
+        "reason": "selection 'D' is incorrect (accepted: B); extraction uncertainty: variant question alignment could not be derived — printed-to-key numbering unverified; human review required; the answer key's value for version A3 on this sub-item is deterministically unverified (colour-only encoding); confirm against the official key"
+      },
+      {
+        "question_id": "3",
+        "sub_item_id": "14",
+        "reason": "selection 'A' is incorrect (accepted: C); extraction uncertainty: variant question alignment could not be derived — printed-to-key numbering unverified; human review required; the answer key's value for version A3 on this sub-item is deterministically unverified (colour-only encoding); confirm against the official key"
+      },
+      {
+        "question_id": "3",
+        "sub_item_id": "15",
+        "reason": "selection 'B' is correct; extraction uncertainty: variant question alignment could not be derived — printed-to-key numbering unverified; human review required; the answer key's value for version A3 on this sub-item is deterministically unverified (colour-only encoding); confirm against the official key"
+      },
+      {
+        "question_id": "3",
+        "sub_item_id": "16",
+        "reason": "selection 'C' is correct; extraction uncertainty: variant question alignment could not be derived — printed-to-key numbering unverified; human review required"
+      },
+      {
+        "question_id": "3",
+        "sub_item_id": "17",
+        "reason": "selection 'D' is correct; extraction uncertainty: variant question alignment could not be derived — printed-to-key numbering unverified; human review required; the answer key's value for version A3 on this sub-item is deterministically unverified (colour-only encoding); confirm against the official key"
+      },
+      {
+        "question_id": "3",
+        "sub_item_id": "18",
+        "reason": "selection 'C' is incorrect (accepted: B); extraction uncertainty: variant question alignment could not be derived — printed-to-key numbering unverified; human review required; the answer key's value for version A3 on this sub-item is deterministically unverified (colour-only encoding); confirm against the official key"
+      },
+      {
+        "question_id": "3",
+        "sub_item_id": "19",
+        "reason": "selection 'B' is incorrect (accepted: C); extraction uncertainty: variant question alignment could not be derived — printed-to-key numbering unverified; human review required; the answer key's value for version A3 on this sub-item is deterministically unverified (colour-only encoding); confirm against the official key"
+      },
+      {
+        "question_id": "3",
+        "sub_item_id": "20",
+        "reason": "selection 'C' is incorrect (accepted: B); extraction uncertainty: variant question alignment could not be derived — printed-to-key numbering unverified; human review required; the answer key's value for version A3 on this sub-item is deterministically unverified (colour-only encoding); confirm against the official key"
+      }
+    ]
+  },
+  {
+    "anon_id": "exam-003",
+    "items": [
+      {
+        "question_id": "3",
+        "sub_item_id": "1",
+        "reason": "selection 'A' is incorrect (accepted: B); the answer key's value for version A2 on this sub-item is deterministically unverified (colour-only encoding); confirm against the official key"
+      },
+      {
+        "question_id": "3",
+        "sub_item_id": "2",
+        "reason": "selection 'C' is incorrect (accepted: B); the answer key's value for version A2 on this sub-item is deterministically unverified (colour-only encoding); confirm against the official key"
+      },
+      {
+        "question_id": "3",
+        "sub_item_id": "3",
+        "reason": "selection 'D' is incorrect (accepted: B); the answer key's value for version A2 on this sub-item is deterministically unverified (colour-only encoding); confirm against the official key"
+      },
+      {
+        "question_id": "3",
+        "sub_item_id": "4",
+        "reason": "selection 'B' is incorrect (accepted: D); the answer key's value for version A2 on this sub-item is deterministically unverified (colour-only encoding); confirm against the official key"
+      },
+      {
+        "question_id": "3",
+        "sub_item_id": "5",
+        "reason": "selection 'C' is correct; the answer key's value for version A2 on this sub-item is deterministically unverified (colour-only encoding); confirm against the official key"
+      },
+      {
+        "question_id": "3",
+        "sub_item_id": "6",
+        "reason": "selection 'A' is correct; the answer key's value for version A2 on this sub-item is deterministically unverified (colour-only encoding); confirm against the official key"
+      },
+      {
+        "question_id": "3",
+        "sub_item_id": "7",
+        "reason": "selection 'D' is incorrect (accepted: B); the answer key's value for version A2 on this sub-item is deterministically unverified (colour-only encoding); confirm against the official key"
+      },
+      {
+        "question_id": "3",
+        "sub_item_id": "8",
+        "reason": "selection 'B' is correct; the answer key's value for version A2 on this sub-item is deterministically unverified (colour-only encoding); confirm against the official key"
+      },
+      {
+        "question_id": "3",
+        "sub_item_id": "9",
+        "reason": "selection 'D' is incorrect (accepted: B); the answer key's value for version A2 on this sub-item is deterministically unverified (colour-only encoding); confirm against the official key"
+      },
+      {
+        "question_id": "3",
+        "sub_item_id": "10",
+        "reason": "selection 'C' is incorrect (accepted: D); the answer key's value for version A2 on this sub-item is deterministically unverified (colour-only encoding); confirm against the official key"
+      },
+      {
+        "question_id": "3",
+        "sub_item_id": "11",
+        "reason": "selection 'B' is incorrect (accepted: C); the answer key's value for version A2 on this sub-item is deterministically unverified (colour-only encoding); confirm against the official key"
+      },
+      {
+        "question_id": "3",
+        "sub_item_id": "12",
+        "reason": "selection 'A' is correct; the answer key's value for version A2 on this sub-item is deterministically unverified (colour-only encoding); confirm against the official key"
+      },
+      {
+        "question_id": "3",
+        "sub_item_id": "13",
+        "reason": "selection 'D' is incorrect (accepted: B); the answer key's value for version A2 on this sub-item is deterministically unverified (colour-only encoding); confirm against the official key"
+      },
+      {
+        "question_id": "3",
+        "sub_item_id": "14",
+        "reason": "selection 'C' is correct; the answer key's value for version A2 on this sub-item is deterministically unverified (colour-only encoding); confirm against the official key"
+      },
+      {
+        "question_id": "3",
+        "sub_item_id": "15",
+        "reason": "selection 'B' is correct; the answer key's value for version A2 on this sub-item is deterministically unverified (colour-only encoding); confirm against the official key"
+      },
+      {
+        "question_id": "3",
+        "sub_item_id": "17",
+        "reason": "selection 'A' is incorrect (accepted: D); the answer key's value for version A2 on this sub-item is deterministically unverified (colour-only encoding); confirm against the official key"
+      },
+      {
+        "question_id": "3",
+        "sub_item_id": "18",
+        "reason": "selection 'B' is correct; the answer key's value for version A2 on this sub-item is deterministically unverified (colour-only encoding); confirm against the official key"
+      },
+      {
+        "question_id": "3",
+        "sub_item_id": "19",
+        "reason": "selection 'D' is incorrect (accepted: C); the answer key's value for version A2 on this sub-item is deterministically unverified (colour-only encoding); confirm against the official key"
+      },
+      {
+        "question_id": "3",
+        "sub_item_id": "20",
+        "reason": "selection 'A' is incorrect (accepted: B); the answer key's value for version A2 on this sub-item is deterministically unverified (colour-only encoding); confirm against the official key"
+      }
+    ]
+  },
+  {
+    "anon_id": "exam-004",
+    "items": [
+      {
+        "question_id": "1",
+        "sub_item_id": "1",
+        "reason": "selection 'F' is correct but the rubric awards no credit without a valid explanation (explanation judged missing); extraction uncertainty: variant question alignment could not be derived — printed-to-key numbering unverified; human review required"
+      },
+      {
+        "question_id": "1",
+        "sub_item_id": "2",
+        "reason": "selection 'G' is correct but the rubric awards no credit without a valid explanation (explanation judged missing); extraction uncertainty: variant question alignment could not be derived — printed-to-key numbering unverified; human review required"
+      },
+      {
+        "question_id": "1",
+        "sub_item_id": "3",
+        "reason": "selection 'D' is correct but the rubric awards no credit without a valid explanation (explanation judged missing); extraction uncertainty: variant question alignment could not be derived — printed-to-key numbering unverified; human review required"
+      },
+      {
+        "question_id": "1",
+        "sub_item_id": "4",
+        "reason": "selection 'H' is correct but the rubric awards no credit without a valid explanation (explanation judged missing); extraction uncertainty: variant question alignment could not be derived — printed-to-key numbering unverified; human review required"
+      },
+      {
+        "question_id": "1",
+        "sub_item_id": "5",
+        "reason": "selection 'C' is correct but the rubric awards no credit without a valid explanation (explanation judged missing); extraction uncertainty: variant question alignment could not be derived — printed-to-key numbering unverified; human review required"
+      },
+      {
+        "question_id": "1",
+        "sub_item_id": "6",
+        "reason": "selection 'I' is correct but the rubric awards no credit without a valid explanation (explanation judged missing); extraction uncertainty: variant question alignment could not be derived — printed-to-key numbering unverified; human review required"
+      },
+      {
+        "question_id": "1",
+        "sub_item_id": "7",
+        "reason": "selection 'A' is correct but the rubric awards no credit without a valid explanation (explanation judged missing); extraction uncertainty: variant question alignment could not be derived — printed-to-key numbering unverified; human review required"
+      },
+      {
+        "question_id": "1",
+        "sub_item_id": "8",
+        "reason": "selection 'B' is incorrect (accepted: E); extraction uncertainty: variant question alignment could not be derived — printed-to-key numbering unverified; human review required"
+      },
+      {
+        "question_id": "2",
+        "sub_item_id": "1",
+        "reason": "selection 'E' is correct and the explanation was judged valid; explanation assessment: הסבר הסטודנט מזכיר את הפעולה (Canny) אך לא מספק סיבה. עם זאת, לפי ההגדרה של 'валид', כל הסבר שמכיל את התהליך המבוסס על ההקשר (יצירת תמונה בינארית עם 255 בקצוות) נחשב כвалиד גם אם לא מפרט את הגרירה. כאן, הסטודנט לא כתב סיבה אלא רק את שם הפעולה, אך זה מספיק כדי להיחשב 'валид' לפי הקריטריונים של המבחן.; extraction uncertainty: variant question alignment could not be derived — printed-to-key numbering unverified; human review required"
+      },
+      {
+        "question_id": "2",
+        "sub_item_id": "2",
+        "reason": "selection 'C' is correct and the explanation was judged valid; explanation assessment: הסבר הסטודנט מזכיר את הפעולה (מטשטשות + Canny) ומכיל את הרעיון המרכזי של היסטוגרמה עם פחות פיקסלים ב-255, מה שמתאים ל- C. למרות שהוא לא מפרט את ההקשר המדויק של 'החלק מהשפות להיעלם', הסבר זה מספיק כדי להיחשב כвалиד.; extraction uncertainty: variant question alignment could not be derived — printed-to-key numbering unverified; human review required"
+      },
+      {
+        "question_id": "2",
+        "sub_item_id": "3",
+        "reason": "selection 'B' is correct and the explanation was judged valid; explanation assessment: הסבר הסטודנט מזכיר את הפעולה (שיווי היסטוגרמה) ומכיל את הרעיון של 'פיזור ערכים' או 'שימוש בכל טווח האפור', מה שמתאים ל- B. גם אם הוא לא מפרט את ההקשר המדויק של 'ההיסטוגרמה עם 0 ו-255', הסבר זה מספיק כדי להיחשב כвалиד.; extraction uncertainty: variant question alignment could not be derived — printed-to-key numbering unverified; human review required"
+      },
+      {
+        "question_id": "2",
+        "sub_item_id": "4",
+        "reason": "selection 'D' is incorrect (accepted: I); extraction uncertainty: variant question alignment could not be derived — printed-to-key numbering unverified; human review required"
+      },
+      {
+        "question_id": "2",
+        "sub_item_id": "5",
+        "reason": "selection 'I' is incorrect (accepted: D); extraction uncertainty: variant question alignment could not be derived — printed-to-key numbering unverified; human review required"
+      },
+      {
+        "question_id": "2",
+        "sub_item_id": "6",
+        "reason": "selection 'G' is incorrect (accepted: A); extraction uncertainty: variant question alignment could not be derived — printed-to-key numbering unverified; human review required"
+      },
+      {
+        "question_id": "2",
+        "sub_item_id": "7",
+        "reason": "selection 'H' is incorrect (accepted: F); extraction uncertainty: variant question alignment could not be derived — printed-to-key numbering unverified; human review required"
+      },
+      {
+        "question_id": "2",
+        "sub_item_id": "8",
+        "reason": "selection 'A' is incorrect (accepted: G); extraction uncertainty: variant question alignment could not be derived — printed-to-key numbering unverified; human review required"
+      },
+      {
+        "question_id": "3",
+        "sub_item_id": "1",
+        "reason": "selection 'C' is incorrect (accepted: B); extraction uncertainty: variant question alignment could not be derived — printed-to-key numbering unverified; human review required; the answer key's value for version A1 on this sub-item is deterministically unverified (colour-only encoding); confirm against the official key"
+      },
+      {
+        "question_id": "3",
+        "sub_item_id": "2",
+        "reason": "selection 'B' is correct; extraction uncertainty: variant question alignment could not be derived — printed-to-key numbering unverified; human review required; the answer key's value for version A1 on this sub-item is deterministically unverified (colour-only encoding); confirm against the official key"
+      },
+      {
+        "question_id": "3",
+        "sub_item_id": "3",
+        "reason": "selection 'C' is incorrect (accepted: B); extraction uncertainty: variant question alignment could not be derived — printed-to-key numbering unverified; human review required; the answer key's value for version A1 on this sub-item is deterministically unverified (colour-only encoding); confirm against the official key"
+      },
+      {
+        "question_id": "3",
+        "sub_item_id": "4",
+        "reason": "selection 'C' is incorrect (accepted: D); extraction uncertainty: variant question alignment could not be derived — printed-to-key numbering unverified; human review required; the answer key's value for version A1 on this sub-item is deterministically unverified (colour-only encoding); confirm against the official key"
+      },
+      {
+        "question_id": "3",
+        "sub_item_id": "5",
+        "reason": "selection 'C' is correct; extraction uncertainty: variant question alignment could not be derived — printed-to-key numbering unverified; human review required; the answer key's value for version A1 on this sub-item is deterministically unverified (colour-only encoding); confirm against the official key"
+      },
+      {
+        "question_id": "3",
+        "sub_item_id": "6",
+        "reason": "selection 'C' is incorrect (accepted: A); extraction uncertainty: variant question alignment could not be derived — printed-to-key numbering unverified; human review required; the answer key's value for version A1 on this sub-item is deterministically unverified (colour-only encoding); confirm against the official key"
+      },
+      {
+        "question_id": "3",
+        "sub_item_id": "7",
+        "reason": "selection 'C' is incorrect (accepted: B); extraction uncertainty: variant question alignment could not be derived — printed-to-key numbering unverified; human review required; the answer key's value for version A1 on this sub-item is deterministically unverified (colour-only encoding); confirm against the official key"
+      },
+      {
+        "question_id": "3",
+        "sub_item_id": "8",
+        "reason": "selection 'C' is incorrect (accepted: B); extraction uncertainty: variant question alignment could not be derived — printed-to-key numbering unverified; human review required; the answer key's value for version A1 on this sub-item is deterministically unverified (colour-only encoding); confirm against the official key"
+      },
+      {
+        "question_id": "3",
+        "sub_item_id": "9",
+        "reason": "selection 'C' is incorrect (accepted: B); extraction uncertainty: variant question alignment could not be derived — printed-to-key numbering unverified; human review required; the answer key's value for version A1 on this sub-item is deterministically unverified (colour-only encoding); confirm against the official key"
+      },
+      {
+        "question_id": "3",
+        "sub_item_id": "10",
+        "reason": "selection 'B' is incorrect (accepted: D); extraction uncertainty: variant question alignment could not be derived — printed-to-key numbering unverified; human review required; the answer key's value for version A1 on this sub-item is deterministically unverified (colour-only encoding); confirm against the official key"
+      },
+      {
+        "question_id": "3",
+        "sub_item_id": "11",
+        "reason": "selection 'C' is correct; extraction uncertainty: variant question alignment could not be derived — printed-to-key numbering unverified; human review required; the answer key's value for version A1 on this sub-item is deterministically unverified (colour-only encoding); confirm against the official key"
+      },
+      {
+        "question_id": "3",
+        "sub_item_id": "12",
+        "reason": "selection 'B' is incorrect (accepted: A); extraction uncertainty: variant question alignment could not be derived — printed-to-key numbering unverified; human review required; the answer key's value for version A1 on this sub-item is deterministically unverified (colour-only encoding); confirm against the official key"
+      },
+      {
+        "question_id": "3",
+        "sub_item_id": "13",
+        "reason": "selection 'C' is incorrect (accepted: B); extraction uncertainty: variant question alignment could not be derived — printed-to-key numbering unverified; human review required; the answer key's value for version A1 on this sub-item is deterministically unverified (colour-only encoding); confirm against the official key"
+      },
+      {
+        "question_id": "3",
+        "sub_item_id": "14",
+        "reason": "selection 'B' is incorrect (accepted: C); extraction uncertainty: variant question alignment could not be derived — printed-to-key numbering unverified; human review required; the answer key's value for version A1 on this sub-item is deterministically unverified (colour-only encoding); confirm against the official key"
+      },
+      {
+        "question_id": "3",
+        "sub_item_id": "15",
+        "reason": "selection 'C' is incorrect (accepted: B); extraction uncertainty: variant question alignment could not be derived — printed-to-key numbering unverified; human review required; the answer key's value for version A1 on this sub-item is deterministically unverified (colour-only encoding); confirm against the official key"
+      },
+      {
+        "question_id": "3",
+        "sub_item_id": "16",
+        "reason": "selection 'B' is incorrect (accepted: C); extraction uncertainty: variant question alignment could not be derived — printed-to-key numbering unverified; human review required"
+      },
+      {
+        "question_id": "3",
+        "sub_item_id": "17",
+        "reason": "selection 'C' is incorrect (accepted: D); extraction uncertainty: variant question alignment could not be derived — printed-to-key numbering unverified; human review required; the answer key's value for version A1 on this sub-item is deterministically unverified (colour-only encoding); confirm against the official key"
+      },
+      {
+        "question_id": "3",
+        "sub_item_id": "18",
+        "reason": "selection 'B' is correct; extraction uncertainty: variant question alignment could not be derived — printed-to-key numbering unverified; human review required; the answer key's value for version A1 on this sub-item is deterministically unverified (colour-only encoding); confirm against the official key"
+      },
+      {
+        "question_id": "3",
+        "sub_item_id": "19",
+        "reason": "selection 'B' is incorrect (accepted: C); extraction uncertainty: variant question alignment could not be derived — printed-to-key numbering unverified; human review required; the answer key's value for version A1 on this sub-item is deterministically unverified (colour-only encoding); confirm against the official key"
+      },
+      {
+        "question_id": "3",
+        "sub_item_id": "20",
+        "reason": "selection 'B' is correct; extraction uncertainty: variant question alignment could not be derived — printed-to-key numbering unverified; human review required; the answer key's value for version A1 on this sub-item is deterministically unverified (colour-only encoding); confirm against the official key"
+      }
+    ]
+  },
+  {
+    "anon_id": "exam-007",
+    "items": [
+      {
+        "question_id": "3",
+        "sub_item_id": "1",
+        "reason": "selection 'C' is incorrect (accepted: B); the answer key's value for version A1 on this sub-item is deterministically unverified (colour-only encoding); confirm against the official key"
+      },
+      {
+        "question_id": "3",
+        "sub_item_id": "2",
+        "reason": "selection 'A' is incorrect (accepted: B); the answer key's value for version A1 on this sub-item is deterministically unverified (colour-only encoding); confirm against the official key"
+      },
+      {
+        "question_id": "3",
+        "sub_item_id": "3",
+        "reason": "selection 'C' is incorrect (accepted: B); the answer key's value for version A1 on this sub-item is deterministically unverified (colour-only encoding); confirm against the official key"
+      },
+      {
+        "question_id": "3",
+        "sub_item_id": "4",
+        "reason": "selection 'A' is incorrect (accepted: D); the answer key's value for version A1 on this sub-item is deterministically unverified (colour-only encoding); confirm against the official key"
+      },
+      {
+        "question_id": "3",
+        "sub_item_id": "5",
+        "reason": "selection 'A' is incorrect (accepted: C); the answer key's value for version A1 on this sub-item is deterministically unverified (colour-only encoding); confirm against the official key"
+      },
+      {
+        "question_id": "3",
+        "sub_item_id": "6",
+        "reason": "selection 'A' is correct; the answer key's value for version A1 on this sub-item is deterministically unverified (colour-only encoding); confirm against the official key"
+      },
+      {
+        "question_id": "3",
+        "sub_item_id": "7",
+        "reason": "selection 'C' is incorrect (accepted: B); the answer key's value for version A1 on this sub-item is deterministically unverified (colour-only encoding); confirm against the official key"
+      },
+      {
+        "question_id": "3",
+        "sub_item_id": "8",
+        "reason": "selection 'A' is incorrect (accepted: B); the answer key's value for version A1 on this sub-item is deterministically unverified (colour-only encoding); confirm against the official key"
+      },
+      {
+        "question_id": "3",
+        "sub_item_id": "9",
+        "reason": "selection 'C' is incorrect (accepted: B); the answer key's value for version A1 on this sub-item is deterministically unverified (colour-only encoding); confirm against the official key"
+      },
+      {
+        "question_id": "3",
+        "sub_item_id": "10",
+        "reason": "selection 'A' is incorrect (accepted: D); the answer key's value for version A1 on this sub-item is deterministically unverified (colour-only encoding); confirm against the official key"
+      },
+      {
+        "question_id": "3",
+        "sub_item_id": "11",
+        "reason": "selection 'B' is incorrect (accepted: C); the answer key's value for version A1 on this sub-item is deterministically unverified (colour-only encoding); confirm against the official key"
+      },
+      {
+        "question_id": "3",
+        "sub_item_id": "12",
+        "reason": "selection 'A' is correct; the answer key's value for version A1 on this sub-item is deterministically unverified (colour-only encoding); confirm against the official key"
+      },
+      {
+        "question_id": "3",
+        "sub_item_id": "13",
+        "reason": "selection 'C' is incorrect (accepted: B); the answer key's value for version A1 on this sub-item is deterministically unverified (colour-only encoding); confirm against the official key"
+      },
+      {
+        "question_id": "3",
+        "sub_item_id": "14",
+        "reason": "selection 'A' is incorrect (accepted: C); the answer key's value for version A1 on this sub-item is deterministically unverified (colour-only encoding); confirm against the official key"
+      },
+      {
+        "question_id": "3",
+        "sub_item_id": "15",
+        "reason": "selection 'B' is correct; the answer key's value for version A1 on this sub-item is deterministically unverified (colour-only encoding); confirm against the official key"
+      },
+      {
+        "question_id": "3",
+        "sub_item_id": "17",
+        "reason": "selection 'C' is incorrect (accepted: D); the answer key's value for version A1 on this sub-item is deterministically unverified (colour-only encoding); confirm against the official key"
+      },
+      {
+        "question_id": "3",
+        "sub_item_id": "18",
+        "reason": "selection 'A' is incorrect (accepted: B); the answer key's value for version A1 on this sub-item is deterministically unverified (colour-only encoding); confirm against the official key"
+      },
+      {
+        "question_id": "3",
+        "sub_item_id": "19",
+        "reason": "selection 'A' is incorrect (accepted: C); the answer key's value for version A1 on this sub-item is deterministically unverified (colour-only encoding); confirm against the official key"
+      },
+      {
+        "question_id": "3",
+        "sub_item_id": "20",
+        "reason": "selection 'A' is incorrect (accepted: B); the answer key's value for version A1 on this sub-item is deterministically unverified (colour-only encoding); confirm against the official key"
+      }
+    ]
+  },
+  {
+    "anon_id": "exam-008",
+    "items": [
+      {
+        "question_id": "3",
+        "sub_item_id": "1",
+        "reason": "selection 'D' is incorrect (accepted: B); the answer key's value for version A2 on this sub-item is deterministically unverified (colour-only encoding); confirm against the official key"
+      },
+      {
+        "question_id": "3",
+        "sub_item_id": "2",
+        "reason": "selection 'B' is correct; the answer key's value for version A2 on this sub-item is deterministically unverified (colour-only encoding); confirm against the official key"
+      },
+      {
+        "question_id": "3",
+        "sub_item_id": "3",
+        "reason": "selection 'C' is incorrect (accepted: B); the answer key's value for version A2 on this sub-item is deterministically unverified (colour-only encoding); confirm against the official key"
+      },
+      {
+        "question_id": "3",
+        "sub_item_id": "4",
+        "reason": "selection 'B' is incorrect (accepted: D); the answer key's value for version A2 on this sub-item is deterministically unverified (colour-only encoding); confirm against the official key"
+      },
+      {
+        "question_id": "3",
+        "sub_item_id": "5",
+        "reason": "selection 'A' is incorrect (accepted: C); the answer key's value for version A2 on this sub-item is deterministically unverified (colour-only encoding); confirm against the official key"
+      },
+      {
+        "question_id": "3",
+        "sub_item_id": "6",
+        "reason": "selection 'B' is incorrect (accepted: A); the answer key's value for version A2 on this sub-item is deterministically unverified (colour-only encoding); confirm against the official key"
+      },
+      {
+        "question_id": "3",
+        "sub_item_id": "7",
+        "reason": "selection 'D' is incorrect (accepted: B); the answer key's value for version A2 on this sub-item is deterministically unverified (colour-only encoding); confirm against the official key"
+      },
+      {
+        "question_id": "3",
+        "sub_item_id": "8",
+        "reason": "selection 'C' is incorrect (accepted: B); the answer key's value for version A2 on this sub-item is deterministically unverified (colour-only encoding); confirm against the official key"
+      },
+      {
+        "question_id": "3",
+        "sub_item_id": "9",
+        "reason": "selection 'D' is incorrect (accepted: B); the answer key's value for version A2 on this sub-item is deterministically unverified (colour-only encoding); confirm against the official key"
+      },
+      {
+        "question_id": "3",
+        "sub_item_id": "10",
+        "reason": "selection 'B' is incorrect (accepted: D); the answer key's value for version A2 on this sub-item is deterministically unverified (colour-only encoding); confirm against the official key"
+      },
+      {
+        "question_id": "3",
+        "sub_item_id": "11",
+        "reason": "selection 'C' is correct; the answer key's value for version A2 on this sub-item is deterministically unverified (colour-only encoding); confirm against the official key"
+      },
+      {
+        "question_id": "3",
+        "sub_item_id": "12",
+        "reason": "selection 'A' is correct; the answer key's value for version A2 on this sub-item is deterministically unverified (colour-only encoding); confirm against the official key"
+      },
+      {
+        "question_id": "3",
+        "sub_item_id": "13",
+        "reason": "selection 'D' is incorrect (accepted: B); the answer key's value for version A2 on this sub-item is deterministically unverified (colour-only encoding); confirm against the official key"
+      },
+      {
+        "question_id": "3",
+        "sub_item_id": "14",
+        "reason": "selection 'B' is incorrect (accepted: C); the answer key's value for version A2 on this sub-item is deterministically unverified (colour-only encoding); confirm against the official key"
+      },
+      {
+        "question_id": "3",
+        "sub_item_id": "15",
+        "reason": "selection 'A' is incorrect (accepted: B); the answer key's value for version A2 on this sub-item is deterministically unverified (colour-only encoding); confirm against the official key"
+      },
+      {
+        "question_id": "3",
+        "sub_item_id": "17",
+        "reason": "selection 'D' is correct; the answer key's value for version A2 on this sub-item is deterministically unverified (colour-only encoding); confirm against the official key"
+      },
+      {
+        "question_id": "3",
+        "sub_item_id": "18",
+        "reason": "selection 'B' is correct; the answer key's value for version A2 on this sub-item is deterministically unverified (colour-only encoding); confirm against the official key"
+      },
+      {
+        "question_id": "3",
+        "sub_item_id": "19",
+        "reason": "selection 'C' is correct; the answer key's value for version A2 on this sub-item is deterministically unverified (colour-only encoding); confirm against the official key"
+      },
+      {
+        "question_id": "3",
+        "sub_item_id": "20",
+        "reason": "selection 'D' is incorrect (accepted: B); the answer key's value for version A2 on this sub-item is deterministically unverified (colour-only encoding); confirm against the official key"
+      }
+    ]
+  }
+]

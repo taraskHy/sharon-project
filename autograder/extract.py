@@ -170,19 +170,34 @@ def _merge_chunk_extractions(q: KeyQuestion, parts: list[QuestionExtraction]) ->
 
 
 def _flag_uniform_collapse(q: KeyQuestion, extraction: QuestionExtraction) -> None:
-    """Deterministic tripwire for the observed template-collapse failure:
-    many rows, every one answered with the SAME letter. Real students
-    occasionally do fill a whole column — a human should confirm that, so
-    this only ADDS review flags; it never changes answers or status."""
+    """Deterministic tripwire for observed template-collapse failures: many
+    rows answered in a DEGENERATE pattern — every row the same letter, or a
+    short repeating cycle (an 'A,B,C,D,A,B,…' staircase was measured live on
+    a dense bubble grid, reading at chance level). Real students can produce
+    such patterns too — a human should confirm — so this only ADDS review
+    flags; it never changes answers or status."""
     answered = [s for s in extraction.sub_items if s.status == "answered" and s.final_answer]
-    if len(answered) < 10 or len(answered) < len(extraction.sub_items):
+    if len(answered) < 10 or len(answered) < len(extraction.sub_items) - 1:
         return
-    letters = {s.final_answer for s in answered}
-    if len(letters) > 1:
+    letters = [s.final_answer for s in answered]
+    pattern = None
+    if len(set(letters)) == 1:
+        pattern = f"all {len(letters)} sub-items report the same answer {letters[0]!r}"
+    else:
+        for period in (2, 3, 4):
+            if len(letters) >= 2 * period and all(
+                letters[i] == letters[i % period] for i in range(len(letters))
+            ):
+                cycle = "".join(letters[:period])
+                pattern = (
+                    f"the {len(letters)} answers repeat a period-{period} "
+                    f"cycle {cycle!r}"
+                )
+                break
+    if pattern is None:
         return
     note = (
-        f"all {len(answered)} sub-items report the same answer "
-        f"{letters.pop()!r} — uniform pattern is a known extraction-collapse "
+        f"{pattern} — a degenerate pattern is a known extraction-collapse "
         "signature; verify against the scan"
     )
     for s in extraction.sub_items:

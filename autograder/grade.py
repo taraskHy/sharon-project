@@ -444,6 +444,16 @@ def _grade_sub_item(
                 f"selection '{student_answer}' is correct but the rubric awards no credit "
                 f"without a valid explanation (explanation judged {verdict or 'missing'})"
             )
+            if not (se.explanation_transcription or "").strip():
+                # A correct selection zeroed on an EMPTY transcription is
+                # indistinguishable from a transcription failure (a live model
+                # limitation on Hebrew handwriting) — never a silent zero.
+                needs_review = True
+                review_reasons.append(
+                    "correct selection gated to zero on an empty explanation "
+                    "transcription — the explanation may exist on the sheet "
+                    "but be untranscribed; verify on the scan"
+                )
         else:
             points_selection = 0.0
             reasons.append(
