@@ -1,0 +1,8 @@
+{
+ "cell": "rep_q1sheet_r4",
+ "run": 1,
+ "raw": "{\"transcription\": \"highpass 1000 lowpass 500 NCO\\n500 Hz 200 Hz 100 Hz 50 Hz\\nlowpass |J'ete 500 X\"}",
+ "transcription": "highpass 1000 lowpass 500 NCO\n500 Hz 200 Hz 100 Hz 50 Hz\nlowpass |J'ete 500 X",
+ "error": null,
+ "latency_s": 18.72
+}
