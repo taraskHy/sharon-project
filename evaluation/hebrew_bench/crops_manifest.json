@@ -1,0 +1,182 @@
+[
+ {
+  "id": "e003_q1_r1",
+  "file": "evaluation\\hebrew_bench\\crops\\e003_q1_r1.png",
+  "source": "test/003_70.pdf",
+  "page": 11,
+  "row": 1,
+  "width": 1254,
+  "height": 244
+ },
+ {
+  "id": "e003_q1_r2",
+  "file": "evaluation\\hebrew_bench\\crops\\e003_q1_r2.png",
+  "source": "test/003_70.pdf",
+  "page": 11,
+  "row": 2,
+  "width": 1254,
+  "height": 222
+ },
+ {
+  "id": "e003_q1_r3",
+  "file": "evaluation\\hebrew_bench\\crops\\e003_q1_r3.png",
+  "source": "test/003_70.pdf",
+  "page": 11,
+  "row": 3,
+  "width": 1254,
+  "height": 228
+ },
+ {
+  "id": "e003_q1_r4",
+  "file": "evaluation\\hebrew_bench\\crops\\e003_q1_r4.png",
+  "source": "test/003_70.pdf",
+  "page": 11,
+  "row": 4,
+  "width": 1254,
+  "height": 228
+ },
+ {
+  "id": "e003_q1_r5",
+  "file": "evaluation\\hebrew_bench\\crops\\e003_q1_r5.png",
+  "source": "test/003_70.pdf",
+  "page": 11,
+  "row": 5,
+  "width": 1254,
+  "height": 213
+ },
+ {
+  "id": "e003_q1_r6",
+  "file": "evaluation\\hebrew_bench\\crops\\e003_q1_r6.png",
+  "source": "test/003_70.pdf",
+  "page": 11,
+  "row": 6,
+  "width": 1254,
+  "height": 213
+ },
+ {
+  "id": "e003_q1_r7",
+  "file": "evaluation\\hebrew_bench\\crops\\e003_q1_r7.png",
+  "source": "test/003_70.pdf",
+  "page": 11,
+  "row": 7,
+  "width": 1254,
+  "height": 213
+ },
+ {
+  "id": "e003_q1_r8",
+  "file": "evaluation\\hebrew_bench\\crops\\e003_q1_r8.png",
+  "source": "test/003_70.pdf",
+  "page": 11,
+  "row": 8,
+  "width": 1254,
+  "height": 244
+ },
+ {
+  "id": "e002_q1_r1",
+  "file": "evaluation\\hebrew_bench\\crops\\e002_q1_r1.png",
+  "source": "test/002_76.pdf",
+  "page": 11,
+  "row": 1,
+  "width": 1287,
+  "height": 247
+ },
+ {
+  "id": "e002_q1_r2",
+  "file": "evaluation\\hebrew_bench\\crops\\e002_q1_r2.png",
+  "source": "test/002_76.pdf",
+  "page": 11,
+  "row": 2,
+  "width": 1287,
+  "height": 222
+ },
+ {
+  "id": "e002_q1_r3",
+  "file": "evaluation\\hebrew_bench\\crops\\e002_q1_r3.png",
+  "source": "test/002_76.pdf",
+  "page": 11,
+  "row": 3,
+  "width": 1287,
+  "height": 232
+ },
+ {
+  "id": "e002_q1_r4",
+  "file": "evaluation\\hebrew_bench\\crops\\e002_q1_r4.png",
+  "source": "test/002_76.pdf",
+  "page": 11,
+  "row": 4,
+  "width": 1287,
+  "height": 225
+ },
+ {
+  "id": "e002_q1_r5",
+  "file": "evaluation\\hebrew_bench\\crops\\e002_q1_r5.png",
+  "source": "test/002_76.pdf",
+  "page": 11,
+  "row": 5,
+  "width": 1287,
+  "height": 222
+ },
+ {
+  "id": "e002_q1_r6",
+  "file": "evaluation\\hebrew_bench\\crops\\e002_q1_r6.png",
+  "source": "test/002_76.pdf",
+  "page": 11,
+  "row": 6,
+  "width": 1287,
+  "height": 216
+ },
+ {
+  "id": "e002_q1_r7",
+  "file": "evaluation\\hebrew_bench\\crops\\e002_q1_r7.png",
+  "source": "test/002_76.pdf",
+  "page": 11,
+  "row": 7,
+  "width": 1287,
+  "height": 225
+ },
+ {
+  "id": "e002_q1_r8",
+  "file": "evaluation\\hebrew_bench\\crops\\e002_q1_r8.png",
+  "source": "test/002_76.pdf",
+  "page": 11,
+  "row": 8,
+  "width": 1287,
+  "height": 247
+ },
+ {
+  "id": "rep_q1sheet_r1",
+  "file": "evaluation\\hebrew_bench\\crops\\rep_q1sheet_r1.png",
+  "source": "sample_data/student_exam.pdf",
+  "page": 12,
+  "row": 1,
+  "width": 1254,
+  "height": 282
+ },
+ {
+  "id": "rep_q1sheet_r2",
+  "file": "evaluation\\hebrew_bench\\crops\\rep_q1sheet_r2.png",
+  "source": "sample_data/student_exam.pdf",
+  "page": 12,
+  "row": 2,
+  "width": 1254,
+  "height": 266
+ },
+ {
+  "id": "rep_q1sheet_r3",
+  "file": "evaluation\\hebrew_bench\\crops\\rep_q1sheet_r3.png",
+  "source": "sample_data/student_exam.pdf",
+  "page": 12,
+  "row": 3,
+  "width": 1254,
+  "height": 266
+ },
+ {
+  "id": "rep_q1sheet_r4",
+  "file": "evaluation\\hebrew_bench\\crops\\rep_q1sheet_r4.png",
+  "source": "sample_data/student_exam.pdf",
+  "page": 12,
+  "row": 4,
+  "width": 1254,
+  "height": 281
+ }
+]

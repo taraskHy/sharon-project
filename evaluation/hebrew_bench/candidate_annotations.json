@@ -1,0 +1,25 @@
+{
+  "_policy": "HIDDEN ground truth - read ONLY by scripts/hebrew_bench_eval.py AFTER inference. Never enters any prompt. Transcribed manually 2026-07-13 from the crops at 2200px source resolution by careful visual reading; low-confidence tokens listed per cell; struck-through student text is excluded (cancelled content).",
+  "_normalization": "evaluation strips punctuation/brackets/quotes, collapses whitespace, lowercases Latin; Hebrew final letters kept",
+  "cells": {
+    "e003_q1_r1": {"type": "strict", "text": "ניתן לראות ברמת התדרים הגבוהים שיש שפה בכיוון התנועה (הטשטוש)", "low_confidence": ["שפה"]},
+    "e003_q1_r2": {"type": "strict", "text": "רק התדרים הגבוהים נשמרו ב-High pass לכן התדרים הנמוכים (כולל DC) מאופסים", "low_confidence": []},
+    "e003_q1_r3": {"type": "strict", "text": "עוצמת התדרים הגבוהים שאחרי הפעולה עלה ולכן הרעש בתמונה מראה שפות עבות יותר", "low_confidence": ["שאחרי", "עלה", "מראה"]},
+    "e003_q1_r4": {"type": "strict", "text": "ניתן לראות שרק תדרים נמוכים נשמרו לכן גם הרמה של התדרים הגבוהים מאופסת", "low_confidence": ["הרמה"]},
+    "e003_q1_r5": {"type": "strict", "text": "הרעש והטשטוש שלו בכיוון ציר ה-X מובלט בתדרים הגבוהים", "low_confidence": ["שלו"]},
+    "e003_q1_r6": {"type": "strict", "text": "הרעש והטשטוש שלו בכיוון ציר ה-Y מובלט בתדרים הגבוהים", "low_confidence": []},
+    "e003_q1_r7": {"type": "strict", "text": "הרמה העליונה שכוללת את DC בהירה יותר", "low_confidence": []},
+    "e003_q1_r8": {"type": "strict", "text": "ברמה העליונה שכוללת את DC ניתן לראות שערכים בהירים יותר, נהיו יותר בהירים", "low_confidence": ["נהיו"]},
+    "e002_q1_r1": {"type": "hard", "text": "יש טשטוש בכל התמונה", "note": "first line heavily struck through by the student; readable tail only. Acceptable outputs: the tail, or an explicit unreadable/crossed-out flag", "low_confidence": []},
+    "e002_q1_r2": {"type": "strict", "text": "נשארו משמעותית רק התדרים הגבוהים", "low_confidence": []},
+    "e002_q1_r3": {"type": "strict", "text": "העוצמה של הצבעים הגבוהים בפרמידה חזקה ביחס למקורי.", "low_confidence": ["הצבעים", "בפרמידה"]},
+    "e002_q1_r4": {"type": "strict", "text": "נשאר בתמונה רק התדרים הנמוכים", "low_confidence": []},
+    "e002_q1_r5": {"type": "strict", "text": "מריחה בציר X עקב הקונבולוציה", "low_confidence": ["עקב"]},
+    "e002_q1_r6": {"type": "strict", "text": "מריחה בציר Y עקב הקונבולוציה", "low_confidence": []},
+    "e002_q1_r7": {"type": "strict", "text": "סהכ התמונה נראית תקינה בגרסה שלה בהירה משמעותית מהתמונה המקורית.", "low_confidence": ["בגרסה", "שלה"]},
+    "e002_q1_r8": {"type": "hard", "text": "בדומה לפעולה 7, מבהיר את התמונה אבל פה הרזולוציות הבהירות יותר נעשות יותר שינוי מהרזולוציות הכהות", "note": "very messy cursive with a struck-through word; several tokens uncertain even to the human annotator. Acceptable: close transcription or explicit partial-unreadable flags", "low_confidence": ["מבהיר", "הרזולוציות", "נעשות", "שינוי"]},
+    "rep_q1sheet_r1": {"type": "hard", "text": "רואים ארטיפקטים ברורים בכיוון ה motion של (באותה אוריינטציה וגם) כיוון ב 45", "note": "dense parenthetical insertion; annotator-uncertain tokens", "low_confidence": ["באותה", "אוריינטציה", "וגם", "כיוון"]},
+    "rep_q1sheet_r2": {"type": "strict", "text": "טשטוש טווח HighPass מאופס את התמונה", "low_confidence": ["טווח", "את"]},
+    "rep_q1sheet_r3": {"type": "strict", "text": "אין השפעה על הרמות הנמוכות אבל הרמה הכי גבוהה בולטת יותר", "low_confidence": []}
+  }
+}

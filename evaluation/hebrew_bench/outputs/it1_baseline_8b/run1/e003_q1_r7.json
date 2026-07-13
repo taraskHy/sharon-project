@@ -1,0 +1,8 @@
+{
+ "cell": "e003_q1_r7",
+ "run": 1,
+ "raw": "{\"transcription\": \"DC \\\\neq \\\\affine \\\\partial_{\\\\alpha} \\\\partial_{\\\\beta} \\\\phi \\\\quad \\\\text{where } \\\\phi \\\\in C^2\"}",
+ "transcription": "DC \\neq \\affine \\partial_{\\alpha} \\partial_{\\beta} \\phi \\quad \\text{where } \\phi \\in C^2",
+ "error": null,
+ "latency_s": 20.0
+}
