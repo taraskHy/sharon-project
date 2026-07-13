@@ -99,6 +99,29 @@ def test_each_flower_selects_its_variant():
         assert record["mapping_source"] == "unit-test mapping"
 
 
+def test_description_echo_resolves_to_unique_canonical_id():
+    """Observed live: the model perceived the daisy and echoed the catalogue
+    DESCRIPTION verbatim instead of the abstract id. The deterministic
+    resolver maps a unique description match back to the canonical id."""
+    from autograder.variant import resolve_marker_name
+
+    seen = (
+        "A round daisy/chamomile with many small elongated petals around a "
+        "large plain circular center; hollow outline print."
+    )
+    real_cfg = load_variant_config("sample_data/Exam_solution.pdf")
+    assert resolve_marker_name(None, real_cfg, seen=seen) == "variant_symbol_a3"
+    # Ambiguous text matching no single description resolves to nothing.
+    assert resolve_marker_name(None, real_cfg, seen="a flower with petals") is None
+    # And through the decision layer it selects A3 confidently.
+    det = VariantDetection(
+        marker_seen=seen, matched_marker=None, confident=True, page_region="bottom"
+    )
+    decision, record = decide_version(det, real_cfg, make_key())
+    assert decision.version == "A3" and not decision.uncertain
+    assert record["matched_marker"] == "variant_symbol_a3"
+
+
 def test_alias_names_resolve_to_canonical_ids():
     """The model may echo a human-readable alias; the decision resolves it
     to the canonical variant_symbol_* id and records both."""

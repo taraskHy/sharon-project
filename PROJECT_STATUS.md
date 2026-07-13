@@ -1,104 +1,86 @@
-# Project status — 2026-07-12
+# Project status — 2026-07-13 (strong-PC validation session)
 
 This file reports **what was actually executed and verified**, on what
 hardware, and what remains open. Nothing here is extrapolated from
-benchmarks we did not run.
-
-## Summary
-
-The system no longer requires the Anthropic API (or any paid proprietary
-API): the pipeline runs against any OpenAI-compatible server through a
-provider-independent backend layer, with a mock backend proving full offline
-operation. Open-model research is complete and committed
-(docs/model-comparison.md, raw reports in docs/research/); the adopted
-primary is **Qwen3-VL (Apache-2.0)**. A local CPU-only smoke validation
-against the real sample exam ran a genuine open model end-to-end on the
-text-judging stage successfully; vision-stage structured output on the local
-Ollama/CPU stack surfaced real issues (documented below) that the
-architecture handles as designed (clear errors, no silent fallback) but that
-must be resolved on university GPU hardware (vLLM) or with further local
-tuning before batch grading.
+benchmarks we did not run. The previous status (2026-07-12, weak CPU-only
+PC) is superseded; its numbers must not be used.
 
 ## Environment used for validation
 
 | Item | Value |
 |---|---|
-| Machine | Windows 11, Intel Core Ultra 7 265U (12C/14T), 63.4 GB RAM, **no discrete GPU** (Intel iGPU only), CPU-only inference |
-| Server | Ollama 0.31.2 (installed via official winget package during this session) |
-| Model | `qwen3-vl:8b` (Qwen3-VL-8B, Q4_K_M GGUF, 6.1 GB download, Apache-2.0), 32K context (`OLLAMA_CONTEXT_LENGTH=32768` — the 4096 default silently truncates multipage calls) |
-| App | this repository, `--backend openai --base-url http://localhost:11434/v1` |
+| Machine | Windows 11, AMD Ryzen 5 5600G, 64 GB RAM, **NVIDIA RTX 2000 Ada 15.4 GB**, driver 595.97 |
+| Server | Ollama 0.31.2, `OLLAMA_CONTEXT_LENGTH` 8192 (probes) / 32768 (pipeline; see context table in docs/deployment.md) |
+| Model | `qwen3-vl:8b-instruct` (ID 0533d74300e4, Qwen3-VL-8B **Q4_K_M**, Apache-2.0) — **never** the bare `qwen3-vl:8b` tag (thinking variant; reasoning consumes the output budget; `think:false` ineffective on 0.31.2) |
+| GPU residency | 100 % GPU at both 8K (~6.5 GiB) and 32K (~10 GiB; 14.7/15.4 GiB total — the card's ceiling); **zero CPU offload**; decode 19–33 tok/s |
+| App | this repository, `--backend openai`, json_schema structured mode, temperature 0 |
 
-## What was executed and the actual results
+## Test suite
+
+**116/116 offline tests pass** (no network, no keys): scoring policy,
+backend transport/malformed/truncation, dataset split determinism, masking,
+metrics, full pipeline + eval-batch on mocks, filename/grade leakage,
+resume fingerprints (incl. crash-resume mid-extraction), answer-sheet
+authority matrix (11 scenarios), close-read merge + swapped-tables
+regression, chunked extraction + collapse tripwire, key cache (one parse
+per batch; invalidation by key/rubric/model/render/prompt/schema;
+corruption rejection), deterministic key repair (text-layer letter groups,
+operator overrides, flattening detector), variant detection (each flower →
+its variant; aliases; unclear → review; no score-maximisation; fingerprints
+separate variants), question alignment (printed↔key numbering round-trip).
+
+## What was executed against the real model and verified
 
 | Check | Result |
 |---|---|
-| Offline test suite (64 tests: scoring policy, version detection, ambiguity, caps, backend transport/malformed-output/truncation handling, dataset split determinism, masking, metrics, full-pipeline-with-mock, leakage, resume fingerprints, batch eval incl. failure continuation) | **64/64 pass**, no network, no API keys (`pytest`) |
-| Proof no Anthropic dependency remains | test runs the CLI + backends in a subprocess and asserts the `anthropic` package is never imported; deps moved to optional extra |
-| `autograder doctor` against local Ollama | **OK** — server reachable, model available |
-| Probe A — text-only judging of a REAL student explanation (Hebrew) against the key's reference reasoning | **PASS in 300 s**: verdict `valid` with correct, fluent Hebrew justification (recognised that "בהירות" refers to the DC component / coarsest level). JSON schema respected. |
-| Probe B — vision: printed-Hebrew MC page (page 6, 1200 px) | **FAIL (truncation)** after 1133 s: image encoded fine (~2.2 min for 1364 vision tokens), but generation consumed the whole 2000-token budget without completing the JSON; the backend raised the designed truncation error (no silent output) |
-| Probe C — vision: bubble-sheet page with X-convention note (page 13) | **FAIL (truncation)** twice: at 2000 tokens (910 s) and at 4000 tokens with `think:false` passed through (1798 s) |
-| Vision diagnostic (no constrained decoding, 800 px) | **NOT COMPLETED** — local-model experiments on this machine were stopped by the project owner before it finished; root cause of the truncation therefore remains undetermined (thinking-token consumption vs grammar loop) |
+| Probes A/B/C (single page, ≤1200 out tokens, temp 0, 8K ctx) | **PASS 4.6 s / 11.1 s / 4.8 s** (weak PC: 300 s / fail / fail). Root causes of the old "vision truncation" found live: (a) thinking-variant tag; (b) grammar-pressure repetition loop on an unbounded verdict field — both fixed structurally (instruct tag; schema discipline) |
+| Answer-key parse | 6 model attempts logged (docs/validation, ledger): quality varies between runs at temp 0 — flattened version columns twice, missing columns twice, one client timeout. Resolution: **deterministic text-layer repair** decodes the per-version letter groups and overrides model columns on every load; colour-only values (this key's Q3 MC answers) come from the version-controlled operator override file or stay review-flagged. Final key: versions A1/A2/A3, Q1+Q2 columns text-layer-verified, 2.8 and 3.16 operator-verified (instructor-tick evidence), Q3 remainder flagged unverified pending instructor input |
+| Persistent key cache | Live hit confirmed (~30 s vs ~12 min parse); repair re-applies on every load; defective parses never cached |
+| Variant detection (cover flower) | Live on the representative exam: `variant_symbol_a1` (four-petal clover), bottom third, confident → A1 per the owner-confirmed authoritative mapping; recorded in the result with page/region/mapping-source |
+| Per-variant question alignment | A1 derived live: exact identity (correct — the key's canonical order IS A1's print order). A2/A3 print orders differ (verified manually: Hough question at #16/#20/#18 in A1/A2/A3) |
+| Answer-sheet detection | Pages 11–13 located structurally (headings/tables/position; no hardcoded count) in every live run |
+| Two-resolution inference | Survey at 640 px over 13 pages + close-read of 3 sheet pages at 1400 px + extraction of only the relevant sheet pages at 1000 px — whole-exam cost ≈ 10 model calls, ~10–13 min end-to-end on this GPU with the cached key |
+| Chunked extraction | The earlier live 20-row template collapse (all rows "B", identical rationale) is gone; per-row reads with mark observations; row-attribution drift between runs remains on messy handwriting (see limitations) |
 
-Interpretation of the vision failures (evidence-based, not confirmed root
-cause): Ollama reports this model with a `thinking` capability, and
-reasoning tokens do not count toward the schema-constrained JSON — they
-consume `max_tokens` first; a grammar-pressure repetition loop is the other
-documented candidate (see docs/research/structured-inference.md). Both are
-**local-serving-stack issues, not pipeline issues** — the pipeline's error
-handling surfaced each one loudly and precisely. Resolution paths, in order:
-(1) vLLM on GPU with xgrammar constrained decoding (the recommended
-production stack); (2) Ollama native-API `think:false` / non-thinking model
-tags; (3) `--structured-mode prompt|json_object` fallback modes (already
-implemented and configurable).
+## Representative exam (per-item audit: evaluation/representative_exam_audit.md)
 
-## Timing reality on CPU-only hardware
+Chain: flower→A1 ✓, key cached+repaired ✓, sheets 11–13 ✓, alignment
+identity ✓, X-convention meaning ✓ (transcription garbage), instructor ink
+excluded from grades ✓ (score fractions deterministically filtered from
+conventions). **Open defect:** the student's answer-table swap (crossed-out
+title digits + faint note) was missed by the close-read at 1000 px and at
+1400 px — Q1/Q2 grade against each other's key columns. Mitigations shipped:
+topic-anchored close-read (question topics vs handwritten explanation
+topics) and a deterministic **swap tripwire** that review-flags strongly
+crossed key agreement (never regrades). Per-item sheet-reading accuracy
+measured manually: 8/8 exact on the neat sheet, 5/8 on the messy one;
+explanation transcriptions largely skipped — Hebrew handwriting remains the
+#1 model limitation.
 
-- text-only judge call: ~5 min
-- one-page vision call: ~2 min prefill + decode (several more minutes)
-- a full 13-page exam needs ~6–10 calls, several with many images ⇒ **hours
-  per exam on this laptop**. The laptop is a smoke-test environment only;
-  batch evaluation of the 41-exam corpus requires the university GPU server
-  (est. 1–3 min/exam on a 24–80 GB GPU with vLLM) or a hosted open-model API.
+## What requires human review (by design, observed live)
 
-## What is blocked, and by what
+Uncertain variant markers; key values not deterministically verified (Q3
+columns pending the operator override); suspected table swaps; uniform-
+answer patterns; ambiguous/conflicting marks; explanation-dependent
+reversals. Review flags fire liberally until the instructor fills the Q3
+override — review-rate metrics reflect that honestly.
 
-| Blocked item | Blocker | Exact command once unblocked |
-|---|---|---|
-| Full-exam grading run against the representative exam | CPU-only laptop (hours/exam); vision structured-output issue on local Ollama | `autograder grade --backend openai --base-url http://GPU-SERVER:8000/v1 --model Qwen/Qwen3-VL-8B-Instruct --exam sample_data/student_exam.pdf --key sample_data/Exam_solution.pdf --out out` after `vllm serve Qwen/Qwen3-VL-8B-Instruct --limit-mm-per-prompt image=16` |
-| Batch evaluation on the 41-exam corpus (train/validation metrics) | same | `autograder eval-batch --split validation --backend openai --base-url http://GPU-SERVER:8000/v1 --model Qwen/Qwen3-VL-8B-Instruct --key sample_data/Exam_solution.pdf --out eval_out` |
-| Leakage audit (masked vs unmasked grade-reading probe) | needs a working vision backend | `autograder audit-leakage --limit 5 --backend openai --base-url ... --model ...` |
-| Model bake-off (Qwen3-VL-32B vs Gemma 4 vs Qwen3.6-27B) | GPU hardware | same eval-batch command per model |
-| Hebrew-handwriting quality assessment | needs the above runs + manual inspection of `extraction.json` transcriptions against the scans | — |
-| Fine-tuning experiments (QLoRA) | GPU + derived per-question labels (derivation path documented in docs/datasets.md) | see docs/training.md |
-| Held-out 48-exam evaluation | exams not yet provided; must follow the freeze procedure in docs/evaluation.md | — |
+## Honest limitations (real-model-tested)
 
-## Honest answers to the validation questions
+1. **Hebrew handwriting**: letter misreads on messy sheets (3/8 on the hard
+   page), near-total failure to transcribe long handwritten justifications,
+   row-attribution drift between identical runs (GPU nondeterminism).
+   These bound end-to-end accuracy regardless of pipeline correctness.
+2. **Fine-print corrections** (crossed-out title digits): below this
+   8B model's reliable perception even at 1400 px; covered by the
+   deterministic tripwire → human review, not silent misgrading.
+3. **Colour-only key encodings** are not deterministically decodable from
+   the text layer; they require the operator override once per exam form.
+4. Key-parse output quality varies between runs at temperature 0; the
+   validation+repair layer rejects/repairs rather than trusts.
 
-- **What works:** the entire deterministic pipeline (offline-tested); the
-  provider-independent layer against a real local open model; Hebrew
-  text-stage judging on a real student explanation; dataset manifests;
-  masking with auditable regions; batch tooling; resume fingerprinting.
-- **What failed:** vision-stage constrained JSON on the local Ollama/CPU
-  stack (truncation — details above). Failure was loud and diagnosable, as
-  designed.
-- **What requires human review:** by design — ambiguous answers, illegible
-  explanations, key defects, uncertain version detection, explanation/answer
-  mismatches; operationally — all grading output until validation-split
-  metrics exist.
-- **What remains untested:** end-to-end grading accuracy of any open model
-  on this exam; Hebrew *handwriting* transcription quality (no published
-  numbers exist for any open model — this is the project's #1 risk);
-  masking effectiveness against a live model (audit implemented, not yet
-  run); hosted-API paths (require account/keys the developer must create).
-- **Is Hebrew handwriting still a limitation?** Unknown-to-likely: printed
-  Hebrew has published evidence for Qwen3-VL (~72 % on a printed-text
-  benchmark); handwriting is unmeasured anywhere and must be assessed on the
-  validation split before trusting the system.
-- **Was grade leakage prevented?** Filename-grade leakage: yes, by
-  construction and by test. Instructor-annotation leakage: masking is
-  implemented and auditable, but its sufficiency is **not proven** until
-  `audit-leakage` runs against a live model.
-- **Is the solution actually self-hostable?** Yes — demonstrated end to end
-  on this machine with open weights (Apache-2.0) served locally; no key, no
-  external calls (all model traffic to localhost).
+## Batch evaluation
+
+Staged batch (5 → 10 → 41) per evaluation plan; results in `evaluation/`
+(appended as stages complete). Splits: train 25 / validation 16, seed 42,
+deterministic manifests (datasets/); exam IDs listed in the manifests.

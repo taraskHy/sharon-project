@@ -168,6 +168,8 @@ def _prompts_version() -> str:
     from . import prompts
     from .schema import ExamExtraction, ExamSurvey
 
+    from .variant import RESOLVER_VERSION
+
     h = hashlib.sha256()
     for text in (
         prompts.KEY_PARSER_SYSTEM,
@@ -177,6 +179,7 @@ def _prompts_version() -> str:
         prompts.ALIGNMENT_SYSTEM,
         prompts.EXTRACTION_SYSTEM,
         prompts.JUDGE_SYSTEM,
+        RESOLVER_VERSION,
     ):
         h.update(text.encode("utf-8"))
     for model in (AnswerKey, ExamSurvey, ExamExtraction):
@@ -634,8 +637,14 @@ def run_grade_pipeline(
                     store_cached_alignment(cache_dir, align_fp, alignment)
         _write_json(alignment, out / "alignment.json")
 
+    # Extraction depends on the EFFECTIVE variant (printed_view relabeling
+    # under a non-identity alignment) — a re-detected variant must never
+    # reuse another variant's extraction artefacts.
+    extraction_fp = current["exam"] + (
+        f"|variant:{version_decision.version}" if version_decision is not None else ""
+    )
     extraction_path = out / "extraction.json"
-    if _reuse(args, extraction_path, current["exam"], stored.get("extraction") or stored.get("exam")):
+    if _reuse(args, extraction_path, extraction_fp, stored.get("extraction") or stored.get("exam")):
         _log(f"resume: reusing {extraction_path}")
         extraction = ExamExtraction.model_validate_json(
             extraction_path.read_text(encoding="utf-8")
@@ -654,7 +663,7 @@ def run_grade_pipeline(
                     s.uncertainty_note = f"{s.uncertainty_note}; {note}" if s.uncertainty_note else note
                     s.confidence = min(s.confidence, 0.5)
         _write_json(extraction, extraction_path)
-        _record_stage_fingerprint(out, "extraction", current["exam"])
+        _record_stage_fingerprint(out, "extraction", extraction_fp)
 
     # Every stage on disk now corresponds to the current inputs ("exam" is
     # the whole-pipeline fingerprint eval-batch uses for finished results).

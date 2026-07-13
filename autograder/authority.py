@@ -205,9 +205,11 @@ def flag_suspected_sheet_swap(
             own = _agreement(qa, ea, version) + _agreement(qb, eb, version)
             crossed = _agreement(qb, ea, version) + _agreement(qa, eb, version)
             total = len(qa.sub_items) + len(qb.sub_items)
-            # Strong signal only: crossed agreement beats own by at least a
-            # third of the items AND covers at least half of them.
-            if crossed - own >= total // 3 and crossed >= total // 2:
+            # Strong signal only, robust to handwriting misreads that erode
+            # the crossed count (measured live: a true swap read as
+            # crossed=7 vs own=1 of 16): fire when crossed agreement
+            # dominates own by ratio AND covers at least a third of items.
+            if crossed >= 2 * own + 3 and crossed >= total // 3:
                 note = (
                     f"suspected answer-table mix-up between questions {qa.id} "
                     f"and {qb.id}: the extracted answers agree with the "

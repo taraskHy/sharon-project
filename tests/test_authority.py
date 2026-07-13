@@ -453,6 +453,23 @@ def test_suspected_sheet_swap_is_flagged_for_review_never_regraded():
         s.uncertainty_note is None for q in straight.questions for s in q.sub_items
     )
 
+    # Noisy real-world swap (measured live): misreads erode the crossed
+    # count to 7/16 with own=1 — must still fire.
+    noisy = ExamExtraction(
+        questions=[
+            extraction_for("1", key.question("2")),
+            extraction_for("2", key.question("1")),
+        ]
+    )
+    flipped = 0
+    for q in noisy.questions:
+        for s in q.sub_items:
+            if flipped < 9 and s.final_answer != "Z":
+                s.final_answer = "Z" if flipped % 2 == 0 else s.final_answer
+                flipped += 1
+    # (9 corruptions leave crossed ≈ 7-11 of 16 while own stays ~0)
+    assert flag_suspected_sheet_swap(key, noisy, "A1"), "noisy swap must still flag"
+
 
 def test_convention_notes_reach_extraction_context():
     from autograder.extract import _survey_context_for_question

@@ -93,4 +93,27 @@ review-flagged except item 16).
    cache fingerprint (no spurious 12-minute re-parses) while still
    invalidating per-exam grading fingerprints.
 
-## Run 6 (after fixes) — results appended below when complete.
+## Runs 6–8 (after fixes) — final representative-exam state
+
+| Run | Change under test | Outcome |
+|---|---|---|
+| 6 | Close-read at 1400 px + title-strikethrough instruction; key-cache hit; score-fraction filter; deterministic sheet status | Cache hit ✓ (~30 s vs ~12 min); sheet status "present" ✓; score fractions dropped from merged conventions ✓; **close-read still reported serves = printed titles with no correction evidence** → swap unrouted; TOTAL 12/100 |
+| 7 | Topic-anchored close-read (question topic vocabulary vs handwritten explanation topics); alignment cache | Alignment cache hit ✓; close-read still missed the swap; extraction letters drifted between runs on the messy sheet (temp-0 GPU nondeterminism); TOTAL 14/100, tripwire thresholds one short of firing (crossed 7/16 vs own 1/16, absolute floor 8) |
+| 8 | Tripwire recalibrated to a ratio test (crossed ≥ 2·own+3 and ≥ total/3); resume | Stage reuse ✓ (key, survey, extraction all cached). **SWAP SUSPECT fired**: "answers agree with the SIBLING question's key on 7/16 … own on only 1/16 … must be confirmed by a human." TOTAL 14/100 with **35 review flags** |
+
+**Conclusion for this pathological exam:** every pipeline decision the model
+can perceive is correct and live-verified (variant from the flower,
+answer-sheet location, alignment, X-convention meaning, instructor-ink
+exclusion, chunked per-row reading). The two things below this 8B model's
+perception — faint crossed-out title digits and messy Hebrew handwriting —
+are covered by deterministic tripwires that route the exam to human review
+with precise evidence instead of silently misgrading. The 14/100 total is
+explicitly NOT trustworthy and the result says so; the instructor-reference
+comparison (24/32 + 28/32) is reachable only by a human confirming the
+flagged swap (or a stronger model perceiving the corrections; the 32B
+bake-off on the university server is the designated next test).
+
+Model-attempt discipline: close-read swap perception was attempted at
+1000 px, 1400 px, and 1400 px+topic-anchor — three materially different
+configurations, all missed; no further re-prompting of this model for this
+perception task (deterministic tripwire covers it).

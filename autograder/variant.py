@@ -93,16 +93,40 @@ def config_fingerprint(cfg: dict) -> str:
 # --------------------------------------------------------------------------
 
 
-def resolve_marker_name(name: str | None, cfg: dict) -> str | None:
-    """Resolve a model-reported marker name to its canonical id (the model
-    may echo a human-readable alias)."""
-    if name is None:
-        return None
+# Bump when the deterministic resolution logic changes: it enters the
+# prompt-version hash so stage fingerprints invalidate (a resolver change
+# can change the effective variant of past runs).
+RESOLVER_VERSION = "marker-resolver-v2-description-fallback"
+
+
+def _norm_tokens(text: str) -> set[str]:
+    return {t for t in "".join(c.lower() if c.isalnum() else " " for c in text).split() if len(t) > 2}
+
+
+def resolve_marker_name(name: str | None, cfg: dict, seen: str = "") -> str | None:
+    """Resolve a model-reported marker to its canonical id.
+
+    Models sometimes echo a human alias, or perceive the marker correctly
+    but copy the catalogue DESCRIPTION instead of the abstract id (observed
+    live: marker_seen = the daisy description verbatim, matched_marker
+    null). Resolution order, all deterministic:
+    1. exact canonical id; 2. declared alias; 3. unique description match —
+    the reported text (name or ``seen``) must cover ≥80 % of exactly ONE
+    catalogue description's tokens. Ambiguity resolves to nothing."""
     if name in cfg["markers"]:
         return name
     for canonical, entry in cfg["markers"].items():
-        if name in entry.get("aliases", []):
+        if name is not None and name in entry.get("aliases", []):
             return canonical
+    reported = _norm_tokens(f"{name or ''} {seen}")
+    if reported:
+        matches = []
+        for canonical, entry in cfg["markers"].items():
+            desc = _norm_tokens(entry["description"])
+            if desc and len(desc & reported) / len(desc) >= 0.8:
+                matches.append(canonical)
+        if len(matches) == 1:
+            return matches[0]
     return name  # unknown — decide_version treats it as unmatched
 
 
@@ -159,7 +183,7 @@ def decide_version(
         "config_fingerprint": config_fingerprint(cfg),
     }
 
-    marker = resolve_marker_name(detection.matched_marker, cfg)
+    marker = resolve_marker_name(detection.matched_marker, cfg, seen=detection.marker_seen)
     record["matched_marker"] = marker
     if detection.matched_marker != marker:
         record["marker_reported"] = detection.matched_marker
