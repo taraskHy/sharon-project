@@ -274,4 +274,21 @@ hardware; it will partially offload to CPU on the 15.4 GB card.
 **Variable changed:** model only (prompt strict, preproc contrast — the
 kept reference configuration).
 
-**Result:** (appended when scored)
+**Result:** CER 0.800 (reference 8B: 0.786 — statistically
+indistinguishable), usable **0.00**, WER 1.012, omission 0.271,
+hallucinated-word rate 0.065, stability 0.162 (worse — MoE routing adds
+nondeterminism), hard cells 15/15 confabulated, 0 flagged. Runtime 1284 s
+at a 41 %/59 % CPU/GPU split (22 GB model on the 15.4 GB card), ~15 s/call.
+
+**Interpretation:** scale hypothesis REFUTED for the tested family — 3.75×
+total parameters reads this cursive no better than 8B. Per the owner's
+directive this shows only that the tested GENERAL-PURPOSE Qwen VLMs fail;
+dedicated HTR models remain untested. Change rejected (8B + strict +
+contrast stays the strongest Qwen result: CER 0.786 / usable 0 %).
+
+**Decision: CONTINUE** — per the owner's revised plan, iterations 6–8
+become the focused LOCAL Hebrew-HTR benchmark
+(evaluation/local_hebrew_htr_benchmark.md): it6 dedicated Hebrew HTR, it7
+multilingual TrOCR-style, it8 best-HTR vs best-Qwen with repeatability.
+EasyOCR/Tesseract only as printed-OCR baselines. Separate venv, provenance
+cards, deterministic segmentation, raw-output-only scoring.

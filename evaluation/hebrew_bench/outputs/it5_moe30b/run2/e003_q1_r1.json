@@ -1,0 +1,8 @@
+{
+ "cell": "e003_q1_r1",
+ "run": 2,
+ "raw": "{\"transcription\": \"הצג את הגרף (האחת) של f(x) = x^2 + 1\"}",
+ "transcription": "הצג את הגרף (האחת) של f(x) = x^2 + 1",
+ "error": null,
+ "latency_s": 1.64
+}

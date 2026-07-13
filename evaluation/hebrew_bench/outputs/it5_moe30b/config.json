@@ -1,0 +1,13 @@
+{
+ "config_id": "it5_moe30b",
+ "model": "qwen3-vl:30b-a3b-instruct",
+ "prompt": "strict_fidelity",
+ "prompt_text": "You transcribe handwritten Hebrew (RTL, may mix English terms) from an exam answer cell. Rules:\n1. Copy EXACTLY the visible handwriting, word by word. Never complete, paraphrase, correct, or invent words. Fluency is NOT the goal; fidelity is.\n2. If a single word is unreadable, write [?] in its place.\n3. If the whole cell is unreadable or fully crossed out, output [unreadable].\n4. Text struck through by the writer is cancelled \u2014 skip it.\n5. It is ALWAYS better to output [?] than to guess a word.\nReply with ONLY a JSON object: {\"transcription\": \"<the text>\"}",
+ "preproc": "contrast",
+ "max_tokens": 400,
+ "runs": 3,
+ "started": "2026-07-13 19:19:28",
+ "finished": "2026-07-13 19:40:53",
+ "total_wall_s": 1284.4,
+ "calls": 84
+}
