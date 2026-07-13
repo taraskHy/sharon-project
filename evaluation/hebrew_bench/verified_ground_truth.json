@@ -1,0 +1,133 @@
+{
+ "_policy": "HUMAN-VERIFIED ground truth. Read only by the post-inference evaluator; never by inference code.",
+ "cells": {
+  "e002_q1_r1": {
+   "type": "strict",
+   "text": "יש טשטוש בכל התדרים",
+   "unreadable_spans": "",
+   "explanation_present": "true",
+   "human_verified": true,
+   "notes": "first line heavily struck through by the student; readable tail only. Acceptable outputs: the tail, or an explicit unreadable/crossed-out flag; owner-verified 2026-07-13; mapping checked by printed row number"
+  },
+  "e002_q1_r2": {
+   "type": "strict",
+   "text": "נשאר בתמונה רק התדרים הגבוהים",
+   "unreadable_spans": "",
+   "explanation_present": "true",
+   "human_verified": true,
+   "notes": "owner-verified 2026-07-13; mapping checked by printed row number"
+  },
+  "e002_q1_r3": {
+   "type": "strict",
+   "text": "העוצמה של הדרגות הגבוהות בפרמידה חזקה ביחס למקורי",
+   "unreadable_spans": "",
+   "explanation_present": "true",
+   "human_verified": true,
+   "notes": "AI-uncertain tokens: הצבעים, בפרמידה; owner-verified 2026-07-13; mapping checked by printed row number"
+  },
+  "e002_q1_r4": {
+   "type": "strict",
+   "text": "נשאר בתמונה רק התדרים הנמוכים",
+   "unreadable_spans": "",
+   "explanation_present": "true",
+   "human_verified": true,
+   "notes": "owner-verified 2026-07-13; mapping checked by printed row number"
+  },
+  "e002_q1_r5": {
+   "type": "strict",
+   "text": "מריחה בציר x עקב הקונבולוציה",
+   "unreadable_spans": "",
+   "explanation_present": "true",
+   "human_verified": true,
+   "notes": "AI-uncertain tokens: עקב; owner-verified 2026-07-13; mapping checked by printed row number"
+  },
+  "e002_q1_r6": {
+   "type": "strict",
+   "text": "מריחה בציר y עקב הקונבולוציה",
+   "unreadable_spans": "",
+   "explanation_present": "true",
+   "human_verified": true,
+   "notes": "owner-verified 2026-07-13; mapping checked by printed row number"
+  },
+  "e002_q1_r7": {
+   "type": "strict",
+   "text": "סה\"כ הפירמידה נראית תקינה. הדרגה 0 שלה בהירה משמעותית מהתמונה המקורית",
+   "unreadable_spans": "",
+   "explanation_present": "true",
+   "human_verified": true,
+   "notes": "AI-uncertain tokens: בגרסה, שלה; owner-verified 2026-07-13; mapping checked by printed row number"
+  },
+  "e002_q1_r8": {
+   "type": "strict",
+   "text": "בדומה לפעולה 7, מבהיר את התמונה אבל פה האיזורים הבהירים יותר נעשים יותר שינוי מהאזורים הכהים",
+   "unreadable_spans": "",
+   "explanation_present": "true",
+   "human_verified": true,
+   "notes": "very messy cursive with a struck-through word; several tokens uncertain even to the human annotator. Acceptable: close transcription or explicit partial-unreadable flags; AI-uncertain tokens: מבהיר, הרזולוציות, נעשות, שינוי; owner-verified 2026-07-13; mapping checked by printed row number"
+  },
+  "e002_q2_r1": {
+   "type": "hard",
+   "text": "עבור גילוי שפות יהיה רוב התמונה ב-[לא קריא] ורק עבור שפות 255",
+   "unreadable_spans": "[לא קריא]",
+   "explanation_present": "true",
+   "human_verified": true,
+   "notes": "owner-verified 2026-07-13; mapping checked by row position + content anchors"
+  },
+  "e002_q2_r2": {
+   "type": "strict",
+   "text": "בדומה לו, רק שהטשטוש לפני מוביל לפחות שפות שמתגלות",
+   "unreadable_spans": "",
+   "explanation_present": "true",
+   "human_verified": true,
+   "notes": "owner-verified 2026-07-13; mapping checked by row position + content anchors"
+  },
+  "e002_q2_r3": {
+   "type": "strict",
+   "text": "פריסה אחידה של ההיסטוגרמה המקורית לאורך כל הטווח",
+   "unreadable_spans": "",
+   "explanation_present": "true",
+   "human_verified": true,
+   "notes": "owner-verified 2026-07-13; mapping checked by row position + content anchors"
+  },
+  "e002_q2_r4": {
+   "type": "hard",
+   "text": "[לא קריא]",
+   "unreadable_spans": "[לא קריא]",
+   "explanation_present": "true",
+   "human_verified": true,
+   "notes": "owner-verified 2026-07-13; mapping checked by row position + content anchors"
+  },
+  "e002_q2_r5": {
+   "type": "hard",
+   "text": "[לא קריא] אחיד מוביל לריווח אחיד בין הערכים שקיימים בכימוי",
+   "unreadable_spans": "[לא קריא]",
+   "explanation_present": "true",
+   "human_verified": true,
+   "notes": "owner-verified 2026-07-13; mapping checked by row position + content anchors"
+  },
+  "e002_q2_r6": {
+   "type": "hard",
+   "text": "המעכה זהה לסכימת תמונה זהה עם תנודה קלה. מין תמונת echo כזאת תגרום להיסטוגרמה החדשה להיות קרובה להכפלה ב-2 [לא קריא]",
+   "unreadable_spans": "[לא קריא]",
+   "explanation_present": "true",
+   "human_verified": true,
+   "notes": "owner-verified 2026-07-13; mapping checked by row position + content anchors"
+  },
+  "e002_q2_r7": {
+   "type": "hard",
+   "text": "צורדת ההיסטוגרמה זהה, אך הגדלים והכמויות הם פי 2, כי גודל התמונה הינו [לא קריא]",
+   "unreadable_spans": "[לא קריא]",
+   "explanation_present": "true",
+   "human_verified": true,
+   "notes": "owner-verified 2026-07-13; mapping checked by row position + content anchors"
+  },
+  "e002_q2_r8": {
+   "type": "strict",
+   "text": "כל ערך x בהיסטוגרמה ממופה ל2x בהיסטוגרמה החדשה",
+   "unreadable_spans": "",
+   "explanation_present": "true",
+   "human_verified": true,
+   "notes": "owner-verified 2026-07-13; mapping checked by row position + content anchors"
+  }
+ }
+}

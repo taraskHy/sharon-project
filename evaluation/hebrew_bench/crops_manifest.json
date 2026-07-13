@@ -178,5 +178,77 @@
   "row": 4,
   "width": 1254,
   "height": 281
+ },
+ {
+  "id": "e002_q2_r1",
+  "file": "evaluation\\hebrew_bench\\crops\\e002_q2_r1.png",
+  "source": "test/002_76.pdf",
+  "page": 12,
+  "row": 1,
+  "width": 1287,
+  "height": 247
+ },
+ {
+  "id": "e002_q2_r2",
+  "file": "evaluation\\hebrew_bench\\crops\\e002_q2_r2.png",
+  "source": "test/002_76.pdf",
+  "page": 12,
+  "row": 2,
+  "width": 1287,
+  "height": 222
+ },
+ {
+  "id": "e002_q2_r3",
+  "file": "evaluation\\hebrew_bench\\crops\\e002_q2_r3.png",
+  "source": "test/002_76.pdf",
+  "page": 12,
+  "row": 3,
+  "width": 1287,
+  "height": 216
+ },
+ {
+  "id": "e002_q2_r4",
+  "file": "evaluation\\hebrew_bench\\crops\\e002_q2_r4.png",
+  "source": "test/002_76.pdf",
+  "page": 12,
+  "row": 4,
+  "width": 1287,
+  "height": 225
+ },
+ {
+  "id": "e002_q2_r5",
+  "file": "evaluation\\hebrew_bench\\crops\\e002_q2_r5.png",
+  "source": "test/002_76.pdf",
+  "page": 12,
+  "row": 5,
+  "width": 1287,
+  "height": 215
+ },
+ {
+  "id": "e002_q2_r6",
+  "file": "evaluation\\hebrew_bench\\crops\\e002_q2_r6.png",
+  "source": "test/002_76.pdf",
+  "page": 12,
+  "row": 6,
+  "width": 1287,
+  "height": 240
+ },
+ {
+  "id": "e002_q2_r7",
+  "file": "evaluation\\hebrew_bench\\crops\\e002_q2_r7.png",
+  "source": "test/002_76.pdf",
+  "page": 12,
+  "row": 7,
+  "width": 1287,
+  "height": 229
+ },
+ {
+  "id": "e002_q2_r8",
+  "file": "evaluation\\hebrew_bench\\crops\\e002_q2_r8.png",
+  "source": "test/002_76.pdf",
+  "page": 12,
+  "row": 8,
+  "width": 1287,
+  "height": 237
  }
 ]

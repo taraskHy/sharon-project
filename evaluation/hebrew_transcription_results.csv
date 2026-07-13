@@ -1,0 +1,2 @@
+config_id,model,prompt,preproc,runs,mean_cer,usable_rate,wer,omission_rate,halluc_rate,stability_pairwise_cer,hard_flag_ok,hard_halluc,hard_total,wall_s
+it1_baseline_8b,qwen3-vl:8b-instruct,baseline,none,3,0.9359,0.0,1.2039,0.1294,0.2033,0.1467,0,15,15,217.8

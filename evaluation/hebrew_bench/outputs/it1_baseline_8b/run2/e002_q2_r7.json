@@ -1,0 +1,8 @@
+{
+ "cell": "e002_q2_r7",
+ "run": 2,
+ "raw": "{\"transcription\": \"קורת ה (C, O, N) מוגבלת ב- C, H, O, N, S, P, K, Ca, Mg, Fe, Mn, Zn, Cu, B, Mo, Na, Cl, Si, Al, Ni, Co, Cr, V, Ti, W, Pb, Sn, As, Se, Br, I, F, Li, Be, Rb, Sr, Y, Zr, Nb, Mo, Tc, Ru, Rh, Pd, Ag, Cd, In, Sn, Sb, Te, I, At, Po, Fr, Ra, Ac, Th, Pa, U, Np, Pu, Am, Cm, Bk, Cf, Es, Fm, Md, No, Lr, La, Ce, Pr, Nd, Pm, Sm, Eu, Gd, Tb, Dy, Ho, Er, Tm, Yb, Lu\"}",
+ "transcription": "קורת ה (C, O, N) מוגבלת ב- C, H, O, N, S, P, K, Ca, Mg, Fe, Mn, Zn, Cu, B, Mo, Na, Cl, Si, Al, Ni, Co, Cr, V, Ti, W, Pb, Sn, As, Se, Br, I, F, Li, Be, Rb, Sr, Y, Zr, Nb, Mo, Tc, Ru, Rh, Pd, Ag, Cd, In, Sn, Sb, Te, I, At, Po, Fr, Ra, Ac, Th, Pa, U, Np, Pu, Am, Cm, Bk, Cf, Es, Fm, Md, No, Lr, La, Ce, Pr, Nd, Pm, Sm, Eu, Gd, Tb, Dy, Ho, Er, Tm, Yb, Lu",
+ "error": null,
+ "latency_s": 6.89
+}
