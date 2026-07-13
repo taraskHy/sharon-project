@@ -101,3 +101,36 @@ workflow built today: crops → candidate → human_verified). Estimated
 training: hours (kraken/PyLaia scale), not days, on the local GPU.
 
 ## Results (appended as iterations complete)
+
+### Iteration 6 — sivan22/hdd-words-ocr (dedicated Hebrew HTR)
+
+Hypothesis: a dedicated modern-Hebrew handwriting recognizer reads the
+cursive more faithfully than general VLMs. Pipeline: deterministic
+line+word segmentation (RTL) → greedy per-word decode; CPU; 2 identical
+runs (stability pairwise CER 0.000 — fully deterministic).
+
+| Metric | it6 hdd-words-ocr | Strongest Qwen (8B+strict+contrast) |
+|---|---|---|
+| mean CER | **0.963** | 0.786 |
+| usable rate | 0.00 | 0.00 |
+| WER | 1.188 | 1.035 |
+| omission | 0.565 | 0.263 |
+| halluc-word | 0.302 | 0.087 |
+| hard flagged/confab | 0 / 10 | 0 / 15 |
+| runtime | ~2.3 s/cell CPU (127 s total) | ~3 s/cell GPU |
+
+**Failure-class decomposition (owner-required):** both classes present and
+separated by the saved crops (`segments_words/it6_hdd_words/`):
+- *Segmentation failure*: ~half the cells' line detection collapsed
+  (connected cursive bridges projection valleys) → whole lines squashed
+  into the 128-px word box → mode-collapse output (the same hallucinated
+  word "הפוליטית" across unrelated cells).
+- *Dedicated-HTR recognizer failure*: on cells that segmented CLEANLY
+  (e.g. e002_q1_r2: 7 well-isolated word crops, visually verified), the
+  recognizer read 0 of 5 ground-truth words — fluent-looking Hebrew
+  unrelated to the ink. Its HDD lineage (isolated characters/short words
+  from hand-filled forms) does not transfer to connected exam cursive.
+
+Verdict: worse than the Qwen reference on every fidelity axis; kept as
+evidence. No segmentation rework can rescue a recognizer that misreads
+clean word crops → CONTINUE to iteration 7 (multilingual document OCR).

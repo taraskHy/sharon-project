@@ -1,0 +1,2 @@
+config_id,model,prompt,preproc,runs,mean_cer,usable_rate,wer,omission_rate,halluc_rate,stability_pairwise_cer,hard_flag_ok,hard_halluc,hard_total,wall_s
+it6_hdd_words,sivan22/hdd-words-ocr@e089ce717594,n/a (dedicated HTR; greedy decode),gray+projection-line+word-segmentation,2,0.9627,0.0,1.1882,0.5647,0.3019,0.0,0,10,10,127.0
