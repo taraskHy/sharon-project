@@ -109,13 +109,18 @@ dense bubble-grid row reading (chance level). More batch exams would
 re-measure these same limits, so per the owner's gate **Stage B is not
 launched**. Highest-value next steps, in order:
 
-1. Bubble-grid reading via **row-band crops** (one narrow image per row or
-   per 4–5 rows) — mechanical change, likely large win on Q3-type sheets.
-2. A dedicated **explanation-transcription pass** per answer-sheet row
-   (crop + "transcribe exactly what is handwritten here") instead of asking
-   for transcription inside the 8-item extraction call.
-3. The **Qwen3-VL-32B bake-off** on the university vLLM server — both
-   failures are capability-bounded, and the 32B tier is the project's
-   designated next model (docs/model-comparison.md).
+1. Bubble-grid **selection** reading via row-band crops (marks, not prose)
+   — still a candidate, but must be validated against ground truth first:
+   the Q1.2 diagnostic showed cropped re-asking can FABRICATE marks.
+2. ~~A dedicated explanation-transcription pass (crop + transcribe)~~ —
+   **WITHDRAWN** after the controlled Q1.2 diagnostic
+   (evaluation/diag_q1_2.md): at every resolution the 8B confabulates
+   fluent Hebrew instead of reading this cursive; forcing transcription
+   replaces safe omissions with dangerous fictions.
+3. The **Qwen3-VL-32B bake-off** on the university vLLM server — the
+   decisive lever for both open limits; its transcriptions must pass a
+   fidelity check against the owner's ground truth before being trusted.
 4. Instructor completes the Q3 override entries (unblocks trusted Q3
-   scoring for all variants).
+   scoring for all variants), and decides the policy question the gate
+   raises: whether correct selections with unreadable explanations earn
+   provisional credit pending review, or remain 0 until verified.
