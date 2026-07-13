@@ -1,0 +1,8 @@
+config_id,model,prompt,preproc,runs,mean_cer,usable_rate,wer,omission_rate,halluc_rate,stability_pairwise_cer,hard_flag_ok,hard_halluc,hard_total,wall_s
+isol0_orig_e002,qwen3-vl:8b-instruct,strict_fidelity,none,3,0.8664,0.0,1.0941,0.3176,0.1343,0.0703,0,12,15,198.6
+isol1_blueonly,qwen3-vl:8b-instruct,strict_fidelity,none,3,0.8704,0.0,1.2667,0.1294,0.2452,0.1255,0,15,15,146.6
+isol2_tsub,qwen3-vl:8b-instruct,strict_fidelity,none,3,0.79,0.0,1.0627,0.051,0.062,0.134,0,14,15,139.9
+isol3_tsub_lines,qwen3-vl:8b-instruct,strict_fidelity,pre-segmented lines,3,0.8275,0.0,1.0941,0.1255,0.1187,0.0732,3,12,15,166.3
+isol4_hdd_blueonly,sivan22/hdd-words-ocr@e089ce717594,n/a (dedicated HTR; greedy decode),gray+projection-line+word-segmentation,2,0.9775,0.0,1.4235,0.2353,0.3564,0.0,0,10,10,139.8
+isol5_hdd_tsub,sivan22/hdd-words-ocr@e089ce717594,n/a (dedicated HTR; greedy decode),gray+projection-line+word-segmentation,2,0.937,0.0,1.2588,0.3412,0.2821,0.0,0,10,10,119.0
+isol6_hdd_tsub_lines,sivan22/hdd-words-ocr@e089ce717594,n/a (dedicated HTR; greedy decode),gray+projection-line+word-segmentation,2,0.9359,0.0,1.2588,0.3294,0.2785,0.0,0,10,10,111.4

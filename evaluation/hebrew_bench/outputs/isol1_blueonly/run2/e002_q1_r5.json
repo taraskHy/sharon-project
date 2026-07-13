@@ -1,0 +1,8 @@
+{
+ "cell": "e002_q1_r5",
+ "run": 2,
+ "raw": "{\"transcription\": \"השאלה היא איזו עוצמה יש ל- x ב- f(x) = 2x^3 - 4x + 1\"}",
+ "transcription": "השאלה היא איזו עוצמה יש ל- x ב- f(x) = 2x^3 - 4x + 1",
+ "error": null,
+ "latency_s": 1.77
+}

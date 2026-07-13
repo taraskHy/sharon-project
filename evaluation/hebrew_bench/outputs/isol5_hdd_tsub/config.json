@@ -1,0 +1,12 @@
+{
+ "config_id": "isol5_hdd_tsub",
+ "model": "sivan22/hdd-words-ocr@e089ce717594",
+ "prompt": "n/a (dedicated HTR; greedy decode)",
+ "preproc": "gray+projection-line+word-segmentation",
+ "max_tokens": 24,
+ "runs": 2,
+ "manifest": "evaluation/student_ink_isolation_artifacts/manifests/manifest_templatesub.json",
+ "started": "2026-07-13 21:35:47",
+ "finished": "2026-07-13 21:37:46",
+ "total_wall_s": 119.0
+}

@@ -1,0 +1,9 @@
+{
+ "cell": "e002_q1_r1",
+ "run": 1,
+ "raw": "[\"{\\\"transcription\\\": \\\"נראה שזו תוצאה של ניסיון\\\"}\"]",
+ "transcription": "נראה שזו תוצאה של ניסיון",
+ "error": null,
+ "latency_s": 5.06,
+ "n_lines": 1
+}

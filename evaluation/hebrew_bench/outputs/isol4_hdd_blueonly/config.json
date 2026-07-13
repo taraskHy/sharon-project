@@ -1,0 +1,12 @@
+{
+ "config_id": "isol4_hdd_blueonly",
+ "model": "sivan22/hdd-words-ocr@e089ce717594",
+ "prompt": "n/a (dedicated HTR; greedy decode)",
+ "preproc": "gray+projection-line+word-segmentation",
+ "max_tokens": 24,
+ "runs": 2,
+ "manifest": "evaluation/student_ink_isolation_artifacts/manifests/manifest_blueonly.json",
+ "started": "2026-07-13 21:33:15",
+ "finished": "2026-07-13 21:35:34",
+ "total_wall_s": 139.8
+}

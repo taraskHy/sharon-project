@@ -1,0 +1,8 @@
+{
+ "cell": "e002_q2_r7",
+ "run": 1,
+ "raw": "{\"transcription\": \"קורת ה- (C, O, N) מַחְזִירָה לְכָל הַמְּרֻשָׁה בְּיַד הַמְּרֻשָׁה כְּמוֹ אֲשֶׁר מִצְוָה לְכָל הַמְּרֻשָׁה בְּיַד הַמְּרֻשָׁה כְּמוֹ אֲשֶׁר מִצְוָה לְכָל הַמְּרֻשָׁה בְּיַד הַמְּרֻשָׁה כְּמוֹ אֲשֶׁר מִצְוָה לְכָל הַמְּרֻשָׁה בְּיַד הַמְּרֻשָׁה כְּמוֹ אֲשֶׁר מִצְוָה לְכָל הַמְּרֻשָׁה בְּיַד הַמְּרֻשָׁה כְּמוֹ אֲש",
+ "transcription": null,
+ "error": "JSONDecodeError: Unterminated string starting at: line 1 column 19 (char 18) | body={'id': 'chatcmpl-795', 'object': 'chat.completion', 'created': 1783967323, 'model': 'qwen3-vl:8b-instruct', 'system_fingerprint': 'fp_ollama', 'choices': [{'index': 0, 'message': {'role': 'assistant',",
+ "latency_s": 15.45
+}

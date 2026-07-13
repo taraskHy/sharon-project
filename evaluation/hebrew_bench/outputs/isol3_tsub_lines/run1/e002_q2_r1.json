@@ -1,0 +1,9 @@
+{
+ "cell": "e002_q2_r1",
+ "run": 1,
+ "raw": "[\"{\\\"transcription\\\": \\\"[unreadable]\\\"}\", \"{\\\"transcription\\\": \\\"היום יום 17/06/2024, 18:35\\\"}\"]",
+ "transcription": "[unreadable] היום יום 17/06/2024, 18:35",
+ "error": null,
+ "latency_s": 5.55,
+ "n_lines": 2
+}

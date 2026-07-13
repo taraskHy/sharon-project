@@ -84,6 +84,31 @@ exams. Grading policy and review gates must not be weakened.
   (~1,000 exist in the 41 dev exams), hours on this GPU — with
   WRITER-SEPARATED splits.
 
+## Student-ink isolation experiment (2026-07-13, owner-directed; DONE — REJECTED)
+- Hypothesis tested: printed table structure in crops drives recognizer
+  failure; registered template subtraction + blue-ink isolation may fix it.
+- Built `scripts/student_ink_isolation.py`: no blank answer sheet exists
+  (Exam_solution.pdf = question booklet only), so blank templates were
+  SYNTHESIZED as the per-pixel median of 16 ECC-registered dev-exam pages
+  per sheet (page-search handles variable booklets; cc .59–.86, 16/16
+  kept). Thresholds frozen from image stats (T_blue 25, per-page Otsu,
+  texture 200@9px, production red rule); E2 images verified 16/16
+  faithful BEFORE recognition (contact sheets:
+  `evaluation/student_ink_isolation_artifacts/contact/`).
+- Ablation (fixed qwen3-vl:8b-instruct, strict prompt, temp 0, 3 runs):
+  original .866 / blue-only .870 / template-sub **.790** / lines .828 CER;
+  usable **0 %** everywhere; best single cell .66. hdd-words: .978 / .937
+  / .936. Ledger `evaluation/student_ink_isolation_results.csv`; report
+  `evaluation/student_ink_isolation_experiment.md`.
+- Verdict: **REJECT — "recognition despite clean input"** (registration,
+  ink separation, segmentation all verified good). Real secondary effects:
+  omission .318→.051, hallucination .134→.062 at equal CER; first honest
+  [unreadable] flags ever (3/15, lines arm). Reinforces the fine-tune
+  pilot; E2 cells + F line crops are reusable as its cleaned inputs.
+  Runner scripts gained `--manifest` (alt crop sets); new
+  `scripts/hebrew_ink_lines_run.py` joins per-line outputs per cell.
+  `.venv` gained opencv-python-headless 5.0.0. Owner review pending.
+
 ## FIRST TASK NEXT SESSION — oracle-ensemble analysis (cheap, no training)
 Use ONLY the retained raw outputs above + hidden GT (post-hoc). Per
 verified crop: pick the expert output with the LOWEST CER (oracle);

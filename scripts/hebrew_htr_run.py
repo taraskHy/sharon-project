@@ -104,6 +104,10 @@ def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--config-id", default="it6_hdd_words")
     ap.add_argument("--runs", type=int, default=2)
+    ap.add_argument("--manifest", default=str(BENCH / "crops_manifest.json"),
+                    help="crop manifest; entries with a 'lines' list are "
+                         "treated as pre-segmented line images (the internal "
+                         "line segmentation is skipped, word segmentation kept)")
     args = ap.parse_args()
 
     import torch
@@ -124,13 +128,14 @@ def main() -> int:
     torch.set_num_threads(6)
     print(f"model loaded in {time.monotonic() - t_load:.1f}s; params={sum(p.numel() for p in model.parameters())/1e6:.0f}M")
 
-    manifest = json.loads((BENCH / "crops_manifest.json").read_text(encoding="utf-8"))
+    manifest = json.loads(Path(args.manifest).read_text(encoding="utf-8"))
     outdir = BENCH / "outputs" / args.config_id
     segroot = BENCH / "segments_words" / args.config_id
     meta = {
         "config_id": args.config_id, "model": f"{MODEL_ID}@{REVISION[:12]}",
         "prompt": "n/a (dedicated HTR; greedy decode)", "preproc": "gray+projection-line+word-segmentation",
-        "max_tokens": 24, "runs": args.runs, "started": time.strftime("%Y-%m-%d %H:%M:%S"),
+        "max_tokens": 24, "runs": args.runs, "manifest": args.manifest,
+        "started": time.strftime("%Y-%m-%d %H:%M:%S"),
     }
     outdir.mkdir(parents=True, exist_ok=True)
     (outdir / "config.json").write_text(json.dumps(meta, indent=1), encoding="utf-8")
@@ -148,12 +153,15 @@ def main() -> int:
             target = rundir / f"{cell['id']}.json"
             if target.exists():
                 continue
-            gray = to_gray(Path(cell["file"]).read_bytes())
+            if "lines" in cell:
+                line_arrays = [to_gray(Path(p).read_bytes()) for p in cell["lines"]]
+            else:
+                gray = to_gray(Path(cell["file"]).read_bytes())
+                line_arrays = [gray[y0:y1, :] for y0, y1 in line_bands(gray)]
             t1 = time.monotonic()
             lines_text = []
             n_words = 0
-            for li, (y0, y1) in enumerate(line_bands(gray), 1):
-                line = gray[y0:y1, :]
+            for li, line in enumerate(line_arrays, 1):
                 words = word_bands(line)
                 # RTL reading order: rightmost word first.
                 words = sorted(words, key=lambda ab: -ab[0])

@@ -100,9 +100,12 @@ def main() -> int:
     ap.add_argument("--runs", type=int, default=3)
     ap.add_argument("--max-tokens", type=int, default=400)
     ap.add_argument("--cells", default="", help="comma list to restrict (debug)")
+    ap.add_argument("--manifest", default=str(BENCH / "crops_manifest.json"),
+                    help="crop manifest (id+file entries); alternate manifests "
+                         "point at preprocessed crops, e.g. student-ink isolation")
     args = ap.parse_args()
 
-    manifest = json.loads((BENCH / "crops_manifest.json").read_text(encoding="utf-8"))
+    manifest = json.loads(Path(args.manifest).read_text(encoding="utf-8"))
     if args.cells:
         keep = set(args.cells.split(","))
         manifest = [m for m in manifest if m["id"] in keep]
@@ -111,6 +114,7 @@ def main() -> int:
         "config_id": args.config_id, "model": args.model, "prompt": args.prompt,
         "prompt_text": PROMPTS[args.prompt], "preproc": args.preproc,
         "max_tokens": args.max_tokens, "runs": args.runs,
+        "manifest": args.manifest,
         "started": time.strftime("%Y-%m-%d %H:%M:%S"),
     }
     outdir.mkdir(parents=True, exist_ok=True)
