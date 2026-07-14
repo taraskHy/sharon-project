@@ -109,6 +109,29 @@ exams. Grading policy and review gates must not be weakened.
   `scripts/hebrew_ink_lines_run.py` joins per-line outputs per cell.
   `.venv` gained opencv-python-headless 5.0.0. Owner review pending.
 
+## HTR-pilot annotation package (2026-07-14, owner-directed; READY FOR OWNER)
+- Writer-separated deterministic split over 16 dev exams: train e003–e012,
+  val e013–e015, internal_test e016–e018; e002 excluded from EVERY split
+  (benchmark writer); rep exam + e019–e042 excluded/reserved; held-out
+  never referenced. 441 line samples / 256 cells; zero build failures.
+- Build: `scripts/htr_pilot_build.py` (sheet pages found per exam by ECC
+  page-search, Q1-vs-Q2 verified by title-digit matchTemplate — e014's
+  sheets are on pages 5–6; per-exam synthesized blank templates; cell rows
+  from detected table rules with registration fallback — used by 5 Q1
+  sheets, QA'd clean; per-sheet sidecars make re-runs incremental).
+  Package: `evaluation/htr_pilot/` (images, splits/, annotations/ per
+  split, contact/, summary.json, README.md with rules+recovery); sources
+  map with grade-bearing scan names kept OUTSIDE at
+  `evaluation/htr_pilot_sources.json` (never for training).
+- App: `.venv\Scripts\python.exe -m streamlit run
+  scripts/htr_annotation_app.py` (streamlit 1.59.2 now in .venv) — RTL,
+  line+cell+original views, atomic autosave every button, resume, prev/
+  next drafts, [לא קריא]/Blank/Bad-segmentation/Needs-recrop/Skip.
+  Validator: `scripts/htr_annotation_validate.py` → RESULT: PASS.
+  Tests 136/136; AppTest smoke PASS (dummy labels in temp only). NO
+  authoritative labels exist yet; owner annotation ≈ 2.5–5 h. Report:
+  `evaluation/htr_annotation_package.md`.
+
 ## FIRST TASK NEXT SESSION — oracle-ensemble analysis (cheap, no training)
 Use ONLY the retained raw outputs above + hidden GT (post-hoc). Per
 verified crop: pick the expert output with the LOWEST CER (oracle);

@@ -1,0 +1,123 @@
+{
+ "built": "2026-07-14 03:31:46",
+ "splits": {
+  "train": [
+   "e003",
+   "e004",
+   "e005",
+   "e006",
+   "e007",
+   "e008",
+   "e009",
+   "e010",
+   "e011",
+   "e012"
+  ],
+  "val": [
+   "e013",
+   "e014",
+   "e015"
+  ],
+  "internal_test": [
+   "e016",
+   "e017",
+   "e018"
+  ]
+ },
+ "samples_total": 441,
+ "per_writer": {
+  "e003": {
+   "split": "train",
+   "lines": 22,
+   "cells": 16
+  },
+  "e004": {
+   "split": "train",
+   "lines": 27,
+   "cells": 16
+  },
+  "e005": {
+   "split": "train",
+   "lines": 39,
+   "cells": 16
+  },
+  "e006": {
+   "split": "train",
+   "lines": 21,
+   "cells": 16
+  },
+  "e007": {
+   "split": "train",
+   "lines": 28,
+   "cells": 16
+  },
+  "e008": {
+   "split": "train",
+   "lines": 20,
+   "cells": 16
+  },
+  "e009": {
+   "split": "train",
+   "lines": 31,
+   "cells": 16
+  },
+  "e010": {
+   "split": "train",
+   "lines": 25,
+   "cells": 16
+  },
+  "e011": {
+   "split": "train",
+   "lines": 24,
+   "cells": 16
+  },
+  "e012": {
+   "split": "train",
+   "lines": 27,
+   "cells": 16
+  },
+  "e013": {
+   "split": "val",
+   "lines": 23,
+   "cells": 16
+  },
+  "e014": {
+   "split": "val",
+   "lines": 34,
+   "cells": 16
+  },
+  "e015": {
+   "split": "val",
+   "lines": 26,
+   "cells": 16
+  },
+  "e016": {
+   "split": "internal_test",
+   "lines": 23,
+   "cells": 16
+  },
+  "e017": {
+   "split": "internal_test",
+   "lines": 32,
+   "cells": 16
+  },
+  "e018": {
+   "split": "internal_test",
+   "lines": 39,
+   "cells": 16
+  }
+ },
+ "failures": [],
+ "constants": {
+  "XSPAN": [
+   0.06,
+   0.645
+  ],
+  "CELL_PAD_FRAC": 0.009,
+  "T_BLUE": 25,
+  "CC_MIN": 0.55,
+  "N_KEEP_DONORS": 12,
+  "DIGIT_MARGIN_MIN": 0.05,
+  "BLANK_MASK_PX": 300
+ }
+}

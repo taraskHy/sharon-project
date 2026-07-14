@@ -1,0 +1,207 @@
+{
+ "geometry": "fallback",
+ "rules": [
+  831,
+  1130,
+  1325,
+  1520,
+  1714,
+  1909,
+  2104,
+  2300,
+  2495,
+  2691
+ ],
+ "samples": [
+  {
+   "sample_id": "e003_q1_r1__l1",
+   "writer": "e003",
+   "split": "train",
+   "question": 1,
+   "row": 1,
+   "line_index": 1,
+   "n_lines": 1,
+   "expected_blank": false,
+   "images": {
+    "line": "images/e003/q1_r1_l1.png",
+    "cell_clean": "images/e003/q1_r1_cell_clean.png",
+    "cell_orig": "images/e003/q1_r1_cell_orig.jpg"
+   },
+   "line_size": [
+    196,
+    1287
+   ]
+  },
+  {
+   "sample_id": "e003_q1_r2__l1",
+   "writer": "e003",
+   "split": "train",
+   "question": 1,
+   "row": 2,
+   "line_index": 1,
+   "n_lines": 2,
+   "expected_blank": false,
+   "images": {
+    "line": "images/e003/q1_r2_l1.png",
+    "cell_clean": "images/e003/q1_r2_cell_clean.png",
+    "cell_orig": "images/e003/q1_r2_cell_orig.jpg"
+   },
+   "line_size": [
+    29,
+    1287
+   ]
+  },
+  {
+   "sample_id": "e003_q1_r2__l2",
+   "writer": "e003",
+   "split": "train",
+   "question": 1,
+   "row": 2,
+   "line_index": 2,
+   "n_lines": 2,
+   "expected_blank": false,
+   "images": {
+    "line": "images/e003/q1_r2_l2.png",
+    "cell_clean": "images/e003/q1_r2_cell_clean.png",
+    "cell_orig": "images/e003/q1_r2_cell_orig.jpg"
+   },
+   "line_size": [
+    218,
+    1287
+   ]
+  },
+  {
+   "sample_id": "e003_q1_r3__l1",
+   "writer": "e003",
+   "split": "train",
+   "question": 1,
+   "row": 3,
+   "line_index": 1,
+   "n_lines": 1,
+   "expected_blank": false,
+   "images": {
+    "line": "images/e003/q1_r3_l1.png",
+    "cell_clean": "images/e003/q1_r3_cell_clean.png",
+    "cell_orig": "images/e003/q1_r3_cell_orig.jpg"
+   },
+   "line_size": [
+    200,
+    1287
+   ]
+  },
+  {
+   "sample_id": "e003_q1_r4__l1",
+   "writer": "e003",
+   "split": "train",
+   "question": 1,
+   "row": 4,
+   "line_index": 1,
+   "n_lines": 1,
+   "expected_blank": false,
+   "images": {
+    "line": "images/e003/q1_r4_l1.png",
+    "cell_clean": "images/e003/q1_r4_cell_clean.png",
+    "cell_orig": "images/e003/q1_r4_cell_orig.jpg"
+   },
+   "line_size": [
+    160,
+    1287
+   ]
+  },
+  {
+   "sample_id": "e003_q1_r5__l1",
+   "writer": "e003",
+   "split": "train",
+   "question": 1,
+   "row": 5,
+   "line_index": 1,
+   "n_lines": 2,
+   "expected_blank": false,
+   "images": {
+    "line": "images/e003/q1_r5_l1.png",
+    "cell_clean": "images/e003/q1_r5_cell_clean.png",
+    "cell_orig": "images/e003/q1_r5_cell_orig.jpg"
+   },
+   "line_size": [
+    174,
+    1287
+   ]
+  },
+  {
+   "sample_id": "e003_q1_r5__l2",
+   "writer": "e003",
+   "split": "train",
+   "question": 1,
+   "row": 5,
+   "line_index": 2,
+   "n_lines": 2,
+   "expected_blank": false,
+   "images": {
+    "line": "images/e003/q1_r5_l2.png",
+    "cell_clean": "images/e003/q1_r5_cell_clean.png",
+    "cell_orig": "images/e003/q1_r5_cell_orig.jpg"
+   },
+   "line_size": [
+    44,
+    1287
+   ]
+  },
+  {
+   "sample_id": "e003_q1_r6__l1",
+   "writer": "e003",
+   "split": "train",
+   "question": 1,
+   "row": 6,
+   "line_index": 1,
+   "n_lines": 1,
+   "expected_blank": false,
+   "images": {
+    "line": "images/e003/q1_r6_l1.png",
+    "cell_clean": "images/e003/q1_r6_cell_clean.png",
+    "cell_orig": "images/e003/q1_r6_cell_orig.jpg"
+   },
+   "line_size": [
+    240,
+    1287
+   ]
+  },
+  {
+   "sample_id": "e003_q1_r7__l1",
+   "writer": "e003",
+   "split": "train",
+   "question": 1,
+   "row": 7,
+   "line_index": 1,
+   "n_lines": 1,
+   "expected_blank": false,
+   "images": {
+    "line": "images/e003/q1_r7_l1.png",
+    "cell_clean": "images/e003/q1_r7_cell_clean.png",
+    "cell_orig": "images/e003/q1_r7_cell_orig.jpg"
+   },
+   "line_size": [
+    251,
+    1287
+   ]
+  },
+  {
+   "sample_id": "e003_q1_r8__l1",
+   "writer": "e003",
+   "split": "train",
+   "question": 1,
+   "row": 8,
+   "line_index": 1,
+   "n_lines": 1,
+   "expected_blank": false,
+   "images": {
+    "line": "images/e003/q1_r8_l1.png",
+    "cell_clean": "images/e003/q1_r8_cell_clean.png",
+    "cell_orig": "images/e003/q1_r8_cell_orig.jpg"
+   },
+   "line_size": [
+    199,
+    1287
+   ]
+  }
+ ]
+}

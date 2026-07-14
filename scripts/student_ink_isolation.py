@@ -264,13 +264,15 @@ def find_sheet_page(ref_inv: np.ndarray, donor: str,
 
 def build_template(ref_pdf: str, page1: int,
                    hints: dict[str, int] | None = None,
+                   donors: list[str] | None = None,
+                   n_keep: int = N_KEEP,
                    ) -> tuple[np.ndarray, list[dict], dict[str, int]]:
     ref_rgb = whiten_red(render_page(ref_pdf, page1))
     h, w = ref_rgb.shape[:2]
     ref_inv = inv_gray(ref_rgb)
     kept, report, found = [], [], {}
-    for donor in DONORS:
-        if len(kept) >= N_KEEP:
+    for donor in (DONORS if donors is None else donors):
+        if len(kept) >= n_keep:
             break
         entry = {"donor": donor, "page": None, "cc": None, "kept": False}
         hit = find_sheet_page(ref_inv, donor, (hints or {}).get(donor))
