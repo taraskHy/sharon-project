@@ -1,0 +1,17 @@
+{
+ "schema_version": 1,
+ "sample_id": "e003_q2_r6__l1",
+ "split": "train",
+ "writer": "e003",
+ "transcription": "סכום המסכה הוא גדול מ-1, לכן טווח הערכים גדול מהטווח בהסטוגרמה המקורית ויותר פרוס",
+ "status": "ok",
+ "unreadable": false,
+ "blank": false,
+ "bad_segmentation": false,
+ "needs_recrop": false,
+ "skipped": false,
+ "notes": "",
+ "annotator": "owner",
+ "human_verified": true,
+ "saved_at": "2026-07-16 19:41:23"
+}

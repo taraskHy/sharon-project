@@ -1,0 +1,17 @@
+{
+ "schema_version": 1,
+ "sample_id": "e003_q2_r7__l1",
+ "split": "train",
+ "writer": "e003",
+ "transcription": "הוכפל מספר הפיקסלים בכל התמונה פי 2 והוכפל מספר הפיקסלים בכל ערך",
+ "status": "ok",
+ "unreadable": false,
+ "blank": false,
+ "bad_segmentation": false,
+ "needs_recrop": false,
+ "skipped": false,
+ "notes": "",
+ "annotator": "owner",
+ "human_verified": true,
+ "saved_at": "2026-07-16 19:41:25"
+}

@@ -165,6 +165,28 @@ exams. Grading policy and review gates must not be weakened.
 - NEXT: owner annotates train+val in the annotation app -> run the 4
   pipeline commands in htr_pilot_gates.md "Scaffold status".
 
+## Real-data overfit test (2026-07-16; PASS — gate met, trainer proven)
+- Owner annotated 91 train samples (72 ok / 18 bad_segmentation /
+  1 needs_recrop; 56 ok-lines without [לא קריא] spans); validator PASS.
+- Pre-registered gate (mean CER <= .05, >= 18/20 lines <= .10) on the
+  first 20 eligible lines (sorted-id order, saved before training):
+  **PASS — mean CER .0028, 20/20 within gate, 18/20 exact**; WER .019;
+  mean confidence .956 (min .942); checkpoint reload delta 0.0000;
+  RTL sanity: reversed-prediction CER .847 vs .0028; 71-char vocab fully
+  covered; no CTC length violations; no empty decodes. Report:
+  `evaluation/htr_overfit_test/report.md` (rig pkg/ws git-ignored,
+  selection in selected_ids.json).
+- The test caught and fixed 3 real trainer defects BEFORE the pilot:
+  (1) RTL/CTC ordering — labels must be bidi display-order at train time
+  (weak-bidi involution `to_display_order` in htr_train_prepare, inverse
+  at decode; unit-tested); (2) LR scheduler stepped on val CER, which sits
+  at 1.0 through the CTC blank-collapse phase and froze learning -> now
+  steps on train loss (+ --min-epochs guard, default overfit 500);
+  (3) width subsampling /8 left ~1.3 frames/char on narrow lines ->
+  /4 (escape from collapse at ~epoch 126, memorized by ~550).
+- Owner instruction honoured: pilot NOT started; owner continues
+  annotating train+val splits.
+
 ## [COMPLETED 2026-07-14 — see oracle section above] original spec: oracle-ensemble analysis
 Use ONLY the retained raw outputs above + hidden GT (post-hoc). Per
 verified crop: pick the expert output with the LOWEST CER (oracle);

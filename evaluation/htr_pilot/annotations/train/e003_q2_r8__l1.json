@@ -1,0 +1,17 @@
+{
+ "schema_version": 1,
+ "sample_id": "e003_q2_r8__l1",
+ "split": "train",
+ "writer": "e003",
+ "transcription": "ניתן לראות שמספר הפיקסלים בכל עוצמה הוזז ימינה באותו מרחק שהיה במקור.",
+ "status": "ok",
+ "unreadable": false,
+ "blank": false,
+ "bad_segmentation": false,
+ "needs_recrop": false,
+ "skipped": false,
+ "notes": "",
+ "annotator": "owner",
+ "human_verified": true,
+ "saved_at": "2026-07-16 19:41:32"
+}

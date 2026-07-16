@@ -106,8 +106,26 @@ def augment(img: np.ndarray, rng: np.random.Generator) -> np.ndarray:
     return np.clip(out.astype(np.float32) * a + b, 0, 255).astype(np.uint8)
 
 
+LTR_RUN = __import__("re").compile(r"[A-Za-z0-9]+(?: [A-Za-z0-9]+)*")
+
+
+def to_display_order(text: str) -> str:
+    """Logical (typed) Hebrew -> left-to-right display order.
+
+    CTC alignment is monotonic in TIME (image frames left to right), while
+    Hebrew is written right to left: training on logical-order labels is
+    unlearnable beyond trivial lengths. Weak-bidi approximation: reverse
+    the whole string, then restore each embedded LTR run (Latin/digit
+    words incl. their inner spaces) to forward order. The transform is an
+    involution, so the same function converts model output back to
+    logical order. Neutral punctuation inside math (e.g. '->') is not
+    special-cased — documented pilot limitation."""
+    rev = text[::-1]
+    return LTR_RUN.sub(lambda m: m.group(0)[::-1], rev)
+
+
 def to_syms(text: str) -> list[str]:
-    return ["<space>" if c == " " else c for c in text]
+    return ["<space>" if c == " " else c for c in to_display_order(text)]
 
 
 def main() -> int:

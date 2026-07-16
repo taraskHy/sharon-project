@@ -1,0 +1,17 @@
+{
+ "schema_version": 1,
+ "sample_id": "e004_q2_r6__l2",
+ "split": "train",
+ "writer": "e004",
+ "transcription": "טווח שלה בציר x (עשינו את זה  [לא קריא] בהרצאה למדוד או לא)",
+ "status": "ok",
+ "unreadable": true,
+ "blank": false,
+ "bad_segmentation": false,
+ "needs_recrop": false,
+ "skipped": false,
+ "notes": "",
+ "annotator": "owner",
+ "human_verified": true,
+ "saved_at": "2026-07-16 19:46:21"
+}

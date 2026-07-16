@@ -36,6 +36,8 @@ import torch.nn as nn
 import torch.nn.functional as F
 from torch.utils.data import DataLoader, Dataset
 
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+
 WS = Path("evaluation/htr_train_workspace")
 SEED = 20260714
 if hasattr(sys.stdout, "reconfigure"):
@@ -97,7 +99,11 @@ def collate(batch):
 
 
 class CRNN(nn.Module):
-    """Conv stack (H128 -> 8, W/8) -> BiLSTM(2x256) -> per-frame logits."""
+    """Conv stack (H128 -> 8, W/4) -> BiLSTM(2x256) -> per-frame logits.
+
+    Width is subsampled only 4x: at 8x the narrowest real lines drop to
+    ~1.3 frames per label symbol and CTC cannot align (verified in the
+    overfit diagnostics); 4x keeps >= ~2.6 and typically 4-6."""
 
     def __init__(self, n_syms: int):
         super().__init__()
@@ -106,27 +112,30 @@ class CRNN(nn.Module):
         for i in range(4):
             blocks += [nn.Conv2d(ch[i], ch[i + 1], 3, padding=1),
                        nn.BatchNorm2d(ch[i + 1]), nn.LeakyReLU(0.1)]
-            # pool H always; pool W only in the first 3 blocks (W/8)
-            blocks += [nn.MaxPool2d((2, 2) if i < 3 else (2, 1))]
+            # pool H always; pool W only in the first 2 blocks (W/4)
+            blocks += [nn.MaxPool2d((2, 2) if i < 2 else (2, 1))]
         self.cnn = nn.Sequential(*blocks)
         self.rnn = nn.LSTM(64 * 8, 256, num_layers=2, bidirectional=True,
                            batch_first=True, dropout=0.2)
         self.fc = nn.Linear(512, n_syms)
 
     def forward(self, x):  # x: B,1,128,W
-        f = self.cnn(x)                       # B,64,8,W/8
+        f = self.cnn(x)                       # B,64,8,W/4
         B, C, H, W = f.shape
         f = f.permute(0, 3, 1, 2).reshape(B, W, C * H)
         out, _ = self.rnn(f)
-        return self.fc(out)                   # B,W/8,n_syms
+        return self.fc(out)                   # B,W/4,n_syms
 
     @staticmethod
     def out_widths(widths: torch.Tensor) -> torch.Tensor:
-        return torch.clamp(widths // 8, min=1)
+        return torch.clamp(widths // 4, min=1)
 
 
 def greedy_decode(logits: torch.Tensor, out_w: int, id2sym: list[str]
                   ) -> tuple[str, float]:
+    """Returns LOGICAL-order text (display->logical via the same involution
+    used at label-preparation time) plus a confidence."""
+    from scripts.htr_train_prepare import to_display_order
     lp = F.log_softmax(logits[:out_w], dim=-1)
     best = lp.argmax(-1)
     conf_terms, syms, prev = [], [], 0
@@ -139,7 +148,7 @@ def greedy_decode(logits: torch.Tensor, out_w: int, id2sym: list[str]
         prev = k
     text = "".join(" " if s == "<space>" else s for s in syms)
     conf = math.exp(sum(conf_terms) / len(conf_terms)) if conf_terms else 0.0
-    return text.strip(), conf
+    return to_display_order(text).strip(), conf
 
 
 def cer(a: str, b: str) -> float:
@@ -208,6 +217,9 @@ def main() -> int:
     tr.add_argument("--batch-size", type=int, default=16)
     tr.add_argument("--lr", type=float, default=3e-4)
     tr.add_argument("--patience", type=int, default=30)
+    tr.add_argument("--min-epochs", type=int, default=0,
+                    help="no early stop before this epoch (CTC spends long "
+                         "in the all-blank phase with val CER pinned at 1.0)")
     tr.add_argument("--device", default="cuda" if torch.cuda.is_available() else "cpu")
     de = sub.add_parser("decode")
     de.add_argument("--split", default="val")
@@ -235,11 +247,17 @@ def main() -> int:
                             collate_fn=collate, num_workers=0)
         model = CRNN(len(id2sym)).to(device)
         opt = torch.optim.AdamW(model.parameters(), lr=args.lr, weight_decay=1e-4)
-        sched = torch.optim.lr_scheduler.ReduceLROnPlateau(opt, "min",
-                                                           factor=0.5, patience=10)
+        # Schedule on TRAIN LOSS: val CER is pinned at 1.0 through the CTC
+        # blank-collapse phase, and stepping on it strangles the LR before
+        # the model can escape (observed in the overfit diagnostics).
+        sched = torch.optim.lr_scheduler.ReduceLROnPlateau(
+            opt, "min", factor=0.5, patience=25, min_lr=1e-5)
         ctc = nn.CTCLoss(blank=0, zero_infinity=True)
-        val_refs = {sid: "".join(" " if s == "<space>" else s for s in syms).strip()
-                    for sid, syms in read_text_table(ws / "text" / "val.txt").items()}
+        from scripts.htr_train_prepare import to_display_order
+        val_refs = {  # text tables hold display order; compare in logical
+            sid: to_display_order(
+                "".join(" " if s == "<space>" else s for s in syms)).strip()
+            for sid, syms in read_text_table(ws / "text" / "val.txt").items()}
         best, bad_epochs = float("inf"), 0
         model_path.parent.mkdir(parents=True, exist_ok=True)
         for epoch in range(1, args.epochs + 1):
@@ -260,7 +278,8 @@ def main() -> int:
                 val_cer = sum(cer(t, val_refs.get(sid, "")) for sid, _c, t in rows) / len(rows)
             else:
                 val_cer = tot / max(n, 1)  # no val labels yet: select on loss
-            sched.step(val_cer)
+            train_loss = tot / max(n, 1)
+            sched.step(train_loss)
             marker = ""
             if val_cer < best - 1e-4:
                 best, bad_epochs = val_cer, 0
@@ -269,9 +288,9 @@ def main() -> int:
                 marker = "  <- saved"
             else:
                 bad_epochs += 1
-            print(f"epoch {epoch:3d} loss {tot / max(n, 1):.4f} "
+            print(f"epoch {epoch:3d} loss {train_loss:.4f} "
                   f"val_cer {val_cer:.4f}{marker}")
-            if bad_epochs >= args.patience:
+            if bad_epochs >= args.patience and epoch >= args.min_epochs:
                 print(f"early stop (patience {args.patience})")
                 break
         log_trial(ws, "train", {"epochs_run": epoch, "batch_size": args.batch_size,

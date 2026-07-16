@@ -1,0 +1,17 @@
+{
+ "schema_version": 1,
+ "sample_id": "e005_q2_r4__l3",
+ "split": "train",
+ "writer": "e005",
+ "transcription": "חלוקה מפוזרת ובאותו טווח אבל עם ערכים קבועים  [לא קריא] -gray",
+ "status": "ok",
+ "unreadable": true,
+ "blank": false,
+ "bad_segmentation": false,
+ "needs_recrop": false,
+ "skipped": false,
+ "notes": "",
+ "annotator": "owner",
+ "human_verified": true,
+ "saved_at": "2026-07-16 19:58:27"
+}

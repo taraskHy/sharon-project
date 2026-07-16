@@ -1,0 +1,17 @@
+{
+ "schema_version": 1,
+ "sample_id": "e005_q1_r7__l2",
+ "split": "train",
+ "writer": "e005",
+ "transcription": "תמונה H כתמונה שמבהירה כל פיקסל במידה שווה",
+ "status": "ok",
+ "unreadable": false,
+ "blank": false,
+ "bad_segmentation": false,
+ "needs_recrop": false,
+ "skipped": false,
+ "notes": "",
+ "annotator": "owner",
+ "human_verified": true,
+ "saved_at": "2026-07-16 19:53:46"
+}

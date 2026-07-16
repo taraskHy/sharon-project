@@ -67,6 +67,25 @@ def test_prepare_requires_train_labels(tmp_path):
     assert code == 3 and "annotate" in log
 
 
+def test_display_order_involution_and_ltr_runs():
+    from scripts.htr_train_prepare import to_display_order as disp
+    cases = [
+        "שלום עולם",
+        "העברנו High pass 123 מסנן",
+        "כל ערך x בהיסטוגרמה ממופה ל2x",
+        "פי 2",
+        "abc",
+        "",
+    ]
+    for s in cases:
+        assert disp(disp(s)) == s, f"not an involution for {s!r}"
+    # pure Hebrew: plain reversal
+    assert disp("אבג") == "גבא"
+    # embedded LTR run keeps internal order, Hebrew reverses around it
+    d = disp("אבג High pass דהו")
+    assert "High pass" in d and d.startswith("והד") and d.endswith("גבא")
+
+
 def test_augmentation_is_deterministic(tmp_path):
     pkg = mini_package(tmp_path)
     annotate_mix(tmp_path, pkg)

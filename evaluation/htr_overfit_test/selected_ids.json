@@ -1,0 +1,32 @@
+{
+ "picked": [
+  "e003_q1_r1__l1",
+  "e003_q1_r2__l2",
+  "e003_q1_r3__l1",
+  "e003_q1_r4__l1",
+  "e003_q1_r5__l1",
+  "e003_q1_r6__l1",
+  "e003_q1_r7__l1",
+  "e003_q1_r8__l1",
+  "e003_q2_r1__l1",
+  "e003_q2_r2__l1",
+  "e003_q2_r3__l1",
+  "e003_q2_r4__l1",
+  "e003_q2_r5__l1",
+  "e003_q2_r6__l1",
+  "e003_q2_r7__l1",
+  "e003_q2_r8__l1",
+  "e004_q1_r1__l1",
+  "e004_q1_r2__l1",
+  "e004_q1_r3__l1",
+  "e004_q1_r4__l1"
+ ],
+ "rule": "first N eligible in sorted sample_id order",
+ "n_eligible": 56,
+ "gate": {
+  "mean_cer_max": 0.05,
+  "per_line_cer_max": 0.1,
+  "min_lines_within": 18
+ },
+ "at": "2026-07-16 20:24:01"
+}
