@@ -16,10 +16,11 @@ from scripts.htr_annotation_lib import (
     save_annotation, validate_record,
 )
 
-PNG_1PX = bytes.fromhex(
-    "89504e470d0a1a0a0000000d494844520000000100000001080200000090"
-    "7753de0000000c4944415408d763f8ffff3f0005fe02fea72d101a000000"
-    "0049454e44ae426082"
+import base64
+
+PNG_1PX = base64.b64decode(
+    "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8"
+    "z8BQDwAEhQGAhKmMIQAAAABJRU5ErkJggg=="
 )
 
 

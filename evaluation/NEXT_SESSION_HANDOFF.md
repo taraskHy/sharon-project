@@ -132,7 +132,40 @@ exams. Grading policy and review gates must not be weakened.
   authoritative labels exist yet; owner annotation ≈ 2.5–5 h. Report:
   `evaluation/htr_annotation_package.md`.
 
-## FIRST TASK NEXT SESSION — oracle-ensemble analysis (cheap, no training)
+## Oracle-ensemble analysis (2026-07-14; DONE — REJECT, gate met exactly)
+- Ran post-hoc over run1 of all 14 retained configs vs hidden GT
+  (`scripts/oracle_ensemble_analysis.py` ->
+  `evaluation/oracle_ensemble_analysis.md` + percell CSV). Oracle CER
+  .717, oracle usable **0/11** (no expert reaches even CER 0.5 on any
+  strict cell) -> pre-registered REJECT branch: no MoE/ensemble, proceed
+  to fine-tuning. Medoid consensus (.864) is worse than best single
+  (.786) — 10/14 experts share the base VLM; agreement carries no
+  correctness signal (some pair agrees >=0.9 on every cell). Abstention
+  must come from model-own confidence (CTC posteriors), not agreement.
+
+## HTR fine-tune pilot scaffold (2026-07-14; READY — waiting on labels)
+- Protocol + pre-registered gates: `evaluation/htr_pilot_gates.md`
+  (trial budget 6, val-only selection, single internal_test decode,
+  optical-only primary metric, CONTINUE/DIAGNOSE thresholds fixed before
+  any run).
+- `.venv-train`: py3.12 + torch 2.13.0+cu126 (CUDA verified) + opencv.
+  PyLaia is NOT installable (needs py<3.11 / unresolvable pins) — pilot
+  uses the in-repo CRNN+CTC trainer `scripts/htr_pilot_train.py`
+  (train/decode subcommands, greedy decode + per-line confidence,
+  trials.jsonl audit log). **cuDNN disabled in the trainer** — its RNN
+  backward fail-fasts (0xC0000409) at teardown on this stack (isolated
+  by minimal repro; native kernels fine at pilot scale).
+- Data prep: `scripts/htr_train_prepare.py` (.venv) — ok-lines only
+  (blank/unreadable/flagged/token-span excluded per reason), deterministic
+  x5 augmentation, char symbol table, internal_test refused without
+  --allow-internal-test. Eval: `scripts/htr_pilot_eval.py` (line+cell
+  CER/WER, usable-rate, confidence-abstention curve). E2E smoke on
+  synthetic data: `scripts/htr_train_smoke.py` — PASS (loss 14.6->2.0 on
+  GPU). Workspace `evaluation/htr_train_workspace/` is git-ignored.
+- NEXT: owner annotates train+val in the annotation app -> run the 4
+  pipeline commands in htr_pilot_gates.md "Scaffold status".
+
+## [COMPLETED 2026-07-14 — see oracle section above] original spec: oracle-ensemble analysis
 Use ONLY the retained raw outputs above + hidden GT (post-hoc). Per
 verified crop: pick the expert output with the LOWEST CER (oracle);
 report oracle CER/WER/usable-rate vs each expert; pairwise error
