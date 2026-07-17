@@ -1,0 +1,76 @@
+{
+ "heldout_writer": "e005",
+ "fold_meta": {
+  "heldout_writer": "e005",
+  "aug": 3,
+  "train_lines": 44,
+  "train_images": 176,
+  "heldout_lines": 20,
+  "skipped_unknown_char": 0,
+  "n_symbols": 123,
+  "at": "2026-07-17 06:07:27"
+ },
+ "train_side": {
+  "n_lines": 44,
+  "mean_cer": 0.0596,
+  "median_cer": 0.0571,
+  "mean_wer": 0.2146,
+  "exact_rate": 0.2045,
+  "usable_rate": 1.0,
+  "omission_rate": 0.0294,
+  "insertion_rate": 0.0027
+ },
+ "heldout_side": {
+  "n_lines": 20,
+  "mean_cer": 0.7472,
+  "median_cer": 0.7609,
+  "mean_wer": 1.0,
+  "exact_rate": 0.0,
+  "usable_rate": 0.0,
+  "omission_rate": 0.3763,
+  "insertion_rate": 0.0
+ },
+ "conf_vs_cer": [
+  {
+   "conf": "[0.5,0.7)",
+   "n": 12,
+   "mean_cer": 0.7568
+  },
+  {
+   "conf": "[0.7,0.85)",
+   "n": 8,
+   "mean_cer": 0.7327
+  }
+ ],
+ "trials": [
+  {
+   "kind": "train",
+   "at": "2026-07-17 06:50:24",
+   "epochs_run": 73,
+   "batch_size": 8,
+   "lr": 0.0003,
+   "max_train_seconds": 2100.0,
+   "best_val_cer": 0.259,
+   "train_lines": 176,
+   "val_lines": 0,
+   "device": "cuda"
+  },
+  {
+   "kind": "decode",
+   "at": "2026-07-17 06:50:29",
+   "split": "heldout",
+   "out": "evaluation\\htr_gen_diag\\fold_e005\\decodes\\heldout.txt",
+   "n": 20,
+   "ckpt_epoch": 73
+  },
+  {
+   "kind": "decode",
+   "at": "2026-07-17 06:50:33",
+   "split": "trainbase",
+   "out": "evaluation\\htr_gen_diag\\fold_e005\\decodes\\trainbase.txt",
+   "n": 44,
+   "ckpt_epoch": 73
+  }
+ ],
+ "at": "2026-07-17 06:50:34"
+}

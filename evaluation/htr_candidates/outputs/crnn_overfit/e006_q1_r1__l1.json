@@ -1,0 +1,19 @@
+{
+ "sample_id": "e006_q1_r1__l1",
+ "config": "crnn_overfit",
+ "model": "in-repo CRNN+CTC (overfit-test checkpoint)",
+ "model_digest": "e4803b3fdf7481a9f55657dcd8804f1ecf180e1ae8b5dd8d5d4f02f1c42b35b8",
+ "images": {
+  "line": {
+   "path": "images/e006/q1_r1_l1.png",
+   "sha256": "c941abe578823244384d4a1612e1e400f2cdc9ed0d35f89ba1ecdfd8bc5630e8"
+  }
+ },
+ "raw": "e006_q1_r1__l1 0.6645 העלר שו הלעו ול מולר בכל הוא בהרמו הכל רא  הוו -כאובכ יא  י שוב בו טר בים",
+ "candidate": "העלר שו הלעו ול מולר בכל הוא בהרמו הכל רא  הוו -כאובכ יא  י שוב בו טר בים",
+ "confidence": 0.6645,
+ "error": null,
+ "latency_s": null,
+ "verified": false,
+ "at": "2026-07-17 06:05:03"
+}

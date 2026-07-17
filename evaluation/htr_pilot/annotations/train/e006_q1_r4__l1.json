@@ -1,0 +1,17 @@
+{
+ "schema_version": 1,
+ "sample_id": "e006_q1_r4__l1",
+ "split": "train",
+ "writer": "e006",
+ "transcription": "בהפעלת  [לא קריא] low pass לא ישאר תדרים גבוהים בכלל ולכן",
+ "status": "ok",
+ "unreadable": true,
+ "blank": false,
+ "bad_segmentation": false,
+ "needs_recrop": false,
+ "skipped": false,
+ "notes": "",
+ "annotator": "owner",
+ "human_verified": true,
+ "saved_at": "2026-07-17 01:18:57"
+}

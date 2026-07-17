@@ -1,0 +1,20 @@
+{
+ "sample_id": "e005_q1_r3__l3",
+ "config": "qwen_line",
+ "model": "qwen3-vl:8b-instruct",
+ "model_digest": "0533d74300e4f9bc367d675d4e64ffd073d50ff16a2b4096cc2e8a1cf8c96319",
+ "prompt_id": "strict_fidelity",
+ "images": {
+  "line": {
+   "path": "images/e005/q1_r3_l3.png",
+   "sha256": "3b97ed476f79dcdb1954f8083b554cebc6bfe4d180e17a6789abb627b5667b3b"
+  }
+ },
+ "raw": "{\"transcription\": \"n write 15(1) |C| Cram (Chirite) x,y,z /261 7,4,2 (c) (x,y) - n (Mw)\"}",
+ "candidate": "n write 15(1) |C| Cram (Chirite) x,y,z /261 7,4,2 (c) (x,y) - n (Mw)",
+ "confidence": null,
+ "error": null,
+ "latency_s": 3.67,
+ "verified": false,
+ "at": "2026-07-17 06:05:55"
+}

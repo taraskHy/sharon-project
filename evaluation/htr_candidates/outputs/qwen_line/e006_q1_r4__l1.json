@@ -1,0 +1,20 @@
+{
+ "sample_id": "e006_q1_r4__l1",
+ "config": "qwen_line",
+ "model": "qwen3-vl:8b-instruct",
+ "model_digest": "0533d74300e4f9bc367d675d4e64ffd073d50ff16a2b4096cc2e8a1cf8c96319",
+ "prompt_id": "strict_fidelity",
+ "images": {
+  "line": {
+   "path": "images/e006/q1_r4_l1.png",
+   "sha256": "b64ed13d4105db5f2883af03781d9457ff2d9cf988e089c40371f9a9f7481344"
+  }
+ },
+ "raw": "{\"transcription\": \"האם זה נורמלי?\"}",
+ "candidate": "האם זה נורמלי?",
+ "confidence": null,
+ "error": null,
+ "latency_s": 2.44,
+ "verified": false,
+ "at": "2026-07-17 06:07:48"
+}

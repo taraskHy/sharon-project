@@ -1,0 +1,19 @@
+{
+ "sample_id": "e005_q2_r8__l1",
+ "config": "crnn_overfit",
+ "model": "in-repo CRNN+CTC (overfit-test checkpoint)",
+ "model_digest": "e4803b3fdf7481a9f55657dcd8804f1ecf180e1ae8b5dd8d5d4f02f1c42b35b8",
+ "images": {
+  "line": {
+   "path": "images/e005/q2_r8_l1.png",
+   "sha256": "10a60759053842764508f9f96370ce379770f8afc6518aae120a4be3c03636df"
+  }
+ },
+ "raw": "e005_q2_r8__l1 0.6535 יו שמ  הEהHig",
+ "candidate": "יו שמ  הEהHig",
+ "confidence": 0.6535,
+ "error": null,
+ "latency_s": null,
+ "verified": false,
+ "at": "2026-07-17 06:05:03"
+}

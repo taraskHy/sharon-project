@@ -1,0 +1,20 @@
+{
+ "sample_id": "e006_q1_r5__l1",
+ "config": "qwen_line",
+ "model": "qwen3-vl:8b-instruct",
+ "model_digest": "0533d74300e4f9bc367d675d4e64ffd073d50ff16a2b4096cc2e8a1cf8c96319",
+ "prompt_id": "strict_fidelity",
+ "images": {
+  "line": {
+   "path": "images/e006/q1_r5_l1.png",
+   "sha256": "f29d73171603cbea19f071d0bae55368b84d2ed08956a9569a9b872a18577d0a"
+  }
+ },
+ "raw": "{\"transcription\": \". אַלְגּוֹרִיתָם יְהִי אֲנִי סְקֶרֶת אֲנִי אֲנִי\"}",
+ "candidate": ". אַלְגּוֹרִיתָם יְהִי אֲנִי סְקֶרֶת אֲנִי אֲנִי",
+ "confidence": null,
+ "error": null,
+ "latency_s": 4.06,
+ "verified": false,
+ "at": "2026-07-17 06:07:52"
+}

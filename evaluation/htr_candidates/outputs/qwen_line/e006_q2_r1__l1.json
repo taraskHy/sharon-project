@@ -1,0 +1,20 @@
+{
+ "sample_id": "e006_q2_r1__l1",
+ "config": "qwen_line",
+ "model": "qwen3-vl:8b-instruct",
+ "model_digest": "0533d74300e4f9bc367d675d4e64ffd073d50ff16a2b4096cc2e8a1cf8c96319",
+ "prompt_id": "strict_fidelity",
+ "images": {
+  "line": {
+   "path": "images/e006/q2_r1_l1.png",
+   "sha256": "647af3bd2d66765ea04ab5d003e857f606b8dd8a89098ef76030427ebc9f838f"
+  }
+ },
+ "raw": "{\"transcription\": \"082551'008 0070000000000000000000000000000000",
+ "candidate": null,
+ "confidence": null,
+ "error": "JSONDecodeError: Unterminated string starting at: line 1 column 19 (char 18)",
+ "latency_s": 3.59,
+ "verified": false,
+ "at": "2026-07-17 06:08:05"
+}

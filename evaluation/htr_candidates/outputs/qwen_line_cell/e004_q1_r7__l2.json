@@ -1,0 +1,24 @@
+{
+ "sample_id": "e004_q1_r7__l2",
+ "config": "qwen_line_cell",
+ "model": "qwen3-vl:8b-instruct",
+ "model_digest": "0533d74300e4f9bc367d675d4e64ffd073d50ff16a2b4096cc2e8a1cf8c96319",
+ "prompt_id": "strict_fidelity",
+ "images": {
+  "line": {
+   "path": "images/e004/q1_r7_l2.png",
+   "sha256": "f57503f1b1ee08a4553838f86de19c05e51444a175faa999d0ea046c859ca925"
+  },
+  "cell_clean": {
+   "path": "images/e004/q1_r7_cell_clean.png",
+   "sha256": "b13df21e745c8ea72df959cdfc91d8a03744466f9f3931347ac7d12983d5eddc"
+  }
+ },
+ "raw": "{\"transcription\": \"כּוֹמְרָה בְּחִירַת הַנְּשָׁמָה\"}",
+ "candidate": "כּוֹמְרָה בְּחִירַת הַנְּשָׁמָה",
+ "confidence": null,
+ "error": null,
+ "latency_s": 5.62,
+ "verified": false,
+ "at": "2026-07-17 06:09:38"
+}

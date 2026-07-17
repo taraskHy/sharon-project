@@ -1,0 +1,664 @@
+[
+ {
+  "cell": "e003_q1_r2",
+  "flagged_line": "e003_q1_r2__l1",
+  "status": "bad_segmentation",
+  "current_bands": [
+   [
+    0,
+    28
+   ],
+   [
+    35,
+    251
+   ]
+  ],
+  "proposed_bands": [
+   [
+    0,
+    28
+   ],
+   [
+    34,
+    251
+   ]
+  ],
+  "proposal_differs": true
+ },
+ {
+  "cell": "e003_q1_r5",
+  "flagged_line": "e003_q1_r5__l2",
+  "status": "bad_segmentation",
+  "current_bands": [
+   [
+    29,
+    200
+   ],
+   [
+    208,
+    251
+   ]
+  ],
+  "proposed_bands": [
+   [
+    27,
+    203
+   ],
+   [
+    208,
+    251
+   ]
+  ],
+  "proposal_differs": true
+ },
+ {
+  "cell": "e003_q2_r2",
+  "flagged_line": "e003_q2_r2__l2",
+  "status": "bad_segmentation",
+  "current_bands": [
+   [
+    0,
+    215
+   ],
+   [
+    223,
+    251
+   ]
+  ],
+  "proposed_bands": [
+   [
+    0,
+    216
+   ],
+   [
+    222,
+    251
+   ]
+  ],
+  "proposal_differs": true
+ },
+ {
+  "cell": "e003_q2_r3",
+  "flagged_line": "e003_q2_r3__l2",
+  "status": "bad_segmentation",
+  "current_bands": [
+   [
+    28,
+    211
+   ],
+   [
+    221,
+    250
+   ]
+  ],
+  "proposed_bands": [
+   [
+    0,
+    21
+   ],
+   [
+    27,
+    212
+   ],
+   [
+    221,
+    250
+   ]
+  ],
+  "proposal_differs": true
+ },
+ {
+  "cell": "e003_q2_r4",
+  "flagged_line": "e003_q2_r4__l2",
+  "status": "bad_segmentation",
+  "current_bands": [
+   [
+    27,
+    179
+   ]
+  ],
+  "proposed_bands": [
+   [
+    27,
+    180
+   ],
+   [
+    224,
+    251
+   ]
+  ],
+  "proposal_differs": true
+ },
+ {
+  "cell": "e003_q2_r7",
+  "flagged_line": "e003_q2_r7__l2",
+  "status": "bad_segmentation",
+  "current_bands": [
+   [
+    21,
+    182
+   ]
+  ],
+  "proposed_bands": [
+   [
+    0,
+    24
+   ],
+   [
+    19,
+    189
+   ],
+   [
+    223,
+    251
+   ]
+  ],
+  "proposal_differs": true
+ },
+ {
+  "cell": "e004_q1_r7",
+  "flagged_line": "e004_q1_r7__l1",
+  "status": "bad_segmentation",
+  "current_bands": [
+   [
+    94,
+    155
+   ]
+  ],
+  "proposed_bands": [
+   [
+    0,
+    26
+   ],
+   [
+    93,
+    155
+   ]
+  ],
+  "proposal_differs": true
+ },
+ {
+  "cell": "e004_q2_r3",
+  "flagged_line": "e004_q2_r3__l2",
+  "status": "bad_segmentation",
+  "current_bands": [
+   [
+    58,
+    113
+   ],
+   [
+    119,
+    190
+   ]
+  ],
+  "proposed_bands": [
+   [
+    0,
+    24
+   ],
+   [
+    58,
+    114
+   ],
+   [
+    118,
+    190
+   ]
+  ],
+  "proposal_differs": true
+ },
+ {
+  "cell": "e004_q2_r5",
+  "flagged_line": "e004_q2_r5__l3",
+  "status": "bad_segmentation",
+  "current_bands": [
+   [
+    31,
+    136
+   ],
+   [
+    161,
+    209
+   ]
+  ],
+  "proposed_bands": [
+   [
+    25,
+    142
+   ],
+   [
+    161,
+    209
+   ],
+   [
+    221,
+    251
+   ]
+  ],
+  "proposal_differs": true
+ },
+ {
+  "cell": "e004_q2_r7",
+  "flagged_line": "e004_q2_r7__l1",
+  "status": "bad_segmentation",
+  "current_bands": [
+   [
+    0,
+    31
+   ],
+   [
+    34,
+    131
+   ],
+   [
+    156,
+    215
+   ]
+  ],
+  "proposed_bands": [
+   [
+    0,
+    31
+   ],
+   [
+    33,
+    132
+   ],
+   [
+    130,
+    216
+   ]
+  ],
+  "proposal_differs": true
+ },
+ {
+  "cell": "e005_q1_r3",
+  "flagged_line": "e005_q1_r3__l1",
+  "status": "bad_segmentation",
+  "current_bands": [
+   [
+    0,
+    29
+   ],
+   [
+    56,
+    119
+   ],
+   [
+    148,
+    215
+   ]
+  ],
+  "proposed_bands": [
+   [
+    0,
+    29
+   ],
+   [
+    55,
+    120
+   ],
+   [
+    147,
+    217
+   ]
+  ],
+  "proposal_differs": true
+ },
+ {
+  "cell": "e005_q1_r5",
+  "flagged_line": "e005_q1_r5__l1",
+  "status": "bad_segmentation",
+  "current_bands": [
+   [
+    0,
+    30
+   ],
+   [
+    45,
+    113
+   ],
+   [
+    131,
+    209
+   ]
+  ],
+  "proposed_bands": [
+   [
+    0,
+    34
+   ],
+   [
+    44,
+    114
+   ],
+   [
+    129,
+    216
+   ]
+  ],
+  "proposal_differs": true
+ },
+ {
+  "cell": "e005_q1_r8",
+  "flagged_line": "e005_q1_r8__l1",
+  "status": "bad_segmentation",
+  "current_bands": [
+   [
+    0,
+    28
+   ],
+   [
+    37,
+    126
+   ],
+   [
+    165,
+    228
+   ]
+  ],
+  "proposed_bands": [
+   [
+    0,
+    28
+   ],
+   [
+    36,
+    127
+   ],
+   [
+    164,
+    228
+   ]
+  ],
+  "proposal_differs": true
+ },
+ {
+  "cell": "e005_q2_r2",
+  "flagged_line": "e005_q2_r2__l1",
+  "status": "bad_segmentation",
+  "current_bands": [
+   [
+    0,
+    27
+   ],
+   [
+    46,
+    119
+   ],
+   [
+    125,
+    230
+   ]
+  ],
+  "proposed_bands": [
+   [
+    0,
+    28
+   ],
+   [
+    44,
+    120
+   ],
+   [
+    123,
+    250
+   ]
+  ],
+  "proposal_differs": true
+ },
+ {
+  "cell": "e005_q2_r4",
+  "flagged_line": "e005_q2_r4__l1",
+  "status": "bad_segmentation",
+  "current_bands": [
+   [
+    40,
+    100
+   ],
+   [
+    128,
+    223
+   ]
+  ],
+  "proposed_bands": [
+   [
+    0,
+    30
+   ],
+   [
+    39,
+    108
+   ],
+   [
+    128,
+    226
+   ]
+  ],
+  "proposal_differs": true
+ },
+ {
+  "cell": "e005_q2_r5",
+  "flagged_line": "e005_q2_r5__l1",
+  "status": "bad_segmentation",
+  "current_bands": [
+   [
+    0,
+    28
+   ],
+   [
+    37,
+    106
+   ],
+   [
+    141,
+    220
+   ]
+  ],
+  "proposed_bands": [
+   [
+    0,
+    31
+   ],
+   [
+    37,
+    107
+   ],
+   [
+    139,
+    222
+   ]
+  ],
+  "proposal_differs": true
+ },
+ {
+  "cell": "e005_q2_r6",
+  "flagged_line": "e005_q2_r6__l1",
+  "status": "bad_segmentation",
+  "current_bands": [
+   [
+    39,
+    236
+   ]
+  ],
+  "proposed_bands": [
+   [
+    0,
+    27
+   ],
+   [
+    39,
+    236
+   ]
+  ],
+  "proposal_differs": true
+ },
+ {
+  "cell": "e005_q2_r7",
+  "flagged_line": "e005_q2_r7__l1",
+  "status": "bad_segmentation",
+  "current_bands": [
+   [
+    0,
+    41
+   ],
+   [
+    50,
+    109
+   ],
+   [
+    134,
+    217
+   ]
+  ],
+  "proposed_bands": [
+   [
+    0,
+    41
+   ],
+   [
+    41,
+    112
+   ],
+   [
+    132,
+    217
+   ]
+  ],
+  "proposal_differs": true
+ },
+ {
+  "cell": "e006_q2_r2",
+  "flagged_line": "e006_q2_r2__l1",
+  "status": "bad_segmentation",
+  "current_bands": [
+   [
+    0,
+    42
+   ],
+   [
+    83,
+    127
+   ]
+  ],
+  "proposed_bands": [
+   [
+    0,
+    43
+   ],
+   [
+    42,
+    79
+   ],
+   [
+    83,
+    128
+   ],
+   [
+    231,
+    250
+   ]
+  ],
+  "proposal_differs": true
+ },
+ {
+  "cell": "e006_q2_r6",
+  "flagged_line": "e006_q2_r6__l2",
+  "status": "bad_segmentation",
+  "current_bands": [
+   [
+    52,
+    127
+   ]
+  ],
+  "proposed_bands": [
+   [
+    44,
+    128
+   ]
+  ],
+  "proposal_differs": true
+ },
+ {
+  "cell": "e007_q1_r1",
+  "flagged_line": "e007_q1_r1__l2",
+  "status": "bad_segmentation",
+  "current_bands": [
+   [
+    26,
+    132
+   ],
+   [
+    218,
+    250
+   ]
+  ],
+  "proposed_bands": [
+   [
+    24,
+    132
+   ],
+   [
+    217,
+    250
+   ]
+  ],
+  "proposal_differs": true
+ },
+ {
+  "cell": "e005_q2_r3",
+  "flagged_line": "e005_q2_r3__l1",
+  "status": "needs_recrop",
+  "current_bands": [
+   [
+    0,
+    36
+   ],
+   [
+    40,
+    115
+   ],
+   [
+    140,
+    215
+   ]
+  ],
+  "proposed_bands": [
+   [
+    0,
+    116
+   ],
+   [
+    126,
+    224
+   ]
+  ],
+  "proposal_differs": true
+ },
+ {
+  "cell": "e006_q2_r5",
+  "flagged_line": "e006_q2_r5__l1",
+  "status": "needs_recrop",
+  "current_bands": [
+   [
+    0,
+    39
+   ],
+   [
+    81,
+    126
+   ]
+  ],
+  "proposed_bands": [
+   [
+    0,
+    39
+   ],
+   [
+    69,
+    128
+   ]
+  ],
+  "proposal_differs": true
+ }
+]

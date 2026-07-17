@@ -1,0 +1,20 @@
+{
+ "sample_id": "e005_q1_r7__l1",
+ "config": "qwen_line",
+ "model": "qwen3-vl:8b-instruct",
+ "model_digest": "0533d74300e4f9bc367d675d4e64ffd073d50ff16a2b4096cc2e8a1cf8c96319",
+ "prompt_id": "strict_fidelity",
+ "images": {
+  "line": {
+   "path": "images/e005/q1_r7_l1.png",
+   "sha256": "8202ff5882dad2adc8742c8af3f2fa7c9cc10b778a4face1eca8f908e3d5ad28"
+  }
+ },
+ "raw": "{\"transcription\": \"היקרים כהן עוזר 700 ק\" }",
+ "candidate": "היקרים כהן עוזר 700 ק",
+ "confidence": null,
+ "error": null,
+ "latency_s": 2.97,
+ "verified": false,
+ "at": "2026-07-17 06:06:22"
+}

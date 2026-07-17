@@ -1,0 +1,20 @@
+{
+ "sample_id": "e005_q1_r6__l2",
+ "config": "qwen_line",
+ "model": "qwen3-vl:8b-instruct",
+ "model_digest": "0533d74300e4f9bc367d675d4e64ffd073d50ff16a2b4096cc2e8a1cf8c96319",
+ "prompt_id": "strict_fidelity",
+ "images": {
+  "line": {
+   "path": "images/e005/q1_r6_l2.png",
+   "sha256": "bc6866b70dceaa1e60c6416133f368d3f73addb340af666b8adac5d3d1422615"
+  }
+ },
+ "raw": "{\"transcription\": \"1861 תחילת המאה ה-19 - 15 במרץ 1861\"}",
+ "candidate": "1861 תחילת המאה ה-19 - 15 במרץ 1861",
+ "confidence": null,
+ "error": null,
+ "latency_s": 3.26,
+ "verified": false,
+ "at": "2026-07-17 06:06:19"
+}

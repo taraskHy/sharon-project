@@ -1,0 +1,24 @@
+{
+ "sample_id": "e006_q1_r1__l1",
+ "config": "qwen_line_cell",
+ "model": "qwen3-vl:8b-instruct",
+ "model_digest": "0533d74300e4f9bc367d675d4e64ffd073d50ff16a2b4096cc2e8a1cf8c96319",
+ "prompt_id": "strict_fidelity",
+ "images": {
+  "line": {
+   "path": "images/e006/q1_r1_l1.png",
+   "sha256": "c941abe578823244384d4a1612e1e400f2cdc9ed0d35f89ba1ecdfd8bc5630e8"
+  },
+  "cell_clean": {
+   "path": "images/e006/q1_r1_cell_clean.png",
+   "sha256": "70e2970f2797c5ad245beefe0c8ccc9285dfab6eb9bdf515ac6162810ebff617"
+  }
+ },
+ "raw": "{\"transcription\": \"اِلْمَوْجُودَةِ فِي الْمَرْحَبِنَةِ (Echo ١٣٠) ! اِلْمَوْجُودَةِ فِي الْمَرْحَبِنَةِ\"}",
+ "candidate": "اِلْمَوْجُودَةِ فِي الْمَرْحَبِنَةِ (Echo ١٣٠) ! اِلْمَوْجُودَةِ فِي الْمَرْحَبِنَةِ",
+ "confidence": null,
+ "error": null,
+ "latency_s": 6.55,
+ "verified": false,
+ "at": "2026-07-17 06:13:10"
+}

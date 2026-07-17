@@ -1,0 +1,10 @@
+{
+ "heldout_writer": "e004",
+ "aug": 3,
+ "train_lines": 46,
+ "train_images": 184,
+ "heldout_lines": 18,
+ "skipped_unknown_char": 0,
+ "n_symbols": 123,
+ "at": "2026-07-17 06:07:29"
+}

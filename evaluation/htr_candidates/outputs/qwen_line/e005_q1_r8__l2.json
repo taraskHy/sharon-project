@@ -1,0 +1,20 @@
+{
+ "sample_id": "e005_q1_r8__l2",
+ "config": "qwen_line",
+ "model": "qwen3-vl:8b-instruct",
+ "model_digest": "0533d74300e4f9bc367d675d4e64ffd073d50ff16a2b4096cc2e8a1cf8c96319",
+ "prompt_id": "strict_fidelity",
+ "images": {
+  "line": {
+   "path": "images/e005/q1_r8_l2.png",
+   "sha256": "cc2aec27894a49d75dd5998d8e578441b3714f35628265805d012384d71490db"
+  }
+ },
+ "raw": "{\"transcription\": \"A (1.81 ק\\\"מ/ש' 132מ') ? / כְּלָבִי, אֲפַרְסְתֵּי, עַדְנִי , פְּרִי , הַשְׁאָר\"}",
+ "candidate": "A (1.81 ק\"מ/ש' 132מ') ? / כְּלָבִי, אֲפַרְסְתֵּי, עַדְנִי , פְּרִי , הַשְׁאָר",
+ "confidence": null,
+ "error": null,
+ "latency_s": 4.95,
+ "verified": false,
+ "at": "2026-07-17 06:06:30"
+}

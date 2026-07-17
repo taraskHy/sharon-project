@@ -1,0 +1,20 @@
+{
+ "sample_id": "e005_q2_r7__l2",
+ "config": "qwen_line",
+ "model": "qwen3-vl:8b-instruct",
+ "model_digest": "0533d74300e4f9bc367d675d4e64ffd073d50ff16a2b4096cc2e8a1cf8c96319",
+ "prompt_id": "strict_fidelity",
+ "images": {
+  "line": {
+   "path": "images/e005/q2_r7_l2.png",
+   "sha256": "e69f7cedbbb29da3e14742b3a162f5b6d1e831e884e206758b05026b67135fd0"
+  }
+ },
+ "raw": "{\"transcription\": \"gray-level 32 150 80, as cuvis 12c_8 .)s Cun cs\"}",
+ "candidate": "gray-level 32 150 80, as cuvis 12c_8 .)s Cun cs",
+ "confidence": null,
+ "error": null,
+ "latency_s": 3.3,
+ "verified": false,
+ "at": "2026-07-17 06:07:22"
+}

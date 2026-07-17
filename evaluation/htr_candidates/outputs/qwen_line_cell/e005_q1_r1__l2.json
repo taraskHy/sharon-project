@@ -1,0 +1,24 @@
+{
+ "sample_id": "e005_q1_r1__l2",
+ "config": "qwen_line_cell",
+ "model": "qwen3-vl:8b-instruct",
+ "model_digest": "0533d74300e4f9bc367d675d4e64ffd073d50ff16a2b4096cc2e8a1cf8c96319",
+ "prompt_id": "strict_fidelity",
+ "images": {
+  "line": {
+   "path": "images/e005/q1_r1_l2.png",
+   "sha256": "c151733a7a2aedcdc0bbf60ff47280b453eab0eda331583114611f875599099d"
+  },
+  "cell_clean": {
+   "path": "images/e005/q1_r1_cell_clean.png",
+   "sha256": "4e492899fba70aa31f1602e48d6f2538156ce682543bd459a74c3ecc5afbdf6e"
+  }
+ },
+ "raw": "{\"transcription\": \"y- א (15) x ק'בּר (16 מ.כ.) כְּלָה אֲפִילוּ הַמְּסֻקֵּר (28 07)\"}",
+ "candidate": "y- א (15) x ק'בּר (16 מ.כ.) כְּלָה אֲפִילוּ הַמְּסֻקֵּר (28 07)",
+ "confidence": null,
+ "error": null,
+ "latency_s": 4.53,
+ "verified": false,
+ "at": "2026-07-17 06:10:48"
+}

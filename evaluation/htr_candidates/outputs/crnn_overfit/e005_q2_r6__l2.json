@@ -1,0 +1,19 @@
+{
+ "sample_id": "e005_q2_r6__l2",
+ "config": "crnn_overfit",
+ "model": "in-repo CRNN+CTC (overfit-test checkpoint)",
+ "model_digest": "e4803b3fdf7481a9f55657dcd8804f1ecf180e1ae8b5dd8d5d4f02f1c42b35b8",
+ "images": {
+  "line": {
+   "path": "images/e005/q2_r6_l2.png",
+   "sha256": "bb253845fa463e555736a146573d925f2eb61d9c828387e23282d5cdcbd43eea"
+  }
+ },
+ "raw": "e005_q2_r6__l2 0.6027 נקלת הת הים ים ים יים נ במים הרהנקיםרכר (ר(כא)",
+ "candidate": "נקלת הת הים ים ים יים נ במים הרהנקיםרכר (ר(כא)",
+ "confidence": 0.6027,
+ "error": null,
+ "latency_s": null,
+ "verified": false,
+ "at": "2026-07-17 06:05:03"
+}

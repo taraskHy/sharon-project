@@ -1,0 +1,15 @@
+{
+ "config": "qwen_line_cell",
+ "model": "qwen3-vl:8b-instruct",
+ "prompt_id": "strict_fidelity",
+ "prompt_text": "You transcribe handwritten Hebrew (RTL, may mix English terms) from an exam answer cell. Rules:\n1. Copy EXACTLY the visible handwriting, word by word. Never complete, paraphrase, correct, or invent words. Fluency is NOT the goal; fidelity is.\n2. If a single word is unreadable, write [?] in its place.\n3. If the whole cell is unreadable or fully crossed out, output [unreadable].\n4. Text struck through by the writer is cancelled \u2014 skip it.\n5. It is ALWAYS better to output [?] than to guess a word.\nReply with ONLY a JSON object: {\"transcription\": \"<the text>\"}",
+ "temperature": 0,
+ "max_tokens": 400,
+ "ids_file": "bench_ids.json",
+ "n_ids": 66,
+ "started": "2026-07-17 06:09:14",
+ "model_digest": "0533d74300e4f9bc367d675d4e64ffd073d50ff16a2b4096cc2e8a1cf8c96319",
+ "finished": "2026-07-17 06:14:37",
+ "total_wall_s": 322.9,
+ "calls": 66
+}

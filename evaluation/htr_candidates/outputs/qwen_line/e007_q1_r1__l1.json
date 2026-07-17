@@ -1,0 +1,20 @@
+{
+ "sample_id": "e007_q1_r1__l1",
+ "config": "qwen_line",
+ "model": "qwen3-vl:8b-instruct",
+ "model_digest": "0533d74300e4f9bc367d675d4e64ffd073d50ff16a2b4096cc2e8a1cf8c96319",
+ "prompt_id": "strict_fidelity",
+ "images": {
+  "line": {
+   "path": "images/e007/q1_r1_l1.png",
+   "sha256": "7943be13b1283c20ddb20bc4142cc6b4bc79096281ed31bbd28ad89fdcaca19b"
+  }
+ },
+ "raw": "{\"transcription\": \"השנה הורכבה מ-100% מהנתחים של ה-2023, והנתחים של 2024 הם 80% מהנתחים של 2023.\"}",
+ "candidate": "השנה הורכבה מ-100% מהנתחים של ה-2023, והנתחים של 2024 הם 80% מהנתחים של 2023.",
+ "confidence": null,
+ "error": null,
+ "latency_s": 3.95,
+ "verified": false,
+ "at": "2026-07-17 06:08:40"
+}

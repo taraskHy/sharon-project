@@ -1,0 +1,24 @@
+{
+ "sample_id": "e005_q2_r5__l3",
+ "config": "qwen_line_cell",
+ "model": "qwen3-vl:8b-instruct",
+ "model_digest": "0533d74300e4f9bc367d675d4e64ffd073d50ff16a2b4096cc2e8a1cf8c96319",
+ "prompt_id": "strict_fidelity",
+ "images": {
+  "line": {
+   "path": "images/e005/q2_r5_l3.png",
+   "sha256": "70628e2a95f7271d7047905894161caac25afb581caa9c6a915f88ebff4e8b3d"
+  },
+  "cell_clean": {
+   "path": "images/e005/q2_r5_cell_clean.png",
+   "sha256": "12bd4a96bba5c9af82acee240b48b861f1c8d5f9ef93877f0efe9d5dce07283f"
+  }
+ },
+ "raw": "{\"transcription\": \"כְּלִילוֹן הַמָּרְחָבִים אֲשֶׁר בְּהֵם לְמַעַרְכֵי הַמָּרְחָבִים\"}",
+ "candidate": "כְּלִילוֹן הַמָּרְחָבִים אֲשֶׁר בְּהֵם לְמַעַרְכֵי הַמָּרְחָבִים",
+ "confidence": null,
+ "error": null,
+ "latency_s": 4.94,
+ "verified": false,
+ "at": "2026-07-17 06:12:42"
+}

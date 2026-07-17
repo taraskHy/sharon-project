@@ -1,0 +1,19 @@
+{
+ "sample_id": "e005_q1_r5__l3",
+ "config": "crnn_overfit",
+ "model": "in-repo CRNN+CTC (overfit-test checkpoint)",
+ "model_digest": "e4803b3fdf7481a9f55657dcd8804f1ecf180e1ae8b5dd8d5d4f02f1c42b35b8",
+ "images": {
+  "line": {
+   "path": "images/e005/q1_r5_l3.png",
+   "sha256": "3c2d3125117c1012e85d76c8153e4b6fd432d4641f20af961281c1584cb2ae04"
+  }
+ },
+ "raw": "e005_q1_r5__l3 0.6964 הירהם הים ים מוה לים",
+ "candidate": "הירהם הים ים מוה לים",
+ "confidence": 0.6964,
+ "error": null,
+ "latency_s": null,
+ "verified": false,
+ "at": "2026-07-17 06:05:03"
+}

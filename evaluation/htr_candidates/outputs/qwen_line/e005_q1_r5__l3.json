@@ -1,0 +1,20 @@
+{
+ "sample_id": "e005_q1_r5__l3",
+ "config": "qwen_line",
+ "model": "qwen3-vl:8b-instruct",
+ "model_digest": "0533d74300e4f9bc367d675d4e64ffd073d50ff16a2b4096cc2e8a1cf8c96319",
+ "prompt_id": "strict_fidelity",
+ "images": {
+  "line": {
+   "path": "images/e005/q1_r5_l3.png",
+   "sha256": "3c2d3125117c1012e85d76c8153e4b6fd432d4641f20af961281c1584cb2ae04"
+  }
+ },
+ "raw": "{\"transcription\": \"x וּשְׁכֵלָה (בְּרִית) כְּתַבְּרִיָּה - בְּרִית הַמְּדִינָה\"}",
+ "candidate": "x וּשְׁכֵלָה (בְּרִית) כְּתַבְּרִיָּה - בְּרִית הַמְּדִינָה",
+ "confidence": null,
+ "error": null,
+ "latency_s": 4.75,
+ "verified": false,
+ "at": "2026-07-17 06:06:12"
+}

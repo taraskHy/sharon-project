@@ -1,0 +1,3 @@
+{"kind": "train", "at": "2026-07-17 06:50:24", "epochs_run": 73, "batch_size": 8, "lr": 0.0003, "max_train_seconds": 2100.0, "best_val_cer": 0.259, "train_lines": 176, "val_lines": 0, "device": "cuda"}
+{"kind": "decode", "at": "2026-07-17 06:50:29", "split": "heldout", "out": "evaluation\\htr_gen_diag\\fold_e005\\decodes\\heldout.txt", "n": 20, "ckpt_epoch": 73}
+{"kind": "decode", "at": "2026-07-17 06:50:33", "split": "trainbase", "out": "evaluation\\htr_gen_diag\\fold_e005\\decodes\\trainbase.txt", "n": 44, "ckpt_epoch": 73}

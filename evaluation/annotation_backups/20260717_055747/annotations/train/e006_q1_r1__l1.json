@@ -1,0 +1,17 @@
+{
+ "schema_version": 1,
+ "sample_id": "e006_q1_r1__l1",
+ "split": "train",
+ "writer": "e006",
+ "transcription": "motionblur זה טשטוש והזזה של  [לא קריא](כמו echo) רואים ברמה הלפלסיאנית  [לא קריא] יש טשטוש בכל הכיוונים  [לא קריא] מוזזות",
+ "status": "ok",
+ "unreadable": true,
+ "blank": false,
+ "bad_segmentation": false,
+ "needs_recrop": false,
+ "skipped": false,
+ "notes": "",
+ "annotator": "owner",
+ "human_verified": true,
+ "saved_at": "2026-07-16 20:02:21"
+}

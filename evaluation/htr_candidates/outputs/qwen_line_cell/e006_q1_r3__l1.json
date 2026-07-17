@@ -1,0 +1,24 @@
+{
+ "sample_id": "e006_q1_r3__l1",
+ "config": "qwen_line_cell",
+ "model": "qwen3-vl:8b-instruct",
+ "model_digest": "0533d74300e4f9bc367d675d4e64ffd073d50ff16a2b4096cc2e8a1cf8c96319",
+ "prompt_id": "strict_fidelity",
+ "images": {
+  "line": {
+   "path": "images/e006/q1_r3_l1.png",
+   "sha256": "4c441bab68723f084850821500ace3f4d8f864cd245f764ec9f5c94945589475"
+  },
+  "cell_clean": {
+   "path": "images/e006/q1_r3_cell_clean.png",
+   "sha256": "a2f745180a5daccbd61fa50638924ef185430f3ca4734f0e1818431ef9bbfe6e"
+  }
+ },
+ "raw": "{\"transcription\": \"קְרָבִי תַעֲרֶה רַחַמִים מֵאֹרְכֵי עַדְוּרִי! דְּ\"}",
+ "candidate": "קְרָבִי תַעֲרֶה רַחַמִים מֵאֹרְכֵי עַדְוּרִי! דְּ",
+ "confidence": null,
+ "error": null,
+ "latency_s": 6.17,
+ "verified": false,
+ "at": "2026-07-17 06:13:21"
+}

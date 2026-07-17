@@ -1,0 +1,19 @@
+{
+ "sample_id": "e004_q2_r8__l2",
+ "config": "crnn_overfit",
+ "model": "in-repo CRNN+CTC (overfit-test checkpoint)",
+ "model_digest": "e4803b3fdf7481a9f55657dcd8804f1ecf180e1ae8b5dd8d5d4f02f1c42b35b8",
+ "images": {
+  "line": {
+   "path": "images/e004/q2_r8_l2.png",
+   "sha256": "46547dd258230c1915605fe03ae2a6aeea770775716e6a9fcdc4bb5a57e264da"
+  }
+ },
+ "raw": "e004_q2_r8__l2 0.7618 הiם ומ  הים",
+ "candidate": "הiם ומ  הים",
+ "confidence": 0.7618,
+ "error": null,
+ "latency_s": null,
+ "verified": false,
+ "at": "2026-07-17 06:05:03"
+}

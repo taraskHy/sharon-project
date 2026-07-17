@@ -1,0 +1,17 @@
+{
+ "schema_version": 1,
+ "sample_id": "e005_q2_r1__l2",
+ "split": "train",
+ "writer": "e005",
+ "transcription": "אך בחרנו  [לא קריא] ולא E כי מס' הפיקסלים שקרובים ל-0 גדולים יותר",
+ "status": "ok",
+ "unreadable": true,
+ "blank": false,
+ "bad_segmentation": false,
+ "needs_recrop": false,
+ "skipped": false,
+ "notes": "",
+ "annotator": "owner",
+ "human_verified": true,
+ "saved_at": "2026-07-16 19:55:10"
+}

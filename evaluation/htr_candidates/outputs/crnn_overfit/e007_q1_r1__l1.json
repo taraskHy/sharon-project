@@ -1,0 +1,19 @@
+{
+ "sample_id": "e007_q1_r1__l1",
+ "config": "crnn_overfit",
+ "model": "in-repo CRNN+CTC (overfit-test checkpoint)",
+ "model_digest": "e4803b3fdf7481a9f55657dcd8804f1ecf180e1ae8b5dd8d5d4f02f1c42b35b8",
+ "images": {
+  "line": {
+   "path": "images/e007/q1_r1_l1.png",
+   "sha256": "7943be13b1283c20ddb20bc4142cc6b4bc79096281ed31bbd28ad89fdcaca19b"
+  }
+ },
+ "raw": "e007_q1_r1__l1 0.7114 ל ו המ ים הר ר ים והלרלר הורא מואר בפפ ק ר  הר גרהגוהים",
+ "candidate": "ל ו המ ים הר ר ים והלרלר הורא מואר בפפ ק ר  הר גרהגוהים",
+ "confidence": 0.7114,
+ "error": null,
+ "latency_s": null,
+ "verified": false,
+ "at": "2026-07-17 06:05:03"
+}

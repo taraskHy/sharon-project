@@ -1,0 +1,17 @@
+{
+ "schema_version": 1,
+ "sample_id": "e004_q2_r1__l2",
+ "split": "train",
+ "writer": "e004",
+ "transcription": "טשטוש לכן נקבל יותר ב255",
+ "status": "ok",
+ "unreadable": false,
+ "blank": false,
+ "bad_segmentation": false,
+ "needs_recrop": false,
+ "skipped": false,
+ "notes": "",
+ "annotator": "owner",
+ "human_verified": true,
+ "saved_at": "2026-07-16 19:42:59"
+}

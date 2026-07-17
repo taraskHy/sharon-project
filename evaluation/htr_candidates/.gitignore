@@ -1,0 +1,4 @@
+# derived decode workspace images + copied checkpoint (13 MB; source of
+# truth is evaluation/htr_overfit_test/ws — see checkpoint_meta.json hash)
+crnn_ws/imgs/
+crnn_ws/model/

@@ -1,0 +1,17 @@
+{
+ "schema_version": 1,
+ "sample_id": "e006_q2_r8__l1",
+ "split": "train",
+ "writer": "e006",
+ "transcription": "הכפלת ערכי התמונה ב2 אז כל עמודה תלך למספר עמודה שלה כפול 2",
+ "status": "ok",
+ "unreadable": false,
+ "blank": false,
+ "bad_segmentation": false,
+ "needs_recrop": false,
+ "skipped": false,
+ "notes": "",
+ "annotator": "owner",
+ "human_verified": true,
+ "saved_at": "2026-07-17 01:28:53"
+}

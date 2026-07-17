@@ -63,6 +63,11 @@ def main() -> int:
     from streamlit.testing.v1 import AppTest
 
     assert (REAL / "splits/train.json").exists(), "pilot package not built"
+    # snapshot the REAL annotation store: the whole run must not touch it
+    # (the owner's real annotations exist since 2026-07-16)
+    real_before = sorted(
+        (str(p.relative_to(REAL)), p.stat().st_mtime_ns, p.stat().st_size)
+        for p in (REAL / "annotations").rglob("*.json"))
     tmp = Path(tempfile.mkdtemp(prefix="htr_smoke_"))
     try:
         samples = build_temp_root(tmp)
@@ -116,10 +121,30 @@ def main() -> int:
         assert draft["status"] == "draft" and not draft["human_verified"]
         print("5. navigation autosaved a draft (not verified)")
 
-        # 6) nothing leaked into the real package
-        real_ann = list((REAL / "annotations").rglob("*.json"))
-        assert not real_ann, f"real annotations touched: {real_ann[:3]}"
-        print("6. real package untouched (dummy annotations in temp only)")
+        # 6) verified-record lock: sample 1 is verified `ok` now — a fresh
+        #    session must refuse to overwrite it until deliberately unlocked
+        at4 = fresh()  # resumes at sample 3 (draft)
+        find_button(at4, "Previous").click().run()
+        find_button(at4, "Previous").click().run()
+        assert any(samples[0]["sample_id"] in h.value for h in at4.subheader)
+        assert find_button(at4, "Save and next").disabled, \
+            "verified record not locked"
+        unlock = [c for c in at4.checkbox if "Unlock" in c.label]
+        assert unlock, "unlock checkbox missing on verified record"
+        unlock[0].check().run()
+        assert not find_button(at4, "Save and next").disabled
+        at4.text_area[0].set_value("עריכה מכוונת אחרי שחרור").run()
+        find_button(at4, "Save and next").click().run()
+        rec1b = json.loads(rec_path.read_text(encoding="utf-8"))
+        assert rec1b["transcription"].startswith("עריכה מכוונת")
+        print("6. verified record locked until explicit unlock; unlock works")
+
+        # 7) nothing leaked into the real package
+        real_after = sorted(
+            (str(p.relative_to(REAL)), p.stat().st_mtime_ns, p.stat().st_size)
+            for p in (REAL / "annotations").rglob("*.json"))
+        assert real_after == real_before, "real annotations changed!"
+        print("7. real package untouched (dummy annotations in temp only)")
         print("SMOKE: PASS")
         return 0
     finally:

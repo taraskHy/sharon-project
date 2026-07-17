@@ -1,0 +1,19 @@
+{
+ "sample_id": "e004_q2_r1__l1",
+ "config": "crnn_overfit",
+ "model": "in-repo CRNN+CTC (overfit-test checkpoint)",
+ "model_digest": "e4803b3fdf7481a9f55657dcd8804f1ecf180e1ae8b5dd8d5d4f02f1c42b35b8",
+ "images": {
+  "line": {
+   "path": "images/e004/q2_r1_l1.png",
+   "sha256": "abfd6a0f360ca1d3064ea72440c82c849f019a7fe3f261db796c410bbb040065"
+  }
+ },
+ "raw": "e004_q2_r1__l1 0.7040 הת ו רות ר מ מד Sנ ים",
+ "candidate": "הת ו רות ר מ מד Sנ ים",
+ "confidence": 0.704,
+ "error": null,
+ "latency_s": null,
+ "verified": false,
+ "at": "2026-07-17 06:05:03"
+}

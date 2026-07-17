@@ -1,0 +1,20 @@
+{
+ "sample_id": "e006_q1_r3__l1",
+ "config": "qwen_line",
+ "model": "qwen3-vl:8b-instruct",
+ "model_digest": "0533d74300e4f9bc367d675d4e64ffd073d50ff16a2b4096cc2e8a1cf8c96319",
+ "prompt_id": "strict_fidelity",
+ "images": {
+  "line": {
+   "path": "images/e006/q1_r3_l1.png",
+   "sha256": "4c441bab68723f084850821500ace3f4d8f864cd245f764ec9f5c94945589475"
+  }
+ },
+ "raw": "{\"transcription\": \"D. קְרָה תַּחֲזִיק בְּמַעְרֶק הַכֹּל\"}",
+ "candidate": "D. קְרָה תַּחֲזִיק בְּמַעְרֶק הַכֹּל",
+ "confidence": null,
+ "error": null,
+ "latency_s": 3.62,
+ "verified": false,
+ "at": "2026-07-17 06:07:45"
+}

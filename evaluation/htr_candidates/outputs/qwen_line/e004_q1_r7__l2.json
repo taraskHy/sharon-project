@@ -1,0 +1,20 @@
+{
+ "sample_id": "e004_q1_r7__l2",
+ "config": "qwen_line",
+ "model": "qwen3-vl:8b-instruct",
+ "model_digest": "0533d74300e4f9bc367d675d4e64ffd073d50ff16a2b4096cc2e8a1cf8c96319",
+ "prompt_id": "strict_fidelity",
+ "images": {
+  "line": {
+   "path": "images/e004/q1_r7_l2.png",
+   "sha256": "f57503f1b1ee08a4553838f86de19c05e51444a175faa999d0ea046c859ca925"
+  }
+ },
+ "raw": "{\"transcription\": \"ספונטני אינטראקציה\"}",
+ "candidate": "ספונטני אינטראקציה",
+ "confidence": null,
+ "error": null,
+ "latency_s": 2.69,
+ "verified": false,
+ "at": "2026-07-17 06:04:48"
+}

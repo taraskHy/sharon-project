@@ -1,0 +1,6 @@
+# derived training artifacts (rebuildable via `prep` + run_folds.sh);
+# lists/, syms.txt, fold_meta.json, eval.json, per_line.json, decodes/ and
+# train_log.txt stay tracked for auditability
+fold_*/imgs/
+fold_*/model/
+fold_*/text/

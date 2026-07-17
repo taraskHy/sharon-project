@@ -23,7 +23,8 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from scripts.htr_annotation_lib import (  # noqa: E402
     UNREADABLE_TOKEN, load_all_annotations, load_annotation, load_samples,
-    make_record, package_root, progress, resume_index, save_annotation,
+    locked_against_overwrite, make_record, package_root, progress,
+    resume_index, save_annotation,
 )
 
 st.set_page_config(page_title="HTR pilot annotation", layout="wide")
@@ -101,6 +102,13 @@ with left:
 with right:
     if existing:
         st.info(f"saved: **{existing['status']}** at {existing['saved_at']}")
+    unlock_key = f"unlock_{split}_{sid}"
+    if existing and existing.get("human_verified"):
+        st.warning("This record is **owner-verified**. It is locked against "
+                   "overwrite; tick below only to deliberately re-annotate.")
+        st.checkbox("Unlock this verified record", key=unlock_key)
+    locked = locked_against_overwrite(
+        existing, st.session_state.get(unlock_key, False))
     text_key, notes_key = f"text_{split}_{sid}", f"notes_{split}_{sid}"
     if text_key not in st.session_state:
         st.session_state[text_key] = (existing or {}).get("transcription", "")
@@ -114,6 +122,11 @@ with right:
     notes = st.text_input("Notes", key=notes_key)
 
     def commit(status: str, advance: bool = True) -> None:
+        if locked_against_overwrite(
+                existing, st.session_state.get(unlock_key, False)):
+            st.error("verified record is locked — tick 'Unlock this verified "
+                     "record' to deliberately re-annotate it")
+            return
         rec = make_record(sample, st.session_state[text_key], status,
                           st.session_state[notes_key], annotator)
         save_annotation(ROOT, rec)
@@ -131,22 +144,26 @@ with right:
             save_annotation(ROOT, rec)
 
     ok_label = "✔ Save and next"
-    if st.button(ok_label, type="primary", use_container_width=True):
+    if st.button(ok_label, type="primary", use_container_width=True,
+                 disabled=locked):
         if not st.session_state[text_key].strip():
             st.error("empty transcription — use Blank / Unreadable instead")
         else:
             commit("ok")
     c1, c2 = st.columns(2)
-    if c1.button("Whole line unreadable", use_container_width=True):
+    if c1.button("Whole line unreadable", use_container_width=True,
+                 disabled=locked):
         commit("unreadable_full")
-    if c2.button("Blank (no writing)", use_container_width=True):
+    if c2.button("Blank (no writing)", use_container_width=True,
+                 disabled=locked):
         commit("blank")
     c3, c4 = st.columns(2)
-    if c3.button("Bad segmentation", use_container_width=True):
+    if c3.button("Bad segmentation", use_container_width=True,
+                 disabled=locked):
         commit("bad_segmentation")
-    if c4.button("Needs recrop", use_container_width=True):
+    if c4.button("Needs recrop", use_container_width=True, disabled=locked):
         commit("needs_recrop")
-    if st.button("Skip for now", use_container_width=True):
+    if st.button("Skip for now", use_container_width=True, disabled=locked):
         commit("skipped")
 
     st.divider()

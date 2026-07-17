@@ -1,0 +1,24 @@
+{
+ "sample_id": "e005_q1_r7__l1",
+ "config": "qwen_line_cell",
+ "model": "qwen3-vl:8b-instruct",
+ "model_digest": "0533d74300e4f9bc367d675d4e64ffd073d50ff16a2b4096cc2e8a1cf8c96319",
+ "prompt_id": "strict_fidelity",
+ "images": {
+  "line": {
+   "path": "images/e005/q1_r7_l1.png",
+   "sha256": "8202ff5882dad2adc8742c8af3f2fa7c9cc10b778a4face1eca8f908e3d5ad28"
+  },
+  "cell_clean": {
+   "path": "images/e005/q1_r7_cell_clean.png",
+   "sha256": "d2ab5a7216a873381d1072b43f1df5bf43a7ff4132b92d4dbac021030eab182f"
+  }
+ },
+ "raw": "{\"transcription\": \"הקרט גה.ר.וֹת 400 ק\" }",
+ "candidate": "הקרט גה.ר.וֹת 400 ק",
+ "confidence": null,
+ "error": null,
+ "latency_s": 5.03,
+ "verified": false,
+ "at": "2026-07-17 06:11:44"
+}

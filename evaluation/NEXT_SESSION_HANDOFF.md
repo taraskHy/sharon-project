@@ -1,10 +1,12 @@
-# NEXT SESSION HANDOFF — 2026-07-13 end of session
+# NEXT SESSION HANDOFF — 2026-07-17 end of overnight campaign
 
 ## State
-- Branch: `initial-prototype` @ latest commit (see `git log -1`; this file
-  committed on top of e898549). Working tree clean; all work pushed to
+- Branch: `initial-prototype` @ latest commit (see `git log -1`).
+  Working tree clean; all work pushed to
   https://github.com/taraskHy/sharon-project (PRIVATE — contains real
   student scans; keep it private).
+- Tests: **154/154** (`.venv\Scripts\python.exe -m pytest`); annotation
+  validator PASS (441 samples / 111 annotations); AppTest smoke PASS.
 - Machine: Windows 11, Ryzen 5 5600G, 64 GB RAM, RTX 2000 Ada 15.4 GB.
   Ollama 0.31.2 (`%LOCALAPPDATA%\Programs\Ollama\ollama.exe`); start with
   `OLLAMA_CONTEXT_LENGTH=16384` (32768 only to reseed key/alignment
@@ -186,6 +188,48 @@ exams. Grading policy and review gates must not be weakened.
   /4 (escape from collapse at ~epoch 126, memorized by ~550).
 - Owner instruction honoured: pilot NOT started; owner continues
   annotating train+val splits.
+
+## Overnight assisted-annotation campaign (2026-07-17; DONE)
+Full report: `evaluation/overnight_annotation_assistance.md`. Owner
+annotations at start: 111 train records (86 ok / 23 bad_seg / 2 recrop);
+backup + SHA256 at `evaluation/annotation_backups/20260717_055747/`;
+live annotations verified byte-identical at end (nothing touched them).
+
+- **AI candidate prefill: REJECTED** (pre-registered gate,
+  `evaluation/htr_candidates/PROTOCOL.md`). Qwen strict line / line+cell
+  and the overfit-CRNN scored CER .83–.86 on 66 held-back verified
+  lines; 0/198 candidates below CER 0.4 (100 % major-error). A↔B
+  agreement anti-predicts correctness. No candidate UI was added; no
+  candidates were generated for untouched samples. Ledger:
+  `evaluation/annotation_candidate_results.csv`; raw outputs + hashes:
+  `evaluation/htr_candidates/outputs/`.
+- **App change (only one)**: owner-verified records are now
+  overwrite-LOCKED in the annotation app until the per-sample "Unlock
+  this verified record" checkbox is ticked
+  (`locked_against_overwrite`). Autosave/resume unchanged.
+- **Priority queues** for the 153 untouched train samples:
+  `evaluation/annotation_priority_queue.csv` (easy_rank / info_rank /
+  recrop_rank; deterministic, non-GT signals only; 22 near-blank
+  quick confirms lead the easy queue).
+- **Writer-generalization diagnostic** (3 writer-grouped folds, fixed
+  overfit config, train-loss-only selection, pre-registered
+  `evaluation/htr_gen_diag/PROTOCOL.md`):
+  held-out CER e005 .747 / e004 .735 / e003 .797, usable 0 %, vs train
+  CER .01–.06 (memorized). **Weak real signal** (2/3 folds beat the
+  best VLM .786 from ~45 lines; transfer improved vs the 20-line
+  checkpoint's .833) but far from the pilot CONTINUE bar (.60):
+  writer diversity is the bottleneck. Confidence-vs-CER only marginal.
+  Report: `evaluation/writer_generalization_diagnostic.md`; the
+  pilot's 6-trial budget is untouched (no val decode happened).
+- **NEXT OWNER ACTION**: annotate untouched train lines of writers
+  e007–e012 in `evaluation/annotation_priority_queue.csv` easy_rank
+  order (~2–3 h), then annotate val, then run the pilot per
+  `evaluation/htr_pilot_gates.md`.
+- **Flagged-sample QA**: `evaluation/flagged_sample_review/` — grouped
+  contact sheets + 23 deterministic recrop proposals (`proposals.json`);
+  no status changed.
+- New safety tests: `tests/test_annotation_campaign.py` (13);
+  backup verifier: `scripts/annotation_backup_verify.py`.
 
 ## [COMPLETED 2026-07-14 — see oracle section above] original spec: oracle-ensemble analysis
 Use ONLY the retained raw outputs above + hidden GT (post-hoc). Per

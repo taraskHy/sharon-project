@@ -1,0 +1,24 @@
+{
+ "sample_id": "e006_q2_r7__l2",
+ "config": "qwen_line_cell",
+ "model": "qwen3-vl:8b-instruct",
+ "model_digest": "0533d74300e4f9bc367d675d4e64ffd073d50ff16a2b4096cc2e8a1cf8c96319",
+ "prompt_id": "strict_fidelity",
+ "images": {
+  "line": {
+   "path": "images/e006/q2_r7_l2.png",
+   "sha256": "00765f42fe45a1c458dc3792b1d9e3f5eb6c01d4ffc2ecf86d8a07161e489766"
+  },
+  "cell_clean": {
+   "path": "images/e006/q2_r7_cell_clean.png",
+   "sha256": "53eb88577b3c155614f05714b49898cde926c90d1cf321c0f872e9997ec4a4f5"
+  }
+ },
+ "raw": "{\"transcription\": \"יְהוֹרָה עַל-מִשְׁכָּנֶךָ הֲרֵעַ בְּרָאֵי אֱלֹהִים לְדַבְּרֵי יְהוָה וְשָׁמַעְתָּ\"}",
+ "candidate": "יְהוֹרָה עַל-מִשְׁכָּנֶךָ הֲרֵעַ בְּרָאֵי אֱלֹהִים לְדַבְּרֵי יְהוָה וְשָׁמַעְתָּ",
+ "confidence": null,
+ "error": null,
+ "latency_s": 5.76,
+ "verified": false,
+ "at": "2026-07-17 06:14:25"
+}

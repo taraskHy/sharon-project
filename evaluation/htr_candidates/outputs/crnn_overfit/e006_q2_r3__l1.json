@@ -1,0 +1,19 @@
+{
+ "sample_id": "e006_q2_r3__l1",
+ "config": "crnn_overfit",
+ "model": "in-repo CRNN+CTC (overfit-test checkpoint)",
+ "model_digest": "e4803b3fdf7481a9f55657dcd8804f1ecf180e1ae8b5dd8d5d4f02f1c42b35b8",
+ "images": {
+  "line": {
+   "path": "images/e006/q2_r3_l1.png",
+   "sha256": "9f76bca8eb863b9bd153f63630c336c8aba337a998e87eb84d6ece4d9096d0ef"
+  }
+ },
+ "raw": "e006_q2_r3__l1 0.6403 םה ת שפרם הי הרהבההרירושושהו הטוש שהל ו היט הטו ו ו תLow",
+ "candidate": "םה ת שפרם הי הרהבההרירושושהו הטוש שהל ו היט הטו ו ו תLow",
+ "confidence": 0.6403,
+ "error": null,
+ "latency_s": null,
+ "verified": false,
+ "at": "2026-07-17 06:05:03"
+}

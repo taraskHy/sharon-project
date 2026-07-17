@@ -1,0 +1,19 @@
+{
+ "sample_id": "e005_q2_r4__l2",
+ "config": "crnn_overfit",
+ "model": "in-repo CRNN+CTC (overfit-test checkpoint)",
+ "model_digest": "e4803b3fdf7481a9f55657dcd8804f1ecf180e1ae8b5dd8d5d4f02f1c42b35b8",
+ "images": {
+  "line": {
+   "path": "images/e005/q2_r4_l2.png",
+   "sha256": "193a2a78b001cf64018a1e33ee3b7b9dd1849e73898074bfa5adc74a9aaf5c95"
+  }
+ },
+ "raw": "e005_q2_r4__l2 0.7155 נ שר ים   מ Hig",
+ "candidate": "נ שר ים   מ Hig",
+ "confidence": 0.7155,
+ "error": null,
+ "latency_s": null,
+ "verified": false,
+ "at": "2026-07-17 06:05:03"
+}

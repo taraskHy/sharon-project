@@ -1,0 +1,17 @@
+{
+ "schema_version": 1,
+ "sample_id": "e005_q2_r8__l1",
+ "split": "train",
+ "writer": "e005",
+ "transcription": "עבור כל פיקסל הוא מקבל ערך 2 ולכן נמרח ההיסטוגרמה",
+ "status": "ok",
+ "unreadable": false,
+ "blank": false,
+ "bad_segmentation": false,
+ "needs_recrop": false,
+ "skipped": false,
+ "notes": "",
+ "annotator": "owner",
+ "human_verified": true,
+ "saved_at": "2026-07-16 20:01:10"
+}

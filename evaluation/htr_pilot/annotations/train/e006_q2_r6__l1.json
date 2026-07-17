@@ -1,0 +1,17 @@
+{
+ "schema_version": 1,
+ "sample_id": "e006_q2_r6__l1",
+ "split": "train",
+ "writer": "e006",
+ "transcription": "קונבלוציה עם מסכה 1,001 תגדיל טווח הדרגות האפור",
+ "status": "ok",
+ "unreadable": false,
+ "blank": false,
+ "bad_segmentation": false,
+ "needs_recrop": false,
+ "skipped": false,
+ "notes": "",
+ "annotator": "owner",
+ "human_verified": true,
+ "saved_at": "2026-07-17 01:27:24"
+}

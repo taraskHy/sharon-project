@@ -1,0 +1,24 @@
+{
+ "sample_id": "e005_q1_r3__l3",
+ "config": "qwen_line_cell",
+ "model": "qwen3-vl:8b-instruct",
+ "model_digest": "0533d74300e4f9bc367d675d4e64ffd073d50ff16a2b4096cc2e8a1cf8c96319",
+ "prompt_id": "strict_fidelity",
+ "images": {
+  "line": {
+   "path": "images/e005/q1_r3_l3.png",
+   "sha256": "3b97ed476f79dcdb1954f8083b554cebc6bfe4d180e17a6789abb627b5667b3b"
+  },
+  "cell_clean": {
+   "path": "images/e005/q1_r3_cell_clean.png",
+   "sha256": "e5aacdd46275e33da09cc1db5df7253e49d9e10ea7a0bba7254162fd4aa82d58"
+  }
+ },
+ "raw": "{\"transcription\": \"n MTC 15(1) >|C | rKMC (11115c. 3.4.2 /261 C71L (UvM) -n (1W nH 7,1.2)}\"}",
+ "candidate": "n MTC 15(1) >|C | rKMC (11115c. 3.4.2 /261 C71L (UvM) -n (1W nH 7,1.2)}",
+ "confidence": null,
+ "error": null,
+ "latency_s": 4.55,
+ "verified": false,
+ "at": "2026-07-17 06:11:09"
+}

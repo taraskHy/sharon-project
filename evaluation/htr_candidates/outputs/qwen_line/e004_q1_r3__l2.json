@@ -1,0 +1,20 @@
+{
+ "sample_id": "e004_q1_r3__l2",
+ "config": "qwen_line",
+ "model": "qwen3-vl:8b-instruct",
+ "model_digest": "0533d74300e4f9bc367d675d4e64ffd073d50ff16a2b4096cc2e8a1cf8c96319",
+ "prompt_id": "strict_fidelity",
+ "images": {
+  "line": {
+   "path": "images/e004/q1_r3_l2.png",
+   "sha256": "bf2382189fd33715d3ad88bfc4d66a1d0daf2e61996a9169f86706644c97336a"
+  }
+ },
+ "raw": "{\"transcription\": \".Brightness 7-1' (.)ce E 12 > 1.8\"}",
+ "candidate": ".Brightness 7-1' (.)ce E 12 > 1.8",
+ "confidence": null,
+ "error": null,
+ "latency_s": 21.06,
+ "verified": false,
+ "at": "2026-07-17 06:04:37"
+}

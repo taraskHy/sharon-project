@@ -1,0 +1,19 @@
+{
+ "sample_id": "e004_q1_r6__l1",
+ "config": "crnn_overfit",
+ "model": "in-repo CRNN+CTC (overfit-test checkpoint)",
+ "model_digest": "e4803b3fdf7481a9f55657dcd8804f1ecf180e1ae8b5dd8d5d4f02f1c42b35b8",
+ "images": {
+  "line": {
+   "path": "images/e004/q1_r6_l1.png",
+   "sha256": "f122f609fa58c724875b9453ee4a7fe5750bea3302b08dcd2b156fd83ef798f4"
+  }
+ },
+ "raw": "e004_q1_r6__l1 0.6303 i ו של רמ מצבעים",
+ "candidate": "i ו של רמ מצבעים",
+ "confidence": 0.6303,
+ "error": null,
+ "latency_s": null,
+ "verified": false,
+ "at": "2026-07-17 06:05:03"
+}

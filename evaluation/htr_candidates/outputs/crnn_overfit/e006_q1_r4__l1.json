@@ -1,0 +1,19 @@
+{
+ "sample_id": "e006_q1_r4__l1",
+ "config": "crnn_overfit",
+ "model": "in-repo CRNN+CTC (overfit-test checkpoint)",
+ "model_digest": "e4803b3fdf7481a9f55657dcd8804f1ecf180e1ae8b5dd8d5d4f02f1c42b35b8",
+ "images": {
+  "line": {
+   "path": "images/e006/q1_r4_l1.png",
+   "sha256": "b64ed13d4105db5f2883af03781d9457ff2d9cf988e089c40371f9a9f7481344"
+  }
+ },
+ "raw": "e006_q1_r4__l1 0.7508 ירם הרמ  דרם הה ים בהר   ים",
+ "candidate": "ירם הרמ  דרם הה ים בהר   ים",
+ "confidence": 0.7508,
+ "error": null,
+ "latency_s": null,
+ "verified": false,
+ "at": "2026-07-17 06:05:03"
+}

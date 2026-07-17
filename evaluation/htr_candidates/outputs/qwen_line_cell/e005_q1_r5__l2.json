@@ -1,0 +1,24 @@
+{
+ "sample_id": "e005_q1_r5__l2",
+ "config": "qwen_line_cell",
+ "model": "qwen3-vl:8b-instruct",
+ "model_digest": "0533d74300e4f9bc367d675d4e64ffd073d50ff16a2b4096cc2e8a1cf8c96319",
+ "prompt_id": "strict_fidelity",
+ "images": {
+  "line": {
+   "path": "images/e005/q1_r5_l2.png",
+   "sha256": "9b0adab9406a6c52cd77b933fcccdb6f726111edc46a5393b9c63ac6384cf020"
+  },
+  "cell_clean": {
+   "path": "images/e005/q1_r5_cell_clean.png",
+   "sha256": "c090a90bc14815508d4a8494e894a53b69cf76ec0ae3e0ffd9386847393cd1cf"
+  }
+ },
+ "raw": "{\"transcription\": \"7'32 מ (דפ) 330N אס x 7'3) -5(1'41.1-2 סב 10017\"}",
+ "candidate": "7'32 מ (דפ) 330N אס x 7'3) -5(1'41.1-2 סב 10017",
+ "confidence": null,
+ "error": null,
+ "latency_s": 5.58,
+ "verified": false,
+ "at": "2026-07-17 06:11:24"
+}

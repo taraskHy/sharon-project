@@ -1,0 +1,20 @@
+{
+ "sample_id": "e005_q2_r6__l2",
+ "config": "qwen_line",
+ "model": "qwen3-vl:8b-instruct",
+ "model_digest": "0533d74300e4f9bc367d675d4e64ffd073d50ff16a2b4096cc2e8a1cf8c96319",
+ "prompt_id": "strict_fidelity",
+ "images": {
+  "line": {
+   "path": "images/e005/q2_r6_l2.png",
+   "sha256": "bb253845fa463e555736a146573d925f2eb61d9c828387e23282d5cdcbd43eea"
+  }
+ },
+ "raw": "{\"transcription\": \"רְגָשׁוּת אַף עִמּוֹ כְּלָלָה הַכְּסֵפִי בְּרַחֲבַת הַשְׁעָרִים אֶל עַמּוֹ כְּלָלָה הַכְּסֵפִי בְּרַחֲבַת הַשְׁעָרִים אֶל עַמּוֹ\"}",
+ "candidate": "רְגָשׁוּת אַף עִמּוֹ כְּלָלָה הַכְּסֵפִי בְּרַחֲבַת הַשְׁעָרִים אֶל עַמּוֹ כְּלָלָה הַכְּסֵפִי בְּרַחֲבַת הַשְׁעָרִים אֶל עַמּוֹ",
+ "confidence": null,
+ "error": null,
+ "latency_s": 7.44,
+ "verified": false,
+ "at": "2026-07-17 06:07:19"
+}

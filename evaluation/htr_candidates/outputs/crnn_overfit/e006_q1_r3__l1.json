@@ -1,0 +1,19 @@
+{
+ "sample_id": "e006_q1_r3__l1",
+ "config": "crnn_overfit",
+ "model": "in-repo CRNN+CTC (overfit-test checkpoint)",
+ "model_digest": "e4803b3fdf7481a9f55657dcd8804f1ecf180e1ae8b5dd8d5d4f02f1c42b35b8",
+ "images": {
+  "line": {
+   "path": "images/e006/q1_r3_l1.png",
+   "sha256": "4c441bab68723f084850821500ace3f4d8f864cd245f764ec9f5c94945589475"
+  }
+ },
+ "raw": "e006_q1_r3__l1 0.5784 היו הב הS וש ים",
+ "candidate": "היו הב הS וש ים",
+ "confidence": 0.5784,
+ "error": null,
+ "latency_s": null,
+ "verified": false,
+ "at": "2026-07-17 06:05:03"
+}

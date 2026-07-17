@@ -1,0 +1,24 @@
+{
+ "sample_id": "e004_q2_r3__l1",
+ "config": "qwen_line_cell",
+ "model": "qwen3-vl:8b-instruct",
+ "model_digest": "0533d74300e4f9bc367d675d4e64ffd073d50ff16a2b4096cc2e8a1cf8c96319",
+ "prompt_id": "strict_fidelity",
+ "images": {
+  "line": {
+   "path": "images/e004/q2_r3_l1.png",
+   "sha256": "ab1a0323cac1603bc57c745a49dd7df168499f9cea5f76b6c6dd48101a8aa971"
+  },
+  "cell_clean": {
+   "path": "images/e004/q2_r3_cell_clean.png",
+   "sha256": "137c387c7ed50cb06b827c332d8d968059a1c00a19d3b651e270c5b867069ac3"
+  }
+ },
+ "raw": "{\"transcription\": \"סְפָרִים בְּרֵאשׁוֹת הַמְּגֻלָּה\"}",
+ "candidate": "סְפָרִים בְּרֵאשׁוֹת הַמְּגֻלָּה",
+ "confidence": null,
+ "error": null,
+ "latency_s": 5.52,
+ "verified": false,
+ "at": "2026-07-17 06:10:00"
+}

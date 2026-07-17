@@ -1,0 +1,19 @@
+{
+ "sample_id": "e004_q2_r8__l1",
+ "config": "crnn_overfit",
+ "model": "in-repo CRNN+CTC (overfit-test checkpoint)",
+ "model_digest": "e4803b3fdf7481a9f55657dcd8804f1ecf180e1ae8b5dd8d5d4f02f1c42b35b8",
+ "images": {
+  "line": {
+   "path": "images/e004/q2_r8_l1.png",
+   "sha256": "413d204de333c491e143a8ff7c41b1c85ca34797d22471d5fcfd9c0230b03741"
+  }
+ },
+ "raw": "e004_q2_r8__l1 0.6355 מ מ ם ו  עתד שתיכים",
+ "candidate": "מ מ ם ו  עתד שתיכים",
+ "confidence": 0.6355,
+ "error": null,
+ "latency_s": null,
+ "verified": false,
+ "at": "2026-07-17 06:05:03"
+}

@@ -1,0 +1,17 @@
+{
+ "schema_version": 1,
+ "sample_id": "e006_q1_r8__l1",
+ "split": "train",
+ "writer": "e006",
+ "transcription": "אם נסווג אותם זה יהיה E/P אבל מכיוון שבחידוד יהיה הוספה לתדרים גבוהים אז יהיה  [לא קריא] שפות יותר מאם נכפיל ב-2",
+ "status": "ok",
+ "unreadable": true,
+ "blank": false,
+ "bad_segmentation": false,
+ "needs_recrop": false,
+ "skipped": false,
+ "notes": "",
+ "annotator": "owner",
+ "human_verified": true,
+ "saved_at": "2026-07-17 01:21:17"
+}

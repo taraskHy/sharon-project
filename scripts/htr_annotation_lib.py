@@ -119,6 +119,13 @@ def validate_record(record: dict) -> list[str]:
     return problems
 
 
+def locked_against_overwrite(existing: dict | None, unlocked: bool = False) -> bool:
+    """Owner-verified records are immutable in the UI unless deliberately
+    unlocked for this sample (assisted-annotation campaign, 2026-07-17:
+    protects ground truth from accidental one-click replacement)."""
+    return bool(existing and existing.get("human_verified")) and not unlocked
+
+
 def save_annotation(root: Path, record: dict) -> Path:
     path = annotation_path(root, record["split"], record["sample_id"])
     path.parent.mkdir(parents=True, exist_ok=True)

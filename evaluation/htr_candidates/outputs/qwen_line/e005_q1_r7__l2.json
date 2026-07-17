@@ -1,0 +1,20 @@
+{
+ "sample_id": "e005_q1_r7__l2",
+ "config": "qwen_line",
+ "model": "qwen3-vl:8b-instruct",
+ "model_digest": "0533d74300e4f9bc367d675d4e64ffd073d50ff16a2b4096cc2e8a1cf8c96319",
+ "prompt_id": "strict_fidelity",
+ "images": {
+  "line": {
+   "path": "images/e005/q1_r7_l2.png",
+   "sha256": "842e29550a1ff1da1300f9792d7823f9d84c542f7cbd9447258a178901251c9d"
+  }
+ },
+ "raw": "{\"transcription\": \"Hence the cyclic group C_n = {a^k | k=0,1,...,n-1}\"}",
+ "candidate": "Hence the cyclic group C_n = {a^k | k=0,1,...,n-1}",
+ "confidence": null,
+ "error": null,
+ "latency_s": 2.94,
+ "verified": false,
+ "at": "2026-07-17 06:06:25"
+}

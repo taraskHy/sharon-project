@@ -1,0 +1,20 @@
+{
+ "sample_id": "e005_q1_r4__l1",
+ "config": "qwen_line",
+ "model": "qwen3-vl:8b-instruct",
+ "model_digest": "0533d74300e4f9bc367d675d4e64ffd073d50ff16a2b4096cc2e8a1cf8c96319",
+ "prompt_id": "strict_fidelity",
+ "images": {
+  "line": {
+   "path": "images/e005/q1_r4_l1.png",
+   "sha256": "b51d891b6aef064ba76e27257a16612f1d9ca8a5eaacfd724aaf9cff55fa87aa"
+  }
+ },
+ "raw": "{\"transcription\": \"לְמַעֲרֵבּוֹתָהּ הַשְׁכִּילָהּ לְמַעֲרֵבּוֹתָהּ הַשְׁכִּילָהּ\"}",
+ "candidate": "לְמַעֲרֵבּוֹתָהּ הַשְׁכִּילָהּ לְמַעֲרֵבּוֹתָהּ הַשְׁכִּילָהּ",
+ "confidence": null,
+ "error": null,
+ "latency_s": 5.11,
+ "verified": false,
+ "at": "2026-07-17 06:06:00"
+}

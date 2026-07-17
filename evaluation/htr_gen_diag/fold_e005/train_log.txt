@@ -1,0 +1,77 @@
+epoch   1 loss 25.8699 val_cer 25.8699  <- saved
+epoch   2 loss 4.0051 val_cer 4.0051  <- saved
+epoch   3 loss 3.6361 val_cer 3.6361  <- saved
+epoch   4 loss 3.5314 val_cer 3.5314  <- saved
+epoch   5 loss 3.5213 val_cer 3.5213  <- saved
+epoch   6 loss 3.5054 val_cer 3.5054  <- saved
+epoch   7 loss 3.4507 val_cer 3.4507  <- saved
+epoch   8 loss 3.4160 val_cer 3.4160  <- saved
+epoch   9 loss 3.4013 val_cer 3.4013  <- saved
+epoch  10 loss 3.3847 val_cer 3.3847  <- saved
+epoch  11 loss 3.3655 val_cer 3.3655  <- saved
+epoch  12 loss 3.3725 val_cer 3.3725
+epoch  13 loss 3.3398 val_cer 3.3398  <- saved
+epoch  14 loss 3.3318 val_cer 3.3318  <- saved
+epoch  15 loss 3.2921 val_cer 3.2921  <- saved
+epoch  16 loss 3.2625 val_cer 3.2625  <- saved
+epoch  17 loss 3.2377 val_cer 3.2377  <- saved
+epoch  18 loss 3.1885 val_cer 3.1885  <- saved
+epoch  19 loss 3.1433 val_cer 3.1433  <- saved
+epoch  20 loss 3.1034 val_cer 3.1034  <- saved
+epoch  21 loss 3.0572 val_cer 3.0572  <- saved
+epoch  22 loss 2.9705 val_cer 2.9705  <- saved
+epoch  23 loss 2.9138 val_cer 2.9138  <- saved
+epoch  24 loss 2.8876 val_cer 2.8876  <- saved
+epoch  25 loss 2.8322 val_cer 2.8322  <- saved
+epoch  26 loss 2.7481 val_cer 2.7481  <- saved
+epoch  27 loss 2.6895 val_cer 2.6895  <- saved
+epoch  28 loss 2.6192 val_cer 2.6192  <- saved
+epoch  29 loss 2.5512 val_cer 2.5512  <- saved
+epoch  30 loss 2.4875 val_cer 2.4875  <- saved
+epoch  31 loss 2.4154 val_cer 2.4154  <- saved
+epoch  32 loss 2.4245 val_cer 2.4245
+epoch  33 loss 2.3297 val_cer 2.3297  <- saved
+epoch  34 loss 2.2444 val_cer 2.2444  <- saved
+epoch  35 loss 2.1610 val_cer 2.1610  <- saved
+epoch  36 loss 2.0846 val_cer 2.0846  <- saved
+epoch  37 loss 2.0177 val_cer 2.0177  <- saved
+epoch  38 loss 1.9520 val_cer 1.9520  <- saved
+epoch  39 loss 1.8901 val_cer 1.8901  <- saved
+epoch  40 loss 1.8285 val_cer 1.8285  <- saved
+epoch  41 loss 1.8031 val_cer 1.8031  <- saved
+epoch  42 loss 1.7358 val_cer 1.7358  <- saved
+epoch  43 loss 1.6444 val_cer 1.6444  <- saved
+epoch  44 loss 1.5757 val_cer 1.5757  <- saved
+epoch  45 loss 1.5118 val_cer 1.5118  <- saved
+epoch  46 loss 1.4399 val_cer 1.4399  <- saved
+epoch  47 loss 1.4030 val_cer 1.4030  <- saved
+epoch  48 loss 1.3397 val_cer 1.3397  <- saved
+epoch  49 loss 1.3099 val_cer 1.3099  <- saved
+epoch  50 loss 1.2602 val_cer 1.2602  <- saved
+epoch  51 loss 1.1688 val_cer 1.1688  <- saved
+epoch  52 loss 1.1291 val_cer 1.1291  <- saved
+epoch  53 loss 1.0731 val_cer 1.0731  <- saved
+epoch  54 loss 1.0081 val_cer 1.0081  <- saved
+epoch  55 loss 0.9428 val_cer 0.9428  <- saved
+epoch  56 loss 0.8876 val_cer 0.8876  <- saved
+epoch  57 loss 0.8919 val_cer 0.8919
+epoch  58 loss 0.7911 val_cer 0.7911  <- saved
+epoch  59 loss 0.7412 val_cer 0.7412  <- saved
+epoch  60 loss 0.6930 val_cer 0.6930  <- saved
+epoch  61 loss 0.6398 val_cer 0.6398  <- saved
+epoch  62 loss 0.5913 val_cer 0.5913  <- saved
+epoch  63 loss 0.5748 val_cer 0.5748  <- saved
+epoch  64 loss 0.5480 val_cer 0.5480  <- saved
+epoch  65 loss 0.5001 val_cer 0.5001  <- saved
+epoch  66 loss 0.4446 val_cer 0.4446  <- saved
+epoch  67 loss 0.3991 val_cer 0.3991  <- saved
+epoch  68 loss 0.3877 val_cer 0.3877  <- saved
+epoch  69 loss 0.3700 val_cer 0.3700  <- saved
+epoch  70 loss 0.3261 val_cer 0.3261  <- saved
+epoch  71 loss 0.2952 val_cer 0.2952  <- saved
+epoch  72 loss 0.2801 val_cer 0.2801  <- saved
+epoch  73 loss 0.2590 val_cer 0.2590  <- saved
+wall-clock stop (2100s)
+best val CER 0.2590 -> evaluation\htr_gen_diag\fold_e005\model\crnn_best.pt
+20 lines -> evaluation\htr_gen_diag\fold_e005\decodes\heldout.txt
+44 lines -> evaluation\htr_gen_diag\fold_e005\decodes\trainbase.txt

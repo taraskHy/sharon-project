@@ -1,0 +1,17 @@
+{
+ "schema_version": 1,
+ "sample_id": "e004_q1_r6__l1",
+ "split": "train",
+ "writer": "e004",
+ "transcription": "הWAVELETS מטושטשת אנכית",
+ "status": "ok",
+ "unreadable": false,
+ "blank": false,
+ "bad_segmentation": false,
+ "needs_recrop": false,
+ "skipped": false,
+ "notes": "",
+ "annotator": "owner",
+ "human_verified": true,
+ "saved_at": "2026-07-16 19:42:11"
+}

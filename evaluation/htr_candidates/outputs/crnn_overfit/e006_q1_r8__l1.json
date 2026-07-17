@@ -1,0 +1,19 @@
+{
+ "sample_id": "e006_q1_r8__l1",
+ "config": "crnn_overfit",
+ "model": "in-repo CRNN+CTC (overfit-test checkpoint)",
+ "model_digest": "e4803b3fdf7481a9f55657dcd8804f1ecf180e1ae8b5dd8d5d4f02f1c42b35b8",
+ "images": {
+  "line": {
+   "path": "images/e006/q1_r8_l1.png",
+   "sha256": "b5ba95d0519d399dd6a61b9aa2f1792d8d686fc4b9ac13f8e9afa656d4926a2e"
+  }
+ },
+ "raw": "e006_q1_r8__l1 0.6225 הםל ים נכאו ב י ניכי ים מסוים קסרס ל ל ל ל ל את סים",
+ "candidate": "הםל ים נכאו ב י ניכי ים מסוים קסרס ל ל ל ל ל את סים",
+ "confidence": 0.6225,
+ "error": null,
+ "latency_s": null,
+ "verified": false,
+ "at": "2026-07-17 06:05:03"
+}

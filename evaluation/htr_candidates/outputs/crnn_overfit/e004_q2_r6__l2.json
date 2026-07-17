@@ -1,0 +1,19 @@
+{
+ "sample_id": "e004_q2_r6__l2",
+ "config": "crnn_overfit",
+ "model": "in-repo CRNN+CTC (overfit-test checkpoint)",
+ "model_digest": "e4803b3fdf7481a9f55657dcd8804f1ecf180e1ae8b5dd8d5d4f02f1c42b35b8",
+ "images": {
+  "line": {
+   "path": "images/e004/q2_r6_l2.png",
+   "sha256": "0db5f2a369981526bab5a56b2b78d14098b47fb98d6a5df32130623d1b3cd94c"
+  }
+ },
+ "raw": "e004_q2_r6__l2 0.6669 ם הגודרם הגבהים בהרים בה(ם הים הכים כל  ים היובהיום בההגו ים",
+ "candidate": "ם הגודרם הגבהים בהרים בה(ם הים הכים כל  ים היובהיום בההגו ים",
+ "confidence": 0.6669,
+ "error": null,
+ "latency_s": null,
+ "verified": false,
+ "at": "2026-07-17 06:05:03"
+}

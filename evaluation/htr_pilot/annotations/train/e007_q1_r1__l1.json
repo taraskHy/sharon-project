@@ -1,0 +1,17 @@
+{
+ "schema_version": 1,
+ "sample_id": "e007_q1_r1__l1",
+ "split": "train",
+ "writer": "e007",
+ "transcription": "ניתן לראות כי בשכבות של הגלים הם לא שומרים  [לא קריא] אותה תוצאה עבור התמונה ניתן לראות שיש סוג של מתיחה",
+ "status": "ok",
+ "unreadable": true,
+ "blank": false,
+ "bad_segmentation": false,
+ "needs_recrop": false,
+ "skipped": false,
+ "notes": "",
+ "annotator": "owner",
+ "human_verified": true,
+ "saved_at": "2026-07-17 01:29:53"
+}

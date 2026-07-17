@@ -1,0 +1,20 @@
+{
+ "sample_id": "e005_q2_r7__l3",
+ "config": "qwen_line",
+ "model": "qwen3-vl:8b-instruct",
+ "model_digest": "0533d74300e4f9bc367d675d4e64ffd073d50ff16a2b4096cc2e8a1cf8c96319",
+ "prompt_id": "strict_fidelity",
+ "images": {
+  "line": {
+   "path": "images/e005/q2_r7_l3.png",
+   "sha256": "a79da6bf960a1ce5d83660c50c22aba184b59372681208d3c2a9cc22163feea7"
+  }
+ },
+ "raw": "{\"transcription\": \"2-7 1981 גמר (פ'ג) .רְשַׁעְיִם : אֲבָרֵקְתִי כְּלִי\"}",
+ "candidate": "2-7 1981 גמר (פ'ג) .רְשַׁעְיִם : אֲבָרֵקְתִי כְּלִי",
+ "confidence": null,
+ "error": null,
+ "latency_s": 4.24,
+ "verified": false,
+ "at": "2026-07-17 06:07:27"
+}

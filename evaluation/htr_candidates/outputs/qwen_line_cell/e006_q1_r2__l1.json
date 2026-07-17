@@ -1,0 +1,24 @@
+{
+ "sample_id": "e006_q1_r2__l1",
+ "config": "qwen_line_cell",
+ "model": "qwen3-vl:8b-instruct",
+ "model_digest": "0533d74300e4f9bc367d675d4e64ffd073d50ff16a2b4096cc2e8a1cf8c96319",
+ "prompt_id": "strict_fidelity",
+ "images": {
+  "line": {
+   "path": "images/e006/q1_r2_l1.png",
+   "sha256": "3d718760d1db46630e84baa202ce457443d06514337db0571d5d96f03f5a9e66"
+  },
+  "cell_clean": {
+   "path": "images/e006/q1_r2_cell_clean.png",
+   "sha256": "df76102bf67712d1c72d6c54141d57d42829532f7da2e2a5e074fe191fc1d523"
+  }
+ },
+ "raw": "{\"transcription\": \"high pass s\\\\footnote{c}\"}",
+ "candidate": "high pass s\\footnote{c}",
+ "confidence": null,
+ "error": null,
+ "latency_s": 4.42,
+ "verified": false,
+ "at": "2026-07-17 06:13:15"
+}

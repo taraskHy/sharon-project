@@ -1,0 +1,17 @@
+{
+ "schema_version": 1,
+ "sample_id": "e006_q2_r1__l1",
+ "split": "train",
+ "writer": "e006",
+ "transcription": "הפעלת canny מחזירה תמונה עם ערכים 255 0 לכן  1,2 יתאימו לC,E מכיוון ש2 עם טשטוש אז יכול להיות שנאבד שפות ולכן canny c עם טשטוש ו  [לא קריא]",
+ "status": "ok",
+ "unreadable": true,
+ "blank": false,
+ "bad_segmentation": false,
+ "needs_recrop": false,
+ "skipped": false,
+ "notes": "",
+ "annotator": "owner",
+ "human_verified": true,
+ "saved_at": "2026-07-17 01:23:04"
+}

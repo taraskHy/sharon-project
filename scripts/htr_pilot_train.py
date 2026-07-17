@@ -220,6 +220,9 @@ def main() -> int:
     tr.add_argument("--min-epochs", type=int, default=0,
                     help="no early stop before this epoch (CTC spends long "
                          "in the all-blank phase with val CER pinned at 1.0)")
+    tr.add_argument("--max-train-seconds", type=float, default=0,
+                    help="wall-clock bound on the epoch loop (0 = none); the "
+                         "best checkpoint so far is kept")
     tr.add_argument("--device", default="cuda" if torch.cuda.is_available() else "cpu")
     de = sub.add_parser("decode")
     de.add_argument("--split", default="val")
@@ -260,6 +263,7 @@ def main() -> int:
             for sid, syms in read_text_table(ws / "text" / "val.txt").items()}
         best, bad_epochs = float("inf"), 0
         model_path.parent.mkdir(parents=True, exist_ok=True)
+        t_train = time.monotonic()
         for epoch in range(1, args.epochs + 1):
             model.train()
             tot = n = 0
@@ -293,8 +297,13 @@ def main() -> int:
             if bad_epochs >= args.patience and epoch >= args.min_epochs:
                 print(f"early stop (patience {args.patience})")
                 break
+            if args.max_train_seconds and \
+                    time.monotonic() - t_train >= args.max_train_seconds:
+                print(f"wall-clock stop ({args.max_train_seconds:.0f}s)")
+                break
         log_trial(ws, "train", {"epochs_run": epoch, "batch_size": args.batch_size,
-                                "lr": args.lr, "best_val_cer": round(best, 4),
+                                "lr": args.lr, "max_train_seconds": args.max_train_seconds,
+                                "best_val_cer": round(best, 4),
                                 "train_lines": len(train_ds),
                                 "val_lines": len(val_ds), "device": str(device)})
         print(f"best val CER {best:.4f} -> {model_path}")

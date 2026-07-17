@@ -1,0 +1,20 @@
+{
+ "sample_id": "e006_q1_r2__l1",
+ "config": "qwen_line",
+ "model": "qwen3-vl:8b-instruct",
+ "model_digest": "0533d74300e4f9bc367d675d4e64ffd073d50ff16a2b4096cc2e8a1cf8c96319",
+ "prompt_id": "strict_fidelity",
+ "images": {
+  "line": {
+   "path": "images/e006/q1_r2_l1.png",
+   "sha256": "3d718760d1db46630e84baa202ce457443d06514337db0571d5d96f03f5a9e66"
+  }
+ },
+ "raw": "{\"transcription\": \"מ'ג'ר א'ג'י 5.25 ידוע כ\" }",
+ "candidate": "מ'ג'ר א'ג'י 5.25 ידוע כ",
+ "confidence": null,
+ "error": null,
+ "latency_s": 2.86,
+ "verified": false,
+ "at": "2026-07-17 06:07:41"
+}

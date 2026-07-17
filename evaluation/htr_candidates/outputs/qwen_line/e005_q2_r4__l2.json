@@ -1,0 +1,20 @@
+{
+ "sample_id": "e005_q2_r4__l2",
+ "config": "qwen_line",
+ "model": "qwen3-vl:8b-instruct",
+ "model_digest": "0533d74300e4f9bc367d675d4e64ffd073d50ff16a2b4096cc2e8a1cf8c96319",
+ "prompt_id": "strict_fidelity",
+ "images": {
+  "line": {
+   "path": "images/e005/q2_r4_l2.png",
+   "sha256": "193a2a78b001cf64018a1e33ee3b7b9dd1849e73898074bfa5adc74a9aaf5c95"
+  }
+ },
+ "raw": "{\"transcription\": \"שְׁלַח לְרָאֵל, optimal quantization אֲנִי רֹצֶה לְקַבֵּל הַמְּסֻוּרָה בְּשֵׁם שְׁלַח לְרָאֵל\"}",
+ "candidate": "שְׁלַח לְרָאֵל, optimal quantization אֲנִי רֹצֶה לְקַבֵּל הַמְּסֻוּרָה בְּשֵׁם שְׁלַח לְרָאֵל",
+ "confidence": null,
+ "error": null,
+ "latency_s": 5.41,
+ "verified": false,
+ "at": "2026-07-17 06:06:58"
+}

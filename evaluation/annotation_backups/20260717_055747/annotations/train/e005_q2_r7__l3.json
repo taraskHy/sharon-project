@@ -1,0 +1,17 @@
+{
+ "schema_version": 1,
+ "sample_id": "e005_q2_r7__l3",
+ "split": "train",
+ "writer": "e005",
+ "transcription": "ב-2 ולכן נבחר היסטוגרמה דומה  [לא קריא] [לא קריא]",
+ "status": "ok",
+ "unreadable": true,
+ "blank": false,
+ "bad_segmentation": false,
+ "needs_recrop": false,
+ "skipped": false,
+ "notes": "",
+ "annotator": "owner",
+ "human_verified": true,
+ "saved_at": "2026-07-16 20:00:46"
+}

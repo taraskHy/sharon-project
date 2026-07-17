@@ -1,0 +1,19 @@
+{
+ "sample_id": "e006_q2_r8__l1",
+ "config": "crnn_overfit",
+ "model": "in-repo CRNN+CTC (overfit-test checkpoint)",
+ "model_digest": "e4803b3fdf7481a9f55657dcd8804f1ecf180e1ae8b5dd8d5d4f02f1c42b35b8",
+ "images": {
+  "line": {
+   "path": "images/e006/q2_r8_l1.png",
+   "sha256": "8a838d76df2fb5e1d9691df5cd9e21ddfe439ccc313c47661db99756e0d78b1f"
+  }
+ },
+ "raw": "e006_q2_r8__l1 0.6954 נהלושול ראן ראבובהר הרנערים",
+ "candidate": "נהלושול ראן ראבובהר הרנערים",
+ "confidence": 0.6954,
+ "error": null,
+ "latency_s": null,
+ "verified": false,
+ "at": "2026-07-17 06:05:03"
+}

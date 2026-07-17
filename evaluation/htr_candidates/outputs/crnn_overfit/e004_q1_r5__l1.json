@@ -1,0 +1,19 @@
+{
+ "sample_id": "e004_q1_r5__l1",
+ "config": "crnn_overfit",
+ "model": "in-repo CRNN+CTC (overfit-test checkpoint)",
+ "model_digest": "e4803b3fdf7481a9f55657dcd8804f1ecf180e1ae8b5dd8d5d4f02f1c42b35b8",
+ "images": {
+  "line": {
+   "path": "images/e004/q1_r5_l1.png",
+   "sha256": "6fd18a6f5795ac897d3a7bff5801edd7982198dd9f7cff50ce8c6296bf22cb4d"
+  }
+ },
+ "raw": "e004_q1_r5__l1 0.7227 רם הר וה הי הים הם ה הם ת שוים",
+ "candidate": "רם הר וה הי הים הם ה הם ת שוים",
+ "confidence": 0.7227,
+ "error": null,
+ "latency_s": null,
+ "verified": false,
+ "at": "2026-07-17 06:05:03"
+}

@@ -1,0 +1,20 @@
+{
+ "sample_id": "e005_q1_r4__l2",
+ "config": "qwen_line",
+ "model": "qwen3-vl:8b-instruct",
+ "model_digest": "0533d74300e4f9bc367d675d4e64ffd073d50ff16a2b4096cc2e8a1cf8c96319",
+ "prompt_id": "strict_fidelity",
+ "images": {
+  "line": {
+   "path": "images/e005/q1_r4_l2.png",
+   "sha256": "d2645352a142c2810222ac3d82463d1f68af7cffd3f0f49f1dd6b1b39f6c57b8"
+  }
+ },
+ "raw": "{\"transcription\": \"83 C vnitc 18cl circe (Cvntc) (Cvntc) [?]\"}",
+ "candidate": "83 C vnitc 18cl circe (Cvntc) (Cvntc) [?]",
+ "confidence": null,
+ "error": null,
+ "latency_s": 3.14,
+ "verified": false,
+ "at": "2026-07-17 06:06:03"
+}

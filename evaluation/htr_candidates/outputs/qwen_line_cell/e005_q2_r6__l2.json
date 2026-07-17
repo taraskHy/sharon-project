@@ -1,0 +1,24 @@
+{
+ "sample_id": "e005_q2_r6__l2",
+ "config": "qwen_line_cell",
+ "model": "qwen3-vl:8b-instruct",
+ "model_digest": "0533d74300e4f9bc367d675d4e64ffd073d50ff16a2b4096cc2e8a1cf8c96319",
+ "prompt_id": "strict_fidelity",
+ "images": {
+  "line": {
+   "path": "images/e005/q2_r6_l2.png",
+   "sha256": "bb253845fa463e555736a146573d925f2eb61d9c828387e23282d5cdcbd43eea"
+  },
+  "cell_clean": {
+   "path": "images/e005/q2_r6_cell_clean.png",
+   "sha256": "75d1c6bf2d979119dbdcc8fae0b1f0d69ea727aaaf80ce79bd836dc2090d2bdc"
+  }
+ },
+ "raw": "{\"transcription\": \"סְפָרִים בְּיַד הַמֶּלֶךְ\"}",
+ "candidate": "סְפָרִים בְּיַד הַמֶּלֶךְ",
+ "confidence": null,
+ "error": null,
+ "latency_s": 5.23,
+ "verified": false,
+ "at": "2026-07-17 06:12:47"
+}

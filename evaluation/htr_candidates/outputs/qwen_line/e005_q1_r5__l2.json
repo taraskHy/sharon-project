@@ -1,0 +1,20 @@
+{
+ "sample_id": "e005_q1_r5__l2",
+ "config": "qwen_line",
+ "model": "qwen3-vl:8b-instruct",
+ "model_digest": "0533d74300e4f9bc367d675d4e64ffd073d50ff16a2b4096cc2e8a1cf8c96319",
+ "prompt_id": "strict_fidelity",
+ "images": {
+  "line": {
+   "path": "images/e005/q1_r5_l2.png",
+   "sha256": "9b0adab9406a6c52cd77b933fcccdb6f726111edc46a5393b9c63ac6384cf020"
+  }
+ },
+ "raw": "{\"transcription\": \"7'32 מ (בְּרֵעַ) 230N אֲשֶׁר x 7'37 -5(כָּלִיּוֹת פְּסַח לְהַבְדִּיל)\"}",
+ "candidate": "7'32 מ (בְּרֵעַ) 230N אֲשֶׁר x 7'37 -5(כָּלִיּוֹת פְּסַח לְהַבְדִּיל)",
+ "confidence": null,
+ "error": null,
+ "latency_s": 4.83,
+ "verified": false,
+ "at": "2026-07-17 06:06:08"
+}

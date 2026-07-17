@@ -1,0 +1,24 @@
+{
+ "sample_id": "e004_q2_r6__l2",
+ "config": "qwen_line_cell",
+ "model": "qwen3-vl:8b-instruct",
+ "model_digest": "0533d74300e4f9bc367d675d4e64ffd073d50ff16a2b4096cc2e8a1cf8c96319",
+ "prompt_id": "strict_fidelity",
+ "images": {
+  "line": {
+   "path": "images/e004/q2_r6_l2.png",
+   "sha256": "0db5f2a369981526bab5a56b2b78d14098b47fb98d6a5df32130623d1b3cd94c"
+  },
+  "cell_clean": {
+   "path": "images/e004/q2_r6_cell_clean.png",
+   "sha256": "7d715f5b4a793ab6b3f7108e0a11d8b6ac88de010c778ab8b430221b4161ad54"
+  }
+ },
+ "raw": "{\"transcription\": \"2630000000000000000000000000000000",
+ "candidate": null,
+ "confidence": null,
+ "error": "JSONDecodeError: Unterminated string starting at: line 1 column 19 (char 18)",
+ "latency_s": 3.44,
+ "verified": false,
+ "at": "2026-07-17 06:10:24"
+}

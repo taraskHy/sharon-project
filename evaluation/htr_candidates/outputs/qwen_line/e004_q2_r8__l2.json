@@ -1,0 +1,20 @@
+{
+ "sample_id": "e004_q2_r8__l2",
+ "config": "qwen_line",
+ "model": "qwen3-vl:8b-instruct",
+ "model_digest": "0533d74300e4f9bc367d675d4e64ffd073d50ff16a2b4096cc2e8a1cf8c96319",
+ "prompt_id": "strict_fidelity",
+ "images": {
+  "line": {
+   "path": "images/e004/q2_r8_l2.png",
+   "sha256": "46547dd258230c1915605fe03ae2a6aeea770775716e6a9fcdc4bb5a57e264da"
+  }
+ },
+ "raw": "{\"transcription\": \"150 אינטראקציה עם כוח\"}",
+ "candidate": "150 אינטראקציה עם כוח",
+ "confidence": null,
+ "error": null,
+ "latency_s": 2.66,
+ "verified": false,
+ "at": "2026-07-17 06:05:30"
+}

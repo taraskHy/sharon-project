@@ -1,0 +1,19 @@
+{
+ "sample_id": "e006_q2_r1__l1",
+ "config": "crnn_overfit",
+ "model": "in-repo CRNN+CTC (overfit-test checkpoint)",
+ "model_digest": "e4803b3fdf7481a9f55657dcd8804f1ecf180e1ae8b5dd8d5d4f02f1c42b35b8",
+ "images": {
+  "line": {
+   "path": "images/e006/q2_r1_l1.png",
+   "sha256": "647af3bd2d66765ea04ab5d003e857f606b8dd8a89098ef76030427ebc9f838f"
+  }
+ },
+ "raw": "e006_q2_r1__l1 0.6466 םהנו ותלם הידת הרם י י ים רים רים י ר סית תנתי רארש תרים",
+ "candidate": "םהנו ותלם הידת הרם י י ים רים רים י ר סית תנתי רארש תרים",
+ "confidence": 0.6466,
+ "error": null,
+ "latency_s": null,
+ "verified": false,
+ "at": "2026-07-17 06:05:03"
+}

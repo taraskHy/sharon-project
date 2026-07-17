@@ -1,0 +1,24 @@
+{
+ "sample_id": "e004_q2_r1__l1",
+ "config": "qwen_line_cell",
+ "model": "qwen3-vl:8b-instruct",
+ "model_digest": "0533d74300e4f9bc367d675d4e64ffd073d50ff16a2b4096cc2e8a1cf8c96319",
+ "prompt_id": "strict_fidelity",
+ "images": {
+  "line": {
+   "path": "images/e004/q2_r1_l1.png",
+   "sha256": "abfd6a0f360ca1d3064ea72440c82c849f019a7fe3f261db796c410bbb040065"
+  },
+  "cell_clean": {
+   "path": "images/e004/q2_r1_cell_clean.png",
+   "sha256": "dc284cfa222e73c20ef7e26fe571a139f767fd4db3af4b0feee49c35e75baba0"
+  }
+ },
+ "raw": "{\"transcription\": \"25511.0 App Cunny 'inke 37?\"}",
+ "candidate": "25511.0 App Cunny 'inke 37?",
+ "confidence": null,
+ "error": null,
+ "latency_s": 4.56,
+ "verified": false,
+ "at": "2026-07-17 06:09:47"
+}

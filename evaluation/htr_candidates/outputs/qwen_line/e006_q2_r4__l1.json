@@ -1,0 +1,20 @@
+{
+ "sample_id": "e006_q2_r4__l1",
+ "config": "qwen_line",
+ "model": "qwen3-vl:8b-instruct",
+ "model_digest": "0533d74300e4f9bc367d675d4e64ffd073d50ff16a2b4096cc2e8a1cf8c96319",
+ "prompt_id": "strict_fidelity",
+ "images": {
+  "line": {
+   "path": "images/e006/q2_r4_l1.png",
+   "sha256": "1af98cbc5af5ed4bb7ece222a00c76837770509689c65d2f2c22c81a02b58a77"
+  }
+ },
+ "raw": "{\"transcription\": \"בְּשַׁלְמִיָּה הַרְבֵּה אֲנִי מְחַזֶּק בְּעֹדְכֶם Quantization\\nUniform 0.5 - 4,5\\n4→1 2→3\"}",
+ "candidate": "בְּשַׁלְמִיָּה הַרְבֵּה אֲנִי מְחַזֶּק בְּעֹדְכֶם Quantization\nUniform 0.5 - 4,5\n4→1 2→3",
+ "confidence": null,
+ "error": null,
+ "latency_s": 5.06,
+ "verified": false,
+ "at": "2026-07-17 06:08:16"
+}

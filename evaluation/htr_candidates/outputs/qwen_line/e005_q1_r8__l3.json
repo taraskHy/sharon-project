@@ -1,0 +1,20 @@
+{
+ "sample_id": "e005_q1_r8__l3",
+ "config": "qwen_line",
+ "model": "qwen3-vl:8b-instruct",
+ "model_digest": "0533d74300e4f9bc367d675d4e64ffd073d50ff16a2b4096cc2e8a1cf8c96319",
+ "prompt_id": "strict_fidelity",
+ "images": {
+  "line": {
+   "path": "images/e005/q1_r8_l3.png",
+   "sha256": "37fe1123ab1c7cb34d87e09127b5294b1dc72922412e9eba8919a14153a2f3fe"
+  }
+ },
+ "raw": "{\"transcription\": \"ב, וְחַיִּים לְרֹאשׁ הַמָּגֵן אֲנִי מְדַוֵּר בְּרַעֲמָה גְּדוֹלָה\"}",
+ "candidate": "ב, וְחַיִּים לְרֹאשׁ הַמָּגֵן אֲנִי מְדַוֵּר בְּרַעֲמָה גְּדוֹלָה",
+ "confidence": null,
+ "error": null,
+ "latency_s": 4.98,
+ "verified": false,
+ "at": "2026-07-17 06:06:35"
+}

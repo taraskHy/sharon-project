@@ -1,0 +1,20 @@
+{
+ "sample_id": "e005_q2_r8__l1",
+ "config": "qwen_line",
+ "model": "qwen3-vl:8b-instruct",
+ "model_digest": "0533d74300e4f9bc367d675d4e64ffd073d50ff16a2b4096cc2e8a1cf8c96319",
+ "prompt_id": "strict_fidelity",
+ "images": {
+  "line": {
+   "path": "images/e005/q2_r8_l1.png",
+   "sha256": "10a60759053842764508f9f96370ce379770f8afc6518aae120a4be3c03636df"
+  }
+ },
+ "raw": "{\"transcription\": \"018 020 030 040 050 060 070 080 090 100\"}",
+ "candidate": "018 020 030 040 050 060 070 080 090 100",
+ "confidence": null,
+ "error": null,
+ "latency_s": 3.58,
+ "verified": false,
+ "at": "2026-07-17 06:07:30"
+}

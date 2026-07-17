@@ -1,0 +1,24 @@
+{
+ "sample_id": "e004_q2_r8__l1",
+ "config": "qwen_line_cell",
+ "model": "qwen3-vl:8b-instruct",
+ "model_digest": "0533d74300e4f9bc367d675d4e64ffd073d50ff16a2b4096cc2e8a1cf8c96319",
+ "prompt_id": "strict_fidelity",
+ "images": {
+  "line": {
+   "path": "images/e004/q2_r8_l1.png",
+   "sha256": "413d204de333c491e143a8ff7c41b1c85ca34797d22471d5fcfd9c0230b03741"
+  },
+  "cell_clean": {
+   "path": "images/e004/q2_r8_cell_clean.png",
+   "sha256": "3028ca4b8cb37825b9fedc0bdbce9b1e762cc34cf5b060dd6c164ec5cbfdeafa"
+  }
+ },
+ "raw": "{\"transcription\": \"ski Echo 128 57.5-913 20'0w3\"}",
+ "candidate": "ski Echo 128 57.5-913 20'0w3",
+ "confidence": null,
+ "error": null,
+ "latency_s": 5.05,
+ "verified": false,
+ "at": "2026-07-17 06:10:34"
+}

@@ -1,0 +1,24 @@
+{
+ "sample_id": "e005_q1_r8__l3",
+ "config": "qwen_line_cell",
+ "model": "qwen3-vl:8b-instruct",
+ "model_digest": "0533d74300e4f9bc367d675d4e64ffd073d50ff16a2b4096cc2e8a1cf8c96319",
+ "prompt_id": "strict_fidelity",
+ "images": {
+  "line": {
+   "path": "images/e005/q1_r8_l3.png",
+   "sha256": "37fe1123ab1c7cb34d87e09127b5294b1dc72922412e9eba8919a14153a2f3fe"
+  },
+  "cell_clean": {
+   "path": "images/e005/q1_r8_cell_clean.png",
+   "sha256": "67f573315936923c094f691f1b941ab67589509bc45ec21fb4d92219b4d64d7b"
+  }
+ },
+ "raw": "{\"transcription\": \"ב, וְחַיִּים לְרֹאשׁ הַמָּגֵן גְּרָם אֲנִי מִזְרָחַי בְּהַקְרָבָה\"}",
+ "candidate": "ב, וְחַיִּים לְרֹאשׁ הַמָּגֵן גְּרָם אֲנִי מִזְרָחַי בְּהַקְרָבָה",
+ "confidence": null,
+ "error": null,
+ "latency_s": 5.26,
+ "verified": false,
+ "at": "2026-07-17 06:12:03"
+}

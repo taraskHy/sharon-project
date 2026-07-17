@@ -1,0 +1,24 @@
+{
+ "sample_id": "e004_q2_r1__l2",
+ "config": "qwen_line_cell",
+ "model": "qwen3-vl:8b-instruct",
+ "model_digest": "0533d74300e4f9bc367d675d4e64ffd073d50ff16a2b4096cc2e8a1cf8c96319",
+ "prompt_id": "strict_fidelity",
+ "images": {
+  "line": {
+   "path": "images/e004/q2_r1_l2.png",
+   "sha256": "dbb35001c8948739ba56b86b9de9c4e3c450e83c692938be501f8e2f4b9b5fcf"
+  },
+  "cell_clean": {
+   "path": "images/e004/q2_r1_cell_clean.png",
+   "sha256": "dc284cfa222e73c20ef7e26fe571a139f767fd4db3af4b0feee49c35e75baba0"
+  }
+ },
+ "raw": "{\"transcription\": \" , 2558 7511 5933 138 eilel\"}",
+ "candidate": " , 2558 7511 5933 138 eilel",
+ "confidence": null,
+ "error": null,
+ "latency_s": 2.89,
+ "verified": false,
+ "at": "2026-07-17 06:09:50"
+}

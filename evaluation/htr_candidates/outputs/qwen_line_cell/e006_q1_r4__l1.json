@@ -1,0 +1,24 @@
+{
+ "sample_id": "e006_q1_r4__l1",
+ "config": "qwen_line_cell",
+ "model": "qwen3-vl:8b-instruct",
+ "model_digest": "0533d74300e4f9bc367d675d4e64ffd073d50ff16a2b4096cc2e8a1cf8c96319",
+ "prompt_id": "strict_fidelity",
+ "images": {
+  "line": {
+   "path": "images/e006/q1_r4_l1.png",
+   "sha256": "b64ed13d4105db5f2883af03781d9457ff2d9cf988e089c40371f9a9f7481344"
+  },
+  "cell_clean": {
+   "path": "images/e006/q1_r4_cell_clean.png",
+   "sha256": "7093808f203a6cfdcc6f5b5437bbc92432baee7d26a96e7febbb65ecd677b6c1"
+  }
+ },
+ "raw": "{\"transcription\": \"H . στοιχεία ένας χώρος με την επικράτηση των δυνάμεων\"}",
+ "candidate": "H . στοιχεία ένας χώρος με την επικράτηση των δυνάμεων",
+ "confidence": null,
+ "error": null,
+ "latency_s": 5.75,
+ "verified": false,
+ "at": "2026-07-17 06:13:27"
+}

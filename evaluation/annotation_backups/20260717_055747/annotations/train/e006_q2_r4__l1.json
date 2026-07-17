@@ -1,0 +1,17 @@
+{
+ "schema_version": 1,
+ "sample_id": "e006_q2_r4__l1",
+ "split": "train",
+ "writer": "e006",
+ "transcription": "Quantization מנסים להקטין מספר דרגות אפוק מתאים לI,D כלומר 4,5->I,D מכיוון שבuniform המרחק בין דרגה ודרגה שווה אז  [לא קריא] [לא קריא]",
+ "status": "ok",
+ "unreadable": true,
+ "blank": false,
+ "bad_segmentation": false,
+ "needs_recrop": false,
+ "skipped": false,
+ "notes": "",
+ "annotator": "owner",
+ "human_verified": true,
+ "saved_at": "2026-07-17 01:25:59"
+}

@@ -1,0 +1,20 @@
+{
+ "sample_id": "e006_q2_r8__l1",
+ "config": "qwen_line",
+ "model": "qwen3-vl:8b-instruct",
+ "model_digest": "0533d74300e4f9bc367d675d4e64ffd073d50ff16a2b4096cc2e8a1cf8c96319",
+ "prompt_id": "strict_fidelity",
+ "images": {
+  "line": {
+   "path": "images/e006/q2_r8_l1.png",
+   "sha256": "8a838d76df2fb5e1d9691df5cd9e21ddfe439ccc313c47661db99756e0d78b1f"
+  }
+ },
+ "raw": "{\"transcription\": \"אינץ' 700N בְּמַסְפֵּר אינץ' 5% 2 מ\" }",
+ "candidate": "אינץ' 700N בְּמַסְפֵּר אינץ' 5% 2 מ",
+ "confidence": null,
+ "error": null,
+ "latency_s": 3.52,
+ "verified": false,
+ "at": "2026-07-17 06:08:36"
+}

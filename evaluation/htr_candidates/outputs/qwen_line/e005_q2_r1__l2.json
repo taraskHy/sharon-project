@@ -1,0 +1,20 @@
+{
+ "sample_id": "e005_q2_r1__l2",
+ "config": "qwen_line",
+ "model": "qwen3-vl:8b-instruct",
+ "model_digest": "0533d74300e4f9bc367d675d4e64ffd073d50ff16a2b4096cc2e8a1cf8c96319",
+ "prompt_id": "strict_fidelity",
+ "images": {
+  "line": {
+   "path": "images/e005/q2_r1_l2.png",
+   "sha256": "baa86c0dc4ce927e8c072cb40926cdc7e5df515187fb6eca9bf0d8af89ed0343"
+  }
+ },
+ "raw": "{\"transcription\": \"הכְּרָפִיַּת הַמְּסֻוֹרֶת אֲשֶׁר בְּהֵם E (c)\"}",
+ "candidate": "הכְּרָפִיַּת הַמְּסֻוֹרֶת אֲשֶׁר בְּהֵם E (c)",
+ "confidence": null,
+ "error": null,
+ "latency_s": 4.12,
+ "verified": false,
+ "at": "2026-07-17 06:06:42"
+}

@@ -1,0 +1,2 @@
+{"kind": "decode", "at": "2026-07-17 06:04:33", "split": "bench", "out": "evaluation\\htr_candidates\\crnn_ws\\decodes\\bench.txt", "n": 66, "ckpt_epoch": 893}
+{"kind": "decode", "at": "2026-07-17 06:11:09", "split": "untouched", "out": "evaluation\\htr_candidates\\crnn_ws\\decodes\\untouched.txt", "n": 153, "ckpt_epoch": 893}

@@ -1,0 +1,19 @@
+{
+ "sample_id": "e006_q1_r2__l1",
+ "config": "crnn_overfit",
+ "model": "in-repo CRNN+CTC (overfit-test checkpoint)",
+ "model_digest": "e4803b3fdf7481a9f55657dcd8804f1ecf180e1ae8b5dd8d5d4f02f1c42b35b8",
+ "images": {
+  "line": {
+   "path": "images/e006/q1_r2_l1.png",
+   "sha256": "3d718760d1db46630e84baa202ce457443d06514337db0571d5d96f03f5a9e66"
+  }
+ },
+ "raw": "e006_q1_r2__l1 0.6890 ה טו שו בר וורא ביר יהםגהרהרה הים",
+ "candidate": "ה טו שו בר וורא ביר יהםגהרהרה הים",
+ "confidence": 0.689,
+ "error": null,
+ "latency_s": null,
+ "verified": false,
+ "at": "2026-07-17 06:05:03"
+}

@@ -1,0 +1,19 @@
+{
+ "sample_id": "e006_q1_r5__l1",
+ "config": "crnn_overfit",
+ "model": "in-repo CRNN+CTC (overfit-test checkpoint)",
+ "model_digest": "e4803b3fdf7481a9f55657dcd8804f1ecf180e1ae8b5dd8d5d4f02f1c42b35b8",
+ "images": {
+  "line": {
+   "path": "images/e006/q1_r5_l1.png",
+   "sha256": "f29d73171603cbea19f071d0bae55368b84d2ed08956a9569a9b872a18577d0a"
+  }
+ },
+ "raw": "e006_q1_r5__l1 0.7441 ים מר רים ב ים",
+ "candidate": "ים מר רים ב ים",
+ "confidence": 0.7441,
+ "error": null,
+ "latency_s": null,
+ "verified": false,
+ "at": "2026-07-17 06:05:03"
+}

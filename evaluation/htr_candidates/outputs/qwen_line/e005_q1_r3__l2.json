@@ -1,0 +1,20 @@
+{
+ "sample_id": "e005_q1_r3__l2",
+ "config": "qwen_line",
+ "model": "qwen3-vl:8b-instruct",
+ "model_digest": "0533d74300e4f9bc367d675d4e64ffd073d50ff16a2b4096cc2e8a1cf8c96319",
+ "prompt_id": "strict_fidelity",
+ "images": {
+  "line": {
+   "path": "images/e005/q1_r3_l2.png",
+   "sha256": "44458cbeeb26b7ebe7fef6d1c46968634eb9628af3d399b27dc5eebedcec0097"
+  }
+ },
+ "raw": "{\"transcription\": \"לְהַשְׁמִיעַ אֶת הַכֹּל בְּחָזֵרָה גְּדוֹלָה (כְּמוֹ עֲדַיִן) high-frequency (בְּמַעֲמַר הַשְׁמֵשׁ)\"}",
+ "candidate": "לְהַשְׁמִיעַ אֶת הַכֹּל בְּחָזֵרָה גְּדוֹלָה (כְּמוֹ עֲדַיִן) high-frequency (בְּמַעֲמַר הַשְׁמֵשׁ)",
+ "confidence": null,
+ "error": null,
+ "latency_s": 5.8,
+ "verified": false,
+ "at": "2026-07-17 06:05:51"
+}

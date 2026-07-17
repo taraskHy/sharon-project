@@ -1,0 +1,20 @@
+{
+ "sample_id": "e005_q1_r1__l1",
+ "config": "qwen_line",
+ "model": "qwen3-vl:8b-instruct",
+ "model_digest": "0533d74300e4f9bc367d675d4e64ffd073d50ff16a2b4096cc2e8a1cf8c96319",
+ "prompt_id": "strict_fidelity",
+ "images": {
+  "line": {
+   "path": "images/e005/q1_r1_l1.png",
+   "sha256": "d03ea83eecc58577b0a0b22d6b26b95ee75423189bafad6acf1fb30c4ec28e2b"
+  }
+ },
+ "raw": "{\"transcription\": \"7810 2139 (T motion blur 6E cccc םינש ג] }\"}",
+ "candidate": "7810 2139 (T motion blur 6E cccc םינש ג] }",
+ "confidence": null,
+ "error": null,
+ "latency_s": 2.94,
+ "verified": false,
+ "at": "2026-07-17 06:05:33"
+}

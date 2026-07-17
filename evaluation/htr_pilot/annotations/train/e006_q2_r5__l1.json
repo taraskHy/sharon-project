@@ -1,0 +1,17 @@
+{
+ "schema_version": 1,
+ "sample_id": "e006_q2_r5__l1",
+ "split": "train",
+ "writer": "e006",
+ "transcription": "",
+ "status": "needs_recrop",
+ "unreadable": false,
+ "blank": false,
+ "bad_segmentation": false,
+ "needs_recrop": true,
+ "skipped": false,
+ "notes": "",
+ "annotator": "owner",
+ "human_verified": false,
+ "saved_at": "2026-07-17 01:26:07"
+}
