@@ -79,6 +79,41 @@ frozen gate and writes `evaluation/claude_annotation_candidate_results.csv`
 + `evaluation/claude_candidates/eval_summary.json`; this report is then
 updated with the exact metrics.
 
+## Claude-Code subscription backend attempt (2026-07-17, owner-directed)
+
+Owner declined separately billed API usage; an EXPERIMENTAL backend
+(`scripts/claude_code_backend.py`) now drives the same benchmark
+through the installed `claude -p` CLI on the Max subscription. The API
+backend is unchanged and unused; the new backend hard-refuses to run
+if ANTHROPIC_API_KEY is set, so it can never silently bill credits.
+
+Auth verification (non-interactive equivalent of `/status`):
+`~/.claude.json` oauthAccount shows `billingType: stripe_subscription`,
+`organizationRateLimitTier: default_claude_max_20x` (Claude Max 20x) —
+no Console/API-credit auth, no apiKeyHelper, no ANTHROPIC_API_KEY at
+session/User/Machine level.
+
+One-crop smoke test (sample e004_q1_r5__l1 as neutral `crop.png`, in a
+throwaway sandbox containing ONLY that file; fresh stateless session;
+allowlist `Read(crop.png)`; Bash/Write/Edit/Web*/Glob/Grep/Task
+disallowed): the CLI executed and returned structured JSON with
+`api_key_source: "none"`, but ended `is_error: true` — **"Not logged
+in · Please run /login"**. Zero tokens consumed, zero Max usage, the
+image was never read. Cause: the desktop app's Max login is not shared
+with the standalone `claude.exe`; `~/.claude/.credentials.json` does
+not exist. Raw artifacts:
+`evaluation/claude_candidates/claude_code_smoke/{raw_stream.jsonl,analysis.json}`.
+
+**Status: the Max subscription cannot serve this automated benchmark
+through the current interface UNTIL a one-time CLI login is done by
+the owner** (`claude setup-token`, or interactive `claude` → `/login`,
+choosing the Claude-account subscription option — not an API key).
+After that: re-run the smoke
+(`.venv\Scripts\python.exe scripts/claude_code_backend.py smoke`),
+and only with owner approval run the 30-line benchmark
+(`generate --config ... --owner-approved`). No API fallback will be
+used.
+
 ## Results
 
-*(pending — no inference has run)*
+*(pending — no transcription inference has run on any backend)*
