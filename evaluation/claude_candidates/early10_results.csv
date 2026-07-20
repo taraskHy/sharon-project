@@ -1,0 +1,21 @@
+sample_id,config,writer,group,cer,wer,exact_strict,exact_norm,edit_class,subs,dels,ins,major_halluc,ref_words,hyp_words,char_edits,t_scratch_s,t_assisted_s,agreement_ab,stop_reason,latency_s,input_tokens,output_tokens,cost_usd_equiv,error,candidate
+e004_q2_r5__l1,claude_line,e004,clear,1.0263,1.75,False,False,major,7,0,7,True,8,15,39,20.9,25.9,0.3898,,10.9,4,267,0.22605099999999997,,אולי פ8פ לכל uniform כ[לא קריא] ולכן ה[לא קריא]ולפ[לא קריא]ר
+e004_q2_r5__l1,claude_line_cell,e004,clear,0.8947,1.5,False,False,major,8,0,4,True,8,12,34,20.9,25.9,0.3898,,12.3,4,218,0.0847325,,ואם צבע BSP של כל Uniform בסך הכל וקטור ומזה [לא קריא]
+e004_q2_r5__l2,claude_line,e004,clear,1.5,2.0,False,False,major,1,0,1,False,1,2,9,15.0,20.0,0.2,,11.0,4,105,0.074422,,את/ה לימוס
+e004_q2_r5__l2,claude_line_cell,e004,clear,1.0,1.0,False,False,major,1,0,0,False,1,1,6,15.0,20.0,0.2,,12.0,4,190,0.0826525,,אלגו/ריתם
+e005_q1_r7__l2,claude_line,e005,clear,0.6667,1.0,False,False,major,7,0,1,False,8,9,28,23.1,28.1,0.4737,,9.3,4,131,0.07559350000000001,,שיערנו H במיטה סתכברה על ל'(פ) כאשר סוב.
+e005_q1_r7__l2,claude_line_cell,e005,clear,0.381,0.75,False,False,moderate,5,0,1,False,8,9,16,23.1,28.1,0.4737,,10.2,4,206,0.08332650000000001,,שיטת H בתמונה מסכירה כל נ'קם) קאדה שווה.
+e005_q1_r5__l2,claude_line,e005,clear,1.5366,2.5,False,False,major,7,0,13,True,8,21,63,22.6,27.6,0.3125,,10.5,4,202,0.0773275,,ההמנל אבל כסן ה'שלוו נקסה [לא קריא] X [לא קריא] הפועל‏ [לא קריא] כפי'‏ (כ'ר) שלווا' לבנ'‏
+e005_q1_r5__l2,claude_line_cell,e005,clear,0.7317,1.25,False,False,major,7,0,3,True,8,11,30,22.6,27.6,0.3125,,12.3,4,333,0.0866865,,הפסח רגז רגיוגלי. (צ'ר X [לא קריא] נמנג2 הצולוו בכיר
+e004_q2_r4__l2,claude_line,e004,clear,0.8431,1.5556,False,False,major,9,0,5,True,9,14,43,28.1,33.0,0.2381,,10.5,4,167,0.07685550000000001,,"כלה ודו כב סוגי ה? כמו של אימ?זי3? Qnutization על כל בקבו2? בבקבו2?,"
+e004_q2_r4__l2,claude_line_cell,e004,clear,0.8039,1.4444,False,False,major,9,0,4,True,9,13,41,28.1,33.0,0.2381,,11.6,4,232,0.08465,,"וכן זהו שסוג כל בעם Quntization אחיד- של כל הצירים לפ כביד סיגמל,"
+e006_q1_r3__l1,claude_line,e006,difficult,0.3143,0.8571,False,False,moderate,6,0,0,False,7,7,11,19.2,24.2,0.6944,,9.4,4,122,0.07534850000000001,,לכיוב תעונה רוים יזר שסונ ולין D .
+e006_q1_r3__l1,claude_line_cell,e006,difficult,0.3714,1.0,False,False,moderate,6,0,1,False,7,8,13,19.2,24.2,0.6944,,10.8,4,207,0.08343350000000002,,לחיבור תעונה רווהם יזר ר שפוט! לפין D.
+e005_q1_r4__l2,claude_line,e005,difficult,0.65,1.3,False,False,major,10,0,3,True,10,13,39,33.6,38.6,0.3621,,15.0,4,370,0.082136,,כ הווה זמן רויג ( ה בלע הלמכפ)(בלוגר משיר המשלח) [לא קריא] 88
+e005_q1_r4__l2,claude_line_cell,e005,difficult,0.6833,1.6,False,False,major,9,0,7,True,10,17,41,33.6,38.6,0.3621,,12.3,4,232,0.0844985,,"כך במווכ ולכן רו""ג ( ה ב""ל ג הא""ק,ף)(בזוff [לא קריא] אויר בחומק)"
+e006_q2_r6__l1,claude_line,e006,difficult,0.6809,1.1111,False,False,major,7,0,3,True,9,12,32,25.9,30.9,0.3818,,11.8,4,313,0.080229,,"לזכויות עם הספר   1   00,1 לכסי.ן םזM ומרוnו הזרωנ ואוט"
+e006_q2_r6__l1,claude_line_cell,e006,difficult,0.7234,1.1111,False,False,major,7,0,3,True,9,12,34,25.9,30.9,0.3818,,11.0,4,225,0.08397700000000001,,"לרכיבה עם הכוח 1 1,00 1 בהתאם לחוק ניוטון הראשון הכיוון"
+e006_q2_r7__l1,claude_line,e006,difficult,0.7551,1.3333,False,False,major,9,0,3,True,9,12,37,27.0,32.0,0.3704,,9.7,4,160,0.07616350000000001,,[לא קריא] ל א נשתבחה יהיה בגברת אריה על אבותם! (ערשיו כמול
+e006_q2_r7__l1,claude_line_cell,e006,difficult,0.6327,1.1111,False,False,major,9,0,1,False,9,10,31,27.0,32.0,0.3704,,10.0,4,215,0.08373749999999999,,צריך 3 4 נשלהצליח יותר על הפרוב מ (עוישור כולל
+e004_q1_r6__l1,claude_line,e004,difficult,0.9565,1.0,False,False,major,2,1,0,False,3,2,22,15.0,20.0,0.1304,,8.4,4,131,0.075711,,אלגוריתם WAVELETS
+e004_q1_r6__l1,claude_line_cell,e004,difficult,0.5217,1.0,False,False,major,3,0,0,False,3,3,12,15.0,20.0,0.1304,,10.4,4,199,0.083305,,WAVELET מהווים אלגוריתם

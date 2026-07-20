@@ -106,3 +106,42 @@ agreement is the only model-visible selector). The experiment is
 If REJECT: no candidates are generated for untouched lines, the
 annotation interface is not modified except to record the negative
 result, and the experiment stops.
+
+## ADDENDUM 2026-07-20 — owner-directed intermediate 10-line stage
+
+Flagged per the audit rule (added AFTER the one-crop smoke, BEFORE any
+benchmark inference). Owner instruction: run 10 of the 30 lines first
+through the Claude-Code subscription backend (`claude -p`, Max plan,
+no API key); the remaining 20 run only if this stage passes its gate
+and the owner approves.
+
+Selection (deterministic, non-GT signals only, fixed now): pool = the
+30 pre-registered bench ids; difficulty signal = the overfit-CRNN
+decode confidence already on disk
+(`evaluation/htr_candidates/crnn_ws/decodes/bench.txt`, computed
+2026-07-17 without GT). **clear-5** = highest-confidence 5; 
+**difficult-5** = lowest-confidence 5; each group must span >= 2
+writers — if a group is single-writer, its worst-ranked member is
+swapped for the best-ranked line of an unrepresented writer;
+ties break by sample_id. Ids recorded in `early10_ids.json` (ids +
+group only) before generation.
+
+Early rejection gate (owner's, verbatim; operationalization fixed
+now). REJECT Claude-assisted annotation and do NOT run the remaining
+20 lines if ANY of:
+
+1. zero candidates close enough to save owner time — no line in
+   either pass with CER <= 0.15 (the time-model's break-even class);
+2. median CER > 0.25 in BOTH passes (the better pass governs);
+3. major hallucinations (>= 2 inserted words) on > 5 % of lines in
+   BOTH passes;
+4. A<->B agreement identifies no reliable subset — no threshold
+   tau in {1.0, 0.98, 0.95, 0.9, 0.85, 0.8} selecting >= 3 lines with
+   mean CER <= 0.15 in either pass.
+
+A pass "survives" if it individually clears 2 and 3 and contributes to
+1 and 4. The stage result is CONTINUE (some pass survives and gates
+1–4 all clear) or REJECT. Either way: no app modification, no
+candidates for untouched lines, stop for owner review after the
+report. The final ACCEPT gate for app integration remains the original
+(stricter) one above and is unchanged.

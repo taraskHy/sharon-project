@@ -114,6 +114,48 @@ and only with owner approval run the 30-line benchmark
 (`generate --config ... --owner-approved`). No API fallback will be
 used.
 
-## Results
+## Results — intermediate 10-line stage (2026-07-20): **REJECT**
 
-*(pending — no transcription inference has run on any backend)*
+Owner-approved 10-line retrospective (5 clear / 5 difficult by CRNN
+confidence, writers e004+e005+e006; PROTOCOL.md addendum) through the
+Max-subscription backend. Hygiene verified on all 20 records:
+`api_key_source: none`, `image_read: true`, only the sandboxed
+neutral-named crop(s) read, `verified: false`, zero API billing.
+Ledger: `early10_results.csv`; summary: `early10_summary.json`; raw
+streams retained per call.
+
+| pass (10 lines) | mean CER | median CER | exact | no-edit | minor | major | omit | insert | major-halluc lines |
+|---|---|---|---|---|---|---|---|---|---|
+| A `claude_line` | .893 | **.799** | 0 | 0 | 0 | 9/10 | .014 | .336 | 6/10 |
+| B `claude_line_cell` | .674 | **.703** | 0 | 0 | 0 | 8/10 | .000 | .250 | 5/10 |
+
+- Candidates needing no edit: **0**. Needing minor edits: **0**.
+  Taking longer to fix than manual transcription: **10/10 in both
+  passes** (est. −25 s per 5 lines vs typing from scratch).
+- A↔B agreement range .13–.69 — no line pair even reaches the lowest
+  pre-registered threshold (0.8), so agreement identifies no subset
+  at all, reliable or otherwise.
+- Best single line anywhere: CER .314 (`e006_q1_r3__l1`, pass A) —
+  better than any local candidate ever measured (.635), but still 2×
+  the minor-edit bar.
+- The CRNN-confidence "clear/difficult" split did not track Claude
+  difficulty (difficult-group B mean .59 vs clear-group B .76) —
+  the proxy is writer/legibility-specific, another sign these signals
+  don't transfer.
+- Qualitative: Claude produces real Hebrew words, sane line structure,
+  honest [לא קריא] tokens, near-zero omissions — but the words are
+  largely the WRONG words (insertion rate .25–.34, hallucinated words
+  on 5–6 lines of 10). Cell context (B) clearly helps (.67 vs .89) yet
+  remains far from usable.
+- Max usage consumed: 21 calls total incl. smoke; 20-call benchmark:
+  80 input + 4,225 output tokens metered by the CLI, 219 s wall,
+  $1.76 API-equivalent — **$0 billed** (subscription).
+
+**Early-rejection gate: ALL FOUR criteria fired** (zero time-saving
+candidates; median CER > 0.25 in both passes; major hallucinations
+> 5 % of lines in both passes; no reliable agreement subset).
+**Verdict: REJECT Claude-assisted annotation.** Per protocol: the
+remaining 20 lines were NOT run, the annotation app was NOT modified,
+no candidates exist for untouched lines, and no annotation record was
+touched. Manual annotation via the priority queue remains the path
+(`evaluation/annotation_priority_queue.csv`).

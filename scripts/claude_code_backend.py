@@ -188,15 +188,22 @@ def cmd_smoke(args) -> int:
                  and r["result_text"]) else 1
 
 
+def load_ids(ids_file: str) -> list[str]:
+    d = json.loads((OUT / (ids_file or "claude_bench_ids.json"))
+                   .read_text(encoding="utf-8"))
+    if "ids" in d:
+        return d["ids"]
+    return list(d["clear"]) + list(d["difficult"])  # early10 shape
+
+
 def cmd_generate(args) -> int:
     refuse_if_api_key()
     if not args.owner_approved:
-        print("REFUSING: the 30-line benchmark runs only after the owner "
-              "approves the smoke test (pass --owner-approved).")
+        print("REFUSING: benchmark generation runs only with explicit owner "
+              "approval (pass --owner-approved).")
         return 2
     cli = find_cli()
-    ids = json.loads((OUT / "claude_bench_ids.json")
-                     .read_text(encoding="utf-8"))["ids"]
+    ids = load_ids(args.ids_file)
     index = load_split_index(ROOT)
     outdir = OUT / "outputs" / args.config
     outdir.mkdir(parents=True, exist_ok=True)
@@ -228,6 +235,9 @@ def cmd_generate(args) -> int:
             "input_type": ("line_crop" if args.config == "claude_line"
                            else "line_crop+cell_context"),
             "model": r["model"], "prompt_version": PROMPT_VERSION,
+            "api_key_source": r["api_key_source"],
+            "image_read": r["image_read"],
+            "read_tool_calls": r["read_tool_calls"],
             "images": images_meta,
             "raw_content": r["events"],
             "stop_reason": None, "usage": r["usage"],
@@ -253,6 +263,9 @@ def main() -> int:
     ge.add_argument("--config", choices=CONFIGS, required=True)
     ge.add_argument("--model", default="opus")
     ge.add_argument("--owner-approved", action="store_true")
+    ge.add_argument("--ids-file", default="",
+                    help="ids file under evaluation/claude_candidates "
+                         "(default: the full 30-line claude_bench_ids.json)")
     args = ap.parse_args()
     return {"smoke": cmd_smoke, "generate": cmd_generate}[args.cmd](args)
 

@@ -118,8 +118,28 @@ def summarize(rows: list[dict]) -> dict:
 
 
 def main() -> int:
-    sel = json.loads((OUT / "claude_bench_ids.json").read_text(encoding="utf-8"))
-    ids = sel["ids"]
+    import argparse
+
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--ids-file", default="claude_bench_ids.json",
+                    help="ids file under evaluation/claude_candidates")
+    ap.add_argument("--early-gate", action="store_true",
+                    help="apply the 10-line early-rejection gate "
+                         "(PROTOCOL.md addendum 2026-07-20) and write to "
+                         "early10_* outputs instead of the final ones")
+    args = ap.parse_args()
+
+    sel = json.loads((OUT / args.ids_file).read_text(encoding="utf-8"))
+    if "ids" in sel:
+        ids = sel["ids"]
+        group_of = {}
+    else:  # early10 shape: clear + difficult
+        ids = list(sel["clear"]) + list(sel["difficult"])
+        group_of = {sid: g for g in ("clear", "difficult")
+                    for sid in sel[g]}
+    csv_path = (OUT / "early10_results.csv") if args.early_gate else CSV_PATH
+    summary_path = (OUT / ("early10_summary.json" if args.early_gate
+                           else "eval_summary.json"))
     ann = load_all_annotations(ROOT, "train")
 
     cands: dict[str, dict[str, dict]] = {}
@@ -146,17 +166,26 @@ def main() -> int:
         for config in CONFIGS:
             c = cands[config][sid]
             m = line_metrics(c.get("candidate") or "", ref_raw)
+            usage = c.get("usage") or {}
+            cost = next((e.get("total_cost_usd")
+                         for e in (c.get("raw_content") or [])
+                         if isinstance(e, dict) and e.get("type") == "result"),
+                        None)
             all_rows.append({
                 "sample_id": sid, "config": config, "writer": rec["writer"],
+                "group": group_of.get(sid, ""),
                 **m, "agreement_ab": round(ab, 4),
                 "stop_reason": c.get("stop_reason"),
                 "latency_s": c.get("latency_s"),
+                "input_tokens": usage.get("input_tokens"),
+                "output_tokens": usage.get("output_tokens"),
+                "cost_usd_equiv": cost,
                 "error": c.get("error") or "",
                 "candidate": c.get("candidate") or "",
             })
 
-    CSV_PATH.parent.mkdir(parents=True, exist_ok=True)
-    with CSV_PATH.open("w", newline="", encoding="utf-8") as f:
+    csv_path.parent.mkdir(parents=True, exist_ok=True)
+    with csv_path.open("w", newline="", encoding="utf-8") as f:
         w = csv.DictWriter(f, fieldnames=list(all_rows[0]))
         w.writeheader()
         w.writerows(all_rows)
@@ -193,8 +222,57 @@ def main() -> int:
         summary["per_config_gate"][config] = checks
         verdicts[config] = checks["all"]
 
-    summary["verdict"] = "ACCEPT" if any(verdicts.values()) else "REJECT"
-    (OUT / "eval_summary.json").write_text(
+    if args.early_gate:
+        # PROTOCOL.md addendum 2026-07-20: intermediate 10-line gate.
+        early = {}
+        time_savers = {c: sum(1 for r in all_rows if r["config"] == c
+                              and r["cer"] <= 0.15) for c in CONFIGS}
+        early["criterion1_zero_time_savers"] = sum(time_savers.values()) == 0
+        early["time_savers_per_config"] = time_savers
+        medians = {c: summary["configs"][c]["median_cer"] for c in CONFIGS}
+        early["criterion2_median_cer_gt_0.25_both"] = all(
+            m > 0.25 for m in medians.values())
+        halluc = {c: summary["configs"][c]["major_halluc_line_rate"]
+                  for c in CONFIGS}
+        early["criterion3_major_halluc_gt_5pct_both"] = all(
+            h > 0.05 for h in halluc.values())
+        agree_ok = {}
+        for c in CONFIGS:
+            rows = [r for r in all_rows if r["config"] == c]
+            ok = False
+            for tau in GATE["agreement_taus"]:
+                sub = [r for r in rows if r["agreement_ab"] >= tau]
+                if len(sub) >= 3 and \
+                        sum(r["cer"] for r in sub) / len(sub) <= 0.15:
+                    ok = True
+            agree_ok[c] = ok
+        early["criterion4_no_reliable_agreement_subset"] = \
+            not any(agree_ok.values())
+        early["agreement_reliable_per_config"] = agree_ok
+        rejected = any(early[k] for k in early if k.startswith("criterion"))
+        early["verdict"] = "REJECT" if rejected else "CONTINUE"
+        # per-group and usage reporting for the owner
+        for g in ("clear", "difficult"):
+            rows = [r for r in all_rows if r["group"] == g]
+            if rows:
+                early[f"{g}_summary"] = {c: summarize(
+                    [r for r in rows if r["config"] == c]) for c in CONFIGS}
+        early["longer_than_manual_counts"] = {
+            c: sum(1 for r in all_rows if r["config"] == c
+                   and r["t_assisted_s"] > r["t_scratch_s"]) for c in CONFIGS}
+        early["max_usage_total"] = {
+            "calls": len(all_rows),
+            "input_tokens": sum(r["input_tokens"] or 0 for r in all_rows),
+            "output_tokens": sum(r["output_tokens"] or 0 for r in all_rows),
+            "wall_s": round(sum(r["latency_s"] or 0 for r in all_rows), 1),
+            "api_equivalent_usd_not_billed": round(sum(
+                r["cost_usd_equiv"] or 0 for r in all_rows), 2),
+        }
+        summary["early_gate"] = early
+        summary["verdict"] = early["verdict"]
+    else:
+        summary["verdict"] = "ACCEPT" if any(verdicts.values()) else "REJECT"
+    summary_path.write_text(
         json.dumps(summary, ensure_ascii=False, indent=1), encoding="utf-8")
     print(json.dumps(summary, ensure_ascii=False, indent=1))
     print(f"\nVERDICT: {summary['verdict']}")
