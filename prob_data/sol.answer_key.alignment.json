@@ -1,0 +1,7 @@
+{
+  "heart": true,
+  "spade": true,
+  "diamond": true,
+  "club": true,
+  "_comment": "Identity alignment, operator-verified 2026-07-18: all four variants print the SAME questions in the SAME order 1-10 (verified on exams 02/06 vs 13 vs 21 vs 29 — see docs/prob-template.md). Variants shuffle only the OPTION order inside each question, which is captured by the per-variant correct letters in sol.answer_key.json, not by question alignment."
+}

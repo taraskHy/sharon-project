@@ -72,6 +72,12 @@ from .authority import flag_suspected_sheet_swap
 from .schema import AnswerKey, ExamExtraction, ExamSurvey
 from .extract import extract_exam
 from .survey import candidate_sheet_pages, closeread_sheets, merge_closeread, survey_exam
+from .template import (
+    apply_template_to_key,
+    load_template,
+    synthesized_survey,
+    template_fingerprint,
+)
 
 
 def _log(msg: str) -> None:
@@ -230,6 +236,12 @@ def _fingerprints(
     pin = getattr(args, "version", None)
     if pin and pin != "auto":
         key_h.update(f"|pin:{pin}".encode())
+    # The exam template (modes, answer-sheet rule) changes what every stage
+    # produces — two exam families can never share stage results or caches.
+    tpl = load_template(Path(args.key), getattr(args, "template", None))
+    key_h.update(
+        f"|template:{template_fingerprint(tpl) if tpl else 'none'}".encode()
+    )
     fp = {"key": key_h.hexdigest()}
     if include_exam:
         exam_h = hashlib.sha256()
@@ -551,10 +563,30 @@ def run_grade_pipeline(
     if not key_is_json:
         _record_stage_fingerprint(out, "key", current["key"])
 
+    # Exam template: enforce per-question grading modes (a multiple-choice-only
+    # template structurally disables explanation transcription and judging)
+    # and, for fixed-page answer sheets, replace the survey model pass with a
+    # deterministic synthesized survey.
+    template = load_template(Path(args.key), getattr(args, "template", None))
+    if template is not None:
+        for note in apply_template_to_key(key, template):
+            _log(f"template: {note}")
+
     if pages is None:
         _log(f"loading exam scan {exam_path}")
         pages = load_pages(exam_path, max_image_edge)
         _log(f"{len(pages)} pages loaded")
+        if getattr(args, "mask", False):
+            from .masking import mask_pages
+
+            pages, mask_report = mask_pages(pages)
+            (out / "masking.json").write_text(
+                json.dumps(mask_report.to_dict(), ensure_ascii=False, indent=2),
+                encoding="utf-8",
+            )
+            _log("instructor-annotation masking applied (masking.json written)")
+            if page_loader is None:
+                page_loader = lambda edge: mask_pages(load_pages(exam_path, edge))[0]  # noqa: E731
 
     # Marker-based variant detection (BEFORE grading, never answer-based).
     variant_cfg = load_variant_config(Path(args.key), getattr(args, "variant_map", None))
@@ -575,7 +607,20 @@ def run_grade_pipeline(
         _log(f"variant: {version_decision.version} ({version_decision.description})")
 
     survey_path = out / "survey.json"
-    if _reuse(args, survey_path, current["exam"], stored.get("survey") or stored.get("exam")):
+    if template is not None and template.answer_sheet_rule == "fixed_pages":
+        # Template-specific page rule: the answer sheet is a known page set for
+        # this exam family. No survey model call, no close-read — the rule is
+        # deterministic configuration, and question-page ink is scratch work
+        # per the template (never allowed to override the sheet).
+        _log(
+            f"survey synthesized from template {template.template_id}: answer "
+            f"sheet fixed to page(s) {template.answer_sheet_pages} "
+            f"(booklet markings {'not graded' if template.booklet_answers_not_graded else 'secondary'})"
+        )
+        survey = synthesized_survey(template, key, n_pages=len(pages))
+        _write_json(survey, survey_path)
+        _record_stage_fingerprint(out, "survey", current["exam"])
+    elif _reuse(args, survey_path, current["exam"], stored.get("survey") or stored.get("exam")):
         _log(f"resume: reusing {survey_path}")
         survey = ExamSurvey.model_validate_json(survey_path.read_text(encoding="utf-8"))
     else:
@@ -773,6 +818,22 @@ def cmd_grade(args) -> int:
     return 0
 
 
+def cmd_run_job(args) -> int:
+    from .jobs import run_job
+
+    return run_job(args.job_dir)
+
+
+def cmd_ui(args) -> int:
+    import subprocess
+
+    app = Path(__file__).with_name("webui.py")
+    return subprocess.call(
+        [sys.executable, "-m", "streamlit", "run", str(app),
+         "--server.port", str(args.port), "--browser.gatherUsageStats", "false"]
+    )
+
+
 def add_backend_args(parser: argparse.ArgumentParser) -> None:
     parser.add_argument("--config", help="TOML config file ([backend] and [grading] tables)")
     parser.add_argument(
@@ -861,6 +922,14 @@ def build_parser() -> argparse.ArgumentParser:
             "and every affected sub-item is review-flagged as unresolved"
         ),
     )
+    common.add_argument(
+        "--template", default=None,
+        help=(
+            "Path to the exam template JSON describing grading modes and the "
+            "answer-sheet rule (default: <key>.template.json next to the "
+            "answer key; absent = full pipeline with detected answer sheets)"
+        ),
+    )
 
     pk = sub.add_parser("parse-key", parents=[common], help="Parse the answer key only")
     pk.set_defaults(func=cmd_parse_key)
@@ -872,7 +941,21 @@ def build_parser() -> argparse.ArgumentParser:
         default="auto",
         help="Exam version id, or 'auto' to detect from answer agreement (default)",
     )
+    g.add_argument(
+        "--mask", action="store_true",
+        help="Mask red instructor annotations from page images before inference",
+    )
     g.set_defaults(func=cmd_grade)
+
+    rj = sub.add_parser(
+        "run-job", help="Run (or resume) a batch-grading job directory created by the web UI"
+    )
+    rj.add_argument("--job-dir", required=True, help="The job directory (jobs/<id>)")
+    rj.set_defaults(func=cmd_run_job)
+
+    ui = sub.add_parser("ui", help="Launch the local web interface (Streamlit)")
+    ui.add_argument("--port", type=int, default=8501)
+    ui.set_defaults(func=cmd_ui)
 
     from .evalcli import add_eval_commands  # late import: keeps CLI startup light
 

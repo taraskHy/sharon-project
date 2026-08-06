@@ -1,0 +1,30 @@
+{
+  "marker_kind": "card-suit symbol",
+  "marker_page": 1,
+  "marker_location_hint": "bottom third of the answer-sheet page, printed immediately next to the word 'בהצלחה!' (left of it in reading order)",
+  "markers": {
+    "heart": {
+      "variant": "heart",
+      "description": "a heart outline symbol (like the card suit ♡), printed next to בהצלחה!",
+      "aliases": ["♡", "♥", "לב", "heart suit"]
+    },
+    "spade": {
+      "variant": "spade",
+      "description": "a spade symbol (like the card suit ♠, a pointed leaf shape with a stem), printed next to בהצלחה!",
+      "aliases": ["♠", "עלה", "spade suit", "pik"]
+    },
+    "diamond": {
+      "variant": "diamond",
+      "description": "a diamond outline symbol (like the card suit ◇, a rhombus), printed next to בהצלחה!",
+      "aliases": ["◇", "♦", "מעוין", "diamond suit", "rhombus"]
+    },
+    "club": {
+      "variant": "club",
+      "description": "a club symbol (like the card suit ♣, three round leaves with a stem), printed next to בהצלחה!",
+      "aliases": ["♣", "תלתן", "club suit", "clover"]
+    }
+  },
+  "mapping_source": {
+    "derived": "one-time manual verification, 2026-07-18: the four suits were collected from all 13 available scans and each suit's booklet was found to carry its own option ordering (docs/prob-template.md). Variant ids are named after the suits themselves; the per-variant correct letters live in sol.answer_key.json."
+  }
+}

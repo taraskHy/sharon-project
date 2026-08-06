@@ -1,0 +1,95 @@
+{
+  "exam_title": "הסתברות למדעי המחשב — סמסטר ב מועד א 12.07.2026 (203.2480)",
+  "versions": ["club", "diamond", "heart", "spade"],
+  "questions": [
+    {
+      "id": "1",
+      "title": "טבלת תשובות — שאלות 1–10 (סמנו כאן בלבד)",
+      "type": "multiple_choice",
+      "max_points": 100,
+      "explanation_required": false,
+      "explanation_weight": 0.0,
+      "answer_source": "the psychometric-style response table on page 1 only; the printed sheet says 'סמנו כאן בלבד! אין לסמן תשובות בגוף הבחינה'",
+      "grading_notes": "10 points per question, no partial credit; one selected option per row; correct letters differ per variant (card-suit symbol) because each variant shuffles the option order within every question. Letters are canonicalised א=A ב=B ג=C ד=D.",
+      "sub_items": [
+        {
+          "id": "1",
+          "prompt": "שאלה 1 — שורת התשובה בטבלה (הסתברות שבוב לא ראה \"6\")",
+          "points": 10,
+          "correct_by_version": {"club": ["C"], "diamond": ["D"], "heart": ["A"], "spade": ["B"]},
+          "versions_unverified": []
+        },
+        {
+          "id": "2",
+          "prompt": "שאלה 2 — שורת התשובה בטבלה (הסתברות שפריט תקין יצא מפס A)",
+          "points": 10,
+          "correct_by_version": {"club": ["A"], "diamond": ["C"], "heart": ["A"], "spade": ["A"]},
+          "versions_unverified": []
+        },
+        {
+          "id": "3",
+          "prompt": "שאלה 3 — שורת התשובה בטבלה (הסיכוי שאליס תנצח)",
+          "points": 10,
+          "correct_by_version": {"club": ["B"], "diamond": ["C"], "heart": ["D"], "spade": ["D"]},
+          "versions_unverified": []
+        },
+        {
+          "id": "4",
+          "prompt": "שאלה 4 — שורת התשובה בטבלה (הצפיפות של X·Y בנקודה 0.5)",
+          "points": 10,
+          "correct_by_version": {"club": ["D"], "diamond": ["D"], "heart": ["D"], "spade": ["D"]},
+          "versions_unverified": []
+        },
+        {
+          "id": "5",
+          "prompt": "שאלה 5 — שורת התשובה בטבלה (הילוך מקרי על הגרף: ביקור ב־5 לפני 3)",
+          "points": 10,
+          "correct_by_version": {"club": ["A"], "diamond": ["B"], "heart": ["B"], "spade": ["D"]},
+          "versions_unverified": []
+        },
+        {
+          "id": "6",
+          "prompt": "שאלה 6 — שורת התשובה בטבלה (תוחלת מספר התאים עם בדיוק 2 כדורים)",
+          "points": 10,
+          "correct_by_version": {"club": ["A"], "diamond": ["C"], "heart": ["A"], "spade": ["A"]},
+          "versions_unverified": []
+        },
+        {
+          "id": "7",
+          "prompt": "שאלה 7 — שורת התשובה בטבלה (Pr[XD+XU ≤ 100])",
+          "points": 10,
+          "correct_by_version": {"club": ["D"], "diamond": ["D"], "heart": ["D"], "spade": ["D"]},
+          "versions_unverified": []
+        },
+        {
+          "id": "8",
+          "prompt": "שאלה 8 — שורת התשובה בטבלה (אומד MLE עבור p)",
+          "points": 10,
+          "correct_by_version": {"club": ["D"], "diamond": ["B"], "heart": ["D"], "spade": ["D"]},
+          "versions_unverified": []
+        },
+        {
+          "id": "9",
+          "prompt": "שאלה 9 — שורת התשובה בטבלה (det A של מטריצת ה־COV)",
+          "points": 10,
+          "correct_by_version": {"club": ["B"], "diamond": ["D"], "heart": ["A"], "spade": ["C"]},
+          "versions_unverified": []
+        },
+        {
+          "id": "10",
+          "prompt": "שאלה 10 — שורת התשובה בטבלה (תוחלת מספר הצעדים בניסוי הריבועים)",
+          "points": 10,
+          "correct_by_version": {"club": ["A"], "diamond": ["B"], "heart": ["C"], "spade": ["B"]},
+          "versions_unverified": []
+        }
+      ]
+    }
+  ],
+  "total_points": 100,
+  "general_rules": [
+    "Only the response table on page 1 is graded ('סמנו כאן בלבד! אין לסמן תשובות בגוף הבחינה').",
+    "Each question is worth 10 points; a wrong, missing, or multiply-marked row earns 0.",
+    "The exam variant is identified by the card-suit symbol printed next to 'בהצלחה!' at the bottom of the answer-sheet page; each variant has its own correct-letter column because option orders are shuffled per variant.",
+    "Provenance: this key was hand-built and verified on 2026-07-18 from sol.pdf (correct values, red) and the per-variant option orderings printed in the student booklets — see docs/prob-template.md for the full evidence chain."
+  ]
+}

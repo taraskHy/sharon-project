@@ -89,6 +89,12 @@ def _question_structure(q: KeyQuestion) -> str:
         lines.append(f"Authoritative answer location per exam instructions: {q.answer_source}")
     if q.explanation_required:
         lines.append("Each sub-item requires a short written justification by the student.")
+    elif q.type in ("multiple_choice", "matching") and q.explanation_weight == 0:
+        lines.append(
+            "This question is selection-only: no written explanation exists or "
+            "is graded. Do NOT transcribe any text — report marks and the final "
+            "selected option only (explanation_transcription stays null)."
+        )
     return "\n".join(lines)
 
 
