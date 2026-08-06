@@ -12,6 +12,20 @@ no paid proprietary API**: it runs against any OpenAI-compatible server
 serving an open model). An optional Anthropic backend exists for development
 comparison only.
 
+## Run the local web application
+
+```powershell
+.\.venv\Scripts\python.exe -m autograder ui
+```
+
+Opens the lecturer-facing interface at http://localhost:8501: upload an
+answer key and student exams (single files, many files, or a ZIP), pick an
+exam template (multiple-choice-only / with-explanations / mixed), start
+grading, watch live progress, pause/stop/resume safely, and download
+per-exam JSON/Markdown plus combined CSV/JSON/ZIP reports. Grading runs in
+a detached process, so closing the browser or the app never loses work —
+see [docs/ui.md](docs/ui.md).
+
 ## Quick start
 
 ```powershell
