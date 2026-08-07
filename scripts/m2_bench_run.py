@@ -39,6 +39,8 @@ if hasattr(sys.stdout, "reconfigure"):
 REPO = Path(__file__).resolve().parents[1]
 BENCH = REPO / "evaluation" / "hebrew_bench_v2"
 
+PLAIN_REPLY = "Reply with ONLY the transcribed text, nothing else."
+
 STRICT_RULES = (
     "Rules:\n"
     "1. Copy EXACTLY the visible text, word by word. Never complete, "
@@ -181,6 +183,12 @@ class ChatVLM:
                 continue
             data = resp.json()
             raw = ""
+            usage = data.get("usage") or {}
+            usage_nums = {
+                "usage_prompt_tokens": usage.get("prompt_tokens"),
+                "usage_completion_tokens": usage.get("completion_tokens"),
+                "usage_total_tokens": usage.get("total_tokens"),
+            }
             try:
                 raw = data["choices"][0]["message"].get("content") or ""
                 try:
@@ -188,13 +196,21 @@ class ChatVLM:
                 except json.JSONDecodeError:
                     parsed = raw.strip() or None  # non-structured providers
                 return {"raw": raw, "transcription": parsed, "error": None,
-                        "status": resp.status_code}
+                        "status": resp.status_code, **usage_nums}
             except Exception as e:  # noqa: BLE001
-                return {"raw": raw, "transcription": None,
-                        "error": f"{type(e).__name__}: {e} | body={str(data)[:300]}",
-                        "status": resp.status_code}
+                err = f"{type(e).__name__}: {e} | body={str(data)[:300]}"
+                low = str(data).lower()
+                if resp.status_code in (429, 403) and any(
+                    k in low for k in ("allocation", "quota", "free tier", "arrears")
+                ):
+                    return {"raw": raw, "transcription": None, "error": err,
+                            "status": resp.status_code,
+                            "daily_quota_exhausted": True, **usage_nums}
+                return {"raw": raw, "transcription": None, "error": err,
+                        "status": resp.status_code, **usage_nums}
         return {"raw": "", "transcription": None,
-                "error": "rate-limited after 5 attempts", "status": 429}
+                "error": "rate-limited after 5 attempts", "status": 429,
+                "rate_limited_out": True}
 
 
 class Gemini:
@@ -316,6 +332,9 @@ class TesseractAdapter:
                 "error": None, "status": 200}
 
 
+ALIBABA_SG_ENDPOINT = "https://dashscope-intl.aliyuncs.com/compatible-mode/v1"
+
+
 def make_adapter(args):
     if args.backend == "qwen_local":
         return ChatVLM(args.base_url, args.model, structured=True)
@@ -325,6 +344,22 @@ def make_adapter(args):
             sys.exit("OPENROUTER_API_KEY not set")
         return ChatVLM("https://openrouter.ai/api/v1", args.model, api_key=key,
                        structured=False, timeout=300.0)
+    if args.backend == "alibaba_ocr":
+        # Official Singapore international endpoint (Model Studio OpenAI-
+        # compatible mode). NO silent fallback: if this endpoint fails, the
+        # run stops and reports — per owner instruction.
+        key = os.environ.get("DASHSCOPE_API_KEY")
+        if not key:
+            sys.exit("DASHSCOPE_API_KEY not set")
+        base = args.base_url if "aliyuncs.com" in args.base_url else ALIBABA_SG_ENDPOINT
+        return ChatVLM(base, args.model, api_key=key, structured=False,
+                       timeout=300.0, max_tokens=800)
+    if args.backend == "groq":
+        key = os.environ.get("GROQ_API_KEY")
+        if not key:
+            sys.exit("GROQ_API_KEY not set")
+        return ChatVLM("https://api.groq.com/openai/v1", args.model, api_key=key,
+                       structured=False, timeout=300.0, max_tokens=400)
     if args.backend == "gemini":
         key = os.environ.get("GEMINI_API_KEY")
         if not key:
@@ -354,6 +389,10 @@ def main() -> int:
     ap.add_argument("--min-interval", type=float, default=0.0,
                     help="minimum seconds between request STARTS (proactive "
                          "RPM pacing for quota-limited hosted APIs)")
+    ap.add_argument("--token-budget", type=int, default=0,
+                    help="hard stop once cumulative TOTAL tokens (prompt+"
+                         "image+output, as reported by the provider) reach "
+                         "this; persisted in usage.json across resumes")
     args = ap.parse_args()
 
     manifest = json.loads((BENCH / "items.json").read_text(encoding="utf-8"))["items"]
@@ -377,6 +416,20 @@ def main() -> int:
     }, indent=1), encoding="utf-8")
 
     adapter = make_adapter(args)
+
+    # Cumulative TOTAL-token fence (prompt+image+output as reported by the
+    # provider), persisted across resumes. Numeric counts only — never
+    # credentials or content.
+    usage_path = outdir / "usage.json"
+    usage_state = (json.loads(usage_path.read_text(encoding="utf-8"))
+                   if usage_path.exists()
+                   else {"cumulative_total_tokens": 0, "usage_reliable": True,
+                         "calls_with_usage": 0, "calls_without_usage": 0})
+
+    def save_usage():
+        usage_state["updated"] = time.strftime("%Y-%m-%d %H:%M:%S")
+        usage_path.write_text(json.dumps(usage_state, indent=1), encoding="utf-8")
+
     t0 = time.monotonic()
     done = 0
     last_start = 0.0
@@ -387,9 +440,27 @@ def main() -> int:
             target = rundir / f"{item['id']}.json"
             if target.exists():
                 continue
+            if args.token_budget and usage_state["cumulative_total_tokens"] >= args.token_budget:
+                print(f"[{args.config_id}] TOKEN BUDGET REACHED "
+                      f"({usage_state['cumulative_total_tokens']}/{args.token_budget} "
+                      "total tokens) — stopping; remaining items stay pending")
+                save_usage()
+                return 4
             png = preprocess((BENCH / item["image"]).read_bytes(), args.preproc,
                              max_edge=args.max_edge)
             prompt = PROMPTS[item["category"]]
+            if args.backend in ("alibaba_ocr", "groq"):
+                # OCR/transcription-only backends: same fidelity rules, plain
+                # text reply (no JSON grammar), minimal output tokens
+                prompt = prompt.replace(
+                    'Reply with ONLY a JSON object: {"transcription": "<the text>"}',
+                    PLAIN_REPLY,
+                ).replace(
+                    'Reply with ONLY a '
+                    'JSON object: {"transcription": "<letter>: <value>; <letter>: '
+                    '<value>; ..."}',
+                    "Reply ONLY with lines of the form '<letter>: <value>'.",
+                )
             if args.min_interval:
                 pace = args.min_interval - (time.monotonic() - last_start)
                 if pace > 0:
@@ -418,12 +489,27 @@ def main() -> int:
                 print(f"[{args.config_id}] DAILY QUOTA EXHAUSTED at {item['id']} — "
                       "stopping; completed items preserved; resume after reset")
                 return 3
+            total_tok = res.get("usage_total_tokens")
+            if total_tok is not None:
+                usage_state["cumulative_total_tokens"] += int(total_tok)
+                usage_state["calls_with_usage"] += 1
+            else:
+                usage_state["calls_without_usage"] += 1
+                if args.token_budget:
+                    usage_state["usage_reliable"] = False
+            save_usage()
+            if args.token_budget and not usage_state["usage_reliable"]:
+                print(f"[{args.config_id}] WARNING: provider did not report "
+                      "usage on some calls — the client-side token fence is "
+                      "NOT sufficient protection; relying on quota-exhaustion "
+                      "handling and the account's billing configuration")
             res.update({"item": item["id"], "category": item["category"],
                         "run": run, "latency_s": round(dt, 2)})
             target.write_text(json.dumps(res, ensure_ascii=False, indent=1),
                               encoding="utf-8")
             done += 1
-            print(f"[{args.config_id} run{run}] {item['id']}: {dt:.1f}s"
+            tok_note = f" tok={total_tok}" if total_tok is not None else ""
+            print(f"[{args.config_id} run{run}] {item['id']}: {dt:.1f}s{tok_note}"
                   + (f" ERR {res['error'][:60]}" if res.get("error") else ""))
     cfg = json.loads((outdir / "config.json").read_text(encoding="utf-8"))
     cfg["total_wall_s"] = round(time.monotonic() - t0, 1)
