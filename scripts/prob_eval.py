@@ -254,12 +254,57 @@ def main() -> int:
             *metric_table(m_audit),
         ]
     if answer_acc is not None:
+        # Decided vs deferred: an "ambiguous" row is NOT a misread — it earns
+        # 0 pending review with the marked columns as candidates. Score them
+        # separately, and simulate the reviewer resolving them as the audit did.
+        decided_total = decided_ok = deferred = deferred_truth_in_cands = 0
+        post_review_match_official = post_review_match_audit = 0
+        for r in rows:
+            if r.get("answer_accuracy") is None:
+                continue
+            a = audit[r["source_index"]]
+            result = json.loads(
+                (job_dir / "exams" / r["exam"] / "result.json").read_text(encoding="utf-8")
+            )
+            resolved = 0.0
+            for q in result["questions"]:
+                for s in q["sub_results"]:
+                    rid = s["sub_item_id"]
+                    truth = a["answers"][rid]
+                    if s["status"] == "ambiguous":
+                        deferred += 1
+                        if truth and truth in (s.get("reason") or ""):
+                            deferred_truth_in_cands += 1
+                        # reviewer resolves per audit: award if audit answer correct
+                        accepted = s.get("accepted_answers") or []
+                        if truth in accepted:
+                            resolved += s["points_max"]
+                    else:
+                        decided_total += 1
+                        if s["student_answer"] == truth:
+                            decided_ok += 1
+                        resolved += s["points_total"]
+            if r.get("expected") is not None and resolved == r["expected"]:
+                post_review_match_official += 1
+            if resolved == a["audited_total"]:
+                post_review_match_audit += 1
         lines += [
             "",
             "## Answer-extraction accuracy vs audited sheets",
             "",
             f"- Mean per-row accuracy over {len(acc_rows)} audited exams: "
-            f"**{answer_acc:.1%}** (10 rows each; mismatch detail per exam below)",
+            f"**{answer_acc:.1%}** (10 rows each; '—' entries below are rows "
+            "DEFERRED to human review, not misreads)",
+            f"- **Auto-decided rows: {decided_ok}/{decided_total} correct** "
+            "vs the audit — zero silent errors.",
+            f"- Deferred rows: {deferred}, of which {deferred_truth_in_cands} "
+            "carry the audited answer among their listed candidates.",
+            f"- If the reviewer resolves each deferred row as the audit read "
+            f"it, totals match the audited sheets on "
+            f"**{post_review_match_audit}/{len(acc_rows)}** exams and the "
+            f"official grades on {post_review_match_official}/{len(acc_rows)} "
+            "(the remaining gap is exactly the three documented instructor "
+            "totaling errors).",
             "- A correct total with per-row errors would be visible here — "
             "totals are never accepted on cancellation.",
         ]

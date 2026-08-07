@@ -90,24 +90,38 @@ plus a human-review flag (`autograder/variant.py` rules, unchanged).
   evaluation by the full-resolution extraction audit (see
   `evaluation/prob/`): the per-row reading, not the key, was the suspect.
 
-## Row-band extraction (added after the live smoke test)
+## Answer-table extraction: deterministic-first (added after two live smokes)
 
-The first live smoke run (exam-001 = scan 02, 2026-08-07) exposed a serious
-whole-page reading failure: variant detection was perfect (♡, confident),
-but the model returned wrong letters for **9 of 10 table rows at high
-confidence with zero review flags** (predicted 0/100 vs expected 60). The
-error pattern was consistent with RTL column confusion — marks assigned to
-the mirrored column position — plus small-checkbox misreads on a full-page
-render.
+Two live failures on 2026-08-07 drove the final design (variant detection
+was perfect both times):
 
-The fix is `answer_table_banding` (template opt-in, `autograder/
-tablecrop.py`): the already-rendered sheet page is cropped deterministically
-into per-row bands using the table's own grid lines (run-length detection,
-least-squares lattice fit that bridges faded lines — scan 13 needs this),
-and each band is stacked under the printed header strip so the column
-letters stay visible directly above the row's cells. One small model call
-reads each row (`BandRowExtraction`), and the model must also report the
-row's PRINTED question number — a mismatch with the requested row marks the
-item ambiguous for human review instead of trusting a mis-registered crop.
-No model calls are involved in the cropping itself; a page without a
-matching grid falls back loudly to whole-page extraction.
+1. **Whole-page read**: the model returned wrong letters for 9/10 rows at
+   high confidence with zero review flags (RTL column mirroring + small
+   checkboxes).
+2. **Per-row band crops** (header strip stitched above each row so the
+   column letters sit directly over the cells): still 4/10 rows wrong at
+   confidence 1.0 — the model *hallucinated* cancelled/filled marks on rows
+   physically holding one clean X, and mirrored columns (claimed א where
+   the mark is in ד). Verbal RTL spatial grounding is a capability wall for
+   qwen3-vl:8b, not a prompting problem.
+
+The sub-task the model fails — *which cell contains ink* — is pure
+geometry, so `answer_table_banding` now reads the table deterministically
+(`autograder/tablecrop.py`): grid lines by run-length detection with a
+least-squares lattice fit that bridges faded lines (scan 13 needs this);
+per-cell darkness-weighted ink mass; a per-scan noise floor (median
+second-highest cell excess) separating marks from bleed-through/overshoot.
+The RTL column→letter mapping is one-time verified template configuration
+(`answer_table_columns_rtl`), like the suit map. Validated against all 130
+independently audited rows at the production render size: **120/130 rows
+auto-read correctly, 0 wrong, 0 missed; all 10 remaining rows flagged
+ambiguous with the true answer among the candidates** — including all 5
+genuine cancelled-then-corrected rows.
+
+Multi-mark rows are **never auto-resolved**: measured on this dataset, a
+cancellation blob and a bold clean X overlap in both amplitude and shape
+features, so any automatic rule would silently mis-grade some rows. They
+go to human review with the marked columns as candidates; a constrained
+model call may add a proposal to the rationale, clearly labeled ADVISORY
+ONLY. Fallback ladder when a scan resists analysis: per-row VLM band reads
+(printed-row-number echo guards mis-registration) → whole-page extraction.

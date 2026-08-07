@@ -109,3 +109,45 @@ unmasked). Stage B/C intentionally NOT launched per the owner's audit gate
 row-band crops / a dedicated transcription pass / the 32B bake-off.
 Splits: train 25 / validation 16, seed 42 (datasets/ manifests;
 evaluation/run_manifest.json lists the exact ids).
+
+## Mission 1 (2026-08-07, weak laptop, CPU-only): UI + prob benchmark — COMPLETE
+
+Built and live-validated: lecturer web UI (`autograder ui`, Streamlit,
+detached runner survives app close; docs/ui.md), exam-template system with
+MC-only / with-explanation / mixed routing (MC-only makes zero judging or
+transcription calls, structurally), persistent batch jobs with anonymized
+intake + pause/stop/resume, and the probability-exam package (card-suit
+variants, first-page-authority template — template-specific, not global).
+Suite: 189 passed, 2 skipped (offline).
+
+**Prob benchmark (13 real exams, qwen3-vl:8b-instruct via local Ollama,
+CPU-only, ~6.7 min/exam avg incl. model loads; no GPU/VRAM):**
+
+- **Variant detection 13/13 correct** live (two faint-diamond scans
+  initially fell to the fallback column with review flags — both fixed by
+  deterministic resolver improvements, commits 3c9569d + ce0fd62, and
+  re-run).
+- **Answer extraction: 120/120 auto-decided rows correct, 10/130 rows
+  deferred to human review (all 10 carry the audited answer among their
+  candidates), 0 silent errors, 0 failures.** Extraction is deterministic
+  cell-ink analysis (tablecrop.py) after BOTH model-based approaches failed
+  measurably on live scans: whole-page reads 1/10 rows correct; per-row
+  band crops 6/10 with hallucinated marks at confidence 1.0 (all three
+  stages documented in docs/prob-template.md and the git history).
+- **Totals: post-review 13/13 match the audited sheets; 10/13 match
+  grades.csv — the other 3 are documented instructor totaling errors**
+  (scans 05, 06, 13; evidence: evaluation/prob/manual_audit.json — key
+  columns re-derived from the booklets + sol.pdf and pinned by the 10
+  exactly-matching exams). Raw pre-review metrics and both references:
+  evaluation/prob/report.md.
+- Ground truth discipline held: grades.csv joined strictly post-prediction;
+  anonymized filenames; capture test proves no grade/filename reaches any
+  model request.
+
+Honest caveats: the 8B model's spatial reading of RTL answer grids is
+unusable (that sub-task is now deterministic); its remaining live roles
+here are variant-marker sighting (13/13 after resolver fixes, 2 with
+review flags) and advisory disambiguation text on flagged rows. The
+earlier "no more inference on this laptop" directive was superseded by
+this mission's explicit local-run requirement; timings above are
+CPU-laptop numbers and must not be extrapolated to the strong PC.

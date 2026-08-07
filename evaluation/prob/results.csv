@@ -1,0 +1,14 @@
+answer_accuracy,answer_mismatches,answers,audited_total,exam,expected,marker_seen,model_calls,predicted,review_items,runtime_s,signed_error,source_index,status,variant,variant_matches_audit
+0.9,7:—≠D,1:B 2:A 3:D 4:C 5:B 6:D 7:— 8:D 9:D 10:C,60,exam-001,60,a heart outline symbol,15,50.0,1,536.1,-10.0,02,done,heart,True
+1.0,,1:A 2:A 3:A 4:D 5:C 6:D 7:A 8:D 9:C 10:D,40,exam-002,50,a heart outline symbol,3,40.0,0,290.4,-10.0,05,done,heart,True
+1.0,,1:A 2:A 3:D 4:D 5:B 6:B 7:A 8:D 9:B 10:B,60,exam-003,70,a heart outline symbol,1,60.0,0,263.3,-10.0,06,done,heart,True
+1.0,,1:C 2:A 3:B 4:A 5:A 6:C 7:D 8:B 9:C 10:B,40,exam-004,30,"a spade symbol (like the card suit ♠, a pointed leaf shape with a stem)",1,40.0,0,277.0,10.0,13,done,spade,True
+1.0,,1:D 2:C 3:C 4:D 5:B 6:A 7:D 8:B 9:B 10:A,70,exam-005,70,a diamond outline symbol,1,70.0,0,264.4,0.0,15,done,diamond,True
+1.0,,1:D 2:C 3:C 4:C 5:B 6:C 7:D 8:B 9:A 10:B,80,exam-006,80,a diamond outline symbol,3,80.0,1,30.2,0.0,21,done,diamond,True
+0.9,4:—≠C,1:C 2:C 3:C 4:— 5:D 6:C 7:B 8:D 9:B 10:A,30,exam-007,30,a diamond outline symbol,4,30.0,1,52.7,0.0,24,done,diamond,True
+0.8,7:—≠D 10:—≠D,1:B 2:A 3:A 4:A 5:B 6:A 7:— 8:C 9:C 10:—,50,exam-008,50,"a spade symbol (like the card suit ♠, a pointed leaf shape with a stem)",3,40.0,2,743.5,-10.0,28,done,spade,True
+0.8,3:—≠B 8:—≠D,1:A 2:A 3:— 4:D 5:B 6:C 7:A 8:— 9:B 10:B,50,exam-009,50,a symbol with three rounded leaves and a stem,3,30.0,2,734.7,-20.0,29,done,club,True
+0.9,7:—≠A,1:C 2:A 3:D 4:B 5:D 6:D 7:— 8:C 9:C 10:D,20,exam-010,20,a heart outline symbol,2,20.0,1,527.7,0.0,30,done,heart,True
+0.9,4:—≠B,1:C 2:A 3:A 4:— 5:D 6:A 7:B 8:C 9:C 10:A,40,exam-011,40,"a club symbol (like the card suit ♣, three round leaves with a stem)",2,40.0,1,547.8,0.0,32,done,club,True
+1.0,,1:C 2:A 3:B 4:B 5:D 6:D 7:B 8:D 9:C 10:A,50,exam-012,50,a symbol with three rounded leaves and a stem,1,50.0,0,297.0,0.0,36,done,club,True
+0.8,8:—≠D 9:—≠B,1:A 2:D 3:C 4:B 5:C 6:A 7:C 8:— 9:— 10:C,30,exam-013,30,a symbol with three rounded leaves and a stem,3,10.0,2,690.7,-20.0,37,done,club,True
