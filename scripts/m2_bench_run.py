@@ -219,11 +219,14 @@ class Gemini:
             ]}],
             "generationConfig": {"temperature": 0, "maxOutputTokens": 800},
         }
+        rl_waits, rl_wait_s = 0, 0.0
         for attempt in range(6):
             resp = self.client.post(url, json=body)
             if resp.status_code in (429, 503):
                 wait = min(30.0 * (attempt + 1), 180.0)
                 print(f"  {resp.status_code} from Gemini; sleeping {wait:.0f}s")
+                rl_waits += 1
+                rl_wait_s += wait
                 time.sleep(wait)
                 continue
             data = resp.json()
@@ -240,13 +243,19 @@ class Gemini:
                     cleaned = re.sub(r"^```[a-z]*\s*|\s*```$", "", raw.strip())
                     parsed = cleaned.strip() or None
                 return {"raw": raw, "transcription": parsed, "error": None,
-                        "status": resp.status_code}
+                        "status": resp.status_code,
+                        "rate_limit_waits": rl_waits,
+                        "rate_limit_wait_s": round(rl_wait_s, 1)}
             except Exception as e:  # noqa: BLE001
                 return {"raw": "", "transcription": None,
                         "error": f"{type(e).__name__}: {e} | body={str(data)[:300]}",
-                        "status": resp.status_code}
+                        "status": resp.status_code,
+                        "rate_limit_waits": rl_waits,
+                        "rate_limit_wait_s": round(rl_wait_s, 1)}
         return {"raw": "", "transcription": None,
-                "error": "rate-limited after 6 attempts", "status": 429}
+                "error": "rate-limited after 6 attempts", "status": 429,
+                "rate_limited_out": True,
+                "rate_limit_waits": rl_waits, "rate_limit_wait_s": round(rl_wait_s, 1)}
 
 
 class EasyOCRAdapter:
@@ -333,6 +342,9 @@ def main() -> int:
     ap.add_argument("--limit", type=int, default=0)
     ap.add_argument("--max-edge", type=int, default=0,
                     help="downscale crops so the long edge <= this before sending")
+    ap.add_argument("--min-interval", type=float, default=0.0,
+                    help="minimum seconds between request STARTS (proactive "
+                         "RPM pacing for quota-limited hosted APIs)")
     args = ap.parse_args()
 
     manifest = json.loads((BENCH / "items.json").read_text(encoding="utf-8"))["items"]
@@ -349,7 +361,8 @@ def main() -> int:
     outdir.mkdir(parents=True, exist_ok=True)
     (outdir / "config.json").write_text(json.dumps({
         "config_id": args.config_id, "backend": args.backend, "model": args.model,
-        "preproc": args.preproc, "max_edge": args.max_edge, "runs": args.runs,
+        "preproc": args.preproc, "max_edge": args.max_edge,
+        "min_interval_s": args.min_interval, "runs": args.runs,
         "categories": args.categories or "all", "n_items": len(manifest),
         "started": time.strftime("%Y-%m-%d %H:%M:%S"),
     }, indent=1), encoding="utf-8")
@@ -357,6 +370,7 @@ def main() -> int:
     adapter = make_adapter(args)
     t0 = time.monotonic()
     done = 0
+    last_start = 0.0
     for run in range(1, args.runs + 1):
         rundir = outdir / f"run{run}"
         rundir.mkdir(exist_ok=True)
@@ -367,6 +381,11 @@ def main() -> int:
             png = preprocess((BENCH / item["image"]).read_bytes(), args.preproc,
                              max_edge=args.max_edge)
             prompt = PROMPTS[item["category"]]
+            if args.min_interval:
+                pace = args.min_interval - (time.monotonic() - last_start)
+                if pace > 0:
+                    time.sleep(pace)
+            last_start = time.monotonic()
             t1 = time.monotonic()
             try:
                 # association answers die inside the constrained JSON grammar

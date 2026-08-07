@@ -63,6 +63,7 @@ def main() -> int:
         "cer": [], "usable": 0, "n": 0, "gtw": 0, "dels": 0, "hypw": 0,
         "ins": 0, "werr": 0, "rev_flags": 0, "hard_ok": 0, "hard_halluc": 0,
         "hard_n": 0, "assoc_ok": 0, "assoc_total": 0, "lat": [], "errors": 0,
+        "rl_waits": 0, "rl_wait_s": 0.0, "rl_out": 0,
     })
     details = []
     for rundir in rundirs:
@@ -75,8 +76,16 @@ def main() -> int:
                 continue
             cat = item["category"]
             S = per_cat[cat]
-            S["lat"].append(rec.get("latency_s") or 0)
-            if rec.get("error"):
+            # rate-limit waiting is quota accounting, NOT a model failure:
+            # exclude in-call backoff time from latency and count items that
+            # ran out of retries separately from real errors
+            rl_wait = rec.get("rate_limit_wait_s") or 0.0
+            S["rl_waits"] += rec.get("rate_limit_waits") or 0
+            S["rl_wait_s"] += rl_wait
+            S["lat"].append(max((rec.get("latency_s") or 0) - rl_wait, 0.0))
+            if rec.get("rate_limited_out"):
+                S["rl_out"] += 1
+            elif rec.get("error"):
                 S["errors"] += 1
             hyp_raw = rec.get("transcription") or ""
 
@@ -137,6 +146,9 @@ def main() -> int:
             "hard_n": S["hard_n"] or None,
             "assoc_pair_acc": round(S["assoc_ok"] / S["assoc_total"], 4) if S["assoc_total"] else None,
             "errors": S["errors"],
+            "rate_limit_waits": S["rl_waits"],
+            "rate_limit_wait_s": round(S["rl_wait_s"], 1),
+            "rate_limited_out": S["rl_out"],
             "median_latency_s": round(lat[len(lat) // 2], 2) if lat else None,
         }
         rows.append(row)
