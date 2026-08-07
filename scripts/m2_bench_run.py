@@ -223,6 +223,15 @@ class Gemini:
         for attempt in range(6):
             resp = self.client.post(url, json=body)
             if resp.status_code in (429, 503):
+                # DAILY quota exhaustion cannot be waited out — signal the
+                # runner to stop cleanly (item stays pending/resumable).
+                body_text = resp.text[:1500]
+                if "PerDay" in body_text or "per day" in body_text.lower():
+                    return {"raw": "", "transcription": None,
+                            "error": "daily quota exhausted", "status": 429,
+                            "daily_quota_exhausted": True,
+                            "rate_limit_waits": rl_waits,
+                            "rate_limit_wait_s": round(rl_wait_s, 1)}
                 wait = min(30.0 * (attempt + 1), 180.0)
                 print(f"  {resp.status_code} from Gemini; sleeping {wait:.0f}s")
                 rl_waits += 1
@@ -398,6 +407,17 @@ def main() -> int:
                 res = {"raw": "", "transcription": None,
                        "error": f"{type(e).__name__}: {e}", "status": -1}
             dt = time.monotonic() - t1
+            if res.get("daily_quota_exhausted"):
+                # Do NOT write the item (stays pending); stop the whole run —
+                # retrying before the daily reset cannot succeed.
+                cfg_now = json.loads((outdir / "config.json").read_text(encoding="utf-8"))
+                cfg_now["stopped_reason"] = "daily quota exhausted"
+                cfg_now["stopped_at"] = time.strftime("%Y-%m-%d %H:%M:%S")
+                (outdir / "config.json").write_text(json.dumps(cfg_now, indent=1),
+                                                    encoding="utf-8")
+                print(f"[{args.config_id}] DAILY QUOTA EXHAUSTED at {item['id']} — "
+                      "stopping; completed items preserved; resume after reset")
+                return 3
             res.update({"item": item["id"], "category": item["category"],
                         "run": run, "latency_s": round(dt, 2)})
             target.write_text(json.dumps(res, ensure_ascii=False, indent=1),
