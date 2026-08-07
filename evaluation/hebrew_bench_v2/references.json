@@ -514,22 +514,51 @@
  },
  "assoc_docB_p2_b1": {
   "text": "0.55\n()ד0.51\n()ג0.47\n()ב0.39\n()א",
-  "provenance": "embedded text layer of docB (born-digital)"
+  "pairs": {
+   "ד": "0.55",
+   "ג": "0.51",
+   "ב": "0.47",
+   "א": "0.39"
+  },
+  "provenance": "embedded text layer of docB (born-digital); pairs from word geometry (value = nearest numeric word left of the option letter)"
  },
  "assoc_docB_p2_b3": {
   "text": "0.475\n()ד0.437\n()ג0.427\n()ב0.401\n()א",
-  "provenance": "embedded text layer of docB (born-digital)"
- },
- "assoc_docB_p2_b4": {
-  "text": "לפגוע ולבוב יש סיכוי1/3אליס ובוב מתחרים בפגיעה במטרה. לאליס יש סיכוי\n:3שאלה\nמה הסיכוי\nאליס מתחילה, והמשחק ממשיך בתורות עד לפגיעה במטרה.\n.1/2\n?שאליס תנצח",
-  "provenance": "embedded text layer of docB (born-digital)"
+  "pairs": {
+   "ד": "0.475",
+   "ג": "0.437",
+   "ב": "0.427",
+   "א": "0.401"
+  },
+  "provenance": "embedded text layer of docB (born-digital); pairs from word geometry (value = nearest numeric word left of the option letter)"
  },
  "assoc_docB_p2_b5": {
   "text": "3/5\n()ד1/2\n()ג1/3\n()ב1/6\n()א",
-  "provenance": "embedded text layer of docB (born-digital)"
+  "pairs": {
+   "ד": "3/5",
+   "ג": "1/2",
+   "ב": "1/3",
+   "א": "1/6"
+  },
+  "provenance": "embedded text layer of docB (born-digital); pairs from word geometry (value = nearest numeric word left of the option letter)"
  },
  "assoc_docB_p2_b7": {
   "text": "אף אחד מהנ״ל\n)ד(1\n()ג0.5\n()ב0.29\n()א",
-  "provenance": "embedded text layer of docB (born-digital)"
+  "pairs": {
+   "ג": "1",
+   "ב": "0.5",
+   "א": "0.29"
+  },
+  "provenance": "embedded text layer of docB (born-digital); pairs from word geometry (value = nearest numeric word left of the option letter)"
+ },
+ "assoc_docB_p2_b12": {
+  "text": "6/19\n()ד5/19\n()ג4/19\n()ב3/19\n()א",
+  "pairs": {
+   "ד": "6/19",
+   "ג": "5/19",
+   "ב": "4/19",
+   "א": "3/19"
+  },
+  "provenance": "embedded text layer of docB (born-digital); pairs from word geometry (value = nearest numeric word left of the option letter)"
  }
 }

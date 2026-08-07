@@ -225,6 +225,30 @@ def main() -> int:
             if n_assoc >= 5:
                 break
             rect = fitz.Rect(x0 - 6, y0 - 6, x1 + 6, y1 + 6) & page.rect
+            # Structured GT pairs from word GEOMETRY (immune to bidi-mangled
+            # block text): each option letter's value is the nearest numeric
+            # word to its LEFT (RTL layout).
+            words = [w for w in page.get_text("words") if fitz.Rect(w[:4]).intersects(rect)]
+            letters_pos = []
+            for w in words:
+                m = re.fullmatch(r"\(?\)?([אבגד])\(?\)?", w[4]) or re.fullmatch(r"[)(]*([אבגד])[)(]*", w[4])
+                if m:
+                    letters_pos.append((m.group(1), fitz.Rect(w[:4])))
+            pairs = {}
+            for letter, lrect in letters_pos:
+                best = None
+                for w in words:
+                    txt = w[4].strip("()")
+                    if not re.fullmatch(r"[0-9]+(?:[./][0-9]+)*", txt):
+                        continue
+                    wrect = fitz.Rect(w[:4])
+                    if wrect.x1 <= lrect.x0 + 2 and abs((wrect.y0 + wrect.y1) - (lrect.y0 + lrect.y1)) < 8:
+                        if best is None or wrect.x1 > best[1].x1:  # nearest on the left
+                            best = (txt, wrect)
+                if best:
+                    pairs[letter] = best[0]
+            if len(pairs) < 3:
+                continue  # geometry parse failed; skip rather than guess
             iid = f"assoc_docB_p{pno + 1}_b{bi}"
             pix = page.get_pixmap(matrix=fitz.Matrix(3, 3), clip=rect)
             pix.save(CROPS / f"{iid}.png")
@@ -244,7 +268,12 @@ def main() -> int:
             )
             refs[iid] = {
                 "text": btext.strip(),
-                "provenance": "embedded text layer of docB (born-digital)",
+                "pairs": pairs,
+                "provenance": (
+                    "embedded text layer of docB (born-digital); pairs from "
+                    "word geometry (value = nearest numeric word left of the "
+                    "option letter)"
+                ),
             }
             n_assoc += 1
     doc.close()

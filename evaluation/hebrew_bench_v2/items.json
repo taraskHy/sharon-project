@@ -1134,14 +1134,6 @@
    "task": "this crop shows the four answer options of one multiple-choice question; output each option letter (א,ב,ג,ד) with its exact printed value"
   },
   {
-   "id": "assoc_docB_p2_b4",
-   "category": "option_row_association",
-   "tier": "text-layer",
-   "image": "crops/assoc_docB_p2_b4.png",
-   "source": "docB page 2",
-   "task": "this crop shows the four answer options of one multiple-choice question; output each option letter (א,ב,ג,ד) with its exact printed value"
-  },
-  {
    "id": "assoc_docB_p2_b5",
    "category": "option_row_association",
    "tier": "text-layer",
@@ -1154,6 +1146,14 @@
    "category": "option_row_association",
    "tier": "text-layer",
    "image": "crops/assoc_docB_p2_b7.png",
+   "source": "docB page 2",
+   "task": "this crop shows the four answer options of one multiple-choice question; output each option letter (א,ב,ג,ד) with its exact printed value"
+  },
+  {
+   "id": "assoc_docB_p2_b12",
+   "category": "option_row_association",
+   "tier": "text-layer",
+   "image": "crops/assoc_docB_p2_b12.png",
    "source": "docB page 2",
    "task": "this crop shows the four answer options of one multiple-choice question; output each option letter (א,ב,ג,ד) with its exact printed value"
   }
