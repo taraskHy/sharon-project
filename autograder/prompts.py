@@ -328,6 +328,19 @@ table's printed HEADER strip on top and, directly below it, ONE data row.
 """
 
 
+DISAMBIGUATION_SYSTEM = """\
+You are looking at ONE ROW of a multiple-choice answer table cropped from a
+scanned exam (header strip on top, one data row below; Hebrew RTL: question
+number at the RIGHT edge, option columns labeled א=A, ב=B, ג=C, ד=D).
+Deterministic ink analysis already found marks in the columns named in the
+prompt — do not search other columns. Your only job: among THOSE columns,
+say which mark (if any) is scribbled-over/blacked-out (a CANCELLED choice)
+and which is a clean X/check/filled mark (the FINAL choice). If you cannot
+tell them apart, say so (final_column=null) — never guess. Your answer is
+advisory: a human reviewer makes the decision.
+"""
+
+
 JUDGE_SYSTEM = """\
 You grade short written justifications from a university exam against the
 official answer key's reference reasoning. Explanations may be in Hebrew,

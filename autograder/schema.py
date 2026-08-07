@@ -521,6 +521,22 @@ class BandRowExtraction(BaseModel):
     row: SubItemExtraction
 
 
+class MarkDisambiguation(BaseModel):
+    """Advisory 2-way reading of a multi-mark table row (cropped band).
+    NEVER decides the grade: the row stays ambiguous/human-review; this
+    proposal is recorded in the rationale to help the reviewer."""
+
+    cancelled_columns: list[str] = Field(
+        default_factory=list,
+        description="Option letters whose mark is scribbled/blacked out (cancelled).",
+    )
+    final_column: Optional[str] = Field(
+        default=None,
+        description="The single clean surviving mark's letter, if determinable.",
+    )
+    reasoning: str = ""
+
+
 class ExamExtraction(BaseModel):
     """Container for all per-question extractions (serialised to disk)."""
 

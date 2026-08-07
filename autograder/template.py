@@ -82,6 +82,15 @@ class ExamTemplate(BaseModel):
             "whole-page extraction when no matching grid is found."
         ),
     )
+    answer_table_columns_rtl: list[str] = Field(
+        default_factory=lambda: ["A", "B", "C", "D"],
+        description=(
+            "With answer_table_banding: canonical option letters of the "
+            "table's option columns ordered RIGHT to LEFT (first = the column "
+            "adjacent to the question-number column). One-time verified "
+            "layout configuration, like the variant-marker mapping."
+        ),
+    )
     booklet_answers_not_graded: bool = Field(
         default=True,
         description=(

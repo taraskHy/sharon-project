@@ -15,6 +15,7 @@ from .schema import (
     ExamExtraction,
     ExamSurvey,
     KeyQuestion,
+    MarkObservation,
     QuestionExtraction,
     SubItemExtraction,
 )
@@ -272,6 +273,51 @@ def _extract_band(
     return row
 
 
+def _propose_disambiguation(
+    llm: VisionBackend, band, page_number: int, sub_id: str, letters: list[str]
+) -> str:
+    """Advisory VLM reading of a multi-mark row — recorded in the rationale,
+    never used to decide the grade (the row stays ambiguous/human-review).
+    The live open model has a measured tendency to hallucinate marks, so its
+    proposal is bounded to a constrained 2-way question and clearly labeled."""
+    from .prompts import DISAMBIGUATION_SYSTEM
+    from .schema import MarkDisambiguation
+
+    try:
+        out = llm.parse(
+            system=DISAMBIGUATION_SYSTEM,
+            content_blocks=[
+                {
+                    "type": "text",
+                    "text": (
+                        f"Row (question number {sub_id}) cropped from page "
+                        f"{page_number}. Ink analysis found marks in columns: "
+                        f"{', '.join(letters)}. Which of THOSE is cancelled and "
+                        "which is the clean final mark?"
+                    ),
+                },
+                {
+                    "type": "image",
+                    "source": {
+                        "type": "base64",
+                        "media_type": "image/png",
+                        "data": base64.standard_b64encode(band.png_bytes).decode("ascii"),
+                    },
+                },
+            ],
+            output_model=MarkDisambiguation,
+            max_tokens=1000,
+        )
+        final = out.final_column or "undetermined"
+        cancelled = ", ".join(out.cancelled_columns) or "none identified"
+        return (
+            f"model proposal (ADVISORY ONLY): final={final}, "
+            f"cancelled={cancelled} — {out.reasoning}"
+        )
+    except Exception as e:  # noqa: BLE001 — advisory only, never fatal
+        return f"model proposal unavailable ({e})"
+
+
 def extract_question_banded(
     llm: VisionBackend,
     q: KeyQuestion,
@@ -280,11 +326,146 @@ def extract_question_banded(
     template,
     progress=None,
 ) -> QuestionExtraction | None:
-    """Row-band extraction for a fixed-page answer table (template opt-in).
+    """Fixed-table extraction (template opt-in), deterministic-first.
 
-    Returns None when banding cannot apply (no/unreadable grid, page missing,
-    row count mismatch) — the caller falls back to whole-page extraction.
+    The live open model misread whole pages (9/10 rows wrong) AND hallucinated
+    marks on single-row crops (measured 2026-08-07), so the final answer per
+    row comes from deterministic per-cell ink analysis, validated against 130
+    independently audited rows: a single dominant mark is read directly; a row
+    with more than one real mark is NEVER auto-resolved — it is flagged
+    ambiguous with the marked columns as candidates for human review, plus an
+    advisory model proposal. Falls back to per-row VLM reads when the grid
+    cannot be analysed, and to whole-page extraction below that.
     """
+    from .tablecrop import TableCropError, analyze_answer_table, answer_table_row_bands
+
+    page_number = template.answer_sheet_pages[0]
+    sheet = next((p for p in pages if p.page_number == page_number), None)
+    if sheet is None:
+        return None
+    letters_rtl = list(template.answer_table_columns_rtl)
+    try:
+        bands = answer_table_row_bands(sheet, n_rows=len(q.sub_items))
+        analysis = analyze_answer_table(
+            sheet, n_rows=len(q.sub_items), n_options=len(letters_rtl)
+        )
+    except TableCropError as e:
+        if progress:
+            progress(
+                f"question {q.id}: table analysis unavailable ({e}); "
+                "falling back to per-row model reads"
+            )
+        return _extract_banded_vlm(llm, q, pages, template, progress)
+
+    rows: list[SubItemExtraction] = []
+    for sub, band, ra in zip(q.sub_items, bands, analysis):
+        letter = lambda j: letters_rtl[j]  # noqa: E731
+        marked = [letter(j) for j in ra.marked]
+        weak = [letter(j) for j in ra.weak]
+        excess_txt = ", ".join(
+            f"{letter(j)}={ra.excess[j]:.0f}" for j in sorted(ra.excess)
+        )
+        detail = (
+            f"deterministic cell ink analysis (noise floor {ra.noise:.0f}): "
+            f"excess darkness per column {excess_txt}"
+            + (f"; weak sub-threshold ink in {', '.join(weak)}" if weak else "")
+        )
+        marks = [
+            MarkObservation(
+                location=f"answer table row {sub.id}, option {L}",
+                mark_type="mark (ink above noise threshold)",
+                meaning="selected_final" if len(marked) == 1 else "candidate",
+            )
+            for L in marked
+        ]
+        if len(marked) == 1:
+            rows.append(
+                SubItemExtraction(
+                    sub_item_id=sub.id,
+                    status="answered",
+                    answer_origin="answer_sheet",
+                    source_page=page_number,
+                    source_region=f"answer table row {sub.id}",
+                    final_answer=marked[0],
+                    marks_observed=marks,
+                    interpretation_rationale=f"single dominant mark in {marked[0]}; {detail}",
+                    confidence=0.93 if not weak else 0.78,
+                )
+            )
+        elif not marked:
+            rows.append(
+                SubItemExtraction(
+                    sub_item_id=sub.id,
+                    status="unanswered",
+                    answer_origin="answer_sheet",
+                    source_page=page_number,
+                    source_region=f"answer table row {sub.id}",
+                    final_answer=None,
+                    marks_observed=[],
+                    interpretation_rationale=f"no cell ink above the answered threshold; {detail}",
+                    confidence=0.6,
+                    uncertainty_note=(
+                        "row read as unanswered by ink analysis — verify no "
+                        "very faint mark was missed"
+                    ),
+                )
+            )
+        else:
+            if progress:
+                progress(
+                    f"question {q.id} row {sub.id}: {len(marked)} marks "
+                    f"({', '.join(marked)}) — flagging for review, asking model "
+                    "for an advisory disambiguation"
+                )
+            proposal = _propose_disambiguation(llm, band, page_number, sub.id, marked)
+            rows.append(
+                SubItemExtraction(
+                    sub_item_id=sub.id,
+                    status="ambiguous",
+                    answer_origin="answer_sheet",
+                    source_page=page_number,
+                    source_region=f"answer table row {sub.id}",
+                    final_answer=None,
+                    candidate_answers=marked,
+                    marks_observed=marks,
+                    interpretation_rationale=(
+                        f"multiple real marks ({', '.join(marked)}) — under the "
+                        "scribble-cancels convention one may be cancelled, but "
+                        "amplitude/shape cannot decide reliably; human review "
+                        f"required. {detail}. {proposal}"
+                    ),
+                    confidence=0.0,
+                    uncertainty_note="multiple live marks; candidates for human review",
+                )
+            )
+    if progress:
+        n_flagged = sum(1 for r in rows if r.status == "ambiguous")
+        progress(
+            f"question {q.id}: table read deterministically "
+            f"({len(rows) - n_flagged}/{len(rows)} rows auto, {n_flagged} flagged)"
+        )
+    extraction = QuestionExtraction(
+        question_id=q.id,
+        source_pages=[page_number],
+        authoritative_source=(
+            f"answer table on page {page_number} (template {template.template_id}), "
+            "deterministic per-cell ink analysis of the grid"
+        ),
+        answer_sheet_status="present",
+        sub_items=rows,
+    )
+    extraction = _reconcile_sub_items(q, extraction)
+    return extraction
+
+
+def _extract_banded_vlm(
+    llm: VisionBackend,
+    q: KeyQuestion,
+    pages: list[PageImage],
+    template,
+    progress=None,
+) -> QuestionExtraction | None:
+    """Per-row VLM reads (fallback when the grid resists analysis)."""
     from .tablecrop import TableCropError, answer_table_row_bands
 
     page_number = template.answer_sheet_pages[0]
@@ -293,12 +474,7 @@ def extract_question_banded(
         return None
     try:
         bands = answer_table_row_bands(sheet, n_rows=len(q.sub_items))
-    except TableCropError as e:
-        if progress:
-            progress(
-                f"question {q.id}: row banding unavailable ({e}); "
-                "falling back to whole-page extraction"
-            )
+    except TableCropError:
         return None
     rows = []
     for sub, band in zip(q.sub_items, bands):

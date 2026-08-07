@@ -153,6 +153,107 @@ def _lattice_fit(ys: list[int], n_lines: int) -> list[int]:
     return [int(round(a + b * k)) for k in range(n_lines)]
 
 
+def _vertical_grid(dark: np.ndarray, n_lines: int) -> list[int]:
+    """Vertical table borders with double-gap completion (a faded interior
+    line makes one gap ~2x the column width — split it)."""
+    xs = _line_positions(dark, axis=0)
+    if len(xs) < 3:
+        raise TableCropError(f"only {len(xs)} vertical line(s) detected")
+    gaps = [b - a for a, b in zip(xs, xs[1:])]
+    med = float(np.median(gaps))
+    filled = [xs[0]]
+    for a, b in zip(xs, xs[1:]):
+        g = b - a
+        if 1.6 * med < g < 2.5 * med:
+            filled.append(int(round(a + g / 2)))
+        filled.append(b)
+    if len(filled) != n_lines:
+        raise TableCropError(
+            f"{len(filled)} vertical lines after completion, expected {n_lines}"
+        )
+    return filled
+
+
+# Mark-detection calibration, in darkness units normalised to a 2100px-long-
+# edge render (validated against 130 independently audited rows across 13
+# scans, 2026-08-07 — see evaluation/prob/manual_audit.json):
+# single clean marks give excess >= ~2x the scan's noise floor; secondary
+# marks (cancelled-then-corrected rows) >= 2.2x; bleed-through/overshoot
+# noise sits below ~2.2x on all scans. The 1.8-2.2x band is recorded as a
+# weak observation. Amplitude/shape features CANNOT reliably distinguish a
+# cancellation blob from a bold clean X (measured overlap), so multi-mark
+# rows are never auto-resolved — they go to human review with candidates.
+_CAL_EDGE = 2100
+_INK_WEIGHT_THRESHOLD = 165
+_NOISE_FLOOR = 800.0
+_ANSWERED_MIN = 2600.0
+_ANSWERED_NOISE_FACTOR = 2.0
+_MARK_NOISE_FACTOR = 2.2
+_WEAK_NOISE_FACTOR = 1.8
+_MARK_MAX_FRACTION = 0.15
+
+
+@dataclass
+class RowMasses:
+    row_index: int                 # 0-based, top to bottom
+    excess: dict[int, float]       # option-column index (0 = rightmost) -> excess darkness
+    marked: list[int]              # real-mark column indices, strongest first
+    weak: list[int]                # gray-zone observations (recorded, not marks)
+    noise: float                   # scan noise floor the thresholds used
+
+
+def analyze_answer_table(
+    page: PageImage, n_rows: int, n_options: int = 4
+) -> list[RowMasses]:
+    """Deterministic per-cell ink analysis of the fixed answer table.
+
+    Layout assumption (RTL psychometric sheet, template opt-in): rightmost
+    column holds the printed question numbers; the ``n_options`` columns to
+    its left are the options, indexed 0 = rightmost option column.
+    """
+    img = _gray(page.png_bytes).astype(np.int16)
+    dark = img < DARK_THRESHOLD
+    h_lines = _lattice_fit(_line_positions(dark, axis=1), n_rows + 2)
+    v_lines = _vertical_grid(dark, n_options + 2)
+    spans = list(zip(v_lines, v_lines[1:]))[:-1]  # drop the number column
+    spans = spans[::-1]  # index 0 = rightmost option column
+    scale = (_CAL_EDGE / max(page.width, page.height)) ** 2
+
+    rows: list[RowMasses] = []
+    for i in range(n_rows):
+        y0, y1 = h_lines[i + 1] + 6, h_lines[i + 2] - 6
+        masses = {}
+        for j, (x0, x1) in enumerate(spans):
+            cell = img[y0:y1, x0 + 8 : x1 - 8]
+            w = np.clip(_INK_WEIGHT_THRESHOLD - cell, 0, None)
+            masses[j] = float(w.sum()) * scale
+        base = min(masses.values())
+        rows.append(
+            RowMasses(
+                row_index=i,
+                excess={j: v - base for j, v in masses.items()},
+                marked=[],
+                weak=[],
+                noise=0.0,
+            )
+        )
+    seconds = [sorted(r.excess.values())[-2] for r in rows]
+    noise = max(float(np.median(seconds)), _NOISE_FLOOR)
+    for r in rows:
+        r.noise = noise
+        order = sorted(r.excess, key=lambda j: -r.excess[j])
+        top, top_v = order[0], r.excess[order[0]]
+        if top_v >= max(_ANSWERED_NOISE_FACTOR * noise, _ANSWERED_MIN):
+            r.marked.append(top)
+        for j in order[1:]:
+            v = r.excess[j]
+            if v > _MARK_NOISE_FACTOR * noise and v > _MARK_MAX_FRACTION * top_v:
+                r.marked.append(j)
+            elif v > _WEAK_NOISE_FACTOR * noise:
+                r.weak.append(j)
+    return rows
+
+
 def answer_table_row_bands(page: PageImage, n_rows: int) -> list[RowBand]:
     """Crop the page's answer table into per-row composites.
 
