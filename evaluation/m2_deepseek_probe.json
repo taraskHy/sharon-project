@@ -1,0 +1,49 @@
+{
+ "model_id": "deepseek-ai/DeepSeek-OCR-2",
+ "started": "2026-08-07 18:48:20",
+ "isolated_env": "C:\\Users\\ethan\\PycharmProjects\\sharon-project\\.venv-dsocr",
+ "steps": [
+  {
+   "step": "resolve_revision",
+   "revision": "aaa02f3811945a91062062994c5c4a3f4c0af2b0",
+   "last_modified": "2026-02-03 00:33:19+00:00"
+  },
+  {
+   "step": "snapshot_downloaded",
+   "path": "C:\\Users\\ethan\\.cache\\huggingface\\hub\\models--deepseek-ai--DeepSeek-OCR-2\\snapshots\\aaa02f3811945a91062062994c5c4a3f4c0af2b0"
+  },
+  {
+   "step": "remote_code_inventory",
+   "files": {
+    "configuration_deepseek_v2.py": "6ab21f29a4722e26fa28c8e0d4277591689a598df17cf6c712330e8f62b3fc7c",
+    "conversation.py": "ec7b6ce89bcda643de1f43269ffa66a7b2e65dc3ed30e427958f776546b4ba03",
+    "deepencoderv2.py": "562e4da383b7ba5ef5db79b5ddfb705c649a80044b99122fe4d5d42c16284193",
+    "modeling_deepseekocr2.py": "4166e8f014250143e257f48fb4eaa57a2ef49fa6ad375ecc016bc7d262fc7160",
+    "modeling_deepseekv2.py": "69184a0493d1fdac21c360f9f9eabc5b5af3188e0265df44cfaeafc44f9095e3"
+   }
+  },
+  {
+   "step": "weights_inventory",
+   "safetensors": [
+    "model-00001-of-000001.safetensors"
+   ],
+   "pickle_bins": []
+  },
+  {
+   "step": "load_attempt",
+   "dtype": "float32",
+   "attn": "eager",
+   "device": "cpu"
+  },
+  {
+   "step": "load_ok",
+   "params_m": 3389
+  },
+  {
+   "step": "inference_failed",
+   "seconds": 0.1,
+   "error": "AssertionError: Torch not compiled with CUDA enabled"
+  }
+ ],
+ "verdict": "loads but inference FAILED on CPU"
+}

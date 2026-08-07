@@ -107,8 +107,8 @@ def _encode_png_gray(gray) -> bytes:
             + chunk(b"IDAT", zlib.compress(raw, 6)) + chunk(b"IEND", b""))
 
 
-def preprocess(png: bytes, mode: str) -> bytes:
-    if mode == "none":
+def preprocess(png: bytes, mode: str, max_edge: int = 0) -> bytes:
+    if mode == "none" and not max_edge:
         return png
     import fitz
     import numpy as np
@@ -116,11 +116,17 @@ def preprocess(png: bytes, mode: str) -> bytes:
     pix = fitz.Pixmap(png)
     if pix.alpha:
         pix = fitz.Pixmap(pix, 0)
+    if max_edge and max(pix.width, pix.height) > max_edge:
+        z = max_edge / max(pix.width, pix.height)
+        with fitz.open(stream=png, filetype="png") as d:
+            pix = d[0].get_pixmap(matrix=fitz.Matrix(z, z))
     arr = np.frombuffer(pix.samples, dtype=np.uint8).reshape(pix.height, pix.width, pix.n)
     gray = arr.mean(axis=2) if pix.n >= 3 else arr[:, :, 0].astype(float)
     if mode == "contrast":
         lo, hi = np.percentile(gray, 5), np.percentile(gray, 95)
         return _encode_png_gray((gray - lo) / max(hi - lo, 1.0) * 255.0)
+    if mode == "none":
+        return _encode_png_gray(gray)
     raise ValueError(f"unknown preproc {mode!r}")
 
 
@@ -141,7 +147,8 @@ class ChatVLM:
         self.base_url, self.model = base_url, model
         self.structured, self.max_tokens = structured, max_tokens
 
-    def transcribe(self, png: bytes, prompt: str) -> dict:
+    def transcribe(self, png: bytes, prompt: str, structured: bool | None = None) -> dict:
+        structured = self.structured if structured is None else structured
         payload = {
             "model": self.model,
             "temperature": 0,
@@ -156,7 +163,7 @@ class ChatVLM:
                 ]},
             ],
         }
-        if self.structured:
+        if structured:
             payload["response_format"] = {
                 "type": "json_schema",
                 "json_schema": {"name": "T", "schema": SCHEMA},
@@ -319,6 +326,8 @@ def main() -> int:
     ap.add_argument("--items", default="", help="comma list to restrict (debug)")
     ap.add_argument("--tesseract-cmd", default="")
     ap.add_argument("--limit", type=int, default=0)
+    ap.add_argument("--max-edge", type=int, default=0,
+                    help="downscale crops so the long edge <= this before sending")
     args = ap.parse_args()
 
     manifest = json.loads((BENCH / "items.json").read_text(encoding="utf-8"))["items"]
@@ -335,7 +344,7 @@ def main() -> int:
     outdir.mkdir(parents=True, exist_ok=True)
     (outdir / "config.json").write_text(json.dumps({
         "config_id": args.config_id, "backend": args.backend, "model": args.model,
-        "preproc": args.preproc, "runs": args.runs,
+        "preproc": args.preproc, "max_edge": args.max_edge, "runs": args.runs,
         "categories": args.categories or "all", "n_items": len(manifest),
         "started": time.strftime("%Y-%m-%d %H:%M:%S"),
     }, indent=1), encoding="utf-8")
@@ -350,11 +359,17 @@ def main() -> int:
             target = rundir / f"{item['id']}.json"
             if target.exists():
                 continue
-            png = preprocess((BENCH / item["image"]).read_bytes(), args.preproc)
+            png = preprocess((BENCH / item["image"]).read_bytes(), args.preproc,
+                             max_edge=args.max_edge)
             prompt = PROMPTS[item["category"]]
             t1 = time.monotonic()
             try:
-                res = adapter.transcribe(png, prompt)
+                # association answers die inside the constrained JSON grammar
+                # on the local model — use free text there and parse post-hoc
+                if item["category"] == "option_row_association" and isinstance(adapter, ChatVLM):
+                    res = adapter.transcribe(png, prompt, structured=False)
+                else:
+                    res = adapter.transcribe(png, prompt)
             except Exception as e:  # noqa: BLE001
                 res = {"raw": "", "transcription": None,
                        "error": f"{type(e).__name__}: {e}", "status": -1}
