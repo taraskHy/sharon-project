@@ -109,17 +109,31 @@ def resolve_marker_name(name: str | None, cfg: dict, seen: str = "") -> str | No
     Models sometimes echo a human alias, or perceive the marker correctly
     but copy the catalogue DESCRIPTION instead of the abstract id (observed
     live: marker_seen = the daisy description verbatim, matched_marker
-    null). Resolution order, all deterministic:
-    1. exact canonical id; 2. declared alias; 3. unique description match —
-    the reported text (name or ``seen``) must cover ≥80 % of exactly ONE
-    catalogue description's tokens. Ambiguity resolves to nothing."""
+    null), or describe the sighting in their own words while leaving
+    matched_marker null (observed live: marker_seen = 'a diamond outline
+    symbol', matched_marker null — scan 24). Resolution order, all
+    deterministic:
+    1. exact canonical id; 2. declared alias; 3. the reported text names
+    exactly ONE canonical id or alias as a word; 4. unique description
+    match — the reported text must cover ≥80 % of exactly ONE catalogue
+    description's tokens. Ambiguity always resolves to nothing."""
     if name in cfg["markers"]:
         return name
     for canonical, entry in cfg["markers"].items():
         if name is not None and name in entry.get("aliases", []):
             return canonical
     reported = _norm_tokens(f"{name or ''} {seen}")
+    reported_sing = {t.rstrip("s") for t in reported}
     if reported:
+        named = []
+        for canonical, entry in cfg["markers"].items():
+            words = _norm_tokens(canonical)
+            for alias in entry.get("aliases", []):
+                words |= _norm_tokens(alias)
+            if {w.rstrip("s") for w in words} & reported_sing:
+                named.append(canonical)
+        if len(set(named)) == 1:
+            return named[0]
         matches = []
         for canonical, entry in cfg["markers"].items():
             desc = _norm_tokens(entry["description"])

@@ -122,6 +122,25 @@ def test_description_echo_resolves_to_unique_canonical_id():
     assert record["matched_marker"] == "variant_symbol_a3"
 
 
+def test_own_words_sighting_naming_one_marker_resolves():
+    """Observed live (scan 24): marker_seen='a diamond outline symbol',
+    matched_marker=null — the sighting names exactly one catalogue marker in
+    the model's own words; the resolver must map it. A sighting naming two
+    markers stays unresolved."""
+    from autograder.variant import resolve_marker_name
+
+    prob_cfg = load_variant_config("prob_data/sol.answer_key.json")
+    assert (
+        resolve_marker_name(None, prob_cfg, seen="a diamond outline symbol")
+        == "diamond"
+    )
+    assert resolve_marker_name(None, prob_cfg, seen="filled clubs shape") == "club"
+    assert (
+        resolve_marker_name(None, prob_cfg, seen="a heart or diamond outline")
+        is None
+    )
+
+
 def test_alias_names_resolve_to_canonical_ids():
     """The model may echo a human-readable alias; the decision resolves it
     to the canonical variant_symbol_* id and records both."""
