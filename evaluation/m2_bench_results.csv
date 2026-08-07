@@ -1,0 +1,6 @@
+config_id,backend,model,preproc,category,items,mean_cer,usable_rate,wer,omission_rate,halluc_rate,reversed_flags,hard_flag_ok,hard_halluc,hard_n,assoc_pair_acc,errors,rate_limit_waits,rate_limit_wait_s,rate_limited_out,median_latency_s
+gemini3_flash,gemini,gemini-3-flash-preview,none,handwritten_line,17,0.473,0.0588,0.4813,0.2834,0.0694,0,,,,,0,0,0.0,0,12.04
+gemini3_flash,gemini,gemini-3-flash-preview,none,option_row_association,1,,,,,,0,,,,1.0,0,0,0.0,0,2.93
+gemini3_flash,gemini,gemini-3-flash-preview,none,printed_rtl,1,0.0,1.0,0.0,0.0,0.0,0,,,,,0,0,0.0,0,3.57
+mlkit_ink_rtl_a1,mlkit_digital_ink,"he (Digital Ink Recognition, on-device)",,handwritten_cell,1,0.4828,0.0,1.2,0.0,0.2857,0,,,,,0,0,0.0,0,0.41
+mlkit_ink_rtl_a1,mlkit_digital_ink,"he (Digital Ink Recognition, on-device)",,handwritten_line,4,0.4525,0.25,0.8065,0.0645,0.0645,0,,,,,0,0,0.0,0,0.23
