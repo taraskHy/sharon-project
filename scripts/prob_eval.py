@@ -243,13 +243,15 @@ def main() -> int:
     if m_audit:
         lines += [
             "",
-            "## Total-score metrics vs audited sheets",
+            "## Total-score metrics vs the agent-audited sheets",
             "",
-            "The independent visual audit (manual_audit.json: every row double-",
-            "read unanimously, key re-derived from the booklets) found grades.csv",
-            "inconsistent with the physically marked sheets on scans 05 (+10),",
-            "06 (+10) and 13 (−10) — instructor totaling errors. Against the",
-            "sheet-faithful reference:",
+            "Reference: a CLAUDE-AGENT audit (manual_audit.json — two agent",
+            "readers per exam, 130/130 rows unanimous; NOT human ground truth),",
+            "which found grades.csv inconsistent with the marked sheets on",
+            "scans 05 (+10), 06 (+10) and 13 (−10). **Owner-verified 2026-08-07:**",
+            "the owner manually checked exams 05, 06 and 13 and confirmed the",
+            "grader totals (40, 60, 40) are correct and grades.csv is wrong for",
+            "those three. Against the sheet-faithful reference:",
             "",
             *metric_table(m_audit),
         ]
@@ -290,21 +292,21 @@ def main() -> int:
                 post_review_match_audit += 1
         lines += [
             "",
-            "## Answer-extraction accuracy vs audited sheets",
+            "## Answer-extraction accuracy vs the agent-audited sheets",
             "",
-            f"- Mean per-row accuracy over {len(acc_rows)} audited exams: "
+            f"- Mean per-row accuracy over {len(acc_rows)} agent-audited exams: "
             f"**{answer_acc:.1%}** (10 rows each; '—' entries below are rows "
             "DEFERRED to human review, not misreads)",
             f"- **Auto-decided rows: {decided_ok}/{decided_total} correct** "
-            "vs the audit — zero silent errors.",
+            "vs the agent audit — zero silent errors.",
             f"- Deferred rows: {deferred}, of which {deferred_truth_in_cands} "
-            "carry the audited answer among their listed candidates.",
-            f"- If the reviewer resolves each deferred row as the audit read "
-            f"it, totals match the audited sheets on "
+            "carry the agent-audited answer among their listed candidates.",
+            f"- If the reviewer resolves each deferred row as the agent audit "
+            f"read it, totals match the agent-audited sheets on "
             f"**{post_review_match_audit}/{len(acc_rows)}** exams and the "
             f"official grades on {post_review_match_official}/{len(acc_rows)} "
-            "(the remaining gap is exactly the three documented instructor "
-            "totaling errors).",
+            "(the remaining gap is exactly the three grades.csv errors the "
+            "owner has confirmed by manual check of exams 05, 06 and 13).",
             "- A correct total with per-row errors would be visible here — "
             "totals are never accepted on cancellation.",
         ]

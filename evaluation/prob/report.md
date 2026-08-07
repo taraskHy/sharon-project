@@ -1,6 +1,6 @@
 # Prob-dataset evaluation (multiple-choice benchmark)
 
-- Generated: 2026-08-07T06:24:14
+- Generated: 2026-08-07T17:57:42
 - Job: `prob-eval-2026-08-07` — 13/13 exams graded
 - Backend: `qwen3-vl:8b-instruct` at `http://localhost:11434/v1`
 - Machine: Windows-11-10.0.26200-SP0 — **CPU-only, no GPU/VRAM**
@@ -22,13 +22,15 @@
 | Human-review rate | 62% |
 | Mean runtime / exam | 404.3 s |
 
-## Total-score metrics vs audited sheets
+## Total-score metrics vs the agent-audited sheets
 
-The independent visual audit (manual_audit.json: every row double-
-read unanimously, key re-derived from the booklets) found grades.csv
-inconsistent with the physically marked sheets on scans 05 (+10),
-06 (+10) and 13 (−10) — instructor totaling errors. Against the
-sheet-faithful reference:
+Reference: a CLAUDE-AGENT audit (manual_audit.json — two agent
+readers per exam, 130/130 rows unanimous; NOT human ground truth),
+which found grades.csv inconsistent with the marked sheets on
+scans 05 (+10), 06 (+10) and 13 (−10). **Owner-verified 2026-08-07:**
+the owner manually checked exams 05, 06 and 13 and confirmed the
+grader totals (40, 60, 40) are correct and grades.csv is wrong for
+those three. Against the sheet-faithful reference:
 
 | Metric | Value |
 |---|---:|
@@ -45,12 +47,12 @@ sheet-faithful reference:
 | Human-review rate | 62% |
 | Mean runtime / exam | 404.3 s |
 
-## Answer-extraction accuracy vs audited sheets
+## Answer-extraction accuracy vs the agent-audited sheets
 
-- Mean per-row accuracy over 13 audited exams: **92.3%** (10 rows each; '—' entries below are rows DEFERRED to human review, not misreads)
-- **Auto-decided rows: 120/120 correct** vs the audit — zero silent errors.
-- Deferred rows: 10, of which 10 carry the audited answer among their listed candidates.
-- If the reviewer resolves each deferred row as the audit read it, totals match the audited sheets on **13/13** exams and the official grades on 10/13 (the remaining gap is exactly the three documented instructor totaling errors).
+- Mean per-row accuracy over 13 agent-audited exams: **92.3%** (10 rows each; '—' entries below are rows DEFERRED to human review, not misreads)
+- **Auto-decided rows: 120/120 correct** vs the agent audit — zero silent errors.
+- Deferred rows: 10, of which 10 carry the agent-audited answer among their listed candidates.
+- If the reviewer resolves each deferred row as the agent audit read it, totals match the agent-audited sheets on **13/13** exams and the official grades on 10/13 (the remaining gap is exactly the three grades.csv errors the owner has confirmed by manual check of exams 05, 06 and 13).
 - A correct total with per-row errors would be visible here — totals are never accepted on cancellation.
 
 ## Per-exam results

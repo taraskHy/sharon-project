@@ -112,11 +112,13 @@ least-squares lattice fit that bridges faded lines (scan 13 needs this);
 per-cell darkness-weighted ink mass; a per-scan noise floor (median
 second-highest cell excess) separating marks from bleed-through/overshoot.
 The RTL column→letter mapping is one-time verified template configuration
-(`answer_table_columns_rtl`), like the suit map. Validated against all 130
-independently audited rows at the production render size: **120/130 rows
-auto-read correctly, 0 wrong, 0 missed; all 10 remaining rows flagged
-ambiguous with the true answer among the candidates** — including all 5
-genuine cancelled-then-corrected rows.
+(`answer_table_columns_rtl`), like the suit map. Validated at the
+production render size against a CLAUDE-AGENT audit of all 130 rows (two
+agent readers per exam, unanimous; not human ground truth — cross-checked
+against grades.csv totals on 10/13 exams and owner manual verification of
+exams 05/06/13): **120/130 rows auto-read correctly, 0 wrong, 0 missed;
+all 10 remaining rows flagged ambiguous with the reference answer among
+the candidates** — including all 5 genuine cancelled-then-corrected rows.
 
 Multi-mark rows are **never auto-resolved**: measured on this dataset, a
 cancellation blob and a bold clean X overlap in both amplitude and shape

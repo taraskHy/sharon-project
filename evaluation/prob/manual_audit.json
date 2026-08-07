@@ -1,5 +1,5 @@
 {
-  "method": "Independent visual audit by the DEV-TIME assistant (Claude agents), NOT by the local grading pipeline: two blind readers per exam read the deterministic band crops (tablecrop) + cover-bottom suit crop; disagreements would go to a third tiebreak reader (none were needed: all 130 rows and 13 suits were read 2/2 unanimous). Readers saw no grades, no key, no original filenames. This label join happened strictly afterwards, outside any model request.",
+  "method": "CLAUDE-AGENT visual audit — NOT human ground truth: two Claude (dev-assistant) agents independently read the deterministic band crops + cover-bottom suit crop per exam; disagreements would go to a third agent (none needed: 130/130 rows and 13/13 suits unanimous). Agents saw no grades, no key, no original filenames; the label join happened strictly afterwards, outside any model request. Reliability is supported by unanimity, by 10/13 totals matching the independently produced grades.csv, and by the owner verification below — but rows not covered by owner verification remain agent-read, not human-read.",
   "generated_at": "2026-08-07",
   "exams": [
     {
@@ -767,5 +767,11 @@
       "Universal question-credit (appeal/throw-out) theories also fail: crediting any question that would lift 05 or 06 would also lift 02 or 30, which match exactly."
     ],
     "conclusion": "grades.csv totals for scans 05, 06, 13 do not follow from the marked sheets under any consistent key; most plausibly instructor totaling/transcription errors (each exactly one question, +/-10). Benchmark metrics are therefore reported against BOTH grades.csv (official) and the audited sheet-faithful totals."
+  },
+  "reader_type": "claude-agent",
+  "owner_verification": {
+    "date": "2026-08-07",
+    "statement": "The project owner manually checked exams 05, 06, and 13 and confirmed the grader totals (40, 60, 40) are correct and that grades.csv is wrong for those three exams.",
+    "scope": "Upgrades the three grades.csv-discrepancy findings from inference to owner-confirmed fact. Other exams/rows: agent-read, cross-checked against grades.csv totals (10/13 exact)."
   }
 }

@@ -128,18 +128,22 @@ CPU-only, ~6.7 min/exam avg incl. model loads; no GPU/VRAM):**
   deterministic resolver improvements, commits 3c9569d + ce0fd62, and
   re-run).
 - **Answer extraction: 120/120 auto-decided rows correct, 10/130 rows
-  deferred to human review (all 10 carry the audited answer among their
-  candidates), 0 silent errors, 0 failures.** Extraction is deterministic
+  deferred to human review (all 10 carry the reference answer among their
+  candidates), 0 silent errors, 0 failures.** The row-level reference is a
+  CLAUDE-AGENT audit (two agent readers per exam, 130/130 unanimous — NOT
+  human ground truth), cross-checked against grades.csv totals (10/13
+  exact) and owner spot-verification. Extraction is deterministic
   cell-ink analysis (tablecrop.py) after BOTH model-based approaches failed
   measurably on live scans: whole-page reads 1/10 rows correct; per-row
   band crops 6/10 with hallucinated marks at confidence 1.0 (all three
   stages documented in docs/prob-template.md and the git history).
-- **Totals: post-review 13/13 match the audited sheets; 10/13 match
-  grades.csv — the other 3 are documented instructor totaling errors**
-  (scans 05, 06, 13; evidence: evaluation/prob/manual_audit.json — key
-  columns re-derived from the booklets + sol.pdf and pinned by the 10
-  exactly-matching exams). Raw pre-review metrics and both references:
-  evaluation/prob/report.md.
+- **Totals: post-review 13/13 match the agent-audited sheets; 10/13 match
+  grades.csv. OWNER-VERIFIED (2026-08-07): the owner manually checked
+  exams 05, 06 and 13 — the grader totals (40, 60, 40) are correct and
+  grades.csv is wrong for those three.** (Supporting evidence:
+  evaluation/prob/manual_audit.json — key columns re-derived from the
+  booklets + sol.pdf and pinned by the 10 exactly-matching exams.) Raw
+  pre-review metrics and both references: evaluation/prob/report.md.
 - Ground truth discipline held: grades.csv joined strictly post-prediction;
   anonymized filenames; capture test proves no grade/filename reaches any
   model request.
