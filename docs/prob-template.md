@@ -89,3 +89,25 @@ plus a human-review flag (`autograder/variant.py` rules, unchanged).
   pre-check of its table against the ♡ column (50) — resolved during
   evaluation by the full-resolution extraction audit (see
   `evaluation/prob/`): the per-row reading, not the key, was the suspect.
+
+## Row-band extraction (added after the live smoke test)
+
+The first live smoke run (exam-001 = scan 02, 2026-08-07) exposed a serious
+whole-page reading failure: variant detection was perfect (♡, confident),
+but the model returned wrong letters for **9 of 10 table rows at high
+confidence with zero review flags** (predicted 0/100 vs expected 60). The
+error pattern was consistent with RTL column confusion — marks assigned to
+the mirrored column position — plus small-checkbox misreads on a full-page
+render.
+
+The fix is `answer_table_banding` (template opt-in, `autograder/
+tablecrop.py`): the already-rendered sheet page is cropped deterministically
+into per-row bands using the table's own grid lines (run-length detection,
+least-squares lattice fit that bridges faded lines — scan 13 needs this),
+and each band is stacked under the printed header strip so the column
+letters stay visible directly above the row's cells. One small model call
+reads each row (`BandRowExtraction`), and the model must also report the
+row's PRINTED question number — a mismatch with the requested row marks the
+item ambiguous for human review instead of trusting a mis-registered crop.
+No model calls are involved in the cropping itself; a page without a
+matching grid falls back loudly to whole-page extraction.

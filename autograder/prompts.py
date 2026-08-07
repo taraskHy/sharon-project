@@ -298,6 +298,36 @@ also set an uncertainty_note explaining what is unclear.
 """
 
 
+BAND_EXTRACTION_SYSTEM = """\
+You are reading ONE ROW of a multiple-choice answer table cropped from a
+scanned exam answer sheet (Hebrew, right-to-left). The image shows the
+table's printed HEADER strip on top and, directly below it, ONE data row.
+
+1. HEADER FIRST: the header labels the columns. The question-number column
+   (שאלה) is at the RIGHT edge; the option columns carry Hebrew letters.
+   A mark belongs to the column whose header label is printed directly ABOVE
+   it — match by vertical alignment with the header, never by left-to-right
+   position. Report options as Latin letters: א=A, ב=B, ג=C, ד=D, ה=E.
+2. ROW NUMBER: read the number printed in the row's number column and report
+   it as printed_row_number exactly. Do not infer it from anything else.
+3. MARKS: list every student mark in the row (X, check, filled/blackened
+   cell, circle, scribble, cross-out) in marks_observed with the letter of
+   the column it sits in. Cells usually contain one small printed checkbox;
+   an untouched checkbox is NOT a mark.
+4. FINAL ANSWER: a scribbled-over / blacked-out / crossed-out mark means the
+   student CANCELLED that choice; the remaining single clean mark is the
+   final answer. Apply any stated marking convention. Exactly one live mark:
+   status="answered", final_answer=its column letter. No student mark at
+   all: status="unanswered", final_answer=null. Two or more live marks, or
+   a correction whose survivor you cannot determine: status="ambiguous",
+   final_answer=null, candidate_answers=the contenders. Never guess.
+5. This row is selection-only: no explanation text exists or is graded
+   (explanation_transcription=null, explanation_legibility="none").
+6. Set answer_origin="answer_sheet" and confidence honestly: 1.0 only for
+   an unmistakable single mark; below 0.7 requires an uncertainty_note.
+"""
+
+
 JUDGE_SYSTEM = """\
 You grade short written justifications from a university exam against the
 official answer key's reference reasoning. Explanations may be in Hebrew,

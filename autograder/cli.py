@@ -726,7 +726,8 @@ def run_grade_pipeline(
         )
     else:
         extraction = extract_exam(
-            backend, key, survey, pages, progress=_log, alignment=alignment
+            backend, key, survey, pages, progress=_log, alignment=alignment,
+            template=template,
         )
         if alignment_note and alignment_note != "operator-override":
             # Any non-operator alignment (derived, cached-derived, identity

@@ -6,6 +6,7 @@
   "answer_sheet_rule": "fixed_pages",
   "answer_sheet_pages": [1],
   "answer_sheet_description": "psychometric-style response table: one row per question (1-10), option columns א/ב/ג/ד with a small checkbox in each cell; the student marks one box per row (X, checkmark, or filled)",
+  "answer_table_banding": true,
   "booklet_answers_not_graded": true,
   "policy_evidence": "The sheet itself prints 'סמנו כאן בלבד! אין לסמן תשובות בגוף הבחינה' (mark HERE only; do not mark answers in the exam body) — first page of every scan and of sol.pdf.",
   "notes": "Template-specific rule per the teaching assistant: the first page is the authoritative answer sheet; circles/calculations on the later question pages are scratch work and must never override the table. Question pages are used only for structure (variant option orderings) — captured one-time in sol.answer_key.json."

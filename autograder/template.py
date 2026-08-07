@@ -69,6 +69,19 @@ class ExamTemplate(BaseModel):
             "columns א/ב/ג/ד with checkboxes'."
         ),
     )
+    answer_table_banding: bool = Field(
+        default=False,
+        description=(
+            "With rule=fixed_pages and a SINGLE answer-sheet page holding one "
+            "grid table (one data row per sub-item under a printed header): "
+            "crop the table deterministically into per-row header+row band "
+            "images and extract each row with its own small model call, "
+            "instead of asking for the whole table from the full page. "
+            "Measured on the probability sheet: whole-page reads misassign "
+            "RTL columns; banded reads are unambiguous. Falls back to "
+            "whole-page extraction when no matching grid is found."
+        ),
+    )
     booklet_answers_not_graded: bool = Field(
         default=True,
         description=(

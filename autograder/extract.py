@@ -2,14 +2,16 @@
 
 from __future__ import annotations
 
+import base64
 import json
 
 from .authority import enforce_answer_authority, sheet_pages_for_question
 from .ingest import PageImage, labeled_page_blocks
 from .backends import VisionBackend
-from .prompts import EXTRACTION_SYSTEM
+from .prompts import BAND_EXTRACTION_SYSTEM, EXTRACTION_SYSTEM
 from .schema import (
     AnswerKey,
+    BandRowExtraction,
     ExamExtraction,
     ExamSurvey,
     KeyQuestion,
@@ -211,6 +213,116 @@ def _flag_uniform_collapse(q: KeyQuestion, extraction: QuestionExtraction) -> No
         s.confidence = min(s.confidence, 0.5)
 
 
+def _extract_band(
+    llm: VisionBackend,
+    q: KeyQuestion,
+    sub,
+    band,
+    page_number: int,
+) -> SubItemExtraction:
+    """One model call reading ONE cropped table row (header stitched on top)."""
+    blocks = [
+        {
+            "type": "text",
+            "text": (
+                f"Answer-table row cropped from the exam's answer sheet "
+                f"(page {page_number}). The crop shows the table header on top "
+                f"and one data row below it. The requested row is question "
+                f"number {sub.id} ({q.title}). Report sub_item_id {sub.id!r}."
+            ),
+        },
+        {
+            "type": "image",
+            "source": {
+                "type": "base64",
+                "media_type": "image/png",
+                "data": base64.standard_b64encode(band.png_bytes).decode("ascii"),
+            },
+        },
+    ]
+    out = llm.parse(
+        system=BAND_EXTRACTION_SYSTEM,
+        content_blocks=blocks,
+        output_model=BandRowExtraction,
+        max_tokens=2000,
+    )
+    row = out.row
+    row.sub_item_id = sub.id
+    row.source_page = page_number
+    row.source_region = f"answer table row {sub.id} (cropped band)"
+    if row.answer_origin == "none":
+        row.answer_origin = "answer_sheet"
+    row.explanation_transcription = None
+    row.explanation_legibility = "none"
+    printed = (out.printed_row_number or "").strip()
+    if _canon_id(printed) != _canon_id(sub.id):
+        # Deterministic guard: the model read a different printed number than
+        # the band was cropped for — registration cannot be trusted.
+        row.status = "ambiguous"
+        if row.final_answer:
+            row.candidate_answers = sorted(set(row.candidate_answers) | {row.final_answer})
+        row.final_answer = None
+        row.confidence = 0.0
+        note = (
+            f"cropped band for row {sub.id} but the model read printed row "
+            f"number {printed!r} — band registration mismatch"
+        )
+        row.uncertainty_note = f"{row.uncertainty_note}; {note}" if row.uncertainty_note else note
+        row.interpretation_rationale = f"{note}; {row.interpretation_rationale}"
+    return row
+
+
+def extract_question_banded(
+    llm: VisionBackend,
+    q: KeyQuestion,
+    survey: ExamSurvey,
+    pages: list[PageImage],
+    template,
+    progress=None,
+) -> QuestionExtraction | None:
+    """Row-band extraction for a fixed-page answer table (template opt-in).
+
+    Returns None when banding cannot apply (no/unreadable grid, page missing,
+    row count mismatch) — the caller falls back to whole-page extraction.
+    """
+    from .tablecrop import TableCropError, answer_table_row_bands
+
+    page_number = template.answer_sheet_pages[0]
+    sheet = next((p for p in pages if p.page_number == page_number), None)
+    if sheet is None:
+        return None
+    try:
+        bands = answer_table_row_bands(sheet, n_rows=len(q.sub_items))
+    except TableCropError as e:
+        if progress:
+            progress(
+                f"question {q.id}: row banding unavailable ({e}); "
+                "falling back to whole-page extraction"
+            )
+        return None
+    rows = []
+    for sub, band in zip(q.sub_items, bands):
+        if progress:
+            progress(
+                f"extracting question {q.id} row {sub.id} "
+                f"(band {band.row_index + 1}/{len(bands)})"
+            )
+        rows.append(_extract_band(llm, q, sub, band, page_number))
+    extraction = QuestionExtraction(
+        question_id=q.id,
+        source_pages=[page_number],
+        authoritative_source=(
+            f"answer table on page {page_number} (template "
+            f"{template.template_id}), read row-by-row from cropped bands"
+        ),
+        answer_sheet_status="present",
+        sub_items=rows,
+    )
+    extraction = _reconcile_sub_items(q, extraction)
+    _flag_uniform_collapse(q, extraction)
+    return extraction
+
+
 def extract_question(
     llm: VisionBackend,
     q: KeyQuestion,
@@ -303,6 +415,19 @@ def _reconcile_sub_items(q: KeyQuestion, extraction: QuestionExtraction) -> Ques
     return extraction
 
 
+def _banding_applies(q: KeyQuestion, template, entry) -> bool:
+    """Row-band extraction is a template opt-in for single-page fixed answer
+    tables serving multiple-choice questions with identity numbering."""
+    return (
+        template is not None
+        and getattr(template, "answer_table_banding", False)
+        and template.answer_sheet_rule == "fixed_pages"
+        and len(template.answer_sheet_pages) == 1
+        and template.mode_for_question(q.id) == "multiple_choice"
+        and (entry is None or entry.identical_order)
+    )
+
+
 def extract_exam(
     llm: VisionBackend,
     key: AnswerKey,
@@ -310,6 +435,7 @@ def extract_exam(
     pages: list[PageImage],
     progress=None,
     alignment=None,
+    template=None,
 ) -> ExamExtraction:
     """``alignment`` (a validated VariantAlignment) relabels each question
     into the variant's PRINTED sub-item numbering for the model — the
@@ -324,6 +450,11 @@ def extract_exam(
         entry = entries.get(q.id)
         if progress:
             progress(f"extracting question {q.id} ({q.title})")
+        if _banding_applies(q, template, entry):
+            qx = extract_question_banded(llm, q, survey, pages, template, progress)
+            if qx is not None:
+                questions.append(qx)
+                continue
         if entry is not None and not entry.identical_order:
             view = printed_view(q, entry)
             if progress:

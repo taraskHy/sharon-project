@@ -16,6 +16,7 @@ import csv
 import datetime as _dt
 import json
 import platform
+import re
 import sys
 from pathlib import Path
 
@@ -125,14 +126,18 @@ def main() -> int:
             if outcome.predicted is not None and outcome.expected is not None
             else None
         )
-        # count model calls from the grade log (variant + extraction chunks)
+        # count model calls from the grade log: variant detection + one line
+        # per band call ("extracting question N row R"); without banding fall
+        # back to per-question lines (chunked calls undercount slightly)
         log_path = job_dir / "exams" / anon / "grade.log"
         if log_path.exists():
             log_text = log_path.read_text(encoding="utf-8", errors="replace")
-            row["model_calls"] = (
-                log_text.count("detecting exam variant")
-                + log_text.count("extracting question")  # one line per question; chunks add calls
-            )
+            band_calls = len(re.findall(r"extracting question \S+ row ", log_text))
+            variant_calls = log_text.count("detecting exam variant")
+            if band_calls:
+                row["model_calls"] = variant_calls + band_calls
+            else:
+                row["model_calls"] = variant_calls + log_text.count("extracting question")
         rows.append(row)
 
     metrics = compute_metrics(outcomes)

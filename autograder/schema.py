@@ -508,6 +508,19 @@ class QuestionExtraction(BaseModel):
     notes: Optional[str] = None
 
 
+class BandRowExtraction(BaseModel):
+    """One answer-table row read from a cropped header+row band image
+    (``tablecrop``). The tiny schema keeps per-row calls fast and focused."""
+
+    printed_row_number: str = Field(
+        description=(
+            "The question number PRINTED in the row's number column, exactly "
+            "as printed. Read it from the image — do not assume it."
+        )
+    )
+    row: SubItemExtraction
+
+
 class ExamExtraction(BaseModel):
     """Container for all per-question extractions (serialised to disk)."""
 
