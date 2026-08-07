@@ -49,7 +49,29 @@ def adb(*args, check=True, timeout=120):
     return r.stdout
 
 
+GATE_20 = [
+    "hc_e002_q1_r1", "hc_e002_q1_r2", "hc_e002_q1_r3", "hc_e002_q1_r4",
+    "hl_e003_q1_r1__l1", "hl_e003_q1_r2__l2", "hl_e003_q1_r3__l1",
+    "hl_e003_q1_r4__l1", "hl_e004_q1_r1__l1", "hl_e004_q1_r2__l1",
+    "hl_e004_q1_r3__l1", "hl_e004_q1_r3__l2", "hl_e005_q1_r1__l1",
+    "hl_e005_q1_r1__l2", "hl_e005_q1_r2__l1", "hl_e005_q1_r2__l2",
+    "hl_e006_q1_r1__l1", "hl_e006_q1_r2__l1", "hl_e006_q1_r3__l1",
+    "hl_e007_q1_r1__l1",
+]
+
+
 def main() -> int:
+    import argparse
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--items", default="",
+                    help="comma list; default = the 5 smoke items; "
+                         "'gate20-rest' = the 15 gate items not yet run")
+    args = ap.parse_args()
+    global SMOKE_ITEMS
+    if args.items == "gate20-rest":
+        SMOKE_ITEMS = [i for i in GATE_20 if i not in SMOKE_ITEMS]
+    elif args.items:
+        SMOKE_ITEMS = args.items.split(",")
     OUTDIR.mkdir(parents=True, exist_ok=True)
     cfg = {
         "config_id": "mlkit_ink_rtl_a1",
