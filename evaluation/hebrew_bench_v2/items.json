@@ -1,0 +1,1161 @@
+{
+ "version": 2,
+ "built": "deterministic build by scripts/m2_bench_build.py",
+ "reference_policy": "references.json is read ONLY post-inference by the evaluator; no AI-generated text serves as ground truth (tiers: owner, text-layer)",
+ "known_gaps": {
+  "teacher_vs_student": "EMPTY by honesty: no owner-verified crop containing red instructor ink exists (checked all 16 exam-002 cells and all htr_pilot cell originals programmatically — zero red pixels above threshold). Instructor-ink separation is covered in production by the deterministic masking module (leakage audit: 0/10 probes extracted grades) and cannot be honestly benchmarked from this material.",
+  "handwriting_writers": "handwritten items cover writers e002-e007 only (owner-verified material available today); generalization to other hands is measured, not guaranteed"
+ },
+ "items": [
+  {
+   "id": "hl_e003_q1_r1__l1",
+   "category": "handwritten_line",
+   "tier": "owner",
+   "hard": false,
+   "image": "crops/hl_e003_q1_r1__l1.png",
+   "writer": "e003",
+   "task": "transcribe the handwritten Hebrew line exactly as written"
+  },
+  {
+   "id": "hl_e003_q1_r2__l2",
+   "category": "handwritten_line",
+   "tier": "owner",
+   "hard": false,
+   "image": "crops/hl_e003_q1_r2__l2.png",
+   "writer": "e003",
+   "task": "transcribe the handwritten Hebrew line exactly as written"
+  },
+  {
+   "id": "hl_e003_q1_r3__l1",
+   "category": "handwritten_line",
+   "tier": "owner",
+   "hard": false,
+   "image": "crops/hl_e003_q1_r3__l1.png",
+   "writer": "e003",
+   "task": "transcribe the handwritten Hebrew line exactly as written"
+  },
+  {
+   "id": "hl_e003_q1_r4__l1",
+   "category": "handwritten_line",
+   "tier": "owner",
+   "hard": false,
+   "image": "crops/hl_e003_q1_r4__l1.png",
+   "writer": "e003",
+   "task": "transcribe the handwritten Hebrew line exactly as written"
+  },
+  {
+   "id": "hl_e003_q1_r5__l1",
+   "category": "handwritten_line",
+   "tier": "owner",
+   "hard": false,
+   "image": "crops/hl_e003_q1_r5__l1.png",
+   "writer": "e003",
+   "task": "transcribe the handwritten Hebrew line exactly as written"
+  },
+  {
+   "id": "hl_e003_q1_r6__l1",
+   "category": "handwritten_line",
+   "tier": "owner",
+   "hard": false,
+   "image": "crops/hl_e003_q1_r6__l1.png",
+   "writer": "e003",
+   "task": "transcribe the handwritten Hebrew line exactly as written"
+  },
+  {
+   "id": "hl_e003_q1_r7__l1",
+   "category": "handwritten_line",
+   "tier": "owner",
+   "hard": false,
+   "image": "crops/hl_e003_q1_r7__l1.png",
+   "writer": "e003",
+   "task": "transcribe the handwritten Hebrew line exactly as written"
+  },
+  {
+   "id": "hl_e003_q1_r8__l1",
+   "category": "handwritten_line",
+   "tier": "owner",
+   "hard": false,
+   "image": "crops/hl_e003_q1_r8__l1.png",
+   "writer": "e003",
+   "task": "transcribe the handwritten Hebrew line exactly as written"
+  },
+  {
+   "id": "hl_e003_q2_r1__l1",
+   "category": "handwritten_line",
+   "tier": "owner",
+   "hard": false,
+   "image": "crops/hl_e003_q2_r1__l1.png",
+   "writer": "e003",
+   "task": "transcribe the handwritten Hebrew line exactly as written"
+  },
+  {
+   "id": "hl_e003_q2_r2__l1",
+   "category": "handwritten_line",
+   "tier": "owner",
+   "hard": false,
+   "image": "crops/hl_e003_q2_r2__l1.png",
+   "writer": "e003",
+   "task": "transcribe the handwritten Hebrew line exactly as written"
+  },
+  {
+   "id": "hl_e003_q2_r3__l1",
+   "category": "handwritten_line",
+   "tier": "owner",
+   "hard": false,
+   "image": "crops/hl_e003_q2_r3__l1.png",
+   "writer": "e003",
+   "task": "transcribe the handwritten Hebrew line exactly as written"
+  },
+  {
+   "id": "hl_e003_q2_r4__l1",
+   "category": "handwritten_line",
+   "tier": "owner",
+   "hard": false,
+   "image": "crops/hl_e003_q2_r4__l1.png",
+   "writer": "e003",
+   "task": "transcribe the handwritten Hebrew line exactly as written"
+  },
+  {
+   "id": "hl_e003_q2_r5__l1",
+   "category": "handwritten_line",
+   "tier": "owner",
+   "hard": false,
+   "image": "crops/hl_e003_q2_r5__l1.png",
+   "writer": "e003",
+   "task": "transcribe the handwritten Hebrew line exactly as written"
+  },
+  {
+   "id": "hl_e003_q2_r6__l1",
+   "category": "handwritten_line",
+   "tier": "owner",
+   "hard": false,
+   "image": "crops/hl_e003_q2_r6__l1.png",
+   "writer": "e003",
+   "task": "transcribe the handwritten Hebrew line exactly as written"
+  },
+  {
+   "id": "hl_e003_q2_r7__l1",
+   "category": "handwritten_line",
+   "tier": "owner",
+   "hard": false,
+   "image": "crops/hl_e003_q2_r7__l1.png",
+   "writer": "e003",
+   "task": "transcribe the handwritten Hebrew line exactly as written"
+  },
+  {
+   "id": "hl_e003_q2_r8__l1",
+   "category": "handwritten_line",
+   "tier": "owner",
+   "hard": false,
+   "image": "crops/hl_e003_q2_r8__l1.png",
+   "writer": "e003",
+   "task": "transcribe the handwritten Hebrew line exactly as written"
+  },
+  {
+   "id": "hl_e004_q1_r1__l1",
+   "category": "handwritten_line",
+   "tier": "owner",
+   "hard": false,
+   "image": "crops/hl_e004_q1_r1__l1.png",
+   "writer": "e004",
+   "task": "transcribe the handwritten Hebrew line exactly as written"
+  },
+  {
+   "id": "hl_e004_q1_r2__l1",
+   "category": "handwritten_line",
+   "tier": "owner",
+   "hard": false,
+   "image": "crops/hl_e004_q1_r2__l1.png",
+   "writer": "e004",
+   "task": "transcribe the handwritten Hebrew line exactly as written"
+  },
+  {
+   "id": "hl_e004_q1_r3__l1",
+   "category": "handwritten_line",
+   "tier": "owner",
+   "hard": false,
+   "image": "crops/hl_e004_q1_r3__l1.png",
+   "writer": "e004",
+   "task": "transcribe the handwritten Hebrew line exactly as written"
+  },
+  {
+   "id": "hl_e004_q1_r3__l2",
+   "category": "handwritten_line",
+   "tier": "owner",
+   "hard": true,
+   "image": "crops/hl_e004_q1_r3__l2.png",
+   "writer": "e004",
+   "task": "transcribe the handwritten Hebrew line exactly as written"
+  },
+  {
+   "id": "hl_e004_q1_r4__l1",
+   "category": "handwritten_line",
+   "tier": "owner",
+   "hard": false,
+   "image": "crops/hl_e004_q1_r4__l1.png",
+   "writer": "e004",
+   "task": "transcribe the handwritten Hebrew line exactly as written"
+  },
+  {
+   "id": "hl_e004_q1_r5__l1",
+   "category": "handwritten_line",
+   "tier": "owner",
+   "hard": false,
+   "image": "crops/hl_e004_q1_r5__l1.png",
+   "writer": "e004",
+   "task": "transcribe the handwritten Hebrew line exactly as written"
+  },
+  {
+   "id": "hl_e004_q1_r6__l1",
+   "category": "handwritten_line",
+   "tier": "owner",
+   "hard": false,
+   "image": "crops/hl_e004_q1_r6__l1.png",
+   "writer": "e004",
+   "task": "transcribe the handwritten Hebrew line exactly as written"
+  },
+  {
+   "id": "hl_e004_q1_r6__l2",
+   "category": "handwritten_line",
+   "tier": "owner",
+   "hard": false,
+   "image": "crops/hl_e004_q1_r6__l2.png",
+   "writer": "e004",
+   "task": "transcribe the handwritten Hebrew line exactly as written"
+  },
+  {
+   "id": "hl_e004_q1_r7__l2",
+   "category": "handwritten_line",
+   "tier": "owner",
+   "hard": true,
+   "image": "crops/hl_e004_q1_r7__l2.png",
+   "writer": "e004",
+   "task": "transcribe the handwritten Hebrew line exactly as written"
+  },
+  {
+   "id": "hl_e004_q1_r8__l1",
+   "category": "handwritten_line",
+   "tier": "owner",
+   "hard": false,
+   "image": "crops/hl_e004_q1_r8__l1.png",
+   "writer": "e004",
+   "task": "transcribe the handwritten Hebrew line exactly as written"
+  },
+  {
+   "id": "hl_e004_q2_r1__l1",
+   "category": "handwritten_line",
+   "tier": "owner",
+   "hard": true,
+   "image": "crops/hl_e004_q2_r1__l1.png",
+   "writer": "e004",
+   "task": "transcribe the handwritten Hebrew line exactly as written"
+  },
+  {
+   "id": "hl_e004_q2_r1__l2",
+   "category": "handwritten_line",
+   "tier": "owner",
+   "hard": false,
+   "image": "crops/hl_e004_q2_r1__l2.png",
+   "writer": "e004",
+   "task": "transcribe the handwritten Hebrew line exactly as written"
+  },
+  {
+   "id": "hl_e004_q2_r2__l1",
+   "category": "handwritten_line",
+   "tier": "owner",
+   "hard": true,
+   "image": "crops/hl_e004_q2_r2__l1.png",
+   "writer": "e004",
+   "task": "transcribe the handwritten Hebrew line exactly as written"
+  },
+  {
+   "id": "hl_e004_q2_r3__l1",
+   "category": "handwritten_line",
+   "tier": "owner",
+   "hard": false,
+   "image": "crops/hl_e004_q2_r3__l1.png",
+   "writer": "e004",
+   "task": "transcribe the handwritten Hebrew line exactly as written"
+  },
+  {
+   "id": "hl_e004_q2_r4__l1",
+   "category": "handwritten_line",
+   "tier": "owner",
+   "hard": false,
+   "image": "crops/hl_e004_q2_r4__l1.png",
+   "writer": "e004",
+   "task": "transcribe the handwritten Hebrew line exactly as written"
+  },
+  {
+   "id": "hl_e004_q2_r4__l2",
+   "category": "handwritten_line",
+   "tier": "owner",
+   "hard": false,
+   "image": "crops/hl_e004_q2_r4__l2.png",
+   "writer": "e004",
+   "task": "transcribe the handwritten Hebrew line exactly as written"
+  },
+  {
+   "id": "hl_e004_q2_r5__l1",
+   "category": "handwritten_line",
+   "tier": "owner",
+   "hard": false,
+   "image": "crops/hl_e004_q2_r5__l1.png",
+   "writer": "e004",
+   "task": "transcribe the handwritten Hebrew line exactly as written"
+  },
+  {
+   "id": "hl_e004_q2_r5__l2",
+   "category": "handwritten_line",
+   "tier": "owner",
+   "hard": false,
+   "image": "crops/hl_e004_q2_r5__l2.png",
+   "writer": "e004",
+   "task": "transcribe the handwritten Hebrew line exactly as written"
+  },
+  {
+   "id": "hl_e004_q2_r6__l1",
+   "category": "handwritten_line",
+   "tier": "owner",
+   "hard": false,
+   "image": "crops/hl_e004_q2_r6__l1.png",
+   "writer": "e004",
+   "task": "transcribe the handwritten Hebrew line exactly as written"
+  },
+  {
+   "id": "hl_e004_q2_r6__l2",
+   "category": "handwritten_line",
+   "tier": "owner",
+   "hard": true,
+   "image": "crops/hl_e004_q2_r6__l2.png",
+   "writer": "e004",
+   "task": "transcribe the handwritten Hebrew line exactly as written"
+  },
+  {
+   "id": "hl_e004_q2_r7__l2",
+   "category": "handwritten_line",
+   "tier": "owner",
+   "hard": false,
+   "image": "crops/hl_e004_q2_r7__l2.png",
+   "writer": "e004",
+   "task": "transcribe the handwritten Hebrew line exactly as written"
+  },
+  {
+   "id": "hl_e004_q2_r8__l1",
+   "category": "handwritten_line",
+   "tier": "owner",
+   "hard": false,
+   "image": "crops/hl_e004_q2_r8__l1.png",
+   "writer": "e004",
+   "task": "transcribe the handwritten Hebrew line exactly as written"
+  },
+  {
+   "id": "hl_e004_q2_r8__l2",
+   "category": "handwritten_line",
+   "tier": "owner",
+   "hard": false,
+   "image": "crops/hl_e004_q2_r8__l2.png",
+   "writer": "e004",
+   "task": "transcribe the handwritten Hebrew line exactly as written"
+  },
+  {
+   "id": "hl_e005_q1_r1__l1",
+   "category": "handwritten_line",
+   "tier": "owner",
+   "hard": false,
+   "image": "crops/hl_e005_q1_r1__l1.png",
+   "writer": "e005",
+   "task": "transcribe the handwritten Hebrew line exactly as written"
+  },
+  {
+   "id": "hl_e005_q1_r1__l2",
+   "category": "handwritten_line",
+   "tier": "owner",
+   "hard": true,
+   "image": "crops/hl_e005_q1_r1__l2.png",
+   "writer": "e005",
+   "task": "transcribe the handwritten Hebrew line exactly as written"
+  },
+  {
+   "id": "hl_e005_q1_r2__l1",
+   "category": "handwritten_line",
+   "tier": "owner",
+   "hard": false,
+   "image": "crops/hl_e005_q1_r2__l1.png",
+   "writer": "e005",
+   "task": "transcribe the handwritten Hebrew line exactly as written"
+  },
+  {
+   "id": "hl_e005_q1_r2__l2",
+   "category": "handwritten_line",
+   "tier": "owner",
+   "hard": true,
+   "image": "crops/hl_e005_q1_r2__l2.png",
+   "writer": "e005",
+   "task": "transcribe the handwritten Hebrew line exactly as written"
+  },
+  {
+   "id": "hl_e005_q1_r3__l2",
+   "category": "handwritten_line",
+   "tier": "owner",
+   "hard": false,
+   "image": "crops/hl_e005_q1_r3__l2.png",
+   "writer": "e005",
+   "task": "transcribe the handwritten Hebrew line exactly as written"
+  },
+  {
+   "id": "hl_e005_q1_r3__l3",
+   "category": "handwritten_line",
+   "tier": "owner",
+   "hard": false,
+   "image": "crops/hl_e005_q1_r3__l3.png",
+   "writer": "e005",
+   "task": "transcribe the handwritten Hebrew line exactly as written"
+  },
+  {
+   "id": "hl_e005_q1_r4__l1",
+   "category": "handwritten_line",
+   "tier": "owner",
+   "hard": true,
+   "image": "crops/hl_e005_q1_r4__l1.png",
+   "writer": "e005",
+   "task": "transcribe the handwritten Hebrew line exactly as written"
+  },
+  {
+   "id": "hl_e005_q1_r4__l2",
+   "category": "handwritten_line",
+   "tier": "owner",
+   "hard": false,
+   "image": "crops/hl_e005_q1_r4__l2.png",
+   "writer": "e005",
+   "task": "transcribe the handwritten Hebrew line exactly as written"
+  },
+  {
+   "id": "hl_e005_q1_r5__l2",
+   "category": "handwritten_line",
+   "tier": "owner",
+   "hard": false,
+   "image": "crops/hl_e005_q1_r5__l2.png",
+   "writer": "e005",
+   "task": "transcribe the handwritten Hebrew line exactly as written"
+  },
+  {
+   "id": "hl_e005_q1_r5__l3",
+   "category": "handwritten_line",
+   "tier": "owner",
+   "hard": false,
+   "image": "crops/hl_e005_q1_r5__l3.png",
+   "writer": "e005",
+   "task": "transcribe the handwritten Hebrew line exactly as written"
+  },
+  {
+   "id": "hl_e005_q1_r6__l1",
+   "category": "handwritten_line",
+   "tier": "owner",
+   "hard": false,
+   "image": "crops/hl_e005_q1_r6__l1.png",
+   "writer": "e005",
+   "task": "transcribe the handwritten Hebrew line exactly as written"
+  },
+  {
+   "id": "hl_e005_q1_r6__l2",
+   "category": "handwritten_line",
+   "tier": "owner",
+   "hard": false,
+   "image": "crops/hl_e005_q1_r6__l2.png",
+   "writer": "e005",
+   "task": "transcribe the handwritten Hebrew line exactly as written"
+  },
+  {
+   "id": "hl_e005_q1_r7__l1",
+   "category": "handwritten_line",
+   "tier": "owner",
+   "hard": true,
+   "image": "crops/hl_e005_q1_r7__l1.png",
+   "writer": "e005",
+   "task": "transcribe the handwritten Hebrew line exactly as written"
+  },
+  {
+   "id": "hl_e005_q1_r7__l2",
+   "category": "handwritten_line",
+   "tier": "owner",
+   "hard": false,
+   "image": "crops/hl_e005_q1_r7__l2.png",
+   "writer": "e005",
+   "task": "transcribe the handwritten Hebrew line exactly as written"
+  },
+  {
+   "id": "hl_e005_q1_r8__l2",
+   "category": "handwritten_line",
+   "tier": "owner",
+   "hard": false,
+   "image": "crops/hl_e005_q1_r8__l2.png",
+   "writer": "e005",
+   "task": "transcribe the handwritten Hebrew line exactly as written"
+  },
+  {
+   "id": "hl_e005_q1_r8__l3",
+   "category": "handwritten_line",
+   "tier": "owner",
+   "hard": false,
+   "image": "crops/hl_e005_q1_r8__l3.png",
+   "writer": "e005",
+   "task": "transcribe the handwritten Hebrew line exactly as written"
+  },
+  {
+   "id": "hl_e005_q2_r1__l1",
+   "category": "handwritten_line",
+   "tier": "owner",
+   "hard": false,
+   "image": "crops/hl_e005_q2_r1__l1.png",
+   "writer": "e005",
+   "task": "transcribe the handwritten Hebrew line exactly as written"
+  },
+  {
+   "id": "hl_e005_q2_r1__l2",
+   "category": "handwritten_line",
+   "tier": "owner",
+   "hard": true,
+   "image": "crops/hl_e005_q2_r1__l2.png",
+   "writer": "e005",
+   "task": "transcribe the handwritten Hebrew line exactly as written"
+  },
+  {
+   "id": "hl_e005_q2_r2__l2",
+   "category": "handwritten_line",
+   "tier": "owner",
+   "hard": true,
+   "image": "crops/hl_e005_q2_r2__l2.png",
+   "writer": "e005",
+   "task": "transcribe the handwritten Hebrew line exactly as written"
+  },
+  {
+   "id": "hl_e005_q2_r2__l3",
+   "category": "handwritten_line",
+   "tier": "owner",
+   "hard": true,
+   "image": "crops/hl_e005_q2_r2__l3.png",
+   "writer": "e005",
+   "task": "transcribe the handwritten Hebrew line exactly as written"
+  },
+  {
+   "id": "hl_e005_q2_r3__l2",
+   "category": "handwritten_line",
+   "tier": "owner",
+   "hard": false,
+   "image": "crops/hl_e005_q2_r3__l2.png",
+   "writer": "e005",
+   "task": "transcribe the handwritten Hebrew line exactly as written"
+  },
+  {
+   "id": "hl_e005_q2_r4__l2",
+   "category": "handwritten_line",
+   "tier": "owner",
+   "hard": true,
+   "image": "crops/hl_e005_q2_r4__l2.png",
+   "writer": "e005",
+   "task": "transcribe the handwritten Hebrew line exactly as written"
+  },
+  {
+   "id": "hl_e005_q2_r4__l3",
+   "category": "handwritten_line",
+   "tier": "owner",
+   "hard": true,
+   "image": "crops/hl_e005_q2_r4__l3.png",
+   "writer": "e005",
+   "task": "transcribe the handwritten Hebrew line exactly as written"
+  },
+  {
+   "id": "hl_e005_q2_r5__l2",
+   "category": "handwritten_line",
+   "tier": "owner",
+   "hard": false,
+   "image": "crops/hl_e005_q2_r5__l2.png",
+   "writer": "e005",
+   "task": "transcribe the handwritten Hebrew line exactly as written"
+  },
+  {
+   "id": "hl_e005_q2_r5__l3",
+   "category": "handwritten_line",
+   "tier": "owner",
+   "hard": false,
+   "image": "crops/hl_e005_q2_r5__l3.png",
+   "writer": "e005",
+   "task": "transcribe the handwritten Hebrew line exactly as written"
+  },
+  {
+   "id": "hl_e005_q2_r6__l2",
+   "category": "handwritten_line",
+   "tier": "owner",
+   "hard": false,
+   "image": "crops/hl_e005_q2_r6__l2.png",
+   "writer": "e005",
+   "task": "transcribe the handwritten Hebrew line exactly as written"
+  },
+  {
+   "id": "hl_e005_q2_r7__l2",
+   "category": "handwritten_line",
+   "tier": "owner",
+   "hard": false,
+   "image": "crops/hl_e005_q2_r7__l2.png",
+   "writer": "e005",
+   "task": "transcribe the handwritten Hebrew line exactly as written"
+  },
+  {
+   "id": "hl_e005_q2_r7__l3",
+   "category": "handwritten_line",
+   "tier": "owner",
+   "hard": true,
+   "image": "crops/hl_e005_q2_r7__l3.png",
+   "writer": "e005",
+   "task": "transcribe the handwritten Hebrew line exactly as written"
+  },
+  {
+   "id": "hl_e005_q2_r8__l1",
+   "category": "handwritten_line",
+   "tier": "owner",
+   "hard": false,
+   "image": "crops/hl_e005_q2_r8__l1.png",
+   "writer": "e005",
+   "task": "transcribe the handwritten Hebrew line exactly as written"
+  },
+  {
+   "id": "hl_e005_q2_r8__l2",
+   "category": "handwritten_line",
+   "tier": "owner",
+   "hard": false,
+   "image": "crops/hl_e005_q2_r8__l2.png",
+   "writer": "e005",
+   "task": "transcribe the handwritten Hebrew line exactly as written"
+  },
+  {
+   "id": "hl_e006_q1_r1__l1",
+   "category": "handwritten_line",
+   "tier": "owner",
+   "hard": true,
+   "image": "crops/hl_e006_q1_r1__l1.png",
+   "writer": "e006",
+   "task": "transcribe the handwritten Hebrew line exactly as written"
+  },
+  {
+   "id": "hl_e006_q1_r2__l1",
+   "category": "handwritten_line",
+   "tier": "owner",
+   "hard": false,
+   "image": "crops/hl_e006_q1_r2__l1.png",
+   "writer": "e006",
+   "task": "transcribe the handwritten Hebrew line exactly as written"
+  },
+  {
+   "id": "hl_e006_q1_r3__l1",
+   "category": "handwritten_line",
+   "tier": "owner",
+   "hard": false,
+   "image": "crops/hl_e006_q1_r3__l1.png",
+   "writer": "e006",
+   "task": "transcribe the handwritten Hebrew line exactly as written"
+  },
+  {
+   "id": "hl_e006_q1_r4__l1",
+   "category": "handwritten_line",
+   "tier": "owner",
+   "hard": true,
+   "image": "crops/hl_e006_q1_r4__l1.png",
+   "writer": "e006",
+   "task": "transcribe the handwritten Hebrew line exactly as written"
+  },
+  {
+   "id": "hl_e006_q1_r5__l1",
+   "category": "handwritten_line",
+   "tier": "owner",
+   "hard": false,
+   "image": "crops/hl_e006_q1_r5__l1.png",
+   "writer": "e006",
+   "task": "transcribe the handwritten Hebrew line exactly as written"
+  },
+  {
+   "id": "hl_e006_q1_r6__l1",
+   "category": "handwritten_line",
+   "tier": "owner",
+   "hard": false,
+   "image": "crops/hl_e006_q1_r6__l1.png",
+   "writer": "e006",
+   "task": "transcribe the handwritten Hebrew line exactly as written"
+  },
+  {
+   "id": "hl_e006_q1_r7__l1",
+   "category": "handwritten_line",
+   "tier": "owner",
+   "hard": false,
+   "image": "crops/hl_e006_q1_r7__l1.png",
+   "writer": "e006",
+   "task": "transcribe the handwritten Hebrew line exactly as written"
+  },
+  {
+   "id": "hl_e006_q1_r8__l1",
+   "category": "handwritten_line",
+   "tier": "owner",
+   "hard": true,
+   "image": "crops/hl_e006_q1_r8__l1.png",
+   "writer": "e006",
+   "task": "transcribe the handwritten Hebrew line exactly as written"
+  },
+  {
+   "id": "hl_e006_q2_r1__l1",
+   "category": "handwritten_line",
+   "tier": "owner",
+   "hard": true,
+   "image": "crops/hl_e006_q2_r1__l1.png",
+   "writer": "e006",
+   "task": "transcribe the handwritten Hebrew line exactly as written"
+  },
+  {
+   "id": "hl_e006_q2_r3__l1",
+   "category": "handwritten_line",
+   "tier": "owner",
+   "hard": true,
+   "image": "crops/hl_e006_q2_r3__l1.png",
+   "writer": "e006",
+   "task": "transcribe the handwritten Hebrew line exactly as written"
+  },
+  {
+   "id": "hl_e006_q2_r4__l1",
+   "category": "handwritten_line",
+   "tier": "owner",
+   "hard": true,
+   "image": "crops/hl_e006_q2_r4__l1.png",
+   "writer": "e006",
+   "task": "transcribe the handwritten Hebrew line exactly as written"
+  },
+  {
+   "id": "hl_e006_q2_r5__l2",
+   "category": "handwritten_line",
+   "tier": "owner",
+   "hard": false,
+   "image": "crops/hl_e006_q2_r5__l2.png",
+   "writer": "e006",
+   "task": "transcribe the handwritten Hebrew line exactly as written"
+  },
+  {
+   "id": "hl_e006_q2_r6__l1",
+   "category": "handwritten_line",
+   "tier": "owner",
+   "hard": false,
+   "image": "crops/hl_e006_q2_r6__l1.png",
+   "writer": "e006",
+   "task": "transcribe the handwritten Hebrew line exactly as written"
+  },
+  {
+   "id": "hl_e006_q2_r7__l1",
+   "category": "handwritten_line",
+   "tier": "owner",
+   "hard": false,
+   "image": "crops/hl_e006_q2_r7__l1.png",
+   "writer": "e006",
+   "task": "transcribe the handwritten Hebrew line exactly as written"
+  },
+  {
+   "id": "hl_e006_q2_r7__l2",
+   "category": "handwritten_line",
+   "tier": "owner",
+   "hard": false,
+   "image": "crops/hl_e006_q2_r7__l2.png",
+   "writer": "e006",
+   "task": "transcribe the handwritten Hebrew line exactly as written"
+  },
+  {
+   "id": "hl_e006_q2_r8__l1",
+   "category": "handwritten_line",
+   "tier": "owner",
+   "hard": false,
+   "image": "crops/hl_e006_q2_r8__l1.png",
+   "writer": "e006",
+   "task": "transcribe the handwritten Hebrew line exactly as written"
+  },
+  {
+   "id": "hl_e007_q1_r1__l1",
+   "category": "handwritten_line",
+   "tier": "owner",
+   "hard": true,
+   "image": "crops/hl_e007_q1_r1__l1.png",
+   "writer": "e007",
+   "task": "transcribe the handwritten Hebrew line exactly as written"
+  },
+  {
+   "id": "hc_e002_q1_r1",
+   "category": "handwritten_cell",
+   "extra_categories": [],
+   "tier": "owner",
+   "hard": false,
+   "image": "crops/hc_e002_q1_r1.png",
+   "writer": "e002",
+   "task": "transcribe the student's handwritten Hebrew exactly; ignore any red instructor ink; struck-through text is cancelled"
+  },
+  {
+   "id": "hc_e002_q1_r2",
+   "category": "handwritten_cell",
+   "extra_categories": [],
+   "tier": "owner",
+   "hard": false,
+   "image": "crops/hc_e002_q1_r2.png",
+   "writer": "e002",
+   "task": "transcribe the student's handwritten Hebrew exactly; ignore any red instructor ink; struck-through text is cancelled"
+  },
+  {
+   "id": "hc_e002_q1_r3",
+   "category": "handwritten_cell",
+   "extra_categories": [],
+   "tier": "owner",
+   "hard": false,
+   "image": "crops/hc_e002_q1_r3.png",
+   "writer": "e002",
+   "task": "transcribe the student's handwritten Hebrew exactly; ignore any red instructor ink; struck-through text is cancelled"
+  },
+  {
+   "id": "hc_e002_q1_r4",
+   "category": "handwritten_cell",
+   "extra_categories": [],
+   "tier": "owner",
+   "hard": false,
+   "image": "crops/hc_e002_q1_r4.png",
+   "writer": "e002",
+   "task": "transcribe the student's handwritten Hebrew exactly; ignore any red instructor ink; struck-through text is cancelled"
+  },
+  {
+   "id": "hc_e002_q1_r5",
+   "category": "handwritten_cell",
+   "extra_categories": [],
+   "tier": "owner",
+   "hard": false,
+   "image": "crops/hc_e002_q1_r5.png",
+   "writer": "e002",
+   "task": "transcribe the student's handwritten Hebrew exactly; ignore any red instructor ink; struck-through text is cancelled"
+  },
+  {
+   "id": "hc_e002_q1_r6",
+   "category": "handwritten_cell",
+   "extra_categories": [],
+   "tier": "owner",
+   "hard": false,
+   "image": "crops/hc_e002_q1_r6.png",
+   "writer": "e002",
+   "task": "transcribe the student's handwritten Hebrew exactly; ignore any red instructor ink; struck-through text is cancelled"
+  },
+  {
+   "id": "hc_e002_q1_r7",
+   "category": "handwritten_cell",
+   "extra_categories": [],
+   "tier": "owner",
+   "hard": false,
+   "image": "crops/hc_e002_q1_r7.png",
+   "writer": "e002",
+   "task": "transcribe the student's handwritten Hebrew exactly; ignore any red instructor ink; struck-through text is cancelled"
+  },
+  {
+   "id": "hc_e002_q1_r8",
+   "category": "handwritten_cell",
+   "extra_categories": [],
+   "tier": "owner",
+   "hard": false,
+   "image": "crops/hc_e002_q1_r8.png",
+   "writer": "e002",
+   "task": "transcribe the student's handwritten Hebrew exactly; ignore any red instructor ink; struck-through text is cancelled"
+  },
+  {
+   "id": "hc_e002_q2_r1",
+   "category": "handwritten_cell",
+   "extra_categories": [],
+   "tier": "owner",
+   "hard": true,
+   "image": "crops/hc_e002_q2_r1.png",
+   "writer": "e002",
+   "task": "transcribe the student's handwritten Hebrew exactly; ignore any red instructor ink; struck-through text is cancelled"
+  },
+  {
+   "id": "hc_e002_q2_r2",
+   "category": "handwritten_cell",
+   "extra_categories": [],
+   "tier": "owner",
+   "hard": false,
+   "image": "crops/hc_e002_q2_r2.png",
+   "writer": "e002",
+   "task": "transcribe the student's handwritten Hebrew exactly; ignore any red instructor ink; struck-through text is cancelled"
+  },
+  {
+   "id": "hc_e002_q2_r3",
+   "category": "handwritten_cell",
+   "extra_categories": [],
+   "tier": "owner",
+   "hard": false,
+   "image": "crops/hc_e002_q2_r3.png",
+   "writer": "e002",
+   "task": "transcribe the student's handwritten Hebrew exactly; ignore any red instructor ink; struck-through text is cancelled"
+  },
+  {
+   "id": "hc_e002_q2_r4",
+   "category": "handwritten_cell",
+   "extra_categories": [],
+   "tier": "owner",
+   "hard": true,
+   "image": "crops/hc_e002_q2_r4.png",
+   "writer": "e002",
+   "task": "transcribe the student's handwritten Hebrew exactly; ignore any red instructor ink; struck-through text is cancelled"
+  },
+  {
+   "id": "hc_e002_q2_r5",
+   "category": "handwritten_cell",
+   "extra_categories": [],
+   "tier": "owner",
+   "hard": true,
+   "image": "crops/hc_e002_q2_r5.png",
+   "writer": "e002",
+   "task": "transcribe the student's handwritten Hebrew exactly; ignore any red instructor ink; struck-through text is cancelled"
+  },
+  {
+   "id": "hc_e002_q2_r6",
+   "category": "handwritten_cell",
+   "extra_categories": [],
+   "tier": "owner",
+   "hard": true,
+   "image": "crops/hc_e002_q2_r6.png",
+   "writer": "e002",
+   "task": "transcribe the student's handwritten Hebrew exactly; ignore any red instructor ink; struck-through text is cancelled"
+  },
+  {
+   "id": "hc_e002_q2_r7",
+   "category": "handwritten_cell",
+   "extra_categories": [],
+   "tier": "owner",
+   "hard": true,
+   "image": "crops/hc_e002_q2_r7.png",
+   "writer": "e002",
+   "task": "transcribe the student's handwritten Hebrew exactly; ignore any red instructor ink; struck-through text is cancelled"
+  },
+  {
+   "id": "hc_e002_q2_r8",
+   "category": "handwritten_cell",
+   "extra_categories": [],
+   "tier": "owner",
+   "hard": false,
+   "image": "crops/hc_e002_q2_r8.png",
+   "writer": "e002",
+   "task": "transcribe the student's handwritten Hebrew exactly; ignore any red instructor ink; struck-through text is cancelled"
+  },
+  {
+   "id": "pr_docA_p1_b0",
+   "category": "printed_rtl",
+   "tier": "text-layer",
+   "image": "crops/pr_docA_p1_b0.png",
+   "source": "docA page 1",
+   "task": "transcribe the printed text exactly (Hebrew is RTL)"
+  },
+  {
+   "id": "pr_docA_p1_b1",
+   "category": "formula_printed",
+   "tier": "text-layer",
+   "image": "crops/pr_docA_p1_b1.png",
+   "source": "docA page 1",
+   "task": "transcribe the printed text exactly (Hebrew is RTL)"
+  },
+  {
+   "id": "pr_docA_p1_b2",
+   "category": "printed_rtl",
+   "tier": "text-layer",
+   "image": "crops/pr_docA_p1_b2.png",
+   "source": "docA page 1",
+   "task": "transcribe the printed text exactly (Hebrew is RTL)"
+  },
+  {
+   "id": "pr_docA_p2_b0",
+   "category": "printed_rtl",
+   "tier": "text-layer",
+   "image": "crops/pr_docA_p2_b0.png",
+   "source": "docA page 2",
+   "task": "transcribe the printed text exactly (Hebrew is RTL)"
+  },
+  {
+   "id": "pr_docA_p2_b1",
+   "category": "printed_rtl",
+   "tier": "text-layer",
+   "image": "crops/pr_docA_p2_b1.png",
+   "source": "docA page 2",
+   "task": "transcribe the printed text exactly (Hebrew is RTL)"
+  },
+  {
+   "id": "pr_docA_p2_b3",
+   "category": "mixed_he_en",
+   "tier": "text-layer",
+   "image": "crops/pr_docA_p2_b3.png",
+   "source": "docA page 2",
+   "task": "transcribe the printed text exactly (Hebrew is RTL)"
+  },
+  {
+   "id": "pr_docA_p2_b4",
+   "category": "mixed_he_en",
+   "tier": "text-layer",
+   "image": "crops/pr_docA_p2_b4.png",
+   "source": "docA page 2",
+   "task": "transcribe the printed text exactly (Hebrew is RTL)"
+  },
+  {
+   "id": "pr_docA_p3_b0",
+   "category": "printed_rtl",
+   "tier": "text-layer",
+   "image": "crops/pr_docA_p3_b0.png",
+   "source": "docA page 3",
+   "task": "transcribe the printed text exactly (Hebrew is RTL)"
+  },
+  {
+   "id": "pr_docA_p3_b3",
+   "category": "printed_rtl",
+   "tier": "text-layer",
+   "image": "crops/pr_docA_p3_b3.png",
+   "source": "docA page 3",
+   "task": "transcribe the printed text exactly (Hebrew is RTL)"
+  },
+  {
+   "id": "pr_docA_p3_b6",
+   "category": "formula_printed",
+   "tier": "text-layer",
+   "image": "crops/pr_docA_p3_b6.png",
+   "source": "docA page 3",
+   "task": "transcribe the printed text exactly (Hebrew is RTL)"
+  },
+  {
+   "id": "pr_docA_p3_b8",
+   "category": "mixed_he_en",
+   "tier": "text-layer",
+   "image": "crops/pr_docA_p3_b8.png",
+   "source": "docA page 3",
+   "task": "transcribe the printed text exactly (Hebrew is RTL)"
+  },
+  {
+   "id": "pr_docA_p3_b9",
+   "category": "mixed_he_en",
+   "tier": "text-layer",
+   "image": "crops/pr_docA_p3_b9.png",
+   "source": "docA page 3",
+   "task": "transcribe the printed text exactly (Hebrew is RTL)"
+  },
+  {
+   "id": "pr_docA_p4_b0",
+   "category": "printed_rtl",
+   "tier": "text-layer",
+   "image": "crops/pr_docA_p4_b0.png",
+   "source": "docA page 4",
+   "task": "transcribe the printed text exactly (Hebrew is RTL)"
+  },
+  {
+   "id": "pr_docA_p5_b0",
+   "category": "printed_rtl",
+   "tier": "text-layer",
+   "image": "crops/pr_docA_p5_b0.png",
+   "source": "docA page 5",
+   "task": "transcribe the printed text exactly (Hebrew is RTL)"
+  },
+  {
+   "id": "pr_docA_p5_b8",
+   "category": "mixed_he_en",
+   "tier": "text-layer",
+   "image": "crops/pr_docA_p5_b8.png",
+   "source": "docA page 5",
+   "task": "transcribe the printed text exactly (Hebrew is RTL)"
+  },
+  {
+   "id": "pr_docA_p5_b9",
+   "category": "mixed_he_en",
+   "tier": "text-layer",
+   "image": "crops/pr_docA_p5_b9.png",
+   "source": "docA page 5",
+   "task": "transcribe the printed text exactly (Hebrew is RTL)"
+  },
+  {
+   "id": "pr_docA_p6_b1",
+   "category": "mixed_he_en",
+   "tier": "text-layer",
+   "image": "crops/pr_docA_p6_b1.png",
+   "source": "docA page 6",
+   "task": "transcribe the printed text exactly (Hebrew is RTL)"
+  },
+  {
+   "id": "pr_docA_p6_b9",
+   "category": "formula_printed",
+   "tier": "text-layer",
+   "image": "crops/pr_docA_p6_b9.png",
+   "source": "docA page 6",
+   "task": "transcribe the printed text exactly (Hebrew is RTL)"
+  },
+  {
+   "id": "pr_docA_p8_b0",
+   "category": "formula_printed",
+   "tier": "text-layer",
+   "image": "crops/pr_docA_p8_b0.png",
+   "source": "docA page 8",
+   "task": "transcribe the printed text exactly (Hebrew is RTL)"
+  },
+  {
+   "id": "pr_docB_p1_b1",
+   "category": "formula_printed",
+   "tier": "text-layer",
+   "image": "crops/pr_docB_p1_b1.png",
+   "source": "docB page 1",
+   "task": "transcribe the printed text exactly (Hebrew is RTL)"
+  },
+  {
+   "id": "pr_docB_p2_b7",
+   "category": "formula_printed",
+   "tier": "text-layer",
+   "image": "crops/pr_docB_p2_b7.png",
+   "source": "docB page 2",
+   "task": "transcribe the printed text exactly (Hebrew is RTL)"
+  },
+  {
+   "id": "pr_docB_p2_b14",
+   "category": "formula_printed",
+   "tier": "text-layer",
+   "image": "crops/pr_docB_p2_b14.png",
+   "source": "docB page 2",
+   "task": "transcribe the printed text exactly (Hebrew is RTL)"
+  },
+  {
+   "id": "assoc_docB_p2_b1",
+   "category": "option_row_association",
+   "tier": "text-layer",
+   "image": "crops/assoc_docB_p2_b1.png",
+   "source": "docB page 2",
+   "task": "this crop shows the four answer options of one multiple-choice question; output each option letter (א,ב,ג,ד) with its exact printed value"
+  },
+  {
+   "id": "assoc_docB_p2_b3",
+   "category": "option_row_association",
+   "tier": "text-layer",
+   "image": "crops/assoc_docB_p2_b3.png",
+   "source": "docB page 2",
+   "task": "this crop shows the four answer options of one multiple-choice question; output each option letter (א,ב,ג,ד) with its exact printed value"
+  },
+  {
+   "id": "assoc_docB_p2_b4",
+   "category": "option_row_association",
+   "tier": "text-layer",
+   "image": "crops/assoc_docB_p2_b4.png",
+   "source": "docB page 2",
+   "task": "this crop shows the four answer options of one multiple-choice question; output each option letter (א,ב,ג,ד) with its exact printed value"
+  },
+  {
+   "id": "assoc_docB_p2_b5",
+   "category": "option_row_association",
+   "tier": "text-layer",
+   "image": "crops/assoc_docB_p2_b5.png",
+   "source": "docB page 2",
+   "task": "this crop shows the four answer options of one multiple-choice question; output each option letter (א,ב,ג,ד) with its exact printed value"
+  },
+  {
+   "id": "assoc_docB_p2_b7",
+   "category": "option_row_association",
+   "tier": "text-layer",
+   "image": "crops/assoc_docB_p2_b7.png",
+   "source": "docB page 2",
+   "task": "this crop shows the four answer options of one multiple-choice question; output each option letter (א,ב,ג,ד) with its exact printed value"
+  }
+ ]
+}

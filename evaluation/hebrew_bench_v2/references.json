@@ -1,0 +1,535 @@
+{
+ "_policy": "References for hebrew_bench_v2. Read ONLY by the post-inference evaluator (scripts/m2_bench_eval.py), never by any inference code or prompt. Tiers: owner=human-verified; text-layer=embedded born-digital PDF text (objective).",
+ "hl_e003_q1_r1__l1": {
+  "text": "ניתן לראות ברמות התדרים הגבוהים שיש שפות בכיוון התנועה(הטשטוש)",
+  "provenance": "owner annotation 2026-07-16 19:19:13 (htr_pilot)"
+ },
+ "hl_e003_q1_r2__l2": {
+  "text": "רק התדרים הגבוהים נשמרו ב-High pass לכן התדרים הנמוכים מאופסים (כולל dc)",
+  "provenance": "owner annotation 2026-07-16 19:40:45 (htr_pilot)"
+ },
+ "hl_e003_q1_r3__l1": {
+  "text": "עוצמת התדרים הגבוהים אחרי הפעולה גדלה ולכן הרמות הנמוכות מראות שפות עבות יותר",
+  "provenance": "owner annotation 2026-07-16 19:40:47 (htr_pilot)"
+ },
+ "hl_e003_q1_r4__l1": {
+  "text": "ניתן לראות שרק תדרים נמוכים נשמרו ולכן כל הרמות של התדרים הגבוהים מאופסות",
+  "provenance": "owner annotation 2026-07-16 19:40:47 (htr_pilot)"
+ },
+ "hl_e003_q1_r5__l1": {
+  "text": "הרעש והטשטוש שלו בכיוון ציר ה-x מובלט בתדרים הגבוהים",
+  "provenance": "owner annotation 2026-07-16 19:40:48 (htr_pilot)"
+ },
+ "hl_e003_q1_r6__l1": {
+  "text": "הרעש והטשטוש שלו בכיוון ציר ה-y מובלט בתדרים הגבוהים",
+  "provenance": "owner annotation 2026-07-16 19:40:56 (htr_pilot)"
+ },
+ "hl_e003_q1_r7__l1": {
+  "text": "הרמה העליונה שכוללת DC בהירה יותר",
+  "provenance": "owner annotation 2026-07-16 19:40:57 (htr_pilot)"
+ },
+ "hl_e003_q1_r8__l1": {
+  "text": "ברמה העליונה שכוללת DC ניתן לראות שערכים בהירים יותר, נהיו יותר בהירים",
+  "provenance": "owner annotation 2026-07-16 19:40:58 (htr_pilot)"
+ },
+ "hl_e003_q2_r1__l1": {
+  "text": "כל פיקסלי השפות שנקלטו קיבלו  ערך 255 לעומת שאר הפיקסלים(הרוב)",
+  "provenance": "owner annotation 2026-07-16 19:40:59 (htr_pilot)"
+ },
+ "hl_e003_q2_r2__l1": {
+  "text": "טשטוש הוריד רעש ולכן פחות פיקסלים נקלטו בשפהב והערך 255 בהיסטוגרמה ירד",
+  "provenance": "owner annotation 2026-07-16 19:41:01 (htr_pilot)"
+ },
+ "hl_e003_q2_r3__l1": {
+  "text": "מפסר הפיקסלים לא השתנה והערכים מתפרסים על כל ספקטרום הערכים האפשרי",
+  "provenance": "owner annotation 2026-07-16 19:25:57 (htr_pilot)"
+ },
+ "hl_e003_q2_r4__l1": {
+  "text": "ניתן לראות שלעומת Uniform יש פחות ערכים אפשריים",
+  "provenance": "owner annotation 2026-07-16 19:41:17 (htr_pilot)"
+ },
+ "hl_e003_q2_r5__l1": {
+  "text": "לכל BIN(20 סה\"כ) יש ערך שנבחר בצורה אחידה וניתן לראות שבהם חולקו הפיקסלים",
+  "provenance": "owner annotation 2026-07-16 19:41:20 (htr_pilot)"
+ },
+ "hl_e003_q2_r6__l1": {
+  "text": "סכום המסכה הוא גדול מ-1, לכן טווח הערכים גדול מהטווח בהסטוגרמה המקורית ויותר פרוס",
+  "provenance": "owner annotation 2026-07-16 19:41:23 (htr_pilot)"
+ },
+ "hl_e003_q2_r7__l1": {
+  "text": "הוכפל מספר הפיקסלים בכל התמונה פי 2 והוכפל מספר הפיקסלים בכל ערך",
+  "provenance": "owner annotation 2026-07-16 19:41:25 (htr_pilot)"
+ },
+ "hl_e003_q2_r8__l1": {
+  "text": "ניתן לראות שמספר הפיקסלים בכל עוצמה הוזז ימינה באותו מרחק שהיה במקור.",
+  "provenance": "owner annotation 2026-07-16 19:41:32 (htr_pilot)"
+ },
+ "hl_e004_q1_r1__l1": {
+  "text": "הWAVEELETS מטושטשת בכל החלקים",
+  "provenance": "owner annotation 2026-07-16 19:41:33 (htr_pilot)"
+ },
+ "hl_e004_q1_r2__l1": {
+  "text": "התדר הנמוך נעלם בכלל HighpassFilter",
+  "provenance": "owner annotation 2026-07-16 19:41:34 (htr_pilot)"
+ },
+ "hl_e004_q1_r3__l1": {
+  "text": "התמונה מחודדת יותר ושמרה על הצבעים",
+  "provenance": "owner annotation 2026-07-16 19:41:46 (htr_pilot)"
+ },
+ "hl_e004_q1_r3__l2": {
+  "text": "לא כמו E  [לא קריא] יותר Brightness",
+  "provenance": "owner annotation 2026-07-16 19:42:00 (htr_pilot)"
+ },
+ "hl_e004_q1_r4__l1": {
+  "text": "התדר הגדול(High) נעלם בגלל ה Low Pass Filter",
+  "provenance": "owner annotation 2026-07-16 19:42:02 (htr_pilot)"
+ },
+ "hl_e004_q1_r5__l1": {
+  "text": "הWAVELETS מטושטשת אופקית(מקביל ציר x)",
+  "provenance": "owner annotation 2026-07-16 19:42:05 (htr_pilot)"
+ },
+ "hl_e004_q1_r6__l1": {
+  "text": "הWAVELETS מטושטשת אנכית",
+  "provenance": "owner annotation 2026-07-16 19:42:11 (htr_pilot)"
+ },
+ "hl_e004_q1_r6__l2": {
+  "text": "(מקביל ציר y)",
+  "provenance": "owner annotation 2026-07-16 19:42:14 (htr_pilot)"
+ },
+ "hl_e004_q1_r7__l2": {
+  "text": "התמונה  [לא קריא] מהמקורית",
+  "provenance": "owner annotation 2026-07-16 19:42:19 (htr_pilot)"
+ },
+ "hl_e004_q1_r8__l1": {
+  "text": "ההבדל בין כהה לבין לבן גדל",
+  "provenance": "owner annotation 2026-07-16 19:42:22 (htr_pilot)"
+ },
+ "hl_e004_q2_r1__l1": {
+  "text": "בגלל ש [לא קריא] canny נקבל 0 או 255 וזה בלי",
+  "provenance": "owner annotation 2026-07-16 19:42:55 (htr_pilot)"
+ },
+ "hl_e004_q2_r1__l2": {
+  "text": "טשטוש לכן נקבל יותר ב255",
+  "provenance": "owner annotation 2026-07-16 19:42:59 (htr_pilot)"
+ },
+ "hl_e004_q2_r2__l1": {
+  "text": "זה canny.  [לא קריא] עם טשטוש ולכן נקבל פחות ב-255 ולכן c",
+  "provenance": "owner annotation 2026-07-16 19:43:03 (htr_pilot)"
+ },
+ "hl_e004_q2_r3__l1": {
+  "text": "יש רווחים בין עמודים וגם יש עכשיו עמודים",
+  "provenance": "owner annotation 2026-07-16 19:43:20 (htr_pilot)"
+ },
+ "hl_e004_q2_r4__l1": {
+  "text": "נקבל בOptimal פחות עמודים מUniform",
+  "provenance": "owner annotation 2026-07-16 19:43:58 (htr_pilot)"
+ },
+ "hl_e004_q2_r4__l2": {
+  "text": "כאן וגם זה נותן בQnatization עמודים לא צפופים בהרבה",
+  "provenance": "owner annotation 2026-07-16 19:44:26 (htr_pilot)"
+ },
+ "hl_e004_q2_r5__l1": {
+  "text": "אותו דבר אבל זה Unoform ולכן נקבל יותר",
+  "provenance": "owner annotation 2026-07-16 19:44:48 (htr_pilot)"
+ },
+ "hl_e004_q2_r5__l2": {
+  "text": "עמודים",
+  "provenance": "owner annotation 2026-07-16 19:44:54 (htr_pilot)"
+ },
+ "hl_e004_q2_r6__l1": {
+  "text": "הכפלת תמונה ב2 זה לקחת ההסטוגרמה ולהגדיל",
+  "provenance": "owner annotation 2026-07-16 19:45:40 (htr_pilot)"
+ },
+ "hl_e004_q2_r6__l2": {
+  "text": "טווח שלה בציר x (עשינו את זה  [לא קריא] בהרצאה למדוד או לא)",
+  "provenance": "owner annotation 2026-07-16 19:46:21 (htr_pilot)"
+ },
+ "hl_e004_q2_r7__l2": {
+  "text": "שיקוף אופקי של התמונה נותן שיקוף אופקי של היסטוגרמה",
+  "provenance": "owner annotation 2026-07-16 19:46:43 (htr_pilot)"
+ },
+ "hl_e004_q2_r8__l1": {
+  "text": "המסיכה נותנת לנו Echo ואז",
+  "provenance": "owner annotation 2026-07-16 19:46:57 (htr_pilot)"
+ },
+ "hl_e004_q2_r8__l2": {
+  "text": "זה יגרור להיסטוגרמה הזו",
+  "provenance": "owner annotation 2026-07-16 19:47:06 (htr_pilot)"
+ },
+ "hl_e005_q1_r1__l1": {
+  "text": "נראה בתמונה טשטוש של motionblur על שפות אשר",
+  "provenance": "owner annotation 2026-07-16 19:47:26 (htr_pilot)"
+ },
+ "hl_e005_q1_r1__l2": {
+  "text": "[לא קריא] לא ברורות כמו שאמורות להיות והם לא בציר x ולא ב-y",
+  "provenance": "owner annotation 2026-07-16 19:48:03 (htr_pilot)"
+ },
+ "hl_e005_q1_r2__l1": {
+  "text": "בתמונה מופיעים שנות של התמונה המקורית בתדר גבוה",
+  "provenance": "owner annotation 2026-07-16 19:48:22 (htr_pilot)"
+ },
+ "hl_e005_q1_r2__l2": {
+  "text": "וגם הן נשים לב שהפעולה מבוצעת על התמונה הכי  [לא קריא] - בסיס -  [לא קריא] גאוסיאן  [לא קריא]",
+  "provenance": "owner annotation 2026-07-16 19:49:13 (htr_pilot)"
+ },
+ "hl_e005_q1_r3__l2": {
+  "text": "הפעל פילטר high-frequency מראה לנו רק תדר אחד של",
+  "provenance": "owner annotation 2026-07-16 19:49:40 (htr_pilot)"
+ },
+ "hl_e005_q1_r3__l3": {
+  "text": "תמונה וזהו אכן ברמה הראשונה x,y,z ולכן בשאר הרמות היא",
+  "provenance": "owner annotation 2026-07-16 19:50:05 (htr_pilot)"
+ },
+ "hl_e005_q1_r4__l1": {
+  "text": "לאחר חידוד שפות בתדר גבוה אנו מפעילים פילטר  pass- [לא קריא]",
+  "provenance": "owner annotation 2026-07-16 19:50:45 (htr_pilot)"
+ },
+ "hl_e005_q1_r4__l2": {
+  "text": "על התמונה ולכן רואים התדרים הנמוכים בשחור(בשונה משאר התמונות)",
+  "provenance": "owner annotation 2026-07-16 19:51:11 (htr_pilot)"
+ },
+ "hl_e005_q1_r5__l2": {
+  "text": "הוספת רעש גאוסיאני בציר x מחדד השפות בציר",
+  "provenance": "owner annotation 2026-07-16 19:51:37 (htr_pilot)"
+ },
+ "hl_e005_q1_r5__l3": {
+  "text": "x יותר ולכן תמונה c היא הכי מתאימה-רואים זו בתמונה",
+  "provenance": "owner annotation 2026-07-16 19:52:03 (htr_pilot)"
+ },
+ "hl_e005_q1_r6__l1": {
+  "text": "הוספת רעש גאוסיאני בציר Y מחדד השפות בציר y יותר",
+  "provenance": "owner annotation 2026-07-16 19:52:26 (htr_pilot)"
+ },
+ "hl_e005_q1_r6__l2": {
+  "text": "ולכן תמונה I מראה זו - היא הכי מתאימה",
+  "provenance": "owner annotation 2026-07-16 19:52:38 (htr_pilot)"
+ },
+ "hl_e005_q1_r7__l1": {
+  "text": "הגברת בהירות  [לא קריא] לכל  פיקסל ערך 100 ולכן נבחרה",
+  "provenance": "owner annotation 2026-07-16 19:53:27 (htr_pilot)"
+ },
+ "hl_e005_q1_r7__l2": {
+  "text": "תמונה H כתמונה שמבהירה כל פיקסל במידה שווה",
+  "provenance": "owner annotation 2026-07-16 19:53:46 (htr_pilot)"
+ },
+ "hl_e005_q1_r8__l2": {
+  "text": "פעולה זו גם מגדילה פיקסלים אך בחרנו אותה ולא D",
+  "provenance": "owner annotation 2026-07-16 19:54:06 (htr_pilot)"
+ },
+ "hl_e005_q1_r8__l3": {
+  "text": "כי תמונה זו מראה תמונה ברמה אחרונה בהירה יותר",
+  "provenance": "owner annotation 2026-07-16 19:54:19 (htr_pilot)"
+ },
+ "hl_e005_q2_r1__l1": {
+  "text": "האלגוריתם עושה thresh-iding בסוף כדי להפריד שפות",
+  "provenance": "owner annotation 2026-07-16 19:54:46 (htr_pilot)"
+ },
+ "hl_e005_q2_r1__l2": {
+  "text": "אך בחרנו  [לא קריא] ולא E כי מס' הפיקסלים שקרובים ל-0 גדולים יותר",
+  "provenance": "owner annotation 2026-07-16 19:55:10 (htr_pilot)"
+ },
+ "hl_e005_q2_r2__l2": {
+  "text": "האלגוריתם עושה threshding בסוף לאחר הפעלת  [לא קריא]",
+  "provenance": "owner annotation 2026-07-16 19:55:58 (htr_pilot)"
+ },
+ "hl_e005_q2_r2__l3": {
+  "text": "גאוסיאן ולכן ההיסטוגרמה תימרח ורק לאחר מכן נעשה threshholding כלומר מס'  [לא קריא] של 0 ויותק של 255",
+  "provenance": "owner annotation 2026-07-16 19:56:48 (htr_pilot)"
+ },
+ "hl_e005_q2_r3__l2": {
+  "text": "באורך כל ההיסטוגרמה(0-255)",
+  "provenance": "owner annotation 2026-07-16 19:57:11 (htr_pilot)"
+ },
+ "hl_e005_q2_r4__l2": {
+  "text": "עושים חלוקה חדשה לפי האלגוריתם optimal quntization  [לא קריא]  [לא קריא] [לא קריא]",
+  "provenance": "owner annotation 2026-07-16 19:57:51 (htr_pilot)"
+ },
+ "hl_e005_q2_r4__l3": {
+  "text": "חלוקה מפוזרת ובאותו טווח אבל עם ערכים קבועים  [לא קריא] -gray",
+  "provenance": "owner annotation 2026-07-16 19:58:27 (htr_pilot)"
+ },
+ "hl_e005_q2_r5__l2": {
+  "text": "קוונטיזציה יוניפורמית מחלקת את כל סביבה של q להתפלג",
+  "provenance": "owner annotation 2026-07-16 19:58:52 (htr_pilot)"
+ },
+ "hl_e005_q2_r5__l3": {
+  "text": "פאופן אחיד בq_max ולכן היסטוגרמה T הכי מתאימה",
+  "provenance": "owner annotation 2026-07-16 19:59:13 (htr_pilot)"
+ },
+ "hl_e005_q2_r6__l2": {
+  "text": "קונבולוציה על כל פיקסל תיצור ערכים גדולים יותר עם שמירה על הערכים המקוריים ולכן תיווצר היסטוגרמה A",
+  "provenance": "owner annotation 2026-07-16 19:59:52 (htr_pilot)"
+ },
+ "hl_e005_q2_r7__l2": {
+  "text": "שיקוף אופקי של תמונה יגדיל את כמות ה gray-level",
+  "provenance": "owner annotation 2026-07-16 20:00:16 (htr_pilot)"
+ },
+ "hl_e005_q2_r7__l3": {
+  "text": "ב-2 ולכן נבחר היסטוגרמה דומה  [לא קריא] [לא קריא]",
+  "provenance": "owner annotation 2026-07-16 20:00:46 (htr_pilot)"
+ },
+ "hl_e005_q2_r8__l1": {
+  "text": "עבור כל פיקסל הוא מקבל ערך 2 ולכן נמרח ההיסטוגרמה",
+  "provenance": "owner annotation 2026-07-16 20:01:10 (htr_pilot)"
+ },
+ "hl_e005_q2_r8__l2": {
+  "text": "לאורך x ונישאר עם אותו דובה היסטוגרמה",
+  "provenance": "owner annotation 2026-07-16 20:01:23 (htr_pilot)"
+ },
+ "hl_e006_q1_r1__l1": {
+  "text": "motionblur זה טשטוש והזזה של  [לא קריא](כמו echo) רואים ברמה הלפלסיאנית  [לא קריא] יש טשטוש בכל הכיוונים  [לא קריא] מוזזות",
+  "provenance": "owner annotation 2026-07-16 20:02:21 (htr_pilot)"
+ },
+ "hl_e006_q1_r2__l1": {
+  "text": "בהפעלת highpass לא ישאר תדרים נמוכים וגם לא ישאר pc",
+  "provenance": "owner annotation 2026-07-16 20:02:50 (htr_pilot)"
+ },
+ "hl_e006_q1_r3__l1": {
+  "text": "בחידוד תמונה רואים יותר שפות ולכן D",
+  "provenance": "owner annotation 2026-07-16 20:03:03 (htr_pilot)"
+ },
+ "hl_e006_q1_r4__l1": {
+  "text": "בהפעלת  [לא קריא] low pass לא ישאר תדרים גבוהים בכלל ולכן",
+  "provenance": "owner annotation 2026-07-17 01:18:57 (htr_pilot)"
+ },
+ "hl_e006_q1_r5__l1": {
+  "text": "עמט עם טשטוש בכיוון x אז שפות בכיוון y מטושטשות",
+  "provenance": "owner annotation 2026-07-17 01:19:31 (htr_pilot)"
+ },
+ "hl_e006_q1_r6__l1": {
+  "text": "רעש עם טשטוש בכיוון y אז זשפות אנכיות מטושטשות",
+  "provenance": "owner annotation 2026-07-17 01:19:52 (htr_pilot)"
+ },
+ "hl_e006_q1_r7__l1": {
+  "text": "הגברת בהירות -> Dc יותר בהיר רואים בA",
+  "provenance": "owner annotation 2026-07-17 01:20:25 (htr_pilot)"
+ },
+ "hl_e006_q1_r8__l1": {
+  "text": "אם נסווג אותם זה יהיה E/P אבל מכיוון שבחידוד יהיה הוספה לתדרים גבוהים אז יהיה  [לא קריא] שפות יותר מאם נכפיל ב-2",
+  "provenance": "owner annotation 2026-07-17 01:21:17 (htr_pilot)"
+ },
+ "hl_e006_q2_r1__l1": {
+  "text": "הפעלת canny מחזירה תמונה עם ערכים 255 0 לכן  1,2 יתאימו לC,E מכיוון ש2 עם טשטוש אז יכול להיות שנאבד שפות ולכן canny c עם טשטוש ו  [לא קריא]",
+  "provenance": "owner annotation 2026-07-17 01:23:04 (htr_pilot)"
+ },
+ "hl_e006_q2_r3__l1": {
+  "text": "שיווי ההיסטוגראמא מנסים לעשות שיווין בעוצמת אבל בלי לשבור עמודות מתאים לB(והכוונה  [לא קריא]  [לא קריא])",
+  "provenance": "owner annotation 2026-07-17 01:24:17 (htr_pilot)"
+ },
+ "hl_e006_q2_r4__l1": {
+  "text": "Quantization מנסים להקטין מספר דרגות אפוק מתאים לI,D כלומר 4,5->I,D מכיוון שבuniform המרחק בין דרגה ודרגה שווה אז  [לא קריא] [לא קריא]",
+  "provenance": "owner annotation 2026-07-17 01:25:59 (htr_pilot)"
+ },
+ "hl_e006_q2_r5__l2": {
+  "text": "הסבר",
+  "provenance": "owner annotation 2026-07-17 01:26:13 (htr_pilot)"
+ },
+ "hl_e006_q2_r6__l1": {
+  "text": "קונבלוציה עם מסכה 1,001 תגדיל טווח הדרגות האפור",
+  "provenance": "owner annotation 2026-07-17 01:27:24 (htr_pilot)"
+ },
+ "hl_e006_q2_r7__l1": {
+  "text": "שיקוף לא משוה דרגות אסור של הפיקסלים ושרשור כאילו",
+  "provenance": "owner annotation 2026-07-17 01:28:06 (htr_pilot)"
+ },
+ "hl_e006_q2_r7__l2": {
+  "text": "יש לנו כפול 2 מכל פיקסל ולכן כל עמודה נכפיל אותה ב2",
+  "provenance": "owner annotation 2026-07-17 01:28:28 (htr_pilot)"
+ },
+ "hl_e006_q2_r8__l1": {
+  "text": "הכפלת ערכי התמונה ב2 אז כל עמודה תלך למספר עמודה שלה כפול 2",
+  "provenance": "owner annotation 2026-07-17 01:28:53 (htr_pilot)"
+ },
+ "hl_e007_q1_r1__l1": {
+  "text": "ניתן לראות כי בשכבות של הגלים הם לא שומרים  [לא קריא] אותה תוצאה עבור התמונה ניתן לראות שיש סוג של מתיחה",
+  "provenance": "owner annotation 2026-07-17 01:29:53 (htr_pilot)"
+ },
+ "hc_e002_q1_r1": {
+  "text": "יש טשטוש בכל התדרים",
+  "unreadable_spans": "",
+  "provenance": "owner-verified 16-cell benchmark (July campaign)"
+ },
+ "hc_e002_q1_r2": {
+  "text": "נשאר בתמונה רק התדרים הגבוהים",
+  "unreadable_spans": "",
+  "provenance": "owner-verified 16-cell benchmark (July campaign)"
+ },
+ "hc_e002_q1_r3": {
+  "text": "העוצמה של הדרגות הגבוהות בפרמידה חזקה ביחס למקורי",
+  "unreadable_spans": "",
+  "provenance": "owner-verified 16-cell benchmark (July campaign)"
+ },
+ "hc_e002_q1_r4": {
+  "text": "נשאר בתמונה רק התדרים הנמוכים",
+  "unreadable_spans": "",
+  "provenance": "owner-verified 16-cell benchmark (July campaign)"
+ },
+ "hc_e002_q1_r5": {
+  "text": "מריחה בציר x עקב הקונבולוציה",
+  "unreadable_spans": "",
+  "provenance": "owner-verified 16-cell benchmark (July campaign)"
+ },
+ "hc_e002_q1_r6": {
+  "text": "מריחה בציר y עקב הקונבולוציה",
+  "unreadable_spans": "",
+  "provenance": "owner-verified 16-cell benchmark (July campaign)"
+ },
+ "hc_e002_q1_r7": {
+  "text": "סה\"כ הפירמידה נראית תקינה. הדרגה 0 שלה בהירה משמעותית מהתמונה המקורית",
+  "unreadable_spans": "",
+  "provenance": "owner-verified 16-cell benchmark (July campaign)"
+ },
+ "hc_e002_q1_r8": {
+  "text": "בדומה לפעולה 7, מבהיר את התמונה אבל פה האיזורים הבהירים יותר נעשים יותר שינוי מהאזורים הכהים",
+  "unreadable_spans": "",
+  "provenance": "owner-verified 16-cell benchmark (July campaign)"
+ },
+ "hc_e002_q2_r1": {
+  "text": "עבור גילוי שפות יהיה רוב התמונה ב-[לא קריא] ורק עבור שפות 255",
+  "unreadable_spans": "[לא קריא]",
+  "provenance": "owner-verified 16-cell benchmark (July campaign)"
+ },
+ "hc_e002_q2_r2": {
+  "text": "בדומה לו, רק שהטשטוש לפני מוביל לפחות שפות שמתגלות",
+  "unreadable_spans": "",
+  "provenance": "owner-verified 16-cell benchmark (July campaign)"
+ },
+ "hc_e002_q2_r3": {
+  "text": "פריסה אחידה של ההיסטוגרמה המקורית לאורך כל הטווח",
+  "unreadable_spans": "",
+  "provenance": "owner-verified 16-cell benchmark (July campaign)"
+ },
+ "hc_e002_q2_r4": {
+  "text": "[לא קריא]",
+  "unreadable_spans": "[לא קריא]",
+  "provenance": "owner-verified 16-cell benchmark (July campaign)"
+ },
+ "hc_e002_q2_r5": {
+  "text": "[לא קריא] אחיד מוביל לריווח אחיד בין הערכים שקיימים בכימוי",
+  "unreadable_spans": "[לא קריא]",
+  "provenance": "owner-verified 16-cell benchmark (July campaign)"
+ },
+ "hc_e002_q2_r6": {
+  "text": "המעכה זהה לסכימת תמונה זהה עם תנודה קלה. מין תמונת echo כזאת תגרום להיסטוגרמה החדשה להיות קרובה להכפלה ב-2 [לא קריא]",
+  "unreadable_spans": "[לא קריא]",
+  "provenance": "owner-verified 16-cell benchmark (July campaign)"
+ },
+ "hc_e002_q2_r7": {
+  "text": "צורדת ההיסטוגרמה זהה, אך הגדלים והכמויות הם פי 2, כי גודל התמונה הינו [לא קריא]",
+  "unreadable_spans": "[לא קריא]",
+  "provenance": "owner-verified 16-cell benchmark (July campaign)"
+ },
+ "hc_e002_q2_r8": {
+  "text": "כל ערך x בהיסטוגרמה ממופה ל2x בהיסטוגרמה החדשה",
+  "unreadable_spans": "",
+  "provenance": "owner-verified 16-cell benchmark (July campaign)"
+ },
+ "pr_docA_p1_b0": {
+  "text": "בחינה בקורס עיבוד תמונה",
+  "provenance": "embedded text layer of docA (born-digital)"
+ },
+ "pr_docA_p1_b1": {
+  "text": "203.3730\n 203.6730 / \n  סמסטר א' מועד א' תשפ\"ו \n2025-2026",
+  "provenance": "embedded text layer of docA (born-digital)"
+ },
+ "pr_docA_p1_b2": {
+  "text": "שם המרצה: פרופ' חגית הל-אור. \nשם המתרגל: מר׳ נעמאן קובטי",
+  "provenance": "embedded text layer of docA (born-digital)"
+ },
+ "pr_docA_p2_b0": {
+  "text": "שאלה מספר 1\n:  )\n32\n נקודות(",
+  "provenance": "embedded text layer of docA (born-digital)"
+ },
+ "pr_docA_p2_b1": {
+  "text": "לפניכם התמונה הבאה:",
+  "provenance": "embedded text layer of docA (born-digital)"
+ },
+ "pr_docA_p2_b3": {
+  "text": "לאחר הפעולה בונים פרמידת WAVELETS של תמונת התוצאה. בעמוד הבא נתונות \nתמונות התוצאה ממוספרות  )\nA-I\n(.",
+  "provenance": "embedded text layer of docA (born-digital)"
+ },
+ "pr_docA_p2_b4": {
+  "text": "התאימו בין כל פעולה ופרמידת \nWavelet\n התוצאה המתאימה לה. מלאו את טבלת",
+  "provenance": "embedded text layer of docA (born-digital)"
+ },
+ "pr_docA_p3_b0": {
+  "text": "6. הרעשה עם רעש גאוסייני ואחכ קונבולוציה עם המסכה : \n𝑒",
+  "provenance": "embedded text layer of docA (born-digital)"
+ },
+ "pr_docA_p3_b3": {
+  "text": "קונבולוציה עם המסכה )גאוסיינית חד מימדית( גורמת לטשטוש התמונה בכוון \nאופקי )פעולה 5( או אנכי )פעולה 6(. ולכן השפות האנכיות או האופקיות בהתאמה",
+  "provenance": "embedded text layer of docA (born-digital)"
+ },
+ "pr_docA_p3_b6": {
+  "text": "7. הגברת בהירות         \n 𝐼!\"#(𝑥, 𝑦) = 𝐼(𝑥, 𝑦) + 100\n- \nA/H/B\n:",
+  "provenance": "embedded text layer of docA (born-digital)"
+ },
+ "pr_docA_p3_b8": {
+  "text": "ב-\nBrightness Shift\n )פעולה 7( רק ה-\nDC\n יושפע ויהפוך ליותר בהיר כמובן, אך",
+  "provenance": "embedded text layer of docA (born-digital)"
+ },
+ "pr_docA_p3_b9": {
+  "text": "שאר התדרים לא יושפעו, בעוד שב-\nscale\n )פעולה 8( כל הפרמידה תוכפל, גם ה-\nDC",
+  "provenance": "embedded text layer of docA (born-digital)"
+ },
+ "pr_docA_p4_b0": {
+  "text": "המשך שאלה מספר 1",
+  "provenance": "embedded text layer of docA (born-digital)"
+ },
+ "pr_docA_p5_b0": {
+  "text": "שאלה מספר 2\n:  )\n32\n נקודות(",
+  "provenance": "embedded text layer of docA (born-digital)"
+ },
+ "pr_docA_p5_b8": {
+  "text": "1. הפעלת גלאי שפה Canny\n  \nE/C/B",
+  "provenance": "embedded text layer of docA (born-digital)"
+ },
+ "pr_docA_p5_b9": {
+  "text": "2. מטשטשים את התמונה בעזרת מסכה גאוסיאנית ואז מפעילים גלאי שפה Canny",
+  "provenance": "embedded text layer of docA (born-digital)"
+ },
+ "pr_docA_p6_b1": {
+  "text": "OQ מתכנסת ל 20\n \nBINS\n לא אחידים על פי צפיפות הפיקסלים בהיסטוגרמה. כך",
+  "provenance": "embedded text layer of docA (born-digital)"
+ },
+ "pr_docA_p6_b9": {
+  "text": "6. קונבולוציה עם המסכה [1\n0\n0\n1]\n \nA/D/H",
+  "provenance": "embedded text layer of docA (born-digital)"
+ },
+ "pr_docA_p8_b0": {
+  "text": "שאלה מספר 3 )\n36\n נקודות(",
+  "provenance": "embedded text layer of docA (born-digital)"
+ },
+ "pr_docB_p1_b1": {
+  "text": "203.2480\n12.07.2026 ,סמסטר ב מועד א2026\nמרצה: פרופ׳ יורי רבינוביץ׳",
+  "provenance": "embedded text layer of docB (born-digital)"
+ },
+ "pr_docB_p2_b7": {
+  "text": "אף אחד מהנ״ל\n)ד(1\n()ג0.5\n()ב0.29\n()א",
+  "provenance": "embedded text layer of docB (born-digital)"
+ },
+ "pr_docB_p2_b14": {
+  "text": "אף אחד מהנ״ל\n)ד(273\n()ג271\n()ב264\n()א",
+  "provenance": "embedded text layer of docB (born-digital)"
+ },
+ "assoc_docB_p2_b1": {
+  "text": "0.55\n()ד0.51\n()ג0.47\n()ב0.39\n()א",
+  "provenance": "embedded text layer of docB (born-digital)"
+ },
+ "assoc_docB_p2_b3": {
+  "text": "0.475\n()ד0.437\n()ג0.427\n()ב0.401\n()א",
+  "provenance": "embedded text layer of docB (born-digital)"
+ },
+ "assoc_docB_p2_b4": {
+  "text": "לפגוע ולבוב יש סיכוי1/3אליס ובוב מתחרים בפגיעה במטרה. לאליס יש סיכוי\n:3שאלה\nמה הסיכוי\nאליס מתחילה, והמשחק ממשיך בתורות עד לפגיעה במטרה.\n.1/2\n?שאליס תנצח",
+  "provenance": "embedded text layer of docB (born-digital)"
+ },
+ "assoc_docB_p2_b5": {
+  "text": "3/5\n()ד1/2\n()ג1/3\n()ב1/6\n()א",
+  "provenance": "embedded text layer of docB (born-digital)"
+ },
+ "assoc_docB_p2_b7": {
+  "text": "אף אחד מהנ״ל\n)ד(1\n()ג0.5\n()ב0.29\n()א",
+  "provenance": "embedded text layer of docB (born-digital)"
+ }
+}
