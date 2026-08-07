@@ -228,12 +228,32 @@ def decide_version(
             record,
         )
 
+    if marker in mapping and mapping[marker] in key.versions:
+        # The marker WAS identified but without confidence: the sighting is
+        # still strictly better provisional evidence than a fixed fallback
+        # (observed live: 'a diamond outline symbol' on a faint scan, graded
+        # under the fallback column). Select it, keep uncertain=True so the
+        # exam is review-flagged, and record the low confidence. Never
+        # score-based: the choice follows the marker, not the answers.
+        variant = mapping[marker]
+        record["fallback_variant"] = None
+        return (
+            VersionDecision(
+                version=variant,
+                description=(
+                    f"cover-page {record['marker_kind']} {marker!r} matched "
+                    f"WITHOUT model confidence — provisional variant {variant} "
+                    "from the sighting; human review required"
+                ),
+                uncertain=True,
+            ),
+            record,
+        )
+
     fallback = sorted(mapping.values())[0]
     why = (
         f"marker unmatched (saw: {detection.marker_seen!r})"
         if marker is None
-        else f"marker {marker!r} matched without confidence"
-        if marker in mapping
         else f"model named unknown marker {marker!r}"
     )
     record["fallback_variant"] = fallback

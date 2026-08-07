@@ -122,6 +122,36 @@ def test_description_echo_resolves_to_unique_canonical_id():
     assert record["matched_marker"] == "variant_symbol_a3"
 
 
+def test_unconfident_matched_marker_selects_sighting_with_review():
+    """Observed live (scan 21, faint ◇): the marker resolved but the model
+    was not confident. The sighting must still pick the provisional variant
+    (better evidence than the fixed fallback), with uncertain=True routing
+    the exam to human review — never the fallback column."""
+    from autograder.variant import load_variant_config
+
+    prob_cfg = load_variant_config("prob_data/sol.answer_key.json")
+    det = VariantDetection(
+        marker_seen="a diamond outline symbol", matched_marker=None,
+        confident=False, page_region="bottom third",
+    )
+    key = make_key()
+    key.versions = ["club", "diamond", "heart", "spade"]
+    decision, record = decide_version(det, prob_cfg, key)
+    assert decision.version == "diamond"
+    assert decision.uncertain, "low confidence must keep the review flag"
+    assert record["matched_marker"] == "diamond"
+    # A genuinely unmatched sighting still falls back deterministically.
+    det2 = VariantDetection(
+        marker_seen="smudged blob", matched_marker=None,
+        confident=False, page_region="bottom",
+    )
+    decision2, _ = decide_version(det2, prob_cfg, key)
+    assert decision2.version == sorted(
+        e["variant"] for e in prob_cfg["markers"].values()
+    )[0]
+    assert decision2.uncertain
+
+
 def test_own_words_sighting_naming_one_marker_resolves():
     """Observed live (scan 24): marker_seen='a diamond outline symbol',
     matched_marker=null — the sighting names exactly one catalogue marker in
@@ -156,7 +186,6 @@ def test_unclear_flower_is_uncertain_and_routed_to_review():
     key = make_key()
     for det in [
         detection(None, seen="smudged symbol"),
-        detection("variant_symbol_a1", confident=False),
         detection("unknown_rose"),
     ]:
         decision, record = decide_version(det, CFG, key)
@@ -166,6 +195,17 @@ def test_unclear_flower_is_uncertain_and_routed_to_review():
         # deterministic choice, never derived from answers or scores.
         assert decision.version == "A1"
         assert record.get("fallback_variant") == "A1"
+
+    # A MATCHED marker reported without confidence follows the sighting
+    # (better provisional evidence than the fixed fallback), still review-
+    # flagged; the record shows no fallback was used.
+    decision, record = decide_version(
+        detection("variant_symbol_a1", confident=False), CFG, key
+    )
+    assert decision.uncertain
+    assert "review" in decision.description
+    assert decision.version == "A1"  # the marker's own variant, not a fallback
+    assert record.get("fallback_variant") is None
 
     # The uncertain decision must surface as a review item in grading.
     extraction = ExamExtraction(
