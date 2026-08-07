@@ -28,6 +28,7 @@ import argparse
 import base64
 import json
 import os
+import re
 import sys
 import time
 from pathlib import Path
@@ -228,12 +229,16 @@ class Gemini:
             data = resp.json()
             try:
                 raw = data["candidates"][0]["content"]["parts"][0]["text"]
-                try:
-                    parsed = json.loads(raw.strip().strip("`").lstrip("json")).get(
-                        "transcription"
-                    )
-                except Exception:  # noqa: BLE001
-                    parsed = raw.strip() or None
+                parsed = None
+                m = re.search(r"\{.*\}", raw, re.DOTALL)
+                if m:
+                    try:
+                        parsed = json.loads(m.group(0)).get("transcription")
+                    except json.JSONDecodeError:
+                        parsed = None
+                if parsed is None:
+                    cleaned = re.sub(r"^```[a-z]*\s*|\s*```$", "", raw.strip())
+                    parsed = cleaned.strip() or None
                 return {"raw": raw, "transcription": parsed, "error": None,
                         "status": resp.status_code}
             except Exception as e:  # noqa: BLE001

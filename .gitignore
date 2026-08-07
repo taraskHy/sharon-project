@@ -11,3 +11,4 @@ key_cache/
 jobs/
 prob_out/
 eval_prob/
+.env
