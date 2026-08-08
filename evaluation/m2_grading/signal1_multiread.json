@@ -1,0 +1,50 @@
+[
+ {
+  "cell": "e003_q1_r1",
+  "inter_read_cer": 0.0,
+  "read1_verdict": "partially_valid",
+  "read2_verdict": "partially_valid",
+  "reads_decision_agree": true,
+  "label": "silent"
+ },
+ {
+  "cell": "e003_q1_r2",
+  "inter_read_cer": 0.862,
+  "read1_verdict": "invalid",
+  "read2_verdict": "invalid",
+  "reads_decision_agree": true,
+  "label": "silent"
+ },
+ {
+  "cell": "e003_q1_r3",
+  "inter_read_cer": 0.0,
+  "read1_verdict": "valid",
+  "read2_verdict": "valid",
+  "reads_decision_agree": true,
+  "label": "silent"
+ },
+ {
+  "cell": "e003_q1_r4",
+  "inter_read_cer": 0.0,
+  "read1_verdict": "valid",
+  "read2_verdict": "valid",
+  "reads_decision_agree": true,
+  "label": "preserved"
+ },
+ {
+  "cell": "e004_q1_r1",
+  "inter_read_cer": 0.0,
+  "read1_verdict": "invalid",
+  "read2_verdict": "invalid",
+  "reads_decision_agree": true,
+  "label": "preserved"
+ },
+ {
+  "cell": "e004_q1_r2",
+  "inter_read_cer": 0.0,
+  "read1_verdict": "valid",
+  "read2_verdict": "invalid",
+  "reads_decision_agree": false,
+  "label": "preserved"
+ }
+]

@@ -154,3 +154,61 @@ qwen vs mlkit n=10: qwen 1/4/5 || mlkit 1/6/3.
    measured-unreliable (local qwen, Mission 1).
 None are validated; validation would require correlating each signal
 with decision preservation on held-out cells.
+
+---
+
+# Reference-free uncertainty-signal analysis (offline; frozen outputs untouched)
+
+## Upward-flip audits (manual)
+
+**e003_q1_r3** (cell CER 0.519; partially_valid -> valid). Reference:
+"עוצמת התדרים הגבוהים אחרי הפעולה גדלה ולכן הרמות הנמוכות מראות שפות
+עבות יותר". Gemini transcribed ONLY the first clause and omitted the
+second — the clause containing the misstatement the judge penalized on
+the reference ("thicker edges"). Mechanism: TRUNCATION REMOVED THE
+STUDENT'S ERROR -> unearned upgrade.
+
+**e006_q1_r2** (cell CER 0.333; partially_valid -> valid). Student wrote
+"pc" (owner-verified); Gemini normalized it to "DC" — the correct
+technical term the judge then credited (reference: "'לא ישאר pc' …
+unclear"). Mechanism: ERROR-CORRECTING NORMALIZATION repaired the
+student's mistake (same tendency as WAVEELETS->WAVELETS). The frozen
+read2 of this cell also says "DC" — the normalization is deterministic.
+
+Both flips are fidelity failures (omission / normalization), not
+hallucinations — exactly the class an image-grounded verifier should
+target.
+
+## Signal 1 — multi-read consistency (n=6 cells; quota-limited, rest pending)
+
+Independent second reads (config gemini3_flash_read2, identical
+model/prompt/settings, originals untouched): **5/6 cells byte-identical
+across reads (inter-read CER 0.000), including 2 of 3 silent-change
+cells** — the truncation flip reproduced verbatim. One silent cell showed
+inter-read 0.862 (catchable). Discrete two-read judge disagreement:
+caught 0/3 silent, flagged 1/3 preserved. **At temperature 0 Gemini is
+read-deterministic; self-consistency cannot flag deterministic errors.**
+Exact counts in signal1_multiread.json.
+
+## Signal 3 — cross-recognizer agreement with local qwen (n=22, exploratory)
+
+Inter-hypothesis distance spans 0.68-0.96 with heavy label overlap
+(preserved cells at BOTH extremes; e004's two preserved cells have the
+highest distances). Catching 10/10 silent changes requires reviewing
+17/22 cells (flagging 6/11 preserved). **Agreement with a recognizer
+this weak adds ~no usable information** — matching the July oracle
+finding. Sweep table in signal3_crossrecognizer.json.
+
+## Recommendation (ONE next experiment)
+
+**Signal 2 — image-to-transcription verification** deserves the larger
+frozen evaluation: give a verifier the crop + Gemini's frozen
+transcription + printed question context; ask whether every
+grading-relevant component (numbers, operators, negation, notation,
+keywords) is visibly supported AND whether any visible content was
+omitted; structured verdict. Rationale: the two audited upward flips are
+omission/normalization failures — precisely what image-grounded
+verification targets and what self-consistency (deterministic) and
+weak-recognizer agreement (measured) cannot catch. To run next quota
+window over all 23 grading cells; evaluated offline against
+preserved/silent labels with exact counts.
