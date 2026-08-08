@@ -4,3 +4,9 @@ gemini3_flash,gemini,gemini-3-flash-preview,none,option_row_association,1,,,,,,0
 gemini3_flash,gemini,gemini-3-flash-preview,none,printed_rtl,1,0.0,1.0,0.0,0.0,0.0,0,,,,,0,0,0.0,0,3.57
 mlkit_ink_rtl_a1,mlkit_digital_ink,"he (Digital Ink Recognition, on-device)",,handwritten_cell,1,0.4828,0.0,1.2,0.0,0.2857,0,,,,,0,0,0.0,0,0.41
 mlkit_ink_rtl_a1,mlkit_digital_ink,"he (Digital Ink Recognition, on-device)",,handwritten_line,4,0.4525,0.25,0.8065,0.0645,0.0645,0,,,,,0,0,0.0,0,0.23
+qwen8b_strict_contrast,qwen_local,qwen3-vl:8b-instruct,contrast,formula_printed,7,0.371,0.5714,0.6389,0.1528,0.1159,0,,,,,0,0,0.0,0,137.89
+qwen8b_strict_contrast,qwen_local,qwen3-vl:8b-instruct,contrast,handwritten_cell,11,0.7971,0.0,1.0471,0.1765,0.0667,0,,5,5,,0,0,0.0,0,194.58
+qwen8b_strict_contrast,qwen_local,qwen3-vl:8b-instruct,contrast,handwritten_line,64,0.9112,0.0,1.0768,0.2089,0.121,0,,22,22,,1,0,0.0,0,162.75
+qwen8b_strict_contrast,qwen_local,qwen3-vl:8b-instruct,contrast,mixed_he_en,7,0.1484,0.8571,0.1591,0.0114,0.0114,1,,,,,0,0,0.0,0,143.79
+qwen8b_strict_contrast,qwen_local,qwen3-vl:8b-instruct,contrast,option_row_association,5,,,,,,0,,,,0.1579,0,0,0.0,0,138.33
+qwen8b_strict_contrast,qwen_local,qwen3-vl:8b-instruct,contrast,printed_rtl,8,0.0657,0.875,0.2154,0.0,0.0714,0,,,,,0,0,0.0,0,152.91

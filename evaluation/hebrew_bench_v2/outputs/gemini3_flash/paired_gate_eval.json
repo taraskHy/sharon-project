@@ -1,0 +1,110 @@
+[
+ {
+  "item": "hl_e003_q1_r1__l1",
+  "writer": "e003",
+  "hard": false,
+  "gem": "{\"transcription\": \"ניתן לראות ברמות התדרים הגבוהים שיש שפות בכיוון התנועה",
+  "gem_cer": 0.344,
+  "gem_wer": 0.2,
+  "gem_lat": 41.33,
+  "ml_cer": 0.754,
+  "ml_wer": 1.0,
+  "winner": "gemini",
+  "en_ref": [],
+  "en_recovered": []
+ },
+ {
+  "item": "hl_e003_q1_r2__l2",
+  "writer": "e003",
+  "hard": false,
+  "gem": "רק התדרים הגבוהים נשמרו ב-High",
+  "gem_cer": 0.571,
+  "gem_wer": 0.538,
+  "gem_lat": 5.43,
+  "ml_cer": 0.8,
+  "ml_wer": 1.0,
+  "winner": "gemini",
+  "en_ref": [
+   "High",
+   "dc",
+   "pass"
+  ],
+  "en_recovered": [
+   "High"
+  ]
+ },
+ {
+  "item": "hl_e003_q1_r3__l1",
+  "writer": "e003",
+  "hard": false,
+  "gem": "עוצמת התדרים הגבוהים אחרי הפעולה גדלה",
+  "gem_cer": 0.519,
+  "gem_wer": 0.538,
+  "gem_lat": 5.84,
+  "ml_cer": 0.714,
+  "ml_wer": 1.0,
+  "winner": "gemini",
+  "en_ref": [],
+  "en_recovered": []
+ },
+ {
+  "item": "hl_e003_q1_r4__l1",
+  "writer": "e003",
+  "hard": false,
+  "gem": "{\"transcription\": \"ניתן לראות שרק תדרים נמוכים נשמרו ולכן כל הרמות של הת",
+  "gem_cer": 0.466,
+  "gem_wer": 0.308,
+  "gem_lat": 5.29,
+  "ml_cer": 0.699,
+  "ml_wer": 1.0,
+  "winner": "gemini",
+  "en_ref": [],
+  "en_recovered": []
+ },
+ {
+  "item": "hl_e004_q1_r1__l1",
+  "writer": "e004",
+  "hard": false,
+  "gem": "ה WAVELETS משתמשת בכל החלפות",
+  "gem_cer": 0.31,
+  "gem_wer": 1.0,
+  "gem_lat": 24.05,
+  "ml_cer": 0.69,
+  "ml_wer": 1.5,
+  "winner": "gemini",
+  "en_ref": [
+   "WAVEELETS"
+  ],
+  "en_recovered": []
+ },
+ {
+  "item": "hl_e004_q1_r2__l1",
+  "writer": "e004",
+  "hard": false,
+  "gem": "התדר הנמוך נעלם בגלל Highpass Filter",
+  "gem_cer": 0.057,
+  "gem_wer": 0.6,
+  "gem_lat": 4.61,
+  "ml_cer": 0.657,
+  "ml_wer": 1.4,
+  "winner": "gemini",
+  "en_ref": [
+   "HighpassFilter"
+  ],
+  "en_recovered": []
+ },
+ {
+  "item": "hl_e004_q1_r3__l1",
+  "writer": "e004",
+  "hard": false,
+  "gem": "sh-y-y-b-t) - wait, it looks like מ-ח-ו-ד-ד-ת? No.",
+  "gem_cer": 1.118,
+  "gem_wer": 2.667,
+  "gem_lat": 4.61,
+  "ml_cer": 0.529,
+  "ml_wer": 1.0,
+  "winner": "mlkit",
+  "en_ref": [],
+  "en_recovered": []
+ }
+]
