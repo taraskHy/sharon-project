@@ -159,6 +159,7 @@ def create_job(
     mask: bool = True,
     job_root: Path | None = None,
     job_id: str | None = None,
+    course_id: str | None = None,
 ) -> Path:
     """Materialise a new job directory. ``backend_args``/``grading_args`` are
     CLI flag name -> value mappings (e.g. {"--model": "qwen3-vl:8b-instruct"}).
@@ -202,6 +203,7 @@ def create_job(
         "key": key_rel,
         "rubric": rubric_rel,
         "mask": bool(mask),
+        "course_id": course_id,  # informational; used by the experimental RAG arm only
         "backend_args": backend_args or {},
         "grading_args": grading_args or {},
         "intake_issues": intake.issues,
