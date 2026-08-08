@@ -1,0 +1,30 @@
+{
+ "item": "hl_e006_q1_r3__l1",
+ "results": {
+  "readme_document_parsing": {
+   "prompt": "<image>document parsing.",
+   "raw": "<|det|>text [354, 148, 980, 760]<|/det|>תְבָרִי אַלְהָם בְּרִי אַלְהָם",
+   "latency_s": 3.81
+  },
+  "code_free_ocr": {
+   "prompt": "<image>\nFree OCR. ",
+   "raw": "",
+   "latency_s": 1.14
+  },
+  "code_extract_text": {
+   "prompt": "<image>\nExtract the text in the image. ",
+   "raw": "",
+   "latency_s": 1.14
+  },
+  "instr_newline": {
+   "prompt": "<image>\nTranscribe exactly the handwritten text visible in this image. Preserve Hebrew, English, numbers, symbols, formulas, spelling mistakes, and order as written. Do not answer the question, explain, correct spelling, normalize terminology, or infer missing content. Return only the transcription.",
+   "raw": "",
+   "latency_s": 1.14
+  },
+  "instr_original": {
+   "prompt": "<image>Transcribe exactly the handwritten text visible in this image. Preserve Hebrew, English, numbers, symbols, formulas, spelling mistakes, and order as written. Do not answer the question, explain, correct spelling, normalize terminology, or infer missing content. Return only the transcription.",
+   "raw": "",
+   "latency_s": 1.16
+  }
+ }
+}

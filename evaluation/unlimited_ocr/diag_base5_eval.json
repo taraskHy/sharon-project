@@ -1,0 +1,303 @@
+{
+ "config_id": "unlimited_ocr_diag_base",
+ "label": "diag_base5",
+ "items_requested": [
+  "hl_e004_q1_r3__l1",
+  "hl_e005_q1_r2__l1",
+  "hl_e003_q1_r1__l1",
+  "hl_e006_q1_r3__l1",
+  "hc_e002_q1_r2"
+ ],
+ "errors": 0,
+ "all": {
+  "n": 5,
+  "mean": 3.3476,
+  "median": 1.0,
+  "p25": 1.0,
+  "p75": 5.8197,
+  "min": 0.7714,
+  "max": 8.1471,
+  "usable_le_025": 0,
+  "usable_le_050": 0
+ },
+ "all_wer_mean": 5.5,
+ "all_wer_median": 1.0,
+ "omission_mean": 0.4857,
+ "empty_outputs": 2,
+ "strict": {
+  "n": 5,
+  "mean": 3.3476,
+  "median": 1.0,
+  "p25": 1.0,
+  "p75": 5.8197,
+  "min": 0.7714,
+  "max": 8.1471,
+  "usable_le_025": 0,
+  "usable_le_050": 0
+ },
+ "hard": {
+  "n": 0
+ },
+ "by_writer": {
+  "e002": {
+   "n": 1,
+   "mean": 1.0,
+   "median": 1.0,
+   "p25": null,
+   "p75": null,
+   "min": 1.0,
+   "max": 1.0,
+   "usable_le_025": 0,
+   "usable_le_050": 0
+  },
+  "e003": {
+   "n": 1,
+   "mean": 5.8197,
+   "median": 5.8197,
+   "p25": null,
+   "p75": null,
+   "min": 5.8197,
+   "max": 5.8197,
+   "usable_le_025": 0,
+   "usable_le_050": 0
+  },
+  "e004": {
+   "n": 1,
+   "mean": 8.1471,
+   "median": 8.1471,
+   "p25": null,
+   "p75": null,
+   "min": 8.1471,
+   "max": 8.1471,
+   "usable_le_025": 0,
+   "usable_le_050": 0
+  },
+  "e005": {
+   "n": 1,
+   "mean": 1.0,
+   "median": 1.0,
+   "p25": null,
+   "p75": null,
+   "min": 1.0,
+   "max": 1.0,
+   "usable_le_025": 0,
+   "usable_le_050": 0
+  },
+  "e006": {
+   "n": 1,
+   "mean": 0.7714,
+   "median": 0.7714,
+   "p25": null,
+   "p75": null,
+   "min": 0.7714,
+   "max": 0.7714,
+   "usable_le_025": 0,
+   "usable_le_050": 0
+  }
+ },
+ "by_category": {
+  "handwritten_cell": {
+   "n": 1,
+   "mean": 1.0,
+   "median": 1.0,
+   "p25": null,
+   "p75": null,
+   "min": 1.0,
+   "max": 1.0,
+   "usable_le_025": 0,
+   "usable_le_050": 0
+  },
+  "handwritten_line": {
+   "n": 4,
+   "mean": 3.9346,
+   "median": 3.4099,
+   "p25": 0.7714,
+   "p75": 8.1471,
+   "min": 0.7714,
+   "max": 8.1471,
+   "usable_le_025": 0,
+   "usable_le_050": 0
+  }
+ },
+ "latency": {
+  "n": 5,
+  "mean": 6.182,
+  "median": 2.44,
+  "p25": 1.19,
+  "p75": 10.06,
+  "min": 1.17,
+  "max": 16.05,
+  "usable_le_025": 0,
+  "usable_le_050": 0
+ },
+ "per_item": [
+  {
+   "item": "hl_e004_q1_r3__l1",
+   "writer": "e004",
+   "category": "handwritten_line",
+   "hard": false,
+   "raw": "<|det|>equation [162, 375, 999, 999]<|/det|>\\[\n\\mathrm{in} _ {2} \\mathrm{in} _ {2} \\mathrm{in} _ {2} \\mathrm{in} _ {2} \\mathrm{in} _ {2} ^ {\\prime} \\mathrm{in} _ {2} ^ {\\prime} \\mathrm{in} _ {2} ^ {\\prime} \\mathrm{in} _ {1} ^ {\\prime} \\mathrm{in} _ {1} ^ {\\prime} \\mathrm{in} _ {1} ^ {\\prime} \\mathrm{out} _ {1} ^ {\\prime} \\mathrm{out} _ {1} ^ {\\prime} \\mathrm{out} _ {1} ^ {\\prime}\n\\]",
+   "transcription": "\\[\n\\mathrm{in} _ {2} \\mathrm{in} _ {2} \\mathrm{in} _ {2} \\mathrm{in} _ {2} \\mathrm{in} _ {2} ^ {\\prime} \\mathrm{in} _ {2} ^ {\\prime} \\mathrm{in} _ {2} ^ {\\prime} \\mathrm{in} _ {1} ^ {\\prime} \\mathrm{in} _ {1} ^ {\\prime} \\mathrm{in} _ {1} ^ {\\prime} \\mathrm{out} _ {1} ^ {\\prime} \\mathrm{out} _ {1} ^ {\\prime} \\mathrm{out} _ {1} ^ {\\prime}\n\\]",
+   "latency_s": 10.06,
+   "error": null,
+   "cer": 8.1471,
+   "wer": 12.0,
+   "omission": 0.0,
+   "hyp_words": 72,
+   "empty": false
+  },
+  {
+   "item": "hl_e005_q1_r2__l1",
+   "writer": "e005",
+   "category": "handwritten_line",
+   "hard": false,
+   "raw": "<|det|>image [48, 0, 999, 999]<|/det|>",
+   "transcription": null,
+   "latency_s": 1.17,
+   "error": null,
+   "cer": 1.0,
+   "wer": 1.0,
+   "omission": 1.0,
+   "hyp_words": 0,
+   "empty": true
+  },
+  {
+   "item": "hl_e003_q1_r1__l1",
+   "writer": "e003",
+   "category": "handwritten_line",
+   "hard": false,
+   "raw": "<|det|>equation [73, 155, 990, 999]<|/det|>\\[\n\\begin{array}{l} \\text {   (e l e l)   } \\text {   (e l e l)   } \\text {   (e l e l)   } \\text {   (e l e l) } \\\\ \\text {   (e l e l)   } \\text {   (e l e l)   } \\text {   (e l e l)    } \\text {   (e l e l)   } \\text {   (e l e l)   } \\text {   (e l e l)} \\\\ \\text {   (e l e l)   } \\text {   (e l e l)   } \\text {   (e l e l)} \\text {   (e l e l)} \\text {   (e l e l)} \\text {   (e l e l)} \\text {   (\\text {   (e l e l)   })} \\text {   (e l e l)} \\text {   (e l e l)} \\text {   (e l e l)} \\text {    } \\text {   (e l e l)} \\text {   (e l e l)} \\text {   (e l e l)} \\text {    }\n\\]",
+   "transcription": "\\[\n\\begin{array}{l} \\text { (e l e l) } \\text { (e l e l) } \\text { (e l e l) } \\text { (e l e l) } \\\\ \\text { (e l e l) } \\text { (e l e l) } \\text { (e l e l) } \\text { (e l e l) } \\text { (e l e l) } \\text { (e l e l)} \\\\ \\text { (e l e l) } \\text { (e l e l) } \\text { (e l e l)} \\text { (e l e l)} \\text { (e l e l)} \\text { (e l e l)} \\text { (\\text { (e l e l) })} \\text { (e l e l)} \\text { (e l e l)} \\text { (e l e l)} \\text { } \\text { (e l e l)} \\text { (e l e l)} \\text { (e l e l)} \\text { }\n\\]",
+   "latency_s": 16.05,
+   "error": null,
+   "cer": 5.8197,
+   "wer": 12.5,
+   "omission": 0.0,
+   "hyp_words": 125,
+   "empty": false
+  },
+  {
+   "item": "hl_e006_q1_r3__l1",
+   "writer": "e006",
+   "category": "handwritten_line",
+   "hard": false,
+   "raw": "<|det|>text [354, 452, 980, 690]<|/det|>תְבָרִי אַלְהָם בְּרִי אַלְהָם",
+   "transcription": "תְבָרִי אַלְהָם בְּרִי אַלְהָם",
+   "latency_s": 2.44,
+   "error": null,
+   "cer": 0.7714,
+   "wer": 1.0,
+   "omission": 0.4286,
+   "hyp_words": 4,
+   "empty": false
+  },
+  {
+   "item": "hc_e002_q1_r2",
+   "writer": "e002",
+   "category": "handwritten_cell",
+   "hard": false,
+   "raw": "<|det|>image [50, 0, 999, 999]<|/det|>",
+   "transcription": null,
+   "latency_s": 1.19,
+   "error": null,
+   "cer": 1.0,
+   "wer": 1.0,
+   "omission": 1.0,
+   "hyp_words": 0,
+   "empty": true
+  }
+ ],
+ "comparisons": {
+  "qwen8b_strict_contrast": {
+   "paired_n": 5,
+   "ours_mean_cer": 3.3476,
+   "theirs_mean_cer": 0.8011,
+   "ours_median_cer": 1.0,
+   "theirs_median_cer": 0.8197,
+   "wins": 0,
+   "ties": 0,
+   "losses": 5,
+   "pairs": [
+    {
+     "item": "hl_e004_q1_r3__l1",
+     "ours": 8.1471,
+     "theirs": 0.9118
+    },
+    {
+     "item": "hl_e005_q1_r2__l1",
+     "ours": 1.0,
+     "theirs": 0.8298
+    },
+    {
+     "item": "hl_e003_q1_r1__l1",
+     "ours": 5.8197,
+     "theirs": 0.8197
+    },
+    {
+     "item": "hl_e006_q1_r3__l1",
+     "ours": 0.7714,
+     "theirs": 0.6857
+    },
+    {
+     "item": "hc_e002_q1_r2",
+     "ours": 1.0,
+     "theirs": 0.7586
+    }
+   ]
+  },
+  "mlkit_ink_rtl_a1": {
+   "paired_n": 5,
+   "ours_mean_cer": 3.3476,
+   "theirs_mean_cer": 0.4586,
+   "ours_median_cer": 1.0,
+   "theirs_median_cer": 0.4828,
+   "wins": 0,
+   "ties": 0,
+   "losses": 5,
+   "pairs": [
+    {
+     "item": "hl_e004_q1_r3__l1",
+     "ours": 8.1471,
+     "theirs": 0.5294
+    },
+    {
+     "item": "hl_e005_q1_r2__l1",
+     "ours": 1.0,
+     "theirs": 0.2979
+    },
+    {
+     "item": "hl_e003_q1_r1__l1",
+     "ours": 5.8197,
+     "theirs": 0.7541
+    },
+    {
+     "item": "hl_e006_q1_r3__l1",
+     "ours": 0.7714,
+     "theirs": 0.2286
+    },
+    {
+     "item": "hc_e002_q1_r2",
+     "ours": 1.0,
+     "theirs": 0.4828
+    }
+   ]
+  },
+  "gemini3_flash": {
+   "paired_n": 1,
+   "ours_mean_cer": 5.8197,
+   "theirs_mean_cer": 0.3443,
+   "ours_median_cer": 5.8197,
+   "theirs_median_cer": 0.3443,
+   "wins": 0,
+   "ties": 0,
+   "losses": 1,
+   "pairs": [
+    {
+     "item": "hl_e003_q1_r1__l1",
+     "ours": 5.8197,
+     "theirs": 0.3443
+    }
+   ]
+  }
+ }
+}

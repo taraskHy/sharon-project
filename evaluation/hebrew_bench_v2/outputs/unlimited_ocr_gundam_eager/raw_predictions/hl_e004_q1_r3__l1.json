@@ -1,0 +1,28 @@
+{
+ "raw": "<|det|>image [162, 375, 999, 999]<|/det|>",
+ "transcription": null,
+ "error": null,
+ "status": 200,
+ "item": "hl_e004_q1_r3__l1",
+ "category": "handwritten_line",
+ "run": 1,
+ "latency_s": 2.48,
+ "model": "baidu/Unlimited-OCR",
+ "revision": "07dea832e22aefee32ad281d4b80551282e1c168",
+ "gen_settings": {
+  "base_size": 1024,
+  "image_size": 640,
+  "crop_mode": true,
+  "max_length": 32768,
+  "no_repeat_ngram_size": 35,
+  "ngram_window": 128,
+  "temperature": 0.0,
+  "eval_mode": true,
+  "save_results": false,
+  "dtype": "bfloat16",
+  "attn_implementation": "eager",
+  "prompt": "<image>document parsing."
+ },
+ "vram_used_mib": 10998,
+ "torch_peak_alloc_mib": 7941
+}

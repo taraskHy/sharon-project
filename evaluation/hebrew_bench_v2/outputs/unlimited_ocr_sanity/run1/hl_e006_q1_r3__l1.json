@@ -1,0 +1,10 @@
+{
+ "raw": "<|det|>text [354, 148, 980, 760]<|/det|>תְבָרִי אַלְהָם בְּרִי אַלְהָם",
+ "transcription": "תְבָרִי אַלְהָם בְּרִי אַלְהָם",
+ "error": null,
+ "status": 200,
+ "item": "hl_e006_q1_r3__l1",
+ "category": "handwritten_line",
+ "run": 1,
+ "latency_s": 3.83
+}
