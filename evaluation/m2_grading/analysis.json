@@ -1,0 +1,165 @@
+{
+ "_terminology": "Baseline = reference-side fixed-grader decision (same fixed judge on the owner-verified transcription). NOT ground truth, NOT human grades. Metrics measure OCR-induced decision preservation only.",
+ "qwen8b_strict_contrast": {
+  "arm": "qwen8b_strict_contrast",
+  "n": 52,
+  "decision_agreement_rate": 0.192,
+  "flip_rate": 0.808,
+  "directions": {
+   "down": 11,
+   "abstain": 31,
+   "same": 10
+  },
+  "confusion_ref_vs_ocr": {
+   "invalid->invalid": 9,
+   "invalid->unintelligible": 21,
+   "partially_valid->invalid": 4,
+   "partially_valid->unintelligible": 8,
+   "valid->invalid": 7,
+   "valid->unintelligible": 2,
+   "valid->valid": 1
+  },
+  "by_cer_band": {
+   "0.5-inf": {
+    "n": 52,
+    "agreement": 0.192,
+    "mean_cer": 0.817
+   }
+  }
+ },
+ "mlkit_ink_rtl_a1": {
+  "arm": "mlkit_ink_rtl_a1",
+  "n": 11,
+  "decision_agreement_rate": 0.091,
+  "flip_rate": 0.909,
+  "directions": {
+   "abstain": 7,
+   "down": 3,
+   "same": 1
+  },
+  "confusion_ref_vs_ocr": {
+   "invalid->invalid": 1,
+   "invalid->unintelligible": 1,
+   "partially_valid->unintelligible": 2,
+   "valid->invalid": 3,
+   "valid->unintelligible": 4
+  },
+  "by_cer_band": {
+   "0.0-0.25": {
+    "n": 1,
+    "agreement": 1.0,
+    "mean_cer": 0.229
+   },
+   "0.25-0.5": {
+    "n": 1,
+    "agreement": 0.0,
+    "mean_cer": 0.483
+   },
+   "0.5-inf": {
+    "n": 9,
+    "agreement": 0.0,
+    "mean_cer": 0.702
+   }
+  }
+ },
+ "gemini3_flash": {
+  "arm": "gemini3_flash",
+  "n": 18,
+  "decision_agreement_rate": 0.444,
+  "flip_rate": 0.556,
+  "directions": {
+   "down": 8,
+   "up": 1,
+   "same": 8,
+   "abstain": 1
+  },
+  "confusion_ref_vs_ocr": {
+   "invalid->invalid": 5,
+   "invalid->unintelligible": 1,
+   "partially_valid->invalid": 4,
+   "partially_valid->partially_valid": 1,
+   "partially_valid->valid": 1,
+   "valid->invalid": 3,
+   "valid->partially_valid": 1,
+   "valid->valid": 2
+  },
+  "by_cer_band": {
+   "0.0-0.25": {
+    "n": 2,
+    "agreement": 1.0,
+    "mean_cer": 0.029
+   },
+   "0.25-0.5": {
+    "n": 9,
+    "agreement": 0.444,
+    "mean_cer": 0.401
+   },
+   "0.5-inf": {
+    "n": 7,
+    "agreement": 0.286,
+    "mean_cer": 0.633
+   }
+  }
+ },
+ "common_subsets": {
+  "qwen8b_strict_contrast vs mlkit_ink_rtl_a1": {
+   "n": 10,
+   "qwen8b_strict_contrast": {
+    "agreement": 0.1,
+    "mean_cell_cer": 0.86
+   },
+   "mlkit_ink_rtl_a1": {
+    "agreement": 0.1,
+    "mean_cell_cer": 0.623
+   }
+  },
+  "qwen8b_strict_contrast vs gemini3_flash": {
+   "n": 17,
+   "qwen8b_strict_contrast": {
+    "agreement": 0.118,
+    "mean_cell_cer": 0.831
+   },
+   "gemini3_flash": {
+    "agreement": 0.471,
+    "mean_cell_cer": 0.443
+   }
+  },
+  "mlkit_ink_rtl_a1 vs gemini3_flash": {
+   "n": 6,
+   "mlkit_ink_rtl_a1": {
+    "agreement": 0.0,
+    "mean_cell_cer": 0.719
+   },
+   "gemini3_flash": {
+    "agreement": 0.5,
+    "mean_cell_cer": 0.378
+   }
+  }
+ },
+ "danger_analysis": {
+  "qwen8b_strict_contrast": {
+   "low_cer_flips": [],
+   "high_cer_preserved_n": 10,
+   "high_cer_preserved_examples": [
+    "e002_q1_r7",
+    "e002_q1_r8",
+    "e003_q2_r7",
+    "e004_q1_r1",
+    "e004_q1_r4"
+   ]
+  },
+  "mlkit_ink_rtl_a1": {
+   "low_cer_flips": [],
+   "high_cer_preserved_n": 0,
+   "high_cer_preserved_examples": []
+  },
+  "gemini3_flash": {
+   "low_cer_flips": [],
+   "high_cer_preserved_n": 2,
+   "high_cer_preserved_examples": [
+    "e003_q2_r5",
+    "e003_q2_r6"
+   ]
+  }
+ }
+}

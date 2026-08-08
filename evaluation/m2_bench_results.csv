@@ -10,3 +10,7 @@ qwen8b_strict_contrast,qwen_local,qwen3-vl:8b-instruct,contrast,handwritten_line
 qwen8b_strict_contrast,qwen_local,qwen3-vl:8b-instruct,contrast,mixed_he_en,7,0.1484,0.8571,0.1591,0.0114,0.0114,1,,,,,0,0,0.0,0,143.79
 qwen8b_strict_contrast,qwen_local,qwen3-vl:8b-instruct,contrast,option_row_association,5,,,,,,0,,,,0.1579,0,0,0.0,0,138.33
 qwen8b_strict_contrast,qwen_local,qwen3-vl:8b-instruct,contrast,printed_rtl,8,0.0657,0.875,0.2154,0.0,0.0714,0,,,,,0,0,0.0,0,152.91
+mlkit_ink_rtl_a1,mlkit_digital_ink,"he (Digital Ink Recognition, on-device)",,handwritten_cell,4,0.8784,0.0,1.1364,0.1364,0.2692,0,,,,,0,0,0.0,0,0.41
+mlkit_ink_rtl_a1,mlkit_digital_ink,"he (Digital Ink Recognition, on-device)",,handwritten_line,11,0.6052,0.0909,0.9691,0.1753,0.0805,0,,5,5,,0,0,0.0,0,0.26
+mlkit_ink_rtl_a1,mlkit_digital_ink,"he (Digital Ink Recognition, on-device)",,handwritten_cell,4,0.8784,0.0,1.1364,0.1364,0.2692,0,,,,,0,0,0.0,0,0.41
+mlkit_ink_rtl_a1,mlkit_digital_ink,"he (Digital Ink Recognition, on-device)",,handwritten_line,11,0.6052,0.0909,0.9691,0.1753,0.0805,0,,5,5,,0,0,0.0,0,0.26
