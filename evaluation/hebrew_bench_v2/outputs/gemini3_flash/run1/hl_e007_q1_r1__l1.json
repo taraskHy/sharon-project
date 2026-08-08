@@ -1,0 +1,12 @@
+{
+ "raw": "```json\n{\"transcription\": \"ניתן לראות כי בשכבות של הגלים הכחולים לא שומרים על אותה",
+ "transcription": "{\"transcription\": \"ניתן לראות כי בשכבות של הגלים הכחולים לא שומרים על אותה",
+ "error": null,
+ "status": 200,
+ "rate_limit_waits": 0,
+ "rate_limit_wait_s": 0.0,
+ "item": "hl_e007_q1_r1__l1",
+ "category": "handwritten_line",
+ "run": 1,
+ "latency_s": 4.98
+}

@@ -101,3 +101,56 @@ provider is more or less "confident" — the observation concerns the
 pipeline's abstention behavior, not model calibration. The design
 implication stands: a deployable pipeline needs a reference-free
 uncertainty signal to decide between automatic grading and human review.
+
+---
+
+# UPDATE: complete Gemini gate (20/20 predictions; grading arm n=23)
+
+Final paired 20-item transcription comparison (identical items, hard
+reported separately): strict-15 Gemini CER 0.315/0.310 vs ML Kit
+0.678/0.673, pairwise 14/0/1; usable@0.25 7/15 vs 1/15; @0.50 11/15 vs
+3/15. Per-writer strict means (gemini | mlkit): e002 0.24|0.88, e003
+0.47|0.74, e004 0.50|0.63, e005 0.02|0.44, e006 0.17|0.47.
+
+## Updated Gemini decision buckets (n=23)
+
+preserved 11 | safe abstention 1 | silent change 11 (up 2, down 9).
+ref=valid n=9: exact 4/9, silent downgrade 5, abstain 0.
+ref=invalid n=7: coincidental invalid->invalid 6, upward flips 0.
+
+## Hypothesis test: low CER -> reliable preservation?
+
+| CER band | n | preserved | abstain | silent change |
+|---|---|---|---|---|
+| <=0.25 | 5 | **5** | 0 | **0** |
+| 0.25-0.50 | 10 | 4 | 1 | 5 |
+| >0.50 | 8 | 2 | 0 | 6 |
+
+Supportive: at CER<=0.25 preservation is 5/5 with zero silent changes,
+and no silent change occurs below CER 0.31 anywhere in the arm. The
+gradient is monotone. n=5 in the key band — promising, not conclusive.
+Writer skew: 16/23 grading cells are writer e003.
+
+## Updated identical-subset comparisons
+
+qwen vs gemini n=22: qwen 2 pres/12 abstain/8 silent || gemini 11/1/10.
+mlkit vs gemini n=11: mlkit 1/7/3 || gemini 6/0/5.
+qwen vs mlkit n=10: qwen 1/4/5 || mlkit 1/6/3.
+
+## Candidate REFERENCE-FREE uncertainty signals (identified, NOT implemented)
+
+1. Fixed-grader abstention itself (the judge's unintelligible verdict) —
+   already exists; catches garbage, misses fluent-wrong text.
+2. Cross-recognizer transcription agreement (e.g. Gemini vs local qwen,
+   both available at deployment; route disagreement to review). Caveat:
+   the July oracle analysis showed agreement among WEAK experts carries
+   no signal — must be re-tested with one strong arm in the pair.
+3. Domain-vocabulary overlap: fraction of OCR tokens found in the exam's
+   printed question text/domain lexicon (deterministic, cheap).
+4. Local-LM plausibility of the transcription conditioned on the question
+   context (reference-free perplexity via the local model).
+5. ML Kit candidate-score margin (ink arm only; scores persisted).
+6. Provider-reported confidence — currently unavailable (Gemini API) or
+   measured-unreliable (local qwen, Mission 1).
+None are validated; validation would require correlating each signal
+with decision preservation on held-out cells.

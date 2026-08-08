@@ -1,0 +1,12 @@
+{
+ "raw": "```json\n{\"transcription\": \"לא כמו E שיהיו יותר Brightness.\"}\n```",
+ "transcription": "לא כמו E שיהיו יותר Brightness.",
+ "error": null,
+ "status": 200,
+ "rate_limit_waits": 0,
+ "rate_limit_wait_s": 0.0,
+ "item": "hl_e004_q1_r3__l2",
+ "category": "handwritten_line",
+ "run": 1,
+ "latency_s": 4.97
+}

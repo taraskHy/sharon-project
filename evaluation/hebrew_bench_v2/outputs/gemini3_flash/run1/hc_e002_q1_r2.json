@@ -1,0 +1,12 @@
+{
+ "raw": "```json\n{\"transcription\": \"נשאלת השאלה רק התדרים הגבוהים\"}\n```",
+ "transcription": "נשאלת השאלה רק התדרים הגבוהים",
+ "error": null,
+ "status": 200,
+ "rate_limit_waits": 0,
+ "rate_limit_wait_s": 0.0,
+ "item": "hc_e002_q1_r2",
+ "category": "handwritten_cell",
+ "run": 1,
+ "latency_s": 4.52
+}

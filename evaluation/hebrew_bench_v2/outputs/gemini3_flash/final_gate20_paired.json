@@ -1,0 +1,142 @@
+[
+ {
+  "item": "hc_e002_q1_r1",
+  "writer": "e002",
+  "hard": false,
+  "gem": 0.105,
+  "ml": 1.737
+ },
+ {
+  "item": "hc_e002_q1_r2",
+  "writer": "e002",
+  "hard": false,
+  "gem": 0.241,
+  "ml": 0.483
+ },
+ {
+  "item": "hc_e002_q1_r3",
+  "writer": "e002",
+  "hard": false,
+  "gem": 0.612,
+  "ml": 0.673
+ },
+ {
+  "item": "hc_e002_q1_r4",
+  "writer": "e002",
+  "hard": false,
+  "gem": 0.0,
+  "ml": 0.621
+ },
+ {
+  "item": "hl_e003_q1_r1__l1",
+  "writer": "e003",
+  "hard": false,
+  "gem": 0.344,
+  "ml": 0.754
+ },
+ {
+  "item": "hl_e003_q1_r2__l2",
+  "writer": "e003",
+  "hard": false,
+  "gem": 0.571,
+  "ml": 0.8
+ },
+ {
+  "item": "hl_e003_q1_r3__l1",
+  "writer": "e003",
+  "hard": false,
+  "gem": 0.519,
+  "ml": 0.714
+ },
+ {
+  "item": "hl_e003_q1_r4__l1",
+  "writer": "e003",
+  "hard": false,
+  "gem": 0.466,
+  "ml": 0.699
+ },
+ {
+  "item": "hl_e004_q1_r1__l1",
+  "writer": "e004",
+  "hard": false,
+  "gem": 0.31,
+  "ml": 0.69
+ },
+ {
+  "item": "hl_e004_q1_r2__l1",
+  "writer": "e004",
+  "hard": false,
+  "gem": 0.057,
+  "ml": 0.657
+ },
+ {
+  "item": "hl_e004_q1_r3__l1",
+  "writer": "e004",
+  "hard": false,
+  "gem": 1.118,
+  "ml": 0.529
+ },
+ {
+  "item": "hl_e004_q1_r3__l2",
+  "writer": "e004",
+  "hard": true,
+  "gem": 0.188,
+  "ml": 0.594
+ },
+ {
+  "item": "hl_e005_q1_r1__l1",
+  "writer": "e005",
+  "hard": false,
+  "gem": 0.023,
+  "ml": 0.581
+ },
+ {
+  "item": "hl_e005_q1_r1__l2",
+  "writer": "e005",
+  "hard": true,
+  "gem": 0.368,
+  "ml": 0.421
+ },
+ {
+  "item": "hl_e005_q1_r2__l1",
+  "writer": "e005",
+  "hard": false,
+  "gem": 0.021,
+  "ml": 0.298
+ },
+ {
+  "item": "hl_e005_q1_r2__l2",
+  "writer": "e005",
+  "hard": true,
+  "gem": 0.637,
+  "ml": 0.575
+ },
+ {
+  "item": "hl_e006_q1_r1__l1",
+  "writer": "e006",
+  "hard": true,
+  "gem": 0.768,
+  "ml": 0.804
+ },
+ {
+  "item": "hl_e006_q1_r2__l1",
+  "writer": "e006",
+  "hard": false,
+  "gem": 0.333,
+  "ml": 0.706
+ },
+ {
+  "item": "hl_e006_q1_r3__l1",
+  "writer": "e006",
+  "hard": false,
+  "gem": 0.0,
+  "ml": 0.229
+ },
+ {
+  "item": "hl_e007_q1_r1__l1",
+  "writer": "e007",
+  "hard": true,
+  "gem": 0.683,
+  "ml": 0.723
+ }
+]
