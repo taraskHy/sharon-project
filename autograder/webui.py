@@ -250,6 +250,18 @@ with tab_courses:
         selected = st.selectbox("Select course", ids) if ids else None
 
     if selected:
+        # Uploads are ingested IMMEDIATELY (idempotent: same bytes -> same
+        # file), so "Build index" always sees what the user just uploaded.
+        uploads = st.file_uploader(
+            "Upload course material (PDF / TXT / MD / DOCX)",
+            accept_multiple_files=True, key=f"course_uploads_{selected}",
+            type=["pdf", "txt", "md", "markdown", "docx"],
+        )
+        for f in uploads or []:
+            res = course_store.add_source(selected, f.name, f.getvalue())
+            if not res["stored"]:
+                st.warning(f"{f.name}: {res['reason']}")
+
         status = course_store.index_status(selected)
         st.markdown(
             f"**Sources:** {status['n_sources']} &nbsp;|&nbsp; "
@@ -265,30 +277,27 @@ with tab_courses:
             if cols[1].button("remove", key=f"rm_{name}"):
                 course_store.remove_source(selected, name)
                 st.rerun()
-        uploads = st.file_uploader(
-            "Upload course material (PDF / TXT / MD / DOCX)",
-            accept_multiple_files=True, key="course_uploads",
-            type=["pdf", "txt", "md", "markdown", "docx"],
-        )
-        if uploads and st.button("Add files"):
-            for f in uploads:
-                res = course_store.add_source(selected, f.name, f.getvalue())
-                (st.success if res["stored"] else st.warning)(
-                    f"{f.name}: {'stored' if res['stored'] else res['reason']}"
-                )
+
         if st.button("Build / rebuild index", type="primary"):
-            with st.spinner("Parsing, chunking and embedding (local Ollama)…"):
-                try:
-                    manifest = course_store.build_index(selected)
-                    st.success(
-                        f"index built: {manifest['n_chunks']} chunks, "
-                        f"dim {manifest['dim']}, model {manifest['embed_model']}"
-                    )
-                except Exception as e:  # noqa: BLE001
-                    st.error(
-                        f"index build failed: {e} — is Ollama running with "
-                        f"the '{course_store.DEFAULT_EMBED_MODEL}' model pulled?"
-                    )
+            if status["n_sources"] == 0:
+                st.error("No course files stored yet — upload material above first.")
+            else:
+                with st.spinner("Parsing, chunking and embedding (local Ollama)…"):
+                    try:
+                        manifest = course_store.build_index(selected)
+                        st.success(
+                            f"index built: {manifest['n_chunks']} chunks, "
+                            f"dim {manifest['dim']}, model {manifest['embed_model']}"
+                        )
+                        st.rerun()
+                    except ValueError as e:
+                        st.error(f"index build failed: {e}")
+                    except Exception as e:  # noqa: BLE001
+                        st.error(
+                            f"embedding failed: {e} — is Ollama running with "
+                            f"the '{course_store.DEFAULT_EMBED_MODEL}' model "
+                            f"pulled? (ollama pull {course_store.DEFAULT_EMBED_MODEL})"
+                        )
 
 
 # --------------------------------------------------------------------------
