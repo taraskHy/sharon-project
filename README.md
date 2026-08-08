@@ -12,6 +12,22 @@ no paid proprietary API**: it runs against any OpenAI-compatible server
 serving an open model). An optional Anthropic backend exists for development
 comparison only.
 
+## Settled architecture (2026-08)
+
+Measured on the frozen Hebrew benchmark (`evaluation/hebrew_bench_v2`,
+129 items, owner-verified + born-digital references):
+
+| Task | Component | Status |
+|---|---|---|
+| Multiple-choice answer grids | **Deterministic CV** (`autograder/tablecrop.py`) + local model for variant symbol only | **Production.** Live: 13/13 variants, 120/120 auto-decided rows correct, 0 silent errors |
+| Printed Hebrew / mixed He-En | Local `qwen3-vl:8b-instruct` (Ollama) | **Production-adequate** (CER 0.066 printed / 0.148 mixed) |
+| Handwritten Hebrew explanations | **Gemini 3 Flash** (optional `GEMINI_API_KEY`) — strongest measured (CER 0.315 vs 0.53-0.68 alternatives); ML Kit Digital Ink + line-split router as the local/offline research arm | **Research-stage — NOT wired into the grading pipeline.** All handwriting reads require human review; see `evaluation/m2_grading/` for the decision-preservation evidence |
+| Handwriting local fallback | ML Kit strike-aware router (`scripts/m2_linesplit_v3.py`, `android/mlkit-ink-runner`) | Experimental; needs an Android runtime; ~0.53 median CER |
+
+The core product a client runs today is the **multiple-choice autograder +
+web UI**, fully local and offline. Handwritten-explanation grading remains
+review-gated by design.
+
 ## Run the local web application
 
 ```powershell
@@ -26,11 +42,12 @@ per-exam JSON/Markdown plus combined CSV/JSON/ZIP reports. Grading runs in
 a detached process, so closing the browser or the app never loses work —
 see [docs/ui.md](docs/ui.md).
 
-## Quick start
+## Quick start (fresh machine)
 
 ```powershell
+python -m venv .venv
 .\.venv\Scripts\python.exe -m pip install -e .[dev]
-.\.venv\Scripts\python.exe -m pytest                 # 64 offline tests, no network/model needed
+.\.venv\Scripts\python.exe -m pytest                 # offline tests, no network/model needed
 
 # with a local open model (see docs/deployment.md):
 ollama pull qwen3-vl:8b-instruct    # NOT bare qwen3-vl:8b — that tag is the thinking

@@ -155,3 +155,24 @@ review flags) and advisory disambiguation text on flagged rows. The
 earlier "no more inference on this laptop" directive was superseded by
 this mission's explicit local-run requirement; timings above are
 CPU-laptop numbers and must not be extrapolated to the strong PC.
+
+## Mission 2 settled + cleanup (2026-08-09)
+
+Decision: **Gemini 3 Flash** is the handwriting-reading candidate
+(frozen-gate CER 0.315, decision-preservation 5/5 with 0 silent changes
+at cell CER<=0.25 — small n) and **ML Kit + strike-aware line-split
+router (v3)** is the local/offline research arm (median 0.531, no
+catastrophic failures, ~100-300 ms/item). Neither is wired into the
+production grading pipeline; handwritten explanations remain
+review-gated. Eliminated with recorded evidence: EasyOCR + PaddleOCR
+(no Hebrew), DeepSeek-OCR-2 (official code CUDA-only), Baidu
+Unlimited-OCR (U-A NONVIABLE smoke), OpenRouter free tier (starved),
+qwen self-consistency + weak-recognizer agreement as uncertainty
+signals. Open: Signal-2 fidelity verifier (runner+analysis frozen,
+never executed — Gemini quota), CER->decision link at scale, human
+per-item grading ground truth.
+
+Cleanup removed 43 dead campaign/arm scripts + 4 test files from HEAD
+(all recoverable from git history), dead local venvs/caches (~10 GB)
+and the wrong-variant Ollama model. Product surface verified after
+cleanup: full offline test suite green; MC autograder + UI untouched.
