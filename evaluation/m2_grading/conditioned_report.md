@@ -90,8 +90,14 @@ confidence score.
    invalid->valid upward flip has been observed in any arm (0 across 81
    transitions), but that also rests on small n.
 
-**Net production reading (cautious)**: better transcription (Gemini) buys
-decision preservation but removes the natural abstention safety net —
-strengthening the earlier conclusion that ANY deployable pipeline needs a
-reference-free confidence/uncertainty signal, because the best transcriber
-is also the most confidently wrong when it is wrong.
+**Net production reading (supported interpretation, not causal)**: Gemini
+produces fewer unintelligible transcriptions, so the current pipeline
+abstains less. This exposes more plausible-but-incorrect OCR outputs to
+the downstream grader. On the currently matched subsets this yields more
+silent grading-decision changes than Qwen/ML Kit, but sample sizes are
+too small for a final provider-level conclusion. No confidence/
+calibration data exists for any arm, so no claim is made about which
+provider is more or less "confident" — the observation concerns the
+pipeline's abstention behavior, not model calibration. The design
+implication stands: a deployable pipeline needs a reference-free
+uncertainty signal to decide between automatic grading and human review.
