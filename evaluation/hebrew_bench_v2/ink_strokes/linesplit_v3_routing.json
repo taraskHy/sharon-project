@@ -1,0 +1,135 @@
+[
+ {
+  "item": "hc_e002_q1_r1",
+  "route": "SUSPICIOUS",
+  "long_crossing": [
+   {
+    "x_extent": 0.256,
+    "straightness": 0.874
+   },
+   {
+    "x_extent": 0.294,
+    "straightness": 0.892
+   },
+   {
+    "x_extent": 0.278,
+    "straightness": 0.833
+   }
+  ],
+  "n_bands": 4
+ },
+ {
+  "item": "hc_e002_q1_r2",
+  "route": "SPLIT",
+  "long_crossing": [],
+  "n_bands": 2
+ },
+ {
+  "item": "hc_e002_q1_r3",
+  "route": "SPLIT",
+  "long_crossing": [],
+  "n_bands": 2
+ },
+ {
+  "item": "hc_e002_q1_r4",
+  "route": "SPLIT",
+  "long_crossing": [],
+  "n_bands": 2
+ },
+ {
+  "item": "hl_e003_q1_r1__l1",
+  "route": "SPLIT",
+  "long_crossing": [],
+  "n_bands": 2
+ },
+ {
+  "item": "hl_e003_q1_r2__l2",
+  "route": "SPLIT",
+  "long_crossing": [],
+  "n_bands": 2
+ },
+ {
+  "item": "hl_e003_q1_r3__l1",
+  "route": "SPLIT",
+  "long_crossing": [],
+  "n_bands": 2
+ },
+ {
+  "item": "hl_e003_q1_r4__l1",
+  "route": "SPLIT",
+  "long_crossing": [],
+  "n_bands": 2
+ },
+ {
+  "item": "hl_e004_q1_r1__l1",
+  "route": "PASSTHROUGH",
+  "long_crossing": [],
+  "n_bands": 1
+ },
+ {
+  "item": "hl_e004_q1_r2__l1",
+  "route": "PASSTHROUGH",
+  "long_crossing": [],
+  "n_bands": 1
+ },
+ {
+  "item": "hl_e004_q1_r3__l1",
+  "route": "PASSTHROUGH",
+  "long_crossing": [],
+  "n_bands": 1
+ },
+ {
+  "item": "hl_e004_q1_r3__l2",
+  "route": "PASSTHROUGH",
+  "long_crossing": [],
+  "n_bands": 1
+ },
+ {
+  "item": "hl_e005_q1_r1__l1",
+  "route": "PASSTHROUGH",
+  "long_crossing": [],
+  "n_bands": 1
+ },
+ {
+  "item": "hl_e005_q1_r1__l2",
+  "route": "PASSTHROUGH",
+  "long_crossing": [],
+  "n_bands": 1
+ },
+ {
+  "item": "hl_e005_q1_r2__l1",
+  "route": "PASSTHROUGH",
+  "long_crossing": [],
+  "n_bands": 1
+ },
+ {
+  "item": "hl_e005_q1_r2__l2",
+  "route": "PASSTHROUGH",
+  "long_crossing": [],
+  "n_bands": 1
+ },
+ {
+  "item": "hl_e006_q1_r1__l1",
+  "route": "SPLIT",
+  "long_crossing": [],
+  "n_bands": 2
+ },
+ {
+  "item": "hl_e006_q1_r2__l1",
+  "route": "SPLIT",
+  "long_crossing": [],
+  "n_bands": 2
+ },
+ {
+  "item": "hl_e006_q1_r3__l1",
+  "route": "PASSTHROUGH",
+  "long_crossing": [],
+  "n_bands": 1
+ },
+ {
+  "item": "hl_e007_q1_r1__l1",
+  "route": "SPLIT",
+  "long_crossing": [],
+  "n_bands": 2
+ }
+]
