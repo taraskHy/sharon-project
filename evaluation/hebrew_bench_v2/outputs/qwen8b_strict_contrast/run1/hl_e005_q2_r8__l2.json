@@ -1,0 +1,10 @@
+{
+ "raw": "{\"transcription\": \"x 10^4 x 50000000000000000000000000000000",
+ "transcription": "{\"transcription\": \"x 10^4 x 50000000000000000000000000000000",
+ "error": null,
+ "status": 200,
+ "item": "hl_e005_q2_r8__l2",
+ "category": "handwritten_line",
+ "run": 1,
+ "latency_s": 193.5
+}

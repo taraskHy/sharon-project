@@ -1,0 +1,10 @@
+{
+ "raw": "{\"transcription\": \"c_{max}-a _{i}^{n} | \\frac{\\text{השכלה}}{\\text{השכלה}} e.g., \\text{השכלה}\"}",
+ "transcription": "c_{max}-a _{i}^{n} | \frac{\text{השכלה}}{\text{השכלה}} e.g., \text{השכלה}",
+ "error": null,
+ "status": 200,
+ "item": "hl_e005_q2_r5__l3",
+ "category": "handwritten_line",
+ "run": 1,
+ "latency_s": 162.11
+}

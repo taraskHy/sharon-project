@@ -1,0 +1,10 @@
+{
+ "config_id": "easyocr_v1",
+ "backend": "easyocr",
+ "model": "qwen3-vl:8b-instruct",
+ "preproc": "none",
+ "runs": 1,
+ "categories": "all",
+ "n_items": 129,
+ "started": "2026-08-07 18:42:07"
+}

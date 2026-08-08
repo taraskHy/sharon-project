@@ -1,0 +1,12 @@
+{
+ "config_id": "gemini3_flash",
+ "backend": "gemini",
+ "model": "gemini-3-flash-preview",
+ "preproc": "none",
+ "max_edge": 0,
+ "min_interval_s": 15.0,
+ "runs": 1,
+ "categories": "all",
+ "n_items": 129,
+ "started": "2026-08-07 20:48:30"
+}

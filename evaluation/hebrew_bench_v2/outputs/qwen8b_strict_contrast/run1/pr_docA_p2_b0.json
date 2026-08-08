@@ -1,0 +1,10 @@
+{
+ "raw": "{\"transcription\": \"שאלה מספר 1 : (32 נקודות)\"}",
+ "transcription": "שאלה מספר 1 : (32 נקודות)",
+ "error": null,
+ "status": 200,
+ "item": "pr_docA_p2_b0",
+ "category": "printed_rtl",
+ "run": 1,
+ "latency_s": 160.51
+}

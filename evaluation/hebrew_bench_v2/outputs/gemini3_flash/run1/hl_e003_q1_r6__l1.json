@@ -1,0 +1,10 @@
+{
+ "raw": "```json\n{\"transcription\": \"הרעש והטשטוש שלו בכיוון ציר ה-y מובלט בתדרים הגבוה",
+ "transcription": "{\"transcription\": \"הרעש והטשטוש שלו בכיוון ציר ה-y מובלט בתדרים הגבוה",
+ "error": null,
+ "status": 200,
+ "item": "hl_e003_q1_r6__l1",
+ "category": "handwritten_line",
+ "run": 1,
+ "latency_s": 6.23
+}

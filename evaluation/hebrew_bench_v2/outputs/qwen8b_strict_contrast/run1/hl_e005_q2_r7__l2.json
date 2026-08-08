@@ -1,0 +1,10 @@
+{
+ "raw": "{\"transcription\": \"gray-levels 0-255, es cuadrado de la imagen\"}",
+ "transcription": "gray-levels 0-255, es cuadrado de la imagen",
+ "error": null,
+ "status": 200,
+ "item": "hl_e005_q2_r7__l2",
+ "category": "handwritten_line",
+ "run": 1,
+ "latency_s": 148.41
+}

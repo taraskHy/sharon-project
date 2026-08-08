@@ -1,0 +1,10 @@
+{
+ "raw": "{\"transcription\": \"נראה שזו תוצאה של אינטראקציה\"}",
+ "transcription": "נראה שזו תוצאה של אינטראקציה",
+ "error": null,
+ "status": 200,
+ "item": "hc_e002_q1_r1",
+ "category": "handwritten_cell",
+ "run": 1,
+ "latency_s": 179.99
+}

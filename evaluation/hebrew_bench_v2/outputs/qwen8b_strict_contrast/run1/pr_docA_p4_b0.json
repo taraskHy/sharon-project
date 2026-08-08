@@ -1,0 +1,10 @@
+{
+ "raw": "{\"transcription\": \"המשך שאלה מספר 1\"}",
+ "transcription": "המשך שאלה מספר 1",
+ "error": null,
+ "status": 200,
+ "item": "pr_docA_p4_b0",
+ "category": "printed_rtl",
+ "run": 1,
+ "latency_s": 139.51
+}

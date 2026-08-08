@@ -1,0 +1,10 @@
+{
+ "raw": "```json\n{\"transcription\": \"ברמה העליונה שכוללת את DC ניתן לראות שערכים בהירים יותר, נ",
+ "transcription": "{\"transcription\": \"ברמה העליונה שכוללת את DC ניתן לראות שערכים בהירים יותר, נ",
+ "error": null,
+ "status": 200,
+ "item": "hl_e003_q1_r8__l1",
+ "category": "handwritten_line",
+ "run": 1,
+ "latency_s": 10.46
+}

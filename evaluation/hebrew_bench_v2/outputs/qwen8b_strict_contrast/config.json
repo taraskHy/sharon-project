@@ -1,0 +1,13 @@
+{
+ "config_id": "qwen8b_strict_contrast",
+ "backend": "qwen_local",
+ "model": "qwen3-vl:8b-instruct",
+ "preproc": "contrast",
+ "max_edge": 1100,
+ "runs": 1,
+ "categories": "all",
+ "n_items": 129,
+ "started": "2026-08-07 20:34:43",
+ "total_wall_s": 23228.1,
+ "calls_made": 110
+}

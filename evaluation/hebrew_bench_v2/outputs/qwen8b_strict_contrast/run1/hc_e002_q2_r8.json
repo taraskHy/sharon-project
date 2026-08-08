@@ -1,0 +1,10 @@
+{
+ "raw": "{\"transcription\": \"נְדָבִי 2x8 אֲפַרְסְטְרֵי 6x9 אֲפַרְסְטְרֵי\"}",
+ "transcription": "נְדָבִי 2x8 אֲפַרְסְטְרֵי 6x9 אֲפַרְסְטְרֵי",
+ "error": null,
+ "status": 200,
+ "item": "hc_e002_q2_r8",
+ "category": "handwritten_cell",
+ "run": 1,
+ "latency_s": 166.56
+}

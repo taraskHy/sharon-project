@@ -1,0 +1,10 @@
+{
+ "raw": "{\"transcription\": \"השאלה היא: איזו ערך של x יש ל- f(x) = 1.5x^2 - 3x + 2, כך ש-f(x) > 0?\"}",
+ "transcription": "השאלה היא: איזו ערך של x יש ל- f(x) = 1.5x^2 - 3x + 2, כך ש-f(x) > 0?",
+ "error": null,
+ "status": 200,
+ "item": "hl_e005_q2_r2__l3",
+ "category": "handwritten_line",
+ "run": 1,
+ "latency_s": 170.91
+}

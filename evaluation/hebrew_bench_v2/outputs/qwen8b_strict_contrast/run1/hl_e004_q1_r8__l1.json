@@ -1,0 +1,10 @@
+{
+ "raw": "{\"transcription\": \"c(x,y) ? ccc y' , g'z}\"}",
+ "transcription": "c(x,y) ? ccc y' , g'z}",
+ "error": null,
+ "status": 200,
+ "item": "hl_e004_q1_r8__l1",
+ "category": "handwritten_line",
+ "run": 1,
+ "latency_s": 144.54
+}

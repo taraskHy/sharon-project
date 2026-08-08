@@ -1,0 +1,10 @@
+{
+ "raw": "{\"transcription\": \"א: 0.401; ב: 0.427; ג: 0.437; ד: 0.475\"}",
+ "transcription": "א: 0.401; ב: 0.427; ג: 0.437; ד: 0.475",
+ "error": null,
+ "status": 200,
+ "item": "assoc_docB_p2_b3",
+ "category": "option_row_association",
+ "run": 1,
+ "latency_s": 2.93
+}

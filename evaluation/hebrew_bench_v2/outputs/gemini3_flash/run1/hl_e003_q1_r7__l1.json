@@ -1,0 +1,10 @@
+{
+ "raw": "```json\n{\"transcription\": \"הרמה העליונה שכוללת את DC\"}\n```",
+ "transcription": "הרמה העליונה שכוללת את DC",
+ "error": null,
+ "status": 200,
+ "item": "hl_e003_q1_r7__l1",
+ "category": "handwritten_line",
+ "run": 1,
+ "latency_s": 54.17
+}

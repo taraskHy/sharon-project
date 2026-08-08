@@ -1,0 +1,10 @@
+{
+ "raw": "{\"transcription\": \"H . אינטגרל של f(x) על [a,b] = ?\"}",
+ "transcription": "H . אינטגרל של f(x) על [a,b] = ?",
+ "error": null,
+ "status": 200,
+ "item": "hl_e006_q1_r4__l1",
+ "category": "handwritten_line",
+ "run": 1,
+ "latency_s": 146.8
+}

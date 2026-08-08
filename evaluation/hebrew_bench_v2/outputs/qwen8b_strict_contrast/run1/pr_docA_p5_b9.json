@@ -1,0 +1,10 @@
+{
+ "raw": "{\"transcription\": \"2. מטשטשים את התמונה בעזרת מסכה גאוסיאנית ואז מפעילים גלאי שפה Canny\"}",
+ "transcription": "2. מטשטשים את התמונה בעזרת מסכה גאוסיאנית ואז מפעילים גלאי שפה Canny",
+ "error": null,
+ "status": 200,
+ "item": "pr_docA_p5_b9",
+ "category": "mixed_he_en",
+ "run": 1,
+ "latency_s": 137.33
+}

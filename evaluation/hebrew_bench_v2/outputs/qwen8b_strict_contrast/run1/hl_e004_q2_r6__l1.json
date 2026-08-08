@@ -1,0 +1,10 @@
+{
+ "raw": "{\"transcription\": \"השאלה היא: מהו הסיכוי ש-2 מתוך 5 אנשים יתפזרו?\"}",
+ "transcription": "השאלה היא: מהו הסיכוי ש-2 מתוך 5 אנשים יתפזרו?",
+ "error": null,
+ "status": 200,
+ "item": "hl_e004_q2_r6__l1",
+ "category": "handwritten_line",
+ "run": 1,
+ "latency_s": 195.7
+}

@@ -1,0 +1,10 @@
+{
+ "raw": "{\"transcription\": \"השאלה נמצאת בחלק הפתוח של המבחן\"}",
+ "transcription": "השאלה נמצאת בחלק הפתוח של המבחן",
+ "error": null,
+ "status": 200,
+ "item": "hc_e002_q1_r2",
+ "category": "handwritten_cell",
+ "run": 1,
+ "latency_s": 177.19
+}

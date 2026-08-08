@@ -1,0 +1,10 @@
+{
+ "raw": "```json\n{\"transcription\": \"טווח הערכים גדול יותר מהטווח בהיסטוגרמה\"}\n```",
+ "transcription": "טווח הערכים גדול יותר מהטווח בהיסטוגרמה",
+ "error": null,
+ "status": 200,
+ "item": "hl_e003_q2_r6__l1",
+ "category": "handwritten_line",
+ "run": 1,
+ "latency_s": 12.04
+}

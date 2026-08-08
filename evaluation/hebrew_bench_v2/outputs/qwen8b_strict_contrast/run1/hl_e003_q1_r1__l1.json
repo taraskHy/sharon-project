@@ -1,0 +1,10 @@
+{
+ "raw": "{\"transcription\": \"המגמה הלאויה (Celsius) היא מידה של טמפרטורה\"}",
+ "transcription": "המגמה הלאויה (Celsius) היא מידה של טמפרטורה",
+ "error": null,
+ "status": 200,
+ "item": "hl_e003_q1_r1__l1",
+ "category": "handwritten_line",
+ "run": 1,
+ "latency_s": 249.06
+}

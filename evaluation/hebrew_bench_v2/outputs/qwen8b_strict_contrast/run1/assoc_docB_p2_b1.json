@@ -1,0 +1,10 @@
+{
+ "raw": "{\"transcription\": \"א: 0.55 (T); ב: 0.51 (ג); ג: 0.47 (ב); ד: 0.39 (N)\"}",
+ "transcription": "א: 0.55 (T); ב: 0.51 (ג); ג: 0.47 (ב); ד: 0.39 (N)",
+ "error": null,
+ "status": 200,
+ "item": "assoc_docB_p2_b1",
+ "category": "option_row_association",
+ "run": 1,
+ "latency_s": 139.79
+}

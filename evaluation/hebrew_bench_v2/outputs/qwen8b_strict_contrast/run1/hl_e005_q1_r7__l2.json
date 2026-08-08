@@ -1,0 +1,10 @@
+{
+ "raw": "{\"transcription\": \"Hence, the curve C is given by f(x,y) = 0.\"}",
+ "transcription": "Hence, the curve C is given by f(x,y) = 0.",
+ "error": null,
+ "status": 200,
+ "item": "hl_e005_q1_r7__l2",
+ "category": "handwritten_line",
+ "run": 1,
+ "latency_s": 156.2
+}

@@ -1,0 +1,10 @@
+{
+ "raw": "{\"transcription\": \"אינטגרל של f(x) = 2x^3 - 4x + 1\"}",
+ "transcription": "אינטגרל של f(x) = 2x^3 - 4x + 1",
+ "error": null,
+ "status": 200,
+ "item": "hl_e006_q2_r7__l2",
+ "category": "handwritten_line",
+ "run": 1,
+ "latency_s": 133.24
+}

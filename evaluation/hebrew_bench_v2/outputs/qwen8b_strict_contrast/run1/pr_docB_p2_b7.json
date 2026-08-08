@@ -1,0 +1,10 @@
+{
+ "raw": "{\"transcription\": \"אף אחד מהנ\\\"ל (ד) 1 (ג) 0.5 (ב) 0.29 (N)\"}",
+ "transcription": "אף אחד מהנ\"ל (ד) 1 (ג) 0.5 (ב) 0.29 (N)",
+ "error": null,
+ "status": 200,
+ "item": "pr_docB_p2_b7",
+ "category": "formula_printed",
+ "run": 1,
+ "latency_s": 137.79
+}

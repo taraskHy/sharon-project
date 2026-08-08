@@ -1,0 +1,10 @@
+{
+ "raw": "{\"transcription\": \"c) 50% of the students are female, Quantization\"}",
+ "transcription": "c) 50% of the students are female, Quantization",
+ "error": null,
+ "status": 200,
+ "item": "hl_e004_q2_r4__l2",
+ "category": "handwritten_line",
+ "run": 1,
+ "latency_s": 128.91
+}

@@ -1,0 +1,10 @@
+{
+ "raw": "```json\n{\"transcription\": \"כל השפות שנקלטו קיבלו ערך 255 לעומת שאר הפי",
+ "transcription": "{\"transcription\": \"כל השפות שנקלטו קיבלו ערך 255 לעומת שאר הפי",
+ "error": null,
+ "status": 200,
+ "item": "hl_e003_q2_r1__l1",
+ "category": "handwritten_line",
+ "run": 1,
+ "latency_s": 38.33
+}

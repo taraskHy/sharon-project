@@ -1,0 +1,10 @@
+{
+ "raw": "{\"transcription\": \"Canny edge detection using Canny algorithm, σ = 1.2, θ = 0.5, and Canny threshold values are 1 and 3.\"}",
+ "transcription": "Canny edge detection using Canny algorithm, σ = 1.2, θ = 0.5, and Canny threshold values are 1 and 3.",
+ "error": null,
+ "status": 200,
+ "item": "hl_e006_q2_r1__l1",
+ "category": "handwritten_line",
+ "run": 1,
+ "latency_s": 135.78
+}

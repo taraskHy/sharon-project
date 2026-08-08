@@ -1,0 +1,10 @@
+{
+ "raw": "{\"transcription\": \"0.81 0.91 0.72 0.65, 0.34, 0.21, 0.15, 0.08\"}",
+ "transcription": "0.81 0.91 0.72 0.65, 0.34, 0.21, 0.15, 0.08",
+ "error": null,
+ "status": 200,
+ "item": "hl_e005_q1_r8__l2",
+ "category": "handwritten_line",
+ "run": 1,
+ "latency_s": 154.11
+}

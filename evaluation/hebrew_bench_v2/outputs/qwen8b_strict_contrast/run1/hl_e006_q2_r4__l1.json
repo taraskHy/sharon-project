@@ -1,0 +1,10 @@
+{
+ "raw": "{\"transcription\": \"ב-Quantization\\nUniform 0,5 -4,5\\nx→I D→K\"}",
+ "transcription": "ב-Quantization\nUniform 0,5 -4,5\nx→I D→K",
+ "error": null,
+ "status": 200,
+ "item": "hl_e006_q2_r4__l1",
+ "category": "handwritten_line",
+ "run": 1,
+ "latency_s": 141.38
+}

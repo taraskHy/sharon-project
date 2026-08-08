@@ -1,0 +1,10 @@
+{
+ "raw": "{\"transcription\": \"סמסטר א' מועד א' תשפ\" }",
+ "transcription": "סמסטר א' מועד א' תשפ",
+ "error": null,
+ "status": 200,
+ "item": "pr_docA_p1_b1",
+ "category": "formula_printed",
+ "run": 1,
+ "latency_s": 169.63
+}

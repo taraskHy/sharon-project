@@ -1,0 +1,10 @@
+{
+ "raw": "",
+ "transcription": null,
+ "error": "KeyError: 'choices' | body={'error': {'message': 'an error was encountered while running the model: read tcp 127.0.0.1:65079->127.0.0.1:60916: wsarecv: An existing connection was forcibly closed by the remote host.', 'type': 'api_error', 'param': None, 'code': None}}",
+ "status": 500,
+ "item": "hl_e003_q1_r2__l2",
+ "category": "handwritten_line",
+ "run": 1,
+ "latency_s": 90.71
+}

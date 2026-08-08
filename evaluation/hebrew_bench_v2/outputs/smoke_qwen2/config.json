@@ -1,0 +1,13 @@
+{
+ "config_id": "smoke_qwen2",
+ "backend": "qwen_local",
+ "model": "qwen3-vl:8b-instruct",
+ "preproc": "contrast",
+ "max_edge": 1100,
+ "runs": 1,
+ "categories": "all",
+ "n_items": 2,
+ "started": "2026-08-07 18:44:07",
+ "total_wall_s": 202.5,
+ "calls_made": 2
+}

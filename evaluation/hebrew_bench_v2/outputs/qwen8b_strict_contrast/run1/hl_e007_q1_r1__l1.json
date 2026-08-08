@@ -1,0 +1,10 @@
+{
+ "raw": "{\"transcription\": \"השאלה היא האם יש פתרון לבעיה זו? לא, אין פתרון.\"}",
+ "transcription": "השאלה היא האם יש פתרון לבעיה זו? לא, אין פתרון.",
+ "error": null,
+ "status": 200,
+ "item": "hl_e007_q1_r1__l1",
+ "category": "handwritten_line",
+ "run": 1,
+ "latency_s": 159.38
+}

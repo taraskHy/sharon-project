@@ -1,0 +1,10 @@
+{
+ "raw": "{\"transcription\": \"א: 3/5 (ת); ב: 1/2 (א); ג: 1/3 (ב); ד: 1/6 (נ)\"}",
+ "transcription": "א: 3/5 (ת); ב: 1/2 (א); ג: 1/3 (ב); ד: 1/6 (נ)",
+ "error": null,
+ "status": 200,
+ "item": "assoc_docB_p2_b5",
+ "category": "option_row_association",
+ "run": 1,
+ "latency_s": 133.61
+}

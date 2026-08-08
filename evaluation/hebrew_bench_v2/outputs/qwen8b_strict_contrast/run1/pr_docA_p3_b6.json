@@ -1,0 +1,10 @@
+{
+ "raw": "{\"transcription\": \"A/H/B - I_new(x, y) = I(x, y) + 100 .7 הגברת בהירות\"}",
+ "transcription": "A/H/B - I_new(x, y) = I(x, y) + 100 .7 הגברת בהירות",
+ "error": null,
+ "status": 200,
+ "item": "pr_docA_p3_b6",
+ "category": "formula_printed",
+ "run": 1,
+ "latency_s": 137.89
+}
