@@ -1,12 +1,16 @@
 """qwen_rag_ocr_v1 — EXPERIMENTAL course-RAG OCR-repair arm.
 
-Per item:  frozen raw Qwen OCR  +  printed question text
+Per item:  frozen raw Qwen OCR  (+ optional printed-question text from an
+           operator-supplied ANSWER-FREE file, --question-context)
            -> retrieve top_k course-summary chunks (course index)
            -> local repair model (text-only) with a fidelity-first prompt
            -> suggested transcription + structured edit evidence.
 
 The repair stage NEVER sees: answer key, rubric, reference transcription,
-grader decisions, benchmark labels. raw_text is preserved byte-for-byte;
+grader decisions, benchmark labels. Question text FAILS CLOSED: without an
+explicit --question-context file none is used — the solved booklet
+(sample_data/Exam_solution.pdf) is never read by this arm, and paths under
+sample_data/ are refused. raw_text is preserved byte-for-byte;
 suggested_text never overwrites it. Semantic-risk changes are flagged for
 review, not auto-accepted. Production grading is untouched.
 
@@ -19,7 +23,6 @@ from __future__ import annotations
 
 import argparse
 import hashlib
-import importlib.util
 import json
 import sys
 import time
@@ -37,9 +40,30 @@ OUTDIR = BENCH / "outputs" / "qwen_rag_ocr_v1"
 sys.path.insert(0, str(REPO))
 from autograder import courses  # noqa: E402
 
-spec = importlib.util.spec_from_file_location("mge", REPO / "scripts" / "m2_grading_eval.py")
-mge = importlib.util.module_from_spec(spec)
-spec.loader.exec_module(mge)
+
+def load_question_context(path: str | None) -> dict:
+    """Operator-supplied answer-free question text: {question_id: text}.
+
+    FAIL-CLOSED default: with no file, the repair stage gets no printed
+    question text at all. The solved booklet and anything else under
+    sample_data/ (solutions, keys, overrides) are refused outright — an
+    answer-free source must be curated by the operator, not sliced out of
+    a solved document."""
+    if not path:
+        return {}
+    p = Path(path).resolve()
+    if (REPO / "sample_data").resolve() in p.parents:
+        sys.exit("--question-context must not point into sample_data/ "
+                 "(solved/graded artifacts are not an answer-free source)")
+    if p.suffix.lower() != ".json":
+        sys.exit("--question-context must be a curated .json file mapping "
+                 "question ids to plain question text")
+    data = json.loads(p.read_text(encoding="utf-8"))
+    if not isinstance(data, dict) or not all(
+        isinstance(k, str) and isinstance(v, str) for k, v in data.items()
+    ):
+        sys.exit("--question-context must be a JSON object {question_id: text}")
+    return data
 
 REPAIR_SYSTEM = (
     "You are repairing OCR from a handwritten student exam.\n"
@@ -90,8 +114,9 @@ def build_repair_prompt(question_text: str, raw_ocr: str, chunks: list[dict]) ->
         + f"]\n{c['text']}"
         for c in chunks
     ) or "(no relevant course passages retrieved)"
+    q = question_text.strip() or "(not provided — no answer-free question source configured)"
     return (
-        f"Printed exam question (context):\n{question_text}\n\n"
+        f"Printed exam question (context):\n{q}\n\n"
         f"Course passages (terminology context only):\n{ctx}\n\n"
         f"RAW OCR of the student's handwritten answer:\n---\n{raw_ocr}\n---\n"
         "Repair ONLY plausible OCR corruptions. Reply with the JSON object."
@@ -116,10 +141,16 @@ def assemble_record(item: str, raw_text: str, rep: dict | None,
     """Pure record assembly. Guarantees: raw_text preserved byte-for-byte;
     on repair failure/absence suggested_text degrades to raw_text; semantic
     risk or uncertain regions force needs_review."""
+    suggested = (rep or {}).get("suggested_text") or raw_text
     return {
         "item": item,
         "raw_text": raw_text,  # NEVER overwritten
-        "suggested_text": (rep or {}).get("suggested_text") or raw_text,
+        "suggested_text": suggested,
+        # Provider contract: every arm's run1/<item>.json exposes the text it
+        # proposes as "transcription" — the field the frozen bench/grading
+        # evaluators score. For this arm that is the repaired text; raw_text
+        # stays available for paired raw-vs-suggested analysis.
+        "transcription": suggested,
         "edits": (rep or {}).get("edits", []),
         "uncertain_regions": (rep or {}).get("uncertain_regions", []),
         "semantic_change_risk": bool((rep or {}).get("semantic_change_risk")),
@@ -162,6 +193,10 @@ def main() -> int:
     ap.add_argument("--embed-base-url", default="http://localhost:11434")
     ap.add_argument("--embed-model", default=courses.DEFAULT_EMBED_MODEL)
     ap.add_argument("--items", default="", help="comma list to restrict")
+    ap.add_argument("--question-context", default=None,
+                    help="optional operator-curated ANSWER-FREE JSON file "
+                         "{question_id: printed question text}; omitted = "
+                         "no question text (fail closed)")
     args = ap.parse_args()
 
     status = courses.index_status(args.course)
@@ -172,7 +207,7 @@ def main() -> int:
 
     run_dir = OUTDIR / "run1"
     run_dir.mkdir(parents=True, exist_ok=True)
-    ctx = mge.question_context()
+    ctx = load_question_context(args.question_context)
     embed_fn = courses.ollama_embed_fn(args.embed_model, args.embed_base_url)
 
     config = {
@@ -181,6 +216,11 @@ def main() -> int:
         "source_config": args.source_config, "top_k": args.top_k,
         "repair_model": args.repair_model,
         "embed_model": args.embed_model,
+        "question_context_file": args.question_context or None,
+        "question_context_sha256": (
+            hashlib.sha256(Path(args.question_context).read_bytes()).hexdigest()[:16]
+            if args.question_context else None
+        ),
         "prompt_sha256": hashlib.sha256((REPAIR_SYSTEM + json.dumps(REPAIR_SCHEMA, sort_keys=True)).encode()).hexdigest()[:16],
         "decoding": {"temperature": 0, "max_tokens": 1200},
         "started": time.strftime("%Y-%m-%d %H:%M:%S"),
@@ -198,7 +238,7 @@ def main() -> int:
             continue
         qid = t["item"].split("_")[2].replace("q", "") if "_q" in t["item"] else "1"
         question_text = ctx.get(qid, "")[:900]
-        query = f"{question_text}\n{t['raw_text']}"
+        query = "\n".join(x for x in (question_text, t["raw_text"]) if x)
         t0 = time.monotonic()
         chunks = courses.retrieve(args.course, query, args.top_k, embed_fn)
         retrieval_s = round(time.monotonic() - t0, 2)

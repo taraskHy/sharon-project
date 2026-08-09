@@ -17,7 +17,9 @@ Layout (root configurable via GRADER_COURSES_DIR, default ./courses):
                                 n_chunks, build timestamp, config hash
 
 Safety: files whose names look like answer keys / rubrics are REFUSED at
-ingestion (recorded in the manifest) — the grading key must never leak
+ingestion, and extracted CONTENT is screened with conservative answer-key/
+rubric indicators — suspicious files are refused unless the operator
+explicitly overrides after verifying them. The grading key must never leak
 into OCR-repair retrieval. Embeddings default to a local Ollama model
 (multilingual bge-m3); an ``embed_fn`` can be injected for tests.
 
@@ -43,7 +45,24 @@ from xml.etree import ElementTree
 import numpy as np
 
 SUPPORTED_SUFFIXES = {".pdf", ".txt", ".md", ".markdown", ".docx"}
-KEY_LIKE = re.compile(r"answer[_\s-]*key|rubric|solution|מחוון|פתרון", re.IGNORECASE)
+# Filename gate (fast, obvious aliases). English tokens are bounded by
+# non-letters so "keynote"/"monkey" stay allowed while "key_2024" or
+# "grading_notes" are caught; Hebrew is matched as substrings.
+KEY_LIKE = re.compile(
+    r"answer[_\s-]*key|rubric|solution"
+    r"|(?<![a-z])(?:references?|grading|grades?|answers?|keys?)(?![a-z])"
+    r"|מחוון|פתרון|תשובות|מפתח|ציונים",
+    re.IGNORECASE,
+)
+# Content gate (conservative — STRONG indicators only, so ordinary lecture
+# notes never trip it): explicit key/rubric marker phrases, or a dense
+# numbered option-letter list ("3. ב" style) typical of MC answer keys.
+_CONTENT_MARKERS = re.compile(
+    r"answer\s+key|grading\s+rubric|\brubric\b|מחוון|מפתח\s+תשובות"
+    r"|פתרון\s+(?:מלא|רשמי)|טבלת\s+תשובות",
+    re.IGNORECASE,
+)
+_ANSWER_LINE = re.compile(r"^\s*\d{1,3}\s*[.)\-:]?\s*[א-דA-Da-d]\s*$", re.MULTILINE)
 
 DEFAULT_EMBED_MODEL = "bge-m3"
 DEFAULT_CHUNK_CONFIG = {
@@ -94,8 +113,28 @@ def list_courses() -> list[dict]:
 # --------------------------------------------------------------------------
 
 
-def add_source(course_id: str, filename: str, data: bytes) -> dict:
-    """Store one uploaded file. Key/rubric-like names are refused."""
+def content_suspicion(blocks: list[dict]) -> str | None:
+    """Conservative screen of EXTRACTED text for answer-key/rubric material.
+
+    Only strong indicators fire (marker phrases twice, or a dense numbered
+    option-letter list) — normal lecture notes must never trip this."""
+    text = "\n".join(b["text"] for b in blocks)
+    markers = _CONTENT_MARKERS.findall(text)
+    if len(markers) >= 2:
+        return (f"content carries answer-key/rubric markers "
+                f"({len(markers)}x, e.g. {markers[0]!r})")
+    pairs = _ANSWER_LINE.findall(text)
+    if len(pairs) >= 6:
+        return (f"content contains a dense numbered answer-letter list "
+                f"({len(pairs)} lines shaped like '<n>. <letter>')")
+    return None
+
+
+def add_source(course_id: str, filename: str, data: bytes,
+               allow_suspicious: bool = False) -> dict:
+    """Store one uploaded file. Key/rubric-like NAMES are refused outright;
+    suspicious CONTENT is refused unless the operator explicitly overrides
+    (``allow_suspicious=True``) after verifying the file."""
     d = create_course(course_id)
     if Path(filename).suffix.lower() not in SUPPORTED_SUFFIXES:
         return {"stored": False, "filename": filename,
@@ -105,9 +144,25 @@ def add_source(course_id: str, filename: str, data: bytes) -> dict:
                 "reason": "looks like an answer key / rubric — grading keys "
                           "must not enter the course-material corpus"}
     safe = re.sub(r"[^\w֐-׿.\- ]", "_", Path(filename).name)
-    (d / "sources" / safe).write_bytes(data)
-    return {"stored": True, "filename": safe,
-            "sha256": hashlib.sha256(data).hexdigest()}
+    target = d / "sources" / safe
+    sha = hashlib.sha256(data).hexdigest()
+    if target.exists() and hashlib.sha256(target.read_bytes()).hexdigest() == sha:
+        return {"stored": True, "filename": safe, "sha256": sha}
+    target.write_bytes(data)
+    try:
+        reason = content_suspicion(parse_source(target)["blocks"])
+    except Exception:  # noqa: BLE001 — unparseable files surface at build time
+        reason = None
+    if reason and not allow_suspicious:
+        target.unlink()
+        return {"stored": False, "filename": filename, "suspicious": True,
+                "reason": f"{reason} — refused; verify the file and use the "
+                          "operator override only if it is genuinely course "
+                          "material"}
+    out = {"stored": True, "filename": safe, "sha256": sha}
+    if reason:
+        out["suspicious_override"] = reason
+    return out
 
 
 def remove_source(course_id: str, filename: str) -> bool:

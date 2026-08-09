@@ -230,8 +230,10 @@ with tab_courses:
 
     st.caption(
         "Course summaries power the experimental OCR-repair arm only. "
-        "Never upload answer keys or rubrics here — key-like filenames "
-        "are refused automatically."
+        "Never upload answer keys or rubrics here — key-like filenames are "
+        "refused automatically, and extracted content is screened for "
+        "answer-key/rubric indicators (flagged files are refused unless you "
+        "explicitly override below)."
     )
     existing = course_store.list_courses()
     col_a, col_b = st.columns([2, 3])
@@ -257,10 +259,21 @@ with tab_courses:
             accept_multiple_files=True, key=f"course_uploads_{selected}",
             type=["pdf", "txt", "md", "markdown", "docx"],
         )
+        allow_flagged = st.toggle(
+            "Operator override — ingest files flagged by the content screen "
+            "(I verified they contain no answer key / rubric / solutions)",
+            value=False, key=f"course_allow_flagged_{selected}",
+        )
         for f in uploads or []:
-            res = course_store.add_source(selected, f.name, f.getvalue())
+            res = course_store.add_source(selected, f.name, f.getvalue(),
+                                          allow_suspicious=allow_flagged)
             if not res["stored"]:
-                st.warning(f"{f.name}: {res['reason']}")
+                (st.error if res.get("suspicious") else st.warning)(
+                    f"{f.name}: {res['reason']}"
+                )
+            elif res.get("suspicious_override"):
+                st.warning(f"{f.name}: ingested via operator override — "
+                           f"{res['suspicious_override']}")
 
         status = course_store.index_status(selected)
         st.markdown(

@@ -157,3 +157,87 @@ def test_semantic_risk_flags_review_and_metadata_persisted():
                                  "page": 3, "similarity": 0.77}]
     rep2 = {"suggested_text": "x", "edits": [], "semantic_change_risk": True}
     assert rag.assemble_record("it4", "raw", rep2, [])["needs_review"] is True
+
+
+def test_rag_arm_scored_from_suggested_text():
+    """Evaluator contract: the arm's record exposes the repaired text as
+    "transcription" (the field m2_bench_eval/m2_grading_eval score) while
+    raw_text stays byte-for-byte and every audit field survives."""
+    raw = "טקסט גולמי עם שגיאת OCR"
+    rep = {"suggested_text": "טקסט גולמי עם שגיאה", "edits": [
+        {"raw": "שגיאת OCR", "suggested": "שגיאה", "reason": "r",
+         "risk": "low", "supporting_chunk_ids": ["c1"]}],
+        "semantic_change_risk": False}
+    chunks = [{"chunk_id": "c1", "text": "t", "source": "s.md", "page": None,
+               "similarity": 0.5}]
+    rec = rag.assemble_record("it5", raw, rep, chunks)
+    assert rec["transcription"] == rec["suggested_text"] == rep["suggested_text"]
+    assert rec["raw_text"] == raw  # never overwritten by the adapter
+    assert rec["edits"] and rec["retrieved"][0]["chunk_id"] == "c1"
+    assert rec["semantic_change_risk"] is False
+    # repair failure: scored text degrades to raw, never invents
+    rec2 = rag.assemble_record("it6", raw, None, [], err="down")
+    assert rec2["transcription"] == rec2["suggested_text"] == raw
+
+
+def test_question_context_fails_closed(tmp_path):
+    """No file -> no question text; sample_data/ paths and non-JSON refused;
+    a curated operator file loads."""
+    assert rag.load_question_context(None) == {}
+    with pytest.raises(SystemExit):
+        rag.load_question_context(
+            str(rag.REPO / "sample_data" / "anything.json"))
+    with pytest.raises(SystemExit):
+        rag.load_question_context(str(tmp_path / "questions.txt"))
+    good = tmp_path / "questions.json"
+    good.write_text(json.dumps({"1": "נוסח שאלה נקי"}, ensure_ascii=False),
+                    encoding="utf-8")
+    assert rag.load_question_context(str(good)) == {"1": "נוסח שאלה נקי"}
+
+
+def test_no_solved_booklet_in_rag_source():
+    """Invariant: the RAG arm has NO code path into the solved booklet or
+    the grading-eval module it used to slice question text from."""
+    src = (Path(__file__).resolve().parents[1] / "scripts" / "m2_rag_ocr.py")
+    text = src.read_text(encoding="utf-8")
+    assert "m2_grading_eval" not in text
+    assert "question_context()" not in text
+    assert text.count("Exam_solution") == 1  # docstring warning only
+    assert "fail" in text.lower() and "sample_data" in text
+
+
+def test_prompt_without_question_context_fails_closed():
+    prompt = rag.build_repair_prompt("", "טקסט OCR", [])
+    assert "(not provided" in prompt
+    assert "טקסט OCR" in prompt
+
+
+def test_filename_alias_hardening(course):
+    for bad in ("key.pdf", "answers.docx", "תשובות.pdf", "מפתח.md",
+                "grades.txt", "references.txt", "grading_notes.md"):
+        res = courses.add_source(course, bad, "טקסט כלשהו".encode())
+        assert not res["stored"], bad
+    # word-bounded English: legitimate lecture names still pass
+    for ok in ("keynote_lecture.md", "monkey_vision_notes.txt"):
+        res = courses.add_source(course, ok, "סיכום הרצאה על ראייה".encode())
+        assert res["stored"], ok
+
+
+def test_content_screen_rejects_and_operator_override(course):
+    # dense numbered option-letter list = classic MC answer key
+    key_like = "\n".join(f"{i}. א" for i in range(1, 9))
+    res = courses.add_source(course, "sikum_last_lecture.txt",
+                             key_like.encode())
+    assert res["stored"] is False and res.get("suspicious") is True
+    assert not (courses.course_dir(course) / "sources"
+                / "sikum_last_lecture.txt").exists()
+    # marker phrases fire too, even with a harmless filename
+    marked = "פרק ראשון\nמחוון בדיקה לשאלה 1\nמחוון בדיקה לשאלה 2".encode()
+    assert courses.add_source(course, "notes2.txt", marked)["stored"] is False
+    # a short exercise list in real notes must NOT trip the screen
+    benign = "תרגול:\n1. א\n2. ב\n3. ג\nהסבר מפורט על כל סעיף".encode()
+    assert courses.add_source(course, "targul.txt", benign)["stored"] is True
+    # explicit operator override ingests, with the reason recorded
+    res2 = courses.add_source(course, "sikum_last_lecture.txt",
+                              key_like.encode(), allow_suspicious=True)
+    assert res2["stored"] is True and res2.get("suspicious_override")
