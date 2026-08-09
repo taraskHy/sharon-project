@@ -350,9 +350,15 @@ with tab_new:
     )
 
     if st.button("Create job", type="primary", disabled=key_path is None or not exams_upload):
+        # Package mode never routes uploads through _stage_dir, so the
+        # session staging dir may not exist yet.
+        staging = Path(st.session_state.setdefault(
+            "staging_dir",
+            str(jobs.jobs_root() / f"_staging-{datetime.now():%Y%m%d-%H%M%S}"),
+        ))
         staged_exams = []
         for uploaded in exams_upload:
-            p = Path(st.session_state["staging_dir"]) / "exams_in" / uploaded.name
+            p = staging / "exams_in" / uploaded.name
             p.parent.mkdir(parents=True, exist_ok=True)
             p.write_bytes(uploaded.getvalue())
             staged_exams.append(p)

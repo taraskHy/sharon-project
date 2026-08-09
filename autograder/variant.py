@@ -96,7 +96,7 @@ def config_fingerprint(cfg: dict) -> str:
 # Bump when the deterministic resolution logic changes: it enters the
 # prompt-version hash so stage fingerprints invalidate (a resolver change
 # can change the effective variant of past runs).
-RESOLVER_VERSION = "marker-resolver-v2-description-fallback"
+RESOLVER_VERSION = "marker-resolver-v3-discriminative-tokens"
 
 
 def _norm_tokens(text: str) -> set[str]:
@@ -114,9 +114,11 @@ def resolve_marker_name(name: str | None, cfg: dict, seen: str = "") -> str | No
     symbol', matched_marker null — scan 24). Resolution order, all
     deterministic:
     1. exact canonical id; 2. declared alias; 3. the reported text names
-    exactly ONE canonical id or alias as a word; 4. unique description
-    match — the reported text must cover ≥80 % of exactly ONE catalogue
-    description's tokens. Ambiguity always resolves to nothing."""
+    exactly ONE marker by a token unique to that marker's id/aliases —
+    tokens shared between several markers (e.g. every suit alias containing
+    the word "suit") carry no identity; 4. unique description match — the
+    reported text must cover ≥80 % of exactly ONE catalogue description's
+    tokens. Ambiguity always resolves to nothing."""
     if name in cfg["markers"]:
         return name
     for canonical, entry in cfg["markers"].items():
@@ -125,13 +127,21 @@ def resolve_marker_name(name: str | None, cfg: dict, seen: str = "") -> str | No
     reported = _norm_tokens(f"{name or ''} {seen}")
     reported_sing = {t.rstrip("s") for t in reported}
     if reported:
-        named = []
+        pools: dict[str, set[str]] = {}
         for canonical, entry in cfg["markers"].items():
             words = _norm_tokens(canonical)
             for alias in entry.get("aliases", []):
                 words |= _norm_tokens(alias)
-            if {w.rstrip("s") for w in words} & reported_sing:
-                named.append(canonical)
+            pools[canonical] = {w.rstrip("s") for w in words}
+        # Tokens present in several markers' ids/aliases carry no identity
+        # (observed live, scan 13: "like the card suit ..." named all four
+        # suits at once via the shared alias word "suit").
+        shared = {
+            t
+            for t in set().union(*pools.values())
+            if sum(t in pool for pool in pools.values()) > 1
+        }
+        named = [c for c, pool in pools.items() if (pool - shared) & reported_sing]
         if len(set(named)) == 1:
             return named[0]
         matches = []

@@ -171,6 +171,21 @@ def test_own_words_sighting_naming_one_marker_resolves():
     )
 
 
+def test_description_echo_with_shared_alias_token_resolves():
+    """Observed live (scan 13): marker_seen echoed the spade description —
+    'a spade symbol (like the card suit ♠, a pointed leaf shape with a
+    stem)' — with matched_marker null. Every suit's aliases contain the
+    shared word 'suit', which used to name all four markers at once and
+    void the match; shared tokens carry no identity, so 'spade' decides."""
+    from autograder.variant import resolve_marker_name
+
+    prob_cfg = load_variant_config("prob_data/sol.answer_key.json")
+    seen = "a spade symbol (like the card suit ♠, a pointed leaf shape with a stem)"
+    assert resolve_marker_name(None, prob_cfg, seen=seen) == "spade"
+    # Text carrying ONLY shared tokens still resolves to nothing.
+    assert resolve_marker_name(None, prob_cfg, seen="a card suit symbol") is None
+
+
 def test_alias_names_resolve_to_canonical_ids():
     """The model may echo a human-readable alias; the decision resolves it
     to the canonical variant_symbol_* id and records both."""
