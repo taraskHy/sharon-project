@@ -1,0 +1,191 @@
+[
+ {
+  "item": "hc_e002_q1_r1",
+  "cat": "strike-through+cancelled-line",
+  "auto": 1.737,
+  "oracle": 0.579,
+  "delta": 1.158,
+  "strokes_auto": 254,
+  "strokes_oracle": 33,
+  "bands": [
+   33
+  ],
+  "hyp": "את שטשטוש בריטי הנהרות,"
+ },
+ {
+  "item": "hl_e006_q1_r1__l1",
+  "cat": "merged-lines+scribble",
+  "auto": 0.804,
+  "oracle": 0.732,
+  "delta": 0.072,
+  "strokes_auto": 136,
+  "strokes_oracle": 125,
+  "bands": [
+   74,
+   51
+  ],
+  "hyp": "נתאות בהספסופה האזנה בהתפנה בכבד את המזרקת הניס הונבל הכיווני הזכות"
+ },
+ {
+  "item": "hl_e007_q1_r1__l1",
+  "cat": "merged-lines",
+  "auto": 0.723,
+  "oracle": 0.337,
+  "delta": 0.386,
+  "strokes_auto": 119,
+  "strokes_oracle": 123,
+  "bands": [
+   55,
+   68
+  ],
+  "hyp": "נית לראות כי בבית אל הגב הפלא גומרים שנה את הצאה סבור התמונה ניתמראות את הגג שלו מנוחה,"
+ },
+ {
+  "item": "hl_e003_q1_r1__l1",
+  "cat": "merged-lines",
+  "auto": 0.754,
+  "oracle": 0.377,
+  "delta": 0.377,
+  "strokes_auto": 126,
+  "strokes_oracle": 129,
+  "bands": [
+   70,
+   59
+  ],
+  "hyp": "ניתן לראות הרמת התבהרות מצאתי שישית ביוון התנועה ההיא אשל"
+ },
+ {
+  "item": "hl_e003_q1_r2__l2",
+  "cat": "merged-lines+scribble+bleed",
+  "auto": 0.8,
+  "oracle": 0.571,
+  "delta": 0.229,
+  "strokes_auto": 191,
+  "strokes_oracle": 161,
+  "bands": [
+   73,
+   88
+  ],
+  "hyp": "ריקי ההרים הגבוהים נשמה בו שם בכך ממש ממש ציני אוהל"
+ },
+ {
+  "item": "hl_e003_q1_r3__l1",
+  "cat": "merged-lines+bleed",
+  "auto": 0.714,
+  "oracle": 0.403,
+  "delta": 0.311,
+  "strokes_auto": 146,
+  "strokes_oracle": 119,
+  "bands": [
+   64,
+   55
+  ],
+  "hyp": "בוגרות הנה הגבוהים אחרי הפניה קורה הרמת הנכות הראתה אבות יותר"
+ },
+ {
+  "item": "hl_e003_q1_r4__l1",
+  "cat": "merged-lines",
+  "auto": 0.699,
+  "oracle": 0.37,
+  "delta": 0.329,
+  "strokes_auto": 104,
+  "strokes_oracle": 117,
+  "bands": [
+   53,
+   64
+  ],
+  "hyp": "ניתן לראות נורה תהריים נמוכים, המשחק כמו בית של הנהגים הגבוהים באופ"
+ },
+ {
+  "item": "hl_e006_q1_r2__l1",
+  "cat": "merged-lines+scribble",
+  "auto": 0.706,
+  "oracle": 0.608,
+  "delta": 0.098,
+  "strokes_auto": 73,
+  "strokes_oracle": 68,
+  "bands": [
+   50,
+   18
+  ],
+  "hyp": "בהפלת אם את זאת תפרים גם ליאונים עם"
+ },
+ {
+  "item": "hl_e005_q1_r2__l2",
+  "cat": "annotation-junk",
+  "auto": 0.575,
+  "oracle": 0.588,
+  "delta": -0.013,
+  "strokes_auto": 88,
+  "strokes_oracle": 87,
+  "bands": [
+   87
+  ],
+  "hyp": "וגם בן נגיע זה הפעלת מוצקה או שתה כפי הנדר תצוגה אקורדים ודחקי"
+ },
+ {
+  "item": "hl_e005_q1_r1__l2",
+  "cat": "annotation-junk",
+  "auto": 0.421,
+  "oracle": 0.421,
+  "delta": -0.0,
+  "strokes_auto": 58,
+  "strokes_oracle": 59,
+  "bands": [
+   59
+  ],
+  "hyp": "ני בא ברורות העל אמנות להינות מהן לא בזרע (א) בנ"
+ },
+ {
+  "item": "hl_e004_q1_r1__l1",
+  "cat": "control",
+  "auto": 0.69,
+  "oracle": 0.69,
+  "delta": 0.0,
+  "strokes_auto": 53,
+  "strokes_oracle": 53,
+  "bands": [
+   53
+  ],
+  "hyp": "הזה אמר במה מהעברת של מחלקות"
+ },
+ {
+  "item": "hl_e004_q1_r3__l1",
+  "cat": "control",
+  "auto": 0.529,
+  "oracle": 0.529,
+  "delta": -0.0,
+  "strokes_auto": 51,
+  "strokes_oracle": 51,
+  "bands": [
+   51
+  ],
+  "hyp": "הממדינה מוסדות יותר היא מצב 5 הבאות"
+ },
+ {
+  "item": "hl_e005_q1_r2__l1",
+  "cat": "control",
+  "auto": 0.298,
+  "oracle": 0.298,
+  "delta": 0.0,
+  "strokes_auto": 61,
+  "strokes_oracle": 61,
+  "bands": [
+   61
+  ],
+  "hyp": "בתמונה מהישג גבות את התמונה אז המקורית בתדר בנוה"
+ },
+ {
+  "item": "hl_e006_q1_r3__l1",
+  "cat": "control",
+  "auto": 0.229,
+  "oracle": 0.229,
+  "delta": 0.0,
+  "strokes_auto": 38,
+  "strokes_oracle": 38,
+  "bands": [
+   38
+  ],
+  "hyp": "בחירה תמונה רואים יותר נפות אלה ה"
+ }
+]

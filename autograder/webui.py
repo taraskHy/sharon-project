@@ -215,7 +215,89 @@ grading_args = {
     "--survey-image-edge": int(survey_image_edge),
 }
 
-tab_new, tab_jobs = st.tabs(["➕ New batch", "📊 Jobs & results"])
+tab_new, tab_jobs, tab_courses = st.tabs(
+    ["➕ New batch", "📊 Jobs & results", "📚 Courses (experimental RAG)"]
+)
+
+# ---------------------------------------------------------------------------
+# Courses — persistent course-material store for the EXPERIMENTAL
+# qwen_rag_ocr_v1 arm. Material is uploaded once per course, indexed
+# locally (Ollama embeddings), and reused across batches. This does NOT
+# affect production grading.
+# ---------------------------------------------------------------------------
+with tab_courses:
+    from autograder import courses as course_store
+
+    st.caption(
+        "Course summaries power the experimental OCR-repair arm only. "
+        "Never upload answer keys or rubrics here — key-like filenames "
+        "are refused automatically."
+    )
+    existing = course_store.list_courses()
+    col_a, col_b = st.columns([2, 3])
+    with col_a:
+        new_id = st.text_input("New course id (letters/digits/_/-)", key="course_new_id")
+        new_name = st.text_input("Course name", key="course_new_name")
+        if st.button("Create course") and new_id:
+            try:
+                course_store.create_course(new_id, new_name)
+                st.success(f"course {new_id} created")
+                st.rerun()
+            except ValueError as e:
+                st.error(str(e))
+    with col_b:
+        ids = [c["course_id"] for c in existing]
+        selected = st.selectbox("Select course", ids) if ids else None
+
+    if selected:
+        # Uploads are ingested IMMEDIATELY (idempotent: same bytes -> same
+        # file), so "Build index" always sees what the user just uploaded.
+        uploads = st.file_uploader(
+            "Upload course material (PDF / TXT / MD / DOCX)",
+            accept_multiple_files=True, key=f"course_uploads_{selected}",
+            type=["pdf", "txt", "md", "markdown", "docx"],
+        )
+        for f in uploads or []:
+            res = course_store.add_source(selected, f.name, f.getvalue())
+            if not res["stored"]:
+                st.warning(f"{f.name}: {res['reason']}")
+
+        status = course_store.index_status(selected)
+        st.markdown(
+            f"**Sources:** {status['n_sources']} &nbsp;|&nbsp; "
+            f"**Indexed:** {'yes' if status['indexed'] else 'no'} "
+            + (f"({status['n_chunks']} chunks, built {status.get('built')}, "
+               f"model `{status.get('embed_model')}`)" if status["indexed"] else "")
+            + (" &nbsp;|&nbsp; :red[**STALE — material changed, rebuild needed**]"
+               if status.get("stale") else "")
+        )
+        for name in status["sources"]:
+            cols = st.columns([5, 1])
+            cols[0].write(f"• {name}")
+            if cols[1].button("remove", key=f"rm_{name}"):
+                course_store.remove_source(selected, name)
+                st.rerun()
+
+        if st.button("Build / rebuild index", type="primary"):
+            if status["n_sources"] == 0:
+                st.error("No course files stored yet — upload material above first.")
+            else:
+                with st.spinner("Parsing, chunking and embedding (local Ollama)…"):
+                    try:
+                        manifest = course_store.build_index(selected)
+                        st.success(
+                            f"index built: {manifest['n_chunks']} chunks, "
+                            f"dim {manifest['dim']}, model {manifest['embed_model']}"
+                        )
+                        st.rerun()
+                    except ValueError as e:
+                        st.error(f"index build failed: {e}")
+                    except Exception as e:  # noqa: BLE001
+                        st.error(
+                            f"embedding failed: {e} — is Ollama running with "
+                            f"the '{course_store.DEFAULT_EMBED_MODEL}' model "
+                            f"pulled? (ollama pull {course_store.DEFAULT_EMBED_MODEL})"
+                        )
 
 
 # --------------------------------------------------------------------------
@@ -340,6 +422,11 @@ with tab_new:
         type=["pdf", "png", "jpg", "jpeg", "tif", "tiff", "zip"],
         accept_multiple_files=True,
     )
+    _courses_avail = [c["course_id"] for c in __import__("autograder.courses", fromlist=["courses"]).list_courses()]
+    course_choice = st.selectbox(
+        "Course (optional — experimental RAG context)",
+        ["(none)"] + _courses_avail, key="batch_course",
+    ) if _courses_avail else "(none)"
     mask = st.toggle(
         "Mask red instructor annotations before inference",
         value=False,
@@ -364,6 +451,7 @@ with tab_new:
             staged_exams.append(p)
         rubric = st.session_state.get("rubric_path")
         job_dir = jobs.create_job(
+                course_id=None if course_choice == "(none)" else course_choice,
             key=Path(key_path),
             exams=staged_exams,
             rubric=Path(rubric) if rubric else None,

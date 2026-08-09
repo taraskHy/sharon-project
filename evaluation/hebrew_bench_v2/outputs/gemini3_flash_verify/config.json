@@ -1,0 +1,12 @@
+{
+ "config_id": "gemini3_flash_verify",
+ "model": "gemini-3-flash-preview",
+ "protocol": "strict fidelity; inputs = crop + frozen transcription ONLY",
+ "thresholds_declared_a_priori": [
+  "T1 verdict",
+  "T2 +low-conf",
+  "T3 +medium-conf",
+  "T4 any-issue-list"
+ ],
+ "started": "2026-08-08 18:11:37"
+}

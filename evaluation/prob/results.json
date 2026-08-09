@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-08-07T06:24:14",
+  "generated_at": "2026-08-07T17:57:42",
   "job": "prob-eval-2026-08-07",
   "backend": {
     "--backend": "openai",
@@ -19,13 +19,7 @@
     "gpu": "none — CPU-only laptop (no discrete GPU); VRAM n/a"
   },
   "server": {
-    "loaded_models": [
-      {
-        "name": "qwen3-vl:8b-instruct",
-        "size_bytes": 8178714541,
-        "size_vram_bytes": 0
-      }
-    ]
+    "loaded_models": []
   },
   "metrics_vs_official_grades": {
     "processed": 13,

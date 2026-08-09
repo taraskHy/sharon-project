@@ -1,0 +1,14 @@
+{
+ "config_id": "gemini3_flash_read2",
+ "backend": "gemini",
+ "model": "gemini-3-flash-preview",
+ "preproc": "none",
+ "max_edge": 0,
+ "min_interval_s": 15.0,
+ "runs": 1,
+ "categories": "handwritten_line,handwritten_cell",
+ "n_items": 13,
+ "started": "2026-08-08 18:01:16",
+ "stopped_reason": "daily quota exhausted",
+ "stopped_at": "2026-08-08 18:03:02"
+}

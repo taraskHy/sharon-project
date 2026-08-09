@@ -1,3 +1,24 @@
+run1 assoc_docB_p2_b1 pairs 0/4 hyp='א: 0.55 (T); ב: 0.51 (ג); ג: 0.47 (ב); ד: 0.39 (N)'
+run1 assoc_docB_p2_b12 pairs 0/4 hyp='א: 6/19 (ת); ב: 5/19 (ג); ג: 4/19 (ב); ד: 3/19 (נ)'
+run1 assoc_docB_p2_b3 pairs 0/4 hyp='א: 0.475 (T); ב: 0.437 (λ); ג: 0.427 (ב); ד: 0.401 (N)'
+run1 assoc_docB_p2_b5 pairs 0/4 hyp='א: 3/5 (ת); ב: 1/2 (א); ג: 1/3 (ב); ד: 1/6 (נ)'
+run1 assoc_docB_p2_b7 pairs 3/3 hyp='ד: אף אחד מהנ"ל; ג: 1; ב: 0.5; א: 0.29'
+run1 hc_e002_q1_r1 cer=1.16 hyp='נראה שזו תוצאה של אינטראקציה'
+run1 hc_e002_q1_r2 cer=0.76 hyp='השאלה נמצאת בחלק הפתוח של המבחן'
+run1 hc_e002_q1_r3 cer=0.71 hyp='המוצר הינו מוגן על ידי חוקי נספח אינטלקטואלי.'
+run1 hc_e002_q1_r4 cer=0.72 hyp='הַמְּגִדּוֹן הָיָה בְּרֵעֵי הַכְּתֻבִים'
+run1 hc_e002_q1_r5 cer=0.75 hyp='NCHT 231 x 075 הַקְרָעִים, 1916'
+run1 hc_e002_q1_r6 cer=0.71 hyp='שְׁלֹמֹה הַמָּלֵךְ עַד שְׁנֵי קְרִיָּה'
+run1 hc_e002_q1_r7 cer=0.60 hyp='סף הירשון ערך תקף-ה-מקרה. סף הירשון ערך תקף-ה-מקרה.'
+run1 hc_e002_q1_r8 cer=0.79 hyp='השנה הורכבה על ידי עוזר המנהל, ד'
+run1 hc_e002_q2_r1 [hard] flagged=False cer=0.73
+run1 hc_e002_q2_r2 cer=1.00 hyp='was telephoned to, is an idea my book was about pain'
+run1 hc_e002_q2_r3 cer=0.75 hyp='כְּרַבְיָה עֲדֹנִי בְּרֵעַ הַמְּשֻׁלְטָן אֶת הַמְּסָפְרָה'
+run1 hc_e002_q2_r4 [hard] flagged=False cer=6.29
+run1 hc_e002_q2_r5 [hard] flagged=False cer=0.77
+run1 hc_e002_q2_r6 [hard] flagged=False cer=0.96
+run1 hc_e002_q2_r7 [hard] flagged=False cer=0.88
+run1 hc_e002_q2_r8 cer=0.80 hyp='נְדָבִי 2x8 אֲפַרְסְטְרֵי 6x9 אֲפַרְסְטְרֵי'
 run1 hl_e003_q1_r1__l1 cer=0.82 hyp='המגמה הלאויה (Celsius) היא מידה של טמפרטורה'
 run1 hl_e003_q1_r2__l2 cer=1.00 hyp=''
 run1 hl_e003_q1_r3__l1 cer=0.78 hyp='שְׁלֹמֹה הַמָּלֵךְ עַל יִשְׂרָאֵל וְיִשְׂרָאֵל הַמָּלֵךְ עַל'
@@ -17,3 +38,92 @@ run1 hl_e003_q2_r8__l1 cer=1.10 hyp='השכלה והערכה של התלמידי
 run1 hl_e004_q1_r1__l1 cer=0.90 hyp='ספונטני אופרטור WAVELETS'
 run1 hl_e004_q1_r2__l1 cer=1.17 hyp='Highpass Filter συντελεστής παράγοντα ισχύος'
 run1 hl_e004_q1_r3__l1 cer=0.91 hyp='compare Nudity, just like C3H4,'
+run1 hl_e004_q1_r3__l2 [hard] flagged=False cer=0.88
+run1 hl_e004_q1_r4__l1 cer=0.65 hyp='Low Pass Filter'
+run1 hl_e004_q1_r5__l1 cer=0.89 hyp="A'pail, 20696n WAVELETS Q x 913 (??)"
+run1 hl_e004_q1_r6__l1 cer=1.09 hyp='ספונטני reception WAVELETS'
+run1 hl_e004_q1_r6__l2 cer=2.27 hyp='C \\subsetneq A_1 \\times A_2'
+run1 hl_e004_q1_r7__l2 [hard] flagged=False cer=0.74
+run1 hl_e004_q1_r8__l1 cer=0.81 hyp="c(x,y) ? ccc y' , g'z}"
+run1 hl_e004_q2_r1__l1 [hard] flagged=False cer=0.83
+run1 hl_e004_q2_r1__l2 cer=0.88 hyp='2558 גלוי פורסם עולם'
+run1 hl_e004_q2_r2__l1 [hard] flagged=False cer=0.75
+run1 hl_e004_q2_r3__l1 cer=0.80 hyp='השאלה היא: מהו הערך של x, אם 2x = 10?'
+run1 hl_e004_q2_r4__l1 cer=1.03 hyp='Uniformly random using Optimal ≥ CDPJ'
+run1 hl_e004_q2_r4__l2 cer=0.88 hyp='c) 50% of the students are female, Quantization'
+run1 hl_e004_q2_r5__l1 cer=0.76 hyp='X ~ Uniform(0, 1)'
+run1 hl_e004_q2_r5__l2 cer=1.67 hyp='[unreadable]'
+run1 hl_e004_q2_r6__l1 cer=0.90 hyp='השאלה היא: מהו הסיכוי ש-2 מתוך 5 אנשים יתפזרו?'
+run1 hl_e004_q2_r6__l2 [hard] flagged=False cer=0.78
+run1 hl_e004_q2_r7__l2 cer=0.86 hyp="e'p'ip'e niced, by unites civil e'dig' n'ied,"
+run1 hl_e004_q2_r8__l1 cer=0.92 hyp='ski Echo 135 מילון גנוב'
+run1 hl_e004_q2_r8__l2 cer=0.91 hyp='C51 C2,075,000'
+run1 hl_e005_q1_r1__l1 cer=0.84 hyp='J(1) קובע דוגמה ל-5 מטרים'
+run1 hl_e005_q1_r1__l2 [hard] flagged=False cer=0.74
+run1 hl_e005_q1_r2__l1 cer=0.83 hyp='כשנוצרת אינטראקציה בין שני גורמים שונים'
+run1 hl_e005_q1_r2__l2 [hard] flagged=False cer=6.08
+run1 hl_e005_q1_r3__l2 cer=0.67 hyp='COS ωt high-frequency'
+run1 hl_e005_q1_r3__l3 cer=0.89 hyp='n Mirc 150.1 |C| CIVILIC (7) x,y,z 1961 כְּרַבְרָה הַמְּחִיר'
+run1 hl_e005_q1_r4__l1 [hard] flagged=False cer=0.77
+run1 hl_e005_q1_r4__l2 cer=0.75 hyp='בְּשַׁעַת הָרִגְלִיָּה (18c) לְחַזְקֵי אֲדֹנִיִּים וְאֶלְמְכ'
+run1 hl_e005_q1_r5__l2 cer=0.85 hyp="C1042 2.11)5. (x - 7.3) -5(1'01-2 (87 16017)"
+run1 hl_e005_q1_r5__l3 cer=0.74 hyp='x וּשְׁכֵלָה / כְּתִיבַת הַמְּסֻוֹרָה - לְחַיַּת אֲדָמִים, ל'
+run1 hl_e005_q1_r6__l1 cer=0.81 hyp='כְּלָבִי 2.15.16. (א) כְּלָבִי 2.15.16. (ב)'
+run1 hl_e005_q1_r6__l2 cer=0.83 hyp='וְכָל הַשְׁאֵרִיָּה תְּרוּמָה לְחֹדֶשׁ הַנְּבִיִּים. וְעַל-פ'
+run1 hl_e005_q1_r7__l1 [hard] flagged=False cer=0.55
+run1 hl_e005_q1_r7__l2 cer=0.88 hyp='Hence, the curve C is given by f(x,y) = 0.'
+run1 hl_e005_q1_r8__l2 cer=0.83 hyp='0.81 0.91 0.72 0.65, 0.34, 0.21, 0.15, 0.08'
+run1 hl_e005_q1_r8__l3 cer=0.71 hyp="ב, תומית ל- N איזה עוצמה גורמת ל- ג'י'ן"
+run1 hl_e005_q2_r1__l1 cer=0.79 hyp='כְּלִי הַמָּסְפּוֹר, 0.2 threshold) (Cyclic, σ'
+run1 hl_e005_q2_r1__l2 [hard] flagged=False cer=0.75
+run1 hl_e005_q2_r2__l2 [hard] flagged=False cer=0.76
+run1 hl_e005_q2_r2__l3 [hard] flagged=False cer=0.75
+run1 hl_e005_q2_r3__l2 cer=0.88 hyp='(0.755) [?] ְּרַגִּיָהּ כְּלֵי הַמְּדִינָה'
+run1 hl_e005_q2_r4__l2 [hard] flagged=False cer=0.80
+run1 hl_e005_q2_r4__l3 [hard] flagged=False cer=0.72
+run1 hl_e005_q2_r5__l2 cer=0.78 hyp='הַשְׁאָרִיָּה הַמְּחֻלֶּת בְּסֵפֶר הַכֹּרְסָה'
+run1 hl_e005_q2_r5__l3 cer=1.00 hyp='c_{max}-a _{i}^{n} | \x0crac{\text{השכלה}}{\text{השכלה}} e.g., \te'
+run1 hl_e005_q2_r6__l2 cer=0.81 hyp='השכלה והערכה של הוראה ב-1250 מ'
+run1 hl_e005_q2_r7__l2 cer=0.87 hyp='gray-levels 0-255, es cuadrado de la imagen'
+run1 hl_e005_q2_r7__l3 [hard] flagged=False cer=0.73
+run1 hl_e005_q2_r8__l1 cer=0.82 hyp='0.1 C5 0.46927 1.21 2.8 3.1 5.2 6.5 7.8'
+run1 hl_e005_q2_r8__l2 cer=1.38 hyp='{"transcription": "x 10^4 x 50000000000000000000000000000000'
+run1 hl_e006_q1_r1__l1 [hard] flagged=False cer=0.77
+run1 hl_e006_q1_r2__l1 cer=1.25 hyp='כְּלִי הַמָּרֵא וְהַמָּרֵא כְּלִי הַמָּרֵא וְהַמָּרֵא high p'
+run1 hl_e006_q1_r3__l1 cer=0.69 hyp='קְרָבִי תְעוּרָה רַחֲמֵי ٢٠١٣ בְּשַׁעַר הַכֹּל'
+run1 hl_e006_q1_r4__l1 [hard] flagged=False cer=0.81
+run1 hl_e006_q1_r5__l1 cer=0.83 hyp='conjugation cell x y s near c.c.ll.'
+run1 hl_e006_q1_r6__l1 cer=0.83 hyp="• AUGUI GN א'ג'ן אָדְוּסִקְיַיִם וְאֵלֶּה מְעַרְפִּים"
+run1 hl_e006_q1_r7__l1 cer=0.75 hyp='אַלְמָרִיּוֹת קְרוּבִים — Dc אֲנִיּוֹן גְּדוֹלִיּוֹן מְחַמֵּ'
+run1 hl_e006_q1_r8__l1 [hard] flagged=False cer=0.78
+run1 hl_e006_q2_r1__l1 [hard] flagged=False cer=0.81
+run1 hl_e006_q2_r3__l1 [hard] flagged=False cer=0.79
+run1 hl_e006_q2_r4__l1 [hard] flagged=False cer=0.81
+run1 hl_e006_q2_r5__l2 cer=2.50 hyp='[unreadable]'
+run1 hl_e006_q2_r6__l1 cer=0.74 hyp="לְרַחֲמֵי הָאֱלֹהִים 1,000 ג' 6.25 mg"
+run1 hl_e006_q2_r7__l1 cer=0.92 hyp='187.2 21070.1! מְסַפְרֵי הַמָּשׁוֹבִים וְהַמְּגֻלָּהּ לְכָל '
+run1 hl_e006_q2_r7__l2 cer=0.78 hyp='אינטגרל של f(x) = 2x^3 - 4x + 1'
+run1 hl_e006_q2_r8__l1 cer=0.71 hyp='הכפיה על הוראת 2% - 5% מ- 700N ל- 200N'
+run1 hl_e007_q1_r1__l1 [hard] flagged=False cer=0.76
+run1 pr_docA_p1_b0 cer=0.04 hyp='בחינה בקורס עיבוד תמונת'
+run1 pr_docA_p1_b1 cer=0.64 hyp="סמסטר א' מועד א' תשפ"
+run1 pr_docA_p1_b2 cer=0.04 hyp="שם המרצה : פרופ' חגית הל-אור . שם המתרגל : מר' נעמאנ קובטי"
+run1 pr_docA_p2_b0 cer=0.00 hyp='שאלה מספר 1 : (32 נקודות)'
+run1 pr_docA_p2_b1 cer=0.06 hyp='לפנייכם התמונה הבאה:'
+run1 pr_docA_p2_b3 cer=0.03 hyp='לאחזר הפעולה בונים פרמידת WAVELETS של תמונת התוצאה. בעמוד הב'
+run1 pr_docA_p2_b4 cer=0.02 hyp='התאימו בקן כל פעולה ופרמידת Wavelet התוצאה המתאימה לה. מלאו '
+run1 pr_docA_p3_b0 cer=0.38 hyp='6. הרעש עם רעש גאוסייני ואתח כונבולוציה עם המסכה : e^(- (y-y'
+run1 pr_docA_p3_b3 cer=0.01 hyp='קונבולוציה עם המסכה (גאוסיינית חד מימדית) גורמת לטשטוש התמונ'
+run1 pr_docA_p3_b6 cer=0.83 hyp='A/H/B - I_new(x, y) = I(x, y) + 100 .7 הגברת בהירות'
+run1 pr_docA_p3_b8 cer=0.06 hyp='Brightness Shift-b (פעולה 7) רק ה-DC יושפע ויהפוך ליותר בהיר'
+run1 pr_docA_p3_b9 cer=0.07 hyp='שאַר התדרים לא יושפעו, בעוד שב scale- (8 פעולה) כל הפרמידה ת'
+run1 pr_docA_p4_b0 cer=0.00 hyp='המשך שאלה מספר 1'
+run1 pr_docA_p5_b0 cer=0.00 hyp='שאלה מספר 2 : (32 נקודות)'
+run1 pr_docA_p5_b8 cer=0.86 REVERSED hyp='E/C/B Canny שפה גלאי הפעלת .1'
+run1 pr_docA_p5_b9 cer=0.00 hyp='2. מטשטשים את התמונה בעזרת מסכה גאוסיאנית ואז מפעילים גלאי ש'
+run1 pr_docA_p6_b1 cer=0.00 hyp='OQ מתכנסת ל 20 BINS לא אחידים על פי צפיפות הפיקסלים בהיסטוגר'
+run1 pr_docA_p6_b9 cer=0.74 hyp='A/D/H [1 0 0 1] קונבולוציה עם המסכה .6'
+run1 pr_docA_p8_b0 cer=0.00 hyp='שאלה מספר 3 (36 נקודות)'
+run1 pr_docB_p1_b1 cer=0.11 hyp="203.2480 12.07.2026, סמסטר ב מועד א, מרצה: פרופ' יורי רביןוב"
+run1 pr_docB_p2_b14 cer=0.13 hyp='אף אחד מהנ"ל (ד) 273 (ג) 271 (ב) 264 (N)'
+run1 pr_docB_p2_b7 cer=0.14 hyp='אף אחד מהנ"ל (ד) 1 (ג) 0.5 (ב) 0.29 (N)'

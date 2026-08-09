@@ -1,0 +1,12 @@
+{
+ "raw": "```json\n{\"transcription\": \"בתמונה מופיעים שמות של התמונה המקורית בתדר גבוה\"}\n```",
+ "transcription": "בתמונה מופיעים שמות של התמונה המקורית בתדר גבוה",
+ "error": null,
+ "status": 200,
+ "rate_limit_waits": 0,
+ "rate_limit_wait_s": 0.0,
+ "item": "hl_e005_q1_r2__l1",
+ "category": "handwritten_line",
+ "run": 1,
+ "latency_s": 5.2
+}

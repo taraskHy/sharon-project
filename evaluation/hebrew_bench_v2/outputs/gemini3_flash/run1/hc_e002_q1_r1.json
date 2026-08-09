@@ -1,0 +1,12 @@
+{
+ "raw": "```json\n{\"transcription\": \"יש לטשטש בכל התדרים\"}\n```",
+ "transcription": "יש לטשטש בכל התדרים",
+ "error": null,
+ "status": 200,
+ "rate_limit_waits": 0,
+ "rate_limit_wait_s": 0.0,
+ "item": "hc_e002_q1_r1",
+ "category": "handwritten_cell",
+ "run": 1,
+ "latency_s": 5.71
+}

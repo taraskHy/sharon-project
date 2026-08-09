@@ -13,3 +13,5 @@ prob_out/
 eval_prob/
 .env
 evaluation/hebrew_bench_v2/ink_strokes/
+evaluation/hebrew_bench_v2/grading_cache/
+courses/
