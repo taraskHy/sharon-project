@@ -35,7 +35,6 @@ if hasattr(sys.stdout, "reconfigure"):
 
 REPO = Path(__file__).resolve().parents[1]
 BENCH = REPO / "evaluation" / "hebrew_bench_v2"
-OUTDIR = BENCH / "outputs" / "qwen_rag_ocr_v1"
 
 sys.path.insert(0, str(REPO))
 from autograder import courses  # noqa: E402
@@ -197,7 +196,12 @@ def main() -> int:
                     help="optional operator-curated ANSWER-FREE JSON file "
                          "{question_id: printed question text}; omitted = "
                          "no question text (fail closed)")
+    ap.add_argument("--config-id", default="qwen_rag_ocr_v1",
+                    help="output arm id under outputs/ — lets the identical "
+                         "frozen repair run against a different frozen raw "
+                         "source (e.g. gemini_rag_ocr_v1)")
     args = ap.parse_args()
+    outdir = BENCH / "outputs" / args.config_id
 
     status = courses.index_status(args.course)
     if not status["indexed"]:
@@ -205,13 +209,13 @@ def main() -> int:
     if status["stale"]:
         sys.exit(f"course {args.course!r} index is STALE (sources/config changed) — rebuild first")
 
-    run_dir = OUTDIR / "run1"
+    run_dir = outdir / "run1"
     run_dir.mkdir(parents=True, exist_ok=True)
     ctx = load_question_context(args.question_context)
     embed_fn = courses.ollama_embed_fn(args.embed_model, args.embed_base_url)
 
     config = {
-        "config_id": "qwen_rag_ocr_v1", "course": args.course,
+        "config_id": args.config_id, "course": args.course,
         "course_config_hash": status.get("config_hash"),
         "source_config": args.source_config, "top_k": args.top_k,
         "repair_model": args.repair_model,
@@ -225,7 +229,7 @@ def main() -> int:
         "decoding": {"temperature": 0, "max_tokens": 1200},
         "started": time.strftime("%Y-%m-%d %H:%M:%S"),
     }
-    (OUTDIR / "config.json").write_text(json.dumps(config, indent=1), encoding="utf-8")
+    (outdir / "config.json").write_text(json.dumps(config, indent=1), encoding="utf-8")
 
     todo = eligible_items(args.source_config)
     if args.items:
@@ -257,7 +261,7 @@ def main() -> int:
               f"sem_risk={rec['semantic_change_risk']} "
               f"chunks={len(chunks)} ({rec['repair_s']}s)"
               + (f" ERR {err[:60]}" if err else ""))
-    print("qwen_rag_ocr_v1 run complete")
+    print(f"{args.config_id} run complete")
     return 0
 
 
