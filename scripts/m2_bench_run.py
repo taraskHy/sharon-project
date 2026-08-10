@@ -90,6 +90,59 @@ SCHEMA = {
     "required": ["transcription"],
 }
 
+_ENVELOPE_PREFIX = re.compile(r'^\s*\{\s*"transcription"\s*:\s*"')
+
+
+def parse_declared_envelope(raw: str) -> tuple[str | None, list[str]]:
+    """Deterministically extract the declared {"transcription": ...} payload.
+
+    Handles, in order: code fences, a complete JSON envelope, and a
+    TRUNCATED envelope (output cut at max tokens, so the closing quote/
+    brace never arrived — previously the whole envelope leaked into the
+    scored transcription). Returns (text, ops) or (None, ops) when the
+    string carries no declared envelope; never invents content — string
+    unescaping is applied only when the fragment unescapes cleanly."""
+    ops: list[str] = []
+    s = raw.strip()
+    defenced = re.sub(r"^```[a-z]*\s*|\s*```$", "", s)
+    if defenced != s:
+        ops.append("code_fence_strip")
+        s = defenced.strip()
+    m = re.search(r"\{.*\}", s, re.DOTALL)
+    if m:
+        try:
+            val = json.loads(m.group(0)).get("transcription")
+            if isinstance(val, str):
+                return val, ops + ["json_envelope_parse"]
+        except json.JSONDecodeError:
+            pass
+    pref = _ENVELOPE_PREFIX.match(s)
+    if not pref:
+        return None, ops
+    frag = s[pref.end():]
+    ops.append("truncated_envelope_prefix_strip")
+    def _escaped_tail(s: str) -> bool:
+        # a quote preceded by an ODD number of backslashes is an escaped
+        # interior quote, not the envelope's closing quote
+        back = len(s) - len(s.rstrip("\\"))
+        return back % 2 == 1
+
+    r = frag.rstrip()
+    if r.endswith('"}') and not _escaped_tail(r[:-2]):
+        frag = r[:-2]
+        ops.append("trailing_close_strip")
+    elif r.endswith('"') and not _escaped_tail(r[:-1]):
+        frag = r[:-1]
+        ops.append("trailing_quote_strip")
+    if frag.endswith("\\"):
+        frag = frag[:-1]
+        ops.append("dangling_escape_strip")
+    try:
+        un = json.loads('"' + frag.replace("\n", "\\n").replace("\r", "\\r").replace("\t", "\\t") + '"')
+        return un, ops + ["json_string_unescape"]
+    except json.JSONDecodeError:
+        return frag, ops + ["no_unescape_applied"]
+
 
 def _encode_png_gray(gray) -> bytes:
     import struct
@@ -194,7 +247,10 @@ class ChatVLM:
                 try:
                     parsed = json.loads(raw).get("transcription")
                 except json.JSONDecodeError:
-                    parsed = raw.strip() or None  # non-structured providers
+                    # truncated json_schema output: extract the declared
+                    # envelope payload instead of leaking the wrapper
+                    text, _ops = parse_declared_envelope(raw)
+                    parsed = text if text is not None else (raw.strip() or None)
                 return {"raw": raw, "transcription": parsed, "error": None,
                         "status": resp.status_code, **usage_nums}
             except Exception as e:  # noqa: BLE001
@@ -257,14 +313,13 @@ class Gemini:
             data = resp.json()
             try:
                 raw = data["candidates"][0]["content"]["parts"][0]["text"]
-                parsed = None
-                m = re.search(r"\{.*\}", raw, re.DOTALL)
-                if m:
-                    try:
-                        parsed = json.loads(m.group(0)).get("transcription")
-                    except json.JSONDecodeError:
-                        parsed = None
-                if parsed is None:
+                # complete envelopes parse as before; TRUNCATED envelopes
+                # (maxOutputTokens cut) now yield their payload instead of
+                # leaking the {"transcription": ... wrapper into the score
+                text, _ops = parse_declared_envelope(raw)
+                if text is not None:
+                    parsed = text
+                else:
                     cleaned = re.sub(r"^```[a-z]*\s*|\s*```$", "", raw.strip())
                     parsed = cleaned.strip() or None
                 return {"raw": raw, "transcription": parsed, "error": None,
