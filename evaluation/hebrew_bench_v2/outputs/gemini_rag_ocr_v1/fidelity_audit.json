@@ -1,0 +1,400 @@
+[
+ {
+  "item": "hc_e002_q1_r3",
+  "image_readability": "Two lines of blue-ink Hebrew cursive inside a ruled answer box, moderately messy but legible after 4-6x zoom. Line 1: \"העוצמה של ה [disputed word] הגבוהות\"; line 2: \"בפרמידה חלקה ביחס למקורי.\" (the trailing \"ביחס למקורי\" is in the image but outside both transcriptions). All disputed letter regions were individually adjudicable.",
+  "undocumented_rewrite": true,
+  "edit_findings": [
+   {
+    "raw_token": "ה דרגות",
+    "suggested_token": "התדרים",
+    "classification": "SEMANTIC_CORRECTION_RISK",
+    "visual_evidence": "The standalone ה has a wide, unambiguous gap on both sides (writer's ה shape confirmed twice elsewhere in the crop), so the merge into one word contradicts the visible spacing. The word's first letter is a '2'-like glyph with a bottom loop consistent with cursive ד, not this writer's ת (their ת is an open two-legged n-shape, seen at the end of הגבוהות). The word ends in a small ו plus an open ת whose left leg sweeps below the baseline; there is no closed oval that a final ם (required for תדרים) would produce. Visible parse ד-ר-ג-ו-ת matches every stroke — the raw reading is what is written. Replacing the student's דרגות (levels/ranks, feminine, agreeing with the visibly-written הגבוהות) with the course term תדרים (frequencies) converts a plausibly imprecise student statement about pyramid levels into the course-correct claim about high frequencies.",
+    "chunk_influence": "cfe29ed1a9bf51e1 contains 'התדרים הגבוהים' essentially verbatim ('לדכא את התדרים הגבוהים'); stem תדר also in 0e067b21b1e757a9 ('תדרי עמודות'). 'דרגות' appears in no retrieved chunk."
+   },
+   {
+    "raw_token": "הגבוהות",
+    "suggested_token": "הגבוהים",
+    "classification": "SEMANTIC_CORRECTION_RISK",
+    "visual_evidence": "UNDOCUMENTED edit (absent from the edits list). The final word visibly ends in ו followed by an open two-legged cursive ת — i.e. the feminine plural ־ות. A masculine ־ים ending would require a tick י plus a closed-loop final ם, and no closed oval exists at the word end. This change has zero stroke support; it is a coordinated gender-agreement fix to make the sentence match the injected masculine noun תדרים, completing the rewrite of the student's sentence into the canonical course phrasing.",
+    "chunk_influence": "cfe29ed1a9bf51e1 ('התדרים הגבוהים', 'לתדרים הגבוהים'); stem גבוה also in bdd5303a5d37d3a4."
+   },
+   {
+    "raw_token": "{\"transcription\": \"",
+    "suggested_token": "",
+    "classification": "OTHER_PROTOCOL_CLEANUP",
+    "visual_evidence": "JSON output-protocol wrapper, not present in the handwriting; its removal is not an image question. Note it is also undocumented in the edits list.",
+    "chunk_influence": "none"
+   }
+  ],
+  "overall_classification": "SEMANTIC_CORRECTION_RISK",
+  "confidence": "high",
+  "notes": "The edits list is defective: it documents only one of three actual diffs, and its second entry is a no-op ('ה דרגות' -> 'ה דרגות') whose reason text openly reasons from course context rather than the image. The two real word-level edits act together as one semantic rewrite: the student visibly wrote 'העוצמה של ה דרגות הגבוהות' (feminine agreement corroborated by strokes in BOTH words), and the repair converted it to 'העוצמה של התדרים הגבוהים' — a phrase appearing near-verbatim in retrieved chunk cfe29ed1a9bf51e1. If the student genuinely confused pyramid levels with frequencies, this rewrite would silently grade-correct their answer. Confidence is high because three independent stroke facts (separate standalone ה; no final-mem closed loop at either word end; open-ת feminine endings) all contradict the suggestion; the exact letter-by-letter reading of דרגות is slightly less certain (messy cursive) but no letter is more consistent with תדרים than with דרגות."
+ },
+ {
+  "item": "hc_e002_q1_r4",
+  "image_readability": "Clear blue-ink Hebrew handwriting inside a ruled table cell. One sentence wrapped across two physical lines: line 1 reads (RTL) \"נשאר בתמונה רק התדרים\" and the word \"הנמוכים\" is wrapped onto a second line below the right portion of line 1, just above the cell border. Fully legible; the only slightly ambiguous stroke is the final letter of \"הנמוכים\", written with a long descender (could pass for final ן/ך), but both raw and suggested texts agree on that word so it is outside any diff.",
+  "undocumented_rewrite": true,
+  "edit_findings": [
+   {
+    "raw_token": "התדרים\\nהנמוכים",
+    "suggested_token": "התדרים הנמוכים",
+    "classification": "OTHER",
+    "visual_evidence": "The strokes show \"הנמוכים\" written on a second physical line, wrapped below the end of line 1 inside the answer box — the raw newline faithfully reflects the visible layout. The suggested text merely joins the wrapped line with a space; zero characters, letters, or words differ. This is a layout-only whitespace normalization (line-wrap join), not a stroke-adjudication question and not a protocol-artifact removal.",
+    "chunk_influence": "The joined phrase \"התדרים הנמוכים\" appears in chunk 3df31bf61e8f8040 (\"יש את התדרים הנמוכים\") and \"התדר הנמוך\" in chunk 79d40e5a3f83fe26, but both words were already present in raw_text, so chunk influence is immaterial to this whitespace-only change."
+   }
+  ],
+  "overall_classification": "OTHER",
+  "confidence": "high",
+  "notes": "Edits list is empty while raw_text and suggested_text differ, so undocumented_rewrite=true per protocol; however the sole undocumented change is a newline collapsed to a space (line-wrap join), verified against the image as harmless. No lexical or semantic content changed, so no UNSUPPORTED_NORMALIZATION or SEMANTIC_CORRECTION_RISK exists for this item. Crop path: C:\\Users\\ethan\\PycharmProjects\\sharon-project\\evaluation\\hebrew_bench_v2\\crops\\hc_e002_q1_r4.png."
+ },
+ {
+  "item": "hl_e003_q1_r1__l1",
+  "image_readability": "Two lines of clearly legible blue-ink Hebrew cursive on white background. Line 1: \"ניתן לראות ברמות התדרים הגבוהים\"; line 2: \"שיש שפות בכיוון התנועה (הטשטוש)\". Individual letters are well-formed and adjudicable at 8x zoom; the disputed third word of line 1 is fully legible.",
+  "undocumented_rewrite": true,
+  "edit_findings": [
+   {
+    "raw_token": "ברמות",
+    "suggested_token": "בדפוסי",
+    "classification": "UNSUPPORTED_NORMALIZATION",
+    "visual_evidence": "Zoomed strokes read ב (open cursive loop), ר (single smooth arc, no dalet-style top curl), מ (unambiguous N-shaped cursive mem), then ות (short vav stroke plus cursive tav with its long left-sweeping foot) — i.e. exactly 'ברמות' as the raw OCR had it. 'בדפוסי' requires a cursive פ (spiral) and ס (closed circle) plus a final י, none of which appear anywhere in the word. The edit's own stated reason is purely context-based ('ברמות לא מתאים לקונטקסט של תדרים'), and it replaces a visually correct transcription with a word contradicted by the strokes.",
+    "chunk_influence": "none — grep for stem 'דפוס' across the manifest matches only the suggestion/edit itself; it appears in none of the retrieved chunk texts (9b530540466ab4d0, dd316d3cc8736d4b, 0e067b21b1e757a9, f77b63546d90fd73)"
+   },
+   {
+    "raw_token": "{\"transcription\": \"",
+    "suggested_token": "",
+    "classification": "OTHER_PROTOCOL_CLEANUP",
+    "visual_evidence": "Not an image question — removal of the JSON output-protocol wrapper prefix from raw_text. However, this change is absent from the documented edits list, so the rewrite is undocumented.",
+    "chunk_influence": "none"
+   }
+  ],
+  "overall_classification": "UNSUPPORTED_NORMALIZATION",
+  "confidence": "high",
+  "notes": "The handwriting plainly supports the raw reading 'ברמות' (levels — appropriate pyramid-level terminology), so the repair degraded a correct transcription based on context plausibility alone; the substituted term is not even present in the retrieved chunks. Considered SEMANTIC_CORRECTION_RISK but rejected: 'בדפוסי' does not move the student's statement toward course-correctness (if anything 'ברמות' is the more course-correct term), so no student error was masked. Neutral observation: the crop shows a trailing '(הטשטוש)' after 'התנועה' that both raw_text and suggested_text truncate equally — not a raw-vs-suggested difference. undocumented_rewrite=true solely because the JSON-wrapper removal is not listed in the edits array."
+ },
+ {
+  "item": "hl_e003_q1_r4__l1",
+  "image_readability": "Two lines of blue-ink Hebrew cursive, moderately legible at 3-6x zoom. Line 1: \"ניתן לראות שרק תדרים נמוכים נשמרו\". Line 2: \"ולכן כל הרמות של התדרים הגבוהים\" followed by a final word consistent with \"מטושטשות\". The student's idiosyncratic letterforms (tav with below-baseline descender, yod as floating apostrophe, closed final-mem loop) recur consistently and allow cross-word comparison within the crop.",
+  "undocumented_rewrite": true,
+  "edit_findings": [
+   {
+    "raw_token": "{\"transcription\": \"",
+    "suggested_token": "(removed)",
+    "classification": "OTHER_PROTOCOL_CLEANUP",
+    "visual_evidence": "Not an image question — this is a leftover JSON output-protocol wrapper in raw_text, not handwriting. Its removal is correct but is NOT documented in the edits list (hence undocumented_rewrite=true).",
+    "chunk_influence": "none"
+   },
+   {
+    "raw_token": "הת (documented in edits as 'ת')",
+    "suggested_token": "התמונה",
+    "classification": "UNSUPPORTED_NORMALIZATION",
+    "visual_evidence": "The truncated word after 'של' visibly continues in the crop and reads 'התדרים': initial he, tav with the same long below-baseline descender the student uses in line 1's 'תדרים', compressed dalet-resh humps, yod written as a floating apostrophe, and a closed final-mem loop — an exact letterform match to the confirmed 'תדר'ם' in line 1. It is immediately followed by 'הגבוה'ם' (הגבוהים, masculine plural, agreeing with התדרים) and a word consistent with 'מטושטשות'. 'התמונה' is contradicted by the strokes: no vav stroke, no nun hook, and the final letter lacks the student's distinctive detached-leg he; it is also grammatically incompatible with the following masculine-plural adjective in the student's own hand. The repair also silently discards the rest of line 2 ('הגבוהים מטושטשות') that is visible in the crop.",
+    "chunk_influence": "'תמונה'/'בתמונה' appears repeatedly in chunk 3df31bf61e8f8040 ('לקחנו תמונה', 'סכום התמונה', 'שפות בתמונה'); the plausible-completion pressure came from context, not the strokes."
+   }
+  ],
+  "overall_classification": "UNSUPPORTED_NORMALIZATION",
+  "confidence": "high",
+  "notes": "Crop path: C:\\Users\\ethan\\PycharmProjects\\sharon-project\\evaluation\\hebrew_bench_v2\\crops\\hl_e003_q1_r4__l1.png. The raw OCR truncated mid-word ('...כל הרמות של הת') and the repair invented the completion 'התמונה' from retrieved-chunk vocabulary, while the handwriting actually continues 'התדרים הגבוהים מטושטשות'. Correct behavior would have been to complete toward 'התדרים' (well supported by within-crop letterform comparison) or leave the truncation. Not classified as SEMANTIC_CORRECTION_RISK because the substitution does not move the student's claim toward course-correctness — it replaces a correct, specific claim about high-frequency levels with a vaguer noun. Also flagged: the edits list omits the JSON-wrapper removal, so the documented edit list is incomplete."
+ },
+ {
+  "item": "hl_e003_q1_r5__l1",
+  "image_readability": "Two lines of cursive Hebrew, quite legible. Line 1 (RTL): \"הרעש והטשטוש\" + caret-inserted \"שלו\" above the line + \"בכיוון\" + caret-inserted \"ציר\" below the line + \"ה-X מובלט\" (final word clearly mem-vav-bet-lamed-tet). Line 2: \"בתדרים הגבוה\\\"ם\" (= הגבוהים with a gershayim-style contraction); gimel-bet-vav-heh unambiguous. Full visible sentence: \"הרעש והטשטוש שלו בכיוון ציר ה-X מובלט בתדרים הגבוה\\\"ם\". Notably, neither raw_text nor suggested_text is a faithful transcription of this crop — raw_text is mostly leaked OCR-model meta-commentary, and the repair edited the commentary instead of restoring the visible sentence.",
+  "undocumented_rewrite": false,
+  "edit_findings": [
+   {
+    "raw_token": "ובלט\"",
+    "suggested_token": "ובתדרים הנמוכים",
+    "classification": "SEMANTIC_CORRECTION_RISK",
+    "visual_evidence": "The strokes this fragment came from are the last word of line 1, clearly מובלט: N-shaped cursive mem, vav stroke, open bet, tall lamed, looped tet. 'ובלט' is a truncation of מובלט. Nothing in the image resembles 'ובתדרים הנמוכים'; the only 'בתדרים' is on line 2 and is followed by הגבוה\"ם (HIGH), with a letter profile (gimel-bet-vav-heh) incompatible with נ-מ-ו-כ. The replacement erases the student's verb 'מובלט' and injects 'low frequencies', a claim the student never wrote and which contradicts the visible 'high frequencies' — moving the answer toward what the repair model deemed course-correct (blur ↔ low frequencies) with zero stroke support.",
+    "chunk_influence": "Partial: stem 'תדרים' appears in chunk d34447731e13b78a ('יש לנו תדרים שונים', 'תדר גבוה') and chunk 2ac9a600fd48bdbb; the key word 'הנמוכים' appears in NO retrieved chunk for this item (d34447731e13b78a has English 'low pass' only) — the low-frequency framing came from outside the retrieved chunks."
+   },
+   {
+    "raw_token": "\"בתדרים הגבוהים\"",
+    "suggested_token": "\"בתדרים הנמוכים\"",
+    "classification": "SEMANTIC_CORRECTION_RISK",
+    "visual_evidence": "Line 2 clearly reads בתדרים הגבוה\"ם: gimel, bet, vav, heh are individually legible, followed by gershayim and final mem. 'הנמוכים' (nun-mem-vav-kaf) is not compatible with these strokes under any confusion-pair reading. The edit reason itself is purely contextual and even concedes it may be 'a student error' — this is a straight high→low answer flip against clear visual evidence. NOTE: this edit is documented in the edits list but was NOT actually applied — suggested_text line 2 still reads 'בתדרים הגבוהים'. The intent is still reportable as the manifest documents it; the final text happens to match the image.",
+    "chunk_influence": "'הנמוכים'/'בתדרים הנמוכים' appears in no retrieved chunk for this item; nearest is 'low pass' (English) and 'תדר גבוה' in chunk d34447731e13b78a — none for the exact token."
+   },
+   {
+    "raw_token": "The word \"ציר\" appears twice? Once above \"בכיוון",
+    "suggested_token": "התשובה 'ציר' מופיעה פעמיים? פעם אחת מעל 'בכיוון",
+    "classification": "OTHER",
+    "visual_evidence": "This sentence corresponds to no handwriting at all — it is leaked OCR-model meta-commentary (the model questioning its own reading). The image does contain a small caret-inserted 'ציר' (once, below the line between 'בכיוון' and 'ה-X'); the second insertion, above the line, reads 'שלו', not 'ציר'. Instead of removing the protocol artifact (which would have been OTHER_PROTOCOL_CLEANUP), the repair TRANSLATED the English commentary into Hebrew, so model commentary now masquerades as Hebrew transcription text. Not an image-fidelity question, but the opposite of cleanup — the artifact was preserved and disguised.",
+    "chunk_influence": "'ציר' appears in chunk 2ac9a600fd48bdbb ('לאורך ציר ה-x'), but the suggested text is a translation of the raw commentary, not chunk-driven; effectively none."
+   }
+  ],
+  "overall_classification": "SEMANTIC_CORRECTION_RISK",
+  "confidence": "high",
+  "notes": "Severe case despite legible handwriting. (1) The raw OCR output is mostly protocol leakage (truncated fragment + English self-commentary), and the repair operated on the leakage instead of restoring the clearly visible sentence \"הרעש והטשטוש שלו בכיוון ציר ה-X מובלט בתדרים הגבוה\\\"ם\" — so the 'repaired' text still bears almost no relation to the image. (2) The applied edit injects \"בתדרים הנמוכים\" (low frequencies), contradicting the student's clearly written \"הגבוהים\" (high) and deleting the verb \"מובלט\"; combined with the documented (though unapplied) edit 2 flipping high→low, the repair model was steering the answer toward a course-correct claim about low frequencies — a grading-integrity hazard, since the student's possibly wrong 'high frequencies' claim is exactly what a grader must see. Manifest inconsistency: edit 2 is documented but not applied in suggested_text (a phantom edit — the reverse of an undocumented rewrite, so undocumented_rewrite=false; all actual diffs are covered by edits 1 and 3). The word \"הנמוכים\" appears in none of this item's retrieved chunks, so the normalization was driven by broader course priors rather than the cited chunks. Crop: C:\\Users\\ethan\\PycharmProjects\\sharon-project\\evaluation\\hebrew_bench_v2\\crops\\hl_e003_q1_r5__l1.png."
+ },
+ {
+  "item": "hl_e003_q1_r6__l1",
+  "image_readability": "Two lines of clear blue cursive Hebrew on white background. Line 1: 'הרעש והטשטוש שלו בכיוון ציר ה-y'. Line 2: 'מובלט בתדר'ם הגבוה\"ם'. Fully legible at 3-5x zoom; letter shapes (bet vs lamed, tet vs final mem, yod ticks) are individually resolvable.",
+  "undocumented_rewrite": true,
+  "edit_findings": [
+   {
+    "raw_token": "{\"transcription\": \"",
+    "suggested_token": "(removed)",
+    "classification": "OTHER_PROTOCOL_CLEANUP",
+    "visual_evidence": "JSON output-protocol wrapper, not part of the handwriting at all. Removal is correct but is NOT documented in the edits list (hence undocumented_rewrite=true).",
+    "chunk_influence": "none"
+   },
+   {
+    "raw_token": "מובלט",
+    "suggested_token": "מובילים",
+    "classification": "UNSUPPORTED_NORMALIZATION",
+    "visual_evidence": "Word 1 of line 2 shows exactly five glyphs: cursive mem (angular N-shape), vav (short stroke), bet (small rounded letter), a tall top-loop lamed, and a bottom-loop tet closing the word before a space. 'מובילים' would require a yod tick after the bet, a second yod tick after the lamed, and a circular cursive final-mem as the last glyph — none of these strokes exist. The strokes clearly support the raw reading מובלט.",
+    "chunk_influence": "none — 'מובילים' (or stem 'מוביל') does not appear in any of the four retrieved chunks; the edit reason even cites a phrase ('נובלים לתדרים גבוהים') that is not present in any chunk text."
+   },
+   {
+    "raw_token": "בתדרים",
+    "suggested_token": "לתדרים",
+    "classification": "UNSUPPORTED_NORMALIZATION",
+    "visual_evidence": "The first letter of word 2 is a small rounded cursive bet sitting at x-height with a flat base, followed by tav, dalet, resh, a clear apostrophe-like yod tick, and final mem (בתדר'ם). A lamed would show a tall ascender loop rising far above x-height — no such ascender exists. The strokes support the raw בתדרים.",
+    "chunk_influence": "'לתדרים' appears in chunk cfe29ed1a9bf51e1 ('הקנס הרבה יותר אכזרי לתדרים הגבוהים') — the replacement token matches course-chunk phrasing rather than the visible strokes."
+   },
+   {
+    "raw_token": "הגבוה",
+    "suggested_token": "גבוהים",
+    "classification": "UNSUPPORTED_NORMALIZATION",
+    "visual_evidence": "Word 3 visibly reads ה-ג-ב-ו-ה followed by gershayim-style ticks and a sigma-shaped cursive final mem: הגבוה\"ם, i.e. הגבוהים. The plural completion '…ים' IS image-supported (raw OCR truncated the word), but the suggested token drops the clearly written definite-article ה at the word start to fit the paraphrase 'לתדרים גבוהים'. The image supports הגבוהים, not גבוהים.",
+    "chunk_influence": "'הגבוהים'/'גבוהים' appear in chunk cfe29ed1a9bf51e1 ('בתדרים הגבוהים', 'לתדרים הגבוהים') and 'תדר גבוה' in chunk c36ac338b13ff7fd."
+   }
+  ],
+  "overall_classification": "UNSUPPORTED_NORMALIZATION",
+  "confidence": "high",
+  "notes": "The handwriting legibly reads 'הרעש והטשטוש שלו בכיוון ציר ה-y מובלט בתדרים הגבוה\"ם [=הגבוהים]'. The repair replaced a fully legible three-word span with a context-plausible paraphrase ('מובילים לתדרים גבוהים'), changing the student's claim from 'is emphasized/prominent in the high frequencies' to 'lead to high frequencies' — a meaning-altering rewrite with no stroke support at three separate points (מובלט kept intact, ב not ל, ה article present). The only image-supported component is completing the truncated last word to הגבוהים. The correct repair would have been 'מובלט בתדרים הגבוהים'. I did not classify this as SEMANTIC_CORRECTION_RISK because the student's actual visible statement is itself coherent and course-plausible, so the rewrite paraphrases rather than converts an error into correctness — but the verb/preposition change does alter the causal structure of the claim, so a grader relying on the suggested text is grading a sentence the student did not write. The one documented edit lumps three token changes together, and the JSON wrapper removal is entirely undocumented."
+ },
+ {
+  "item": "hl_e003_q1_r8__l1",
+  "image_readability": "Two lines of legible blue-ink Hebrew handwriting (right-to-left). Line 1 clearly reads \"ברמה העליונה שכוללת את DC ניתן לראות\" with \"DC\" unmistakably in Latin letters; line 2 reads \"שערכים בהירים יותר,\" followed by a word starting with a stroke consistent with נ (continuation appears to be \"נהיו יותר בהיר...\" beyond the transcription cutoff). Under 2x zoom every retained token is readable and matches the strokes.",
+  "undocumented_rewrite": true,
+  "edit_findings": [
+   {
+    "raw_token": "{\"transcription\": \"",
+    "suggested_token": "",
+    "classification": "OTHER_PROTOCOL_CLEANUP",
+    "visual_evidence": "The handwriting contains only Hebrew script plus the Latin token 'DC'; no braces, quotes, or the word 'transcription' appear anywhere in the ink. The removed prefix is purely an output-protocol JSON wrapper, not an image question. Note: this removal is the ONLY actual diff between raw and suggested, and the edits list does not document it (its single entry is a no-op with raw == suggested), hence undocumented_rewrite=true. All Hebrew text, 'DC', the comma, and the truncated final 'נ' are byte-identical; the strokes support the retained reading, including the final 'נ' (a word beginning with a nun-compatible stroke follows the comma), and the repair correctly did not invent a completion for the visibly continuing text.",
+    "chunk_influence": "none"
+   }
+  ],
+  "overall_classification": "OTHER_PROTOCOL_CLEANUP",
+  "confidence": "high",
+  "notes": "Benign case. The suggested_text is the raw_text minus the {\"transcription\": \" JSON wrapper; the Hebrew payload is unchanged. The edits list is misleading (one identity no-op entry that documents nothing), so the wrapper removal is technically an undocumented rewrite, but it carries no fidelity or semantic risk. The transcription is truncated mid-word at 'נ' while the handwriting visibly continues (approx. 'נהיו יותר בהיר...'); the repair preserved the truncation rather than hallucinating a completion, which is the correct fidelity-preserving behavior. Crop path: C:\\Users\\ethan\\PycharmProjects\\sharon-project\\evaluation\\hebrew_bench_v2\\crops\\hl_e003_q1_r8__l1.png"
+ },
+ {
+  "item": "hl_e003_q2_r1__l1",
+  "image_readability": "Two-and-a-bit lines of blue-ink Hebrew RTL handwriting, well legible at 2x zoom. Line 1: \"כ[ל] [scribbled-out word] השפות שנקלטו קיבלו ערך 255\". Line 2: \"לעומת שאר הפיקסלים (הרוב)\" with a small interlinear insertion \"פיקסלי\" plus caret line between the lines. A third line is cut off at the bottom edge.",
+  "undocumented_rewrite": true,
+  "edit_findings": [
+   {
+    "raw_token": "הפי",
+    "suggested_token": "הפיקסלים",
+    "classification": "IMAGE_SUPPORTED_FIX",
+    "visual_evidence": "In line 2 after 'שאר', the strokes continue past ה-פ-י with a clear ק (descender below baseline), closed-loop ס, tall-ascender ל, a yod tick, and a closed final ם — the full word הפיקסלים is literally written, followed by '(הרוב)'. The raw OCR truncated mid-word; the repair completes exactly to the visible word boundary and does not add the following parenthetical that is also written.",
+    "chunk_influence": "'פיקסלים' appears in chunk 3cf3ad0841e0108c ('עלולים לתפוס יותר פיקסלים') and 'פיקסלים' in chunk 02697ab52036142c ('סכום פיקסלים 0'), but the completion is independently supported by the strokes."
+   },
+   {
+    "raw_token": "{\"transcription\": \"",
+    "suggested_token": "",
+    "classification": "OTHER_PROTOCOL_CLEANUP",
+    "visual_evidence": "Not an image question — removal of the JSON output-protocol wrapper prefix. This difference is not documented in the edits list, hence undocumented_rewrite=true.",
+    "chunk_influence": "none"
+   }
+  ],
+  "overall_classification": "IMAGE_SUPPORTED_FIX",
+  "confidence": "high",
+  "notes": "The word הפיקסלים is unambiguous in the crop; the OCR line was simply truncated mid-word. One tooling caveat: an initial off-band zoom render briefly showed content resembling a different item; regenerated full-width band crops from the verified file (1287x223) matched the original full-image read and were used for adjudication. The interlinear 'פיקסלי' insertion and the scribbled-out word in line 1 are student self-corrections, not part of the raw/suggested diff. Crop: C:\\Users\\ethan\\PycharmProjects\\sharon-project\\evaluation\\hebrew_bench_v2\\crops\\hl_e003_q2_r1__l1.png"
+ },
+ {
+  "item": "hl_e003_q2_r8__l1",
+  "image_readability": "Three lines of blue-ink Hebrew handwriting, RTL, with two student-scribbled deletions (a large crossed-out block in line 1 between \"לראות\" and \"שמספר\", and a small crossed-out word in line 2 before \"ימינה\"). Legibility is good after 2-3x zoom. Full visible text: \"ניתן לראות [מחוק] שמספר הפיקסלים / בכל עוצמה חוזר [מחוק] ימינה באותו מרחק שהיה / במקור.\"",
+  "undocumented_rewrite": true,
+  "edit_findings": [
+   {
+    "raw_token": "{\"transcription\": \"",
+    "suggested_token": "(removed)",
+    "classification": "OTHER_PROTOCOL_CLEANUP",
+    "visual_evidence": "JSON output-protocol wrapper; no corresponding strokes in the image. Not documented in the edits list.",
+    "chunk_influence": "none"
+   },
+   {
+    "raw_token": "ימינה באותו",
+    "suggested_token": "ל-1/2N ביחס ל-N המקורי, ולכן התמונה נראית כהה יותר.",
+    "classification": "SEMANTIC_CORRECTION_RISK",
+    "visual_evidence": "After 'חוזר' and a scribbled-out word, the strokes clearly spell 'ימינה' (yod-mem-yod-nun-he) then 'באותו' (bet-alef-vav-tav-vav), continuing 'מרחק שהיה' and, on the next line, 'במקור.' — i.e., the student wrote 'חוזר ימינה באותו מרחק שהיה במקור'. The crop contains no digits, no Latin 'N', no fraction '1/2N', and no strokes resembling 'נראית כהה יותר'. The raw reading is visibly correct (raw was merely truncated at 'באותו'); the suggested replacement has zero stroke support and overwrites the student's actual words with the course-correct explanation (intensities become 1/2N, image looks darker), plausibly masking a student misconception about the histogram 'returning rightward'.",
+    "chunk_influence": "chunk 391f4be8c08d807f — contains near-verbatim 'ביחס ל-N המקורי, קרה פה 1/2N במקום 1/N' and 'למה קיבלנו את התמונה כהה יותר', the exact source of the fabricated continuation."
+   }
+  ],
+  "overall_classification": "SEMANTIC_CORRECTION_RISK",
+  "confidence": "high",
+  "notes": "The manifest's edits list is incoherent and does not describe the actual diff: it lists edits whose raw tokens ('רואה', 'המקרה' twice, 'ביחס ל-N המקורי' as a no-op) do not occur in raw_text at all, while the real changes (wrapper removal, deletion of visibly-written 'ימינה', substitution of chunk-derived text '1/2N ... כהה יותר') are undocumented or misattributed — hence undocumented_rewrite=true. The correct completion of the truncated raw line, per the visible strokes, would have been 'ימינה באותו מרחק שהיה במקור.' — not the chunk-sourced sentence. Crop: C:\\\\Users\\\\ethan\\\\PycharmProjects\\\\sharon-project\\\\evaluation\\\\hebrew_bench_v2\\\\crops\\\\hl_e003_q2_r8__l1.png; zoomed crops saved in scratchpad (line2_zoom.png, line2_mid_zoom.png)."
+ },
+ {
+  "item": "hl_e004_q1_r2__l1",
+  "image_readability": "Single clean line of blue-ink handwriting, fully legible: Hebrew RTL 'התדר הנמוך נעלם בגלל' followed (at line-left) by English 'Highpass Filter'. All letters individually clear; English letter spacing is loose overall, which is the crux of the single edit.",
+  "undocumented_rewrite": false,
+  "edit_findings": [
+   {
+    "raw_token": "Highpass",
+    "suggested_token": "High pass",
+    "classification": "UNSUPPORTED_NORMALIZATION",
+    "visual_evidence": "Column-ink gap profile: the h|p junction gap is 7px and the h's exit tail stroke sweeps right into that gap toward the p stem, indicating continuity. Intra-word letter gaps elsewhere in the same phrase run 9-13px (within 'Hig', within 'Filter'), and the writer's genuine word boundary 'pass'|'Filter' is only 12px. The h|p junction is thus among the tightest junctions in the whole English phrase - tighter than intra-word gaps and tighter than the writer's own word gap. The strokes show 'Highpass' written without a space; the inserted space has no visual support and the edit reason itself admits 'context-only validation'. Benign (no meaning change), but image-unsupported.",
+    "chunk_influence": "'high pass' appears verbatim in chunk 9e04a7f26d53b2a5 (cited by the edit reason) and chunk c3833902c7a1079c; related 'Low pass filter'/'band pass' in chunks 3173524afd13ca0c and 087decec4cff35d4"
+   }
+  ],
+  "overall_classification": "UNSUPPORTED_NORMALIZATION",
+  "confidence": "medium",
+  "notes": "Only one edit, and it is a whitespace-only orthographic normalization of an English technical term ('Highpass' -> 'High pass'); no Hebrew content changed and no semantic movement toward course-correctness, so no SEMANTIC_CORRECTION_RISK. Quantitatively the strokes favor the raw one-word reading (h|p gap = 7px vs 12px at the writer's real word boundary), so the space insertion is chunk-driven normalization rather than an image-supported fix. Confidence medium rather than high only because handwriting spacing calls are inherently softer than letter-identity calls; the direction of the evidence is clear."
+ },
+ {
+  "item": "hl_e004_q1_r3__l1",
+  "image_readability": "Single line of Hebrew cursive handwriting (blue pen), 1287x86 px, fully legible under 4-6x magnification. No Latin script anywhere in the crop. Reading RTL the strokes support approximately \"בתמונה מחודדת יותר ו... על הצבעים\"; word 2 is a strong match for מחודדת (N-shaped מ, n-shaped ח, vertical ו, two 9-like ד loops, final ת), word 3 is clearly יותר, and the line ends in a final-ם with a long horizontal tail.",
+  "undocumented_rewrite": true,
+  "edit_findings": [
+   {
+    "raw_token": "sh-y-y-b-t",
+    "suggested_token": "shear",
+    "classification": "UNSUPPORTED_NORMALIZATION",
+    "visual_evidence": "The crop contains no Latin script at all, so neither 'sh-y-y-b-t' nor 'shear' is written. The word at the position the model was struggling with is Hebrew cursive matching מ-ח-ו-ד-ד-ת ('מחודדת', sharpened): N-shaped מ, n-shaped ח, vertical ו, two consecutive 9-like loops (double ד), final ת-glyph — the very reading the model's leaked commentary raised and rejected. Substituting the English course term 'shear' has zero stroke support; it converts reasoning-leak garbage into a fabricated technical term the student never wrote.",
+    "chunk_influence": "'shear' appears verbatim in chunk 24c8f00fe9c730fe (the shear-transform passage), which the edit's own reason cites"
+   },
+   {
+    "raw_token": ")",
+    "suggested_token": "",
+    "classification": "OTHER_PROTOCOL_CLEANUP",
+    "visual_evidence": "The stray closing parenthesis after 'sh-y-y-b-t' is part of the malformed OCR-output/reasoning artifact, not anything visible in the handwriting; its removal is protocol cleanup but was not documented in the edits list (the edit lists raw 'sh-y-y-b-t' without the paren), hence undocumented_rewrite=true.",
+    "chunk_influence": "none"
+   }
+  ],
+  "overall_classification": "UNSUPPORTED_NORMALIZATION",
+  "confidence": "high",
+  "notes": "Both raw_text and suggested_text are reasoning-leakage artifacts, not transcriptions: the retained tail \"- wait, it looks like מ-ח-ו-ד-ד-ת? No.\" is OCR-model self-dialogue that the repair left in place, and neither string transcribes the actual visible line (approx. \"בתמונה מחודדת יותר ו... על הצבעים\"). The correct repair would have been to transcribe the Hebrew line (the model's own discarded hypothesis מחודדת is what the strokes show), not to inject the chunk-sourced English term 'shear'. High confidence on the absence of Latin script (unambiguous); medium confidence on the exact reading of every Hebrew word, but word 2 = מחודדת and word 3 = יותר are solid."
+ },
+ {
+  "item": "hl_e004_q1_r3__l2",
+  "image_readability": "Single-line crop (1287x81 px), blue-ink Israeli cursive Hebrew written RTL with two Latin tokens (\"E\" and \"Brightness.\"). Legible after 5-7x upscale; every disputed region is clearly resolvable — this is not a marginal-legibility case.",
+  "undocumented_rewrite": true,
+  "edit_findings": [
+   {
+    "raw_token": "E",
+    "suggested_token": "Y",
+    "classification": "SEMANTIC_CORRECTION_RISK",
+    "visual_evidence": "The letter is an unambiguous capital E: a tall vertical stem with three distinct horizontal arms (long top bar, short middle bar, bottom bar), all attached on the right side of the stem. A Y would require a V-shaped fork at the top converging into a single descending stem — nothing of the sort is present; there is no fork and no stroke below the baseline. The student visibly wrote E. Replacing it with Y (the luminance channel in YIQ) converts what is plausibly a genuine student terminology error into the course-correct statement — the edit reason itself argues from course context ('Y refers to the luminance component... The student's original text makes sense if corrected to Y, but not E'), which is exactly meaning-moved-toward-correctness, not stroke evidence. E/Y is also not a plausible OCR confusion pair for handwriting this clear.",
+    "chunk_influence": "chunk 8cf8815b6847b718 (Y appears repeatedly: 'חישוב ה-Y', 'ערוץ ה-Y', the Y/I/Q blur experiment); the edit reason explicitly cites this chunk"
+   },
+   {
+    "raw_token": "שיהיו",
+    "suggested_token": ", יהיו",
+    "classification": "UNSUPPORTED_NORMALIZATION",
+    "visual_evidence": "UNDOCUMENTED edit (not in the edits list). The word following the E clearly begins with a cursive shin — the distinctive 'e'-shaped glyph — written attached as the first letter of the word, followed by strokes consistent with יהיו (curve of ה, verticals of ו, small yod ticks). The gap between the E and this word is blank white space: there is no comma mark anywhere. The rewrite deletes a visibly-written letter (ש) and invents punctuation not present in the strokes, apparently to make the sentence read more fluently after the E→Y substitution ('לא כמו Y, יהיו יותר').",
+    "chunk_influence": "none (יהיו is a generic Hebrew verb form, not a course term drawn from the chunks)"
+   },
+   {
+    "raw_token": "Brightness",
+    "suggested_token": "brightness",
+    "classification": "UNSUPPORTED_NORMALIZATION",
+    "visual_evidence": "UNDOCUMENTED edit (not in the edits list). The word in the image plainly begins with a capital B — large upper-case B with two bowls, distinctly taller than the following lowercase letters. Lowercasing it contradicts the visible strokes; it is a trivial style normalization, but still an image-contradicting silent change.",
+    "chunk_influence": "none (the English token 'brightness' does not appear in any chunk; the Hebrew equivalent בהירות appears in chunks 8cf8815b6847b718 and f68ddca67804ad6d, but the lowercase form is not sourced from them)"
+   }
+  ],
+  "overall_classification": "SEMANTIC_CORRECTION_RISK",
+  "confidence": "high",
+  "notes": "The documented E→Y edit is the concerning one: the handwriting shows a textbook capital E with three horizontal arms, so the substitution has zero visual support and is driven entirely by retrieved-chunk context (Y = luminance in the Y/I/Q discussion). In a graded-answer pipeline this silently repairs what may be the student's actual mistake (writing E instead of Y for the luminance channel), i.e. the repair moves the answer toward course-correctness. Additionally, the applied rewrite goes beyond the documented edits list: it drops the visible ש prefix from שיהיו, inserts a nonexistent comma, and lowercases a clearly capital Brightness — hence undocumented_rewrite=true. Raw text 'לא כמו E שיהיו יותר Brightness.' is what the strokes actually support, essentially verbatim."
+ },
+ {
+  "item": "hl_e005_q1_r2__l2",
+  "image_readability": "Single line of blue-ink Hebrew cursive, right-to-left, generally clean and legible. Main line clearly reads \"וגם הן נשים לב שהפועל מבוצע על תמונה הכי רעה -\". After the dash the writing drops below the baseline and continues with a longer word whose strokes (curl, two-stroke aleph, vav, samekh loop, yod tick, second aleph, final-nun descender) are most consistent with \"בגאוסיאן\"/\"גאוסיאן\", followed by one more short word at the far-left edge (possibly \"יותר\"), plus a small, faint superscript annotation above the line end. The tail words and superscript are only partially legible; the OCR truncated the tail as \"בבי\" and neither raw nor suggested transcribes the rest.",
+  "undocumented_rewrite": true,
+  "edit_findings": [
+   {
+    "raw_token": "{\"transcription\": \"",
+    "suggested_token": "",
+    "classification": "OTHER_PROTOCOL_CLEANUP",
+    "visual_evidence": "Not an image question: this is the model's own JSON output-protocol wrapper, not handwriting. No corresponding strokes exist in the crop.",
+    "chunk_influence": "none"
+   },
+   {
+    "raw_token": "בבי\\\"",
+    "suggested_token": "בבי\\",
+    "classification": "OTHER_PROTOCOL_CLEANUP",
+    "visual_evidence": "Removal of the trailing double-quote of a truncated JSON escape sequence (\\\"). The quote is a protocol artifact, not a stroke in the image. Note the cleanup is incomplete: a stray backslash remains in suggested_text, which also corresponds to no visible stroke. The underlying handwritten word after the dash visibly continues beyond 'בבי' (stroke sequence most consistent with 'בגאוסיאן'), but the repair made no attempt to complete or alter the Hebrew token itself.",
+    "chunk_influence": "none"
+   },
+   {
+    "raw_token": "בבי\\",
+    "suggested_token": "בבי\\",
+    "classification": "OTHER",
+    "visual_evidence": "The single documented edit in the manifest is a no-op (identical raw and suggested), so it documents no actual change; meanwhile the real changes (wrapper and quote stripping) are undocumented, hence undocumented_rewrite=true. Visually, 'בבי' is a questionable partial reading of the below-baseline word (first letters could be ב/ג with a two-stroke aleph rather than בבי), but since the text was left unchanged there is no fidelity change to adjudicate.",
+    "chunk_influence": "none"
+   }
+  ],
+  "overall_classification": "OTHER_PROTOCOL_CLEANUP",
+  "confidence": "high",
+  "notes": "All retained Hebrew text is identical between raw_text and suggested_text; the repair changed only protocol artifacts (JSON wrapper prefix and trailing quote). No semantic or normalization risk: the repair conservatively kept the truncated 'בבי' rather than completing the visibly longer handwritten word (likely 'בגאוסיאן'), and no suggested token was drawn from the retrieved chunks. Residual defects worth noting for the pipeline: (1) a stray backslash escape artifact survives in suggested_text; (2) the edits list documents only a no-op and omits the wrapper stripping; (3) the crop contains additional legible-ish content (tail word(s) and a superscript annotation) that neither transcription covers — an OCR completeness issue, not a fidelity issue."
+ },
+ {
+  "item": "hl_e006_q1_r1__l1",
+  "image_readability": "Small crop (1287x116 px) with two lines of blue-ink cursive Hebrew student handwriting. Line 1 (the audited line, RTL) begins at far right with clearly legible English \"motion blur\", then a Hebrew word ending in a clear exclamation mark (consistent with \"וטשטוש!\"), then a middle Hebrew word of ~4-6 cursive strokes (caret shape + two S-like shapes + two vertical strokes), then a tall ayin-lamed ligature consistent with \"על\", then strokes consistent with \"התמונה\", a clearly legible \"(echo\" with cursive strokes consistent with \"כמו)\" beside it, then \"רואים ברמה\" and two small truncated ticks at the far left consistent with a cut-off \"יד\". A second handwriting line is visible in the crop but is not covered by either raw_text or suggested_text. English tokens and punctuation are fully legible; the Hebrew cursive is legible only at the word-shape level — individual letters in the middle word cannot be reliably resolved at this resolution even at 6x magnification.",
+  "undocumented_rewrite": true,
+  "edit_findings": [
+   {
+    "raw_token": "{\"transcription\": \"",
+    "suggested_token": "",
+    "classification": "OTHER_PROTOCOL_CLEANUP",
+    "visual_evidence": "Not an image question: the removed token is a JSON output-protocol wrapper prefix, not handwriting. Programmatic diff confirms suggested_text equals raw_text with exactly this prefix stripped and no other character changed. This change is NOT documented in the edits list (the list contains only a no-op), hence undocumented_rewrite=true, though the change itself is benign.",
+    "chunk_influence": "none"
+   },
+   {
+    "raw_token": "הלוואי",
+    "suggested_token": "הלוואי",
+    "classification": "OTHER",
+    "visual_evidence": "No-op edit — raw and suggested are identical, so there is no difference to adjudicate; the repairer explicitly declined to change the word, which is the fidelity-preserving action. For the record, the strokes at this position (after the exclamation mark, before the על ligature) show a caret-like two-stroke shape, then two S-like shapes (one with a long under-sweeping tail), then two vertical strokes. A fast-cursive lamed does look like an S, and a reduced he/alef can look like a caret, so 'הלוואי' is one plausible reading, but the letter count/order does not cleanly match ה-ל-ו-ו-א-י at this resolution; the underlying OCR reading is itself uncertain. Since no text was changed, this carries no image-fidelity risk.",
+    "chunk_influence": "none — 'הלוואי' does not appear in any of this item's four retrieved chunks (9a9a87a297b2d94a, 3a93e8e526536bcb, 8488a890ce37b69c, e3957aa310784480); the phrase 'תופעת הלוואי' exists elsewhere in the corpus but not in this item's retrieval set"
+   }
+  ],
+  "overall_classification": "OTHER_PROTOCOL_CLEANUP",
+  "confidence": "high",
+  "notes": "Verified programmatically: suggested_text == raw_text minus the leading '{\"transcription\": \"' wrapper; zero substantive character changes. The single documented edit is a self-identical no-op on 'הלוואי'. undocumented_rewrite is set true only because the wrapper-prefix removal is a real string change not listed in the edits array; it is protocol cleanup, not a content rewrite. Image checks at 4x-6x zoom confirm the retained text is consistent with the visible strokes where legible ('motion blur', '!', 'על', '(echo', 'רואים ברמה', truncated 'יד'); the middle word 'הלוואי' is the least certain reading in both raw and suggested, but since it was preserved unchanged there is no repair-fidelity concern. Crop path: C:\\\\Users\\\\ethan\\\\PycharmProjects\\\\sharon-project\\\\evaluation\\\\hebrew_bench_v2\\\\crops\\\\hl_e006_q1_r1__l1.png"
+ },
+ {
+  "item": "hl_e006_q1_r2__l1",
+  "image_readability": "Two-line blue-ink Hebrew cursive crop (1287x122 px), legible at 3-4x zoom. Line 1: 'בהפעלת high pass לא ישאר תדרים [struck-through word] נמוכים'; Line 2: 'גם לא ישאר DC.'. Latin tokens 'high pass' and 'DC' are clear (the D's narrow loop superficially resembles 'P'). One word between 'תדרים' and 'נמוכים' is heavily scribbled out by the student; a small stray vertical mark with a dot appears right of 'גם'.",
+  "undocumented_rewrite": true,
+  "edit_findings": [
+   {
+    "raw_token": "{\"transcription\": \"",
+    "suggested_token": "",
+    "classification": "OTHER_PROTOCOL_CLEANUP",
+    "visual_evidence": "No such characters exist anywhere in the handwriting; this is the OCR model's JSON output wrapper, not image content. Not an image question.",
+    "chunk_influence": "none"
+   },
+   {
+    "raw_token": "\" (trailing quote after 'DC.')",
+    "suggested_token": "",
+    "classification": "OTHER_PROTOCOL_CLEANUP",
+    "visual_evidence": "The handwriting ends with 'DC' followed by a period; no quotation mark is written after it. The removed character is the closing quote of the JSON wrapper.",
+    "chunk_influence": "none"
+   }
+  ],
+  "overall_classification": "OTHER_PROTOCOL_CLEANUP",
+  "confidence": "high",
+  "notes": "Edits list is empty, so I diffed the strings myself: the ONLY change is removal of the {\"transcription\": \" prefix and trailing quote — hence undocumented_rewrite=true, but the rewrite is purely protocol artifact removal. The inner text is character-identical between raw and suggested, verified directly. Fidelity of the retained transcription checks out against the strokes: the student's grammatical error 'לא ישאר תדרים' was preserved (not normalized to יישארו); the struck-through word between תדרים and נמוכים is crossed out in ink and correctly omitted; 'DC' matches the strokes (a sloppy D resembling P, but DC is the visually and contextually supported reading and was not altered). No chunk-sourced vocabulary was introduced. No semantic movement toward course-correctness occurred."
+ },
+ {
+  "item": "hl_e007_q1_r1__l1",
+  "image_readability": "Single main line of cursive Hebrew in blue ink (a partial second line intrudes at the bottom of the crop), 1287x108 px. Moderately legible: the opening \"ניתן לראות כי בשכבות של\" is clear, the middle word cluster (transcribed \"הגלים הכחולים\") is loopy cursive and harder to resolve at pixel level, and the line ends clearly with \"שומרים על אותה\". Adequate for this audit since no Hebrew content was altered.",
+  "undocumented_rewrite": true,
+  "edit_findings": [
+   {
+    "raw_token": "{\"transcription\": \"",
+    "suggested_token": "",
+    "classification": "OTHER_PROTOCOL_CLEANUP",
+    "visual_evidence": "Not an image question: the removed token is a JSON output-protocol wrapper prefix, not handwriting. Programmatic diff confirms the 55-character Hebrew remainder after the wrapper is byte-identical to suggested_text, so no stroke adjudication applies.",
+    "chunk_influence": "none"
+   }
+  ],
+  "overall_classification": "OTHER_PROTOCOL_CLEANUP",
+  "confidence": "high",
+  "notes": "The edits list is empty, yet raw_text and suggested_text differ, so undocumented_rewrite is set per protocol. However, the sole undocumented change is stripping the leading {\"transcription\": \" JSON wrapper artifact; the Hebrew transcription itself (\"ניתן לראות כי בשכבות של הגלים הכחולים לא שומרים על אותה\") was preserved verbatim, verified by exact string comparison. No normalization, semantic correction, or chunk-driven substitution occurred; retrieved chunks (2436a2554d8fbf99, 5fd4bc3f3054bf1f, 8f57b4d690810190, e3957aa310784480) had no influence on the output text. Minor observation not affecting the audit: the word transcribed as \"לא\" before \"שומרים\" is difficult to confirm in the strokes at this resolution, but since raw and suggested agree there, it is outside the scope of edit classification."
+ }
+]
