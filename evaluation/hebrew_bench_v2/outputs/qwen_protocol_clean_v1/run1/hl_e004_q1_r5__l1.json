@@ -1,0 +1,11 @@
+{
+ "item": "hl_e004_q1_r5__l1",
+ "raw": "{\"transcription\": \"A'pail, 20696n WAVELETS Q x 913 (??)\"}",
+ "source_transcription": "A'pail, 20696n WAVELETS Q x 913 (??)",
+ "transcription": "A'pail, 20696n WAVELETS Q x 913 (??)",
+ "ops": [
+  "json_envelope_parse"
+ ],
+ "changed": false,
+ "error": null
+}

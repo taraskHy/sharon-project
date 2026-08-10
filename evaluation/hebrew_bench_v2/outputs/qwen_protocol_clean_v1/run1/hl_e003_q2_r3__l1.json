@@ -1,0 +1,11 @@
+{
+ "item": "hl_e003_q2_r3__l1",
+ "raw": "{\"transcription\": \"השעון והריכוזים הורכבים על ידי סוכן שוקי מוניטרי\"}",
+ "source_transcription": "השעון והריכוזים הורכבים על ידי סוכן שוקי מוניטרי",
+ "transcription": "השעון והריכוזים הורכבים על ידי סוכן שוקי מוניטרי",
+ "ops": [
+  "json_envelope_parse"
+ ],
+ "changed": false,
+ "error": null
+}

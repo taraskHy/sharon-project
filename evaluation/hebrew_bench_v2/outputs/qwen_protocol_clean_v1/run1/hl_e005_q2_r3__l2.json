@@ -1,0 +1,11 @@
+{
+ "item": "hl_e005_q2_r3__l2",
+ "raw": "{\"transcription\": \"(0.755) [?] ְּרַגִּיָהּ כְּלֵי הַמְּדִינָה\"}",
+ "source_transcription": "(0.755) [?] ְּרַגִּיָהּ כְּלֵי הַמְּדִינָה",
+ "transcription": "(0.755) [?] ְּרַגִּיָהּ כְּלֵי הַמְּדִינָה",
+ "ops": [
+  "json_envelope_parse"
+ ],
+ "changed": false,
+ "error": null
+}

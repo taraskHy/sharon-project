@@ -1,0 +1,11 @@
+{
+ "item": "hl_e004_q1_r3__l1",
+ "raw": "{\"transcription\": \"compare Nudity, just like C3H4,\"}",
+ "source_transcription": "compare Nudity, just like C3H4,",
+ "transcription": "compare Nudity, just like C3H4,",
+ "ops": [
+  "json_envelope_parse"
+ ],
+ "changed": false,
+ "error": null
+}

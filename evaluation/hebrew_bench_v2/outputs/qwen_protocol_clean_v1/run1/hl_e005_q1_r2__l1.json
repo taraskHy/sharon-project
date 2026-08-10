@@ -1,0 +1,11 @@
+{
+ "item": "hl_e005_q1_r2__l1",
+ "raw": "{\"transcription\": \"כשנוצרת אינטראקציה בין שני גורמים שונים\"}",
+ "source_transcription": "כשנוצרת אינטראקציה בין שני גורמים שונים",
+ "transcription": "כשנוצרת אינטראקציה בין שני גורמים שונים",
+ "ops": [
+  "json_envelope_parse"
+ ],
+ "changed": false,
+ "error": null
+}

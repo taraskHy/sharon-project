@@ -1,0 +1,11 @@
+{
+ "item": "hl_e005_q2_r5__l2",
+ "raw": "{\"transcription\": \"הַשְׁאָרִיָּה הַמְּחֻלֶּת בְּסֵפֶר הַכֹּרְסָה\"}",
+ "source_transcription": "הַשְׁאָרִיָּה הַמְּחֻלֶּת בְּסֵפֶר הַכֹּרְסָה",
+ "transcription": "הַשְׁאָרִיָּה הַמְּחֻלֶּת בְּסֵפֶר הַכֹּרְסָה",
+ "ops": [
+  "json_envelope_parse"
+ ],
+ "changed": false,
+ "error": null
+}

@@ -1,0 +1,11 @@
+{
+ "item": "hc_e002_q1_r4",
+ "raw": "{\"transcription\": \"הַמְּגִדּוֹן הָיָה בְּרֵעֵי הַכְּתֻבִים\"}",
+ "source_transcription": "הַמְּגִדּוֹן הָיָה בְּרֵעֵי הַכְּתֻבִים",
+ "transcription": "הַמְּגִדּוֹן הָיָה בְּרֵעֵי הַכְּתֻבִים",
+ "ops": [
+  "json_envelope_parse"
+ ],
+ "changed": false,
+ "error": null
+}

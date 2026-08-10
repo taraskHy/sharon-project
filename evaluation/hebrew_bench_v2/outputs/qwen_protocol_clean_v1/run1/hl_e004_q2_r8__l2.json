@@ -1,0 +1,11 @@
+{
+ "item": "hl_e004_q2_r8__l2",
+ "raw": "{\"transcription\": \"C51 C2,075,000\"}",
+ "source_transcription": "C51 C2,075,000",
+ "transcription": "C51 C2,075,000",
+ "ops": [
+  "json_envelope_parse"
+ ],
+ "changed": false,
+ "error": null
+}

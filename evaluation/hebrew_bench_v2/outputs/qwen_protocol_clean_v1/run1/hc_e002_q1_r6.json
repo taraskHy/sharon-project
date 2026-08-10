@@ -1,0 +1,11 @@
+{
+ "item": "hc_e002_q1_r6",
+ "raw": "{\"transcription\": \"שְׁלֹמֹה הַמָּלֵךְ עַד שְׁנֵי קְרִיָּה\"}",
+ "source_transcription": "שְׁלֹמֹה הַמָּלֵךְ עַד שְׁנֵי קְרִיָּה",
+ "transcription": "שְׁלֹמֹה הַמָּלֵךְ עַד שְׁנֵי קְרִיָּה",
+ "ops": [
+  "json_envelope_parse"
+ ],
+ "changed": false,
+ "error": null
+}

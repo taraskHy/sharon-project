@@ -1,0 +1,11 @@
+{
+ "item": "hl_e006_q2_r1__l1",
+ "raw": "{\"transcription\": \"Canny edge detection using Canny algorithm, σ = 1.2, θ = 0.5, and Canny threshold values are 1 and 3.\"}",
+ "source_transcription": "Canny edge detection using Canny algorithm, σ = 1.2, θ = 0.5, and Canny threshold values are 1 and 3.",
+ "transcription": "Canny edge detection using Canny algorithm, σ = 1.2, θ = 0.5, and Canny threshold values are 1 and 3.",
+ "ops": [
+  "json_envelope_parse"
+ ],
+ "changed": false,
+ "error": null
+}

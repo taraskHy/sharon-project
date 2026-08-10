@@ -1,0 +1,11 @@
+{
+ "item": "hl_e004_q2_r4__l2",
+ "raw": "{\"transcription\": \"c) 50% of the students are female, Quantization\"}",
+ "source_transcription": "c) 50% of the students are female, Quantization",
+ "transcription": "c) 50% of the students are female, Quantization",
+ "ops": [
+  "json_envelope_parse"
+ ],
+ "changed": false,
+ "error": null
+}

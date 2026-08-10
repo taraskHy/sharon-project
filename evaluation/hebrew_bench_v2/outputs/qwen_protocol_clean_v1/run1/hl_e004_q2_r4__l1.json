@@ -1,0 +1,11 @@
+{
+ "item": "hl_e004_q2_r4__l1",
+ "raw": "{\"transcription\": \"Uniformly random using Optimal ≥ CDPJ\"}",
+ "source_transcription": "Uniformly random using Optimal ≥ CDPJ",
+ "transcription": "Uniformly random using Optimal ≥ CDPJ",
+ "ops": [
+  "json_envelope_parse"
+ ],
+ "changed": false,
+ "error": null
+}

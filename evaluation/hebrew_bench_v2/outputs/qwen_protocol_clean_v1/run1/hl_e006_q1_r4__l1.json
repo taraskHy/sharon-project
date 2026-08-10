@@ -1,0 +1,11 @@
+{
+ "item": "hl_e006_q1_r4__l1",
+ "raw": "{\"transcription\": \"H . אינטגרל של f(x) על [a,b] = ?\"}",
+ "source_transcription": "H . אינטגרל של f(x) על [a,b] = ?",
+ "transcription": "H . אינטגרל של f(x) על [a,b] = ?",
+ "ops": [
+  "json_envelope_parse"
+ ],
+ "changed": false,
+ "error": null
+}

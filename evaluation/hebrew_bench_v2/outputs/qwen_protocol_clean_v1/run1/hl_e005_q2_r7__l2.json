@@ -1,0 +1,11 @@
+{
+ "item": "hl_e005_q2_r7__l2",
+ "raw": "{\"transcription\": \"gray-levels 0-255, es cuadrado de la imagen\"}",
+ "source_transcription": "gray-levels 0-255, es cuadrado de la imagen",
+ "transcription": "gray-levels 0-255, es cuadrado de la imagen",
+ "ops": [
+  "json_envelope_parse"
+ ],
+ "changed": false,
+ "error": null
+}

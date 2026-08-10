@@ -1,0 +1,11 @@
+{
+ "item": "hl_e006_q2_r6__l1",
+ "raw": "{\"transcription\": \"לְרַחֲמֵי הָאֱלֹהִים 1,000 ג' 6.25 mg\"}",
+ "source_transcription": "לְרַחֲמֵי הָאֱלֹהִים 1,000 ג' 6.25 mg",
+ "transcription": "לְרַחֲמֵי הָאֱלֹהִים 1,000 ג' 6.25 mg",
+ "ops": [
+  "json_envelope_parse"
+ ],
+ "changed": false,
+ "error": null
+}

@@ -1,0 +1,11 @@
+{
+ "item": "hc_e002_q1_r5",
+ "raw": "{\"transcription\": \"NCHT 231 x 075 הַקְרָעִים, 1916\"}",
+ "source_transcription": "NCHT 231 x 075 הַקְרָעִים, 1916",
+ "transcription": "NCHT 231 x 075 הַקְרָעִים, 1916",
+ "ops": [
+  "json_envelope_parse"
+ ],
+ "changed": false,
+ "error": null
+}

@@ -1,0 +1,11 @@
+{
+ "item": "hl_e006_q2_r4__l1",
+ "raw": "{\"transcription\": \"ב-Quantization\\nUniform 0,5 -4,5\\nx→I D→K\"}",
+ "source_transcription": "ב-Quantization\nUniform 0,5 -4,5\nx→I D→K",
+ "transcription": "ב-Quantization\nUniform 0,5 -4,5\nx→I D→K",
+ "ops": [
+  "json_envelope_parse"
+ ],
+ "changed": false,
+ "error": null
+}

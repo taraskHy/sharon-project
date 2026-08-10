@@ -1,0 +1,11 @@
+{
+ "item": "hl_e005_q1_r7__l1",
+ "raw": "{\"transcription\": \"היקרים כהן עוזר אסף פיקס, סרק 700 גל נבמרג\"}",
+ "source_transcription": "היקרים כהן עוזר אסף פיקס, סרק 700 גל נבמרג",
+ "transcription": "היקרים כהן עוזר אסף פיקס, סרק 700 גל נבמרג",
+ "ops": [
+  "json_envelope_parse"
+ ],
+ "changed": false,
+ "error": null
+}

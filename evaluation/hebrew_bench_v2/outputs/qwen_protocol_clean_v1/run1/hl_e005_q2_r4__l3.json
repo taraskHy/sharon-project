@@ -1,0 +1,11 @@
+{
+ "item": "hl_e005_q2_r4__l3",
+ "raw": "{\"transcription\": \"החוקה שכוללת את ה-100% ו-25% של גלויים (grey-levels)\"}",
+ "source_transcription": "החוקה שכוללת את ה-100% ו-25% של גלויים (grey-levels)",
+ "transcription": "החוקה שכוללת את ה-100% ו-25% של גלויים (grey-levels)",
+ "ops": [
+  "json_envelope_parse"
+ ],
+ "changed": false,
+ "error": null
+}

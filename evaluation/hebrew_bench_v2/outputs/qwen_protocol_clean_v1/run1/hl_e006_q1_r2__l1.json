@@ -1,0 +1,11 @@
+{
+ "item": "hl_e006_q1_r2__l1",
+ "raw": "{\"transcription\": \"כְּלִי הַמָּרֵא וְהַמָּרֵא כְּלִי הַמָּרֵא וְהַמָּרֵא high pressure and high velocity . PC = 2k v' k·δ·ρl!\"}",
+ "source_transcription": "כְּלִי הַמָּרֵא וְהַמָּרֵא כְּלִי הַמָּרֵא וְהַמָּרֵא high pressure and high velocity . PC = 2k v' k·δ·ρl!",
+ "transcription": "כְּלִי הַמָּרֵא וְהַמָּרֵא כְּלִי הַמָּרֵא וְהַמָּרֵא high pressure and high velocity . PC = 2k v' k·δ·ρl!",
+ "ops": [
+  "json_envelope_parse"
+ ],
+ "changed": false,
+ "error": null
+}

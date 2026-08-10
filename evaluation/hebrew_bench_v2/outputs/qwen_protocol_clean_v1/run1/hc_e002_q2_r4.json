@@ -1,0 +1,11 @@
+{
+ "item": "hc_e002_q2_r4",
+ "raw": "{\"transcription\": \"דיברנו בפנינו, נגזרת ממנה, ונקבעה על ידי עורך הדין\"}",
+ "source_transcription": "דיברנו בפנינו, נגזרת ממנה, ונקבעה על ידי עורך הדין",
+ "transcription": "דיברנו בפנינו, נגזרת ממנה, ונקבעה על ידי עורך הדין",
+ "ops": [
+  "json_envelope_parse"
+ ],
+ "changed": false,
+ "error": null
+}

@@ -1,0 +1,11 @@
+{
+ "item": "hc_e002_q2_r8",
+ "raw": "{\"transcription\": \"נְדָבִי 2x8 אֲפַרְסְטְרֵי 6x9 אֲפַרְסְטְרֵי\"}",
+ "source_transcription": "נְדָבִי 2x8 אֲפַרְסְטְרֵי 6x9 אֲפַרְסְטְרֵי",
+ "transcription": "נְדָבִי 2x8 אֲפַרְסְטְרֵי 6x9 אֲפַרְסְטְרֵי",
+ "ops": [
+  "json_envelope_parse"
+ ],
+ "changed": false,
+ "error": null
+}

@@ -1,0 +1,11 @@
+{
+ "item": "hl_e004_q2_r8__l1",
+ "raw": "{\"transcription\": \"ski Echo 135 מילון גנוב\"}",
+ "source_transcription": "ski Echo 135 מילון גנוב",
+ "transcription": "ski Echo 135 מילון גנוב",
+ "ops": [
+  "json_envelope_parse"
+ ],
+ "changed": false,
+ "error": null
+}

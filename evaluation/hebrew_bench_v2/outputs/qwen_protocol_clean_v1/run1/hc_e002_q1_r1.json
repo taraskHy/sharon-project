@@ -1,0 +1,11 @@
+{
+ "item": "hc_e002_q1_r1",
+ "raw": "{\"transcription\": \"נראה שזו תוצאה של אינטראקציה\"}",
+ "source_transcription": "נראה שזו תוצאה של אינטראקציה",
+ "transcription": "נראה שזו תוצאה של אינטראקציה",
+ "ops": [
+  "json_envelope_parse"
+ ],
+ "changed": false,
+ "error": null
+}

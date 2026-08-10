@@ -1,0 +1,11 @@
+{
+ "item": "hl_e005_q1_r5__l2",
+ "raw": "{\"transcription\": \"C1042 2.11)5. (x - 7.3) -5(1'01-2 (87 16017)\"}",
+ "source_transcription": "C1042 2.11)5. (x - 7.3) -5(1'01-2 (87 16017)",
+ "transcription": "C1042 2.11)5. (x - 7.3) -5(1'01-2 (87 16017)",
+ "ops": [
+  "json_envelope_parse"
+ ],
+ "changed": false,
+ "error": null
+}

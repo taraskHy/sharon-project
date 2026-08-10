@@ -1,0 +1,11 @@
+{
+ "item": "hl_e004_q1_r2__l1",
+ "raw": "{\"transcription\": \"Highpass Filter συντελεστής παράγοντα ισχύος\"}",
+ "source_transcription": "Highpass Filter συντελεστής παράγοντα ισχύος",
+ "transcription": "Highpass Filter συντελεστής παράγοντα ισχύος",
+ "ops": [
+  "json_envelope_parse"
+ ],
+ "changed": false,
+ "error": null
+}

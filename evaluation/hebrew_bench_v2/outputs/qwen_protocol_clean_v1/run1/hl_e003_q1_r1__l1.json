@@ -1,0 +1,11 @@
+{
+ "item": "hl_e003_q1_r1__l1",
+ "raw": "{\"transcription\": \"המגמה הלאויה (Celsius) היא מידה של טמפרטורה\"}",
+ "source_transcription": "המגמה הלאויה (Celsius) היא מידה של טמפרטורה",
+ "transcription": "המגמה הלאויה (Celsius) היא מידה של טמפרטורה",
+ "ops": [
+  "json_envelope_parse"
+ ],
+ "changed": false,
+ "error": null
+}

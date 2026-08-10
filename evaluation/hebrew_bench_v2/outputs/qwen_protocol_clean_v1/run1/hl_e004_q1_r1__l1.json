@@ -1,0 +1,11 @@
+{
+ "item": "hl_e004_q1_r1__l1",
+ "raw": "{\"transcription\": \"ספונטני אופרטור WAVELETS\"}",
+ "source_transcription": "ספונטני אופרטור WAVELETS",
+ "transcription": "ספונטני אופרטור WAVELETS",
+ "ops": [
+  "json_envelope_parse"
+ ],
+ "changed": false,
+ "error": null
+}

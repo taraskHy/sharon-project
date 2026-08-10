@@ -1,0 +1,11 @@
+{
+ "item": "hl_e005_q2_r1__l1",
+ "raw": "{\"transcription\": \"כְּלִי הַמָּסְפּוֹר, 0.2 threshold) (Cyclic, σ\"}",
+ "source_transcription": "כְּלִי הַמָּסְפּוֹר, 0.2 threshold) (Cyclic, σ",
+ "transcription": "כְּלִי הַמָּסְפּוֹר, 0.2 threshold) (Cyclic, σ",
+ "ops": [
+  "json_envelope_parse"
+ ],
+ "changed": false,
+ "error": null
+}

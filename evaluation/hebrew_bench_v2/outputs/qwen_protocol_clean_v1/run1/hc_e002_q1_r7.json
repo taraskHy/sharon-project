@@ -1,0 +1,11 @@
+{
+ "item": "hc_e002_q1_r7",
+ "raw": "{\"transcription\": \"סף הירשון ערך תקף-ה-מקרה. סף הירשון ערך תקף-ה-מקרה.\"}",
+ "source_transcription": "סף הירשון ערך תקף-ה-מקרה. סף הירשון ערך תקף-ה-מקרה.",
+ "transcription": "סף הירשון ערך תקף-ה-מקרה. סף הירשון ערך תקף-ה-מקרה.",
+ "ops": [
+  "json_envelope_parse"
+ ],
+ "changed": false,
+ "error": null
+}

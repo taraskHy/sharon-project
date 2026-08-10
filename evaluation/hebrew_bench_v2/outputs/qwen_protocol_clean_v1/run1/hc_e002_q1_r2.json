@@ -1,0 +1,11 @@
+{
+ "item": "hc_e002_q1_r2",
+ "raw": "{\"transcription\": \"השאלה נמצאת בחלק הפתוח של המבחן\"}",
+ "source_transcription": "השאלה נמצאת בחלק הפתוח של המבחן",
+ "transcription": "השאלה נמצאת בחלק הפתוח של המבחן",
+ "ops": [
+  "json_envelope_parse"
+ ],
+ "changed": false,
+ "error": null
+}

@@ -1,0 +1,11 @@
+{
+ "item": "hl_e004_q1_r8__l1",
+ "raw": "{\"transcription\": \"c(x,y) ? ccc y' , g'z}\"}",
+ "source_transcription": "c(x,y) ? ccc y' , g'z}",
+ "transcription": "c(x,y) ? ccc y' , g'z}",
+ "ops": [
+  "json_envelope_parse"
+ ],
+ "changed": false,
+ "error": null
+}

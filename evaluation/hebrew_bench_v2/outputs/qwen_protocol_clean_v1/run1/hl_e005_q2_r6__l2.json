@@ -1,0 +1,11 @@
+{
+ "item": "hl_e005_q2_r6__l2",
+ "raw": "{\"transcription\": \"השכלה והערכה של הוראה ב-1250 מ\" }",
+ "source_transcription": "השכלה והערכה של הוראה ב-1250 מ",
+ "transcription": "השכלה והערכה של הוראה ב-1250 מ",
+ "ops": [
+  "json_envelope_parse"
+ ],
+ "changed": false,
+ "error": null
+}

@@ -1,0 +1,11 @@
+{
+ "item": "hl_e004_q2_r1__l2",
+ "raw": "{\"transcription\": \"2558 גלוי פורסם עולם\"}",
+ "source_transcription": "2558 גלוי פורסם עולם",
+ "transcription": "2558 גלוי פורסם עולם",
+ "ops": [
+  "json_envelope_parse"
+ ],
+ "changed": false,
+ "error": null
+}

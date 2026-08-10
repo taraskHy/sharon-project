@@ -1,0 +1,11 @@
+{
+ "item": "hl_e005_q1_r1__l2",
+ "raw": "{\"transcription\": \"y-ג (15) x ק'ר (אַף אָמְרִי) כּוֹלֵי אֲנִיִּים\"}",
+ "source_transcription": "y-ג (15) x ק'ר (אַף אָמְרִי) כּוֹלֵי אֲנִיִּים",
+ "transcription": "y-ג (15) x ק'ר (אַף אָמְרִי) כּוֹלֵי אֲנִיִּים",
+ "ops": [
+  "json_envelope_parse"
+ ],
+ "changed": false,
+ "error": null
+}

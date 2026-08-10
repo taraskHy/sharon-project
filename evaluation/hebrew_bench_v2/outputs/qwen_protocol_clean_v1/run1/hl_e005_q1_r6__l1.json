@@ -1,0 +1,11 @@
+{
+ "item": "hl_e005_q1_r6__l1",
+ "raw": "{\"transcription\": \"כְּלָבִי 2.15.16. (א) כְּלָבִי 2.15.16. (ב)\"}",
+ "source_transcription": "כְּלָבִי 2.15.16. (א) כְּלָבִי 2.15.16. (ב)",
+ "transcription": "כְּלָבִי 2.15.16. (א) כְּלָבִי 2.15.16. (ב)",
+ "ops": [
+  "json_envelope_parse"
+ ],
+ "changed": false,
+ "error": null
+}

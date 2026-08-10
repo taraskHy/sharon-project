@@ -1,0 +1,11 @@
+{
+ "item": "hl_e005_q2_r5__l3",
+ "raw": "{\"transcription\": \"c_{max}-a _{i}^{n} | \\frac{\\text{השכלה}}{\\text{השכלה}} e.g., \\text{השכלה}\"}",
+ "source_transcription": "c_{max}-a _{i}^{n} | \frac{\text{השכלה}}{\text{השכלה}} e.g., \text{השכלה}",
+ "transcription": "c_{max}-a _{i}^{n} | \frac{\text{השכלה}}{\text{השכלה}} e.g., \text{השכלה}",
+ "ops": [
+  "json_envelope_parse"
+ ],
+ "changed": false,
+ "error": null
+}

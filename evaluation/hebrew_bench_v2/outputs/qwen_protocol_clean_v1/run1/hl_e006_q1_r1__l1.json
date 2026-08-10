@@ -1,0 +1,11 @@
+{
+ "item": "hl_e006_q1_r1__l1",
+ "raw": "{\"transcription\": \"Motion blur ! נקודות בודדות (C(ho 170) הגדלתה מרחוק\"}",
+ "source_transcription": "Motion blur ! נקודות בודדות (C(ho 170) הגדלתה מרחוק",
+ "transcription": "Motion blur ! נקודות בודדות (C(ho 170) הגדלתה מרחוק",
+ "ops": [
+  "json_envelope_parse"
+ ],
+ "changed": false,
+ "error": null
+}

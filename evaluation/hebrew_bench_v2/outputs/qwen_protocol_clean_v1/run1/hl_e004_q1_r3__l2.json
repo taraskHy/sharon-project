@@ -1,0 +1,11 @@
+{
+ "item": "hl_e004_q1_r3__l2",
+ "raw": "{\"transcription\": \"Brightness 750 E 12 > 1.8\"}",
+ "source_transcription": "Brightness 750 E 12 > 1.8",
+ "transcription": "Brightness 750 E 12 > 1.8",
+ "ops": [
+  "json_envelope_parse"
+ ],
+ "changed": false,
+ "error": null
+}

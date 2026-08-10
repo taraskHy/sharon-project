@@ -1,0 +1,11 @@
+{
+ "item": "hl_e004_q2_r3__l1",
+ "raw": "{\"transcription\": \"השאלה היא: מהו הערך של x, אם 2x = 10?\"}",
+ "source_transcription": "השאלה היא: מהו הערך של x, אם 2x = 10?",
+ "transcription": "השאלה היא: מהו הערך של x, אם 2x = 10?",
+ "ops": [
+  "json_envelope_parse"
+ ],
+ "changed": false,
+ "error": null
+}

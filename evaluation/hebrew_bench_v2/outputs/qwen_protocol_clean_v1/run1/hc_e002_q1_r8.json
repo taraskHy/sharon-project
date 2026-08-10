@@ -1,0 +1,11 @@
+{
+ "item": "hc_e002_q1_r8",
+ "raw": "{\"transcription\": \"השנה הורכבה על ידי עוזר המנהל, ד\" }",
+ "source_transcription": "השנה הורכבה על ידי עוזר המנהל, ד",
+ "transcription": "השנה הורכבה על ידי עוזר המנהל, ד",
+ "ops": [
+  "json_envelope_parse"
+ ],
+ "changed": false,
+ "error": null
+}

@@ -1,0 +1,11 @@
+{
+ "item": "hl_e006_q1_r6__l1",
+ "raw": "{\"transcription\": \"• AUGUI GN א'ג'ן אָדְוּסִקְיַיִם וְאֵלֶּה מְעַרְפִּים\"}",
+ "source_transcription": "• AUGUI GN א'ג'ן אָדְוּסִקְיַיִם וְאֵלֶּה מְעַרְפִּים",
+ "transcription": "• AUGUI GN א'ג'ן אָדְוּסִקְיַיִם וְאֵלֶּה מְעַרְפִּים",
+ "ops": [
+  "json_envelope_parse"
+ ],
+ "changed": false,
+ "error": null
+}

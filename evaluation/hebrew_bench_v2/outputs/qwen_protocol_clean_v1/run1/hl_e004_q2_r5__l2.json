@@ -1,0 +1,11 @@
+{
+ "item": "hl_e004_q2_r5__l2",
+ "raw": "{\"transcription\": \"[unreadable]\"}",
+ "source_transcription": "[unreadable]",
+ "transcription": "[unreadable]",
+ "ops": [
+  "json_envelope_parse"
+ ],
+ "changed": false,
+ "error": null
+}

@@ -1,0 +1,11 @@
+{
+ "item": "hl_e005_q2_r8__l1",
+ "raw": "{\"transcription\": \"0.1 C5 0.46927 1.21 2.8 3.1 5.2 6.5 7.8\"}",
+ "source_transcription": "0.1 C5 0.46927 1.21 2.8 3.1 5.2 6.5 7.8",
+ "transcription": "0.1 C5 0.46927 1.21 2.8 3.1 5.2 6.5 7.8",
+ "ops": [
+  "json_envelope_parse"
+ ],
+ "changed": false,
+ "error": null
+}

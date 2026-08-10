@@ -1,0 +1,11 @@
+{
+ "item": "hl_e006_q1_r3__l1",
+ "raw": "{\"transcription\": \"קְרָבִי תְעוּרָה רַחֲמֵי ٢٠١٣ בְּשַׁעַר הַכֹּל\"}",
+ "source_transcription": "קְרָבִי תְעוּרָה רַחֲמֵי ٢٠١٣ בְּשַׁעַר הַכֹּל",
+ "transcription": "קְרָבִי תְעוּרָה רַחֲמֵי ٢٠١٣ בְּשַׁעַר הַכֹּל",
+ "ops": [
+  "json_envelope_parse"
+ ],
+ "changed": false,
+ "error": null
+}

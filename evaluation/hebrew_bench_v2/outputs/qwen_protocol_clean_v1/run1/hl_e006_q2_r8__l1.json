@@ -1,0 +1,11 @@
+{
+ "item": "hl_e006_q2_r8__l1",
+ "raw": "{\"transcription\": \"הכפיה על הוראת 2% - 5% מ- 700N ל- 200N\"}",
+ "source_transcription": "הכפיה על הוראת 2% - 5% מ- 700N ל- 200N",
+ "transcription": "הכפיה על הוראת 2% - 5% מ- 700N ל- 200N",
+ "ops": [
+  "json_envelope_parse"
+ ],
+ "changed": false,
+ "error": null
+}

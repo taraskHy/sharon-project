@@ -1,0 +1,11 @@
+{
+ "item": "hl_e004_q1_r6__l2",
+ "raw": "{\"transcription\": \"C \\\\subsetneq A_1 \\\\times A_2\"}",
+ "source_transcription": "C \\subsetneq A_1 \\times A_2",
+ "transcription": "C \\subsetneq A_1 \\times A_2",
+ "ops": [
+  "json_envelope_parse"
+ ],
+ "changed": false,
+ "error": null
+}

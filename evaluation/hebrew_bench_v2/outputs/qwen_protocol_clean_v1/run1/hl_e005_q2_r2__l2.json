@@ -1,0 +1,11 @@
+{
+ "item": "hl_e005_q2_r2__l2",
+ "raw": "{\"transcription\": \"n > 0.8 δ,07 threshholding σελχ ουσ'γ/δειος\"}",
+ "source_transcription": "n > 0.8 δ,07 threshholding σελχ ουσ'γ/δειος",
+ "transcription": "n > 0.8 δ,07 threshholding σελχ ουσ'γ/δειος",
+ "ops": [
+  "json_envelope_parse"
+ ],
+ "changed": false,
+ "error": null
+}

@@ -1,0 +1,11 @@
+{
+ "item": "hl_e005_q2_r1__l2",
+ "raw": "{\"transcription\": \"איך קוראים ל-80% מההפקה? E [c]\"}",
+ "source_transcription": "איך קוראים ל-80% מההפקה? E [c]",
+ "transcription": "איך קוראים ל-80% מההפקה? E [c]",
+ "ops": [
+  "json_envelope_parse"
+ ],
+ "changed": false,
+ "error": null
+}

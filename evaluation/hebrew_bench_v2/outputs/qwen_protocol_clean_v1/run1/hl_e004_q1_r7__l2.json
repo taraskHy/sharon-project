@@ -1,0 +1,11 @@
+{
+ "item": "hl_e004_q1_r7__l2",
+ "raw": "{\"transcription\": \"ספונטני אינטראקציה\"}",
+ "source_transcription": "ספונטני אינטראקציה",
+ "transcription": "ספונטני אינטראקציה",
+ "ops": [
+  "json_envelope_parse"
+ ],
+ "changed": false,
+ "error": null
+}

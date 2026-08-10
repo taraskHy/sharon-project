@@ -1,0 +1,11 @@
+{
+ "item": "hl_e004_q1_r6__l1",
+ "raw": "{\"transcription\": \"ספונטני reception WAVELETS\"}",
+ "source_transcription": "ספונטני reception WAVELETS",
+ "transcription": "ספונטני reception WAVELETS",
+ "ops": [
+  "json_envelope_parse"
+ ],
+ "changed": false,
+ "error": null
+}

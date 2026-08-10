@@ -1,0 +1,11 @@
+{
+ "item": "hc_e002_q2_r2",
+ "raw": "{\"transcription\": \"was telephoned to, is an idea my book was about pain\"}",
+ "source_transcription": "was telephoned to, is an idea my book was about pain",
+ "transcription": "was telephoned to, is an idea my book was about pain",
+ "ops": [
+  "json_envelope_parse"
+ ],
+ "changed": false,
+ "error": null
+}

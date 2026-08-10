@@ -1,0 +1,11 @@
+{
+ "item": "hl_e006_q1_r5__l1",
+ "raw": "{\"transcription\": \"conjugation cell x y s near c.c.ll.\"}",
+ "source_transcription": "conjugation cell x y s near c.c.ll.",
+ "transcription": "conjugation cell x y s near c.c.ll.",
+ "ops": [
+  "json_envelope_parse"
+ ],
+ "changed": false,
+ "error": null
+}

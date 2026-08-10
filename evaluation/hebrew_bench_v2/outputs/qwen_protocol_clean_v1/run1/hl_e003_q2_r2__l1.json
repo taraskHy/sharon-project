@@ -1,0 +1,11 @@
+{
+ "item": "hl_e003_q2_r2__l1",
+ "raw": "{\"transcription\": \"העתקת ה-255 ערך ב-100%\"}",
+ "source_transcription": "העתקת ה-255 ערך ב-100%",
+ "transcription": "העתקת ה-255 ערך ב-100%",
+ "ops": [
+  "json_envelope_parse"
+ ],
+ "changed": false,
+ "error": null
+}

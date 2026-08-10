@@ -1,0 +1,11 @@
+{
+ "item": "hl_e004_q2_r6__l2",
+ "raw": "{\"transcription\": \"x 23.6 x CaO, n = 1.57 g / (18.016)\"}",
+ "source_transcription": "x 23.6 x CaO, n = 1.57 g / (18.016)",
+ "transcription": "x 23.6 x CaO, n = 1.57 g / (18.016)",
+ "ops": [
+  "json_envelope_parse"
+ ],
+ "changed": false,
+ "error": null
+}

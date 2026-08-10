@@ -1,0 +1,11 @@
+{
+ "item": "hl_e004_q2_r2__l1",
+ "raw": "{\"transcription\": \"Canny 255 - .C pfi 20910 יד רכיב עוזר\"}",
+ "source_transcription": "Canny 255 - .C pfi 20910 יד רכיב עוזר",
+ "transcription": "Canny 255 - .C pfi 20910 יד רכיב עוזר",
+ "ops": [
+  "json_envelope_parse"
+ ],
+ "changed": false,
+ "error": null
+}

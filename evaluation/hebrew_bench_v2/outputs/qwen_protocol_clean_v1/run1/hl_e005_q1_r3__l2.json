@@ -1,0 +1,11 @@
+{
+ "item": "hl_e005_q1_r3__l2",
+ "raw": "{\"transcription\": \"COS ωt high-frequency\"}",
+ "source_transcription": "COS ωt high-frequency",
+ "transcription": "COS ωt high-frequency",
+ "ops": [
+  "json_envelope_parse"
+ ],
+ "changed": false,
+ "error": null
+}
