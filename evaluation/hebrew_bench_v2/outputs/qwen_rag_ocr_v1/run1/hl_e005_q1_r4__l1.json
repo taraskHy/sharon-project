@@ -1,0 +1,40 @@
+{
+ "item": "hl_e005_q1_r4__l1",
+ "raw_text": "גְּלִילַת הָעֲרָבִים אֵינָהּ מְשׁוֹמֶרֶת לְפָנֵי הַמְּסֻכְלִים",
+ "suggested_text": "גְּלִילַת הָעֲרָבִים אֵינָהּ מְשׁוֹמֶרֶת לְפָנֵי הַמְּסֻכְלִים",
+ "transcription": "גְּלִילַת הָעֲרָבִים אֵינָהּ מְשׁוֹמֶרֶת לְפָנֵי הַמְּסֻכְלִים",
+ "edits": [],
+ "uncertain_regions": [],
+ "semantic_change_risk": false,
+ "needs_review": false,
+ "retrieved": [
+  {
+   "chunk_id": "5c75851dcfe50e4c",
+   "source": "עיבוד תמונה.pdf",
+   "page": 33,
+   "similarity": 0.4459
+  },
+  {
+   "chunk_id": "36fb798cd6bc9af3",
+   "source": "עיבוד תמונה.pdf",
+   "page": 104,
+   "similarity": 0.4379
+  },
+  {
+   "chunk_id": "723f9270d833287c",
+   "source": "עיבוד תמונה.pdf",
+   "page": 21,
+   "similarity": 0.4308
+  },
+  {
+   "chunk_id": "1d26fd0f26dcca1b",
+   "source": "עיבוד תמונה.pdf",
+   "page": 18,
+   "similarity": 0.4257
+  }
+ ],
+ "retrieval_empty": false,
+ "error": null,
+ "retrieval_s": 2.59,
+ "repair_s": 7.42
+}

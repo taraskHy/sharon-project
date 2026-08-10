@@ -1,0 +1,40 @@
+{
+ "item": "hc_e002_q2_r3",
+ "raw_text": "כְּרַבְיָה עֲדֹנִי בְּרֵעַ הַמְּשֻׁלְטָן אֶת הַמְּסָפְרָה",
+ "suggested_text": "כְּרַבְיָה עֲדֹנִי בְּרֵעַ הַמְּשֻׁלְטָן אֶת הַמְּסָפְרָה",
+ "transcription": "כְּרַבְיָה עֲדֹנִי בְּרֵעַ הַמְּשֻׁלְטָן אֶת הַמְּסָפְרָה",
+ "edits": [],
+ "uncertain_regions": [],
+ "semantic_change_risk": false,
+ "needs_review": false,
+ "retrieved": [
+  {
+   "chunk_id": "0a029e1bb12c3de7",
+   "source": "עיבוד תמונה.pdf",
+   "page": 42,
+   "similarity": 0.4246
+  },
+  {
+   "chunk_id": "bd482271a22dad66",
+   "source": "עיבוד תמונה.pdf",
+   "page": 43,
+   "similarity": 0.4209
+  },
+  {
+   "chunk_id": "62ba70ad2e84dcb3",
+   "source": "עיבוד תמונה.pdf",
+   "page": 29,
+   "similarity": 0.4186
+  },
+  {
+   "chunk_id": "5503f0c78803233f",
+   "source": "עיבוד תמונה.pdf",
+   "page": 40,
+   "similarity": 0.4128
+  }
+ ],
+ "retrieval_empty": false,
+ "error": null,
+ "retrieval_s": 2.56,
+ "repair_s": 7.41
+}

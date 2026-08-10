@@ -1,0 +1,59 @@
+{
+ "item": "hl_e005_q1_r3__l3",
+ "raw_text": "n Mirc 150.1 |C| CIVILIC (7) x,y,z 1961 כְּרַבְרָה הַמְּחִיר-תְּרוֹמֵי (כְּרַבְרָה)",
+ "suggested_text": "n Mirc 150.1 |C| CIVILIC (7) x,y,z 1961 כְּרַבְרָה הַמְּחִיר-תְּרוֹמֵי (כְּרַבְרָה)",
+ "transcription": "n Mirc 150.1 |C| CIVILIC (7) x,y,z 1961 כְּרַבְרָה הַמְּחִיר-תְּרוֹמֵי (כְּרַבְרָה)",
+ "edits": [
+  {
+   "raw": "n Mirc 150.1",
+   "suggested": "n Mirc 150.1",
+   "reason": "No plausible OCR corruption detected; 'Mirc' may be a proper name or typo, but context doesn't suggest correction without student error preservation rule. Left unchanged as per instruction to preserve mistakes unless context suggests otherwise (e.g., no course terminology matches 'Mirc').",
+   "risk": "low"
+  },
+  {
+   "raw": "|C| CIVILIC (7) x,y,z 1961",
+   "suggested": "|C| CIVILIC (7) x,y,z 1961",
+   "reason": "No plausible OCR corruption detected. 'CIVILIC' may be a misread or placeholder; no course context suggests correction. Preserved as-is per instruction to preserve student errors.",
+   "risk": "low"
+  },
+  {
+   "raw": "כְּרַבְרָה הַמְּחִיר-תְּרוֹמֵי (כְּרַבְרָה)",
+   "suggested": "כְּרַבְרָה הַמְּחִיר-תְּרוֹמֵי (כְּרַבְרָה)",
+   "reason": "Hebrew text appears intact. No OCR corruption detected; no course context suggests correction. Preserved as-is per instruction to preserve student errors.",
+   "risk": "low"
+  }
+ ],
+ "uncertain_regions": [],
+ "semantic_change_risk": false,
+ "needs_review": false,
+ "retrieved": [
+  {
+   "chunk_id": "99d8357322ce8235",
+   "source": "עיבוד תמונה.pdf",
+   "page": 111,
+   "similarity": 0.4252
+  },
+  {
+   "chunk_id": "a7b6844cca99ec12",
+   "source": "עיבוד תמונה.pdf",
+   "page": 18,
+   "similarity": 0.424
+  },
+  {
+   "chunk_id": "e2030d8d3922b877",
+   "source": "עיבוד תמונה.pdf",
+   "page": 33,
+   "similarity": 0.4176
+  },
+  {
+   "chunk_id": "2e43c92a8b6dff51",
+   "source": "עיבוד תמונה.pdf",
+   "page": 100,
+   "similarity": 0.4163
+  }
+ ],
+ "retrieval_empty": false,
+ "error": null,
+ "retrieval_s": 2.56,
+ "repair_s": 20.33
+}

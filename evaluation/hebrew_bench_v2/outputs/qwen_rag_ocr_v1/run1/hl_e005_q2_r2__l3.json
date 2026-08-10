@@ -1,0 +1,40 @@
+{
+ "item": "hl_e005_q2_r2__l3",
+ "raw_text": "השאלה היא: איזו ערך של x יש ל- f(x) = 1.5x^2 - 3x + 2, כך ש-f(x) > 0?",
+ "suggested_text": "השאלה היא: איזו ערך של x יש ל- f(x) = 1.5x^2 - 3x + 2, כך ש-f(x) > 0?",
+ "transcription": "השאלה היא: איזו ערך של x יש ל- f(x) = 1.5x^2 - 3x + 2, כך ש-f(x) > 0?",
+ "edits": [],
+ "uncertain_regions": [],
+ "semantic_change_risk": false,
+ "needs_review": false,
+ "retrieved": [
+  {
+   "chunk_id": "1c59e3b301e8b7d5",
+   "source": "עיבוד תמונה.pdf",
+   "page": 76,
+   "similarity": 0.4758
+  },
+  {
+   "chunk_id": "41ddf2b25d6ad347",
+   "source": "עיבוד תמונה.pdf",
+   "page": 56,
+   "similarity": 0.4734
+  },
+  {
+   "chunk_id": "3b87159fcc4a5cca",
+   "source": "עיבוד תמונה.pdf",
+   "page": 17,
+   "similarity": 0.4713
+  },
+  {
+   "chunk_id": "dcbc6eb17369a3fa",
+   "source": "עיבוד תמונה.pdf",
+   "page": 56,
+   "similarity": 0.4578
+  }
+ ],
+ "retrieval_empty": false,
+ "error": null,
+ "retrieval_s": 2.61,
+ "repair_s": 6.08
+}

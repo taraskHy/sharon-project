@@ -1,0 +1,40 @@
+{
+ "item": "hl_e004_q2_r4__l2",
+ "raw_text": "c) 50% of the students are female, Quantization",
+ "suggested_text": "c) 50% of the students are female, Quantization",
+ "transcription": "c) 50% of the students are female, Quantization",
+ "edits": [],
+ "uncertain_regions": [],
+ "semantic_change_risk": false,
+ "needs_review": false,
+ "retrieved": [
+  {
+   "chunk_id": "bf1a0dcebf3d3be1",
+   "source": "עיבוד תמונה.pdf",
+   "page": 7,
+   "similarity": 0.4707
+  },
+  {
+   "chunk_id": "0257fa907d4f6bd0",
+   "source": "עיבוד תמונה.pdf",
+   "page": 11,
+   "similarity": 0.4684
+  },
+  {
+   "chunk_id": "6bbdc5e368b53f21",
+   "source": "עיבוד תמונה.pdf",
+   "page": 112,
+   "similarity": 0.4471
+  },
+  {
+   "chunk_id": "3ec7a2503ad6d6f3",
+   "source": "עיבוד תמונה.pdf",
+   "page": 4,
+   "similarity": 0.4389
+  }
+ ],
+ "retrieval_empty": false,
+ "error": null,
+ "retrieval_s": 2.55,
+ "repair_s": 5.55
+}

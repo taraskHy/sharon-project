@@ -1,0 +1,40 @@
+{
+ "item": "hl_e004_q2_r3__l1",
+ "raw_text": "השאלה היא: מהו הערך של x, אם 2x = 10?",
+ "suggested_text": "השאלה היא: מהו הערך של x, אם 2x = 10?",
+ "transcription": "השאלה היא: מהו הערך של x, אם 2x = 10?",
+ "edits": [],
+ "uncertain_regions": [],
+ "semantic_change_risk": false,
+ "needs_review": false,
+ "retrieved": [
+  {
+   "chunk_id": "baf8865fbca7aeb6",
+   "source": "עיבוד תמונה.pdf",
+   "page": 43,
+   "similarity": 0.5151
+  },
+  {
+   "chunk_id": "f9d59480b98ffc40",
+   "source": "עיבוד תמונה.pdf",
+   "page": 92,
+   "similarity": 0.5028
+  },
+  {
+   "chunk_id": "4ca9b9709e7fc06a",
+   "source": "עיבוד תמונה.pdf",
+   "page": 60,
+   "similarity": 0.4928
+  },
+  {
+   "chunk_id": "6f824b0eb39cb468",
+   "source": "עיבוד תמונה.pdf",
+   "page": 47,
+   "similarity": 0.492
+  }
+ ],
+ "retrieval_empty": false,
+ "error": null,
+ "retrieval_s": 2.58,
+ "repair_s": 5.66
+}

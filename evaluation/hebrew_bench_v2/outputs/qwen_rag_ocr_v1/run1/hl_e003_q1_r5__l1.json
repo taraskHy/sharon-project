@@ -1,0 +1,47 @@
+{
+ "item": "hl_e003_q1_r5__l1",
+ "raw_text": "Clain X-הַלְוָיִם קְבֵרָה וְעֹמֶדֶת הַרְשָׁמָה אֲנִי הַרְשָׁמָה",
+ "suggested_text": "Clain X - הַלְוָיִם קְבֵרָה וְעֹמֶדֶת הַרְשָׁמָה אֲנִי הַרְשָׁמָה",
+ "transcription": "Clain X - הַלְוָיִם קְבֵרָה וְעֹמֶדֶת הַרְשָׁמָה אֲנִי הַרְשָׁמָה",
+ "edits": [
+  {
+   "raw": "Clain X-הַלְוָיִם קְבֵרָה וְעֹמֶדֶת הַרְשָׁמָה אֲנִי הַרְשָׁמָה",
+   "suggested": "Clain X - הַלְוָיִם קְבֵרָה וְעֹמֶדֶת הַרְשָׁמָה אֲנִי הַרְשָׁמָה",
+   "reason": "Added a space after 'Clain X' for readability and to separate the label from the Hebrew text, which is plausible OCR corruption. The rest of the text appears as likely preserved Hebrew with possible OCR misinterpretation (e.g., 'הַרְשָׁמָה' might be a correct rendering). No correction beyond spacing was made per instructions to preserve student mistakes and only repair plausible corruptions. The term 'Clain X' is left unchanged as it may be an identifier or placeholder, not necessarily a typo or OCR error requiring correction based on course context.",
+   "risk": "low"
+  }
+ ],
+ "uncertain_regions": [],
+ "semantic_change_risk": false,
+ "needs_review": false,
+ "retrieved": [
+  {
+   "chunk_id": "196472e276a0fdee",
+   "source": "עיבוד תמונה.pdf",
+   "page": 28,
+   "similarity": 0.4605
+  },
+  {
+   "chunk_id": "dfe3effc6b9da8c8",
+   "source": "עיבוד תמונה.pdf",
+   "page": 65,
+   "similarity": 0.4544
+  },
+  {
+   "chunk_id": "1d1361f5d7301689",
+   "source": "עיבוד תמונה.pdf",
+   "page": 99,
+   "similarity": 0.4423
+  },
+  {
+   "chunk_id": "64c37ae6bd43465b",
+   "source": "עיבוד תמונה.pdf",
+   "page": 28,
+   "similarity": 0.4344
+  }
+ ],
+ "retrieval_empty": false,
+ "error": null,
+ "retrieval_s": 2.55,
+ "repair_s": 17.92
+}

@@ -1,0 +1,40 @@
+{
+ "item": "hl_e004_q1_r2__l1",
+ "raw_text": "Highpass Filter συντελεστής παράγοντα ισχύος",
+ "suggested_text": "Highpass Filter συντελεστής παράγοντα ισχύος",
+ "transcription": "Highpass Filter συντελεστής παράγοντα ισχύος",
+ "edits": [],
+ "uncertain_regions": [],
+ "semantic_change_risk": false,
+ "needs_review": false,
+ "retrieved": [
+  {
+   "chunk_id": "c3833902c7a1079c",
+   "source": "עיבוד תמונה.pdf",
+   "page": 71,
+   "similarity": 0.4867
+  },
+  {
+   "chunk_id": "6498fd0868671718",
+   "source": "עיבוד תמונה.pdf",
+   "page": 77,
+   "similarity": 0.4645
+  },
+  {
+   "chunk_id": "153619dfda24c44b",
+   "source": "עיבוד תמונה.pdf",
+   "page": 75,
+   "similarity": 0.4531
+  },
+  {
+   "chunk_id": "cc6bda14f5c98d22",
+   "source": "עיבוד תמונה.pdf",
+   "page": 80,
+   "similarity": 0.4503
+  }
+ ],
+ "retrieval_empty": false,
+ "error": "JSONDecodeError: Unterminated string starting at: line 7 column 17 (char 191)",
+ "retrieval_s": 5.02,
+ "repair_s": 45.06
+}

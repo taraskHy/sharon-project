@@ -1,0 +1,40 @@
+{
+ "item": "hl_e004_q1_r7__l2",
+ "raw_text": "ספונטני אינטראקציה",
+ "suggested_text": "ספונטני אינטראקציה",
+ "transcription": "ספונטני אינטראקציה",
+ "edits": [],
+ "uncertain_regions": [],
+ "semantic_change_risk": false,
+ "needs_review": false,
+ "retrieved": [
+  {
+   "chunk_id": "64dbb266cc585a9e",
+   "source": "עיבוד תמונה.pdf",
+   "page": 37,
+   "similarity": 0.5205
+  },
+  {
+   "chunk_id": "9a8417986ccaec71",
+   "source": "עיבוד תמונה.pdf",
+   "page": 60,
+   "similarity": 0.5172
+  },
+  {
+   "chunk_id": "fe451e3ed022cf4d",
+   "source": "עיבוד תמונה.pdf",
+   "page": 26,
+   "similarity": 0.5153
+  },
+  {
+   "chunk_id": "81bac89337bb9a17",
+   "source": "עיבוד תמונה.pdf",
+   "page": 115,
+   "similarity": 0.5045
+  }
+ ],
+ "retrieval_empty": false,
+ "error": null,
+ "retrieval_s": 2.53,
+ "repair_s": 5.48
+}

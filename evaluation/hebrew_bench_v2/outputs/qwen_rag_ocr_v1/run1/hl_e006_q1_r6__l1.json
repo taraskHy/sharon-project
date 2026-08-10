@@ -1,0 +1,40 @@
+{
+ "item": "hl_e006_q1_r6__l1",
+ "raw_text": "• AUGUI GN א'ג'ן אָדְוּסִקְיַיִם וְאֵלֶּה מְעַרְפִּים",
+ "suggested_text": "• AUGUI GN א'ג'ן אָדְוּסִקְיַיִם וְאֵלֶּה מְעַרְפִּים",
+ "transcription": "• AUGUI GN א'ג'ן אָדְוּסִקְיַיִם וְאֵלֶּה מְעַרְפִּים",
+ "edits": [],
+ "uncertain_regions": [],
+ "semantic_change_risk": false,
+ "needs_review": false,
+ "retrieved": [
+  {
+   "chunk_id": "e1347f1f0dbe868c",
+   "source": "עיבוד תמונה.pdf",
+   "page": 45,
+   "similarity": 0.426
+  },
+  {
+   "chunk_id": "de1ce3a5a89a703d",
+   "source": "עיבוד תמונה.pdf",
+   "page": 51,
+   "similarity": 0.4207
+  },
+  {
+   "chunk_id": "4963b4bf70e69016",
+   "source": "עיבוד תמונה.pdf",
+   "page": 42,
+   "similarity": 0.42
+  },
+  {
+   "chunk_id": "0c3d0922093bc76d",
+   "source": "עיבוד תמונה.pdf",
+   "page": 57,
+   "similarity": 0.4102
+  }
+ ],
+ "retrieval_empty": false,
+ "error": null,
+ "retrieval_s": 2.62,
+ "repair_s": 7.0
+}

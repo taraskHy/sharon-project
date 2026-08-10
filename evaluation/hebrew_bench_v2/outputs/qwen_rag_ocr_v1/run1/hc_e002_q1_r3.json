@@ -1,0 +1,40 @@
+{
+ "item": "hc_e002_q1_r3",
+ "raw_text": "המוצר הינו מוגן על ידי חוקי נספח אינטלקטואלי.",
+ "suggested_text": "המוצר הינו מוגן על ידי חוקי נספח אינטלקטואלי.",
+ "transcription": "המוצר הינו מוגן על ידי חוקי נספח אינטלקטואלי.",
+ "edits": [],
+ "uncertain_regions": [],
+ "semantic_change_risk": false,
+ "needs_review": false,
+ "retrieved": [
+  {
+   "chunk_id": "a0c2f7955a0c8131",
+   "source": "עיבוד תמונה.pdf",
+   "page": 58,
+   "similarity": 0.4211
+  },
+  {
+   "chunk_id": "bdd5303a5d37d3a4",
+   "source": "עיבוד תמונה.pdf",
+   "page": 98,
+   "similarity": 0.4189
+  },
+  {
+   "chunk_id": "cc6bda14f5c98d22",
+   "source": "עיבוד תמונה.pdf",
+   "page": 80,
+   "similarity": 0.4051
+  },
+  {
+   "chunk_id": "7f86f1df5233f462",
+   "source": "עיבוד תמונה.pdf",
+   "page": 18,
+   "similarity": 0.3952
+  }
+ ],
+ "retrieval_empty": false,
+ "error": null,
+ "retrieval_s": 5.23,
+ "repair_s": 5.81
+}

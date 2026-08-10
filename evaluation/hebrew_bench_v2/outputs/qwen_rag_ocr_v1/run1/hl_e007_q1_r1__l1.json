@@ -1,0 +1,40 @@
+{
+ "item": "hl_e007_q1_r1__l1",
+ "raw_text": "השאלה היא האם יש פתרון לבעיה זו? לא, אין פתרון.",
+ "suggested_text": "השאלה היא האם יש פתרון לבעיה זו? לא, אין פתרון.",
+ "transcription": "השאלה היא האם יש פתרון לבעיה זו? לא, אין פתרון.",
+ "edits": [],
+ "uncertain_regions": [],
+ "semantic_change_risk": false,
+ "needs_review": false,
+ "retrieved": [
+  {
+   "chunk_id": "b73ccaa23c4c42b8",
+   "source": "עיבוד תמונה.pdf",
+   "page": 41,
+   "similarity": 0.4976
+  },
+  {
+   "chunk_id": "77a0f5ce69c53894",
+   "source": "עיבוד תמונה.pdf",
+   "page": 34,
+   "similarity": 0.4747
+  },
+  {
+   "chunk_id": "4b1889b17f91fc48",
+   "source": "עיבוד תמונה.pdf",
+   "page": 30,
+   "similarity": 0.4736
+  },
+  {
+   "chunk_id": "2e92ee94480ddd13",
+   "source": "עיבוד תמונה.pdf",
+   "page": 25,
+   "similarity": 0.4722
+  }
+ ],
+ "retrieval_empty": false,
+ "error": null,
+ "retrieval_s": 2.53,
+ "repair_s": 5.78
+}

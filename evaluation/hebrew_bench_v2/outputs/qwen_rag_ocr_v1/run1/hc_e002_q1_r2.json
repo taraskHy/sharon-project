@@ -1,0 +1,40 @@
+{
+ "item": "hc_e002_q1_r2",
+ "raw_text": "השאלה נמצאת בחלק הפתוח של המבחן",
+ "suggested_text": "השאלה נמצאת בחלק הפתוח של המבחן",
+ "transcription": "השאלה נמצאת בחלק הפתוח של המבחן",
+ "edits": [],
+ "uncertain_regions": [],
+ "semantic_change_risk": false,
+ "needs_review": false,
+ "retrieved": [
+  {
+   "chunk_id": "11ea98d369ea8b28",
+   "source": "עיבוד תמונה.pdf",
+   "page": 89,
+   "similarity": 0.4904
+  },
+  {
+   "chunk_id": "627ede3ec9836f1e",
+   "source": "עיבוד תמונה.pdf",
+   "page": 103,
+   "similarity": 0.4902
+  },
+  {
+   "chunk_id": "451e2caf4cd79b7c",
+   "source": "עיבוד תמונה.pdf",
+   "page": 36,
+   "similarity": 0.4822
+  },
+  {
+   "chunk_id": "f9d59480b98ffc40",
+   "source": "עיבוד תמונה.pdf",
+   "page": 92,
+   "similarity": 0.4813
+  }
+ ],
+ "retrieval_empty": false,
+ "error": null,
+ "retrieval_s": 2.58,
+ "repair_s": 5.55
+}

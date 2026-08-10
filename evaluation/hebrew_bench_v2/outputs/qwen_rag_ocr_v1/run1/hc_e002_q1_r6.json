@@ -1,0 +1,40 @@
+{
+ "item": "hc_e002_q1_r6",
+ "raw_text": "שְׁלֹמֹה הַמָּלֵךְ עַד שְׁנֵי קְרִיָּה",
+ "suggested_text": "שְׁלֹמֹה הַמָּלֵךְ עַד שְׁנֵי קְרִיָּה",
+ "transcription": "שְׁלֹמֹה הַמָּלֵךְ עַד שְׁנֵי קְרִיָּה",
+ "edits": [],
+ "uncertain_regions": [],
+ "semantic_change_risk": false,
+ "needs_review": false,
+ "retrieved": [
+  {
+   "chunk_id": "6ec71fda5384f034",
+   "source": "עיבוד תמונה.pdf",
+   "page": 32,
+   "similarity": 0.3278
+  },
+  {
+   "chunk_id": "02dacc0732267f38",
+   "source": "עיבוד תמונה.pdf",
+   "page": 10,
+   "similarity": 0.3213
+  },
+  {
+   "chunk_id": "dcbc6eb17369a3fa",
+   "source": "עיבוד תמונה.pdf",
+   "page": 56,
+   "similarity": 0.3178
+  },
+  {
+   "chunk_id": "cfe29ed1a9bf51e1",
+   "source": "עיבוד תמונה.pdf",
+   "page": 77,
+   "similarity": 0.3168
+  }
+ ],
+ "retrieval_empty": false,
+ "error": null,
+ "retrieval_s": 2.59,
+ "repair_s": 6.72
+}

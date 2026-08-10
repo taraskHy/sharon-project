@@ -1,0 +1,65 @@
+{
+ "item": "hc_e002_q2_r1",
+ "raw_text": "הַשְׁמוּרָה הַמְּסֻפֶּרֶת, אֲבִי עַל-כֵּן, בְּרֹאשׁ הַשָּׁנָה, וְעַד שְׁבוּעַת הַשָּׁנָה",
+ "suggested_text": "השמורה המספרת, אביו על-כן, בראש השנה, ועד שבועות השנה",
+ "transcription": "השמורה המספרת, אביו על-כן, בראש השנה, ועד שבועות השנה",
+ "edits": [
+  {
+   "raw": "הַשְׁמוּרָה הַמְּסֻפֶּרֶת",
+   "suggested": "השמורה המספרת",
+   "reason": "OCR corruption: Hebrew ligature 'הַשְׁמוּרָה' likely misread as 'הַשְׁמוּרָה הַמְּסֻפֶּרֶת'. The extra 'הַמְּסֻפֶּרֶת' appears to be a misread or artifact. In context, 'השמורה המספרת' is plausible as a term (e.g., 'the numbered reserve' or similar). Preserving the student's intent without over-correcting based on course terminology, since no course passage references this phrase. Keeping it minimal and plausible for OCR repair only.",
+   "risk": "low"
+  },
+  {
+   "raw": "אֲבִי עַל-כֵּן",
+   "suggested": "אביו על-כן",
+   "reason": "OCR corruption: Hebrew 'אֲבִי' likely misread as 'אביו'. This is a common OCR error for possessive pronouns. The phrase 'אביו על-כן' makes grammatical sense in context (e.g., 'his father, accordingly'). Preserving the student's intent without over-correcting based on course terminology.",
+   "risk": "low"
+  },
+  {
+   "raw": "בְּרֹאשׁ הַשָּׁנָה",
+   "suggested": "בראש השנה",
+   "reason": "OCR corruption: Hebrew 'בְּרֹאשׁ הַשָּׁנָה' likely misread as 'בראש השנה'. This is a common OCR error for spacing and ligatures. The phrase 'בראש השנה' is standard Hebrew (e.g., 'at the beginning of the year'). Preserving the student's intent without over-correcting based on course terminology.",
+   "risk": "low"
+  },
+  {
+   "raw": "וְעַד שְׁבוּעַת הַשָּׁנָה",
+   "suggested": "ועד שבועות השנה",
+   "reason": "OCR corruption: Hebrew 'וְעַד שְׁבוּעַת הַשָּׁנָה' likely misread as 'ועד שבועות השנה'. The word 'שבועות' is a common term for 'weeks', and the phrase 'ועד שבועות השנה' makes sense (e.g., 'until weeks of the year'). Preserving the student's intent without over-correcting based on course terminology.",
+   "risk": "low"
+  }
+ ],
+ "uncertain_regions": [],
+ "semantic_change_risk": false,
+ "needs_review": false,
+ "retrieved": [
+  {
+   "chunk_id": "e1347f1f0dbe868c",
+   "source": "עיבוד תמונה.pdf",
+   "page": 45,
+   "similarity": 0.4416
+  },
+  {
+   "chunk_id": "e2030d8d3922b877",
+   "source": "עיבוד תמונה.pdf",
+   "page": 33,
+   "similarity": 0.439
+  },
+  {
+   "chunk_id": "1d1361f5d7301689",
+   "source": "עיבוד תמונה.pdf",
+   "page": 99,
+   "similarity": 0.4345
+  },
+  {
+   "chunk_id": "e14cf4548c7d2e55",
+   "source": "עיבוד תמונה.pdf",
+   "page": 30,
+   "similarity": 0.4333
+  }
+ ],
+ "retrieval_empty": false,
+ "error": null,
+ "retrieval_s": 2.53,
+ "repair_s": 29.81
+}

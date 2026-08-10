@@ -1,0 +1,47 @@
+{
+ "item": "hc_e002_q1_r5",
+ "raw_text": "NCHT 231 x 075 הַקְרָעִים, 1916",
+ "suggested_text": "NCC: 231 x 075 הַקְרָעִים, 1916",
+ "transcription": "NCC: 231 x 075 הַקְרָעִים, 1916",
+ "edits": [
+  {
+   "raw": "NCHT",
+   "suggested": "NCC",
+   "reason": "Based on course context, 'NCC' is the normalized correlation coefficient used in image processing. 'NCHT' appears to be an OCR corruption of 'NCC'. The rest of the text ('231 x 075 הַקְרָעִים, 1916') seems plausible as-is and does not require correction based on context or terminology. No other corrections are needed since no course passage suggests a different interpretation for 'NCHT' or the rest of the phrase. The student's handwriting may have caused misreading of 'C' as 'H', which is common in OCR errors, especially with similar-looking characters like 'H' and 'C'. Therefore, correcting to 'NCC' is plausible and contextually appropriate while preserving the student’s intent and avoiding over-correction.",
+   "risk": "low"
+  }
+ ],
+ "uncertain_regions": [],
+ "semantic_change_risk": false,
+ "needs_review": false,
+ "retrieved": [
+  {
+   "chunk_id": "3ab0299761be46d5",
+   "source": "עיבוד תמונה.pdf",
+   "page": 95,
+   "similarity": 0.3904
+  },
+  {
+   "chunk_id": "71fe03a899a9f932",
+   "source": "עיבוד תמונה.pdf",
+   "page": 101,
+   "similarity": 0.387
+  },
+  {
+   "chunk_id": "2e43c92a8b6dff51",
+   "source": "עיבוד תמונה.pdf",
+   "page": 100,
+   "similarity": 0.3845
+  },
+  {
+   "chunk_id": "3b87159fcc4a5cca",
+   "source": "עיבוד תמונה.pdf",
+   "page": 17,
+   "similarity": 0.3844
+  }
+ ],
+ "retrieval_empty": false,
+ "error": null,
+ "retrieval_s": 2.55,
+ "repair_s": 13.58
+}

@@ -1,0 +1,59 @@
+{
+ "item": "hl_e004_q1_r6__l1",
+ "raw_text": "ספונטני reception WAVELETS",
+ "suggested_text": "ספונטני reception WAVELETS",
+ "transcription": "ספונטני reception WAVELETS",
+ "edits": [
+  {
+   "raw": "ספונטני",
+   "suggested": "ספונטני",
+   "reason": "נראה שהמילה 'ספונטני' נמצאת במקור, אך לא מובנת בהקשר של עיבוד תמונה. ייתכן שזה טעות כתיבה או שגיאה של OCR. עם זאת, אין סיבה לתקן את זה ללא הקשר נוסף – אולי התלמיד הכוונה לכתוב 'ספונטני' כחלק מביטוי כמו 'ספונטני reception', אך זה לא מובן בהקשר הטכני. לכן נשאיר אותו כפי שהוא, אלא אם יש אינדיקציה ברורה שזו טעות (למשל, אם התלמיד הכוון ל-\"spontaneous\" או \"spatial\").",
+   "risk": "low"
+  },
+  {
+   "raw": "reception",
+   "suggested": "reception",
+   "reason": "המילה 'reception' לא נמצאת בהקשר הטכני של עיבוד תמונה. ייתכן שזה טעות כתיבה או שגיאה של OCR. עם זאת, אין סיבה לתקן את זה ללא הקשר נוסף – אולי התלמיד הכוון לכתוב 'reception' כחלק מביטוי כמו 'spontaneous reception', אך זה לא מובן בהקשר הטכני. לכן נשאיר אותו כפי שהוא, אלא אם יש אינדיקציה ברורה שזו טעות (למשל, אם התלמיד הכוון ל-\"spatial\" או \"wavelet reception\").",
+   "risk": "low"
+  },
+  {
+   "raw": "WAVELETS",
+   "suggested": "WAVELETS",
+   "reason": "המילה 'WAVELETS' נמצאת במקור, אך היא לא מובנת בהקשר של עיבוד תמונה. ייתכן שזה טעות כתיבה או שגיאה של OCR. עם זאת, אין סיבה לתקן את זה ללא הקשר נוסף – אולי התלמיד הכוון לכתוב 'wavelets' כחלק מביטוי כמו 'spontaneous wavelet reception', אך זה לא מובן בהקשר הטכני. לכן נשאיר אותו כפי שהוא, אלא אם יש אינדיקציה ברורה שזו טעות (למשל, אם התלמיד הכוון ל-\"spatial\" או \"wavelet reception\").",
+   "risk": "low"
+  }
+ ],
+ "uncertain_regions": [],
+ "semantic_change_risk": false,
+ "needs_review": false,
+ "retrieved": [
+  {
+   "chunk_id": "078505a74f4f18be",
+   "source": "עיבוד תמונה.pdf",
+   "page": 86,
+   "similarity": 0.572
+  },
+  {
+   "chunk_id": "856ea960986d185c",
+   "source": "עיבוד תמונה.pdf",
+   "page": 86,
+   "similarity": 0.5273
+  },
+  {
+   "chunk_id": "9b530540466ab4d0",
+   "source": "עיבוד תמונה.pdf",
+   "page": 62,
+   "similarity": 0.5096
+  },
+  {
+   "chunk_id": "b5ef2382aa401de7",
+   "source": "עיבוד תמונה.pdf",
+   "page": 98,
+   "similarity": 0.5065
+  }
+ ],
+ "retrieval_empty": false,
+ "error": null,
+ "retrieval_s": 4.94,
+ "repair_s": 22.33
+}

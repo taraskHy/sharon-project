@@ -1,0 +1,59 @@
+{
+ "item": "hl_e006_q2_r8__l1",
+ "raw_text": "הכפיה על הוראת 2% - 5% מ- 700N ל- 200N",
+ "suggested_text": "הכפיה על הוראת 2% - 5% מ- 700N ל- 200N",
+ "transcription": "הכפיה על הוראת 2% - 5% מ- 700N ל- 200N",
+ "edits": [
+  {
+   "raw": "2%",
+   "suggested": "2%",
+   "reason": "No plausible corruption; '2%' is likely correct as written, though contextually odd without further explanation (e.g., scaling or force reduction). Preserve original unless clearly OCR error. No correction needed here based on course context provided.",
+   "risk": "low"
+  },
+  {
+   "raw": "700N",
+   "suggested": "700N",
+   "reason": "No plausible corruption; '700N' is likely correct as written (e.g., Newtons). Preserve original unless clearly OCR error. No correction needed here based on course context provided.",
+   "risk": "low"
+  },
+  {
+   "raw": "200N",
+   "suggested": "200N",
+   "reason": "No plausible corruption; '200N' is likely correct as written (e.g., Newtons). Preserve original unless clearly OCR error. No correction needed here based on course context provided.",
+   "risk": "low"
+  }
+ ],
+ "uncertain_regions": [],
+ "semantic_change_risk": false,
+ "needs_review": false,
+ "retrieved": [
+  {
+   "chunk_id": "2b9ed62bac35149f",
+   "source": "עיבוד תמונה.pdf",
+   "page": 67,
+   "similarity": 0.4741
+  },
+  {
+   "chunk_id": "d2898bce524d7fcb",
+   "source": "עיבוד תמונה.pdf",
+   "page": 117,
+   "similarity": 0.4573
+  },
+  {
+   "chunk_id": "cfe29ed1a9bf51e1",
+   "source": "עיבוד תמונה.pdf",
+   "page": 77,
+   "similarity": 0.4519
+  },
+  {
+   "chunk_id": "3b87159fcc4a5cca",
+   "source": "עיבוד תמונה.pdf",
+   "page": 17,
+   "similarity": 0.4501
+  }
+ ],
+ "retrieval_empty": false,
+ "error": null,
+ "retrieval_s": 2.53,
+ "repair_s": 14.25
+}

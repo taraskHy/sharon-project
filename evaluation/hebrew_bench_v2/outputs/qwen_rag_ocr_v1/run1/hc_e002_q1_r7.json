@@ -1,0 +1,40 @@
+{
+ "item": "hc_e002_q1_r7",
+ "raw_text": "סף הירשון ערך תקף-ה-מקרה. סף הירשון ערך תקף-ה-מקרה.",
+ "suggested_text": "סף הירשון ערך תקף-ה-מקרה. סף הירשון ערך תקף-ה-מקרה.",
+ "transcription": "סף הירשון ערך תקף-ה-מקרה. סף הירשון ערך תקף-ה-מקרה.",
+ "edits": [],
+ "uncertain_regions": [],
+ "semantic_change_risk": false,
+ "needs_review": false,
+ "retrieved": [
+  {
+   "chunk_id": "712d64d3d92fb2a8",
+   "source": "עיבוד תמונה.pdf",
+   "page": 14,
+   "similarity": 0.4694
+  },
+  {
+   "chunk_id": "c7db116ac06d7d5c",
+   "source": "עיבוד תמונה.pdf",
+   "page": 96,
+   "similarity": 0.4654
+  },
+  {
+   "chunk_id": "8488a890ce37b69c",
+   "source": "עיבוד תמונה.pdf",
+   "page": 90,
+   "similarity": 0.4612
+  },
+  {
+   "chunk_id": "aebc9d2fdc9d57c7",
+   "source": "עיבוד תמונה.pdf",
+   "page": 93,
+   "similarity": 0.4601
+  }
+ ],
+ "retrieval_empty": false,
+ "error": null,
+ "retrieval_s": 2.52,
+ "repair_s": 6.19
+}

@@ -1,0 +1,40 @@
+{
+ "item": "hl_e005_q1_r4__l2",
+ "raw_text": "בְּשַׁעַת הָרִגְלִיָּה (18c) לְחַזְקֵי אֲדֹנִיִּים וְאֶלְמְכֵי הַשְׁרֵיָה",
+ "suggested_text": "בְּשַׁעַת הָרִגְלִיָּה (18c) לְחַזְקֵי אֲדֹנִיִּים וְאֶלְמְכֵי הַשְׁרֵיָה",
+ "transcription": "בְּשַׁעַת הָרִגְלִיָּה (18c) לְחַזְקֵי אֲדֹנִיִּים וְאֶלְמְכֵי הַשְׁרֵיָה",
+ "edits": [],
+ "uncertain_regions": [],
+ "semantic_change_risk": false,
+ "needs_review": false,
+ "retrieved": [
+  {
+   "chunk_id": "1fb7c09180428d0d",
+   "source": "עיבוד תמונה.pdf",
+   "page": 16,
+   "similarity": 0.4078
+  },
+  {
+   "chunk_id": "dea94434b52fea10",
+   "source": "עיבוד תמונה.pdf",
+   "page": 93,
+   "similarity": 0.4024
+  },
+  {
+   "chunk_id": "aebc9d2fdc9d57c7",
+   "source": "עיבוד תמונה.pdf",
+   "page": 93,
+   "similarity": 0.3981
+  },
+  {
+   "chunk_id": "b6e6ee552296f7e9",
+   "source": "עיבוד תמונה.pdf",
+   "page": 67,
+   "similarity": 0.3936
+  }
+ ],
+ "retrieval_empty": false,
+ "error": null,
+ "retrieval_s": 2.53,
+ "repair_s": 7.97
+}

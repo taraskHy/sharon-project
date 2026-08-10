@@ -1,0 +1,40 @@
+{
+ "item": "hl_e005_q1_r3__l2",
+ "raw_text": "COS ωt high-frequency",
+ "suggested_text": "COS ωt high-frequency",
+ "transcription": "COS ωt high-frequency",
+ "edits": [],
+ "uncertain_regions": [],
+ "semantic_change_risk": false,
+ "needs_review": false,
+ "retrieved": [
+  {
+   "chunk_id": "de1ce3a5a89a703d",
+   "source": "עיבוד תמונה.pdf",
+   "page": 51,
+   "similarity": 0.4549
+  },
+  {
+   "chunk_id": "9e04a7f26d53b2a5",
+   "source": "עיבוד תמונה.pdf",
+   "page": 70,
+   "similarity": 0.428
+  },
+  {
+   "chunk_id": "f91f41bc5d2114e4",
+   "source": "עיבוד תמונה.pdf",
+   "page": 109,
+   "similarity": 0.4215
+  },
+  {
+   "chunk_id": "0b9703cda0dd28c1",
+   "source": "עיבוד תמונה.pdf",
+   "page": 56,
+   "similarity": 0.4096
+  }
+ ],
+ "retrieval_empty": false,
+ "error": null,
+ "retrieval_s": 2.53,
+ "repair_s": 5.55
+}

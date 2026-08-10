@@ -1,0 +1,59 @@
+{
+ "item": "hl_e006_q1_r2__l1",
+ "raw_text": "כְּלִי הַמָּרֵא וְהַמָּרֵא כְּלִי הַמָּרֵא וְהַמָּרֵא high pressure and high velocity . PC = 2k v' k·δ·ρl!",
+ "suggested_text": "כלי המראה וקצת מראה, כלי המראה וקצת מראה – high pressure and high velocity. PC = 2k v' k·δ·ρl!",
+ "transcription": "כלי המראה וקצת מראה, כלי המראה וקצת מראה – high pressure and high velocity. PC = 2k v' k·δ·ρl!",
+ "edits": [
+  {
+   "raw": "כְּלִי הַמָּרֵא וְהַמָּרֵא כְּלִי הַמָּרֵא וְהַמָּרֵא",
+   "suggested": "כלי המראה וקצת מראה, כלי המראה וקצת מראה",
+   "reason": "נראה שהטקסט נפלט כפיל של 'כלי המראה' עם נוסח נוסף. ייתכן שמדובר בטעות אופטית או ריפוד של מילה. הוספת 'קצת מראה' כדי להשלים את ההקשר, אך לא נערך שינוי משמעותי בהקשר הטכני – זה רק תיקון לפלט של OCR.",
+   "risk": "low"
+  },
+  {
+   "raw": "high pressure and high velocity",
+   "suggested": "high pressure and high velocity",
+   "reason": "הטקסט הזה נראה כמו טקסט אנגלי שנכתב בצד, והOCR הצליח להמיר אותו כמעט כמות שהוא. אין סיבה לתקן את זה – זה לא קשור לתוכן הטכני של התמונה או הניתוחים המופיעים במאגר.",
+   "risk": "low"
+  },
+  {
+   "raw": "PC = 2k v' k·δ·ρl!",
+   "suggested": "PC = 2k v' k·δ·ρl!",
+   "reason": "הסימנים והסמלים נראים כמו נוסח מתמטי. 'v'' יכול להיות טעות אופטית של 'v', אך גם אם זה 'v' – זה לא מדויק, אבל לא ניתן לתקן את זה ללא הקשר. הסימן '!' אולי סתם סימן עצרת או שגיאה. נשאר כמות שהוא.",
+   "risk": "low"
+  }
+ ],
+ "uncertain_regions": [],
+ "semantic_change_risk": false,
+ "needs_review": false,
+ "retrieved": [
+  {
+   "chunk_id": "cfe29ed1a9bf51e1",
+   "source": "עיבוד תמונה.pdf",
+   "page": 77,
+   "similarity": 0.539
+  },
+  {
+   "chunk_id": "a53ffd0b95ab12a1",
+   "source": "עיבוד תמונה.pdf",
+   "page": 102,
+   "similarity": 0.5186
+  },
+  {
+   "chunk_id": "5faadccab5ef36b2",
+   "source": "עיבוד תמונה.pdf",
+   "page": 55,
+   "similarity": 0.5165
+  },
+  {
+   "chunk_id": "d34447731e13b78a",
+   "source": "עיבוד תמונה.pdf",
+   "page": 85,
+   "similarity": 0.512
+  }
+ ],
+ "retrieval_empty": false,
+ "error": null,
+ "retrieval_s": 2.64,
+ "repair_s": 20.55
+}

@@ -1,0 +1,40 @@
+{
+ "item": "hl_e006_q1_r8__l1",
+ "raw_text": "אך לא נרמז, אולם ב-2017, הורכבה של 50% מ-2016, ו-2015, והשנה האחרונה היא 2014.",
+ "suggested_text": "אך לא נרמז, אולם ב-2017, הורכבה של 50% מ-2016, ו-2015, והשנה האחרונה היא 2014.",
+ "transcription": "אך לא נרמז, אולם ב-2017, הורכבה של 50% מ-2016, ו-2015, והשנה האחרונה היא 2014.",
+ "edits": [],
+ "uncertain_regions": [],
+ "semantic_change_risk": false,
+ "needs_review": false,
+ "retrieved": [
+  {
+   "chunk_id": "027077d560655488",
+   "source": "עיבוד תמונה.pdf",
+   "page": 96,
+   "similarity": 0.4383
+  },
+  {
+   "chunk_id": "451e2caf4cd79b7c",
+   "source": "עיבוד תמונה.pdf",
+   "page": 36,
+   "similarity": 0.4314
+  },
+  {
+   "chunk_id": "6fb8333594ef6317",
+   "source": "עיבוד תמונה.pdf",
+   "page": 8,
+   "similarity": 0.4262
+  },
+  {
+   "chunk_id": "64c37ae6bd43465b",
+   "source": "עיבוד תמונה.pdf",
+   "page": 28,
+   "similarity": 0.4251
+  }
+ ],
+ "retrieval_empty": false,
+ "error": null,
+ "retrieval_s": 2.53,
+ "repair_s": 6.42
+}

@@ -1,0 +1,59 @@
+{
+ "item": "hl_e004_q2_r2__l1",
+ "raw_text": "Canny 255 - .C pfi 20910 יד רכיב עוזר",
+ "suggested_text": "Canny 255 - .C pfi 20910 יד רכיב עוזר",
+ "transcription": "Canny 255 - .C pfi 20910 יד רכיב עוזר",
+ "edits": [
+  {
+   "raw": "Canny 255",
+   "suggested": "Canny 255",
+   "reason": "Likely correct as-is; 'Canny' is a known edge detector, and '255' may be a threshold value or noise level. No plausible OCR corruption detected here.",
+   "risk": "low"
+  },
+  {
+   "raw": ".C pfi 20910",
+   "suggested": ".C pfi 20910",
+   "reason": "Unclear if 'pfi' is a typo or abbreviation (possibly 'PFI', 'PFi', or OCR misread of 'PFI'). '20910' appears to be a number, possibly an index or parameter. Without context from course material, no correction is made.",
+   "risk": "low"
+  },
+  {
+   "raw": "יד רכיב עוזר",
+   "suggested": "יד רכיב עוזר",
+   "reason": "Hebrew text 'יד רכיב עוזר' appears to be a plausible OCR corruption of something like 'יְדֵי רַכִּיב עֹזֶר' or similar. However, without context from course material (e.g., whether this refers to 'edge detector', 'feature extractor', etc.), no correction is made.",
+   "risk": "low"
+  }
+ ],
+ "uncertain_regions": [],
+ "semantic_change_risk": false,
+ "needs_review": false,
+ "retrieved": [
+  {
+   "chunk_id": "3f8727f8b193c9fc",
+   "source": "עיבוד תמונה.pdf",
+   "page": 103,
+   "similarity": 0.4272
+  },
+  {
+   "chunk_id": "787bd3ba3016808e",
+   "source": "עיבוד תמונה.pdf",
+   "page": 102,
+   "similarity": 0.4242
+  },
+  {
+   "chunk_id": "1588957db5849418",
+   "source": "עיבוד תמונה.pdf",
+   "page": 48,
+   "similarity": 0.4238
+  },
+  {
+   "chunk_id": "69e02e4fa0c52bed",
+   "source": "עיבוד תמונה.pdf",
+   "page": 28,
+   "similarity": 0.4223
+  }
+ ],
+ "retrieval_empty": false,
+ "error": null,
+ "retrieval_s": 2.53,
+ "repair_s": 16.22
+}

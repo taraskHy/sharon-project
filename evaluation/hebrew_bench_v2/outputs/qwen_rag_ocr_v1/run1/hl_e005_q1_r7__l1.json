@@ -1,0 +1,40 @@
+{
+ "item": "hl_e005_q1_r7__l1",
+ "raw_text": "היקרים כהן עוזר אסף פיקס, סרק 700 גל נבמרג",
+ "suggested_text": "היקרים כהן עוזר אסף פיקס, סרק 700 גל נבמרג",
+ "transcription": "היקרים כהן עוזר אסף פיקס, סרק 700 גל נבמרג",
+ "edits": [],
+ "uncertain_regions": [],
+ "semantic_change_risk": false,
+ "needs_review": false,
+ "retrieved": [
+  {
+   "chunk_id": "02697ab52036142c",
+   "source": "עיבוד תמונה.pdf",
+   "page": 91,
+   "similarity": 0.4453
+  },
+  {
+   "chunk_id": "3d6d5963af5c6674",
+   "source": "עיבוד תמונה.pdf",
+   "page": 115,
+   "similarity": 0.4376
+  },
+  {
+   "chunk_id": "787bd3ba3016808e",
+   "source": "עיבוד תמונה.pdf",
+   "page": 102,
+   "similarity": 0.4342
+  },
+  {
+   "chunk_id": "4c7f851c22d6e1e3",
+   "source": "עיבוד תמונה.pdf",
+   "page": 38,
+   "similarity": 0.4339
+  }
+ ],
+ "retrieval_empty": false,
+ "error": null,
+ "retrieval_s": 2.56,
+ "repair_s": 5.95
+}

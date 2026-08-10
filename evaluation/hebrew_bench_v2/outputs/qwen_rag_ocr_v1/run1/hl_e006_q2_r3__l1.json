@@ -1,0 +1,40 @@
+{
+ "item": "hl_e006_q2_r3__l1",
+ "raw_text": "לְהַחֲזִיר אֶת הַמָּשָׁרְתִּי לְפָנֵי הַכֹּהֲנִים וְאֶל הַמְּדִינָה הַגְּדוֹלָה",
+ "suggested_text": "לְהַחֲזִיר אֶת הַמָּשָׁרְתִּי לְפָנֵי הַכֹּהֲנִים וְאֶל הַמְּדִינָה הַגְּדוֹלָה",
+ "transcription": "לְהַחֲזִיר אֶת הַמָּשָׁרְתִּי לְפָנֵי הַכֹּהֲנִים וְאֶל הַמְּדִינָה הַגְּדוֹלָה",
+ "edits": [],
+ "uncertain_regions": [],
+ "semantic_change_risk": false,
+ "needs_review": false,
+ "retrieved": [
+  {
+   "chunk_id": "7d909c1841d575fe",
+   "source": "עיבוד תמונה.pdf",
+   "page": 45,
+   "similarity": 0.4608
+  },
+  {
+   "chunk_id": "4b1889b17f91fc48",
+   "source": "עיבוד תמונה.pdf",
+   "page": 30,
+   "similarity": 0.4376
+  },
+  {
+   "chunk_id": "dee0fe87db314dc5",
+   "source": "עיבוד תמונה.pdf",
+   "page": 101,
+   "similarity": 0.4356
+  },
+  {
+   "chunk_id": "8488a890ce37b69c",
+   "source": "עיבוד תמונה.pdf",
+   "page": 90,
+   "similarity": 0.4328
+  }
+ ],
+ "retrieval_empty": false,
+ "error": null,
+ "retrieval_s": 2.52,
+ "repair_s": 8.16
+}

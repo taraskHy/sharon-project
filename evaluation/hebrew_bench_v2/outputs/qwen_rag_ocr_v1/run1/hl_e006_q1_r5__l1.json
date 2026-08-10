@@ -1,0 +1,40 @@
+{
+ "item": "hl_e006_q1_r5__l1",
+ "raw_text": "conjugation cell x y s near c.c.ll.",
+ "suggested_text": "conjugation cell x y s near c.c.ll.",
+ "transcription": "conjugation cell x y s near c.c.ll.",
+ "edits": [],
+ "uncertain_regions": [],
+ "semantic_change_risk": false,
+ "needs_review": false,
+ "retrieved": [
+  {
+   "chunk_id": "a53ffd0b95ab12a1",
+   "source": "עיבוד תמונה.pdf",
+   "page": 102,
+   "similarity": 0.4735
+  },
+  {
+   "chunk_id": "2e43c92a8b6dff51",
+   "source": "עיבוד תמונה.pdf",
+   "page": 100,
+   "similarity": 0.4706
+  },
+  {
+   "chunk_id": "6f824b0eb39cb468",
+   "source": "עיבוד תמונה.pdf",
+   "page": 47,
+   "similarity": 0.4705
+  },
+  {
+   "chunk_id": "995363fad885d9dc",
+   "source": "עיבוד תמונה.pdf",
+   "page": 100,
+   "similarity": 0.469
+  }
+ ],
+ "retrieval_empty": false,
+ "error": null,
+ "retrieval_s": 2.52,
+ "repair_s": 5.66
+}

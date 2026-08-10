@@ -1,0 +1,55 @@
+{
+ "item": "hl_e006_q1_r1__l1",
+ "raw_text": "Motion blur ! נקודות בודדות (C(ho 170) הגדלתה מרחוק",
+ "suggested_text": "Motion blur! נקודות בודדות (C(ho 170) הגדלתה מרחוק",
+ "transcription": "Motion blur! נקודות בודדות (C(ho 170) הגדלתה מרחוק",
+ "edits": [
+  {
+   "raw": "C(ho 170)",
+   "suggested": "C(ho 170)",
+   "reason": "The OCR appears to have misread a likely handwritten token. 'C(ho 170)' is plausible as-is, possibly referring to a specific parameter or notation (e.g., a Hough space bin or threshold value). No correction needed unless context suggests otherwise — but no course context supports altering it. Preserve student's original form.",
+   "risk": "low"
+  },
+  {
+   "raw": "הגדלתה מרחוק",
+   "suggested": "הגדלתה מרחוק",
+   "reason": "The OCR likely misread a word like 'הגדלתה' (possibly intended as 'הגדלת' or 'הגדלתה' is acceptable in context). The phrase 'הגדלתה מרחוק' may be an attempt to say 'הגדלת המרחק' or similar. However, since the student's handwriting might have been unclear and no course context suggests a standard correction, we preserve as-is with note of uncertainty.",
+   "risk": "low"
+  }
+ ],
+ "uncertain_regions": [
+  "הגדלתה מרחוק"
+ ],
+ "semantic_change_risk": false,
+ "needs_review": true,
+ "retrieved": [
+  {
+   "chunk_id": "6f79a5c1d38416ec",
+   "source": "עיבוד תמונה.pdf",
+   "page": 97,
+   "similarity": 0.505
+  },
+  {
+   "chunk_id": "3b87159fcc4a5cca",
+   "source": "עיבוד תמונה.pdf",
+   "page": 17,
+   "similarity": 0.5046
+  },
+  {
+   "chunk_id": "b92c82681204242d",
+   "source": "עיבוד תמונה.pdf",
+   "page": 14,
+   "similarity": 0.5
+  },
+  {
+   "chunk_id": "07ba13770a0ab484",
+   "source": "עיבוד תמונה.pdf",
+   "page": 99,
+   "similarity": 0.4971
+  }
+ ],
+ "retrieval_empty": false,
+ "error": null,
+ "retrieval_s": 2.55,
+ "repair_s": 14.61
+}

@@ -1,0 +1,40 @@
+{
+ "item": "hl_e004_q2_r6__l1",
+ "raw_text": "השאלה היא: מהו הסיכוי ש-2 מתוך 5 אנשים יתפזרו?",
+ "suggested_text": "השאלה היא: מהו הסיכוי ש-2 מתוך 5 אנשים יתפזרו?",
+ "transcription": "השאלה היא: מהו הסיכוי ש-2 מתוך 5 אנשים יתפזרו?",
+ "edits": [],
+ "uncertain_regions": [],
+ "semantic_change_risk": false,
+ "needs_review": false,
+ "retrieved": [
+  {
+   "chunk_id": "6ec71fda5384f034",
+   "source": "עיבוד תמונה.pdf",
+   "page": 32,
+   "similarity": 0.4789
+  },
+  {
+   "chunk_id": "6cce560c4b0e5deb",
+   "source": "עיבוד תמונה.pdf",
+   "page": 10,
+   "similarity": 0.4616
+  },
+  {
+   "chunk_id": "2e25977dc9e2aae7",
+   "source": "עיבוד תמונה.pdf",
+   "page": 13,
+   "similarity": 0.4489
+  },
+  {
+   "chunk_id": "f71fe312fd3ecd6f",
+   "source": "עיבוד תמונה.pdf",
+   "page": 72,
+   "similarity": 0.4414
+  }
+ ],
+ "retrieval_empty": false,
+ "error": null,
+ "retrieval_s": 2.53,
+ "repair_s": 5.88
+}

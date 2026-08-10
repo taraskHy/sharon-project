@@ -1,0 +1,47 @@
+{
+ "item": "hc_e002_q2_r7",
+ "raw_text": "קורת ה-10,000 מ",
+ "suggested_text": "קורה של 10,000 מ",
+ "transcription": "קורה של 10,000 מ",
+ "edits": [
+  {
+   "raw": "קורת ה-10,000 מ",
+   "suggested": "קורה של 10,000 מ",
+   "reason": "המילה 'קורת' נראית כטעות אופטית של 'קורה', ו-'של' היא תיקון לוגי להקשר. 'מ' נשארת כנראה סימן יחידה (כמו 'מ' ב-10,000 מטרים), אך לא ניתן לקבוע את המילה המלאה ללא הקשר נוסף. הוספת 'של' היא תיקון אופטימלי לפי תרבות כתיבה בעברית ותנאי ההקשר של התמונה (שעומדת על ספקטרום אור).",
+   "risk": "low"
+  }
+ ],
+ "uncertain_regions": [],
+ "semantic_change_risk": false,
+ "needs_review": false,
+ "retrieved": [
+  {
+   "chunk_id": "07ba13770a0ab484",
+   "source": "עיבוד תמונה.pdf",
+   "page": 99,
+   "similarity": 0.4079
+  },
+  {
+   "chunk_id": "9aa0794ae6075786",
+   "source": "עיבוד תמונה.pdf",
+   "page": 108,
+   "similarity": 0.3911
+  },
+  {
+   "chunk_id": "1d1361f5d7301689",
+   "source": "עיבוד תמונה.pdf",
+   "page": 99,
+   "similarity": 0.3874
+  },
+  {
+   "chunk_id": "aeb9ef54f19c2ee5",
+   "source": "עיבוד תמונה.pdf",
+   "page": 15,
+   "similarity": 0.3861
+  }
+ ],
+ "retrieval_empty": false,
+ "error": null,
+ "retrieval_s": 4.53,
+ "repair_s": 11.77
+}

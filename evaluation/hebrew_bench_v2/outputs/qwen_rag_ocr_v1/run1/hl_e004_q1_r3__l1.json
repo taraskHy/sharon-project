@@ -1,0 +1,47 @@
+{
+ "item": "hl_e004_q1_r3__l1",
+ "raw_text": "compare Nudity, just like C3H4,",
+ "suggested_text": "compare NCC, just like C3H4",
+ "transcription": "compare NCC, just like C3H4",
+ "edits": [
+  {
+   "raw": "Nudity",
+   "suggested": "NCC",
+   "reason": "In context of image processing course materials (chunk 2e43c92a8b6dff51), 'NCC' refers to Normalized Cross-Correlation, a standard term. 'Nudity' is not relevant and likely an OCR corruption of 'NCC'. The rest of the phrase ('just like C3H4') appears plausible as-is, since C3H4 is a chemical formula that may be used for analogy in some contexts (e.g., comparing correlation to a simple ratio). No other context suggests 'Nudity' should remain. Therefore, correction is justified based on course terminology and OCR likelihood.",
+   "risk": "low"
+  }
+ ],
+ "uncertain_regions": [],
+ "semantic_change_risk": false,
+ "needs_review": false,
+ "retrieved": [
+  {
+   "chunk_id": "1c59e3b301e8b7d5",
+   "source": "עיבוד תמונה.pdf",
+   "page": 76,
+   "similarity": 0.4807
+  },
+  {
+   "chunk_id": "2e43c92a8b6dff51",
+   "source": "עיבוד תמונה.pdf",
+   "page": 100,
+   "similarity": 0.4759
+  },
+  {
+   "chunk_id": "ab76ef53b91e7ef6",
+   "source": "עיבוד תמונה.pdf",
+   "page": 101,
+   "similarity": 0.4557
+  },
+  {
+   "chunk_id": "dc7337325d7f5a91",
+   "source": "עיבוד תמונה.pdf",
+   "page": 81,
+   "similarity": 0.4557
+  }
+ ],
+ "retrieval_empty": false,
+ "error": null,
+ "retrieval_s": 2.62,
+ "repair_s": 11.77
+}

@@ -1,0 +1,40 @@
+{
+ "item": "hc_e002_q2_r2",
+ "raw_text": "was telephoned to, is an idea my book was about pain",
+ "suggested_text": "was telephoned to, is an idea my book was about pain",
+ "transcription": "was telephoned to, is an idea my book was about pain",
+ "edits": [],
+ "uncertain_regions": [],
+ "semantic_change_risk": false,
+ "needs_review": false,
+ "retrieved": [
+  {
+   "chunk_id": "75641ea709e0063a",
+   "source": "עיבוד תמונה.pdf",
+   "page": 4,
+   "similarity": 0.4184
+  },
+  {
+   "chunk_id": "97508d3c72223ddb",
+   "source": "עיבוד תמונה.pdf",
+   "page": 78,
+   "similarity": 0.4091
+  },
+  {
+   "chunk_id": "b5ef2382aa401de7",
+   "source": "עיבוד תמונה.pdf",
+   "page": 98,
+   "similarity": 0.4081
+  },
+  {
+   "chunk_id": "9889b14e1688e203",
+   "source": "עיבוד תמונה.pdf",
+   "page": 15,
+   "similarity": 0.4074
+  }
+ ],
+ "retrieval_empty": false,
+ "error": null,
+ "retrieval_s": 2.53,
+ "repair_s": 5.77
+}

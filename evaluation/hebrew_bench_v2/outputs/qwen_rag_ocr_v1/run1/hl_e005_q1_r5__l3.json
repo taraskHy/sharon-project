@@ -1,0 +1,40 @@
+{
+ "item": "hl_e005_q1_r5__l3",
+ "raw_text": "x וּשְׁכֵלָה / כְּתִיבַת הַמְּסֻוֹרָה - לְחַיַּת אֲדָמִים, לְחַיַּת אֲדָמִים",
+ "suggested_text": "x וּשְׁכֵלָה / כְּתִיבַת הַמְּסֻוֹרָה - לְחַיַּת אֲדָמִים, לְחַיַּת אֲדָמִים",
+ "transcription": "x וּשְׁכֵלָה / כְּתִיבַת הַמְּסֻוֹרָה - לְחַיַּת אֲדָמִים, לְחַיַּת אֲדָמִים",
+ "edits": [],
+ "uncertain_regions": [],
+ "semantic_change_risk": false,
+ "needs_review": false,
+ "retrieved": [
+  {
+   "chunk_id": "a53ffd0b95ab12a1",
+   "source": "עיבוד תמונה.pdf",
+   "page": 102,
+   "similarity": 0.4496
+  },
+  {
+   "chunk_id": "4b1889b17f91fc48",
+   "source": "עיבוד תמונה.pdf",
+   "page": 30,
+   "similarity": 0.4484
+  },
+  {
+   "chunk_id": "62ba70ad2e84dcb3",
+   "source": "עיבוד תמונה.pdf",
+   "page": 29,
+   "similarity": 0.4476
+  },
+  {
+   "chunk_id": "de272f664f980bcb",
+   "source": "עיבוד תמונה.pdf",
+   "page": 41,
+   "similarity": 0.4428
+  }
+ ],
+ "retrieval_empty": false,
+ "error": null,
+ "retrieval_s": 2.59,
+ "repair_s": 7.89
+}

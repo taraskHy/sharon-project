@@ -1,0 +1,40 @@
+{
+ "item": "hl_e003_q2_r4__l1",
+ "raw_text": "and e' Uniform angle N17 | 8/20",
+ "suggested_text": "and e' Uniform angle N17 | 8/20",
+ "transcription": "and e' Uniform angle N17 | 8/20",
+ "edits": [],
+ "uncertain_regions": [],
+ "semantic_change_risk": false,
+ "needs_review": false,
+ "retrieved": [
+  {
+   "chunk_id": "2e43c92a8b6dff51",
+   "source": "עיבוד תמונה.pdf",
+   "page": 100,
+   "similarity": 0.4653
+  },
+  {
+   "chunk_id": "17d0fb588e4ea819",
+   "source": "עיבוד תמונה.pdf",
+   "page": 104,
+   "similarity": 0.4627
+  },
+  {
+   "chunk_id": "6923d4c4be184d72",
+   "source": "עיבוד תמונה.pdf",
+   "page": 68,
+   "similarity": 0.4624
+  },
+  {
+   "chunk_id": "c82194adc36b2ffb",
+   "source": "עיבוד תמונה.pdf",
+   "page": 47,
+   "similarity": 0.4618
+  }
+ ],
+ "retrieval_empty": false,
+ "error": null,
+ "retrieval_s": 5.02,
+ "repair_s": 5.61
+}

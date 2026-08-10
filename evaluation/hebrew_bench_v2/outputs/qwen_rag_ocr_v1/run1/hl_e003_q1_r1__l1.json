@@ -1,0 +1,40 @@
+{
+ "item": "hl_e003_q1_r1__l1",
+ "raw_text": "המגמה הלאויה (Celsius) היא מידה של טמפרטורה",
+ "suggested_text": "המגמה הלאויה (Celsius) היא מידה של טמפרטורה",
+ "transcription": "המגמה הלאויה (Celsius) היא מידה של טמפרטורה",
+ "edits": [],
+ "uncertain_regions": [],
+ "semantic_change_risk": false,
+ "needs_review": false,
+ "retrieved": [
+  {
+   "chunk_id": "ab76ef53b91e7ef6",
+   "source": "עיבוד תמונה.pdf",
+   "page": 101,
+   "similarity": 0.4947
+  },
+  {
+   "chunk_id": "b5ef2382aa401de7",
+   "source": "עיבוד תמונה.pdf",
+   "page": 98,
+   "similarity": 0.4632
+  },
+  {
+   "chunk_id": "2ac9a600fd48bdbb",
+   "source": "עיבוד תמונה.pdf",
+   "page": 7,
+   "similarity": 0.4583
+  },
+  {
+   "chunk_id": "f447ea98b71f4b69",
+   "source": "עיבוד תמונה.pdf",
+   "page": 102,
+   "similarity": 0.4451
+  }
+ ],
+ "retrieval_empty": false,
+ "error": null,
+ "retrieval_s": 8.42,
+ "repair_s": 12.48
+}

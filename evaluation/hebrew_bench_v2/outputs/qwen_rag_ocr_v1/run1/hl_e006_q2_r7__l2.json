@@ -1,0 +1,40 @@
+{
+ "item": "hl_e006_q2_r7__l2",
+ "raw_text": "אינטגרל של f(x) = 2x^3 - 4x + 1",
+ "suggested_text": "אינטגרל של f(x) = 2x^3 - 4x + 1",
+ "transcription": "אינטגרל של f(x) = 2x^3 - 4x + 1",
+ "edits": [],
+ "uncertain_regions": [],
+ "semantic_change_risk": false,
+ "needs_review": false,
+ "retrieved": [
+  {
+   "chunk_id": "41ddf2b25d6ad347",
+   "source": "עיבוד תמונה.pdf",
+   "page": 56,
+   "similarity": 0.5007
+  },
+  {
+   "chunk_id": "dcbc6eb17369a3fa",
+   "source": "עיבוד תמונה.pdf",
+   "page": 56,
+   "similarity": 0.4882
+  },
+  {
+   "chunk_id": "b8d47c1331cc7e08",
+   "source": "עיבוד תמונה.pdf",
+   "page": 43,
+   "similarity": 0.4867
+  },
+  {
+   "chunk_id": "130539e0a3d80129",
+   "source": "עיבוד תמונה.pdf",
+   "page": 54,
+   "similarity": 0.4772
+  }
+ ],
+ "retrieval_empty": false,
+ "error": null,
+ "retrieval_s": 2.53,
+ "repair_s": 5.56
+}

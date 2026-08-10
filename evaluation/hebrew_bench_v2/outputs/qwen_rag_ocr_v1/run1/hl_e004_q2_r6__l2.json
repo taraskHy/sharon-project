@@ -1,0 +1,40 @@
+{
+ "item": "hl_e004_q2_r6__l2",
+ "raw_text": "x 23.6 x CaO, n = 1.57 g / (18.016)",
+ "suggested_text": "x 23.6 x CaO, n = 1.57 g / (18.016)",
+ "transcription": "x 23.6 x CaO, n = 1.57 g / (18.016)",
+ "edits": [],
+ "uncertain_regions": [],
+ "semantic_change_risk": false,
+ "needs_review": false,
+ "retrieved": [
+  {
+   "chunk_id": "153619dfda24c44b",
+   "source": "עיבוד תמונה.pdf",
+   "page": 75,
+   "similarity": 0.4291
+  },
+  {
+   "chunk_id": "3b87159fcc4a5cca",
+   "source": "עיבוד תמונה.pdf",
+   "page": 17,
+   "similarity": 0.418
+  },
+  {
+   "chunk_id": "69e02e4fa0c52bed",
+   "source": "עיבוד תמונה.pdf",
+   "page": 28,
+   "similarity": 0.4096
+  },
+  {
+   "chunk_id": "3da5b4f3be74723b",
+   "source": "עיבוד תמונה.pdf",
+   "page": 47,
+   "similarity": 0.4087
+  }
+ ],
+ "retrieval_empty": false,
+ "error": null,
+ "retrieval_s": 2.56,
+ "repair_s": 6.03
+}

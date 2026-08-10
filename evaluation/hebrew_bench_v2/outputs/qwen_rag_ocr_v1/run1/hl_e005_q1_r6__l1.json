@@ -1,0 +1,40 @@
+{
+ "item": "hl_e005_q1_r6__l1",
+ "raw_text": "כְּלָבִי 2.15.16. (א) כְּלָבִי 2.15.16. (ב)",
+ "suggested_text": "כְּלָבִי 2.15.16. (א) כְּלָבִי 2.15.16. (ב)",
+ "transcription": "כְּלָבִי 2.15.16. (א) כְּלָבִי 2.15.16. (ב)",
+ "edits": [],
+ "uncertain_regions": [],
+ "semantic_change_risk": false,
+ "needs_review": false,
+ "retrieved": [
+  {
+   "chunk_id": "64c37ae6bd43465b",
+   "source": "עיבוד תמונה.pdf",
+   "page": 28,
+   "similarity": 0.508
+  },
+  {
+   "chunk_id": "76e741805dd763ab",
+   "source": "עיבוד תמונה.pdf",
+   "page": 39,
+   "similarity": 0.5015
+  },
+  {
+   "chunk_id": "23d6b3916c816ed4",
+   "source": "עיבוד תמונה.pdf",
+   "page": 27,
+   "similarity": 0.4825
+  },
+  {
+   "chunk_id": "de272f664f980bcb",
+   "source": "עיבוד תמונה.pdf",
+   "page": 41,
+   "similarity": 0.4815
+  }
+ ],
+ "retrieval_empty": false,
+ "error": null,
+ "retrieval_s": 2.52,
+ "repair_s": 6.28
+}

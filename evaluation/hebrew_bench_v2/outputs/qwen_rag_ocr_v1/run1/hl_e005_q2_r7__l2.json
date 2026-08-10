@@ -1,0 +1,47 @@
+{
+ "item": "hl_e005_q2_r7__l2",
+ "raw_text": "gray-levels 0-255, es cuadrado de la imagen",
+ "suggested_text": "gray-levels 0-255, es cuadrado de la imagen",
+ "transcription": "gray-levels 0-255, es cuadrado de la imagen",
+ "edits": [
+  {
+   "raw": "es cuadrado de la imagen",
+   "suggested": "es cuadrado de la imagen",
+   "reason": "The phrase 'es cuadrado de la imagen' is plausible as-is; it appears to be a direct translation from Spanish ('it is the square of the image') and does not require correction based on course context. No OCR corruption detected or needed repair for this segment, since no terminology mismatch exists with provided course passages (e.g., grayscale levels 0-255 are mentioned). The student's phrasing may be literal translation error but remains plausible as written without altering meaning or correcting terminology per instructions.",
+   "risk": "low"
+  }
+ ],
+ "uncertain_regions": [],
+ "semantic_change_risk": false,
+ "needs_review": false,
+ "retrieved": [
+  {
+   "chunk_id": "30ab20b4804cc5c1",
+   "source": "עיבוד תמונה.pdf",
+   "page": 82,
+   "similarity": 0.5309
+  },
+  {
+   "chunk_id": "3b87159fcc4a5cca",
+   "source": "עיבוד תמונה.pdf",
+   "page": 17,
+   "similarity": 0.5286
+  },
+  {
+   "chunk_id": "0257fa907d4f6bd0",
+   "source": "עיבוד תמונה.pdf",
+   "page": 11,
+   "similarity": 0.5077
+  },
+  {
+   "chunk_id": "3c72cc1dfbfe1e8e",
+   "source": "עיבוד תמונה.pdf",
+   "page": 6,
+   "similarity": 0.5068
+  }
+ ],
+ "retrieval_empty": false,
+ "error": null,
+ "retrieval_s": 2.69,
+ "repair_s": 10.98
+}

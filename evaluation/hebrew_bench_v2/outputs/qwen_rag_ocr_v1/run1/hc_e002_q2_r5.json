@@ -1,0 +1,40 @@
+{
+ "item": "hc_e002_q2_r5",
+ "raw_text": "כְּיָר, בַּזֹּחַק קִרְמִין מֵאֲנִיָּה אֶל עֲדַת הַשְׁכָּבִים",
+ "suggested_text": "כְּיָר, בַּזֹּחַק קִרְמִין מֵאֲנִיָּה אֶל עֲדַת הַשְׁכָּבִים",
+ "transcription": "כְּיָר, בַּזֹּחַק קִרְמִין מֵאֲנִיָּה אֶל עֲדַת הַשְׁכָּבִים",
+ "edits": [],
+ "uncertain_regions": [],
+ "semantic_change_risk": false,
+ "needs_review": false,
+ "retrieved": [
+  {
+   "chunk_id": "e5a90554c25d7ceb",
+   "source": "עיבוד תמונה.pdf",
+   "page": 108,
+   "similarity": 0.4244
+  },
+  {
+   "chunk_id": "6bbdc5e368b53f21",
+   "source": "עיבוד תמונה.pdf",
+   "page": 112,
+   "similarity": 0.4214
+  },
+  {
+   "chunk_id": "a53ffd0b95ab12a1",
+   "source": "עיבוד תמונה.pdf",
+   "page": 102,
+   "similarity": 0.4145
+  },
+  {
+   "chunk_id": "6cce560c4b0e5deb",
+   "source": "עיבוד תמונה.pdf",
+   "page": 10,
+   "similarity": 0.413
+  }
+ ],
+ "retrieval_empty": false,
+ "error": null,
+ "retrieval_s": 2.66,
+ "repair_s": 7.44
+}

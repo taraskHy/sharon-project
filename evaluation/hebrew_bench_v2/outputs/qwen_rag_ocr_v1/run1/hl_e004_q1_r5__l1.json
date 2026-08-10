@@ -1,0 +1,65 @@
+{
+ "item": "hl_e004_q1_r5__l1",
+ "raw_text": "A'pail, 20696n WAVELETS Q x 913 (??)",
+ "suggested_text": "A'pail, 20696n WAVELETS Q x 913 (?)",
+ "transcription": "A'pail, 20696n WAVELETS Q x 913 (?)",
+ "edits": [
+  {
+   "raw": "A'pail",
+   "suggested": "A'pail",
+   "reason": "Likely correct as-is; may be a name or identifier. No plausible OCR corruption detected without context, but preserved per instruction to not silently correct student input.",
+   "risk": "low"
+  },
+  {
+   "raw": "20696n",
+   "suggested": "20696n",
+   "reason": "Unclear if 'n' is a typo or part of the identifier. Could be OCR misreading of 'N', but since it's likely intentional (e.g., variable, index, or code), preserved as-is.",
+   "risk": "low"
+  },
+  {
+   "raw": "WAVELETS",
+   "suggested": "WAVELETS",
+   "reason": "Correct capitalization and spelling. No corruption detected.",
+   "risk": "low"
+  },
+  {
+   "raw": "Q x 913 (?)",
+   "suggested": "Q x 913 (?)",
+   "reason": "Likely student notation for a question identifier or problem number (e.g., 'Question Q, part 913?'). The '?' is preserved as it may indicate uncertainty. No plausible OCR corruption detected.",
+   "risk": "low"
+  }
+ ],
+ "uncertain_regions": [],
+ "semantic_change_risk": false,
+ "needs_review": false,
+ "retrieved": [
+  {
+   "chunk_id": "d79f374ac1c27f69",
+   "source": "עיבוד תמונה.pdf",
+   "page": 88,
+   "similarity": 0.4522
+  },
+  {
+   "chunk_id": "f94ee445be83184b",
+   "source": "עיבוד תמונה.pdf",
+   "page": 86,
+   "similarity": 0.4476
+  },
+  {
+   "chunk_id": "5c75851dcfe50e4c",
+   "source": "עיבוד תמונה.pdf",
+   "page": 33,
+   "similarity": 0.4392
+  },
+  {
+   "chunk_id": "078505a74f4f18be",
+   "source": "עיבוד תמונה.pdf",
+   "page": 86,
+   "similarity": 0.4302
+  }
+ ],
+ "retrieval_empty": false,
+ "error": null,
+ "retrieval_s": 2.53,
+ "repair_s": 15.75
+}

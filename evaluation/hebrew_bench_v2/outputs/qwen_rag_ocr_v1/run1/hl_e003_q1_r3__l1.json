@@ -1,0 +1,40 @@
+{
+ "item": "hl_e003_q1_r3__l1",
+ "raw_text": "שְׁלֹמֹה הַמָּלֵךְ עַל יִשְׂרָאֵל וְיִשְׂרָאֵל הַמָּלֵךְ עַל יִשְׂרָאֵל",
+ "suggested_text": "שְׁלֹמֹה הַמָּלֵךְ עַל יִשְׂרָאֵל וְיִשְׂרָאֵל הַמָּלֵךְ עַל יִשְׂרָאֵל",
+ "transcription": "שְׁלֹמֹה הַמָּלֵךְ עַל יִשְׂרָאֵל וְיִשְׂרָאֵל הַמָּלֵךְ עַל יִשְׂרָאֵל",
+ "edits": [],
+ "uncertain_regions": [],
+ "semantic_change_risk": false,
+ "needs_review": false,
+ "retrieved": [
+  {
+   "chunk_id": "3da5b4f3be74723b",
+   "source": "עיבוד תמונה.pdf",
+   "page": 47,
+   "similarity": 0.3429
+  },
+  {
+   "chunk_id": "b1ff802ffd7033a1",
+   "source": "עיבוד תמונה.pdf",
+   "page": 22,
+   "similarity": 0.3406
+  },
+  {
+   "chunk_id": "6ec71fda5384f034",
+   "source": "עיבוד תמונה.pdf",
+   "page": 32,
+   "similarity": 0.3378
+  },
+  {
+   "chunk_id": "5c75851dcfe50e4c",
+   "source": "עיבוד תמונה.pdf",
+   "page": 33,
+   "similarity": 0.3365
+  }
+ ],
+ "retrieval_empty": false,
+ "error": null,
+ "retrieval_s": 2.55,
+ "repair_s": 8.17
+}

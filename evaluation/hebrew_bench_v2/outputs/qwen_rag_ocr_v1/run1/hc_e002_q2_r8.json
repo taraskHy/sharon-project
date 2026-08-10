@@ -1,0 +1,40 @@
+{
+ "item": "hc_e002_q2_r8",
+ "raw_text": "נְדָבִי 2x8 אֲפַרְסְטְרֵי 6x9 אֲפַרְסְטְרֵי",
+ "suggested_text": "נְדָבִי 2x8 אֲפַרְסְטְרֵי 6x9 אֲפַרְסְטְרֵי",
+ "transcription": "נְדָבִי 2x8 אֲפַרְסְטְרֵי 6x9 אֲפַרְסְטְרֵי",
+ "edits": [],
+ "uncertain_regions": [],
+ "semantic_change_risk": false,
+ "needs_review": false,
+ "retrieved": [
+  {
+   "chunk_id": "b6e6ee552296f7e9",
+   "source": "עיבוד תמונה.pdf",
+   "page": 67,
+   "similarity": 0.4468
+  },
+  {
+   "chunk_id": "d2898bce524d7fcb",
+   "source": "עיבוד תמונה.pdf",
+   "page": 117,
+   "similarity": 0.446
+  },
+  {
+   "chunk_id": "6923d4c4be184d72",
+   "source": "עיבוד תמונה.pdf",
+   "page": 68,
+   "similarity": 0.4422
+  },
+  {
+   "chunk_id": "b943fe8ecfc74b9f",
+   "source": "עיבוד תמונה.pdf",
+   "page": 116,
+   "similarity": 0.4398
+  }
+ ],
+ "retrieval_empty": false,
+ "error": null,
+ "retrieval_s": 2.59,
+ "repair_s": 7.02
+}

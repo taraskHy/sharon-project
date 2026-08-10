@@ -1,0 +1,40 @@
+{
+ "item": "hl_e005_q2_r4__l2",
+ "raw_text": "לְהַעֲמִיד אֶת הַשְׁכָּלוֹן, אֲנִי מְחַרְבֵּר לְהַעֲמִיד אֶת הַשְׁכָּלוֹן, אֲנִי מְחַרְבֵּר",
+ "suggested_text": "לְהַעֲמִיד אֶת הַשְׁכָּלוֹן, אֲנִי מְחַרְבֵּר לְהַעֲמִיד אֶת הַשְׁכָּלוֹן, אֲנִי מְחַרְבֵּר",
+ "transcription": "לְהַעֲמִיד אֶת הַשְׁכָּלוֹן, אֲנִי מְחַרְבֵּר לְהַעֲמִיד אֶת הַשְׁכָּלוֹן, אֲנִי מְחַרְבֵּר",
+ "edits": [],
+ "uncertain_regions": [],
+ "semantic_change_risk": false,
+ "needs_review": false,
+ "retrieved": [
+  {
+   "chunk_id": "7d909c1841d575fe",
+   "source": "עיבוד תמונה.pdf",
+   "page": 45,
+   "similarity": 0.4387
+  },
+  {
+   "chunk_id": "d2898bce524d7fcb",
+   "source": "עיבוד תמונה.pdf",
+   "page": 117,
+   "similarity": 0.4372
+  },
+  {
+   "chunk_id": "21dcdb439c3a2b37",
+   "source": "עיבוד תמונה.pdf",
+   "page": 80,
+   "similarity": 0.4369
+  },
+  {
+   "chunk_id": "bdd5303a5d37d3a4",
+   "source": "עיבוד תמונה.pdf",
+   "page": 98,
+   "similarity": 0.4332
+  }
+ ],
+ "retrieval_empty": false,
+ "error": null,
+ "retrieval_s": 2.53,
+ "repair_s": 8.72
+}

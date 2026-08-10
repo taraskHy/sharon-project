@@ -1,0 +1,40 @@
+{
+ "item": "hl_e003_q2_r8__l1",
+ "raw_text": "השכלה והערכה של התלמידים במערכת החינוך הישראלית, התחום המוסרי והחברתי, והתחום האקדמי והתורני. מהן ההגדרות?",
+ "suggested_text": "השכלה והערכה של התלמידים במערכת החינוך הישראלית, התחום המוסרי והחברתי, והתחום האקדמי והתורני. מהן ההגדרות?",
+ "transcription": "השכלה והערכה של התלמידים במערכת החינוך הישראלית, התחום המוסרי והחברתי, והתחום האקדמי והתורני. מהן ההגדרות?",
+ "edits": [],
+ "uncertain_regions": [],
+ "semantic_change_risk": false,
+ "needs_review": false,
+ "retrieved": [
+  {
+   "chunk_id": "e096025e340fc3a7",
+   "source": "עיבוד תמונה.pdf",
+   "page": 6,
+   "similarity": 0.4446
+  },
+  {
+   "chunk_id": "9aa0794ae6075786",
+   "source": "עיבוד תמונה.pdf",
+   "page": 108,
+   "similarity": 0.4316
+  },
+  {
+   "chunk_id": "3c72cc1dfbfe1e8e",
+   "source": "עיבוד תמונה.pdf",
+   "page": 6,
+   "similarity": 0.4315
+  },
+  {
+   "chunk_id": "f19d47e2ea26d4b0",
+   "source": "עיבוד תמונה.pdf",
+   "page": 1,
+   "similarity": 0.4257
+  }
+ ],
+ "retrieval_empty": false,
+ "error": null,
+ "retrieval_s": 2.61,
+ "repair_s": 6.41
+}

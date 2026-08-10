@@ -1,0 +1,59 @@
+{
+ "item": "hl_e005_q2_r5__l3",
+ "raw_text": "c_{max}-a _{i}^{n} | \frac{\text{השכלה}}{\text{השכלה}} e.g., \text{השכלה}",
+ "suggested_text": "c_{max} - a_i^n | \\frac{\\text{השכלה}}{\\text{השכלה}} e.g., \\text{השכלה}",
+ "transcription": "c_{max} - a_i^n | \\frac{\\text{השכלה}}{\\text{השכלה}} e.g., \\text{השכלה}",
+ "edits": [
+  {
+   "raw": "c_{max}-a _{i}^{n}",
+   "suggested": "c_{max} - a_i^n",
+   "reason": "Removed space and added proper subscript/superscript formatting. OCR likely misread hyphen as minus, and underscore as subscript indicator. 'a' with subscript 'i' and superscript 'n' is plausible in math context, especially given course material on image processing involving pixel operations or histograms (e.g., EMD).",
+   "risk": "low"
+  },
+  {
+   "raw": "|  \\frac{\\text{השכלה}}{\\text{השכלה}}",
+   "suggested": "| \\frac{\\text{השכלה}}{\\text{השכלה}}",
+   "reason": "Added missing space before the fraction and corrected LaTeX delimiters. OCR likely misread spacing around math operators. The text 'השכלה' appears twice — possibly a placeholder or error, but preserved as-is since it's not standard terminology in course context (no clear equivalent).",
+   "risk": "low"
+  },
+  {
+   "raw": "e.g.,  \\text{השכלה}",
+   "suggested": "e.g., \\text{השכלה}",
+   "reason": "Added missing space before 'e.g.' and preserved the text as-is. The term 'השכלה' is not standard in course context (no clear equivalent), so it's likely a placeholder or OCR corruption of an intended variable, concept, or example. Preserved to avoid over-correcting.",
+   "risk": "low"
+  }
+ ],
+ "uncertain_regions": [],
+ "semantic_change_risk": false,
+ "needs_review": false,
+ "retrieved": [
+  {
+   "chunk_id": "43c2a5ecfc1da4d9",
+   "source": "עיבוד תמונה.pdf",
+   "page": 16,
+   "similarity": 0.479
+  },
+  {
+   "chunk_id": "8418c2498b776ad9",
+   "source": "עיבוד תמונה.pdf",
+   "page": 12,
+   "similarity": 0.4757
+  },
+  {
+   "chunk_id": "137cbb504fa383ef",
+   "source": "עיבוד תמונה.pdf",
+   "page": 102,
+   "similarity": 0.466
+  },
+  {
+   "chunk_id": "dea94434b52fea10",
+   "source": "עיבוד תמונה.pdf",
+   "page": 93,
+   "similarity": 0.4556
+  }
+ ],
+ "retrieval_empty": false,
+ "error": null,
+ "retrieval_s": 2.53,
+ "repair_s": 18.33
+}

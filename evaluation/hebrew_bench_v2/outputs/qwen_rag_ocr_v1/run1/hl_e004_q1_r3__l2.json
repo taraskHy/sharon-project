@@ -1,0 +1,40 @@
+{
+ "item": "hl_e004_q1_r3__l2",
+ "raw_text": "Brightness 750 E 12 > 1.8",
+ "suggested_text": "Brightness 750 E 12 > 1.8",
+ "transcription": "Brightness 750 E 12 > 1.8",
+ "edits": [],
+ "uncertain_regions": [],
+ "semantic_change_risk": false,
+ "needs_review": false,
+ "retrieved": [
+  {
+   "chunk_id": "3b87159fcc4a5cca",
+   "source": "עיבוד תמונה.pdf",
+   "page": 17,
+   "similarity": 0.4976
+  },
+  {
+   "chunk_id": "b1fe7d2a38de1deb",
+   "source": "עיבוד תמונה.pdf",
+   "page": 6,
+   "similarity": 0.4768
+  },
+  {
+   "chunk_id": "ebf99e7e6d091112",
+   "source": "עיבוד תמונה.pdf",
+   "page": 12,
+   "similarity": 0.4551
+  },
+  {
+   "chunk_id": "4c7f851c22d6e1e3",
+   "source": "עיבוד תמונה.pdf",
+   "page": 38,
+   "similarity": 0.4494
+  }
+ ],
+ "retrieval_empty": false,
+ "error": null,
+ "retrieval_s": 4.69,
+ "repair_s": 5.52
+}

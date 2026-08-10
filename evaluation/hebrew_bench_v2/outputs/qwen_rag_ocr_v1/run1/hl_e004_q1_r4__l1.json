@@ -1,0 +1,40 @@
+{
+ "item": "hl_e004_q1_r4__l1",
+ "raw_text": "Low Pass Filter",
+ "suggested_text": "Low Pass Filter",
+ "transcription": "Low Pass Filter",
+ "edits": [],
+ "uncertain_regions": [],
+ "semantic_change_risk": false,
+ "needs_review": false,
+ "retrieved": [
+  {
+   "chunk_id": "3173524afd13ca0c",
+   "source": "עיבוד תמונה.pdf",
+   "page": 69,
+   "similarity": 0.5971
+  },
+  {
+   "chunk_id": "c3833902c7a1079c",
+   "source": "עיבוד תמונה.pdf",
+   "page": 71,
+   "similarity": 0.5591
+  },
+  {
+   "chunk_id": "196779e6ff52f0b9",
+   "source": "עיבוד תמונה.pdf",
+   "page": 79,
+   "similarity": 0.558
+  },
+  {
+   "chunk_id": "9e04a7f26d53b2a5",
+   "source": "עיבוד תמונה.pdf",
+   "page": 70,
+   "similarity": 0.5549
+  }
+ ],
+ "retrieval_empty": false,
+ "error": null,
+ "retrieval_s": 4.16,
+ "repair_s": 5.2
+}

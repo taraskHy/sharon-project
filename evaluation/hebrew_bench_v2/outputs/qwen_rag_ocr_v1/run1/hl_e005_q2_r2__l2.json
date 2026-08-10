@@ -1,0 +1,55 @@
+{
+ "item": "hl_e005_q2_r2__l2",
+ "raw_text": "n > 0.8 δ,07 threshholding σελχ ουσ'γ/δειος",
+ "suggested_text": "n > 0.8 δ,07 thresholding σελχ ουσ'γ/δειος",
+ "transcription": "n > 0.8 δ,07 thresholding σελχ ουσ'γ/δειος",
+ "edits": [
+  {
+   "raw": "threshholding",
+   "suggested": "thresholding",
+   "reason": "Likely OCR error: 'threshholding' → correct term is 'thresholding'. Common OCR misreading of 'h' to 't' or similar typo. Context suggests thresholding in edge detection (chunk 02697ab5...). Preserve original if unsure, but this correction is plausible and contextually supported.",
+   "risk": "low"
+  },
+  {
+   "raw": "σελχ ουσ'γ/δειος",
+   "suggested": "σελχ ουσ'γ/δειος",
+   "reason": "Unclear Greek-like text. No clear OCR corruption detected; may be a misread of 'σελχ ουσ'γ/δειος'. Could represent an attempt to write something like 'σελχ ουσ'γ/δειος', possibly related to 'σελχ ουσ'γ/δειος' (e.g., Greek for 'thresholding' or similar). No clear correction possible without more context. Preserve as-is.",
+   "risk": "low"
+  }
+ ],
+ "uncertain_regions": [
+  "σελχ ουσ'γ/δειος"
+ ],
+ "semantic_change_risk": false,
+ "needs_review": true,
+ "retrieved": [
+  {
+   "chunk_id": "5c2180b9073503fb",
+   "source": "עיבוד תמונה.pdf",
+   "page": 95,
+   "similarity": 0.4852
+  },
+  {
+   "chunk_id": "02697ab52036142c",
+   "source": "עיבוד תמונה.pdf",
+   "page": 91,
+   "similarity": 0.4709
+  },
+  {
+   "chunk_id": "5fd4bc3f3054bf1f",
+   "source": "עיבוד תמונה.pdf",
+   "page": 70,
+   "similarity": 0.4641
+  },
+  {
+   "chunk_id": "db1dce0d0132afea",
+   "source": "עיבוד תמונה.pdf",
+   "page": 103,
+   "similarity": 0.4595
+  }
+ ],
+ "retrieval_empty": false,
+ "error": null,
+ "retrieval_s": 2.61,
+ "repair_s": 16.0
+}

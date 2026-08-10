@@ -1,0 +1,47 @@
+{
+ "item": "hl_e003_q2_r1__l1",
+ "raw_text": "255 pr 16:p IGRNe WOEN G (הַרְמָ) מִבְּרֵאֲדֹגִיָּמְרִתְוַּעַר אֲחַר",
+ "suggested_text": "255 pr 16: p IGRNe WOEN G (הַרְמָ) מִבְּרֵאֲדֹגִיָּמְרִתְוַּעַר אֲחַר",
+ "transcription": "255 pr 16: p IGRNe WOEN G (הַרְמָ) מִבְּרֵאֲדֹגִיָּמְרִתְוַּעַר אֲחַר",
+ "edits": [
+  {
+   "raw": "255 pr 16:p IGRNe WOEN G (הַרְמָ) מִבְּרֵאֲדֹגִיָּמְרִתְוַּעַר אֲחַר",
+   "suggested": "255 pr 16: p IGRNe WOEN G (הַרְמָ) מִבְּרֵאֲדֹגִיָּמְרִתְוַּעַר אֲחַר",
+   "reason": "No plausible OCR corruption detected. The text appears to be a direct transcription of the student's handwriting, possibly with non-standard spacing or unclear symbols (e.g., 'p IGRNe' may be an artifact of poor OCR). No correction is warranted per instructions — preserve original as-is unless context suggests otherwise. No course terminology matches this phrase for repair purposes. Unclear if 'הַרְמָ' is intended to be Hebrew or a misread symbol, but no standard term in the provided passages justifies alteration. Leave unchanged as student's own text with OCR artifacts preserved.",
+   "risk": "low"
+  }
+ ],
+ "uncertain_regions": [],
+ "semantic_change_risk": false,
+ "needs_review": false,
+ "retrieved": [
+  {
+   "chunk_id": "69e02e4fa0c52bed",
+   "source": "עיבוד תמונה.pdf",
+   "page": 28,
+   "similarity": 0.4886
+  },
+  {
+   "chunk_id": "cf68dd150a5d5844",
+   "source": "עיבוד תמונה.pdf",
+   "page": 26,
+   "similarity": 0.4772
+  },
+  {
+   "chunk_id": "f2c96643fba6823e",
+   "source": "עיבוד תמונה.pdf",
+   "page": 35,
+   "similarity": 0.4742
+  },
+  {
+   "chunk_id": "6498fd0868671718",
+   "source": "עיבוד תמונה.pdf",
+   "page": 77,
+   "similarity": 0.4729
+  }
+ ],
+ "retrieval_empty": false,
+ "error": null,
+ "retrieval_s": 2.61,
+ "repair_s": 20.64
+}

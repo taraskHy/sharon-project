@@ -1,0 +1,40 @@
+{
+ "item": "hl_e003_q2_r3__l1",
+ "raw_text": "השעון והריכוזים הורכבים על ידי סוכן שוקי מוניטרי",
+ "suggested_text": "השעון והריכוזים הורכבים על ידי סוכן שוקי מוניטרי",
+ "transcription": "השעון והריכוזים הורכבים על ידי סוכן שוקי מוניטרי",
+ "edits": [],
+ "uncertain_regions": [],
+ "semantic_change_risk": false,
+ "needs_review": false,
+ "retrieved": [
+  {
+   "chunk_id": "1fb7c09180428d0d",
+   "source": "עיבוד תמונה.pdf",
+   "page": 16,
+   "similarity": 0.3763
+  },
+  {
+   "chunk_id": "0d8ea3ca8347936c",
+   "source": "עיבוד תמונה.pdf",
+   "page": 52,
+   "similarity": 0.3737
+  },
+  {
+   "chunk_id": "de1ce3a5a89a703d",
+   "source": "עיבוד תמונה.pdf",
+   "page": 51,
+   "similarity": 0.3686
+  },
+  {
+   "chunk_id": "5e47a1c0362b53cf",
+   "source": "עיבוד תמונה.pdf",
+   "page": 52,
+   "similarity": 0.3686
+  }
+ ],
+ "retrieval_empty": false,
+ "error": null,
+ "retrieval_s": 2.62,
+ "repair_s": 6.08
+}

@@ -1,0 +1,55 @@
+{
+ "item": "hl_e005_q2_r3__l2",
+ "raw_text": "(0.755) [?] ְּרַגִּיָהּ כְּלֵי הַמְּדִינָה",
+ "suggested_text": "(0.755) [?] רגילה כלי המדינה",
+ "transcription": "(0.755) [?] רגילה כלי המדינה",
+ "edits": [
+  {
+   "raw": "ְּרַגִּיָהּ",
+   "suggested": "רגילה",
+   "reason": "OCR corruption: Hebrew vowel points (ְּ) likely misread; 'רגילה' is a plausible word in context of 'civic tools' or similar, though the phrase remains ambiguous without full context. Preserving student's attempt to write a meaningful term despite OCR error.",
+   "risk": "low"
+  },
+  {
+   "raw": "כְּלֵי הַמְּדִינָה",
+   "suggested": "כלי המדינה",
+   "reason": "OCR likely misread 'כְּלֵי' as a Hebrew word with diacritics, but the intended term is probably 'כלי המדינה' (civic tools), which matches common terminology in image processing or computer vision contexts. However, since student's original text may be incorrect or incomplete, we preserve it unless context suggests correction.",
+   "risk": "low"
+  }
+ ],
+ "uncertain_regions": [
+  "[?]"
+ ],
+ "semantic_change_risk": false,
+ "needs_review": true,
+ "retrieved": [
+  {
+   "chunk_id": "00a9e3b49d778b0c",
+   "source": "עיבוד תמונה.pdf",
+   "page": 19,
+   "similarity": 0.4986
+  },
+  {
+   "chunk_id": "5faadccab5ef36b2",
+   "source": "עיבוד תמונה.pdf",
+   "page": 55,
+   "similarity": 0.4918
+  },
+  {
+   "chunk_id": "3b87159fcc4a5cca",
+   "source": "עיבוד תמונה.pdf",
+   "page": 17,
+   "similarity": 0.4886
+  },
+  {
+   "chunk_id": "da92d884efceb760",
+   "source": "עיבוד תמונה.pdf",
+   "page": 9,
+   "similarity": 0.4867
+  }
+ ],
+ "retrieval_empty": false,
+ "error": null,
+ "retrieval_s": 2.52,
+ "repair_s": 13.45
+}

@@ -1,0 +1,40 @@
+{
+ "item": "hl_e003_q1_r6__l1",
+ "raw_text": "y-הַרְבֵּיָהּ | הֲכִי עַל־הַמְּסֻפְרִים הַשְׁאָרִים",
+ "suggested_text": "y-הַרְבֵּיָהּ | הֲכִי עַל־הַמְּסֻפְרִים הַשְׁאָרִים",
+ "transcription": "y-הַרְבֵּיָהּ | הֲכִי עַל־הַמְּסֻפְרִים הַשְׁאָרִים",
+ "edits": [],
+ "uncertain_regions": [],
+ "semantic_change_risk": false,
+ "needs_review": false,
+ "retrieved": [
+  {
+   "chunk_id": "e2030d8d3922b877",
+   "source": "עיבוד תמונה.pdf",
+   "page": 33,
+   "similarity": 0.5077
+  },
+  {
+   "chunk_id": "5c75851dcfe50e4c",
+   "source": "עיבוד תמונה.pdf",
+   "page": 33,
+   "similarity": 0.4931
+  },
+  {
+   "chunk_id": "dfe3effc6b9da8c8",
+   "source": "עיבוד תמונה.pdf",
+   "page": 65,
+   "similarity": 0.4776
+  },
+  {
+   "chunk_id": "24c8f00fe9c730fe",
+   "source": "עיבוד תמונה.pdf",
+   "page": 29,
+   "similarity": 0.4771
+  }
+ ],
+ "retrieval_empty": false,
+ "error": null,
+ "retrieval_s": 2.56,
+ "repair_s": 7.42
+}

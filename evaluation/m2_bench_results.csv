@@ -14,3 +14,5 @@ mlkit_ink_rtl_a1,mlkit_digital_ink,"he (Digital Ink Recognition, on-device)",,ha
 mlkit_ink_rtl_a1,mlkit_digital_ink,"he (Digital Ink Recognition, on-device)",,handwritten_line,11,0.6052,0.0909,0.9691,0.1753,0.0805,0,,5,5,,0,0,0.0,0,0.26
 mlkit_ink_rtl_a1,mlkit_digital_ink,"he (Digital Ink Recognition, on-device)",,handwritten_cell,4,0.8784,0.0,1.1364,0.1364,0.2692,0,,,,,0,0,0.0,0,0.41
 mlkit_ink_rtl_a1,mlkit_digital_ink,"he (Digital Ink Recognition, on-device)",,handwritten_line,11,0.6052,0.0909,0.9691,0.1753,0.0805,0,,5,5,,0,0,0.0,0,0.26
+qwen_rag_ocr_v1,,,,handwritten_cell,11,0.7939,0.0,1.0471,0.1765,0.0667,0,,5,5,,1,0,0.0,0,0.0
+qwen_rag_ocr_v1,,,,handwritten_line,63,0.9094,0.0,1.0713,0.2048,0.1176,0,,22,22,,4,0,0.0,0,0.0

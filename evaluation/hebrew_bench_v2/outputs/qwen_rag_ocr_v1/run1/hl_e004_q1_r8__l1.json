@@ -1,0 +1,59 @@
+{
+ "item": "hl_e004_q1_r8__l1",
+ "raw_text": "c(x,y) ? ccc y' , g'z}",
+ "suggested_text": "c(x,y) = ccc(y', z')",
+ "transcription": "c(x,y) = ccc(y', z')",
+ "edits": [
+  {
+   "raw": "?",
+   "suggested": "=",
+   "reason": "Likely OCR misinterpretation of an equals sign, given context of mathematical expressions in course material. The student’s intent is to define or relate c(x,y) to a function of y' and z'.",
+   "risk": "low"
+  },
+  {
+   "raw": "ccc",
+   "suggested": "c",
+   "reason": "The OCR likely misread 'c' as 'ccc', which is plausible given handwriting ambiguity. In context, c(x,y) suggests a function; repeating 'c' would be ungrammatical unless intentional (which is unlikely here).",
+   "risk": "low"
+  },
+  {
+   "raw": "y' , g'z}",
+   "suggested": "y', z')",
+   "reason": "OCR likely misread comma and closing brace as 'g' and 'z}', which appears to be a corruption of 'y', 'z', and the closing parenthesis. The context suggests coordinates or variables, so y' and z' are plausible. Also, 'g' may have been a misread of 'y'.",
+   "risk": "low"
+  }
+ ],
+ "uncertain_regions": [],
+ "semantic_change_risk": false,
+ "needs_review": false,
+ "retrieved": [
+  {
+   "chunk_id": "44b5f68bc45e2ab7",
+   "source": "עיבוד תמונה.pdf",
+   "page": 38,
+   "similarity": 0.5419
+  },
+  {
+   "chunk_id": "2e43c92a8b6dff51",
+   "source": "עיבוד תמונה.pdf",
+   "page": 100,
+   "similarity": 0.5215
+  },
+  {
+   "chunk_id": "d362372110537b72",
+   "source": "עיבוד תמונה.pdf",
+   "page": 30,
+   "similarity": 0.518
+  },
+  {
+   "chunk_id": "24c8f00fe9c730fe",
+   "source": "עיבוד תמונה.pdf",
+   "page": 29,
+   "similarity": 0.5178
+  }
+ ],
+ "retrieval_empty": false,
+ "error": null,
+ "retrieval_s": 2.53,
+ "repair_s": 15.0
+}

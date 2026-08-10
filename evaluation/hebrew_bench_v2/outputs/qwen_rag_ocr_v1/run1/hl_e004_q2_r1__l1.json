@@ -1,0 +1,47 @@
+{
+ "item": "hl_e004_q2_r1__l1",
+ "raw_text": "שאלה 255160 ספקי Funny 'inke MT?",
+ "suggested_text": "שאלה 255160 ספקי Funny 'Inke MT?",
+ "transcription": "שאלה 255160 ספקי Funny 'Inke MT?",
+ "edits": [
+  {
+   "raw": "MT?",
+   "suggested": "MT?",
+   "reason": "The OCR may have misread a symbol or letter, but 'MT?' is plausible as-is. No clear corruption to repair without context. Preserving student's original text per instructions (do not silently correct).",
+   "risk": "low"
+  }
+ ],
+ "uncertain_regions": [],
+ "semantic_change_risk": false,
+ "needs_review": false,
+ "retrieved": [
+  {
+   "chunk_id": "e5a7c6a1cf77e5b3",
+   "source": "עיבוד תמונה.pdf",
+   "page": 106,
+   "similarity": 0.397
+  },
+  {
+   "chunk_id": "d0a0235971a44e33",
+   "source": "עיבוד תמונה.pdf",
+   "page": 37,
+   "similarity": 0.376
+  },
+  {
+   "chunk_id": "693d8b7cfb67ce67",
+   "source": "עיבוד תמונה.pdf",
+   "page": 96,
+   "similarity": 0.3733
+  },
+  {
+   "chunk_id": "a4365c08c05ae261",
+   "source": "עיבוד תמונה.pdf",
+   "page": 27,
+   "similarity": 0.3717
+  }
+ ],
+ "retrieval_empty": false,
+ "error": null,
+ "retrieval_s": 2.5,
+ "repair_s": 8.72
+}

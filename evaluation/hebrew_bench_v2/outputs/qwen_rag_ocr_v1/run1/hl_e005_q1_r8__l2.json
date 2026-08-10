@@ -1,0 +1,40 @@
+{
+ "item": "hl_e005_q1_r8__l2",
+ "raw_text": "0.81 0.91 0.72 0.65, 0.34, 0.21, 0.15, 0.08",
+ "suggested_text": "0.81 0.91 0.72 0.65, 0.34, 0.21, 0.15, 0.08",
+ "transcription": "0.81 0.91 0.72 0.65, 0.34, 0.21, 0.15, 0.08",
+ "edits": [],
+ "uncertain_regions": [],
+ "semantic_change_risk": false,
+ "needs_review": false,
+ "retrieved": [
+  {
+   "chunk_id": "c0ded09ee7da6947",
+   "source": "עיבוד תמונה.pdf",
+   "page": 118,
+   "similarity": 0.5248
+  },
+  {
+   "chunk_id": "005b01a10cc82314",
+   "source": "עיבוד תמונה.pdf",
+   "page": 67,
+   "similarity": 0.5076
+  },
+  {
+   "chunk_id": "57912db00049cb3c",
+   "source": "עיבוד תמונה.pdf",
+   "page": 77,
+   "similarity": 0.4898
+  },
+  {
+   "chunk_id": "56c46d55e2e482a2",
+   "source": "עיבוד תמונה.pdf",
+   "page": 40,
+   "similarity": 0.4882
+  }
+ ],
+ "retrieval_empty": false,
+ "error": "JSONDecodeError: Unterminated string starting at: line 7 column 17 (char 142)",
+ "retrieval_s": 2.52,
+ "repair_s": 44.61
+}

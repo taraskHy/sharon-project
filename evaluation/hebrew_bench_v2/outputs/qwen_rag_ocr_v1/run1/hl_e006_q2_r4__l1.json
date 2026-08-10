@@ -1,0 +1,47 @@
+{
+ "item": "hl_e006_q2_r4__l1",
+ "raw_text": "ב-Quantization\nUniform 0,5 -4,5\nx→I D→K",
+ "suggested_text": "ב-Quantization Uniform 0,5 - 4,5 x → I D → K",
+ "transcription": "ב-Quantization Uniform 0,5 - 4,5 x → I D → K",
+ "edits": [
+  {
+   "raw": "0,5 -4,5",
+   "suggested": "0,5 - 4,5",
+   "reason": "Added space for readability and to match typical OCR formatting; no semantic change in meaning. Student likely intended '0.5 to 4.5' as a range, but the hyphen may have been misread or missing spacing. Preserving original structure unless context suggests correction — here, it's plausible this is an OCR error of missing space between numbers and hyphen, not a conceptual mistake by student. No course terminology requires correction; 'Uniform quantization' is correctly referenced in context. The rest (x→I D→K) remains ambiguous but preserved as-is per instruction to avoid correcting student errors unless context demands it — no clear term replacement needed here either. So only plausible OCR corruption repaired: added space after hyphen for clarity and standard formatting, not altering meaning or concept.",
+   "risk": "low"
+  }
+ ],
+ "uncertain_regions": [],
+ "semantic_change_risk": false,
+ "needs_review": false,
+ "retrieved": [
+  {
+   "chunk_id": "6bbdc5e368b53f21",
+   "source": "עיבוד תמונה.pdf",
+   "page": 112,
+   "similarity": 0.5389
+  },
+  {
+   "chunk_id": "56c46d55e2e482a2",
+   "source": "עיבוד תמונה.pdf",
+   "page": 40,
+   "similarity": 0.5333
+  },
+  {
+   "chunk_id": "e2030d8d3922b877",
+   "source": "עיבוד תמונה.pdf",
+   "page": 33,
+   "similarity": 0.5121
+  },
+  {
+   "chunk_id": "191cb23005a13272",
+   "source": "עיבוד תמונה.pdf",
+   "page": 10,
+   "similarity": 0.5079
+  }
+ ],
+ "retrieval_empty": false,
+ "error": null,
+ "retrieval_s": 2.61,
+ "repair_s": 14.31
+}

@@ -1,0 +1,53 @@
+{
+ "item": "hl_e006_q2_r7__l1",
+ "raw_text": "187.2 21070.1! מְסַפְרֵי הַמָּשׁוֹבִים וְהַמְּגֻלָּהּ לְכָל הַמְּסַפְרֵי הַמָּשׁוֹבִים",
+ "suggested_text": "187.2 21070.1! מספרי המשובים ו המגולה לכל המספרי המשובים",
+ "transcription": "187.2 21070.1! מספרי המשובים ו המגולה לכל המספרי המשובים",
+ "edits": [
+  {
+   "raw": "מְסַפְרֵי הַמָּשׁוֹבִים",
+   "suggested": "מספרי המשובים",
+   "reason": "OCR corruption: Hebrew characters likely misread as 'מְסַפְרֵי' → correct term is 'מספרי'. This matches course context where numerical values and descriptors are discussed (e.g., frequency, filters). Preserving the student's intent while correcting obvious OCR error. The rest of the phrase appears to be a plausible misreading of Hebrew text with possible spacing or punctuation errors, but no further correction needed as it remains semantically coherent in context of image processing terminology (e.g., 'מספרים' = numbers, 'משובים' = responses/feedback).",
+   "risk": "low"
+  },
+  {
+   "raw": "וְהַמְּגֻלָּהּ לְכָל הַמְּסַפְרֵי הַמָּשׁוֹבִים",
+   "suggested": "ומגולה לכל המספרי המשובים",
+   "reason": "OCR corruption: Hebrew 'וְהַמְּגֻלָּהּ' → likely intended as 'ומגולה', and 'הַמְּסַפְרֵי הַמָּשׁוֹבִים' → 'המספרים המשובים'. This is a plausible OCR error where Hebrew letters were misread. The phrase 'ומגולה לכל המספרים המשובים' makes sense in context of image processing (e.g., 'mgula' could refer to 'magnitude', 'response magnitude', or similar technical term).",
+   "risk": "low"
+  }
+ ],
+ "uncertain_regions": [],
+ "semantic_change_risk": false,
+ "needs_review": false,
+ "retrieved": [
+  {
+   "chunk_id": "cfe29ed1a9bf51e1",
+   "source": "עיבוד תמונה.pdf",
+   "page": 77,
+   "similarity": 0.4645
+  },
+  {
+   "chunk_id": "a53ffd0b95ab12a1",
+   "source": "עיבוד תמונה.pdf",
+   "page": 102,
+   "similarity": 0.4565
+  },
+  {
+   "chunk_id": "64c37ae6bd43465b",
+   "source": "עיבוד תמונה.pdf",
+   "page": 28,
+   "similarity": 0.4562
+  },
+  {
+   "chunk_id": "0a029e1bb12c3de7",
+   "source": "עיבוד תמונה.pdf",
+   "page": 42,
+   "similarity": 0.456
+  }
+ ],
+ "retrieval_empty": false,
+ "error": null,
+ "retrieval_s": 2.58,
+ "repair_s": 20.91
+}

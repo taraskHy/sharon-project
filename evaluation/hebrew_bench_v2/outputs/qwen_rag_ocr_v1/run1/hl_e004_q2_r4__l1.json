@@ -1,0 +1,40 @@
+{
+ "item": "hl_e004_q2_r4__l1",
+ "raw_text": "Uniformly random using Optimal ≥ CDPJ",
+ "suggested_text": "Uniformly random using Optimal ≥ CDPJ",
+ "transcription": "Uniformly random using Optimal ≥ CDPJ",
+ "edits": [],
+ "uncertain_regions": [],
+ "semantic_change_risk": false,
+ "needs_review": false,
+ "retrieved": [
+  {
+   "chunk_id": "6bbdc5e368b53f21",
+   "source": "עיבוד תמונה.pdf",
+   "page": 112,
+   "similarity": 0.5323
+  },
+  {
+   "chunk_id": "2e43c92a8b6dff51",
+   "source": "עיבוד תמונה.pdf",
+   "page": 100,
+   "similarity": 0.489
+  },
+  {
+   "chunk_id": "40a371efd3d6123c",
+   "source": "עיבוד תמונה.pdf",
+   "page": 66,
+   "similarity": 0.4857
+  },
+  {
+   "chunk_id": "3f8727f8b193c9fc",
+   "source": "עיבוד תמונה.pdf",
+   "page": 103,
+   "similarity": 0.4811
+  }
+ ],
+ "retrieval_empty": false,
+ "error": null,
+ "retrieval_s": 2.5,
+ "repair_s": 5.56
+}

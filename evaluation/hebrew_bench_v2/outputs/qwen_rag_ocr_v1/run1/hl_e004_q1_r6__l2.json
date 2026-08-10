@@ -1,0 +1,47 @@
+{
+ "item": "hl_e004_q1_r6__l2",
+ "raw_text": "C \\subsetneq A_1 \\times A_2",
+ "suggested_text": "C \\subsetneq A_1 \\times A_2",
+ "transcription": "C \\subsetneq A_1 \\times A_2",
+ "edits": [
+  {
+   "raw": "C \\\\subsetneq A_1 \\\\times A_2",
+   "suggested": "C \\subsetneq A_1 \\times A_2",
+   "reason": "The OCR produced a malformed LaTeX-like expression with double backslashes. The correct rendering uses single backslash for LaTeX commands, and the subset symbol with not equal is correctly represented as \\subsetneq. This matches standard mathematical notation for proper subset in Cartesian product context, which aligns with course terminology on sets and transformations (e.g., image processing domains). No correction beyond fixing syntax is warranted unless context suggests otherwise — but no such context exists here to override the student’s intent or mistake. The student likely meant a proper subset relation between C and the Cartesian product A1×A2, which is plausible in set theory contexts even if not directly related to Fourier transforms or convolution as discussed in course passages. Therefore, only syntax repair is applied without altering meaning or introducing correct terminology that wasn’t written by the student.",
+   "risk": "low"
+  }
+ ],
+ "uncertain_regions": [],
+ "semantic_change_risk": false,
+ "needs_review": false,
+ "retrieved": [
+  {
+   "chunk_id": "baf8865fbca7aeb6",
+   "source": "עיבוד תמונה.pdf",
+   "page": 43,
+   "similarity": 0.4799
+  },
+  {
+   "chunk_id": "8341f5d6af2f4ced",
+   "source": "עיבוד תמונה.pdf",
+   "page": 68,
+   "similarity": 0.4663
+  },
+  {
+   "chunk_id": "35a6ef75c20e7df4",
+   "source": "עיבוד תמונה.pdf",
+   "page": 51,
+   "similarity": 0.4608
+  },
+  {
+   "chunk_id": "6923d4c4be184d72",
+   "source": "עיבוד תמונה.pdf",
+   "page": 68,
+   "similarity": 0.4419
+  }
+ ],
+ "retrieval_empty": false,
+ "error": null,
+ "retrieval_s": 2.52,
+ "repair_s": 13.95
+}

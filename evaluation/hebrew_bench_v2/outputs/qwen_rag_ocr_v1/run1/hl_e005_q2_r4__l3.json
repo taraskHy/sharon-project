@@ -1,0 +1,53 @@
+{
+ "item": "hl_e005_q2_r4__l3",
+ "raw_text": "החוקה שכוללת את ה-100% ו-25% של גלויים (grey-levels)",
+ "suggested_text": "החוקה שכוללת את ה-100% ו-25% של גלויים (grey-levels)",
+ "transcription": "החוקה שכוללת את ה-100% ו-25% של גלויים (grey-levels)",
+ "edits": [
+  {
+   "raw": "החוקה",
+   "suggested": "החוקה",
+   "reason": "No plausible OCR corruption detected. The term 'החוקה' is likely correct as-is, though it may be a miswriting of 'החוק' or 'החוקה' depending on context — but without further context, we preserve the student's text as written and do not silently correct it per instructions.",
+   "risk": "low"
+  },
+  {
+   "raw": "של גלויים",
+   "suggested": "של גלויים",
+   "reason": "The phrase 'של גלויים' is likely intended to be 'של גליי' or 'של גלויים' — but given the context of image processing and grey-levels, it's plausible that 'גלויים' was meant as 'גריים' (grey levels) or a miswriting. However, since OCR may have captured 'גלויים' correctly from handwriting, we preserve it unless there is clear corruption.",
+   "risk": "low"
+  }
+ ],
+ "uncertain_regions": [],
+ "semantic_change_risk": false,
+ "needs_review": false,
+ "retrieved": [
+  {
+   "chunk_id": "8bbd7fdd59361b6a",
+   "source": "עיבוד תמונה.pdf",
+   "page": 46,
+   "similarity": 0.4318
+  },
+  {
+   "chunk_id": "2aec2248008b9924",
+   "source": "עיבוד תמונה.pdf",
+   "page": 104,
+   "similarity": 0.429
+  },
+  {
+   "chunk_id": "3b87159fcc4a5cca",
+   "source": "עיבוד תמונה.pdf",
+   "page": 17,
+   "similarity": 0.4277
+  },
+  {
+   "chunk_id": "7f86f1df5233f462",
+   "source": "עיבוד תמונה.pdf",
+   "page": 18,
+   "similarity": 0.4269
+  }
+ ],
+ "retrieval_empty": false,
+ "error": null,
+ "retrieval_s": 2.67,
+ "repair_s": 13.95
+}

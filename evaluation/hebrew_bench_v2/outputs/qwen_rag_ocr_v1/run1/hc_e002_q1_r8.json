@@ -1,0 +1,40 @@
+{
+ "item": "hc_e002_q1_r8",
+ "raw_text": "השנה הורכבה על ידי עוזר המנהל, ד",
+ "suggested_text": "השנה הורכבה על ידי עוזר המנהל, ד",
+ "transcription": "השנה הורכבה על ידי עוזר המנהל, ד",
+ "edits": [],
+ "uncertain_regions": [],
+ "semantic_change_risk": false,
+ "needs_review": false,
+ "retrieved": [
+  {
+   "chunk_id": "3cc930a1dbbce901",
+   "source": "עיבוד תמונה.pdf",
+   "page": 1,
+   "similarity": 0.4543
+  },
+  {
+   "chunk_id": "5c2180b9073503fb",
+   "source": "עיבוד תמונה.pdf",
+   "page": 95,
+   "similarity": 0.4005
+  },
+  {
+   "chunk_id": "ab79dad37e58752e",
+   "source": "עיבוד תמונה.pdf",
+   "page": 99,
+   "similarity": 0.3846
+  },
+  {
+   "chunk_id": "24c8f00fe9c730fe",
+   "source": "עיבוד תמונה.pdf",
+   "page": 29,
+   "similarity": 0.3832
+  }
+ ],
+ "retrieval_empty": false,
+ "error": null,
+ "retrieval_s": 2.58,
+ "repair_s": 5.91
+}

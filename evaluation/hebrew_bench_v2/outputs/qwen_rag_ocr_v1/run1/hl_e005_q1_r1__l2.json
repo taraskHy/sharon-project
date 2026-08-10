@@ -1,0 +1,53 @@
+{
+ "item": "hl_e005_q1_r1__l2",
+ "raw_text": "y-ג (15) x ק'ר (אַף אָמְרִי) כּוֹלֵי אֲנִיִּים",
+ "suggested_text": "y' = (15) x' ק'ר (אף אמרי) כולי אניים",
+ "transcription": "y' = (15) x' ק'ר (אף אמרי) כולי אניים",
+ "edits": [
+  {
+   "raw": "y-ג",
+   "suggested": "y'",
+   "reason": "OCR likely misread 'y-' as a partial symbol; in context of affine transformations and coordinates, 'y'' is standard notation for transformed y-coordinate. The dash may have been misinterpreted due to handwriting style or scanning artifacts.",
+   "risk": "low"
+  },
+  {
+   "raw": "כּוֹלֵי אֲנִיִּים",
+   "suggested": "כולי אניים",
+   "reason": "Likely OCR misread Hebrew characters 'כּ' and 'אֲ' as non-standard forms; in context, the phrase appears to be a student's attempt at writing 'כולי אניים', which may mean 'all my points' or similar. Preserving original form with minimal correction for readability.",
+   "risk": "low"
+  }
+ ],
+ "uncertain_regions": [],
+ "semantic_change_risk": false,
+ "needs_review": false,
+ "retrieved": [
+  {
+   "chunk_id": "5c75851dcfe50e4c",
+   "source": "עיבוד תמונה.pdf",
+   "page": 33,
+   "similarity": 0.4696
+  },
+  {
+   "chunk_id": "9aa0794ae6075786",
+   "source": "עיבוד תמונה.pdf",
+   "page": 108,
+   "similarity": 0.4671
+  },
+  {
+   "chunk_id": "e2030d8d3922b877",
+   "source": "עיבוד תמונה.pdf",
+   "page": 33,
+   "similarity": 0.4594
+  },
+  {
+   "chunk_id": "05c27a6424b7d3a8",
+   "source": "עיבוד תמונה.pdf",
+   "page": 26,
+   "similarity": 0.4527
+  }
+ ],
+ "retrieval_empty": false,
+ "error": null,
+ "retrieval_s": 2.5,
+ "repair_s": 12.89
+}

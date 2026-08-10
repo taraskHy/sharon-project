@@ -1,0 +1,40 @@
+{
+ "item": "hl_e004_q2_r1__l2",
+ "raw_text": "2558 גלוי פורסם עולם",
+ "suggested_text": "2558 גלוי פורסם עולם",
+ "transcription": "2558 גלוי פורסם עולם",
+ "edits": [],
+ "uncertain_regions": [],
+ "semantic_change_risk": false,
+ "needs_review": false,
+ "retrieved": [
+  {
+   "chunk_id": "71bc9ab755699b58",
+   "source": "עיבוד תמונה.pdf",
+   "page": 109,
+   "similarity": 0.41
+  },
+  {
+   "chunk_id": "856ea960986d185c",
+   "source": "עיבוד תמונה.pdf",
+   "page": 86,
+   "similarity": 0.4013
+  },
+  {
+   "chunk_id": "e5a90554c25d7ceb",
+   "source": "עיבוד תמונה.pdf",
+   "page": 108,
+   "similarity": 0.3974
+  },
+  {
+   "chunk_id": "f9d59480b98ffc40",
+   "source": "עיבוד תמונה.pdf",
+   "page": 92,
+   "similarity": 0.3918
+  }
+ ],
+ "retrieval_empty": false,
+ "error": null,
+ "retrieval_s": 4.31,
+ "repair_s": 5.67
+}

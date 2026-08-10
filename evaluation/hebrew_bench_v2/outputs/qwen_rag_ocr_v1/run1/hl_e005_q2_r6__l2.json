@@ -1,0 +1,40 @@
+{
+ "item": "hl_e005_q2_r6__l2",
+ "raw_text": "השכלה והערכה של הוראה ב-1250 מ",
+ "suggested_text": "השכלה והערכה של הוראה ב-1250 מ",
+ "transcription": "השכלה והערכה של הוראה ב-1250 מ",
+ "edits": [],
+ "uncertain_regions": [],
+ "semantic_change_risk": false,
+ "needs_review": false,
+ "retrieved": [
+  {
+   "chunk_id": "3b87159fcc4a5cca",
+   "source": "עיבוד תמונה.pdf",
+   "page": 17,
+   "similarity": 0.4022
+  },
+  {
+   "chunk_id": "c0ded09ee7da6947",
+   "source": "עיבוד תמונה.pdf",
+   "page": 118,
+   "similarity": 0.3984
+  },
+  {
+   "chunk_id": "baf8865fbca7aeb6",
+   "source": "עיבוד תמונה.pdf",
+   "page": 43,
+   "similarity": 0.3615
+  },
+  {
+   "chunk_id": "dd316d3cc8736d4b",
+   "source": "עיבוד תמונה.pdf",
+   "page": 88,
+   "similarity": 0.3586
+  }
+ ],
+ "retrieval_empty": false,
+ "error": null,
+ "retrieval_s": 2.59,
+ "repair_s": 5.89
+}

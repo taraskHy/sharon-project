@@ -1,0 +1,40 @@
+{
+ "item": "hl_e006_q2_r1__l1",
+ "raw_text": "Canny edge detection using Canny algorithm, σ = 1.2, θ = 0.5, and Canny threshold values are 1 and 3.",
+ "suggested_text": "Canny edge detection using Canny algorithm, σ = 1.2, θ = 0.5, and Canny threshold values are 1 and 3.",
+ "transcription": "Canny edge detection using Canny algorithm, σ = 1.2, θ = 0.5, and Canny threshold values are 1 and 3.",
+ "edits": [],
+ "uncertain_regions": [],
+ "semantic_change_risk": false,
+ "needs_review": false,
+ "retrieved": [
+  {
+   "chunk_id": "db1dce0d0132afea",
+   "source": "עיבוד תמונה.pdf",
+   "page": 103,
+   "similarity": 0.6006
+  },
+  {
+   "chunk_id": "c24bdfdf2b728ee5",
+   "source": "עיבוד תמונה.pdf",
+   "page": 94,
+   "similarity": 0.5556
+  },
+  {
+   "chunk_id": "3f8727f8b193c9fc",
+   "source": "עיבוד תמונה.pdf",
+   "page": 103,
+   "similarity": 0.5549
+  },
+  {
+   "chunk_id": "3a93e8e526536bcb",
+   "source": "עיבוד תמונה.pdf",
+   "page": 93,
+   "similarity": 0.5516
+  }
+ ],
+ "retrieval_empty": false,
+ "error": null,
+ "retrieval_s": 2.52,
+ "repair_s": 6.34
+}

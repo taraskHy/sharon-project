@@ -1,0 +1,47 @@
+{
+ "item": "hl_e003_q1_r4__l1",
+ "raw_text": "הַמְּרָאֵל מְעִירִים הַמְּרָאֵל מְעִירִים",
+ "suggested_text": "המראל מעירים המראלים",
+ "transcription": "המראל מעירים המראלים",
+ "edits": [
+  {
+   "raw": "הַמְּרָאֵל מְעִירִים",
+   "suggested": "המראל מעירים",
+   "reason": "OCR corruption: likely a misread of 'המראל' (possibly intended as 'המראל' or similar) and 'מְעִירִים' which may be an OCR artifact. The repetition suggests it was meant to be once, not twice. No correction beyond plausible OCR fix without over-interpreting the student's intent.",
+   "risk": "low"
+  }
+ ],
+ "uncertain_regions": [],
+ "semantic_change_risk": false,
+ "needs_review": false,
+ "retrieved": [
+  {
+   "chunk_id": "0e871f6c4c78fdab",
+   "source": "עיבוד תמונה.pdf",
+   "page": 2,
+   "similarity": 0.4161
+  },
+  {
+   "chunk_id": "5afe7803b3a3dd84",
+   "source": "עיבוד תמונה.pdf",
+   "page": 29,
+   "similarity": 0.415
+  },
+  {
+   "chunk_id": "64c37ae6bd43465b",
+   "source": "עיבוד תמונה.pdf",
+   "page": 28,
+   "similarity": 0.4111
+  },
+  {
+   "chunk_id": "a53ffd0b95ab12a1",
+   "source": "עיבוד תמונה.pdf",
+   "page": 102,
+   "similarity": 0.4072
+  }
+ ],
+ "retrieval_empty": false,
+ "error": null,
+ "retrieval_s": 2.5,
+ "repair_s": 10.16
+}

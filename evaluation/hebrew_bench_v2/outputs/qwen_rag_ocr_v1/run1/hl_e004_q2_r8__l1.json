@@ -1,0 +1,40 @@
+{
+ "item": "hl_e004_q2_r8__l1",
+ "raw_text": "ski Echo 135 מילון גנוב",
+ "suggested_text": "ski Echo 135 מילון גנוב",
+ "transcription": "ski Echo 135 מילון גנוב",
+ "edits": [],
+ "uncertain_regions": [],
+ "semantic_change_risk": false,
+ "needs_review": false,
+ "retrieved": [
+  {
+   "chunk_id": "85eff931521107f0",
+   "source": "עיבוד תמונה.pdf",
+   "page": 22,
+   "similarity": 0.4529
+  },
+  {
+   "chunk_id": "2c7fb83e9f5f5e31",
+   "source": "עיבוד תמונה.pdf",
+   "page": 110,
+   "similarity": 0.4328
+  },
+  {
+   "chunk_id": "02697ab52036142c",
+   "source": "עיבוד תמונה.pdf",
+   "page": 91,
+   "similarity": 0.4314
+  },
+  {
+   "chunk_id": "3cf3ad0841e0108c",
+   "source": "עיבוד תמונה.pdf",
+   "page": 91,
+   "similarity": 0.4254
+  }
+ ],
+ "retrieval_empty": false,
+ "error": null,
+ "retrieval_s": 2.58,
+ "repair_s": 5.38
+}

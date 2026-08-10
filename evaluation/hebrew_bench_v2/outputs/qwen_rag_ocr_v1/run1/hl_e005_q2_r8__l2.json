@@ -1,0 +1,47 @@
+{
+ "item": "hl_e005_q2_r8__l2",
+ "raw_text": "{\"transcription\": \"x 10^4 x 50000000000000000000000000000000",
+ "suggested_text": "x 10^4 x 50000000000000000000000000000000",
+ "transcription": "x 10^4 x 50000000000000000000000000000000",
+ "edits": [
+  {
+   "raw": "x 10^4 x 50000000000000000000000000000000",
+   "suggested": "x 10^4 x 50000000000000000000000000000000",
+   "reason": "No plausible OCR corruption detected. The text appears to be a literal transcription of a very large number, possibly with scientific notation or an error in digit count. No correction is needed unless context suggests otherwise (e.g., if this was meant to be 'x 10^4 x 5' or similar). However, since no course context indicates a correct form, we preserve the student's input as-is per instructions.",
+   "risk": "low"
+  }
+ ],
+ "uncertain_regions": [],
+ "semantic_change_risk": false,
+ "needs_review": false,
+ "retrieved": [
+  {
+   "chunk_id": "e2030d8d3922b877",
+   "source": "עיבוד תמונה.pdf",
+   "page": 33,
+   "similarity": 0.4988
+  },
+  {
+   "chunk_id": "56c46d55e2e482a2",
+   "source": "עיבוד תמונה.pdf",
+   "page": 40,
+   "similarity": 0.4982
+  },
+  {
+   "chunk_id": "24c8f00fe9c730fe",
+   "source": "עיבוד תמונה.pdf",
+   "page": 29,
+   "similarity": 0.4719
+  },
+  {
+   "chunk_id": "4b1889b17f91fc48",
+   "source": "עיבוד תמונה.pdf",
+   "page": 30,
+   "similarity": 0.4698
+  }
+ ],
+ "retrieval_empty": false,
+ "error": null,
+ "retrieval_s": 2.59,
+ "repair_s": 13.27
+}

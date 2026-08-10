@@ -1,0 +1,40 @@
+{
+ "item": "hl_e006_q1_r4__l1",
+ "raw_text": "H . אינטגרל של f(x) על [a,b] = ?",
+ "suggested_text": "H. אינטגרל של f(x) על [a,b] = ?",
+ "transcription": "H. אינטגרל של f(x) על [a,b] = ?",
+ "edits": [],
+ "uncertain_regions": [],
+ "semantic_change_risk": false,
+ "needs_review": false,
+ "retrieved": [
+  {
+   "chunk_id": "41ddf2b25d6ad347",
+   "source": "עיבוד תמונה.pdf",
+   "page": 56,
+   "similarity": 0.5332
+  },
+  {
+   "chunk_id": "dcbc6eb17369a3fa",
+   "source": "עיבוד תמונה.pdf",
+   "page": 56,
+   "similarity": 0.5273
+  },
+  {
+   "chunk_id": "1c59e3b301e8b7d5",
+   "source": "עיבוד תמונה.pdf",
+   "page": 76,
+   "similarity": 0.4895
+  },
+  {
+   "chunk_id": "cf68dd150a5d5844",
+   "source": "עיבוד תמונה.pdf",
+   "page": 26,
+   "similarity": 0.4747
+  }
+ ],
+ "retrieval_empty": false,
+ "error": null,
+ "retrieval_s": 2.59,
+ "repair_s": 5.91
+}

@@ -1,0 +1,59 @@
+{
+ "item": "hl_e004_q1_r1__l1",
+ "raw_text": "ספונטני אופרטור WAVELETS",
+ "suggested_text": "ספונטני אופרטור WAVELETS",
+ "transcription": "ספונטני אופרטור WAVELETS",
+ "edits": [
+  {
+   "raw": "ספונטני",
+   "suggested": "ספונטני",
+   "reason": "המילה 'ספונטני' נראית כנראה נכונה, אך לא מוצגת בקונטקסט של התשובה. ייתכן שהכוונה הייתה 'ספונטני' או 'אופרטור' – אך לפי הדרישה להתחשב רק ב-OCR ולחזות את התשובה כפי שהיא, אין סיבה לתקן אותה. ייתכן שזה טעות כתיבה או שגיאה של הסטודנט, אך לא ניתן לתקן ללא הקשר נוסף. לכן, נשמרת כנוכחת.",
+   "risk": "low"
+  },
+  {
+   "raw": "אופרטור",
+   "suggested": "אופרטור",
+   "reason": "המילה 'אופרטור' נראית נכונה ומשתלבת עם 'WAVELETS'. אין סיבה לתקן אותה. ייתכן שהכוונה הייתה 'אופרטור' או 'ספונטני', אך לפי הדרישה להתחשב רק ב-OCR, לא ניתן לתקן את זה.",
+   "risk": "low"
+  },
+  {
+   "raw": "WAVELETS",
+   "suggested": "WAVELETS",
+   "reason": "המילה 'WAVELETS' נראית נכונה ומשתלבת עם המילה הקודמת. אין סיבה לתקן אותה.",
+   "risk": "low"
+  }
+ ],
+ "uncertain_regions": [],
+ "semantic_change_risk": false,
+ "needs_review": false,
+ "retrieved": [
+  {
+   "chunk_id": "078505a74f4f18be",
+   "source": "עיבוד תמונה.pdf",
+   "page": 86,
+   "similarity": 0.5493
+  },
+  {
+   "chunk_id": "d34447731e13b78a",
+   "source": "עיבוד תמונה.pdf",
+   "page": 85,
+   "similarity": 0.483
+  },
+  {
+   "chunk_id": "856ea960986d185c",
+   "source": "עיבוד תמונה.pdf",
+   "page": 86,
+   "similarity": 0.4816
+  },
+  {
+   "chunk_id": "f94ee445be83184b",
+   "source": "עיבוד תמונה.pdf",
+   "page": 86,
+   "similarity": 0.4756
+  }
+ ],
+ "retrieval_empty": false,
+ "error": null,
+ "retrieval_s": 2.55,
+ "repair_s": 16.66
+}
