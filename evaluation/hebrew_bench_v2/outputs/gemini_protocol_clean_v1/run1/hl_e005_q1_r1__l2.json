@@ -1,0 +1,13 @@
+{
+ "item": "hl_e005_q1_r1__l2",
+ "raw": "```json\n{\"transcription\": \"הם לא ברורות כמו שאמורות להיות והם לא בציר x (ול",
+ "source_transcription": "{\"transcription\": \"הם לא ברורות כמו שאמורות להיות והם לא בציר x (ול",
+ "transcription": "הם לא ברורות כמו שאמורות להיות והם לא בציר x (ול",
+ "ops": [
+  "code_fence_strip",
+  "truncated_envelope_prefix_strip",
+  "json_string_unescape"
+ ],
+ "changed": true,
+ "error": null
+}

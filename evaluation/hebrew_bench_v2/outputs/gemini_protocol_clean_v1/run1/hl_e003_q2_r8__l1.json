@@ -1,0 +1,13 @@
+{
+ "item": "hl_e003_q2_r8__l1",
+ "raw": "```json\n{\"transcription\": \"ניתן לראות שמספר הפיקסלים בכל עוצמה חוזר ימינה באותו",
+ "source_transcription": "{\"transcription\": \"ניתן לראות שמספר הפיקסלים בכל עוצמה חוזר ימינה באותו",
+ "transcription": "ניתן לראות שמספר הפיקסלים בכל עוצמה חוזר ימינה באותו",
+ "ops": [
+  "code_fence_strip",
+  "truncated_envelope_prefix_strip",
+  "json_string_unescape"
+ ],
+ "changed": true,
+ "error": null
+}

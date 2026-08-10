@@ -1,0 +1,12 @@
+{
+ "item": "hl_e005_q1_r1__l1",
+ "raw": "```json\n{\"transcription\": \"נראה בתמונה טשטוש של motion blur על שפות אשר\"}\n```",
+ "source_transcription": "נראה בתמונה טשטוש של motion blur על שפות אשר",
+ "transcription": "נראה בתמונה טשטוש של motion blur על שפות אשר",
+ "ops": [
+  "code_fence_strip",
+  "json_envelope_parse"
+ ],
+ "changed": false,
+ "error": null
+}

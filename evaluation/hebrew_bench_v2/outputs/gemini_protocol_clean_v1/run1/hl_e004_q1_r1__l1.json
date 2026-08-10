@@ -1,0 +1,12 @@
+{
+ "item": "hl_e004_q1_r1__l1",
+ "raw": "```json\n{\"transcription\": \"ה WAVELETS משתמשת בכל החלפות\"}\n```",
+ "source_transcription": "ה WAVELETS משתמשת בכל החלפות",
+ "transcription": "ה WAVELETS משתמשת בכל החלפות",
+ "ops": [
+  "code_fence_strip",
+  "json_envelope_parse"
+ ],
+ "changed": false,
+ "error": null
+}

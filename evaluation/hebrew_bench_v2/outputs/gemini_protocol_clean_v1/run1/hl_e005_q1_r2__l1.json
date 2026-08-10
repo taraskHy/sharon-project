@@ -1,0 +1,12 @@
+{
+ "item": "hl_e005_q1_r2__l1",
+ "raw": "```json\n{\"transcription\": \"בתמונה מופיעים שמות של התמונה המקורית בתדר גבוה\"}\n```",
+ "source_transcription": "בתמונה מופיעים שמות של התמונה המקורית בתדר גבוה",
+ "transcription": "בתמונה מופיעים שמות של התמונה המקורית בתדר גבוה",
+ "ops": [
+  "code_fence_strip",
+  "json_envelope_parse"
+ ],
+ "changed": false,
+ "error": null
+}

@@ -1,0 +1,13 @@
+{
+ "item": "hl_e007_q1_r1__l1",
+ "raw": "```json\n{\"transcription\": \"ניתן לראות כי בשכבות של הגלים הכחולים לא שומרים על אותה",
+ "source_transcription": "{\"transcription\": \"ניתן לראות כי בשכבות של הגלים הכחולים לא שומרים על אותה",
+ "transcription": "ניתן לראות כי בשכבות של הגלים הכחולים לא שומרים על אותה",
+ "ops": [
+  "code_fence_strip",
+  "truncated_envelope_prefix_strip",
+  "json_string_unescape"
+ ],
+ "changed": true,
+ "error": null
+}

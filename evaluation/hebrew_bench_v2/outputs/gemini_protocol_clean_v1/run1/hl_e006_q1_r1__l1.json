@@ -1,0 +1,13 @@
+{
+ "item": "hl_e006_q1_r1__l1",
+ "raw": "```json\n{\"transcription\": \"motion blur וטשטוש! הלוואי על התמונה (כמו echo) רואים ברמה יד",
+ "source_transcription": "{\"transcription\": \"motion blur וטשטוש! הלוואי על התמונה (כמו echo) רואים ברמה יד",
+ "transcription": "motion blur וטשטוש! הלוואי על התמונה (כמו echo) רואים ברמה יד",
+ "ops": [
+  "code_fence_strip",
+  "truncated_envelope_prefix_strip",
+  "json_string_unescape"
+ ],
+ "changed": true,
+ "error": null
+}

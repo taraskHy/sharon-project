@@ -1,0 +1,12 @@
+{
+ "item": "hl_e006_q1_r3__l1",
+ "raw": "```json\n{\"transcription\": \"בחידוד תמונה רואים יותר שפות ולכן D .\"}\n```",
+ "source_transcription": "בחידוד תמונה רואים יותר שפות ולכן D .",
+ "transcription": "בחידוד תמונה רואים יותר שפות ולכן D .",
+ "ops": [
+  "code_fence_strip",
+  "json_envelope_parse"
+ ],
+ "changed": false,
+ "error": null
+}

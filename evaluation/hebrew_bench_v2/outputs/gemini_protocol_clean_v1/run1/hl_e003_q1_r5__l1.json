@@ -1,0 +1,11 @@
+{
+ "item": "hl_e003_q1_r5__l1",
+ "raw": "ובלט\"\n        \"בתדרים הגבוהים\"\n        The word \"ציר\" appears twice? Once above \"בכיוון",
+ "source_transcription": "ובלט\"\n        \"בתדרים הגבוהים\"\n        The word \"ציר\" appears twice? Once above \"בכיוון",
+ "transcription": "ובלט\"\n        \"בתדרים הגבוהים\"\n        The word \"ציר\" appears twice? Once above \"בכיוון",
+ "ops": [
+  "fail_closed_keep_existing"
+ ],
+ "changed": false,
+ "error": null
+}

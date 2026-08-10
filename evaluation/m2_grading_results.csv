@@ -3,3 +3,4 @@ qwen_rag_ocr_v1,qwen3-vl:8b-instruct,12,0.0833,0.5833,invalid->invalidx1; invali
 qwen8b_strict_contrast,qwen3-vl:8b-instruct,12,0.0833,0.6667,invalid->invalidx1; invalid->unintelligiblex1; partially_valid->unintelligiblex3; valid->invalidx4; valid->unintelligiblex3
 gemini3_flash,qwen3-vl:8b-instruct,12,0.4167,0.5,invalid->invalidx1; invalid->unintelligiblex1; partially_valid->invalidx2; partially_valid->validx1; valid->invalidx1; valid->partially_validx2; valid->validx4
 gemini_rag_ocr_v1,qwen3-vl:8b-instruct,12,0.4167,0.5,invalid->invalidx1; invalid->unintelligiblex1; partially_valid->invalidx2; partially_valid->validx1; valid->invalidx1; valid->partially_validx2; valid->validx4
+gemini_protocol_clean_v1,qwen3-vl:8b-instruct,12,0.4167,0.5,invalid->invalidx1; invalid->unintelligiblex1; partially_valid->invalidx2; partially_valid->validx1; valid->invalidx1; valid->partially_validx2; valid->validx4

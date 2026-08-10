@@ -1,0 +1,12 @@
+{
+ "item": "hc_e002_q1_r4",
+ "raw": "```json\n{\"transcription\": \"נשאר בתמונה רק התדרים\\nהנמוכים\"}\n```",
+ "source_transcription": "נשאר בתמונה רק התדרים\nהנמוכים",
+ "transcription": "נשאר בתמונה רק התדרים\nהנמוכים",
+ "ops": [
+  "code_fence_strip",
+  "json_envelope_parse"
+ ],
+ "changed": false,
+ "error": null
+}

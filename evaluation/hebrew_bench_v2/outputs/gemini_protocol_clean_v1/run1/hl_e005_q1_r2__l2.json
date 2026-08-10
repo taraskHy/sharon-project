@@ -1,0 +1,13 @@
+{
+ "item": "hl_e005_q1_r2__l2",
+ "raw": "```json\n{\"transcription\": \"וגם הן נשים לב שהפועל מבוצע על תמונה הכי רעה - בבי\\\"",
+ "source_transcription": "{\"transcription\": \"וגם הן נשים לב שהפועל מבוצע על תמונה הכי רעה - בבי\\\"",
+ "transcription": "וגם הן נשים לב שהפועל מבוצע על תמונה הכי רעה - בבי\"",
+ "ops": [
+  "code_fence_strip",
+  "truncated_envelope_prefix_strip",
+  "json_string_unescape"
+ ],
+ "changed": true,
+ "error": null
+}

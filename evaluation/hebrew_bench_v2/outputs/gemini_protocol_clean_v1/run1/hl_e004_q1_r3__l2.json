@@ -1,0 +1,12 @@
+{
+ "item": "hl_e004_q1_r3__l2",
+ "raw": "```json\n{\"transcription\": \"לא כמו E שיהיו יותר Brightness.\"}\n```",
+ "source_transcription": "לא כמו E שיהיו יותר Brightness.",
+ "transcription": "לא כמו E שיהיו יותר Brightness.",
+ "ops": [
+  "code_fence_strip",
+  "json_envelope_parse"
+ ],
+ "changed": false,
+ "error": null
+}

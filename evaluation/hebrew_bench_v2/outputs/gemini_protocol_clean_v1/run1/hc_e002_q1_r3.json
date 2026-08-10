@@ -1,0 +1,13 @@
+{
+ "item": "hc_e002_q1_r3",
+ "raw": "```json\n{\"transcription\": \"העוצמה של ה דרגות הגבוהות\\nבפרמידה חלקה",
+ "source_transcription": "{\"transcription\": \"העוצמה של ה דרגות הגבוהות\\nבפרמידה חלקה",
+ "transcription": "העוצמה של ה דרגות הגבוהות\nבפרמידה חלקה",
+ "ops": [
+  "code_fence_strip",
+  "truncated_envelope_prefix_strip",
+  "json_string_unescape"
+ ],
+ "changed": true,
+ "error": null
+}

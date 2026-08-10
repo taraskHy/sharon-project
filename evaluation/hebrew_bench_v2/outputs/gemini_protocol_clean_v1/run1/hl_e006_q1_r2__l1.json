@@ -1,0 +1,14 @@
+{
+ "item": "hl_e006_q1_r2__l1",
+ "raw": "```json\n{\"transcription\": \"בהפעלת high pass לא ישאר תדרים נמוכים גם לא ישאר DC.\"",
+ "source_transcription": "{\"transcription\": \"בהפעלת high pass לא ישאר תדרים נמוכים גם לא ישאר DC.\"",
+ "transcription": "בהפעלת high pass לא ישאר תדרים נמוכים גם לא ישאר DC.",
+ "ops": [
+  "code_fence_strip",
+  "truncated_envelope_prefix_strip",
+  "trailing_quote_strip",
+  "json_string_unescape"
+ ],
+ "changed": true,
+ "error": null
+}

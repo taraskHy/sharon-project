@@ -1,0 +1,32 @@
+run1 hc_e002_q1_r1 cer=0.11 hyp='יש לטשטש בכל התדרים'
+run1 hc_e002_q1_r2 cer=0.24 hyp='נשאלת השאלה רק התדרים הגבוהים'
+run1 hc_e002_q1_r3 cer=0.29 hyp='העוצמה של ה דרגות הגבוהות\nבפרמידה חלקה'
+run1 hc_e002_q1_r4 cer=0.00 hyp='נשאר בתמונה רק התדרים\nהנמוכים'
+run1 hl_e003_q1_r1__l1 cer=0.11 hyp='ניתן לראות ברמות התדרים הגבוהים שיש שפות בכיוון התנועה'
+run1 hl_e003_q1_r2__l2 cer=0.57 hyp='רק התדרים הגבוהים נשמרו ב-High'
+run1 hl_e003_q1_r3__l1 cer=0.52 hyp='עוצמת התדרים הגבוהים אחרי הפעולה גדלה'
+run1 hl_e003_q1_r4__l1 cer=0.27 hyp='ניתן לראות שרק תדרים נמוכים נשמרו ולכן כל הרמות של הת'
+run1 hl_e003_q1_r5__l1 cer=1.02 hyp='ובלט"\n        "בתדרים הגבוהים"\n        The word "ציר" appear'
+run1 hl_e003_q1_r6__l1 cer=0.04 hyp='הרעש והטשטוש שלו בכיוון ציר ה-y מובלט בתדרים הגבוה'
+run1 hl_e003_q1_r7__l1 cer=0.36 hyp='הרמה העליונה שכוללת את DC'
+run1 hl_e003_q1_r8__l1 cer=0.26 hyp='ברמה העליונה שכוללת את DC ניתן לראות שערכים בהירים יותר, נ'
+run1 hl_e003_q2_r1__l1 cer=0.28 hyp='כל השפות שנקלטו קיבלו ערך 255 לעומת שאר הפי'
+run1 hl_e003_q2_r2__l1 cer=0.54 hyp='הטשטוש הוריד רעש ולכן פחות פיקסלים'
+run1 hl_e003_q2_r3__l1 cer=0.30 hyp='מספר הפיקסלים לא השתנה והערכים מתפרסים על כל ספק'
+run1 hl_e003_q2_r4__l1 cer=0.00 hyp='ניתן לראות שלעומת Uniform יש פחות ערכים אפשריים'
+run1 hl_e003_q2_r5__l1 cer=0.61 hyp='לכל BIN (סה"כ 20) יש ערך שנבחר בצורה'
+run1 hl_e003_q2_r6__l1 cer=0.65 hyp='טווח הערכים גדול יותר מהטווח בהיסטוגרמה'
+run1 hl_e003_q2_r7__l1 cer=0.45 hyp='הוכפל מספר הפיקסלים בכל התמונה פי 2'
+run1 hl_e003_q2_r8__l1 cer=0.26 hyp='ניתן לראות שמספר הפיקסלים בכל עוצמה חוזר ימינה באותו'
+run1 hl_e004_q1_r1__l1 cer=0.31 hyp='ה WAVELETS משתמשת בכל החלפות'
+run1 hl_e004_q1_r2__l1 cer=0.06 hyp='התדר הנמוך נעלם בגלל Highpass Filter'
+run1 hl_e004_q1_r3__l1 cer=1.12 hyp='sh-y-y-b-t) - wait, it looks like מ-ח-ו-ד-ד-ת? No.'
+run1 hl_e004_q1_r3__l2 [hard] flagged=False cer=0.19
+run1 hl_e005_q1_r1__l1 cer=0.02 hyp='נראה בתמונה טשטוש של motion blur על שפות אשר'
+run1 hl_e005_q1_r1__l2 [hard] flagged=False cer=0.21
+run1 hl_e005_q1_r2__l1 cer=0.02 hyp='בתמונה מופיעים שמות של התמונה המקורית בתדר גבוה'
+run1 hl_e005_q1_r2__l2 [hard] flagged=False cer=0.46
+run1 hl_e006_q1_r1__l1 [hard] flagged=False cer=0.64
+run1 hl_e006_q1_r2__l1 cer=0.06 hyp='בהפעלת high pass לא ישאר תדרים נמוכים גם לא ישאר DC.'
+run1 hl_e006_q1_r3__l1 cer=0.00 hyp='בחידוד תמונה רואים יותר שפות ולכן D .'
+run1 hl_e007_q1_r1__l1 [hard] flagged=False cer=0.54

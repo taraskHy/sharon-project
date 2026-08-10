@@ -1,0 +1,12 @@
+{
+ "item": "hc_e002_q1_r2",
+ "raw": "```json\n{\"transcription\": \"נשאלת השאלה רק התדרים הגבוהים\"}\n```",
+ "source_transcription": "נשאלת השאלה רק התדרים הגבוהים",
+ "transcription": "נשאלת השאלה רק התדרים הגבוהים",
+ "ops": [
+  "code_fence_strip",
+  "json_envelope_parse"
+ ],
+ "changed": false,
+ "error": null
+}

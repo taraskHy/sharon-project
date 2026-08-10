@@ -1,0 +1,8 @@
+{
+ "config_id": "gemini_protocol_clean_v1",
+ "source_config": "gemini3_flash",
+ "deterministic": true,
+ "parser": "m2_bench_run.parse_declared_envelope",
+ "parser_sha256": "5abe78e61be58243",
+ "created": "2026-08-11 02:13:40"
+}

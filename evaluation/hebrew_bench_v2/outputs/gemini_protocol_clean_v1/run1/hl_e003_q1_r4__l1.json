@@ -1,0 +1,13 @@
+{
+ "item": "hl_e003_q1_r4__l1",
+ "raw": "```json\n{\"transcription\": \"ניתן לראות שרק תדרים נמוכים נשמרו ולכן כל הרמות של הת",
+ "source_transcription": "{\"transcription\": \"ניתן לראות שרק תדרים נמוכים נשמרו ולכן כל הרמות של הת",
+ "transcription": "ניתן לראות שרק תדרים נמוכים נשמרו ולכן כל הרמות של הת",
+ "ops": [
+  "code_fence_strip",
+  "truncated_envelope_prefix_strip",
+  "json_string_unescape"
+ ],
+ "changed": true,
+ "error": null
+}

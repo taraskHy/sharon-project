@@ -1,0 +1,11 @@
+{
+ "item": "hl_e004_q1_r2__l1",
+ "raw": "{\"transcription\": \"התדר הנמוך נעלם בגלל Highpass Filter\"}",
+ "source_transcription": "התדר הנמוך נעלם בגלל Highpass Filter",
+ "transcription": "התדר הנמוך נעלם בגלל Highpass Filter",
+ "ops": [
+  "json_envelope_parse"
+ ],
+ "changed": false,
+ "error": null
+}

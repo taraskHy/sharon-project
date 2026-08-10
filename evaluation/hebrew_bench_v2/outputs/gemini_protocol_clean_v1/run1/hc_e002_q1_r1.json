@@ -1,0 +1,12 @@
+{
+ "item": "hc_e002_q1_r1",
+ "raw": "```json\n{\"transcription\": \"יש לטשטש בכל התדרים\"}\n```",
+ "source_transcription": "יש לטשטש בכל התדרים",
+ "transcription": "יש לטשטש בכל התדרים",
+ "ops": [
+  "code_fence_strip",
+  "json_envelope_parse"
+ ],
+ "changed": false,
+ "error": null
+}

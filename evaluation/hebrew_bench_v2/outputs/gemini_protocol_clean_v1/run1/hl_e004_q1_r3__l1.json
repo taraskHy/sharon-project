@@ -1,0 +1,11 @@
+{
+ "item": "hl_e004_q1_r3__l1",
+ "raw": "sh-y-y-b-t) - wait, it looks like מ-ח-ו-ד-ד-ת? No.",
+ "source_transcription": "sh-y-y-b-t) - wait, it looks like מ-ח-ו-ד-ד-ת? No.",
+ "transcription": "sh-y-y-b-t) - wait, it looks like מ-ח-ו-ד-ד-ת? No.",
+ "ops": [
+  "fail_closed_keep_existing"
+ ],
+ "changed": false,
+ "error": null
+}
