@@ -1,0 +1,40 @@
+{
+ "item": "hl_e003_q2_r4__l1",
+ "raw_text": "ניתן לראות שלעומת Uniform יש פחות ערכים אפשריים",
+ "suggested_text": "ניתן לראות שלעומת Uniform יש פחות ערכים אפשריים",
+ "transcription": "ניתן לראות שלעומת Uniform יש פחות ערכים אפשריים",
+ "edits": [],
+ "uncertain_regions": [],
+ "semantic_change_risk": false,
+ "needs_review": false,
+ "retrieved": [
+  {
+   "chunk_id": "723f9270d833287c",
+   "source": "עיבוד תמונה.pdf",
+   "page": 21,
+   "similarity": 0.5607
+  },
+  {
+   "chunk_id": "b1ff802ffd7033a1",
+   "source": "עיבוד תמונה.pdf",
+   "page": 22,
+   "similarity": 0.5386
+  },
+  {
+   "chunk_id": "2e43c92a8b6dff51",
+   "source": "עיבוד תמונה.pdf",
+   "page": 100,
+   "similarity": 0.5329
+  },
+  {
+   "chunk_id": "64c37ae6bd43465b",
+   "source": "עיבוד תמונה.pdf",
+   "page": 28,
+   "similarity": 0.5328
+  }
+ ],
+ "retrieval_empty": false,
+ "error": null,
+ "retrieval_s": 2.58,
+ "repair_s": 5.69
+}

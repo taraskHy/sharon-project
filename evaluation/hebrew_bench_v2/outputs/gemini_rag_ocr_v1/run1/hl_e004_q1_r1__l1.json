@@ -1,0 +1,40 @@
+{
+ "item": "hl_e004_q1_r1__l1",
+ "raw_text": "ה WAVELETS משתמשת בכל החלפות",
+ "suggested_text": "ה WAVELETS משתמשת בכל החלפות",
+ "transcription": "ה WAVELETS משתמשת בכל החלפות",
+ "edits": [],
+ "uncertain_regions": [],
+ "semantic_change_risk": false,
+ "needs_review": false,
+ "retrieved": [
+  {
+   "chunk_id": "078505a74f4f18be",
+   "source": "עיבוד תמונה.pdf",
+   "page": 86,
+   "similarity": 0.5427
+  },
+  {
+   "chunk_id": "d34447731e13b78a",
+   "source": "עיבוד תמונה.pdf",
+   "page": 85,
+   "similarity": 0.5423
+  },
+  {
+   "chunk_id": "f94ee445be83184b",
+   "source": "עיבוד תמונה.pdf",
+   "page": 86,
+   "similarity": 0.5235
+  },
+  {
+   "chunk_id": "d5e02b6499c88ad9",
+   "source": "עיבוד תמונה.pdf",
+   "page": 84,
+   "similarity": 0.52
+  }
+ ],
+ "retrieval_empty": false,
+ "error": "JSONDecodeError: Unterminated string starting at: line 7 column 17 (char 151)",
+ "retrieval_s": 2.75,
+ "repair_s": 45.22
+}

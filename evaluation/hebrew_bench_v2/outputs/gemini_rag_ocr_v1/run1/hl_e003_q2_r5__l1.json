@@ -1,0 +1,40 @@
+{
+ "item": "hl_e003_q2_r5__l1",
+ "raw_text": "לכל BIN (סה\"כ 20) יש ערך שנבחר בצורה",
+ "suggested_text": "לכל BIN (סה\"כ 20) יש ערך שנבחר בצורה",
+ "transcription": "לכל BIN (סה\"כ 20) יש ערך שנבחר בצורה",
+ "edits": [],
+ "uncertain_regions": [],
+ "semantic_change_risk": false,
+ "needs_review": false,
+ "retrieved": [
+  {
+   "chunk_id": "693d8b7cfb67ce67",
+   "source": "עיבוד תמונה.pdf",
+   "page": 96,
+   "similarity": 0.56
+  },
+  {
+   "chunk_id": "02dacc0732267f38",
+   "source": "עיבוד תמונה.pdf",
+   "page": 10,
+   "similarity": 0.5387
+  },
+  {
+   "chunk_id": "4fcc67a0a5db3ecb",
+   "source": "עיבוד תמונה.pdf",
+   "page": 39,
+   "similarity": 0.5255
+  },
+  {
+   "chunk_id": "f0bda4541911fbaf",
+   "source": "עיבוד תמונה.pdf",
+   "page": 106,
+   "similarity": 0.5159
+  }
+ ],
+ "retrieval_empty": false,
+ "error": null,
+ "retrieval_s": 2.58,
+ "repair_s": 6.14
+}

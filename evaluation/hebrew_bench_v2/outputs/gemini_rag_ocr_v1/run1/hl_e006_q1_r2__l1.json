@@ -1,0 +1,40 @@
+{
+ "item": "hl_e006_q1_r2__l1",
+ "raw_text": "{\"transcription\": \"בהפעלת high pass לא ישאר תדרים נמוכים גם לא ישאר DC.\"",
+ "suggested_text": "בהפעלת high pass לא ישאר תדרים נמוכים גם לא ישאר DC.",
+ "transcription": "בהפעלת high pass לא ישאר תדרים נמוכים גם לא ישאר DC.",
+ "edits": [],
+ "uncertain_regions": [],
+ "semantic_change_risk": false,
+ "needs_review": false,
+ "retrieved": [
+  {
+   "chunk_id": "9e04a7f26d53b2a5",
+   "source": "עיבוד תמונה.pdf",
+   "page": 70,
+   "similarity": 0.6264
+  },
+  {
+   "chunk_id": "087decec4cff35d4",
+   "source": "עיבוד תמונה.pdf",
+   "page": 71,
+   "similarity": 0.6002
+  },
+  {
+   "chunk_id": "c3833902c7a1079c",
+   "source": "עיבוד תמונה.pdf",
+   "page": 71,
+   "similarity": 0.5617
+  },
+  {
+   "chunk_id": "cfe29ed1a9bf51e1",
+   "source": "עיבוד תמונה.pdf",
+   "page": 77,
+   "similarity": 0.5567
+  }
+ ],
+ "retrieval_empty": false,
+ "error": null,
+ "retrieval_s": 2.67,
+ "repair_s": 5.83
+}

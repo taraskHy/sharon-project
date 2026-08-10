@@ -1,0 +1,47 @@
+{
+ "item": "hl_e003_q1_r8__l1",
+ "raw_text": "{\"transcription\": \"ברמה העליונה שכוללת את DC ניתן לראות שערכים בהירים יותר, נ",
+ "suggested_text": "ברמה העליונה שכוללת את DC ניתן לראות שערכים בהירים יותר, נ",
+ "transcription": "ברמה העליונה שכוללת את DC ניתן לראות שערכים בהירים יותר, נ",
+ "edits": [
+  {
+   "raw": "ברמה העליונה שכוללת את DC ניתן לראות שערכים בהירים יותר, נ",
+   "suggested": "ברמה העליונה שכוללת את DC ניתן לראות שערכים בהירים יותר, נ",
+   "reason": "The text appears to be a plausible OCR corruption with no clear error or ambiguity. The phrase is grammatically incomplete but contextually consistent with the course material (e.g., discussing image transforms and frequency components). No correction needed unless more context suggests an intended word like 'נראה' or similar, which isn't indicated here. Preserving student's original text as per instructions to avoid silent corrections without evidence of error or ambiguity in OCR corruption.",
+   "risk": "low"
+  }
+ ],
+ "uncertain_regions": [],
+ "semantic_change_risk": false,
+ "needs_review": false,
+ "retrieved": [
+  {
+   "chunk_id": "64c37ae6bd43465b",
+   "source": "עיבוד תמונה.pdf",
+   "page": 28,
+   "similarity": 0.594
+  },
+  {
+   "chunk_id": "0e067b21b1e757a9",
+   "source": "עיבוד תמונה.pdf",
+   "page": 59,
+   "similarity": 0.5637
+  },
+  {
+   "chunk_id": "8cf8815b6847b718",
+   "source": "עיבוד תמונה.pdf",
+   "page": 110,
+   "similarity": 0.5548
+  },
+  {
+   "chunk_id": "c363dce0e1320cef",
+   "source": "עיבוד תמונה.pdf",
+   "page": 7,
+   "similarity": 0.5519
+  }
+ ],
+ "retrieval_empty": false,
+ "error": null,
+ "retrieval_s": 2.61,
+ "repair_s": 11.55
+}

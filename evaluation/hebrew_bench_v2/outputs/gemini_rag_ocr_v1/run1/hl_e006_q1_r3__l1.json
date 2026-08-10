@@ -1,0 +1,40 @@
+{
+ "item": "hl_e006_q1_r3__l1",
+ "raw_text": "בחידוד תמונה רואים יותר שפות ולכן D .",
+ "suggested_text": "בחידוד תמונה רואים יותר שפות ולכן D .",
+ "transcription": "בחידוד תמונה רואים יותר שפות ולכן D .",
+ "edits": [],
+ "uncertain_regions": [],
+ "semantic_change_risk": false,
+ "needs_review": false,
+ "retrieved": [
+  {
+   "chunk_id": "dd316d3cc8736d4b",
+   "source": "עיבוד תמונה.pdf",
+   "page": 88,
+   "similarity": 0.6621
+  },
+  {
+   "chunk_id": "f77b63546d90fd73",
+   "source": "עיבוד תמונה.pdf",
+   "page": 89,
+   "similarity": 0.6289
+  },
+  {
+   "chunk_id": "076c7fd6e0bada4d",
+   "source": "עיבוד תמונה.pdf",
+   "page": 92,
+   "similarity": 0.6253
+  },
+  {
+   "chunk_id": "9813d2e59a89a8ca",
+   "source": "עיבוד תמונה.pdf",
+   "page": 95,
+   "similarity": 0.615
+  }
+ ],
+ "retrieval_empty": false,
+ "error": null,
+ "retrieval_s": 2.58,
+ "repair_s": 5.56
+}

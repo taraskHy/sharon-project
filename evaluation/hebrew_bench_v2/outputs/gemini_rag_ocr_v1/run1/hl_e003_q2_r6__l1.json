@@ -1,0 +1,40 @@
+{
+ "item": "hl_e003_q2_r6__l1",
+ "raw_text": "טווח הערכים גדול יותר מהטווח בהיסטוגרמה",
+ "suggested_text": "טווח הערכים גדול יותר מהטווח בהיסטוגרמה",
+ "transcription": "טווח הערכים גדול יותר מהטווח בהיסטוגרמה",
+ "edits": [],
+ "uncertain_regions": [],
+ "semantic_change_risk": false,
+ "needs_review": false,
+ "retrieved": [
+  {
+   "chunk_id": "9889b14e1688e203",
+   "source": "עיבוד תמונה.pdf",
+   "page": 15,
+   "similarity": 0.5598
+  },
+  {
+   "chunk_id": "43c2a5ecfc1da4d9",
+   "source": "עיבוד תמונה.pdf",
+   "page": 16,
+   "similarity": 0.5583
+  },
+  {
+   "chunk_id": "723f9270d833287c",
+   "source": "עיבוד תמונה.pdf",
+   "page": 21,
+   "similarity": 0.548
+  },
+  {
+   "chunk_id": "ea42b090b2f93e8e",
+   "source": "עיבוד תמונה.pdf",
+   "page": 21,
+   "similarity": 0.5459
+  }
+ ],
+ "retrieval_empty": false,
+ "error": null,
+ "retrieval_s": 2.75,
+ "repair_s": 5.89
+}

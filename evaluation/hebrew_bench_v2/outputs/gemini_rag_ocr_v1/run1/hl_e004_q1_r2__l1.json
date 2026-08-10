@@ -1,0 +1,47 @@
+{
+ "item": "hl_e004_q1_r2__l1",
+ "raw_text": "התדר הנמוך נעלם בגלל Highpass Filter",
+ "suggested_text": "התדר הנמוך נעלם בגלל High pass Filter",
+ "transcription": "התדר הנמוך נעלם בגלל High pass Filter",
+ "edits": [
+  {
+   "raw": "Highpass",
+   "suggested": "High pass",
+   "reason": "Based on course context, 'high pass' is the correct terminology for high-pass filters. OCR likely misread 'High pass' as 'Highpass'. The space between words was probably lost in OCR but preserved in context as a standard term (e.g., 'low pass', 'high pass'). Preserving student's intent while correcting plausible OCR error only, without altering meaning or introducing course-corrected terminology unless explicitly required. Student may have written 'Highpass' due to handwriting ambiguity or OCR failure — correction is minimal and based on context-only validation of term usage in course materials (e.g., chunk 9e04a7f26d53b2a5 mentions 'high pass').",
+   "risk": "low"
+  }
+ ],
+ "uncertain_regions": [],
+ "semantic_change_risk": false,
+ "needs_review": false,
+ "retrieved": [
+  {
+   "chunk_id": "9e04a7f26d53b2a5",
+   "source": "עיבוד תמונה.pdf",
+   "page": 70,
+   "similarity": 0.6287
+  },
+  {
+   "chunk_id": "c3833902c7a1079c",
+   "source": "עיבוד תמונה.pdf",
+   "page": 71,
+   "similarity": 0.6047
+  },
+  {
+   "chunk_id": "3173524afd13ca0c",
+   "source": "עיבוד תמונה.pdf",
+   "page": 69,
+   "similarity": 0.5863
+  },
+  {
+   "chunk_id": "087decec4cff35d4",
+   "source": "עיבוד תמונה.pdf",
+   "page": 71,
+   "similarity": 0.5843
+  }
+ ],
+ "retrieval_empty": false,
+ "error": null,
+ "retrieval_s": 2.62,
+ "repair_s": 12.95
+}

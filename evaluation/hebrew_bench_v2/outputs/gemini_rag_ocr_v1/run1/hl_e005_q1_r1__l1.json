@@ -1,0 +1,40 @@
+{
+ "item": "hl_e005_q1_r1__l1",
+ "raw_text": "נראה בתמונה טשטוש של motion blur על שפות אשר",
+ "suggested_text": "נראה בתמונה טשטוש של motion blur על שפות אשר",
+ "transcription": "נראה בתמונה טשטוש של motion blur על שפות אשר",
+ "edits": [],
+ "uncertain_regions": [],
+ "semantic_change_risk": false,
+ "needs_review": false,
+ "retrieved": [
+  {
+   "chunk_id": "8488a890ce37b69c",
+   "source": "עיבוד תמונה.pdf",
+   "page": 90,
+   "similarity": 0.6263
+  },
+  {
+   "chunk_id": "a5fa574cc11d8224",
+   "source": "עיבוד תמונה.pdf",
+   "page": 82,
+   "similarity": 0.6004
+  },
+  {
+   "chunk_id": "1588957db5849418",
+   "source": "עיבוד תמונה.pdf",
+   "page": 48,
+   "similarity": 0.5954
+  },
+  {
+   "chunk_id": "02697ab52036142c",
+   "source": "עיבוד תמונה.pdf",
+   "page": 91,
+   "similarity": 0.5921
+  }
+ ],
+ "retrieval_empty": false,
+ "error": null,
+ "retrieval_s": 2.53,
+ "repair_s": 5.45
+}

@@ -1,0 +1,40 @@
+{
+ "item": "hc_e002_q1_r1",
+ "raw_text": "יש לטשטש בכל התדרים",
+ "suggested_text": "יש לטשטש בכל התדרים",
+ "transcription": "יש לטשטש בכל התדרים",
+ "edits": [],
+ "uncertain_regions": [],
+ "semantic_change_risk": false,
+ "needs_review": false,
+ "retrieved": [
+  {
+   "chunk_id": "3a93e8e526536bcb",
+   "source": "עיבוד תמונה.pdf",
+   "page": 93,
+   "similarity": 0.5757
+  },
+  {
+   "chunk_id": "9e04a7f26d53b2a5",
+   "source": "עיבוד תמונה.pdf",
+   "page": 70,
+   "similarity": 0.5735
+  },
+  {
+   "chunk_id": "196779e6ff52f0b9",
+   "source": "עיבוד תמונה.pdf",
+   "page": 79,
+   "similarity": 0.5524
+  },
+  {
+   "chunk_id": "f71fe312fd3ecd6f",
+   "source": "עיבוד תמונה.pdf",
+   "page": 72,
+   "similarity": 0.5502
+  }
+ ],
+ "retrieval_empty": false,
+ "error": null,
+ "retrieval_s": 2.64,
+ "repair_s": 5.48
+}

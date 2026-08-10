@@ -1,0 +1,47 @@
+{
+ "item": "hl_e003_q1_r4__l1",
+ "raw_text": "{\"transcription\": \"ניתן לראות שרק תדרים נמוכים נשמרו ולכן כל הרמות של הת",
+ "suggested_text": "ניתן לראות שרק תדרים נמוכים נשמרו ולכן כל הרמות של התמונה",
+ "transcription": "ניתן לראות שרק תדרים נמוכים נשמרו ולכן כל הרמות של התמונה",
+ "edits": [
+  {
+   "raw": "ת",
+   "suggested": "תמונה",
+   "reason": "המילה 'ת' מוסתרת או חסרה, והטקסט המושלם הוא 'התמונה', בהתאם ל맥락 של פירמידות ותדרים הנמוכים שמוזכר בקטעים. זה נפוץ ב-OCR עבור מילים שהן חלק מהטקסט המקורי אך לא נמצאו בשל שגיאות כתיבה או חוסר ברירה.",
+   "risk": "low"
+  }
+ ],
+ "uncertain_regions": [],
+ "semantic_change_risk": false,
+ "needs_review": false,
+ "retrieved": [
+  {
+   "chunk_id": "087decec4cff35d4",
+   "source": "עיבוד תמונה.pdf",
+   "page": 71,
+   "similarity": 0.5819
+  },
+  {
+   "chunk_id": "cfe29ed1a9bf51e1",
+   "source": "עיבוד תמונה.pdf",
+   "page": 77,
+   "similarity": 0.5804
+  },
+  {
+   "chunk_id": "3df31bf61e8f8040",
+   "source": "עיבוד תמונה.pdf",
+   "page": 81,
+   "similarity": 0.5772
+  },
+  {
+   "chunk_id": "b2059d1c99a68bfd",
+   "source": "עיבוד תמונה.pdf",
+   "page": 71,
+   "similarity": 0.5738
+  }
+ ],
+ "retrieval_empty": false,
+ "error": null,
+ "retrieval_s": 2.53,
+ "repair_s": 10.47
+}

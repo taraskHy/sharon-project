@@ -1,0 +1,47 @@
+{
+ "item": "hl_e003_q1_r2__l2",
+ "raw_text": "רק התדרים הגבוהים נשמרו ב-High",
+ "suggested_text": "רק התדרים הגבוהים נשמרו ב-High",
+ "transcription": "רק התדרים הגבוהים נשמרו ב-High",
+ "edits": [
+  {
+   "raw": "High",
+   "suggested": "High",
+   "reason": "The term 'High' is likely correct as-is, referring to high-pass filtering. No plausible OCR corruption detected; no correction needed unless context suggests otherwise (e.g., if it should be 'high pass', but student's phrasing matches course terminology for brevity). Preserving original form per instruction: do not silently correct or replace concepts based on course answer standards. Student’s use of 'High' is plausible shorthand in context, and no OCR corruption is evident here.",
+   "risk": "low"
+  }
+ ],
+ "uncertain_regions": [],
+ "semantic_change_risk": false,
+ "needs_review": false,
+ "retrieved": [
+  {
+   "chunk_id": "9e04a7f26d53b2a5",
+   "source": "עיבוד תמונה.pdf",
+   "page": 70,
+   "similarity": 0.6095
+  },
+  {
+   "chunk_id": "087decec4cff35d4",
+   "source": "עיבוד תמונה.pdf",
+   "page": 71,
+   "similarity": 0.5875
+  },
+  {
+   "chunk_id": "cfe29ed1a9bf51e1",
+   "source": "עיבוד תמונה.pdf",
+   "page": 77,
+   "similarity": 0.5821
+  },
+  {
+   "chunk_id": "b2059d1c99a68bfd",
+   "source": "עיבוד תמונה.pdf",
+   "page": 71,
+   "similarity": 0.5607
+  }
+ ],
+ "retrieval_empty": false,
+ "error": null,
+ "retrieval_s": 2.62,
+ "repair_s": 10.73
+}

@@ -1,0 +1,40 @@
+{
+ "item": "hl_e003_q2_r3__l1",
+ "raw_text": "{\"transcription\": \"מספר הפיקסלים לא השתנה והערכים מתפרסים על כל ספק",
+ "suggested_text": "{\"transcription\": \"מספר הפיקסלים לא השתנה והערכים מתפרסים על כל ספק",
+ "transcription": "{\"transcription\": \"מספר הפיקסלים לא השתנה והערכים מתפרסים על כל ספק",
+ "edits": [],
+ "uncertain_regions": [],
+ "semantic_change_risk": false,
+ "needs_review": false,
+ "retrieved": [
+  {
+   "chunk_id": "a0c2f7955a0c8131",
+   "source": "עיבוד תמונה.pdf",
+   "page": 58,
+   "similarity": 0.6027
+  },
+  {
+   "chunk_id": "adf55e18800104e4",
+   "source": "עיבוד תמונה.pdf",
+   "page": 54,
+   "similarity": 0.5963
+  },
+  {
+   "chunk_id": "ab3a8f926c33542a",
+   "source": "עיבוד תמונה.pdf",
+   "page": 60,
+   "similarity": 0.5884
+  },
+  {
+   "chunk_id": "e578b4d956138f4a",
+   "source": "עיבוד תמונה.pdf",
+   "page": 54,
+   "similarity": 0.5845
+  }
+ ],
+ "retrieval_empty": false,
+ "error": "JSONDecodeError: Unterminated string starting at: line 7 column 17 (char 165)",
+ "retrieval_s": 2.66,
+ "repair_s": 45.02
+}

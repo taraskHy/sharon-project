@@ -1,0 +1,47 @@
+{
+ "item": "hl_e004_q1_r3__l2",
+ "raw_text": "לא כמו E שיהיו יותר Brightness.",
+ "suggested_text": "לא כמו Y, יהיו יותר brightness.",
+ "transcription": "לא כמו Y, יהיו יותר brightness.",
+ "edits": [
+  {
+   "raw": "E",
+   "suggested": "Y",
+   "reason": "Based on context from course passages (chunk 8cf8815b6847b718 p.110), 'Y' refers to the luminance component, commonly used in color space transformations and contrast discussions. OCR likely misread 'Y' as 'E'. The rest of the sentence is plausible with this correction: 'Y' (luminance) holds high-frequency information, unlike I or Q which handle color. The student's original text makes sense if corrected to Y, but not E. No other changes are needed for plausibility or terminology consistency in context.",
+   "risk": "low"
+  }
+ ],
+ "uncertain_regions": [],
+ "semantic_change_risk": false,
+ "needs_review": false,
+ "retrieved": [
+  {
+   "chunk_id": "64c37ae6bd43465b",
+   "source": "עיבוד תמונה.pdf",
+   "page": 28,
+   "similarity": 0.554
+  },
+  {
+   "chunk_id": "f68ddca67804ad6d",
+   "source": "עיבוד תמונה.pdf",
+   "page": 110,
+   "similarity": 0.5437
+  },
+  {
+   "chunk_id": "8cf8815b6847b718",
+   "source": "עיבוד תמונה.pdf",
+   "page": 110,
+   "similarity": 0.5406
+  },
+  {
+   "chunk_id": "b00d4cfc8b138fa2",
+   "source": "עיבוד תמונה.pdf",
+   "page": 113,
+   "similarity": 0.5369
+  }
+ ],
+ "retrieval_empty": false,
+ "error": null,
+ "retrieval_s": 2.58,
+ "repair_s": 11.27
+}

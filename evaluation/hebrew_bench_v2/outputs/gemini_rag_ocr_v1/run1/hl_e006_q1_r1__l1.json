@@ -1,0 +1,47 @@
+{
+ "item": "hl_e006_q1_r1__l1",
+ "raw_text": "{\"transcription\": \"motion blur וטשטוש! הלוואי על התמונה (כמו echo) רואים ברמה יד",
+ "suggested_text": "motion blur וטשטוש! הלוואי על התמונה (כמו echo) רואים ברמה יד",
+ "transcription": "motion blur וטשטוש! הלוואי על התמונה (כמו echo) רואים ברמה יד",
+ "edits": [
+  {
+   "raw": "הלוואי",
+   "suggested": "הלוואי",
+   "reason": "נראה שהמילה 'הלוואי' נוצרת כרמז לטעות OCR, אך היא לא מדויקת בהקשר. ייתכן שמדובר בטעות של 'הלוויי' או 'הלוויים', אך ללא הקשר ברור, נשאיר את המילה כפי שהיא – אולי התלמיד רצה לכתוב 'הלוואי' כחלק מהשאלה או כמונח לא מוגדר. אין סיבה לתקן אותה בהקשר הזה.",
+   "risk": "low"
+  }
+ ],
+ "uncertain_regions": [],
+ "semantic_change_risk": false,
+ "needs_review": false,
+ "retrieved": [
+  {
+   "chunk_id": "9a9a87a297b2d94a",
+   "source": "עיבוד תמונה.pdf",
+   "page": 72,
+   "similarity": 0.6371
+  },
+  {
+   "chunk_id": "3a93e8e526536bcb",
+   "source": "עיבוד תמונה.pdf",
+   "page": 93,
+   "similarity": 0.5988
+  },
+  {
+   "chunk_id": "8488a890ce37b69c",
+   "source": "עיבוד תמונה.pdf",
+   "page": 90,
+   "similarity": 0.5981
+  },
+  {
+   "chunk_id": "e3957aa310784480",
+   "source": "עיבוד תמונה.pdf",
+   "page": 9,
+   "similarity": 0.5951
+  }
+ ],
+ "retrieval_empty": false,
+ "error": null,
+ "retrieval_s": 2.58,
+ "repair_s": 10.8
+}

@@ -1,0 +1,53 @@
+{
+ "item": "hc_e002_q1_r3",
+ "raw_text": "{\"transcription\": \"העוצמה של ה דרגות הגבוהות\\nבפרמידה חלקה",
+ "suggested_text": "העוצמה של התדרים הגבוהים\nבפרמידה חלקה",
+ "transcription": "העוצמה של התדרים הגבוהים\nבפרמידה חלקה",
+ "edits": [
+  {
+   "raw": "ה דרגות",
+   "suggested": "התדרים",
+   "reason": "מונח 'תדרים' מתאים לkonteks של תדרים גבוהים, כמו בקטעים על טרנספורם ותדרים. 'דרגות' לא מופיע בהקשר הזה, והשאלה היא על תדרים, לא על דרגות (כמו בפרמידה). זה תיקון אופייני ל-OCR של מונחים טכניים.",
+   "risk": "low"
+  },
+  {
+   "raw": "ה דרגות",
+   "suggested": "ה דרגות",
+   "reason": "אין סיבה להחליף את 'ה דרגות' אם זה לא נוצר בטעות. אבל בהקשר של פרמידה, 'דרגות' יכול להיות שגיאה – אך לא ניתן לתקן ללא הקשר ברור. לכן, התיקון המוצע הוא 'תדרים', אך זה לא מחייב.",
+   "risk": "low"
+  }
+ ],
+ "uncertain_regions": [],
+ "semantic_change_risk": false,
+ "needs_review": false,
+ "retrieved": [
+  {
+   "chunk_id": "1d1361f5d7301689",
+   "source": "עיבוד תמונה.pdf",
+   "page": 99,
+   "similarity": 0.5722
+  },
+  {
+   "chunk_id": "0e067b21b1e757a9",
+   "source": "עיבוד תמונה.pdf",
+   "page": 59,
+   "similarity": 0.5565
+  },
+  {
+   "chunk_id": "cfe29ed1a9bf51e1",
+   "source": "עיבוד תמונה.pdf",
+   "page": 77,
+   "similarity": 0.551
+  },
+  {
+   "chunk_id": "bdd5303a5d37d3a4",
+   "source": "עיבוד תמונה.pdf",
+   "page": 98,
+   "similarity": 0.5459
+  }
+ ],
+ "retrieval_empty": false,
+ "error": null,
+ "retrieval_s": 2.55,
+ "repair_s": 14.22
+}

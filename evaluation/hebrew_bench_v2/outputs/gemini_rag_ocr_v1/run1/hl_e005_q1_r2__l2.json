@@ -1,0 +1,49 @@
+{
+ "item": "hl_e005_q1_r2__l2",
+ "raw_text": "{\"transcription\": \"וגם הן נשים לב שהפועל מבוצע על תמונה הכי רעה - בבי\\\"",
+ "suggested_text": "וגם הן נשים לב שהפועל מבוצע על תמונה הכי רעה - בבי\\",
+ "transcription": "וגם הן נשים לב שהפועל מבוצע על תמונה הכי רעה - בבי\\",
+ "edits": [
+  {
+   "raw": "בבי\\",
+   "suggested": "בבי\\",
+   "reason": "The OCR appears to have captured an incomplete or corrupted segment (possibly '\\') that does not form a meaningful word. Without context, it is plausible this was meant to be part of a phrase like 'בביסק' or 'בביט', but since the student's handwriting may have been unclear and no course terminology suggests such terms, we preserve as-is with uncertainty. The backslash might indicate OCR failure to resolve an ambiguous character or break in text. We do not alter it unless context strongly supports a correction (which is absent here).",
+   "risk": "low"
+  }
+ ],
+ "uncertain_regions": [
+  "בבי\\"
+ ],
+ "semantic_change_risk": false,
+ "needs_review": true,
+ "retrieved": [
+  {
+   "chunk_id": "5f48b37118ae4efd",
+   "source": "עיבוד תמונה.pdf",
+   "page": 50,
+   "similarity": 0.5096
+  },
+  {
+   "chunk_id": "103a997506b1a39d",
+   "source": "עיבוד תמונה.pdf",
+   "page": 3,
+   "similarity": 0.4932
+  },
+  {
+   "chunk_id": "c82194adc36b2ffb",
+   "source": "עיבוד תמונה.pdf",
+   "page": 47,
+   "similarity": 0.491
+  },
+  {
+   "chunk_id": "64c37ae6bd43465b",
+   "source": "עיבוד תמונה.pdf",
+   "page": 28,
+   "similarity": 0.4851
+  }
+ ],
+ "retrieval_empty": false,
+ "error": null,
+ "retrieval_s": 2.56,
+ "repair_s": 11.84
+}

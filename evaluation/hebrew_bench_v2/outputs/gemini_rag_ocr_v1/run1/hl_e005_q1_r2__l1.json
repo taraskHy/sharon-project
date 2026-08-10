@@ -1,0 +1,47 @@
+{
+ "item": "hl_e005_q1_r2__l1",
+ "raw_text": "בתמונה מופיעים שמות של התמונה המקורית בתדר גבוה",
+ "suggested_text": "בתמונה מופיעים שמות של התמונה המקורית בתדר גבוה",
+ "transcription": "בתמונה מופיעים שמות של התמונה המקורית בתדר גבוה",
+ "edits": [
+  {
+   "raw": "בתמונה מופיעים שמות של התמונה המקורית בתדר גבוה",
+   "suggested": "בתמונה מופיעים שמות של התמונה המקורית בתדר גבוה",
+   "reason": "The raw text is already plausible and consistent with the course context. 'שמות' may be a OCR corruption of 'שדות', but without stronger evidence or context suggesting it should be corrected, we preserve the student's original wording as per instructions to not silently correct concepts or terms. The phrase 'בתדר גבוה' aligns with course terminology about high frequencies and resolution levels in image pyramids (chunk 97508d3c72223ddb). No correction is warranted unless explicitly requested by context, which it isn't here.",
+   "risk": "low"
+  }
+ ],
+ "uncertain_regions": [],
+ "semantic_change_risk": false,
+ "needs_review": false,
+ "retrieved": [
+  {
+   "chunk_id": "97508d3c72223ddb",
+   "source": "עיבוד תמונה.pdf",
+   "page": 78,
+   "similarity": 0.5645
+  },
+  {
+   "chunk_id": "623b4806352519e1",
+   "source": "עיבוד תמונה.pdf",
+   "page": 63,
+   "similarity": 0.5589
+  },
+  {
+   "chunk_id": "072d7baaee2b690d",
+   "source": "עיבוד תמונה.pdf",
+   "page": 68,
+   "similarity": 0.5551
+  },
+  {
+   "chunk_id": "3df31bf61e8f8040",
+   "source": "עיבוד תמונה.pdf",
+   "page": 81,
+   "similarity": 0.5505
+  }
+ ],
+ "retrieval_empty": false,
+ "error": null,
+ "retrieval_s": 2.67,
+ "repair_s": 12.14
+}

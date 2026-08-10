@@ -1,0 +1,40 @@
+{
+ "item": "hl_e005_q1_r1__l2",
+ "raw_text": "{\"transcription\": \"הם לא ברורות כמו שאמורות להיות והם לא בציר x (ול",
+ "suggested_text": "{\"transcription\": \"הם לא ברורות כמו שאמורות להיות והם לא בציר x (ול",
+ "transcription": "{\"transcription\": \"הם לא ברורות כמו שאמורות להיות והם לא בציר x (ול",
+ "edits": [],
+ "uncertain_regions": [],
+ "semantic_change_risk": false,
+ "needs_review": false,
+ "retrieved": [
+  {
+   "chunk_id": "4b1889b17f91fc48",
+   "source": "עיבוד תמונה.pdf",
+   "page": 30,
+   "similarity": 0.5704
+  },
+  {
+   "chunk_id": "5c75851dcfe50e4c",
+   "source": "עיבוד תמונה.pdf",
+   "page": 33,
+   "similarity": 0.5507
+  },
+  {
+   "chunk_id": "e2030d8d3922b877",
+   "source": "עיבוד תמונה.pdf",
+   "page": 33,
+   "similarity": 0.5461
+  },
+  {
+   "chunk_id": "5c2180b9073503fb",
+   "source": "עיבוד תמונה.pdf",
+   "page": 95,
+   "similarity": 0.5455
+  }
+ ],
+ "retrieval_empty": false,
+ "error": "JSONDecodeError: Unterminated string starting at: line 7 column 17 (char 161)",
+ "retrieval_s": 2.52,
+ "repair_s": 44.44
+}

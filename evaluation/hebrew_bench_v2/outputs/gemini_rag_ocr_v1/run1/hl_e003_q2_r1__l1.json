@@ -1,0 +1,47 @@
+{
+ "item": "hl_e003_q2_r1__l1",
+ "raw_text": "{\"transcription\": \"כל השפות שנקלטו קיבלו ערך 255 לעומת שאר הפי",
+ "suggested_text": "כל השפות שנקלטו קיבלו ערך 255 לעומת שאר הפיקסלים",
+ "transcription": "כל השפות שנקלטו קיבלו ערך 255 לעומת שאר הפיקסלים",
+ "edits": [
+  {
+   "raw": "פי",
+   "suggested": "פיקסלים",
+   "reason": "המילה 'פיקסלים' היא המילה הנכונה בהקשר של עיבוד תמונה, ומשתלבת עם הטקסט הסמוך. 'פי' הוא פגיעה נפוצה ב-OCR עבור 'פיקסלים'. התשובה המקורית לא משלימה את המשפט, ולכן נתקן את ה-OCR כדי להשלים את המילה הנכונה, תוך שמירה על ערך 255 כחלק מהמשפט. אין סיבה לשנות את '255' או את 'שאר' כי הם מובנים בהקשר של thresholding וערכי פיקסלים.",
+   "risk": "low"
+  }
+ ],
+ "uncertain_regions": [],
+ "semantic_change_risk": false,
+ "needs_review": false,
+ "retrieved": [
+  {
+   "chunk_id": "02697ab52036142c",
+   "source": "עיבוד תמונה.pdf",
+   "page": 91,
+   "similarity": 0.5201
+  },
+  {
+   "chunk_id": "9b530540466ab4d0",
+   "source": "עיבוד תמונה.pdf",
+   "page": 62,
+   "similarity": 0.511
+  },
+  {
+   "chunk_id": "dd316d3cc8736d4b",
+   "source": "עיבוד תמונה.pdf",
+   "page": 88,
+   "similarity": 0.5023
+  },
+  {
+   "chunk_id": "3cf3ad0841e0108c",
+   "source": "עיבוד תמונה.pdf",
+   "page": 91,
+   "similarity": 0.4979
+  }
+ ],
+ "retrieval_empty": false,
+ "error": null,
+ "retrieval_s": 2.89,
+ "repair_s": 12.47
+}

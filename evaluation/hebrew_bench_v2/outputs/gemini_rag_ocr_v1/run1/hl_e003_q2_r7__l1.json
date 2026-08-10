@@ -1,0 +1,40 @@
+{
+ "item": "hl_e003_q2_r7__l1",
+ "raw_text": "הוכפל מספר הפיקסלים בכל התמונה פי 2",
+ "suggested_text": "הוכפל מספר הפיקסלים בכל התמונה פי 2",
+ "transcription": "הוכפל מספר הפיקסלים בכל התמונה פי 2",
+ "edits": [],
+ "uncertain_regions": [],
+ "semantic_change_risk": false,
+ "needs_review": false,
+ "retrieved": [
+  {
+   "chunk_id": "2b9ed62bac35149f",
+   "source": "עיבוד תמונה.pdf",
+   "page": 67,
+   "similarity": 0.5773
+  },
+  {
+   "chunk_id": "16c7204301ff5860",
+   "source": "עיבוד תמונה.pdf",
+   "page": 67,
+   "similarity": 0.5402
+  },
+  {
+   "chunk_id": "005b01a10cc82314",
+   "source": "עיבוד תמונה.pdf",
+   "page": 67,
+   "similarity": 0.5318
+  },
+  {
+   "chunk_id": "bd8b0f6e82f7c887",
+   "source": "עיבוד תמונה.pdf",
+   "page": 5,
+   "similarity": 0.5301
+  }
+ ],
+ "retrieval_empty": false,
+ "error": null,
+ "retrieval_s": 2.61,
+ "repair_s": 5.67
+}

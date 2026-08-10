@@ -1,0 +1,47 @@
+{
+ "item": "hl_e003_q1_r1__l1",
+ "raw_text": "{\"transcription\": \"ניתן לראות ברמות התדרים הגבוהים שיש שפות בכיוון התנועה",
+ "suggested_text": "ניתן לראות בדפוסי התדרים הגבוהים שיש שפות בכיוון התנועה",
+ "transcription": "ניתן לראות בדפוסי התדרים הגבוהים שיש שפות בכיוון התנועה",
+ "edits": [
+  {
+   "raw": "ברמות",
+   "suggested": "בדפוסי",
+   "reason": "בהתבסס על הקשר הטכני – 'ברמות' לא מתאים לkontext של תדרים, בעוד 'בדפוסי' מתאים יותר לתיאור התנהגות של שפות בתדרים גבוהים. 'ברמות' יכול להיות טעות OCR של 'בדפוסי'.",
+   "risk": "low"
+  }
+ ],
+ "uncertain_regions": [],
+ "semantic_change_risk": false,
+ "needs_review": false,
+ "retrieved": [
+  {
+   "chunk_id": "9b530540466ab4d0",
+   "source": "עיבוד תמונה.pdf",
+   "page": 62,
+   "similarity": 0.6088
+  },
+  {
+   "chunk_id": "dd316d3cc8736d4b",
+   "source": "עיבוד תמונה.pdf",
+   "page": 88,
+   "similarity": 0.6047
+  },
+  {
+   "chunk_id": "0e067b21b1e757a9",
+   "source": "עיבוד תמונה.pdf",
+   "page": 59,
+   "similarity": 0.5892
+  },
+  {
+   "chunk_id": "f77b63546d90fd73",
+   "source": "עיבוד תמונה.pdf",
+   "page": 89,
+   "similarity": 0.5867
+  }
+ ],
+ "retrieval_empty": false,
+ "error": null,
+ "retrieval_s": 5.53,
+ "repair_s": 12.67
+}

@@ -1,0 +1,40 @@
+{
+ "item": "hc_e002_q1_r4",
+ "raw_text": "נשאר בתמונה רק התדרים\nהנמוכים",
+ "suggested_text": "נשאר בתמונה רק התדרים הנמוכים",
+ "transcription": "נשאר בתמונה רק התדרים הנמוכים",
+ "edits": [],
+ "uncertain_regions": [],
+ "semantic_change_risk": false,
+ "needs_review": false,
+ "retrieved": [
+  {
+   "chunk_id": "79d40e5a3f83fe26",
+   "source": "עיבוד תמונה.pdf",
+   "page": 81,
+   "similarity": 0.5737
+  },
+  {
+   "chunk_id": "3df31bf61e8f8040",
+   "source": "עיבוד תמונה.pdf",
+   "page": 81,
+   "similarity": 0.5731
+  },
+  {
+   "chunk_id": "3173524afd13ca0c",
+   "source": "עיבוד תמונה.pdf",
+   "page": 69,
+   "similarity": 0.571
+  },
+  {
+   "chunk_id": "98a1717b9c88aaab",
+   "source": "עיבוד תמונה.pdf",
+   "page": 7,
+   "similarity": 0.567
+  }
+ ],
+ "retrieval_empty": false,
+ "error": null,
+ "retrieval_s": 2.55,
+ "repair_s": 5.52
+}

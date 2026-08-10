@@ -1,0 +1,40 @@
+{
+ "item": "hl_e007_q1_r1__l1",
+ "raw_text": "{\"transcription\": \"ניתן לראות כי בשכבות של הגלים הכחולים לא שומרים על אותה",
+ "suggested_text": "ניתן לראות כי בשכבות של הגלים הכחולים לא שומרים על אותה",
+ "transcription": "ניתן לראות כי בשכבות של הגלים הכחולים לא שומרים על אותה",
+ "edits": [],
+ "uncertain_regions": [],
+ "semantic_change_risk": false,
+ "needs_review": false,
+ "retrieved": [
+  {
+   "chunk_id": "2436a2554d8fbf99",
+   "source": "עיבוד תמונה.pdf",
+   "page": 113,
+   "similarity": 0.5581
+  },
+  {
+   "chunk_id": "5fd4bc3f3054bf1f",
+   "source": "עיבוד תמונה.pdf",
+   "page": 70,
+   "similarity": 0.5357
+  },
+  {
+   "chunk_id": "8f57b4d690810190",
+   "source": "עיבוד תמונה.pdf",
+   "page": 110,
+   "similarity": 0.5352
+  },
+  {
+   "chunk_id": "e3957aa310784480",
+   "source": "עיבוד תמונה.pdf",
+   "page": 9,
+   "similarity": 0.5297
+  }
+ ],
+ "retrieval_empty": false,
+ "error": null,
+ "retrieval_s": 2.55,
+ "repair_s": 5.73
+}

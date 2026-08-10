@@ -1,0 +1,47 @@
+{
+ "item": "hl_e004_q1_r3__l1",
+ "raw_text": "sh-y-y-b-t) - wait, it looks like מ-ח-ו-ד-ד-ת? No.",
+ "suggested_text": "shear - wait, it looks like מ-ח-ו-ד-ד-ת? No.",
+ "transcription": "shear - wait, it looks like מ-ח-ו-ד-ד-ת? No.",
+ "edits": [
+  {
+   "raw": "sh-y-y-b-t",
+   "suggested": "shear",
+   "reason": "The OCR likely misread 'shear' as a sequence of letters resembling 'sh-y-y-b-t'. In context, the course discusses shear transformations (as in chunk 24c8f00fe9c730fe p.29), so this is a plausible correction. The rest ('- wait, it looks like מ-ח-ו-ד-ד-ת? No.') appears to be student commentary and should remain unchanged unless context suggests otherwise. However, since the OCR corruption is only in 'sh-y-y-b-t', we correct that part only, preserving the student's phrasing around it. The Hebrew phrase 'מ-ח-ו-ד-ד-ת' may be a misread of 'מחודדת' or similar — but without context to confirm, we leave as-is per instruction not to silently correct concepts. But since the question asks for repair ONLY plausible OCR corruptions, and 'sh-y-y-b-t' is clearly an OCR error for 'shear', we fix that part only. The rest remains unchanged unless it's a corruption — which it isn't in this case (it’s student commentary). So final output: correct 'sh-y-y-b-t' to 'shear'.",
+   "risk": "low"
+  }
+ ],
+ "uncertain_regions": [],
+ "semantic_change_risk": false,
+ "needs_review": false,
+ "retrieved": [
+  {
+   "chunk_id": "5c75851dcfe50e4c",
+   "source": "עיבוד תמונה.pdf",
+   "page": 33,
+   "similarity": 0.4745
+  },
+  {
+   "chunk_id": "99d8357322ce8235",
+   "source": "עיבוד תמונה.pdf",
+   "page": 111,
+   "similarity": 0.4716
+  },
+  {
+   "chunk_id": "8488a890ce37b69c",
+   "source": "עיבוד תמונה.pdf",
+   "page": 90,
+   "similarity": 0.4694
+  },
+  {
+   "chunk_id": "24c8f00fe9c730fe",
+   "source": "עיבוד תמונה.pdf",
+   "page": 29,
+   "similarity": 0.4666
+  }
+ ],
+ "retrieval_empty": false,
+ "error": null,
+ "retrieval_s": 2.53,
+ "repair_s": 17.19
+}
