@@ -25,7 +25,9 @@ documented here); temperature 0; maxOutputTokens 800.
 
 from __future__ import annotations
 
+import argparse
 import base64
+import hashlib
 import json
 import os
 import re
@@ -41,7 +43,6 @@ if hasattr(sys.stdout, "reconfigure"):
 
 REPO = Path(__file__).resolve().parents[1]
 BENCH = REPO / "evaluation" / "hebrew_bench_v2"
-OUTDIR = BENCH / "outputs" / "gemini3_flash_verify" / "run1"
 MODEL = "gemini-3-flash-preview"
 
 VERIFIER_PROMPT = (
@@ -64,9 +65,11 @@ VERIFIER_PROMPT = (
 )
 
 
-def eligible_items() -> list[tuple[str, str]]:
+def eligible_items(source_config: str = "gemini3_flash") -> list[tuple[str, str]]:
     """(item_id, frozen transcription) for every item composing an eligible
-    Gemini grading cell. Derived from the frozen grading ledger."""
+    Gemini grading cell. Derived from the frozen grading ledger; the
+    transcription SOURCE arm is a mechanical parameter (e.g. the
+    protocol-clean arm) — item set and protocol are unchanged."""
     cells = [json.loads(l)["cell"] for l in
              (REPO / "evaluation" / "m2_grading" / "gemini3_flash.jsonl")
              .read_text(encoding="utf-8").splitlines()]
@@ -81,7 +84,7 @@ def eligible_items() -> list[tuple[str, str]]:
     out = []
     for cell in cells:
         for iid in sorted(cellmap[cell]):
-            rec = json.loads((BENCH / "outputs" / "gemini3_flash" / "run1" / f"{iid}.json")
+            rec = json.loads((BENCH / "outputs" / source_config / "run1" / f"{iid}.json")
                              .read_text(encoding="utf-8"))
             if not rec.get("error") and (rec.get("transcription") or "").strip():
                 out.append((iid, rec["transcription"]))
@@ -89,19 +92,30 @@ def eligible_items() -> list[tuple[str, str]]:
 
 
 def main() -> int:
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--source-config", default="gemini3_flash",
+                    help="transcription source arm (mechanical only — "
+                         "prompt/model/thresholds are frozen)")
+    ap.add_argument("--config-id", default="gemini3_flash_verify")
+    args = ap.parse_args()
+    outdir = BENCH / "outputs" / args.config_id / "run1"
+
     key = os.environ.get("GEMINI_API_KEY")
     if not key:
         sys.exit("GEMINI_API_KEY not set")
-    OUTDIR.mkdir(parents=True, exist_ok=True)
-    (OUTDIR.parent / "config.json").write_text(json.dumps({
-        "config_id": "gemini3_flash_verify", "model": MODEL,
+    outdir.mkdir(parents=True, exist_ok=True)
+    (outdir.parent / "config.json").write_text(json.dumps({
+        "config_id": args.config_id, "model": MODEL,
+        "source_config": args.source_config,
         "protocol": "strict fidelity; inputs = crop + frozen transcription ONLY",
+        "prompt_sha256": hashlib.sha256(VERIFIER_PROMPT.encode()).hexdigest()[:16],
         "thresholds_declared_a_priori": ["T1 verdict", "T2 +low-conf",
                                         "T3 +medium-conf", "T4 any-issue-list"],
         "started": time.strftime("%Y-%m-%d %H:%M:%S"),
     }, indent=1), encoding="utf-8")
 
-    todo = [(i, t) for i, t in eligible_items() if not (OUTDIR / f"{i}.json").exists()]
+    todo = [(i, t) for i, t in eligible_items(args.source_config)
+            if not (outdir / f"{i}.json").exists()]
     print(f"verifier items todo: {len(todo)}")
     client = httpx.Client(timeout=180.0)
     last = 0.0
@@ -144,7 +158,7 @@ def main() -> int:
                 rec["error"] = "no JSON object in verifier output"
         except Exception as e:  # noqa: BLE001
             rec["error"] = f"{type(e).__name__}: {e} | body={str(data)[:200]}"
-        (OUTDIR / f"{iid}.json").write_text(json.dumps(rec, ensure_ascii=False, indent=1),
+        (outdir / f"{iid}.json").write_text(json.dumps(rec, ensure_ascii=False, indent=1),
                                             encoding="utf-8")
         v = (rec.get("verdict_json") or {}).get("verdict", "?")
         print(f"  {iid}: {v} ({rec['latency_s']}s)"

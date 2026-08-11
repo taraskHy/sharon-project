@@ -9,6 +9,7 @@ says review (or has a runtime error); confidence = min over items
 
 from __future__ import annotations
 
+import argparse
 import json
 import sys
 from collections import defaultdict
@@ -19,11 +20,16 @@ if hasattr(sys.stdout, "reconfigure"):
 
 REPO = Path(__file__).resolve().parents[1]
 BENCH = REPO / "evaluation" / "hebrew_bench_v2"
-VDIR = BENCH / "outputs" / "gemini3_flash_verify" / "run1"
 CONF_ORDER = {"high": 2, "medium": 1, "low": 0}
 
 
 def main() -> int:
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--verify-config", default="gemini3_flash_verify",
+                    help="verifier arm to analyze (mechanical only — "
+                         "thresholds/aggregation are frozen)")
+    args = ap.parse_args()
+    VDIR = BENCH / "outputs" / args.verify_config / "run1"
     labels = {}
     for l in (REPO / "evaluation" / "m2_grading" / "gemini3_flash.jsonl").read_text(encoding="utf-8").splitlines():
         r = json.loads(l)
@@ -106,10 +112,13 @@ def main() -> int:
         a = cells[c]
         print(f"  {c:<14} {labels[c]:<10} {a['verdict']:<10} conf={a['confidence']} "
               f"om={len(a['omissions'])} sub={len(a['substitutions'])} add={len(a['additions'])}")
-    (REPO / "evaluation" / "m2_grading" / "signal2_verifier.json").write_text(
+    suffix = ("" if args.verify_config == "gemini3_flash_verify"
+              else f"_{args.verify_config}")
+    out_name = f"signal2_verifier{suffix}.json"
+    (REPO / "evaluation" / "m2_grading" / out_name).write_text(
         json.dumps({"cells": cells, "labels": {c: labels[c] for c in cells}},
                    ensure_ascii=False, indent=1), encoding="utf-8")
-    print("\nwrote signal2_verifier.json")
+    print(f"\nwrote {out_name}")
     return 0
 
 
