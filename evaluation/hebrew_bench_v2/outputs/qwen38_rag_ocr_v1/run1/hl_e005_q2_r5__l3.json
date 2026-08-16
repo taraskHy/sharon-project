@@ -1,0 +1,47 @@
+{
+ "item": "hl_e005_q2_r5__l3",
+ "raw_text": "כלומר, כלומר, e - e_max לטעמינו, e - e_max לטעמינו",
+ "suggested_text": "כלומר, כלומר, e - e_max לטעמינו, e - e_max לטעמינו",
+ "transcription": "כלומר, כלומר, e - e_max לטעמינו, e - e_max לטעמינו",
+ "edits": [
+  {
+   "raw": "e - e_max",
+   "suggested": "e - e_max",
+   "reason": "The OCR appears to have correctly captured the expression 'e - e_max'. No plausible corruption detected. The repetition is likely a student's mistake or emphasis, not an OCR error. Preserving as-is per instructions to not correct student errors or replace concepts without context. No course context suggests 'e - e_max' should be corrected to anything else. The repetition is preserved as written, though it may be redundant or erroneous in meaning, but not OCR-corrupted. No change needed beyond preserving the raw text as-is, since it's plausible the student wrote it twice for emphasis or error. No correction applied to the expression itself, as it matches the course context (e.g., e_max appears in chunk 137cbb504fa383ef as a term in argmax context).",
+   "risk": "low"
+  }
+ ],
+ "uncertain_regions": [],
+ "semantic_change_risk": false,
+ "needs_review": false,
+ "retrieved": [
+  {
+   "chunk_id": "c82194adc36b2ffb",
+   "source": "עיבוד תמונה.pdf",
+   "page": 47,
+   "similarity": 0.5317
+  },
+  {
+   "chunk_id": "137cbb504fa383ef",
+   "source": "עיבוד תמונה.pdf",
+   "page": 102,
+   "similarity": 0.5316
+  },
+  {
+   "chunk_id": "dea94434b52fea10",
+   "source": "עיבוד תמונה.pdf",
+   "page": 93,
+   "similarity": 0.5243
+  },
+  {
+   "chunk_id": "10c2162ba04b3402",
+   "source": "עיבוד תמונה.pdf",
+   "page": 74,
+   "similarity": 0.5047
+  }
+ ],
+ "retrieval_empty": false,
+ "error": null,
+ "retrieval_s": 2.5,
+ "repair_s": 13.11
+}

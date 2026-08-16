@@ -1,0 +1,15 @@
+{
+ "raw": "{\"transcription\": \"סמסטר אי מועד אי תשפ\" }",
+ "transcription": "סמסטר אי מועד אי תשפ",
+ "error": null,
+ "status": 200,
+ "usage_prompt_tokens": 321,
+ "usage_completion_tokens": 21,
+ "usage_total_tokens": 342,
+ "thinking_chars": 0,
+ "done_reason": "stop",
+ "item": "pr_docA_p1_b1",
+ "category": "formula_printed",
+ "run": 1,
+ "latency_s": 7.58
+}

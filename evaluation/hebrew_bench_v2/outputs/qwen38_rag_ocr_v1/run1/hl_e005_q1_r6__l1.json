@@ -1,0 +1,40 @@
+{
+ "item": "hl_e005_q1_r6__l1",
+ "raw_text": "היה זה כיצד? כיצד יתאפשר כי ברגע שאתה נכנס ל'אני'",
+ "suggested_text": "היה זה כיצד? כיצד יתאפשר כי ברגע שאתה נכנס ל'אני'",
+ "transcription": "היה זה כיצד? כיצד יתאפשר כי ברגע שאתה נכנס ל'אני'",
+ "edits": [],
+ "uncertain_regions": [],
+ "semantic_change_risk": false,
+ "needs_review": false,
+ "retrieved": [
+  {
+   "chunk_id": "76e741805dd763ab",
+   "source": "עיבוד תמונה.pdf",
+   "page": 39,
+   "similarity": 0.4958
+  },
+  {
+   "chunk_id": "7a5ce10d4c92744f",
+   "source": "עיבוד תמונה.pdf",
+   "page": 35,
+   "similarity": 0.4768
+  },
+  {
+   "chunk_id": "c0ded09ee7da6947",
+   "source": "עיבוד תמונה.pdf",
+   "page": 118,
+   "similarity": 0.4709
+  },
+  {
+   "chunk_id": "9a8417986ccaec71",
+   "source": "עיבוד תמונה.pdf",
+   "page": 60,
+   "similarity": 0.4692
+  }
+ ],
+ "retrieval_empty": false,
+ "error": null,
+ "retrieval_s": 2.5,
+ "repair_s": 5.17
+}

@@ -1,0 +1,40 @@
+{
+ "item": "hl_e004_q2_r3__l1",
+ "raw_text": "על כלל, כי ארצות (סמ' ארצות) לא הו",
+ "suggested_text": "על כלל, כי ארצות (סמ' ארצות) לא הו",
+ "transcription": "על כלל, כי ארצות (סמ' ארצות) לא הו",
+ "edits": [],
+ "uncertain_regions": [],
+ "semantic_change_risk": false,
+ "needs_review": false,
+ "retrieved": [
+  {
+   "chunk_id": "dcbc6eb17369a3fa",
+   "source": "עיבוד תמונה.pdf",
+   "page": 56,
+   "similarity": 0.3822
+  },
+  {
+   "chunk_id": "6cce560c4b0e5deb",
+   "source": "עיבוד תמונה.pdf",
+   "page": 10,
+   "similarity": 0.3807
+  },
+  {
+   "chunk_id": "1c59e3b301e8b7d5",
+   "source": "עיבוד תמונה.pdf",
+   "page": 76,
+   "similarity": 0.3804
+  },
+  {
+   "chunk_id": "1d26fd0f26dcca1b",
+   "source": "עיבוד תמונה.pdf",
+   "page": 18,
+   "similarity": 0.38
+  }
+ ],
+ "retrieval_empty": false,
+ "error": "JSONDecodeError: Unterminated string starting at: line 7 column 17 (char 203)",
+ "retrieval_s": 2.48,
+ "repair_s": 42.78
+}

@@ -1,0 +1,40 @@
+{
+ "item": "hl_e006_q1_r4__l1",
+ "raw_text": "11. שאלה 8 נדפסו 5,000,000 מניות של 1 לירה",
+ "suggested_text": "11. שאלה 8 נדפסו 5,000,000 מניות של 1 לירה",
+ "transcription": "11. שאלה 8 נדפסו 5,000,000 מניות של 1 לירה",
+ "edits": [],
+ "uncertain_regions": [],
+ "semantic_change_risk": false,
+ "needs_review": false,
+ "retrieved": [
+  {
+   "chunk_id": "bd482271a22dad66",
+   "source": "עיבוד תמונה.pdf",
+   "page": 43,
+   "similarity": 0.4173
+  },
+  {
+   "chunk_id": "ccc8962b010c71ed",
+   "source": "עיבוד תמונה.pdf",
+   "page": 87,
+   "similarity": 0.4062
+  },
+  {
+   "chunk_id": "1fb7c09180428d0d",
+   "source": "עיבוד תמונה.pdf",
+   "page": 16,
+   "similarity": 0.4053
+  },
+  {
+   "chunk_id": "5c75851dcfe50e4c",
+   "source": "עיבוד תמונה.pdf",
+   "page": 33,
+   "similarity": 0.3999
+  }
+ ],
+ "retrieval_empty": false,
+ "error": null,
+ "retrieval_s": 2.52,
+ "repair_s": 5.66
+}

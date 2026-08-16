@@ -1,0 +1,15 @@
+{
+ "raw": "{\"transcription\": \"אפשר לסמן את כל קבוצת הסימנים (כולל את ה-) .\"}",
+ "transcription": "אפשר לסמן את כל קבוצת הסימנים (כולל את ה-) .",
+ "error": null,
+ "status": 200,
+ "usage_prompt_tokens": 219,
+ "usage_completion_tokens": 28,
+ "usage_total_tokens": 247,
+ "thinking_chars": 0,
+ "done_reason": "stop",
+ "item": "hl_e006_q2_r7__l2",
+ "category": "handwritten_line",
+ "run": 1,
+ "latency_s": 8.28
+}

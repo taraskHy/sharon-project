@@ -1,0 +1,15 @@
+{
+ "raw": "{\"transcription\": \"עם תוכנית מלאה של מודול על סכום\"}",
+ "transcription": "עם תוכנית מלאה של מודול על סכום",
+ "error": null,
+ "status": 200,
+ "usage_prompt_tokens": 219,
+ "usage_completion_tokens": 23,
+ "usage_total_tokens": 242,
+ "thinking_chars": 0,
+ "done_reason": "stop",
+ "item": "hl_e004_q1_r3__l1",
+ "category": "handwritten_line",
+ "run": 1,
+ "latency_s": 7.2
+}

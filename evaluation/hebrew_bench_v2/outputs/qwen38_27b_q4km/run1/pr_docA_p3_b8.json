@@ -1,0 +1,15 @@
+{
+ "raw": "{\"transcription\": \"ב- Brightness Shift (פעלה 7) רק ח-DC יעשף ויחקן ליותר בהיר כמבואן, אך\"}",
+ "transcription": "ב- Brightness Shift (פעלה 7) רק ח-DC יעשף ויחקן ליותר בהיר כמבואן, אך",
+ "error": null,
+ "status": 200,
+ "usage_prompt_tokens": 190,
+ "usage_completion_tokens": 41,
+ "usage_total_tokens": 231,
+ "thinking_chars": 0,
+ "done_reason": "stop",
+ "item": "pr_docA_p3_b8",
+ "category": "mixed_he_en",
+ "run": 1,
+ "latency_s": 11.0
+}

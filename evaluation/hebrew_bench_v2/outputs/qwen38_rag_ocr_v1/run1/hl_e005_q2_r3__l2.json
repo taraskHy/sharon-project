@@ -1,0 +1,40 @@
+{
+ "item": "hl_e005_q2_r3__l2",
+ "raw_text": "831712 ס'ג (6.09121212.6 (5522.0)",
+ "suggested_text": "831712 ס'ג (6.09121212.6 (5522.0)",
+ "transcription": "831712 ס'ג (6.09121212.6 (5522.0)",
+ "edits": [],
+ "uncertain_regions": [],
+ "semantic_change_risk": false,
+ "needs_review": false,
+ "retrieved": [
+  {
+   "chunk_id": "3da5b4f3be74723b",
+   "source": "עיבוד תמונה.pdf",
+   "page": 47,
+   "similarity": 0.4224
+  },
+  {
+   "chunk_id": "e8bd6015f531f2c7",
+   "source": "עיבוד תמונה.pdf",
+   "page": 75,
+   "similarity": 0.4179
+  },
+  {
+   "chunk_id": "842e50ea642520dc",
+   "source": "עיבוד תמונה.pdf",
+   "page": 61,
+   "similarity": 0.4123
+  },
+  {
+   "chunk_id": "24c8f00fe9c730fe",
+   "source": "עיבוד תמונה.pdf",
+   "page": 29,
+   "similarity": 0.4113
+  }
+ ],
+ "retrieval_empty": false,
+ "error": null,
+ "retrieval_s": 2.5,
+ "repair_s": 5.92
+}

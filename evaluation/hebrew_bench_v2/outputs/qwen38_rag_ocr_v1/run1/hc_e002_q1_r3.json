@@ -1,0 +1,40 @@
+{
+ "item": "hc_e002_q1_r3",
+ "raw_text": "הטפאה עם עכברית\nהעברית אפס קיום פארקיו",
+ "suggested_text": "הטפאה עם עכברית\nהעברית אפס קיום פארקיו",
+ "transcription": "הטפאה עם עכברית\nהעברית אפס קיום פארקיו",
+ "edits": [],
+ "uncertain_regions": [],
+ "semantic_change_risk": false,
+ "needs_review": false,
+ "retrieved": [
+  {
+   "chunk_id": "027077d560655488",
+   "source": "עיבוד תמונה.pdf",
+   "page": 96,
+   "similarity": 0.3553
+  },
+  {
+   "chunk_id": "a9a6be43ba61a9f1",
+   "source": "עיבוד תמונה.pdf",
+   "page": 62,
+   "similarity": 0.3541
+  },
+  {
+   "chunk_id": "196779e6ff52f0b9",
+   "source": "עיבוד תמונה.pdf",
+   "page": 79,
+   "similarity": 0.3534
+  },
+  {
+   "chunk_id": "dcbc6eb17369a3fa",
+   "source": "עיבוד תמונה.pdf",
+   "page": 56,
+   "similarity": 0.3469
+  }
+ ],
+ "retrieval_empty": false,
+ "error": null,
+ "retrieval_s": 2.56,
+ "repair_s": 5.38
+}

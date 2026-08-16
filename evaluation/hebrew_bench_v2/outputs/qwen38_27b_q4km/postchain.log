@@ -1,0 +1,234 @@
+﻿2026-08-16 13:12:04 postchain start (pid 37780)
+2026-08-16 13:12:04 waiting for raw benchmark DONE + 129 records
+2026-08-16 13:21:05 raw benchmark DONE detected; records=129
+2026-08-16 13:21:05 STAGE 1: canonical evaluation of qwen38_27b_q4km
+2026-08-16 13:21:05 {"config_id": "qwen38_27b_q4km", "backend": "ollama_native", "model": "qwen3.8:27b-q4_K_M", "preproc": "contrast", "category": "formula_printed", "items": 7, "mean_cer": 0.424, "usable_rate": 0.4286, "wer": 0.6806, "omission_rate": 0.1528, "halluc_rate": 0.1286, "reversed_flags": 0, "hard_flag_ok": null, "hard_halluc": null, "hard_n": null, "assoc_pair_acc": null, "errors": 0, "rate_limit_waits": 0, "rate_limit_wait_s": 0.0, "rate_limited_out": 0, "median_latency_s": 9.66}
+2026-08-16 13:21:05 {"config_id": "qwen38_27b_q4km", "backend": "ollama_native", "model": "qwen3.8:27b-q4_K_M", "preproc": "contrast", "category": "handwritten_cell", "items": 11, "mean_cer": 0.8806, "usable_rate": 0.0, "wer": 1.1882, "omission_rate": 0.0235, "halluc_rate": 0.1863, "reversed_flags": 0, "hard_flag_ok": null, "hard_halluc": 5, "hard_n": 5, "assoc_pair_acc": null, "errors": 0, "rate_limit_waits": 0, "rate_limit_wait_s": 0.0, "rate_limited_out": 0, "median_latency_s": 8.98}
+2026-08-16 13:21:05 {"config_id": "qwen38_27b_q4km", "backend": "ollama_native", "model": "qwen3.8:27b-q4_K_M", "preproc": "contrast", "category": "handwritten_line", "items": 64, "mean_cer": 1.4002, "usable_rate": 0.0, "wer": 1.8946, "omission_rate": 0.1571, "halluc_rate": 0.5247, "reversed_flags": 0, "hard_flag_ok": null, "hard_halluc": 22, "hard_n": 22, "assoc_pair_acc": null, "errors": 0, "rate_limit_waits": 0, "rate_limit_wait_s": 0.0, "rate_limited_out": 0, "median_latency_s": 8.61}
+2026-08-16 13:21:05 {"config_id": "qwen38_27b_q4km", "backend": "ollama_native", "model": "qwen3.8:27b-q4_K_M", "preproc": "contrast", "category": "mixed_he_en", "items": 7, "mean_cer": 0.113, "usable_rate": 1.0, "wer": 0.2727, "omission_rate": 0.0114, "halluc_rate": 0.0, "reversed_flags": 0, "hard_flag_ok": null, "hard_halluc": null, "hard_n": null, "assoc_pair_acc": null, "errors": 0, "rate_limit_waits": 0, "rate_limit_wait_s": 0.0, "rate_limited_out": 0, "median_latency_s": 10.8}
+2026-08-16 13:21:05 {"config_id": "qwen38_27b_q4km", "backend": "ollama_native", "model": "qwen3.8:27b-q4_K_M", "preproc": "contrast", "category": "option_row_association", "items": 5, "mean_cer": null, "usable_rate": null, "wer": null, "omission_rate": null, "halluc_rate": null, "reversed_flags": 0, "hard_flag_ok": null, "hard_halluc": null, "hard_n": null, "assoc_pair_acc": 0.7895, "errors": 0, "rate_limit_waits": 0, "rate_limit_wait_s": 0.0, "rate_limited_out": 0, "median_latency_s": 10.02}
+2026-08-16 13:21:05 {"config_id": "qwen38_27b_q4km", "backend": "ollama_native", "model": "qwen3.8:27b-q4_K_M", "preproc": "contrast", "category": "printed_rtl", "items": 8, "mean_cer": 0.0695, "usable_rate": 0.875, "wer": 0.2769, "omission_rate": 0.0, "halluc_rate": 0.058, "reversed_flags": 0, "hard_flag_ok": null, "hard_halluc": null, "hard_n": null, "assoc_pair_acc": null, "errors": 0, "rate_limit_waits": 0, "rate_limit_wait_s": 0.0, "rate_limited_out": 0, "median_latency_s": 7.33}
+2026-08-16 13:21:05 stage 1 eval exit: 0
+2026-08-16 13:21:06 qwen38_handwritten_all: n=102 mean=2.3909 median=0.782 usable25=0 usable50=1
+2026-08-16 13:21:06 vs_gemini: n=32 WTL=2/0/30
+2026-08-16 13:21:06    qwen38_27b_q4km: mean=1.0092 median=0.7685 usable25=0 usable50=1
+2026-08-16 13:21:06    gemini_protocol_clean_v1: mean=0.3293 median=0.2787 usable25=13 usable50=23
+2026-08-16 13:21:06 vs_mlkit: n=20 WTL=3/0/17
+2026-08-16 13:21:06    qwen38_27b_q4km: mean=1.1732 median=0.7745 usable25=0 usable50=0
+2026-08-16 13:21:06    mlkit_ink_rtl_a1: mean=0.6643 median=0.6653 usable25=1 usable50=4
+2026-08-16 13:21:06 gate20: n=20
+2026-08-16 13:21:06    qwen38_27b_q4km: mean=1.1732 median=0.7745 usable25=0 usable50=0
+2026-08-16 13:21:06    gemini_protocol_clean_v1: mean=0.2874 median=0.226 usable25=11 usable50=15
+2026-08-16 13:21:06    mlkit_ink_rtl_a1: mean=0.6643 median=0.6653 usable25=1 usable50=4
+2026-08-16 13:21:06 wrote C:\Users\ethan\PycharmProjects\sharon-project\evaluation\hebrew_bench_v2\outputs\qwen38_27b_q4km\comparison.json
+2026-08-16 13:21:06 stage 1 comparison exit: 0
+2026-08-16 13:21:06 STAGE 2: qwen38_rag_ocr_v1 (frozen m2_rag_ocr, course CV, top-k 4)
+2026-08-16 13:55:41 eligible items: 102
+2026-08-16 13:55:41 [1/102] hl_e003_q1_r1__l1: edits=3 sem_risk=False chunks=4 (29.22s)
+2026-08-16 13:55:41 [2/102] hl_e003_q1_r2__l2: edits=4 sem_risk=False chunks=4 (17.64s)
+2026-08-16 13:55:41 [3/102] hl_e003_q1_r3__l1: edits=0 sem_risk=False chunks=4 (41.36s) ERR JSONDecodeError: Unterminated string starting at: line 7 col
+2026-08-16 13:55:41 [4/102] hl_e003_q1_r4__l1: edits=0 sem_risk=False chunks=4 (41.62s) ERR JSONDecodeError: Unterminated string starting at: line 7 col
+2026-08-16 13:55:41 [5/102] hl_e003_q1_r5__l1: edits=0 sem_risk=False chunks=4 (5.52s)
+2026-08-16 13:55:41 [6/102] hl_e003_q1_r6__l1: edits=0 sem_risk=False chunks=4 (42.14s) ERR JSONDecodeError: Unterminated string starting at: line 7 col
+2026-08-16 13:55:41 [7/102] hl_e003_q1_r7__l1: edits=0 sem_risk=False chunks=4 (5.41s)
+2026-08-16 13:55:41 [8/102] hl_e003_q1_r8__l1: edits=0 sem_risk=False chunks=4 (41.86s) ERR JSONDecodeError: Unterminated string starting at: line 7 col
+2026-08-16 13:55:41 [9/102] hl_e003_q2_r1__l1: edits=1 sem_risk=False chunks=4 (10.08s)
+2026-08-16 13:55:41 [10/102] hl_e003_q2_r2__l1: edits=0 sem_risk=False chunks=4 (5.27s)
+2026-08-16 13:55:41 [11/102] hl_e003_q2_r3__l1: edits=3 sem_risk=False chunks=4 (11.44s)
+2026-08-16 13:55:41 [12/102] hl_e003_q2_r4__l1: edits=0 sem_risk=False chunks=4 (5.22s)
+2026-08-16 13:55:41 [13/102] hl_e003_q2_r5__l1: edits=0 sem_risk=False chunks=4 (5.41s)
+2026-08-16 13:55:41 [14/102] hl_e003_q2_r6__l1: edits=0 sem_risk=False chunks=4 (5.59s)
+2026-08-16 13:55:41 [15/102] hl_e003_q2_r7__l1: edits=0 sem_risk=False chunks=4 (41.83s) ERR JSONDecodeError: Unterminated string starting at: line 7 col
+2026-08-16 13:55:41 [16/102] hl_e003_q2_r8__l1: edits=0 sem_risk=False chunks=4 (5.92s)
+2026-08-16 13:55:41 [17/102] hl_e004_q1_r1__l1: edits=0 sem_risk=False chunks=4 (5.33s)
+2026-08-16 13:55:41 [18/102] hl_e004_q1_r2__l1: edits=2 sem_risk=False chunks=4 (10.23s)
+2026-08-16 13:55:41 [19/102] hl_e004_q1_r3__l1: edits=0 sem_risk=False chunks=4 (5.19s)
+2026-08-16 13:55:41 [20/102] hl_e004_q1_r3__l2: edits=3 sem_risk=False chunks=4 (16.86s)
+2026-08-16 13:55:41 [21/102] hl_e004_q1_r4__l1: edits=0 sem_risk=False chunks=4 (4.83s)
+2026-08-16 13:55:41 [22/102] hl_e004_q1_r5__l1: edits=4 sem_risk=False chunks=4 (15.14s)
+2026-08-16 13:55:41 [23/102] hl_e004_q1_r6__l1: edits=0 sem_risk=False chunks=4 (42.16s) ERR JSONDecodeError: Unterminated string starting at: line 7 col
+2026-08-16 13:55:41 [24/102] hl_e004_q1_r6__l2: edits=0 sem_risk=False chunks=4 (5.27s)
+2026-08-16 13:55:41 [25/102] hl_e004_q1_r7__l2: edits=0 sem_risk=False chunks=4 (5.16s)
+2026-08-16 13:55:41 [26/102] hl_e004_q1_r8__l1: edits=0 sem_risk=False chunks=4 (5.33s)
+2026-08-16 13:55:41 [27/102] hl_e004_q2_r1__l1: edits=0 sem_risk=False chunks=4 (41.45s) ERR JSONDecodeError: Unterminated string starting at: line 7 col
+2026-08-16 13:55:41 [28/102] hl_e004_q2_r1__l2: edits=0 sem_risk=False chunks=4 (4.92s)
+2026-08-16 13:55:41 [29/102] hl_e004_q2_r2__l1: edits=1 sem_risk=False chunks=4 (11.34s)
+2026-08-16 13:55:41 [30/102] hl_e004_q2_r3__l1: edits=0 sem_risk=False chunks=4 (42.78s) ERR JSONDecodeError: Unterminated string starting at: line 7 col
+2026-08-16 13:55:41 [31/102] hl_e004_q2_r4__l1: edits=0 sem_risk=False chunks=4 (4.91s)
+2026-08-16 13:55:41 [32/102] hl_e004_q2_r4__l2: edits=0 sem_risk=False chunks=4 (5.28s)
+2026-08-16 13:55:41 [33/102] hl_e004_q2_r5__l1: edits=0 sem_risk=False chunks=4 (5.38s)
+2026-08-16 13:55:41 [34/102] hl_e004_q2_r5__l2: edits=0 sem_risk=False chunks=4 (5.06s)
+2026-08-16 13:55:41 [35/102] hl_e004_q2_r6__l1: edits=0 sem_risk=False chunks=4 (5.08s)
+2026-08-16 13:55:41 [36/102] hl_e004_q2_r6__l2: edits=0 sem_risk=False chunks=4 (42.59s) ERR JSONDecodeError: Unterminated string starting at: line 7 col
+2026-08-16 13:55:41 [37/102] hl_e004_q2_r7__l2: edits=0 sem_risk=False chunks=4 (5.59s)
+2026-08-16 13:55:41 [38/102] hl_e004_q2_r8__l1: edits=0 sem_risk=False chunks=4 (5.33s)
+2026-08-16 13:55:41 [39/102] hl_e004_q2_r8__l2: edits=0 sem_risk=False chunks=4 (5.59s)
+2026-08-16 13:55:41 [40/102] hl_e005_q1_r1__l1: edits=0 sem_risk=False chunks=4 (41.66s) ERR JSONDecodeError: Unterminated string starting at: line 7 col
+2026-08-16 13:55:41 [41/102] hl_e005_q1_r1__l2: edits=0 sem_risk=False chunks=4 (5.17s)
+2026-08-16 13:55:41 [42/102] hl_e005_q1_r2__l1: edits=0 sem_risk=False chunks=4 (5.03s)
+2026-08-16 13:55:41 [43/102] hl_e005_q1_r2__l2: edits=0 sem_risk=False chunks=4 (42.11s) ERR JSONDecodeError: Unterminated string starting at: line 2 col
+2026-08-16 13:55:41 [44/102] hl_e005_q1_r3__l2: edits=0 sem_risk=False chunks=4 (41.41s) ERR JSONDecodeError: Unterminated string starting at: line 7 col
+2026-08-16 13:55:41 [45/102] hl_e005_q1_r3__l3: edits=0 sem_risk=False chunks=4 (5.47s)
+2026-08-16 13:55:41 [46/102] hl_e005_q1_r4__l1: edits=0 sem_risk=False chunks=4 (4.84s)
+2026-08-16 13:55:41 [47/102] hl_e005_q1_r4__l2: edits=0 sem_risk=False chunks=4 (5.3s)
+2026-08-16 13:55:41 [48/102] hl_e005_q1_r5__l2: edits=0 sem_risk=False chunks=4 (41.72s) ERR JSONDecodeError: Unterminated string starting at: line 7 col
+2026-08-16 13:55:41 [49/102] hl_e005_q1_r5__l3: edits=1 sem_risk=False chunks=4 (11.02s)
+2026-08-16 13:55:41 [50/102] hl_e005_q1_r6__l1: edits=0 sem_risk=False chunks=4 (5.17s)
+2026-08-16 13:55:41 [51/102] hl_e005_q1_r6__l2: edits=0 sem_risk=False chunks=4 (41.62s) ERR JSONDecodeError: Unterminated string starting at: line 2 col
+2026-08-16 13:55:41 [52/102] hl_e005_q1_r7__l1: edits=0 sem_risk=False chunks=4 (41.83s) ERR JSONDecodeError: Unterminated string starting at: line 7 col
+2026-08-16 13:55:41 [53/102] hl_e005_q1_r7__l2: edits=0 sem_risk=False chunks=4 (5.3s)
+2026-08-16 13:55:41 [54/102] hl_e005_q1_r8__l2: edits=0 sem_risk=False chunks=4 (41.59s) ERR JSONDecodeError: Unterminated string starting at: line 2 col
+2026-08-16 13:55:41 [55/102] hl_e005_q1_r8__l3: edits=0 sem_risk=False chunks=4 (5.19s)
+2026-08-16 13:55:41 [56/102] hl_e005_q2_r1__l1: edits=0 sem_risk=False chunks=4 (41.61s) ERR JSONDecodeError: Unterminated string starting at: line 7 col
+2026-08-16 13:55:41 [57/102] hl_e005_q2_r1__l2: edits=0 sem_risk=False chunks=4 (41.59s) ERR JSONDecodeError: Unterminated string starting at: line 7 col
+2026-08-16 13:55:41 [58/102] hl_e005_q2_r2__l2: edits=1 sem_risk=False chunks=4 (9.25s)
+2026-08-16 13:55:41 [59/102] hl_e005_q2_r2__l3: edits=0 sem_risk=False chunks=4 (5.2s)
+2026-08-16 13:55:41 [60/102] hl_e005_q2_r3__l2: edits=0 sem_risk=False chunks=4 (5.92s)
+2026-08-16 13:55:41 [61/102] hl_e005_q2_r4__l2: edits=0 sem_risk=False chunks=4 (41.89s) ERR JSONDecodeError: Unterminated string starting at: line 7 col
+2026-08-16 13:55:41 [62/102] hl_e005_q2_r4__l3: edits=0 sem_risk=False chunks=4 (42.17s) ERR JSONDecodeError: Unterminated string starting at: line 7 col
+2026-08-16 13:55:41 [63/102] hl_e005_q2_r5__l2: edits=0 sem_risk=False chunks=4 (5.53s)
+2026-08-16 13:55:41 [64/102] hl_e005_q2_r5__l3: edits=1 sem_risk=False chunks=4 (13.11s)
+2026-08-16 13:55:41 [65/102] hl_e005_q2_r6__l2: edits=0 sem_risk=False chunks=4 (4.94s)
+2026-08-16 13:55:41 [66/102] hl_e005_q2_r7__l2: edits=2 sem_risk=False chunks=4 (14.98s)
+2026-08-16 13:55:41 [67/102] hl_e005_q2_r7__l3: edits=0 sem_risk=False chunks=4 (5.28s)
+2026-08-16 13:55:41 [68/102] hl_e005_q2_r8__l1: edits=0 sem_risk=False chunks=4 (4.97s)
+2026-08-16 13:55:41 [69/102] hl_e005_q2_r8__l2: edits=2 sem_risk=False chunks=4 (13.94s)
+2026-08-16 13:55:41 [70/102] hl_e006_q1_r1__l1: edits=0 sem_risk=False chunks=4 (41.05s) ERR JSONDecodeError: Unterminated string starting at: line 7 col
+2026-08-16 13:55:41 [71/102] hl_e006_q1_r2__l1: edits=0 sem_risk=False chunks=4 (5.05s)
+2026-08-16 13:55:41 [72/102] hl_e006_q1_r3__l1: edits=0 sem_risk=False chunks=4 (5.2s)
+2026-08-16 13:55:41 [73/102] hl_e006_q1_r4__l1: edits=0 sem_risk=False chunks=4 (5.66s)
+2026-08-16 13:55:41 [74/102] hl_e006_q1_r5__l1: edits=1 sem_risk=False chunks=4 (13.36s)
+2026-08-16 13:55:41 [75/102] hl_e006_q1_r6__l1: edits=0 sem_risk=False chunks=4 (5.5s)
+2026-08-16 13:55:41 [76/102] hl_e006_q1_r7__l1: edits=3 sem_risk=False chunks=4 (16.91s)
+2026-08-16 13:55:41 [77/102] hl_e006_q1_r8__l1: edits=0 sem_risk=False chunks=4 (5.66s)
+2026-08-16 13:55:41 [78/102] hl_e006_q2_r1__l1: edits=0 sem_risk=False chunks=4 (5.08s)
+2026-08-16 13:55:41 [79/102] hl_e006_q2_r3__l1: edits=0 sem_risk=False chunks=4 (41.8s) ERR JSONDecodeError: Unterminated string starting at: line 7 col
+2026-08-16 13:55:41 [80/102] hl_e006_q2_r4__l1: edits=0 sem_risk=False chunks=4 (41.78s) ERR JSONDecodeError: Unterminated string starting at: line 2 col
+2026-08-16 13:55:41 [81/102] hl_e006_q2_r5__l2: edits=0 sem_risk=False chunks=4 (4.86s)
+2026-08-16 13:55:41 [82/102] hl_e006_q2_r6__l1: edits=0 sem_risk=False chunks=4 (5.42s)
+2026-08-16 13:55:41 [83/102] hl_e006_q2_r7__l1: edits=0 sem_risk=False chunks=4 (15.27s)
+2026-08-16 13:55:41 [84/102] hl_e006_q2_r7__l2: edits=0 sem_risk=False chunks=4 (41.98s) ERR JSONDecodeError: Unterminated string starting at: line 7 col
+2026-08-16 13:55:41 [85/102] hl_e006_q2_r8__l1: edits=0 sem_risk=False chunks=4 (41.41s) ERR JSONDecodeError: Unterminated string starting at: line 7 col
+2026-08-16 13:55:41 [86/102] hl_e007_q1_r1__l1: edits=0 sem_risk=False chunks=4 (5.73s)
+2026-08-16 13:55:41 [87/102] hc_e002_q1_r1: edits=0 sem_risk=False chunks=4 (5.33s)
+2026-08-16 13:55:41 [88/102] hc_e002_q1_r2: edits=1 sem_risk=False chunks=4 (11.83s)
+2026-08-16 13:55:41 [89/102] hc_e002_q1_r3: edits=0 sem_risk=False chunks=4 (5.38s)
+2026-08-16 13:55:41 [90/102] hc_e002_q1_r4: edits=0 sem_risk=False chunks=4 (41.47s) ERR JSONDecodeError: Unterminated string starting at: line 7 col
+2026-08-16 13:55:41 [91/102] hc_e002_q1_r5: edits=0 sem_risk=False chunks=4 (41.12s) ERR JSONDecodeError: Unterminated string starting at: line 7 col
+2026-08-16 13:55:41 [92/102] hc_e002_q1_r6: edits=0 sem_risk=False chunks=4 (41.91s) ERR JSONDecodeError: Unterminated string starting at: line 7 col
+2026-08-16 13:55:41 [93/102] hc_e002_q1_r7: edits=0 sem_risk=False chunks=4 (5.62s)
+2026-08-16 13:55:41 [94/102] hc_e002_q1_r8: edits=2 sem_risk=True chunks=4 (14.69s)
+2026-08-16 13:55:41 [95/102] hc_e002_q2_r1: edits=0 sem_risk=False chunks=4 (5.47s)
+2026-08-16 13:55:41 [96/102] hc_e002_q2_r2: edits=0 sem_risk=False chunks=4 (5.12s)
+2026-08-16 13:55:41 [97/102] hc_e002_q2_r3: edits=0 sem_risk=False chunks=4 (5.39s)
+2026-08-16 13:55:41 [98/102] hc_e002_q2_r4: edits=0 sem_risk=False chunks=4 (41.64s) ERR JSONDecodeError: Unterminated string starting at: line 2 col
+2026-08-16 13:55:41 [99/102] hc_e002_q2_r5: edits=3 sem_risk=False chunks=4 (16.19s)
+2026-08-16 13:55:41 [100/102] hc_e002_q2_r6: edits=0 sem_risk=False chunks=4 (42.3s) ERR JSONDecodeError: Unterminated string starting at: line 7 col
+2026-08-16 13:55:41 [101/102] hc_e002_q2_r7: edits=0 sem_risk=False chunks=4 (5.16s)
+2026-08-16 13:55:41 [102/102] hc_e002_q2_r8: edits=0 sem_risk=False chunks=4 (5.59s)
+2026-08-16 13:55:41 qwen38_rag_ocr_v1 run complete
+2026-08-16 13:55:41 stage 2 rag exit: 0
+2026-08-16 13:55:41 rag records persisted: 102
+2026-08-16 13:55:41 STAGE 3: reference join (only now) - paired eval + grading preservation
+2026-08-16 13:55:42 {"config_id": "qwen38_rag_ocr_v1", "backend": null, "model": null, "preproc": null, "category": "handwritten_cell", "items": 11, "mean_cer": 0.884, "usable_rate": 0.0, "wer": 1.1765, "omission_rate": 0.0235, "halluc_rate": 0.1782, "reversed_flags": 0, "hard_flag_ok": null, "hard_halluc": 5, "hard_n": 5, "assoc_pair_acc": null, "errors": 5, "rate_limit_waits": 0, "rate_limit_wait_s": 0.0, "rate_limited_out": 0, "median_latency_s": 0.0}
+2026-08-16 13:55:42 {"config_id": "qwen38_rag_ocr_v1", "backend": null, "model": null, "preproc": null, "category": "handwritten_line", "items": 64, "mean_cer": 1.405, "usable_rate": 0.0, "wer": 1.8946, "omission_rate": 0.1554, "halluc_rate": 0.5241, "reversed_flags": 0, "hard_flag_ok": null, "hard_halluc": 22, "hard_n": 22, "assoc_pair_acc": null, "errors": 25, "rate_limit_waits": 0, "rate_limit_wait_s": 0.0, "rate_limited_out": 0, "median_latency_s": 0.0}
+2026-08-16 13:55:43 config_id: qwen38_rag_ocr_v1
+2026-08-16 13:55:43 n: 102
+2026-08-16 13:55:43 mean_cer_raw: 2.3909
+2026-08-16 13:55:43 mean_cer_suggested: 2.3951
+2026-08-16 13:55:43 median_cer_raw: 0.782
+2026-08-16 13:55:43 median_cer_suggested: 0.7839
+2026-08-16 13:55:43 usable_025_raw: 0
+2026-08-16 13:55:43 usable_025_suggested: 0
+2026-08-16 13:55:43 usable_050_raw: 1
+2026-08-16 13:55:43 usable_050_suggested: 1
+2026-08-16 13:55:43 texts_changed: 12
+2026-08-16 13:55:43 improved: 2
+2026-08-16 13:55:43 worsened: 8
+2026-08-16 13:55:43 neutral: 2
+2026-08-16 13:55:43 repair_errors: 30
+2026-08-16 13:55:43 semantic_risk_flags: 1
+2026-08-16 13:55:43 needs_review: 2
+2026-08-16 13:55:43   hc_e002_q1_r8: 0.791 -> 0.725 edits=2 sem_risk=True review=True
+2026-08-16 13:55:43   hl_e005_q1_r3__l3: 0.849 -> 0.830 edits=0 sem_risk=False review=False
+2026-08-16 13:55:43   hc_e002_q2_r5: 0.786 -> 0.786 edits=3 sem_risk=False review=False
+2026-08-16 13:55:43   hl_e003_q2_r1__l1: 0.817 -> 0.817 edits=1 sem_risk=False review=True
+2026-08-16 13:55:43   hl_e005_q1_r5__l3: 0.920 -> 0.940 edits=1 sem_risk=False review=False
+2026-08-16 13:55:43   hl_e006_q1_r5__l1: 0.787 -> 0.808 edits=1 sem_risk=False review=False
+2026-08-16 13:55:43   hl_e004_q1_r3__l2: 0.875 -> 0.906 edits=3 sem_risk=False review=False
+2026-08-16 13:55:43   hl_e005_q2_r8__l2: 0.757 -> 0.811 edits=2 sem_risk=False review=False
+2026-08-16 13:55:43   hl_e004_q2_r2__l1: 0.736 -> 0.792 edits=1 sem_risk=False review=False
+2026-08-16 13:55:43   hl_e003_q1_r1__l1: 0.590 -> 0.672 edits=3 sem_risk=False review=False
+2026-08-16 13:55:43   hc_e002_q1_r2: 0.793 -> 0.897 edits=1 sem_risk=False review=False
+2026-08-16 13:55:43   hl_e005_q2_r7__l2: 0.851 -> 1.000 edits=2 sem_risk=False review=False
+2026-08-16 13:55:43 wrote C:\Users\ethan\PycharmProjects\sharon-project\evaluation\hebrew_bench_v2\outputs\qwen38_rag_ocr_v1\paired_eval.json
+2026-08-16 13:55:43 warning: The `fitz` API is deprecated and will be removed in future. Use `import pymupdf` instead.
+2026-08-16 13:56:29 fixed subset (12 cells): ['e002_q1_r2', 'e002_q1_r3', 'e002_q1_r4', 'e003_q1_r1', 'e003_q1_r2', 'e003_q1_r3', 'e004_q1_r1', 'e004_q1_r2', 'e004_q1_r3', 'e005_q1_r1', 'e005_q1_r2', 'e005_q1_r3']
+2026-08-16 13:56:29   gold e002_q1_r2: valid
+2026-08-16 13:56:29   gold e002_q1_r3: valid
+2026-08-16 13:56:29   gold e002_q1_r4: valid
+2026-08-16 13:56:29   gold e003_q1_r1: valid
+2026-08-16 13:56:29   gold e003_q1_r2: valid
+2026-08-16 13:56:29   gold e003_q1_r3: partially_valid
+2026-08-16 13:56:29   gold e004_q1_r1: invalid
+2026-08-16 13:56:29   gold e004_q1_r2: valid
+2026-08-16 13:56:29   gold e004_q1_r3: partially_valid
+2026-08-16 13:56:29   gold e005_q1_r1: valid
+2026-08-16 13:56:29   gold e005_q1_r2: partially_valid
+2026-08-16 13:56:29   gold e005_q1_r3: invalid
+2026-08-16 13:56:29   e002_q1_r2: gold=valid ocr=invalid WRONG-DECISION | The text is incoherent and does not provide any valid reason
+2026-08-16 13:56:29   e002_q1_r3: gold=valid ocr=unintelligible SAFE | The text is completely garbled and cannot be interpreted as 
+2026-08-16 13:56:29   e002_q1_r4: gold=valid ocr=invalid WRONG-DECISION | The justification is vague and irrelevant, not explaining th
+2026-08-16 13:56:29   e003_q1_r1: gold=valid ocr=unintelligible SAFE | The text is garbled and incoherent, with no discernible logi
+2026-08-16 13:56:29   e003_q1_r2: gold=valid ocr=unintelligible SAFE | The text is garbled and contains no coherent reasoning or re
+2026-08-16 13:56:29   e003_q1_r3: gold=partially_valid ocr=invalid WRONG-DECISION | The justification is irrelevant and contains no meaningful r
+2026-08-16 13:56:29   e004_q1_r1: gold=invalid ocr=invalid MATCH | The justification is empty and does not explain why the wave
+2026-08-16 13:56:29   e004_q1_r2: gold=valid ocr=partially_valid WRONG-DECISION | The student correctly identifies the high pass filter as a f
+2026-08-16 13:56:29   e004_q1_r3: gold=partially_valid ocr=unintelligible SAFE | The text is garbled and contains nonsensical phrases with no
+2026-08-16 13:56:29   e005_q1_r1: gold=valid ocr=unintelligible SAFE | The text is fragmented and incoherent, with unclear phrasing
+2026-08-16 13:56:29   e005_q1_r2: gold=partially_valid ocr=invalid WRONG-DECISION | The justification is irrelevant and repetitive, containing n
+2026-08-16 13:56:29   e005_q1_r3: gold=invalid ocr=invalid MATCH | The justification is irrelevant and lacks meaningful reasoni
+2026-08-16 13:56:29 {
+2026-08-16 13:56:29  "config_id": "qwen38_27b_q4km",
+2026-08-16 13:56:29  "judge_model": "qwen3-vl:8b-instruct",
+2026-08-16 13:56:29  "cells": 12,
+2026-08-16 13:56:29  "decision_match_rate": 0.1667,
+2026-08-16 13:56:29  "safe_rate": 0.5833,
+2026-08-16 13:56:29  "verdict_shifts": "invalid->invalidx2; partially_valid->invalidx2; partially_valid->unintelligiblex1; valid->invalidx2; valid->partially_validx1; valid->unintelligiblex4"
+2026-08-16 13:56:29 }
+2026-08-16 13:56:30 warning: The `fitz` API is deprecated and will be removed in future. Use `import pymupdf` instead.
+2026-08-16 13:56:44 fixed subset (12 cells): ['e002_q1_r2', 'e002_q1_r3', 'e002_q1_r4', 'e003_q1_r1', 'e003_q1_r2', 'e003_q1_r3', 'e004_q1_r1', 'e004_q1_r2', 'e004_q1_r3', 'e005_q1_r1', 'e005_q1_r2', 'e005_q1_r3']
+2026-08-16 13:56:44   gold e002_q1_r2: valid
+2026-08-16 13:56:44   gold e002_q1_r3: valid
+2026-08-16 13:56:44   gold e002_q1_r4: valid
+2026-08-16 13:56:44   gold e003_q1_r1: valid
+2026-08-16 13:56:44   gold e003_q1_r2: valid
+2026-08-16 13:56:44   gold e003_q1_r3: partially_valid
+2026-08-16 13:56:44   gold e004_q1_r1: invalid
+2026-08-16 13:56:44   gold e004_q1_r2: valid
+2026-08-16 13:56:44   gold e004_q1_r3: partially_valid
+2026-08-16 13:56:44   gold e005_q1_r1: valid
+2026-08-16 13:56:44   gold e005_q1_r2: partially_valid
+2026-08-16 13:56:44   gold e005_q1_r3: invalid
+2026-08-16 13:56:44   e002_q1_r2: gold=valid ocr=invalid WRONG-DECISION | The justification is irrelevant and does not address the hig
+2026-08-16 13:56:44   e002_q1_r3: gold=valid ocr=unintelligible SAFE | The text is completely garbled and cannot be interpreted as 
+2026-08-16 13:56:44   e002_q1_r4: gold=valid ocr=invalid WRONG-DECISION | The justification is vague and irrelevant, not explaining th
+2026-08-16 13:56:44   e003_q1_r1: gold=valid ocr=invalid WRONG-DECISION | The justification is irrelevant and does not address the mot
+2026-08-16 13:56:45   e003_q1_r2: gold=valid ocr=unintelligible SAFE | The text is garbled and contains no coherent reasoning or re
+2026-08-16 13:56:45   e003_q1_r3: gold=partially_valid ocr=invalid WRONG-DECISION | The justification is irrelevant and contains no meaningful r
+2026-08-16 13:56:45   e004_q1_r1: gold=invalid ocr=invalid MATCH | The justification is empty and does not explain why the wave
+2026-08-16 13:56:45   e004_q1_r2: gold=valid ocr=partially_valid WRONG-DECISION | The student correctly identifies the high pass filter as a f
+2026-08-16 13:56:45   e004_q1_r3: gold=partially_valid ocr=unintelligible SAFE | The text is garbled and contains nonsensical phrases with no
+2026-08-16 13:56:45   e005_q1_r1: gold=valid ocr=unintelligible SAFE | The text is fragmented and incoherent, with unclear phrasing
+2026-08-16 13:56:45   e005_q1_r2: gold=partially_valid ocr=invalid WRONG-DECISION | The justification is irrelevant and repetitive, containing n
+2026-08-16 13:56:45   e005_q1_r3: gold=invalid ocr=invalid MATCH | The justification is irrelevant and does not address the fre
+2026-08-16 13:56:45 {
+2026-08-16 13:56:45  "config_id": "qwen38_rag_ocr_v1",
+2026-08-16 13:56:45  "judge_model": "qwen3-vl:8b-instruct",
+2026-08-16 13:56:45  "cells": 12,
+2026-08-16 13:56:45  "decision_match_rate": 0.1667,
+2026-08-16 13:56:45  "safe_rate": 0.5,
+2026-08-16 13:56:45  "verdict_shifts": "invalid->invalidx2; partially_valid->invalidx2; partially_valid->unintelligiblex1; valid->invalidx3; valid->partially_validx1; valid->unintelligiblex3"
+2026-08-16 13:56:45 }
+2026-08-16 13:56:45 stage 3 exit: 0
+2026-08-16 13:56:45 CHAIN_DONE - fidelity audit of RAG-changed items is the remaining (agent) step

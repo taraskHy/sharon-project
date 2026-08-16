@@ -1,0 +1,15 @@
+{
+ "raw": "{\"transcription\": \"כלומר, כן יש גם Quantization של אינסטרומנטים מסוימים\"}",
+ "transcription": "כלומר, כן יש גם Quantization של אינסטרומנטים מסוימים",
+ "error": null,
+ "status": 200,
+ "usage_prompt_tokens": 219,
+ "usage_completion_tokens": 26,
+ "usage_total_tokens": 245,
+ "thinking_chars": 0,
+ "done_reason": "stop",
+ "item": "hl_e004_q2_r4__l2",
+ "category": "handwritten_line",
+ "run": 1,
+ "latency_s": 7.86
+}

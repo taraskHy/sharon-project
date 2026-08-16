@@ -1,0 +1,40 @@
+{
+ "item": "hl_e006_q1_r6__l1",
+ "raw_text": "כשהם ג'קסון ו'אליס י'א ס'אליס ג'אקסון",
+ "suggested_text": "כשהם ג'קסון ו'אליס י'א ס'אליס ג'אקסון",
+ "transcription": "כשהם ג'קסון ו'אליס י'א ס'אליס ג'אקסון",
+ "edits": [],
+ "uncertain_regions": [],
+ "semantic_change_risk": false,
+ "needs_review": false,
+ "retrieved": [
+  {
+   "chunk_id": "3da5b4f3be74723b",
+   "source": "עיבוד תמונה.pdf",
+   "page": 47,
+   "similarity": 0.3976
+  },
+  {
+   "chunk_id": "6f824b0eb39cb468",
+   "source": "עיבוד תמונה.pdf",
+   "page": 47,
+   "similarity": 0.3935
+  },
+  {
+   "chunk_id": "6fb8333594ef6317",
+   "source": "עיבוד תמונה.pdf",
+   "page": 8,
+   "similarity": 0.3931
+  },
+  {
+   "chunk_id": "f26f7d66de6fd852",
+   "source": "עיבוד תמונה.pdf",
+   "page": 82,
+   "similarity": 0.3905
+  }
+ ],
+ "retrieval_empty": false,
+ "error": null,
+ "retrieval_s": 2.53,
+ "repair_s": 5.5
+}

@@ -1,0 +1,40 @@
+{
+ "item": "hl_e003_q1_r7__l1",
+ "raw_text": "מן שהן מחייבות את מוסד ה DC",
+ "suggested_text": "מן שהן מחייבות את מוסד ה DC",
+ "transcription": "מן שהן מחייבות את מוסד ה DC",
+ "edits": [],
+ "uncertain_regions": [],
+ "semantic_change_risk": false,
+ "needs_review": false,
+ "retrieved": [
+  {
+   "chunk_id": "130539e0a3d80129",
+   "source": "עיבוד תמונה.pdf",
+   "page": 54,
+   "similarity": 0.3798
+  },
+  {
+   "chunk_id": "3df31bf61e8f8040",
+   "source": "עיבוד תמונה.pdf",
+   "page": 81,
+   "similarity": 0.3792
+  },
+  {
+   "chunk_id": "43c2a5ecfc1da4d9",
+   "source": "עיבוד תמונה.pdf",
+   "page": 16,
+   "similarity": 0.3652
+  },
+  {
+   "chunk_id": "036b7b54112cb043",
+   "source": "עיבוד תמונה.pdf",
+   "page": 64,
+   "similarity": 0.3582
+  }
+ ],
+ "retrieval_empty": false,
+ "error": null,
+ "retrieval_s": 2.55,
+ "repair_s": 5.41
+}

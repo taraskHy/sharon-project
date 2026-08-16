@@ -1,0 +1,40 @@
+{
+ "item": "hl_e005_q1_r4__l1",
+ "raw_text": "אם אדם צריך להגיש תלונה",
+ "suggested_text": "אם אדם צריך להגיש תלונה",
+ "transcription": "אם אדם צריך להגיש תלונה",
+ "edits": [],
+ "uncertain_regions": [],
+ "semantic_change_risk": false,
+ "needs_review": false,
+ "retrieved": [
+  {
+   "chunk_id": "37a2ca36df5d57c2",
+   "source": "עיבוד תמונה.pdf",
+   "page": 42,
+   "similarity": 0.4785
+  },
+  {
+   "chunk_id": "6498fd0868671718",
+   "source": "עיבוד תמונה.pdf",
+   "page": 77,
+   "similarity": 0.4762
+  },
+  {
+   "chunk_id": "e6230e3e26df17de",
+   "source": "עיבוד תמונה.pdf",
+   "page": 73,
+   "similarity": 0.4644
+  },
+  {
+   "chunk_id": "ab76ef53b91e7ef6",
+   "source": "עיבוד תמונה.pdf",
+   "page": 101,
+   "similarity": 0.4615
+  }
+ ],
+ "retrieval_empty": false,
+ "error": null,
+ "retrieval_s": 2.53,
+ "repair_s": 4.84
+}

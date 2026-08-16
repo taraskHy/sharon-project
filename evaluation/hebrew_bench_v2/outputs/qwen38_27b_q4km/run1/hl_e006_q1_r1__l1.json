@@ -1,0 +1,15 @@
+{
+ "raw": "{\"transcription\": \"מבוא לתוכנית מחשבים! כל סוגי הנתונים (כמו ריאל, מחרוזת, ...).\"}",
+ "transcription": "מבוא לתוכנית מחשבים! כל סוגי הנתונים (כמו ריאל, מחרוזת, ...).",
+ "error": null,
+ "status": 200,
+ "usage_prompt_tokens": 219,
+ "usage_completion_tokens": 38,
+ "usage_total_tokens": 257,
+ "thinking_chars": 0,
+ "done_reason": "stop",
+ "item": "hl_e006_q1_r1__l1",
+ "category": "handwritten_line",
+ "run": 1,
+ "latency_s": 10.2
+}

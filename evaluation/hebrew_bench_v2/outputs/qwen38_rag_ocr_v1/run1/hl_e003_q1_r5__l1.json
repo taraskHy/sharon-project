@@ -1,0 +1,40 @@
+{
+ "item": "hl_e003_q1_r5__l1",
+ "raw_text": "הישראלי והספרדי בעל אפליקציה X-1000 ניסיון",
+ "suggested_text": "הישראלי והספרדי בעל אפליקציה X-1000 ניסיון",
+ "transcription": "הישראלי והספרדי בעל אפליקציה X-1000 ניסיון",
+ "edits": [],
+ "uncertain_regions": [],
+ "semantic_change_risk": false,
+ "needs_review": false,
+ "retrieved": [
+  {
+   "chunk_id": "48acf9a5d2f4a71d",
+   "source": "עיבוד תמונה.pdf",
+   "page": 110,
+   "similarity": 0.3899
+  },
+  {
+   "chunk_id": "c24bdfdf2b728ee5",
+   "source": "עיבוד תמונה.pdf",
+   "page": 94,
+   "similarity": 0.3811
+  },
+  {
+   "chunk_id": "24c8f00fe9c730fe",
+   "source": "עיבוד תמונה.pdf",
+   "page": 29,
+   "similarity": 0.3809
+  },
+  {
+   "chunk_id": "e5a7c6a1cf77e5b3",
+   "source": "עיבוד תמונה.pdf",
+   "page": 106,
+   "similarity": 0.378
+  }
+ ],
+ "retrieval_empty": false,
+ "error": null,
+ "retrieval_s": 2.52,
+ "repair_s": 5.52
+}

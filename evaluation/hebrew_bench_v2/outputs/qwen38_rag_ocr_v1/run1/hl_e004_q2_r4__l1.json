@@ -1,0 +1,40 @@
+{
+ "item": "hl_e004_q2_r4__l1",
+ "raw_text": "Uniform algo in optimal > [?]",
+ "suggested_text": "Uniform algo in optimal > [?]",
+ "transcription": "Uniform algo in optimal > [?]",
+ "edits": [],
+ "uncertain_regions": [],
+ "semantic_change_risk": false,
+ "needs_review": false,
+ "retrieved": [
+  {
+   "chunk_id": "6bbdc5e368b53f21",
+   "source": "עיבוד תמונה.pdf",
+   "page": 112,
+   "similarity": 0.5411
+  },
+  {
+   "chunk_id": "02dacc0732267f38",
+   "source": "עיבוד תמונה.pdf",
+   "page": 10,
+   "similarity": 0.5107
+  },
+  {
+   "chunk_id": "b1ff802ffd7033a1",
+   "source": "עיבוד תמונה.pdf",
+   "page": 22,
+   "similarity": 0.505
+  },
+  {
+   "chunk_id": "40a371efd3d6123c",
+   "source": "עיבוד תמונה.pdf",
+   "page": 66,
+   "similarity": 0.501
+  }
+ ],
+ "retrieval_empty": false,
+ "error": null,
+ "retrieval_s": 2.53,
+ "repair_s": 4.91
+}

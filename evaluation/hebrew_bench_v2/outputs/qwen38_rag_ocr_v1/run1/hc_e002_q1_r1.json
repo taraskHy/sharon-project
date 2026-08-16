@@ -1,0 +1,40 @@
+{
+ "item": "hc_e002_q1_r1",
+ "raw_text": "העובדה שהמחלה היא לא מחלה נפשית אלא מחלה גנטית",
+ "suggested_text": "העובדה שהמחלה היא לא מחלה נפשית אלא מחלה גנטית",
+ "transcription": "העובדה שהמחלה היא לא מחלה נפשית אלא מחלה גנטית",
+ "edits": [],
+ "uncertain_regions": [],
+ "semantic_change_risk": false,
+ "needs_review": false,
+ "retrieved": [
+  {
+   "chunk_id": "de08e157da939428",
+   "source": "עיבוד תמונה.pdf",
+   "page": 114,
+   "similarity": 0.3967
+  },
+  {
+   "chunk_id": "8bbd7fdd59361b6a",
+   "source": "עיבוד תמונה.pdf",
+   "page": 46,
+   "similarity": 0.3949
+  },
+  {
+   "chunk_id": "103a997506b1a39d",
+   "source": "עיבוד תמונה.pdf",
+   "page": 3,
+   "similarity": 0.3942
+  },
+  {
+   "chunk_id": "e3957aa310784480",
+   "source": "עיבוד תמונה.pdf",
+   "page": 9,
+   "similarity": 0.3937
+  }
+ ],
+ "retrieval_empty": false,
+ "error": null,
+ "retrieval_s": 2.5,
+ "repair_s": 5.33
+}

@@ -1,0 +1,40 @@
+{
+ "item": "hl_e006_q2_r6__l1",
+ "raw_text": "התכנון לא נכון 1,000 ש",
+ "suggested_text": "התכנון לא נכון 1,000 ש",
+ "transcription": "התכנון לא נכון 1,000 ש",
+ "edits": [],
+ "uncertain_regions": [],
+ "semantic_change_risk": false,
+ "needs_review": false,
+ "retrieved": [
+  {
+   "chunk_id": "c9de22371b130c23",
+   "source": "עיבוד תמונה.pdf",
+   "page": 53,
+   "similarity": 0.4578
+  },
+  {
+   "chunk_id": "195497a5c1acf8ae",
+   "source": "עיבוד תמונה.pdf",
+   "page": 23,
+   "similarity": 0.4551
+  },
+  {
+   "chunk_id": "e2030d8d3922b877",
+   "source": "עיבוד תמונה.pdf",
+   "page": 33,
+   "similarity": 0.4534
+  },
+  {
+   "chunk_id": "5c75851dcfe50e4c",
+   "source": "עיבוד תמונה.pdf",
+   "page": 33,
+   "similarity": 0.4516
+  }
+ ],
+ "retrieval_empty": false,
+ "error": null,
+ "retrieval_s": 2.51,
+ "repair_s": 5.42
+}

@@ -1,0 +1,15 @@
+{
+ "raw": "{\"transcription\": \"עדיין לא נקבעו תאריכים\"}",
+ "transcription": "עדיין לא נקבעו תאריכים",
+ "error": null,
+ "status": 200,
+ "usage_prompt_tokens": 193,
+ "usage_completion_tokens": 19,
+ "usage_total_tokens": 212,
+ "thinking_chars": 0,
+ "done_reason": "stop",
+ "item": "hl_e004_q1_r7__l2",
+ "category": "handwritten_line",
+ "run": 1,
+ "latency_s": 6.97
+}

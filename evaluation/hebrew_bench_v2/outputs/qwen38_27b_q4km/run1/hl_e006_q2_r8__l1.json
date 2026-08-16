@@ -1,0 +1,15 @@
+{
+ "raw": "{\"transcription\": \"אין סעיף 2. סעיף 2 הוא לא 2 כל סעיף 2 הוא סעיף 2\"}",
+ "transcription": "אין סעיף 2. סעיף 2 הוא לא 2 כל סעיף 2 הוא סעיף 2",
+ "error": null,
+ "status": 200,
+ "usage_prompt_tokens": 245,
+ "usage_completion_tokens": 36,
+ "usage_total_tokens": 281,
+ "thinking_chars": 0,
+ "done_reason": "stop",
+ "item": "hl_e006_q2_r8__l1",
+ "category": "handwritten_line",
+ "run": 1,
+ "latency_s": 9.97
+}

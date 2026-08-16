@@ -1,0 +1,15 @@
+{
+ "raw": "{\"transcription\": \"סוגה על מודעות לרכיב על קליעה בפרקטיקה על מודעות לרכיב נכנסים לפרקטיקה\"}",
+ "transcription": "סוגה על מודעות לרכיב על קליעה בפרקטיקה על מודעות לרכיב נכנסים לפרקטיקה",
+ "error": null,
+ "status": 200,
+ "usage_prompt_tokens": 301,
+ "usage_completion_tokens": 44,
+ "usage_total_tokens": 345,
+ "thinking_chars": 0,
+ "done_reason": "stop",
+ "item": "hc_e002_q1_r7",
+ "category": "handwritten_cell",
+ "run": 1,
+ "latency_s": 11.81
+}

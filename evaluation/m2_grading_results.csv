@@ -5,3 +5,5 @@ gemini3_flash,qwen3-vl:8b-instruct,12,0.4167,0.5,invalid->invalidx1; invalid->un
 gemini_rag_ocr_v1,qwen3-vl:8b-instruct,12,0.4167,0.5,invalid->invalidx1; invalid->unintelligiblex1; partially_valid->invalidx2; partially_valid->validx1; valid->invalidx1; valid->partially_validx2; valid->validx4
 gemini_protocol_clean_v1,qwen3-vl:8b-instruct,12,0.4167,0.5,invalid->invalidx1; invalid->unintelligiblex1; partially_valid->invalidx2; partially_valid->validx1; valid->invalidx1; valid->partially_validx2; valid->validx4
 qwen_protocol_clean_v1,qwen3-vl:8b-instruct,12,0.0833,0.6667,invalid->invalidx1; invalid->unintelligiblex1; partially_valid->unintelligiblex3; valid->invalidx4; valid->unintelligiblex3
+qwen38_27b_q4km,qwen3-vl:8b-instruct,12,0.1667,0.5833,invalid->invalidx2; partially_valid->invalidx2; partially_valid->unintelligiblex1; valid->invalidx2; valid->partially_validx1; valid->unintelligiblex4
+qwen38_rag_ocr_v1,qwen3-vl:8b-instruct,12,0.1667,0.5,invalid->invalidx2; partially_valid->invalidx2; partially_valid->unintelligiblex1; valid->invalidx3; valid->partially_validx1; valid->unintelligiblex3

@@ -1,0 +1,40 @@
+{
+ "item": "hc_e002_q1_r5",
+ "raw_text": "נראה איבר X סלם הקדמית פרו",
+ "suggested_text": "נראה איבר X סלם הקדמית פרו",
+ "transcription": "נראה איבר X סלם הקדמית פרו",
+ "edits": [],
+ "uncertain_regions": [],
+ "semantic_change_risk": false,
+ "needs_review": false,
+ "retrieved": [
+  {
+   "chunk_id": "1966b4f1bde5ac09",
+   "source": "עיבוד תמונה.pdf",
+   "page": 55,
+   "similarity": 0.5176
+  },
+  {
+   "chunk_id": "adf55e18800104e4",
+   "source": "עיבוד תמונה.pdf",
+   "page": 54,
+   "similarity": 0.4999
+  },
+  {
+   "chunk_id": "bfc5027b9b4b059c",
+   "source": "עיבוד תמונה.pdf",
+   "page": 55,
+   "similarity": 0.4826
+  },
+  {
+   "chunk_id": "5f48b37118ae4efd",
+   "source": "עיבוד תמונה.pdf",
+   "page": 50,
+   "similarity": 0.4798
+  }
+ ],
+ "retrieval_empty": false,
+ "error": "JSONDecodeError: Unterminated string starting at: line 7 column 17 (char 134)",
+ "retrieval_s": 2.53,
+ "repair_s": 41.12
+}

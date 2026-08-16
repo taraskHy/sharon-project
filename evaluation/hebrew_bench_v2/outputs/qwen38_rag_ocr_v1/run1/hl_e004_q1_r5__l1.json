@@ -1,0 +1,65 @@
+{
+ "item": "hl_e004_q1_r5__l1",
+ "raw_text": "א' 9911, 206016, WAVELETS 3\nx 9'3 (8'99)",
+ "suggested_text": "א' 9911, 206016, WAVELETS 3\nx 9'3 (8'99)",
+ "transcription": "א' 9911, 206016, WAVELETS 3\nx 9'3 (8'99)",
+ "edits": [
+  {
+   "raw": "9911",
+   "suggested": "9911",
+   "reason": "No plausible OCR corruption detected; likely correct as-is (possibly exam ID or section number).",
+   "risk": "low"
+  },
+  {
+   "raw": "206016",
+   "suggested": "206016",
+   "reason": "No plausible OCR corruption detected; likely correct as-is (possibly student ID or exam code).",
+   "risk": "low"
+  },
+  {
+   "raw": "WAVELETS 3",
+   "suggested": "WAVELETS 3",
+   "reason": "No plausible OCR corruption detected; likely correct as-is (course topic or question identifier).",
+   "risk": "low"
+  },
+  {
+   "raw": "x 9'3 (8'99)",
+   "suggested": "x 9'3 (8'99)",
+   "reason": "Unclear if '9'3' is meant to be '9.3' or '93', but preserving as-is since it may be a handwritten notation (e.g., 'x 9.3 (8.99)' or similar). No strong evidence to correct.",
+   "risk": "low"
+  }
+ ],
+ "uncertain_regions": [],
+ "semantic_change_risk": false,
+ "needs_review": false,
+ "retrieved": [
+  {
+   "chunk_id": "d79f374ac1c27f69",
+   "source": "עיבוד תמונה.pdf",
+   "page": 88,
+   "similarity": 0.4948
+  },
+  {
+   "chunk_id": "f94ee445be83184b",
+   "source": "עיבוד תמונה.pdf",
+   "page": 86,
+   "similarity": 0.4923
+  },
+  {
+   "chunk_id": "078505a74f4f18be",
+   "source": "עיבוד תמונה.pdf",
+   "page": 86,
+   "similarity": 0.4857
+  },
+  {
+   "chunk_id": "d34447731e13b78a",
+   "source": "עיבוד תמונה.pdf",
+   "page": 85,
+   "similarity": 0.4757
+  }
+ ],
+ "retrieval_empty": false,
+ "error": null,
+ "retrieval_s": 2.52,
+ "repair_s": 15.14
+}

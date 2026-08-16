@@ -1,0 +1,175 @@
+﻿2026-08-16 12:41:17 launcher start (pid 33944)
+2026-08-16 12:41:17 smoke-5 (canonical): hl_e004_q1_r3__l1,hl_e005_q1_r2__l1,hl_e003_q1_r1__l1,hl_e006_q1_r3__l1,hc_e002_q1_r2
+2026-08-16 12:41:17 ollama: ollama version is 0.32.13
+2026-08-16 12:41:17 model: qwen3.8:27b-q4_K_M           25b843619e94    17 GB     7 hours ago    
+2026-08-16 12:41:17 Traceback (most recent call last):
+2026-08-16 12:41:17   File "C:\Users\ethan\PycharmProjects\sharon-project\scripts\m2_bench_run.py", line 590, in <module>
+2026-08-16 12:41:17     sys.exit(main())
+2026-08-16 12:41:17              ^^^^^^
+2026-08-16 12:41:17   File "C:\Users\ethan\PycharmProjects\sharon-project\scripts\m2_bench_run.py", line 481, in main
+2026-08-16 12:41:17     "extra_body": json.loads(args.extra_body) if args.extra_body else None,
+2026-08-16 12:41:18                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-08-16 12:41:18   File "C:\Users\ethan\AppData\Local\Programs\Python\Python312\Lib\json\__init__.py", line 346, in loads
+2026-08-16 12:41:18     return _default_decoder.decode(s)
+2026-08-16 12:41:18            ^^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-08-16 12:41:18   File "C:\Users\ethan\AppData\Local\Programs\Python\Python312\Lib\json\decoder.py", line 338, in decode
+2026-08-16 12:41:18     obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+2026-08-16 12:41:18                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-08-16 12:41:18   File "C:\Users\ethan\AppData\Local\Programs\Python\Python312\Lib\json\decoder.py", line 354, in raw_decode
+2026-08-16 12:41:18     obj, end = self.scan_once(s, idx)
+2026-08-16 12:41:18                ^^^^^^^^^^^^^^^^^^^^^^
+2026-08-16 12:41:18 json.decoder.JSONDecodeError: Expecting property name enclosed in double quotes: line 1 column 2 (char 1)
+2026-08-16 12:41:18 smoke exit code: 1
+2026-08-16 12:41:18 smoke technical gate: ok=0 err=5 empty=0
+2026-08-16 12:41:18 ollama ps: 
+2026-08-16 12:41:18 SMOKE GATE FAILED - stopping before the full run (genuine technical failure).
+2026-08-16 12:42:45 launcher start (pid 18400)
+2026-08-16 12:42:45 smoke-5 (canonical): hl_e004_q1_r3__l1,hl_e005_q1_r2__l1,hl_e003_q1_r1__l1,hl_e006_q1_r3__l1,hc_e002_q1_r2
+2026-08-16 12:42:45 ollama: ollama version is 0.32.13
+2026-08-16 12:42:45 model: qwen3.8:27b-q4_K_M           25b843619e94    17 GB     7 hours ago    
+2026-08-16 12:42:46 warning: The `fitz` API is deprecated and will be removed in future. Use `import pymupdf` instead.
+2026-08-16 12:52:33 launcher start (pid 32440)
+2026-08-16 12:52:33 smoke-5 (canonical): hl_e004_q1_r3__l1,hl_e005_q1_r2__l1,hl_e003_q1_r1__l1,hl_e006_q1_r3__l1,hc_e002_q1_r2
+2026-08-16 12:52:33 ollama: ollama version is 0.32.13
+2026-08-16 12:52:33 model: qwen3.8:27b-q4_K_M           25b843619e94    17 GB     8 hours ago    
+2026-08-16 12:52:34 warning: The `fitz` API is deprecated and will be removed in future. Use `import pymupdf` instead.
+2026-08-16 12:53:17 [qwen38_27b_q4km run1] hl_e003_q1_r1__l1: 12.8s tok=311
+2026-08-16 12:53:17 [qwen38_27b_q4km run1] hl_e004_q1_r3__l1: 7.2s tok=242
+2026-08-16 12:53:17 [qwen38_27b_q4km run1] hl_e005_q1_r2__l1: 7.1s tok=214
+2026-08-16 12:53:17 [qwen38_27b_q4km run1] hl_e006_q1_r3__l1: 8.3s tok=246
+2026-08-16 12:53:17 [qwen38_27b_q4km run1] hc_e002_q1_r2: 7.9s tok=300
+2026-08-16 12:53:17 done: 5 calls in 43.6s
+2026-08-16 12:53:17 smoke exit code: 0
+2026-08-16 12:53:17 smoke technical gate: ok=5 err=0 empty=0
+2026-08-16 12:53:18 ollama ps: qwen3.8:27b-q4_K_M    25b843619e94    17 GB    27%/73% CPU/GPU    8192       4 minutes from now    
+2026-08-16 12:53:18 SMOKE GATE PASSED - continuing through the full 129-item frozen benchmark.
+2026-08-16 12:53:18 warning: The `fitz` API is deprecated and will be removed in future. Use `import pymupdf` instead.
+2026-08-16 13:20:40 [qwen38_27b_q4km run1] hl_e003_q1_r2__l2: 15.2s tok=321
+2026-08-16 13:20:40 [qwen38_27b_q4km run1] hl_e003_q1_r3__l1: 12.3s tok=318
+2026-08-16 13:20:40 [qwen38_27b_q4km run1] hl_e003_q1_r4__l1: 9.5s tok=275
+2026-08-16 13:20:40 [qwen38_27b_q4km run1] hl_e003_q1_r5__l1: 10.6s tok=305
+2026-08-16 13:20:40 [qwen38_27b_q4km run1] hl_e003_q1_r6__l1: 7.0s tok=315
+2026-08-16 13:20:40 [qwen38_27b_q4km run1] hl_e003_q1_r7__l1: 6.9s tok=316
+2026-08-16 13:20:40 [qwen38_27b_q4km run1] hl_e003_q1_r8__l1: 9.9s tok=306
+2026-08-16 13:20:40 [qwen38_27b_q4km run1] hl_e003_q2_r1__l1: 7.8s tok=295
+2026-08-16 13:20:40 [qwen38_27b_q4km run1] hl_e003_q2_r2__l1: 7.3s tok=293
+2026-08-16 13:20:40 [qwen38_27b_q4km run1] hl_e003_q2_r3__l1: 10.9s tok=312
+2026-08-16 13:20:40 [qwen38_27b_q4km run1] hl_e003_q2_r4__l1: 8.6s tok=272
+2026-08-16 13:20:40 [qwen38_27b_q4km run1] hl_e003_q2_r5__l1: 9.9s tok=331
+2026-08-16 13:20:40 [qwen38_27b_q4km run1] hl_e003_q2_r6__l1: 12.0s tok=342
+2026-08-16 13:20:40 [qwen38_27b_q4km run1] hl_e003_q2_r7__l1: 11.3s tok=315
+2026-08-16 13:20:40 [qwen38_27b_q4km run1] hl_e003_q2_r8__l1: 12.9s tok=323
+2026-08-16 13:20:40 [qwen38_27b_q4km run1] hl_e004_q1_r1__l1: 5.7s tok=234
+2026-08-16 13:20:40 [qwen38_27b_q4km run1] hl_e004_q1_r2__l1: 6.3s tok=237
+2026-08-16 13:20:40 [qwen38_27b_q4km run1] hl_e004_q1_r3__l2: 7.8s tok=245
+2026-08-16 13:20:40 [qwen38_27b_q4km run1] hl_e004_q1_r4__l1: 4.8s tok=255
+2026-08-16 13:20:40 [qwen38_27b_q4km run1] hl_e004_q1_r5__l1: 10.9s tok=286
+2026-08-16 13:20:40 [qwen38_27b_q4km run1] hl_e004_q1_r6__l1: 7.1s tok=212
+2026-08-16 13:20:40 [qwen38_27b_q4km run1] hl_e004_q1_r6__l2: 6.8s tok=211
+2026-08-16 13:20:40 [qwen38_27b_q4km run1] hl_e004_q1_r7__l2: 7.0s tok=212
+2026-08-16 13:20:40 [qwen38_27b_q4km run1] hl_e004_q1_r8__l1: 6.8s tok=240
+2026-08-16 13:20:40 [qwen38_27b_q4km run1] hl_e004_q2_r1__l1: 7.9s tok=245
+2026-08-16 13:20:40 [qwen38_27b_q4km run1] hl_e004_q2_r1__l2: 5.9s tok=235
+2026-08-16 13:20:40 [qwen38_27b_q4km run1] hl_e004_q2_r2__l1: 7.5s tok=269
+2026-08-16 13:20:40 [qwen38_27b_q4km run1] hl_e004_q2_r3__l1: 8.9s tok=222
+2026-08-16 13:20:40 [qwen38_27b_q4km run1] hl_e004_q2_r4__l1: 5.8s tok=207
+2026-08-16 13:20:40 [qwen38_27b_q4km run1] hl_e004_q2_r4__l2: 7.9s tok=245
+2026-08-16 13:20:40 [qwen38_27b_q4km run1] hl_e004_q2_r5__l1: 7.7s tok=244
+2026-08-16 13:20:40 [qwen38_27b_q4km run1] hl_e004_q2_r5__l2: 5.2s tok=203
+2026-08-16 13:20:40 [qwen38_27b_q4km run1] hl_e004_q2_r6__l1: 7.4s tok=213
+2026-08-16 13:20:40 [qwen38_27b_q4km run1] hl_e004_q2_r6__l2: 13.3s tok=297
+2026-08-16 13:20:40 [qwen38_27b_q4km run1] hl_e004_q2_r7__l2: 9.2s tok=303
+2026-08-16 13:20:40 [qwen38_27b_q4km run1] hl_e004_q2_r8__l1: 7.1s tok=240
+2026-08-16 13:20:40 [qwen38_27b_q4km run1] hl_e004_q2_r8__l2: 8.0s tok=218
+2026-08-16 13:20:40 [qwen38_27b_q4km run1] hl_e005_q1_r1__l1: 8.9s tok=250
+2026-08-16 13:20:40 [qwen38_27b_q4km run1] hl_e005_q1_r1__l2: 7.8s tok=218
+2026-08-16 13:20:40 [qwen38_27b_q4km run1] hl_e005_q1_r2__l2: 98.5s tok=719
+2026-08-16 13:20:40 [qwen38_27b_q4km run1] hl_e005_q1_r3__l2: 7.4s tok=215
+2026-08-16 13:20:40 [qwen38_27b_q4km run1] hl_e005_q1_r3__l3: 10.2s tok=230
+2026-08-16 13:20:40 [qwen38_27b_q4km run1] hl_e005_q1_r4__l1: 6.7s tok=212
+2026-08-16 13:20:40 [qwen38_27b_q4km run1] hl_e005_q1_r4__l2: 8.7s tok=250
+2026-08-16 13:20:40 [qwen38_27b_q4km run1] hl_e005_q1_r5__l2: 7.2s tok=215
+2026-08-16 13:20:40 [qwen38_27b_q4km run1] hl_e005_q1_r5__l3: 5.2s tok=231
+2026-08-16 13:20:40 [qwen38_27b_q4km run1] hl_e005_q1_r6__l1: 9.9s tok=229
+2026-08-16 13:20:40 [qwen38_27b_q4km run1] hl_e005_q1_r6__l2: 99.8s tok=693
+2026-08-16 13:20:40 [qwen38_27b_q4km run1] hl_e005_q1_r7__l1: 6.0s tok=236
+2026-08-16 13:20:40 [qwen38_27b_q4km run1] hl_e005_q1_r7__l2: 9.2s tok=225
+2026-08-16 13:20:40 [qwen38_27b_q4km run1] hl_e005_q1_r8__l2: 99.6s tok=719
+2026-08-16 13:20:40 [qwen38_27b_q4km run1] hl_e005_q1_r8__l3: 9.5s tok=226
+2026-08-16 13:20:40 [qwen38_27b_q4km run1] hl_e005_q2_r1__l1: 7.6s tok=244
+2026-08-16 13:20:40 [qwen38_27b_q4km run1] hl_e005_q2_r1__l2: 9.4s tok=253
+2026-08-16 13:20:40 [qwen38_27b_q4km run1] hl_e005_q2_r2__l2: 8.0s tok=246
+2026-08-16 13:20:40 [qwen38_27b_q4km run1] hl_e005_q2_r2__l3: 8.2s tok=273
+2026-08-16 13:20:40 [qwen38_27b_q4km run1] hl_e005_q2_r3__l2: 9.9s tok=256
+2026-08-16 13:20:40 [qwen38_27b_q4km run1] hl_e005_q2_r4__l2: 10.2s tok=230
+2026-08-16 13:20:40 [qwen38_27b_q4km run1] hl_e005_q2_r4__l3: 11.0s tok=262
+2026-08-16 13:20:40 [qwen38_27b_q4km run1] hl_e005_q2_r5__l2: 8.6s tok=222
+2026-08-16 13:20:40 [qwen38_27b_q4km run1] hl_e005_q2_r5__l3: 8.9s tok=251
+2026-08-16 13:20:40 [qwen38_27b_q4km run1] hl_e005_q2_r6__l2: 5.4s tok=284
+2026-08-16 13:20:40 [qwen38_27b_q4km run1] hl_e005_q2_r7__l2: 10.2s tok=230
+2026-08-16 13:20:40 [qwen38_27b_q4km run1] hl_e005_q2_r7__l3: 8.9s tok=251
+2026-08-16 13:20:40 [qwen38_27b_q4km run1] hl_e005_q2_r8__l1: 9.3s tok=224
+2026-08-16 13:20:41 [qwen38_27b_q4km run1] hl_e005_q2_r8__l2: 9.2s tok=251
+2026-08-16 13:20:41 [qwen38_27b_q4km run1] hl_e006_q1_r1__l1: 10.2s tok=257
+2026-08-16 13:20:41 [qwen38_27b_q4km run1] hl_e006_q1_r2__l1: 6.6s tok=239
+2026-08-16 13:20:41 [qwen38_27b_q4km run1] hl_e006_q1_r4__l1: 9.9s tok=256
+2026-08-16 13:20:41 [qwen38_27b_q4km run1] hl_e006_q1_r5__l1: 7.4s tok=215
+2026-08-16 13:20:41 [qwen38_27b_q4km run1] hl_e006_q1_r6__l1: 10.0s tok=227
+2026-08-16 13:20:41 [qwen38_27b_q4km run1] hl_e006_q1_r7__l1: 8.5s tok=242
+2026-08-16 13:20:41 [qwen38_27b_q4km run1] hl_e006_q1_r8__l1: 14.0s tok=325
+2026-08-16 13:20:41 [qwen38_27b_q4km run1] hl_e006_q2_r1__l1: 5.3s tok=282
+2026-08-16 13:20:41 [qwen38_27b_q4km run1] hl_e006_q2_r3__l1: 18.3s tok=323
+2026-08-16 13:20:41 [qwen38_27b_q4km run1] hl_e006_q2_r4__l1: 104.5s tok=771
+2026-08-16 13:20:41 [qwen38_27b_q4km run1] hl_e006_q2_r5__l2: 5.1s tok=203
+2026-08-16 13:20:41 [qwen38_27b_q4km run1] hl_e006_q2_r6__l1: 7.6s tok=243
+2026-08-16 13:20:41 [qwen38_27b_q4km run1] hl_e006_q2_r7__l1: 65.9s tok=543
+2026-08-16 13:20:41 [qwen38_27b_q4km run1] hl_e006_q2_r7__l2: 8.3s tok=247
+2026-08-16 13:20:41 [qwen38_27b_q4km run1] hl_e006_q2_r8__l1: 10.0s tok=281
+2026-08-16 13:20:41 [qwen38_27b_q4km run1] hl_e007_q1_r1__l1: 12.5s tok=269
+2026-08-16 13:20:41 [qwen38_27b_q4km run1] hc_e002_q1_r1: 8.7s tok=330
+2026-08-16 13:20:41 [qwen38_27b_q4km run1] hc_e002_q1_r3: 8.9s tok=331
+2026-08-16 13:20:41 [qwen38_27b_q4km run1] hc_e002_q1_r4: 6.4s tok=318
+2026-08-16 13:20:41 [qwen38_27b_q4km run1] hc_e002_q1_r5: 7.1s tok=296
+2026-08-16 13:20:41 [qwen38_27b_q4km run1] hc_e002_q1_r6: 7.4s tok=298
+2026-08-16 13:20:41 [qwen38_27b_q4km run1] hc_e002_q1_r7: 11.8s tok=345
+2026-08-16 13:20:41 [qwen38_27b_q4km run1] hc_e002_q1_r8: 14.3s tok=359
+2026-08-16 13:20:41 [qwen38_27b_q4km run1] hc_e002_q2_r1: 11.1s tok=340
+2026-08-16 13:20:41 [qwen38_27b_q4km run1] hc_e002_q2_r2: 7.6s tok=299
+2026-08-16 13:20:41 [qwen38_27b_q4km run1] hc_e002_q2_r3: 9.0s tok=306
+2026-08-16 13:20:41 [qwen38_27b_q4km run1] hc_e002_q2_r4: 100.6s tok=801
+2026-08-16 13:20:41 [qwen38_27b_q4km run1] hc_e002_q2_r5: 9.5s tok=308
+2026-08-16 13:20:41 [qwen38_27b_q4km run1] hc_e002_q2_r6: 12.7s tok=351
+2026-08-16 13:20:41 [qwen38_27b_q4km run1] hc_e002_q2_r7: 7.8s tok=325
+2026-08-16 13:20:41 [qwen38_27b_q4km run1] hc_e002_q2_r8: 10.7s tok=340
+2026-08-16 13:20:41 [qwen38_27b_q4km run1] pr_docA_p1_b0: 6.5s tok=255
+2026-08-16 13:20:41 [qwen38_27b_q4km run1] pr_docA_p1_b1: 7.6s tok=342
+2026-08-16 13:20:41 [qwen38_27b_q4km run1] pr_docA_p1_b2: 11.3s tok=349
+2026-08-16 13:20:41 [qwen38_27b_q4km run1] pr_docA_p2_b0: 7.3s tok=259
+2026-08-16 13:20:41 [qwen38_27b_q4km run1] pr_docA_p2_b1: 6.0s tok=234
+2026-08-16 13:20:41 [qwen38_27b_q4km run1] pr_docA_p2_b3: 12.7s tok=267
+2026-08-16 13:20:41 [qwen38_27b_q4km run1] pr_docA_p2_b4: 10.4s tok=227
+2026-08-16 13:20:41 [qwen38_27b_q4km run1] pr_docA_p3_b0: 12.0s tok=260
+2026-08-16 13:20:41 [qwen38_27b_q4km run1] pr_docA_p3_b3: 19.6s tok=294
+2026-08-16 13:20:41 [qwen38_27b_q4km run1] pr_docA_p3_b6: 9.7s tok=252
+2026-08-16 13:20:41 [qwen38_27b_q4km run1] pr_docA_p3_b8: 11.0s tok=231
+2026-08-16 13:20:41 [qwen38_27b_q4km run1] pr_docA_p3_b9: 10.8s tok=230
+2026-08-16 13:20:41 [qwen38_27b_q4km run1] pr_docA_p4_b0: 6.1s tok=226
+2026-08-16 13:20:41 [qwen38_27b_q4km run1] pr_docA_p5_b0: 7.2s tok=259
+2026-08-16 13:20:41 [qwen38_27b_q4km run1] pr_docA_p5_b8: 7.1s tok=249
+2026-08-16 13:20:41 [qwen38_27b_q4km run1] pr_docA_p5_b9: 10.7s tok=230
+2026-08-16 13:20:41 [qwen38_27b_q4km run1] pr_docA_p6_b1: 11.5s tok=233
+2026-08-16 13:20:41 [qwen38_27b_q4km run1] pr_docA_p6_b9: 9.0s tok=290
+2026-08-16 13:20:41 [qwen38_27b_q4km run1] pr_docA_p8_b0: 7.1s tok=260
+2026-08-16 13:20:41 [qwen38_27b_q4km run1] pr_docB_p1_b1: 13.7s tok=312
+2026-08-16 13:20:41 [qwen38_27b_q4km run1] pr_docB_p2_b7: 10.1s tok=228
+2026-08-16 13:20:41 [qwen38_27b_q4km run1] pr_docB_p2_b14: 10.0s tok=227
+2026-08-16 13:20:41 [qwen38_27b_q4km run1] assoc_docB_p2_b1: 10.1s tok=176
+2026-08-16 13:20:41 [qwen38_27b_q4km run1] assoc_docB_p2_b3: 10.8s tok=180
+2026-08-16 13:20:41 [qwen38_27b_q4km run1] assoc_docB_p2_b5: 9.2s tok=172
+2026-08-16 13:20:41 [qwen38_27b_q4km run1] assoc_docB_p2_b7: 9.0s tok=171
+2026-08-16 13:20:41 [qwen38_27b_q4km run1] assoc_docB_p2_b12: 10.0s tok=176
+2026-08-16 13:20:41 done: 124 calls in 1642.0s
+2026-08-16 13:20:41 full run exit code: 0
+2026-08-16 13:20:41 final ollama ps: qwen3.8:27b-q4_K_M    25b843619e94    17 GB    27%/73% CPU/GPU    8192       4 minutes from now    
+2026-08-16 13:20:41 persisted records: 129/129
+2026-08-16 13:20:41 DONE - score with: C:\Users\ethan\PycharmProjects\sharon-project\.venv\Scripts\python.exe scripts\m2_bench_eval.py qwen38_27b_q4km

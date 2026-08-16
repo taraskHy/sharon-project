@@ -1,0 +1,15 @@
+{
+ "raw": "{\"transcription\": \"אני לא יודע מה אני עושה כאן\"}",
+ "transcription": "אני לא יודע מה אני עושה כאן",
+ "error": null,
+ "status": 200,
+ "usage_prompt_tokens": 219,
+ "usage_completion_tokens": 20,
+ "usage_total_tokens": 239,
+ "thinking_chars": 0,
+ "done_reason": "stop",
+ "item": "hl_e006_q1_r2__l1",
+ "category": "handwritten_line",
+ "run": 1,
+ "latency_s": 6.59
+}

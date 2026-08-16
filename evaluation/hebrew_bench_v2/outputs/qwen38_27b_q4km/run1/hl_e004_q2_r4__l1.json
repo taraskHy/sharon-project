@@ -1,0 +1,15 @@
+{
+ "raw": "{\"transcription\": \"Uniform algo in optimal > [?]\"}",
+ "transcription": "Uniform algo in optimal > [?]",
+ "error": null,
+ "status": 200,
+ "usage_prompt_tokens": 193,
+ "usage_completion_tokens": 14,
+ "usage_total_tokens": 207,
+ "thinking_chars": 0,
+ "done_reason": "stop",
+ "item": "hl_e004_q2_r4__l1",
+ "category": "handwritten_line",
+ "run": 1,
+ "latency_s": 5.83
+}

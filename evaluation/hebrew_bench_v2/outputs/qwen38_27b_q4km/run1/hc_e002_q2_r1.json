@@ -1,0 +1,15 @@
+{
+ "raw": "{\"transcription\": \"נו יעד סגירה 255/120. אפילו ( פילי, סגירה ילכה ע\" }",
+ "transcription": "נו יעד סגירה 255/120. אפילו ( פילי, סגירה ילכה ע",
+ "error": null,
+ "status": 200,
+ "usage_prompt_tokens": 301,
+ "usage_completion_tokens": 39,
+ "usage_total_tokens": 340,
+ "thinking_chars": 0,
+ "done_reason": "stop",
+ "item": "hc_e002_q2_r1",
+ "category": "handwritten_cell",
+ "run": 1,
+ "latency_s": 11.06
+}

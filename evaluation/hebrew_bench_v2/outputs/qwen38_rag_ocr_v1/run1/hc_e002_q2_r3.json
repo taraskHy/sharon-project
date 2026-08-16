@@ -1,0 +1,40 @@
+{
+ "item": "hc_e002_q2_r3",
+ "raw_text": "עשה איחודים עם איחודים (אנ) אקליד עם אקליד",
+ "suggested_text": "עשה איחודים עם איחודים (אנ) אקליד עם אקליד",
+ "transcription": "עשה איחודים עם איחודים (אנ) אקליד עם אקליד",
+ "edits": [],
+ "uncertain_regions": [],
+ "semantic_change_risk": false,
+ "needs_review": false,
+ "retrieved": [
+  {
+   "chunk_id": "0d8ea3ca8347936c",
+   "source": "עיבוד תמונה.pdf",
+   "page": 52,
+   "similarity": 0.4467
+  },
+  {
+   "chunk_id": "1d1361f5d7301689",
+   "source": "עיבוד תמונה.pdf",
+   "page": 99,
+   "similarity": 0.4451
+  },
+  {
+   "chunk_id": "5c75851dcfe50e4c",
+   "source": "עיבוד תמונה.pdf",
+   "page": 33,
+   "similarity": 0.4393
+  },
+  {
+   "chunk_id": "de1ce3a5a89a703d",
+   "source": "עיבוד תמונה.pdf",
+   "page": 51,
+   "similarity": 0.4249
+  }
+ ],
+ "retrieval_empty": false,
+ "error": null,
+ "retrieval_s": 2.5,
+ "repair_s": 5.39
+}

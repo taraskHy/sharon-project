@@ -1,0 +1,40 @@
+{
+ "item": "hc_e002_q1_r7",
+ "raw_text": "סוגה על מודעות לרכיב על קליעה בפרקטיקה על מודעות לרכיב נכנסים לפרקטיקה",
+ "suggested_text": "סוגה על מודעות לרכיב על קליעה בפרקטיקה על מודעות לרכיב נכנסים לפרקטיקה",
+ "transcription": "סוגה על מודעות לרכיב על קליעה בפרקטיקה על מודעות לרכיב נכנסים לפרקטיקה",
+ "edits": [],
+ "uncertain_regions": [],
+ "semantic_change_risk": false,
+ "needs_review": false,
+ "retrieved": [
+  {
+   "chunk_id": "3f1f38be8e1481e8",
+   "source": "עיבוד תמונה.pdf",
+   "page": 74,
+   "similarity": 0.4517
+  },
+  {
+   "chunk_id": "b5ef2382aa401de7",
+   "source": "עיבוד תמונה.pdf",
+   "page": 98,
+   "similarity": 0.4483
+  },
+  {
+   "chunk_id": "6fb8333594ef6317",
+   "source": "עיבוד תמונה.pdf",
+   "page": 8,
+   "similarity": 0.4216
+  },
+  {
+   "chunk_id": "5f58f03ec2d3aa2c",
+   "source": "עיבוד תמונה.pdf",
+   "page": 16,
+   "similarity": 0.4184
+  }
+ ],
+ "retrieval_empty": false,
+ "error": null,
+ "retrieval_s": 2.53,
+ "repair_s": 5.62
+}

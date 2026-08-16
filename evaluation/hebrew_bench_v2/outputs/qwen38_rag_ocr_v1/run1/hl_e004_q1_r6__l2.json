@@ -1,0 +1,40 @@
+{
+ "item": "hl_e004_q1_r6__l2",
+ "raw_text": "C = 2 sin(3π/2)",
+ "suggested_text": "C = 2 sin(3π/2)",
+ "transcription": "C = 2 sin(3π/2)",
+ "edits": [],
+ "uncertain_regions": [],
+ "semantic_change_risk": false,
+ "needs_review": false,
+ "retrieved": [
+  {
+   "chunk_id": "511c3870b35fefa6",
+   "source": "עיבוד תמונה.pdf",
+   "page": 70,
+   "similarity": 0.4783
+  },
+  {
+   "chunk_id": "b8d47c1331cc7e08",
+   "source": "עיבוד תמונה.pdf",
+   "page": 43,
+   "similarity": 0.4649
+  },
+  {
+   "chunk_id": "bdddefff04d79d09",
+   "source": "עיבוד תמונה.pdf",
+   "page": 57,
+   "similarity": 0.4536
+  },
+  {
+   "chunk_id": "4ca9b9709e7fc06a",
+   "source": "עיבוד תמונה.pdf",
+   "page": 60,
+   "similarity": 0.4476
+  }
+ ],
+ "retrieval_empty": false,
+ "error": null,
+ "retrieval_s": 2.52,
+ "repair_s": 5.27
+}

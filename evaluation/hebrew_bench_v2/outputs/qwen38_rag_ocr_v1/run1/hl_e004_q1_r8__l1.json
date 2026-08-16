@@ -1,0 +1,40 @@
+{
+ "item": "hl_e004_q1_r8__l1",
+ "raw_text": "מעשה כי פעם סד' סד' סד'}",
+ "suggested_text": "מעשה כי פעם סד' סד' סד'}",
+ "transcription": "מעשה כי פעם סד' סד' סד'}",
+ "edits": [],
+ "uncertain_regions": [],
+ "semantic_change_risk": false,
+ "needs_review": false,
+ "retrieved": [
+  {
+   "chunk_id": "baf8865fbca7aeb6",
+   "source": "עיבוד תמונה.pdf",
+   "page": 43,
+   "similarity": 0.4281
+  },
+  {
+   "chunk_id": "c0ded09ee7da6947",
+   "source": "עיבוד תמונה.pdf",
+   "page": 118,
+   "similarity": 0.4268
+  },
+  {
+   "chunk_id": "76e741805dd763ab",
+   "source": "עיבוד תמונה.pdf",
+   "page": 39,
+   "similarity": 0.4231
+  },
+  {
+   "chunk_id": "3f1f38be8e1481e8",
+   "source": "עיבוד תמונה.pdf",
+   "page": 74,
+   "similarity": 0.4193
+  }
+ ],
+ "retrieval_empty": false,
+ "error": null,
+ "retrieval_s": 2.59,
+ "repair_s": 5.33
+}

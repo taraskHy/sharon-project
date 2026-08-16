@@ -1,0 +1,15 @@
+{
+ "raw": "{\"transcription\": \"שם המרצה: פרופי חגית הל-אור. שם המתרגל: מר' נעמאן קובטי\"}",
+ "transcription": "שם המרצה: פרופי חגית הל-אור. שם המתרגל: מר' נעמאן קובטי",
+ "error": null,
+ "status": 200,
+ "usage_prompt_tokens": 308,
+ "usage_completion_tokens": 41,
+ "usage_total_tokens": 349,
+ "thinking_chars": 0,
+ "done_reason": "stop",
+ "item": "pr_docA_p1_b2",
+ "category": "printed_rtl",
+ "run": 1,
+ "latency_s": 11.31
+}

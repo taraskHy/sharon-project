@@ -1,0 +1,40 @@
+{
+ "item": "hc_e002_q2_r8",
+ "raw_text": "אין קשר סך הכל אחריותיך וקבלת X אין קשר סך הכל אחריותיך וקבלת",
+ "suggested_text": "אין קשר סך הכל אחריותיך וקבלת X אין קשר סך הכל אחריותיך וקבלת",
+ "transcription": "אין קשר סך הכל אחריותיך וקבלת X אין קשר סך הכל אחריותיך וקבלת",
+ "edits": [],
+ "uncertain_regions": [],
+ "semantic_change_risk": false,
+ "needs_review": false,
+ "retrieved": [
+  {
+   "chunk_id": "ab76ef53b91e7ef6",
+   "source": "עיבוד תמונה.pdf",
+   "page": 101,
+   "similarity": 0.4114
+  },
+  {
+   "chunk_id": "1044f74016bcc0e3",
+   "source": "עיבוד תמונה.pdf",
+   "page": 90,
+   "similarity": 0.4101
+  },
+  {
+   "chunk_id": "2e43c92a8b6dff51",
+   "source": "עיבוד תמונה.pdf",
+   "page": 100,
+   "similarity": 0.4043
+  },
+  {
+   "chunk_id": "0a029e1bb12c3de7",
+   "source": "עיבוד תמונה.pdf",
+   "page": 42,
+   "similarity": 0.4024
+  }
+ ],
+ "retrieval_empty": false,
+ "error": null,
+ "retrieval_s": 2.52,
+ "repair_s": 5.59
+}

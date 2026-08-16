@@ -1,0 +1,40 @@
+{
+ "item": "hc_e002_q2_r2",
+ "raw_text": "אני לא יודע מה אני רוצה לעשות עם החיים שלי",
+ "suggested_text": "אני לא יודע מה אני רוצה לעשות עם החיים שלי",
+ "transcription": "אני לא יודע מה אני רוצה לעשות עם החיים שלי",
+ "edits": [],
+ "uncertain_regions": [],
+ "semantic_change_risk": false,
+ "needs_review": false,
+ "retrieved": [
+  {
+   "chunk_id": "13e611c6334e1f92",
+   "source": "עיבוד תמונה.pdf",
+   "page": 116,
+   "similarity": 0.4202
+  },
+  {
+   "chunk_id": "e89829841faa555b",
+   "source": "עיבוד תמונה.pdf",
+   "page": 26,
+   "similarity": 0.4133
+  },
+  {
+   "chunk_id": "dc86280efd3fa1a7",
+   "source": "עיבוד תמונה.pdf",
+   "page": 109,
+   "similarity": 0.4101
+  },
+  {
+   "chunk_id": "5825325f13db8435",
+   "source": "עיבוד תמונה.pdf",
+   "page": 8,
+   "similarity": 0.4007
+  }
+ ],
+ "retrieval_empty": false,
+ "error": null,
+ "retrieval_s": 2.56,
+ "repair_s": 5.12
+}

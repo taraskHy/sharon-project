@@ -1,0 +1,17 @@
+{
+ "config_id": "qwen38_rag_ocr_v1",
+ "course": "CV",
+ "course_config_hash": "d563bfc2e895d71b",
+ "source_config": "qwen38_27b_q4km",
+ "top_k": 4,
+ "repair_model": "qwen3-vl:8b-instruct",
+ "embed_model": "bge-m3",
+ "question_context_file": null,
+ "question_context_sha256": null,
+ "prompt_sha256": "03b6a268cbea8381",
+ "decoding": {
+  "temperature": 0,
+  "max_tokens": 1200
+ },
+ "started": "2026-08-16 13:21:06"
+}

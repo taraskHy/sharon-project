@@ -1,0 +1,40 @@
+{
+ "item": "hl_e004_q2_r1__l1",
+ "raw_text": "אם יש כניסה חופשית ללשון ויש ספרים",
+ "suggested_text": "אם יש כניסה חופשית ללשון ויש ספרים",
+ "transcription": "אם יש כניסה חופשית ללשון ויש ספרים",
+ "edits": [],
+ "uncertain_regions": [],
+ "semantic_change_risk": false,
+ "needs_review": false,
+ "retrieved": [
+  {
+   "chunk_id": "f77b63546d90fd73",
+   "source": "עיבוד תמונה.pdf",
+   "page": 89,
+   "similarity": 0.4945
+  },
+  {
+   "chunk_id": "9b530540466ab4d0",
+   "source": "עיבוד תמונה.pdf",
+   "page": 62,
+   "similarity": 0.4944
+  },
+  {
+   "chunk_id": "a5fa574cc11d8224",
+   "source": "עיבוד תמונה.pdf",
+   "page": 82,
+   "similarity": 0.4787
+  },
+  {
+   "chunk_id": "13e611c6334e1f92",
+   "source": "עיבוד תמונה.pdf",
+   "page": 116,
+   "similarity": 0.4782
+  }
+ ],
+ "retrieval_empty": false,
+ "error": "JSONDecodeError: Unterminated string starting at: line 7 column 17 (char 143)",
+ "retrieval_s": 2.55,
+ "repair_s": 41.45
+}

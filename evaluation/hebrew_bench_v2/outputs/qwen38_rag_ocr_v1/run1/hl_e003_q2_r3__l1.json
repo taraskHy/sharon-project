@@ -1,0 +1,59 @@
+{
+ "item": "hl_e003_q2_r3__l1",
+ "raw_text": "מספרים וספרים עם תמונות והדרכים\nמספרים עם ספרים והדרכים\nהדרכים",
+ "suggested_text": "מספרים וספרים עם תמונות והדרכים\nמספרים עם ספרים והדרכים\nהדרכים",
+ "transcription": "מספרים וספרים עם תמונות והדרכים\nמספרים עם ספרים והדרכים\nהדרכים",
+ "edits": [
+  {
+   "raw": "מספרים וספרים עם תמונות והדרכים",
+   "suggested": "מספרים וספרים עם תמונות והדרכים",
+   "reason": "No corruption detected; text appears plausible and consistent with OCR output. No change needed.",
+   "risk": "low"
+  },
+  {
+   "raw": "מספרים עם ספרים והדרכים",
+   "suggested": "מספרים עם ספרים והדרכים",
+   "reason": "No corruption detected; text appears plausible and consistent with OCR output. No change needed.",
+   "risk": "low"
+  },
+  {
+   "raw": "הדרכים",
+   "suggested": "הדרכים",
+   "reason": "No corruption detected; text appears plausible and consistent with OCR output. No change needed.",
+   "risk": "low"
+  }
+ ],
+ "uncertain_regions": [],
+ "semantic_change_risk": false,
+ "needs_review": false,
+ "retrieved": [
+  {
+   "chunk_id": "f77b63546d90fd73",
+   "source": "עיבוד תמונה.pdf",
+   "page": 89,
+   "similarity": 0.4602
+  },
+  {
+   "chunk_id": "363a3dba6de68984",
+   "source": "עיבוד תמונה.pdf",
+   "page": 84,
+   "similarity": 0.4552
+  },
+  {
+   "chunk_id": "f19d47e2ea26d4b0",
+   "source": "עיבוד תמונה.pdf",
+   "page": 1,
+   "similarity": 0.4547
+  },
+  {
+   "chunk_id": "d0b2d245099ac0de",
+   "source": "עיבוד תמונה.pdf",
+   "page": 95,
+   "similarity": 0.447
+  }
+ ],
+ "retrieval_empty": false,
+ "error": null,
+ "retrieval_s": 2.5,
+ "repair_s": 11.44
+}

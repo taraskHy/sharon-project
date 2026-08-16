@@ -1,0 +1,15 @@
+{
+ "raw": "{\"transcription\": \"לא במינו יעשה E(1) לא הכתבון קלוקס-ס ורג'ס ישר\"}",
+ "transcription": "לא במינו יעשה E(1) לא הכתבון קלוקס-ס ורג'ס ישר",
+ "error": null,
+ "status": 200,
+ "usage_prompt_tokens": 219,
+ "usage_completion_tokens": 34,
+ "usage_total_tokens": 253,
+ "thinking_chars": 0,
+ "done_reason": "stop",
+ "item": "hl_e005_q2_r1__l2",
+ "category": "handwritten_line",
+ "run": 1,
+ "latency_s": 9.42
+}

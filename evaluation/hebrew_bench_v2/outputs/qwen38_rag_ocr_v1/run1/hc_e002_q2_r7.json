@@ -1,0 +1,40 @@
+{
+ "item": "hc_e002_q2_r7",
+ "raw_text": "אין לי דעה על האם יש צורך בשינוי החוק",
+ "suggested_text": "אין לי דעה על האם יש צורך בשינוי החוק",
+ "transcription": "אין לי דעה על האם יש צורך בשינוי החוק",
+ "edits": [],
+ "uncertain_regions": [],
+ "semantic_change_risk": false,
+ "needs_review": false,
+ "retrieved": [
+  {
+   "chunk_id": "c9de22371b130c23",
+   "source": "עיבוד תמונה.pdf",
+   "page": 53,
+   "similarity": 0.4161
+  },
+  {
+   "chunk_id": "62ba70ad2e84dcb3",
+   "source": "עיבוד תמונה.pdf",
+   "page": 29,
+   "similarity": 0.4155
+  },
+  {
+   "chunk_id": "ab3a8f926c33542a",
+   "source": "עיבוד תמונה.pdf",
+   "page": 60,
+   "similarity": 0.4116
+  },
+  {
+   "chunk_id": "2e43c92a8b6dff51",
+   "source": "עיבוד תמונה.pdf",
+   "page": 100,
+   "similarity": 0.4036
+  }
+ ],
+ "retrieval_empty": false,
+ "error": null,
+ "retrieval_s": 2.52,
+ "repair_s": 5.16
+}

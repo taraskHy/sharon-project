@@ -1,0 +1,40 @@
+{
+ "item": "hc_e002_q1_r4",
+ "raw_text": "בסוף נשארו רק הגוריים",
+ "suggested_text": "בסוף נשארו רק הגוריים",
+ "transcription": "בסוף נשארו רק הגוריים",
+ "edits": [],
+ "uncertain_regions": [],
+ "semantic_change_risk": false,
+ "needs_review": false,
+ "retrieved": [
+  {
+   "chunk_id": "027077d560655488",
+   "source": "עיבוד תמונה.pdf",
+   "page": 96,
+   "similarity": 0.3386
+  },
+  {
+   "chunk_id": "b1ff802ffd7033a1",
+   "source": "עיבוד תמונה.pdf",
+   "page": 22,
+   "similarity": 0.3246
+  },
+  {
+   "chunk_id": "bcf0ba6fa00aa7c6",
+   "source": "עיבוד תמונה.pdf",
+   "page": 32,
+   "similarity": 0.3235
+  },
+  {
+   "chunk_id": "723f9270d833287c",
+   "source": "עיבוד תמונה.pdf",
+   "page": 21,
+   "similarity": 0.3229
+  }
+ ],
+ "retrieval_empty": false,
+ "error": "JSONDecodeError: Unterminated string starting at: line 7 column 17 (char 134)",
+ "retrieval_s": 2.56,
+ "repair_s": 41.47
+}

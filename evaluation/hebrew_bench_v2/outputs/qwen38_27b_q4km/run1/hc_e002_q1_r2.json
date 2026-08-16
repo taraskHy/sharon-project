@@ -1,0 +1,15 @@
+{
+ "raw": "{\"transcription\": \"בשעה שהמטאליק נק העניינים נשארו\"}",
+ "transcription": "בשעה שהמטאליק נק העניינים נשארו",
+ "error": null,
+ "status": 200,
+ "usage_prompt_tokens": 275,
+ "usage_completion_tokens": 25,
+ "usage_total_tokens": 300,
+ "thinking_chars": 0,
+ "done_reason": "stop",
+ "item": "hc_e002_q1_r2",
+ "category": "handwritten_cell",
+ "run": 1,
+ "latency_s": 7.86
+}

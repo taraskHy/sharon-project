@@ -1,0 +1,15 @@
+{
+ "raw": "{\"transcription\": \"אני לא יודע מה אני רוצה לעשות עם החיים שלי\"}",
+ "transcription": "אני לא יודע מה אני רוצה לעשות עם החיים שלי",
+ "error": null,
+ "status": 200,
+ "usage_prompt_tokens": 275,
+ "usage_completion_tokens": 24,
+ "usage_total_tokens": 299,
+ "thinking_chars": 0,
+ "done_reason": "stop",
+ "item": "hc_e002_q2_r2",
+ "category": "handwritten_cell",
+ "run": 1,
+ "latency_s": 7.56
+}

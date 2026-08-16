@@ -1,0 +1,40 @@
+{
+ "item": "hc_e002_q2_r1",
+ "raw_text": "נו יעד סגירה 255/120. אפילו ( פילי, סגירה ילכה ע",
+ "suggested_text": "נו יעד סגירה 255/120. אפילו ( פילי, סגירה ילכה ע",
+ "transcription": "נו יעד סגירה 255/120. אפילו ( פילי, סגירה ילכה ע",
+ "edits": [],
+ "uncertain_regions": [],
+ "semantic_change_risk": false,
+ "needs_review": false,
+ "retrieved": [
+  {
+   "chunk_id": "c82194adc36b2ffb",
+   "source": "עיבוד תמונה.pdf",
+   "page": 47,
+   "similarity": 0.4886
+  },
+  {
+   "chunk_id": "e8bd6015f531f2c7",
+   "source": "עיבוד תמונה.pdf",
+   "page": 75,
+   "similarity": 0.4885
+  },
+  {
+   "chunk_id": "590c3062e75e39c8",
+   "source": "עיבוד תמונה.pdf",
+   "page": 105,
+   "similarity": 0.4875
+  },
+  {
+   "chunk_id": "76e741805dd763ab",
+   "source": "עיבוד תמונה.pdf",
+   "page": 39,
+   "similarity": 0.4868
+  }
+ ],
+ "retrieval_empty": false,
+ "error": null,
+ "retrieval_s": 2.53,
+ "repair_s": 5.47
+}

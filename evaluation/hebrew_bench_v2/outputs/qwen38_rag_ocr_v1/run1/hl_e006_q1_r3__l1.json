@@ -1,0 +1,40 @@
+{
+ "item": "hl_e006_q1_r3__l1",
+ "raw_text": "קליגוב תאורה ריאם זארי סופר! כן D",
+ "suggested_text": "קליגוב תאורה ריאם זארי סופר! כן D",
+ "transcription": "קליגוב תאורה ריאם זארי סופר! כן D",
+ "edits": [],
+ "uncertain_regions": [],
+ "semantic_change_risk": false,
+ "needs_review": false,
+ "retrieved": [
+  {
+   "chunk_id": "b6e6ee552296f7e9",
+   "source": "עיבוד תמונה.pdf",
+   "page": 67,
+   "similarity": 0.471
+  },
+  {
+   "chunk_id": "e5a90554c25d7ceb",
+   "source": "עיבוד תמונה.pdf",
+   "page": 108,
+   "similarity": 0.4624
+  },
+  {
+   "chunk_id": "a4365c08c05ae261",
+   "source": "עיבוד תמונה.pdf",
+   "page": 27,
+   "similarity": 0.4602
+  },
+  {
+   "chunk_id": "64c37ae6bd43465b",
+   "source": "עיבוד תמונה.pdf",
+   "page": 28,
+   "similarity": 0.4519
+  }
+ ],
+ "retrieval_empty": false,
+ "error": null,
+ "retrieval_s": 2.52,
+ "repair_s": 5.2
+}

@@ -1,0 +1,15 @@
+{
+ "raw": "{\"transcription\": \"כשהם ג'קסון ו'אליס י'א ס'אליס ג'אקסון\"}",
+ "transcription": "כשהם ג'קסון ו'אליס י'א ס'אליס ג'אקסון",
+ "error": null,
+ "status": 200,
+ "usage_prompt_tokens": 193,
+ "usage_completion_tokens": 34,
+ "usage_total_tokens": 227,
+ "thinking_chars": 0,
+ "done_reason": "stop",
+ "item": "hl_e006_q1_r6__l1",
+ "category": "handwritten_line",
+ "run": 1,
+ "latency_s": 10.02
+}

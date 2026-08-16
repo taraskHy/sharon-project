@@ -1,0 +1,15 @@
+{
+ "raw": "{\"transcription\": \"אין, אבל יש סוגים שונים של ג'אז, כמו סווינג, בי-בופ, וכו'\"}",
+ "transcription": "אין, אבל יש סוגים שונים של ג'אז, כמו סווינג, בי-בופ, וכו'",
+ "error": null,
+ "status": 200,
+ "usage_prompt_tokens": 193,
+ "usage_completion_tokens": 37,
+ "usage_total_tokens": 230,
+ "thinking_chars": 0,
+ "done_reason": "stop",
+ "item": "hl_e005_q2_r7__l2",
+ "category": "handwritten_line",
+ "run": 1,
+ "latency_s": 10.16
+}

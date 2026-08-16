@@ -1,0 +1,15 @@
+{
+ "raw": "{\"transcription\": \"ב-2 יצא נספר כל סוגייה. בזה אקבל 50%.\"}",
+ "transcription": "ב-2 יצא נספר כל סוגייה. בזה אקבל 50%.",
+ "error": null,
+ "status": 200,
+ "usage_prompt_tokens": 219,
+ "usage_completion_tokens": 32,
+ "usage_total_tokens": 251,
+ "thinking_chars": 0,
+ "done_reason": "stop",
+ "item": "hl_e005_q2_r7__l3",
+ "category": "handwritten_line",
+ "run": 1,
+ "latency_s": 8.94
+}

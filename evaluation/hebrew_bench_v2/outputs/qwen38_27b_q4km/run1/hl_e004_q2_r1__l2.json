@@ -1,0 +1,15 @@
+{
+ "raw": "{\"transcription\": \"כלומר, כל סוג של בשר\"}",
+ "transcription": "כלומר, כל סוג של בשר",
+ "error": null,
+ "status": 200,
+ "usage_prompt_tokens": 219,
+ "usage_completion_tokens": 16,
+ "usage_total_tokens": 235,
+ "thinking_chars": 0,
+ "done_reason": "stop",
+ "item": "hl_e004_q2_r1__l2",
+ "category": "handwritten_line",
+ "run": 1,
+ "latency_s": 5.94
+}

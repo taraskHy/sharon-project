@@ -1,0 +1,15 @@
+{
+ "raw": "{\"transcription\": \"אין לי מושג\"}",
+ "transcription": "אין לי מושג",
+ "error": null,
+ "status": 200,
+ "usage_prompt_tokens": 271,
+ "usage_completion_tokens": 13,
+ "usage_total_tokens": 284,
+ "thinking_chars": 0,
+ "done_reason": "stop",
+ "item": "hl_e005_q2_r6__l2",
+ "category": "handwritten_line",
+ "run": 1,
+ "latency_s": 5.36
+}

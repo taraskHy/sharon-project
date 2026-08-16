@@ -1,0 +1,53 @@
+{
+ "item": "hl_e004_q1_r2__l1",
+ "raw_text": "High pass filter סוג סוג של מסנן",
+ "suggested_text": "High pass filter סוג סוג של מסנן",
+ "transcription": "High pass filter סוג סוג של מסנן",
+ "edits": [
+  {
+   "raw": "High pass filter",
+   "suggested": "High pass filter",
+   "reason": "No corruption detected; term is correct and matches course terminology (e.g., 'high pass' is discussed in context).",
+   "risk": "low"
+  },
+  {
+   "raw": "סוג סוג של מסנן",
+   "suggested": "סוג סוג של מסנן",
+   "reason": "OCR likely misread a repeated or ambiguous phrase. The student's phrasing is not standard, but plausible as a handwritten error or repetition. Course context confirms 'high pass' is a filter type, so the concept is correct even if phrasing is awkward.",
+   "risk": "low"
+  }
+ ],
+ "uncertain_regions": [],
+ "semantic_change_risk": false,
+ "needs_review": false,
+ "retrieved": [
+  {
+   "chunk_id": "087decec4cff35d4",
+   "source": "עיבוד תמונה.pdf",
+   "page": 71,
+   "similarity": 0.4778
+  },
+  {
+   "chunk_id": "c3833902c7a1079c",
+   "source": "עיבוד תמונה.pdf",
+   "page": 71,
+   "similarity": 0.4575
+  },
+  {
+   "chunk_id": "9e04a7f26d53b2a5",
+   "source": "עיבוד תמונה.pdf",
+   "page": 70,
+   "similarity": 0.4519
+  },
+  {
+   "chunk_id": "02697ab52036142c",
+   "source": "עיבוד תמונה.pdf",
+   "page": 91,
+   "similarity": 0.4496
+  }
+ ],
+ "retrieval_empty": false,
+ "error": null,
+ "retrieval_s": 2.67,
+ "repair_s": 10.23
+}

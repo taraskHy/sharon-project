@@ -1,0 +1,40 @@
+{
+ "item": "hl_e005_q1_r3__l3",
+ "raw_text": "אמרתי: [?] רציתי לראות איך זה ייראה /אבל כל כך הרבה זמן לא היה לי",
+ "suggested_text": "אמרתי: [?] רציתי לראות איך זה ייראה / אבל כל כך הרבה זמן לא היה לי",
+ "transcription": "אמרתי: [?] רציתי לראות איך זה ייראה / אבל כל כך הרבה זמן לא היה לי",
+ "edits": [],
+ "uncertain_regions": [],
+ "semantic_change_risk": false,
+ "needs_review": false,
+ "retrieved": [
+  {
+   "chunk_id": "21dcdb439c3a2b37",
+   "source": "עיבוד תמונה.pdf",
+   "page": 80,
+   "similarity": 0.4567
+  },
+  {
+   "chunk_id": "eb16105641eea93e",
+   "source": "עיבוד תמונה.pdf",
+   "page": 23,
+   "similarity": 0.4523
+  },
+  {
+   "chunk_id": "00219acc83f1b56b",
+   "source": "עיבוד תמונה.pdf",
+   "page": 100,
+   "similarity": 0.4521
+  },
+  {
+   "chunk_id": "9aa0794ae6075786",
+   "source": "עיבוד תמונה.pdf",
+   "page": 108,
+   "similarity": 0.4472
+  }
+ ],
+ "retrieval_empty": false,
+ "error": null,
+ "retrieval_s": 2.5,
+ "repair_s": 5.47
+}

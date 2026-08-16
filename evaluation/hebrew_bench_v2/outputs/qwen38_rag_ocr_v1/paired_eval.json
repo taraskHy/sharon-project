@@ -1,0 +1,141 @@
+{
+ "config_id": "qwen38_rag_ocr_v1",
+ "n": 102,
+ "mean_cer_raw": 2.3909,
+ "mean_cer_suggested": 2.3951,
+ "median_cer_raw": 0.782,
+ "median_cer_suggested": 0.7839,
+ "usable_025_raw": 0,
+ "usable_025_suggested": 0,
+ "usable_050_raw": 1,
+ "usable_050_suggested": 1,
+ "texts_changed": 12,
+ "improved": 2,
+ "worsened": 8,
+ "neutral": 2,
+ "repair_errors": 30,
+ "semantic_risk_flags": 1,
+ "needs_review": 2,
+ "changed_items": [
+  {
+   "item": "hc_e002_q1_r8",
+   "changed": true,
+   "cer_raw": 0.7912,
+   "cer_sug": 0.7253,
+   "edits": 2,
+   "semantic_change_risk": true,
+   "needs_review": true,
+   "error": null
+  },
+  {
+   "item": "hl_e005_q1_r3__l3",
+   "changed": true,
+   "cer_raw": 0.8491,
+   "cer_sug": 0.8302,
+   "edits": 0,
+   "semantic_change_risk": false,
+   "needs_review": false,
+   "error": null
+  },
+  {
+   "item": "hc_e002_q2_r5",
+   "changed": true,
+   "cer_raw": 0.7857,
+   "cer_sug": 0.7857,
+   "edits": 3,
+   "semantic_change_risk": false,
+   "needs_review": false,
+   "error": null
+  },
+  {
+   "item": "hl_e003_q2_r1__l1",
+   "changed": true,
+   "cer_raw": 0.8167,
+   "cer_sug": 0.8167,
+   "edits": 1,
+   "semantic_change_risk": false,
+   "needs_review": true,
+   "error": null
+  },
+  {
+   "item": "hl_e005_q1_r5__l3",
+   "changed": true,
+   "cer_raw": 0.92,
+   "cer_sug": 0.94,
+   "edits": 1,
+   "semantic_change_risk": false,
+   "needs_review": false,
+   "error": null
+  },
+  {
+   "item": "hl_e006_q1_r5__l1",
+   "changed": true,
+   "cer_raw": 0.7872,
+   "cer_sug": 0.8085,
+   "edits": 1,
+   "semantic_change_risk": false,
+   "needs_review": false,
+   "error": null
+  },
+  {
+   "item": "hl_e004_q1_r3__l2",
+   "changed": true,
+   "cer_raw": 0.875,
+   "cer_sug": 0.9062,
+   "edits": 3,
+   "semantic_change_risk": false,
+   "needs_review": false,
+   "error": null
+  },
+  {
+   "item": "hl_e005_q2_r8__l2",
+   "changed": true,
+   "cer_raw": 0.7568,
+   "cer_sug": 0.8108,
+   "edits": 2,
+   "semantic_change_risk": false,
+   "needs_review": false,
+   "error": null
+  },
+  {
+   "item": "hl_e004_q2_r2__l1",
+   "changed": true,
+   "cer_raw": 0.7358,
+   "cer_sug": 0.7925,
+   "edits": 1,
+   "semantic_change_risk": false,
+   "needs_review": false,
+   "error": null
+  },
+  {
+   "item": "hl_e003_q1_r1__l1",
+   "changed": true,
+   "cer_raw": 0.5902,
+   "cer_sug": 0.6721,
+   "edits": 3,
+   "semantic_change_risk": false,
+   "needs_review": false,
+   "error": null
+  },
+  {
+   "item": "hc_e002_q1_r2",
+   "changed": true,
+   "cer_raw": 0.7931,
+   "cer_sug": 0.8966,
+   "edits": 1,
+   "semantic_change_risk": false,
+   "needs_review": false,
+   "error": null
+  },
+  {
+   "item": "hl_e005_q2_r7__l2",
+   "changed": true,
+   "cer_raw": 0.8511,
+   "cer_sug": 1.0,
+   "edits": 2,
+   "semantic_change_risk": false,
+   "needs_review": false,
+   "error": null
+  }
+ ]
+}

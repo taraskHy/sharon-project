@@ -1,0 +1,15 @@
+{
+ "raw": "{\"transcription\": \"בדיקת עומסים של מערכת נמוגמית\"}",
+ "transcription": "בדיקת עומסים של מערכת נמוגמית",
+ "error": null,
+ "status": 200,
+ "usage_prompt_tokens": 193,
+ "usage_completion_tokens": 22,
+ "usage_total_tokens": 215,
+ "thinking_chars": 0,
+ "done_reason": "stop",
+ "item": "hl_e006_q1_r5__l1",
+ "category": "handwritten_line",
+ "run": 1,
+ "latency_s": 7.38
+}

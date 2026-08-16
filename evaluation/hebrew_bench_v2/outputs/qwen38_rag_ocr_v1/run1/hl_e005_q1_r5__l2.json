@@ -1,0 +1,40 @@
+{
+ "item": "hl_e005_q1_r5__l2",
+ "raw_text": "1. אסור לעבור את הליניית הרכבת",
+ "suggested_text": "1. אסור לעבור את הליניית הרכבת",
+ "transcription": "1. אסור לעבור את הליניית הרכבת",
+ "edits": [],
+ "uncertain_regions": [],
+ "semantic_change_risk": false,
+ "needs_review": false,
+ "retrieved": [
+  {
+   "chunk_id": "62ba70ad2e84dcb3",
+   "source": "עיבוד תמונה.pdf",
+   "page": 29,
+   "similarity": 0.4351
+  },
+  {
+   "chunk_id": "606a996cbcc245bb",
+   "source": "עיבוד תמונה.pdf",
+   "page": 31,
+   "similarity": 0.4296
+  },
+  {
+   "chunk_id": "00bf57958aa59828",
+   "source": "עיבוד תמונה.pdf",
+   "page": 19,
+   "similarity": 0.4293
+  },
+  {
+   "chunk_id": "e2030d8d3922b877",
+   "source": "עיבוד תמונה.pdf",
+   "page": 33,
+   "similarity": 0.4248
+  }
+ ],
+ "retrieval_empty": false,
+ "error": "JSONDecodeError: Unterminated string starting at: line 7 column 17 (char 147)",
+ "retrieval_s": 2.48,
+ "repair_s": 41.72
+}

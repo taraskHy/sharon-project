@@ -1,0 +1,15 @@
+{
+ "raw": "{\"transcription\": \"נראה איבר X סלם הקדמית פרו\"}",
+ "transcription": "נראה איבר X סלם הקדמית פרו",
+ "error": null,
+ "status": 200,
+ "usage_prompt_tokens": 275,
+ "usage_completion_tokens": 21,
+ "usage_total_tokens": 296,
+ "thinking_chars": 0,
+ "done_reason": "stop",
+ "item": "hc_e002_q1_r5",
+ "category": "handwritten_cell",
+ "run": 1,
+ "latency_s": 7.08
+}

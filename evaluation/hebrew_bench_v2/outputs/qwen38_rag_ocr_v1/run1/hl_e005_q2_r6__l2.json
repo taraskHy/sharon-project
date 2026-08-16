@@ -1,0 +1,40 @@
+{
+ "item": "hl_e005_q2_r6__l2",
+ "raw_text": "אין לי מושג",
+ "suggested_text": "אין לי מושג",
+ "transcription": "אין לי מושג",
+ "edits": [],
+ "uncertain_regions": [],
+ "semantic_change_risk": false,
+ "needs_review": false,
+ "retrieved": [
+  {
+   "chunk_id": "1966b4f1bde5ac09",
+   "source": "עיבוד תמונה.pdf",
+   "page": 55,
+   "similarity": 0.428
+  },
+  {
+   "chunk_id": "29bffa64b06539d5",
+   "source": "עיבוד תמונה.pdf",
+   "page": 73,
+   "similarity": 0.4207
+  },
+  {
+   "chunk_id": "40a371efd3d6123c",
+   "source": "עיבוד תמונה.pdf",
+   "page": 66,
+   "similarity": 0.4202
+  },
+  {
+   "chunk_id": "c9de22371b130c23",
+   "source": "עיבוד תמונה.pdf",
+   "page": 53,
+   "similarity": 0.4189
+  }
+ ],
+ "retrieval_empty": false,
+ "error": null,
+ "retrieval_s": 2.5,
+ "repair_s": 4.94
+}

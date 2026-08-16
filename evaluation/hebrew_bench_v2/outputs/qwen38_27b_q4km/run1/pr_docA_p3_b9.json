@@ -1,0 +1,15 @@
+{
+ "raw": "{\"transcription\": \"שאת התדרים ייאפשר, בעוד שב- scale (פעולה 8) כל הפרמידה תוכפל, עם ה- DC\"}",
+ "transcription": "שאת התדרים ייאפשר, בעוד שב- scale (פעולה 8) כל הפרמידה תוכפל, עם ה- DC",
+ "error": null,
+ "status": 200,
+ "usage_prompt_tokens": 190,
+ "usage_completion_tokens": 40,
+ "usage_total_tokens": 230,
+ "thinking_chars": 0,
+ "done_reason": "stop",
+ "item": "pr_docA_p3_b9",
+ "category": "mixed_he_en",
+ "run": 1,
+ "latency_s": 10.8
+}

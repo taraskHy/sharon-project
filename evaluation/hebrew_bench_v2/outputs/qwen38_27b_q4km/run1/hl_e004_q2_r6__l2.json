@@ -1,0 +1,15 @@
+{
+ "raw": "{\"transcription\": \"16. אין צורך ב'א. X. (חוקה) 1. יש צורך ב'ג' או ב'ד' לזיהוי (ב'ד' ב'ג'\"}",
+ "transcription": "16. אין צורך ב'א. X. (חוקה) 1. יש צורך ב'ג' או ב'ד' לזיהוי (ב'ד' ב'ג'",
+ "error": null,
+ "status": 200,
+ "usage_prompt_tokens": 245,
+ "usage_completion_tokens": 52,
+ "usage_total_tokens": 297,
+ "thinking_chars": 0,
+ "done_reason": "stop",
+ "item": "hl_e004_q2_r6__l2",
+ "category": "handwritten_line",
+ "run": 1,
+ "latency_s": 13.3
+}

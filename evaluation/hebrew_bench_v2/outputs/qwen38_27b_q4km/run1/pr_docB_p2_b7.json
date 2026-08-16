@@ -1,0 +1,15 @@
+{
+ "raw": "{\"transcription\": \"(א) 0.29 (ב) 0.5 (ג) 1 (ד) אף אחד מהנ\\\"ל\"}",
+ "transcription": "(א) 0.29 (ב) 0.5 (ג) 1 (ד) אף אחד מהנ\"ל",
+ "error": null,
+ "status": 200,
+ "usage_prompt_tokens": 192,
+ "usage_completion_tokens": 36,
+ "usage_total_tokens": 228,
+ "thinking_chars": 0,
+ "done_reason": "stop",
+ "item": "pr_docB_p2_b7",
+ "category": "formula_printed",
+ "run": 1,
+ "latency_s": 10.12
+}

@@ -1,0 +1,15 @@
+{
+ "raw": "{\"transcription\": \"pass וסל [struck-through] ארג'אן ה'אוסטין (DC) (DC) ה'אוסטין (DC) High-2 ורנע)\"}",
+ "transcription": "pass וסל [struck-through] ארג'אן ה'אוסטין (DC) (DC) ה'אוסטין (DC) High-2 ורנע)",
+ "error": null,
+ "status": 200,
+ "usage_prompt_tokens": 271,
+ "usage_completion_tokens": 50,
+ "usage_total_tokens": 321,
+ "thinking_chars": 0,
+ "done_reason": "stop",
+ "item": "hl_e003_q1_r2__l2",
+ "category": "handwritten_line",
+ "run": 1,
+ "latency_s": 15.16
+}

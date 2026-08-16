@@ -1,0 +1,59 @@
+{
+ "item": "hl_e004_q1_r3__l2",
+ "raw_text": "Brightness 70\" (1)ce E 1.2 > 1.8",
+ "suggested_text": "Brightness 70° (1)ce E 1.2 > 1.8",
+ "transcription": "Brightness 70° (1)ce E 1.2 > 1.8",
+ "edits": [
+  {
+   "raw": "70\"",
+   "suggested": "70°",
+   "reason": "Likely OCR misinterpretation of degree symbol (°) as quotation mark (\"), given context of brightness and gamma correction which often involves angles or scaling factors. Preserving as plausible corruption only, not correcting to '70' or '70 degrees' without student intent. The student may have meant '70 degrees' or '70°' as a unit, but no course context suggests '70\"' is meaningful. Marking as uncertain if student intended '70°' or '70' without unit. However, since the student wrote '70\"', and it's a plausible OCR error, we preserve it as a corruption with suggestion '70°'.",
+   "risk": "low"
+  },
+  {
+   "raw": "E",
+   "suggested": "E",
+   "reason": "No plausible OCR corruption. 'E' is likely a variable or placeholder. No course context suggests it should be corrected to 'e' or 'E' is a typo. Preserving as-is.",
+   "risk": "low"
+  },
+  {
+   "raw": "1.2 > 1.8",
+   "suggested": "1.2 > 1.8",
+   "reason": "No plausible OCR corruption. This is likely a direct transcription of a gamma correction value or threshold. No course context suggests it should be corrected to '1.2 < 1.8' or any other value. Preserving as-is.",
+   "risk": "low"
+  }
+ ],
+ "uncertain_regions": [],
+ "semantic_change_risk": false,
+ "needs_review": false,
+ "retrieved": [
+  {
+   "chunk_id": "b1fe7d2a38de1deb",
+   "source": "עיבוד תמונה.pdf",
+   "page": 6,
+   "similarity": 0.4953
+  },
+  {
+   "chunk_id": "ebf99e7e6d091112",
+   "source": "עיבוד תמונה.pdf",
+   "page": 12,
+   "similarity": 0.4928
+  },
+  {
+   "chunk_id": "b00d4cfc8b138fa2",
+   "source": "עיבוד תמונה.pdf",
+   "page": 113,
+   "similarity": 0.4796
+  },
+  {
+   "chunk_id": "3b87159fcc4a5cca",
+   "source": "עיבוד תמונה.pdf",
+   "page": 17,
+   "similarity": 0.4784
+  }
+ ],
+ "retrieval_empty": false,
+ "error": null,
+ "retrieval_s": 2.51,
+ "repair_s": 16.86
+}

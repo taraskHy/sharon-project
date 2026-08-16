@@ -1,0 +1,47 @@
+{
+ "item": "hl_e004_q2_r2__l1",
+ "raw_text": "ב. carry את כל או רגולציה של רגולציה",
+ "suggested_text": "ב. קיימת את כל הורגלציה של הורגלציה",
+ "transcription": "ב. קיימת את כל הורגלציה של הורגלציה",
+ "edits": [
+  {
+   "raw": "carry",
+   "suggested": "קיימת",
+   "reason": "המילה 'carry' אינה מובנית ב맥סיקס של התשובה. בהקשר של עיבוד תמונה, 'קיימת' היא מילה רלוונטית ומשתלבת בהקשר של 'הורגלציה' (שנראה שהיא תוצאה של OCR של 'הורגלציה' או 'הורגלציה' - אולי 'הורגלציה' היא תרגום או שגיאה של 'הורגלציה' או 'הורגלציה' - אך בהקשר של עיבוד תמונה, 'קיימת' היא מילה רלוונטית ומשתלבת בהקשר של 'הורגלציה'.)",
+   "risk": "low"
+  }
+ ],
+ "uncertain_regions": [],
+ "semantic_change_risk": false,
+ "needs_review": false,
+ "retrieved": [
+  {
+   "chunk_id": "9554cfbfd7166f4e",
+   "source": "עיבוד תמונה.pdf",
+   "page": 40,
+   "similarity": 0.4649
+  },
+  {
+   "chunk_id": "4963b4bf70e69016",
+   "source": "עיבוד תמונה.pdf",
+   "page": 42,
+   "similarity": 0.4624
+  },
+  {
+   "chunk_id": "1d26fd0f26dcca1b",
+   "source": "עיבוד תמונה.pdf",
+   "page": 18,
+   "similarity": 0.4498
+  },
+  {
+   "chunk_id": "dab9a140425d60ea",
+   "source": "עיבוד תמונה.pdf",
+   "page": 113,
+   "similarity": 0.4476
+  }
+ ],
+ "retrieval_empty": false,
+ "error": null,
+ "retrieval_s": 2.55,
+ "repair_s": 11.34
+}

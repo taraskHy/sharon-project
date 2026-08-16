@@ -1,0 +1,15 @@
+{
+ "raw": "{\"transcription\": \"1.5% 826 2% 25% uniform 2\"}",
+ "transcription": "1.5% 826 2% 25% uniform 2",
+ "error": null,
+ "status": 200,
+ "usage_prompt_tokens": 219,
+ "usage_completion_tokens": 25,
+ "usage_total_tokens": 244,
+ "thinking_chars": 0,
+ "done_reason": "stop",
+ "item": "hl_e004_q2_r5__l1",
+ "category": "handwritten_line",
+ "run": 1,
+ "latency_s": 7.72
+}

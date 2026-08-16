@@ -1,0 +1,15 @@
+{
+ "raw": "{\"transcription\": \"[unreadable]\"}",
+ "transcription": "[unreadable]",
+ "error": null,
+ "status": 200,
+ "usage_prompt_tokens": 193,
+ "usage_completion_tokens": 10,
+ "usage_total_tokens": 203,
+ "thinking_chars": 0,
+ "done_reason": "stop",
+ "item": "hl_e004_q2_r5__l2",
+ "category": "handwritten_line",
+ "run": 1,
+ "latency_s": 5.16
+}

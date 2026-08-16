@@ -1,0 +1,15 @@
+{
+ "raw": "{\"transcription\": \"11. שאלה 8 נדפסו 5,000,000 מניות של 1 לירה\"}",
+ "transcription": "11. שאלה 8 נדפסו 5,000,000 מניות של 1 לירה",
+ "error": null,
+ "status": 200,
+ "usage_prompt_tokens": 219,
+ "usage_completion_tokens": 37,
+ "usage_total_tokens": 256,
+ "thinking_chars": 0,
+ "done_reason": "stop",
+ "item": "hl_e006_q1_r4__l1",
+ "category": "handwritten_line",
+ "run": 1,
+ "latency_s": 9.92
+}

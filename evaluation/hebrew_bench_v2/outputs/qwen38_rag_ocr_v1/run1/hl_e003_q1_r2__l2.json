@@ -1,0 +1,65 @@
+{
+ "item": "hl_e003_q1_r2__l2",
+ "raw_text": "pass וסל [struck-through] ארג'אן ה'אוסטין (DC) (DC) ה'אוסטין (DC) High-2 ורנע)",
+ "suggested_text": "pass וסל [struck-through] ארג'אן ה'אוסטין (DC) (DC) ה'אוסטין (DC) High-2 ורנע)",
+ "transcription": "pass וסל [struck-through] ארג'אן ה'אוסטין (DC) (DC) ה'אוסטין (DC) High-2 ורנע)",
+ "edits": [
+  {
+   "raw": "pass",
+   "suggested": "pass",
+   "reason": "Preserved as-is; likely correct term or OCR artifact, no plausible corruption detected in context of course terminology (e.g., 'high pass' is mentioned).",
+   "risk": "low"
+  },
+  {
+   "raw": "וְלַרְנֵעַ",
+   "suggested": "ורנע)",
+   "reason": "Likely OCR corruption of Hebrew word 'ורנע' (possibly 'ורנע' or 'ורנע') — but context suggests it may be a misread of 'ה'אוסטין' or 'DC' or a fragment. No clear correction possible without more context. Preserved as-is with note.",
+   "risk": "low"
+  },
+  {
+   "raw": "ה'אוסטין (DC) (DC) ה'אוסטין (DC)",
+   "suggested": "ה'אוסטין (DC) (DC) ה'אוסטין (DC)",
+   "reason": "Repetition appears to be OCR artifact or student error. No plausible correction based on course context. Preserved as-is.",
+   "risk": "low"
+  },
+  {
+   "raw": "High-2",
+   "suggested": "High-2",
+   "reason": "Likely OCR corruption of 'High-pass' or 'High-2' — but 'High-2' is not standard terminology. In context of wavelet or Laplacian, 'High-pass' is mentioned. However, student may have written 'High-2' as shorthand or error. Preserved as-is.",
+   "risk": "low"
+  }
+ ],
+ "uncertain_regions": [],
+ "semantic_change_risk": false,
+ "needs_review": false,
+ "retrieved": [
+  {
+   "chunk_id": "f94ee445be83184b",
+   "source": "עיבוד תמונה.pdf",
+   "page": 86,
+   "similarity": 0.4641
+  },
+  {
+   "chunk_id": "cf296ebf59f82ade",
+   "source": "עיבוד תמונה.pdf",
+   "page": 92,
+   "similarity": 0.4468
+  },
+  {
+   "chunk_id": "9e04a7f26d53b2a5",
+   "source": "עיבוד תמונה.pdf",
+   "page": 70,
+   "similarity": 0.4467
+  },
+  {
+   "chunk_id": "fc40ced3fe2b630e",
+   "source": "עיבוד תמונה.pdf",
+   "page": 31,
+   "similarity": 0.4463
+  }
+ ],
+ "retrieval_empty": false,
+ "error": null,
+ "retrieval_s": 4.66,
+ "repair_s": 17.64
+}

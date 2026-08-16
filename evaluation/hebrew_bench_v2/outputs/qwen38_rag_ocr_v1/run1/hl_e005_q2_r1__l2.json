@@ -1,0 +1,40 @@
+{
+ "item": "hl_e005_q2_r1__l2",
+ "raw_text": "לא במינו יעשה E(1) לא הכתבון קלוקס-ס ורג'ס ישר",
+ "suggested_text": "לא במינו יעשה E(1) לא הכתבון קלוקס-ס ורג'ס ישר",
+ "transcription": "לא במינו יעשה E(1) לא הכתבון קלוקס-ס ורג'ס ישר",
+ "edits": [],
+ "uncertain_regions": [],
+ "semantic_change_risk": false,
+ "needs_review": false,
+ "retrieved": [
+  {
+   "chunk_id": "23d6b3916c816ed4",
+   "source": "עיבוד תמונה.pdf",
+   "page": 27,
+   "similarity": 0.4485
+  },
+  {
+   "chunk_id": "453ff0622950c94f",
+   "source": "עיבוד תמונה.pdf",
+   "page": 41,
+   "similarity": 0.445
+  },
+  {
+   "chunk_id": "1205cd9ad95eb079",
+   "source": "עיבוד תמונה.pdf",
+   "page": 75,
+   "similarity": 0.4278
+  },
+  {
+   "chunk_id": "00bf57958aa59828",
+   "source": "עיבוד תמונה.pdf",
+   "page": 19,
+   "similarity": 0.421
+  }
+ ],
+ "retrieval_empty": false,
+ "error": "JSONDecodeError: Unterminated string starting at: line 7 column 17 (char 243)",
+ "retrieval_s": 2.5,
+ "repair_s": 41.59
+}

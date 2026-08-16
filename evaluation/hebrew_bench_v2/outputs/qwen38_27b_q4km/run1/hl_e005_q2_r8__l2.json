@@ -1,0 +1,15 @@
+{
+ "raw": "{\"transcription\": \"בכלל x לאיך ש אלו ואלו זיכ (כ. ויזכרם\"}",
+ "transcription": "בכלל x לאיך ש אלו ואלו זיכ (כ. ויזכרם",
+ "error": null,
+ "status": 200,
+ "usage_prompt_tokens": 219,
+ "usage_completion_tokens": 32,
+ "usage_total_tokens": 251,
+ "thinking_chars": 0,
+ "done_reason": "stop",
+ "item": "hl_e005_q2_r8__l2",
+ "category": "handwritten_line",
+ "run": 1,
+ "latency_s": 9.25
+}

@@ -1,0 +1,40 @@
+{
+ "item": "hl_e006_q2_r7__l2",
+ "raw_text": "אפשר לסמן את כל קבוצת הסימנים (כולל את ה-) .",
+ "suggested_text": "אפשר לסמן את כל קבוצת הסימנים (כולל את ה-) .",
+ "transcription": "אפשר לסמן את כל קבוצת הסימנים (כולל את ה-) .",
+ "edits": [],
+ "uncertain_regions": [],
+ "semantic_change_risk": false,
+ "needs_review": false,
+ "retrieved": [
+  {
+   "chunk_id": "fc40ced3fe2b630e",
+   "source": "עיבוד תמונה.pdf",
+   "page": 31,
+   "similarity": 0.4893
+  },
+  {
+   "chunk_id": "44b5f68bc45e2ab7",
+   "source": "עיבוד תמונה.pdf",
+   "page": 38,
+   "similarity": 0.4868
+  },
+  {
+   "chunk_id": "05c27a6424b7d3a8",
+   "source": "עיבוד תמונה.pdf",
+   "page": 26,
+   "similarity": 0.4721
+  },
+  {
+   "chunk_id": "bfc5027b9b4b059c",
+   "source": "עיבוד תמונה.pdf",
+   "page": 55,
+   "similarity": 0.47
+  }
+ ],
+ "retrieval_empty": false,
+ "error": "JSONDecodeError: Unterminated string starting at: line 7 column 17 (char 229)",
+ "retrieval_s": 2.48,
+ "repair_s": 41.98
+}

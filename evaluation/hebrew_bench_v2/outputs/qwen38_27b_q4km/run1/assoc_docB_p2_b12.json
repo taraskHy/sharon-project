@@ -1,0 +1,15 @@
+{
+ "raw": "{\"transcription\": \"א: 3/19; ב: 4/19; ג: 5/19; ד: 6/19\"}",
+ "transcription": "א: 3/19; ב: 4/19; ג: 5/19; ד: 6/19",
+ "error": null,
+ "status": 200,
+ "usage_prompt_tokens": 138,
+ "usage_completion_tokens": 38,
+ "usage_total_tokens": 176,
+ "thinking_chars": 0,
+ "done_reason": "stop",
+ "item": "assoc_docB_p2_b12",
+ "category": "option_row_association",
+ "run": 1,
+ "latency_s": 10.02
+}

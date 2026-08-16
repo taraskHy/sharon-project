@@ -1,0 +1,15 @@
+{
+ "raw": "{\"transcription\": \"אני לא רוצה שזה יהיה כזה משהו, אבל אני\"}",
+ "transcription": "אני לא רוצה שזה יהיה כזה משהו, אבל אני",
+ "error": null,
+ "status": 200,
+ "usage_prompt_tokens": 193,
+ "usage_completion_tokens": 25,
+ "usage_total_tokens": 218,
+ "thinking_chars": 0,
+ "done_reason": "stop",
+ "item": "hl_e005_q1_r1__l2",
+ "category": "handwritten_line",
+ "run": 1,
+ "latency_s": 7.84
+}

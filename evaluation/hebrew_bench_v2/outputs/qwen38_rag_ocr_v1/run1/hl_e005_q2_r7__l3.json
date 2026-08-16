@@ -1,0 +1,40 @@
+{
+ "item": "hl_e005_q2_r7__l3",
+ "raw_text": "ב-2 יצא נספר כל סוגייה. בזה אקבל 50%.",
+ "suggested_text": "ב-2 יצא נספר כל סוגייה. בזה אקבל 50%.",
+ "transcription": "ב-2 יצא נספר כל סוגייה. בזה אקבל 50%.",
+ "edits": [],
+ "uncertain_regions": [],
+ "semantic_change_risk": false,
+ "needs_review": false,
+ "retrieved": [
+  {
+   "chunk_id": "c0ded09ee7da6947",
+   "source": "עיבוד תמונה.pdf",
+   "page": 118,
+   "similarity": 0.5075
+  },
+  {
+   "chunk_id": "0257fa907d4f6bd0",
+   "source": "עיבוד תמונה.pdf",
+   "page": 11,
+   "similarity": 0.5068
+  },
+  {
+   "chunk_id": "2aec2248008b9924",
+   "source": "עיבוד תמונה.pdf",
+   "page": 104,
+   "similarity": 0.4969
+  },
+  {
+   "chunk_id": "8604f56cd2ee2b8e",
+   "source": "עיבוד תמונה.pdf",
+   "page": 105,
+   "similarity": 0.4964
+  }
+ ],
+ "retrieval_empty": false,
+ "error": null,
+ "retrieval_s": 2.5,
+ "repair_s": 5.28
+}

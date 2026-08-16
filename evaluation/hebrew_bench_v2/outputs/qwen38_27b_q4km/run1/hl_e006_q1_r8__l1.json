@@ -1,0 +1,15 @@
+{
+ "raw": "{\"transcription\": \"אם [ללא] אימרים אין לדעת אם קיים קשר סיבובי בין האם לילד. אם קיים קשר סיבובי בין האם לילד, אז נראה\"}",
+ "transcription": "אם [ללא] אימרים אין לדעת אם קיים קשר סיבובי בין האם לילד. אם קיים קשר סיבובי בין האם לילד, אז נראה",
+ "error": null,
+ "status": 200,
+ "usage_prompt_tokens": 271,
+ "usage_completion_tokens": 54,
+ "usage_total_tokens": 325,
+ "thinking_chars": 0,
+ "done_reason": "stop",
+ "item": "hl_e006_q1_r8__l1",
+ "category": "handwritten_line",
+ "run": 1,
+ "latency_s": 13.97
+}

@@ -1,0 +1,15 @@
+{
+ "raw": "{\"transcription\": \"OQ מתכנסת ל 20 BINS לא אחידים על פי צפיות הפיקסלים בהקטנטומגוה. כך\"}",
+ "transcription": "OQ מתכנסת ל 20 BINS לא אחידים על פי צפיות הפיקסלים בהקטנטומגוה. כך",
+ "error": null,
+ "status": 200,
+ "usage_prompt_tokens": 190,
+ "usage_completion_tokens": 43,
+ "usage_total_tokens": 233,
+ "thinking_chars": 0,
+ "done_reason": "stop",
+ "item": "pr_docA_p6_b1",
+ "category": "mixed_he_en",
+ "run": 1,
+ "latency_s": 11.45
+}

@@ -1,0 +1,15 @@
+{
+ "raw": "{\"transcription\": \"בדיקה של סוגים שונים של תוכנות (למשל, תוכנות מערכת)\"}",
+ "transcription": "בדיקה של סוגים שונים של תוכנות (למשל, תוכנות מערכת)",
+ "error": null,
+ "status": 200,
+ "usage_prompt_tokens": 193,
+ "usage_completion_tokens": 31,
+ "usage_total_tokens": 224,
+ "thinking_chars": 0,
+ "done_reason": "stop",
+ "item": "hl_e005_q2_r8__l1",
+ "category": "handwritten_line",
+ "run": 1,
+ "latency_s": 9.34
+}

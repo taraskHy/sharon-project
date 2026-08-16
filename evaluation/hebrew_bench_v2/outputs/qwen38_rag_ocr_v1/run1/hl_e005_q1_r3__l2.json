@@ -1,0 +1,40 @@
+{
+ "item": "hl_e005_q1_r3__l2",
+ "raw_text": "האם יש קשר בין high-frequency וצבע טבעי",
+ "suggested_text": "האם יש קשר בין high-frequency וצבע טבעי",
+ "transcription": "האם יש קשר בין high-frequency וצבע טבעי",
+ "edits": [],
+ "uncertain_regions": [],
+ "semantic_change_risk": false,
+ "needs_review": false,
+ "retrieved": [
+  {
+   "chunk_id": "79d40e5a3f83fe26",
+   "source": "עיבוד תמונה.pdf",
+   "page": 81,
+   "similarity": 0.5164
+  },
+  {
+   "chunk_id": "e096025e340fc3a7",
+   "source": "עיבוד תמונה.pdf",
+   "page": 6,
+   "similarity": 0.5125
+  },
+  {
+   "chunk_id": "319afa39c7b076ed",
+   "source": "עיבוד תמונה.pdf",
+   "page": 108,
+   "similarity": 0.5086
+  },
+  {
+   "chunk_id": "c0d5df5f28ae3af3",
+   "source": "עיבוד תמונה.pdf",
+   "page": 21,
+   "similarity": 0.5052
+  }
+ ],
+ "retrieval_empty": false,
+ "error": "JSONDecodeError: Unterminated string starting at: line 7 column 17 (char 154)",
+ "retrieval_s": 2.48,
+ "repair_s": 41.41
+}

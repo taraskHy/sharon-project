@@ -1,0 +1,15 @@
+{
+ "raw": "{\"transcription\": \"לא ידוע לי אם יש תוכנית כזו, אבל אני חושב שזה ייתכן. אני לא בטוח אם זה יקרה, אבל אני מקווה שכן.\"}",
+ "transcription": "לא ידוע לי אם יש תוכנית כזו, אבל אני חושב שזה ייתכן. אני לא בטוח אם זה יקרה, אבל אני מקווה שכן.",
+ "error": null,
+ "status": 200,
+ "usage_prompt_tokens": 219,
+ "usage_completion_tokens": 50,
+ "usage_total_tokens": 269,
+ "thinking_chars": 0,
+ "done_reason": "stop",
+ "item": "hl_e007_q1_r1__l1",
+ "category": "handwritten_line",
+ "run": 1,
+ "latency_s": 12.48
+}

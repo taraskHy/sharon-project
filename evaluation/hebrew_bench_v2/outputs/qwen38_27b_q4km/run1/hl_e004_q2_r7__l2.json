@@ -1,0 +1,15 @@
+{
+ "raw": "{\"transcription\": \"אין מידע על ממצאים אובייקטיביים, אין תלונות על כאב\"}",
+ "transcription": "אין מידע על ממצאים אובייקטיביים, אין תלונות על כאב",
+ "error": null,
+ "status": 200,
+ "usage_prompt_tokens": 271,
+ "usage_completion_tokens": 32,
+ "usage_total_tokens": 303,
+ "thinking_chars": 0,
+ "done_reason": "stop",
+ "item": "hl_e004_q2_r7__l2",
+ "category": "handwritten_line",
+ "run": 1,
+ "latency_s": 9.22
+}

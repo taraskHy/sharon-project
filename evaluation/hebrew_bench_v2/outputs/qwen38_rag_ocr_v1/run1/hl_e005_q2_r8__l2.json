@@ -1,0 +1,53 @@
+{
+ "item": "hl_e005_q2_r8__l2",
+ "raw_text": "בכלל x לאיך ש אלו ואלו זיכ (כ. ויזכרם",
+ "suggested_text": "בכללי, x לא ידוע, ואלו זיכרון (כ. ויזכרם)",
+ "transcription": "בכללי, x לא ידוע, ואלו זיכרון (כ. ויזכרם)",
+ "edits": [
+  {
+   "raw": "x לאיך",
+   "suggested": "x לא ידוע",
+   "reason": "המילה 'לאיך' היא תעתוע אופייני של OCR; 'לא ידוע' היא תרגום לוגי ומשתלב עם הקשר של 'x' כמשתנה לא מוגדר. 'לא ידוע' היא תعبير נפוץ במתמטיקה/מדעי המחשב.",
+   "risk": "low"
+  },
+  {
+   "raw": "ש אלו ואלו זיכ",
+   "suggested": "ש אלו ואלו זיכרון",
+   "reason": "המילה 'זיכ' היא תעתוע של 'זיכרון'. בהקשר של 'כ. ויזכרם' (כנראה 'כְּמוֹ זִכְרָם' או 'כְּמוֹ זִכְרָם' – זיכרון), 'זיכרון' היא המילה הנכונה. 'זיכ' לא מובנת בדיבור רגיל.",
+   "risk": "low"
+  }
+ ],
+ "uncertain_regions": [],
+ "semantic_change_risk": false,
+ "needs_review": false,
+ "retrieved": [
+  {
+   "chunk_id": "4963b4bf70e69016",
+   "source": "עיבוד תמונה.pdf",
+   "page": 42,
+   "similarity": 0.4883
+  },
+  {
+   "chunk_id": "0a029e1bb12c3de7",
+   "source": "עיבוד תמונה.pdf",
+   "page": 42,
+   "similarity": 0.4857
+  },
+  {
+   "chunk_id": "6cce560c4b0e5deb",
+   "source": "עיבוד תמונה.pdf",
+   "page": 10,
+   "similarity": 0.4846
+  },
+  {
+   "chunk_id": "2e43c92a8b6dff51",
+   "source": "עיבוד תמונה.pdf",
+   "page": 100,
+   "similarity": 0.4783
+  }
+ ],
+ "retrieval_empty": false,
+ "error": null,
+ "retrieval_s": 2.48,
+ "repair_s": 13.94
+}

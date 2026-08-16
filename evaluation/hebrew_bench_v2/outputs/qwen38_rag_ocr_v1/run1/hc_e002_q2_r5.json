@@ -1,0 +1,59 @@
+{
+ "item": "hc_e002_q2_r5",
+ "raw_text": "במידע עמינים במידע עמינים\nג' (התקבלו) תע",
+ "suggested_text": "במידע עמינים, במידע עמינים, ג' (התקבלו) תע",
+ "transcription": "במידע עמינים, במידע עמינים, ג' (התקבלו) תע",
+ "edits": [
+  {
+   "raw": "במידע עמינים",
+   "suggested": "במידע עמינים",
+   "reason": "No corruption detected; likely correct as-is or OCR error is minimal and contextually plausible (e.g., 'עַמִּינִים' may be a misread of 'עַמִּינִים' or similar). Preserved as-is per instruction to not silently correct student mistakes unless contextually necessary. No change needed here unless context suggests otherwise, but no context provided for correction. Left unchanged for safety and consistency with student's intent.",
+   "risk": "low"
+  },
+  {
+   "raw": "במידע עמינים",
+   "suggested": "במידע עמינים",
+   "reason": "Same as above; no change needed.",
+   "risk": "low"
+  },
+  {
+   "raw": "ג' (התקבלו) תע",
+   "suggested": "ג' (התקבלו) תע",
+   "reason": "Unclear if 'ג' is meant to be 'ג' or 'ג' (possibly 'ג' as in 'ג' (התקבלו) תע' — but no context to correct. Preserved as-is. 'תע' may be a misread of 'תע' or 'תע' — but no context to correct. Left unchanged for safety and consistency with student's intent.",
+   "risk": "low"
+  }
+ ],
+ "uncertain_regions": [],
+ "semantic_change_risk": false,
+ "needs_review": false,
+ "retrieved": [
+  {
+   "chunk_id": "2436a2554d8fbf99",
+   "source": "עיבוד תמונה.pdf",
+   "page": 113,
+   "similarity": 0.4257
+  },
+  {
+   "chunk_id": "57912db00049cb3c",
+   "source": "עיבוד תמונה.pdf",
+   "page": 77,
+   "similarity": 0.4235
+  },
+  {
+   "chunk_id": "e1347f1f0dbe868c",
+   "source": "עיבוד תמונה.pdf",
+   "page": 45,
+   "similarity": 0.4162
+  },
+  {
+   "chunk_id": "dab9a140425d60ea",
+   "source": "עיבוד תמונה.pdf",
+   "page": 113,
+   "similarity": 0.4155
+  }
+ ],
+ "retrieval_empty": false,
+ "error": null,
+ "retrieval_s": 2.5,
+ "repair_s": 16.19
+}

@@ -1,0 +1,40 @@
+{
+ "item": "hl_e005_q1_r4__l2",
+ "raw_text": "23. ע' א' אומרת כי כל דבר (אמריא) יש לו ערך",
+ "suggested_text": "23. ע' א' אומרת כי כל דבר (אמריא) יש לו ערך",
+ "transcription": "23. ע' א' אומרת כי כל דבר (אמריא) יש לו ערך",
+ "edits": [],
+ "uncertain_regions": [],
+ "semantic_change_risk": false,
+ "needs_review": false,
+ "retrieved": [
+  {
+   "chunk_id": "a0c2f7955a0c8131",
+   "source": "עיבוד תמונה.pdf",
+   "page": 58,
+   "similarity": 0.4439
+  },
+  {
+   "chunk_id": "0a029e1bb12c3de7",
+   "source": "עיבוד תמונה.pdf",
+   "page": 42,
+   "similarity": 0.4407
+  },
+  {
+   "chunk_id": "92d6dde6fc07d151",
+   "source": "עיבוד תמונה.pdf",
+   "page": 5,
+   "similarity": 0.4274
+  },
+  {
+   "chunk_id": "c0ded09ee7da6947",
+   "source": "עיבוד תמונה.pdf",
+   "page": 118,
+   "similarity": 0.4222
+  }
+ ],
+ "retrieval_empty": false,
+ "error": null,
+ "retrieval_s": 2.48,
+ "repair_s": 5.3
+}

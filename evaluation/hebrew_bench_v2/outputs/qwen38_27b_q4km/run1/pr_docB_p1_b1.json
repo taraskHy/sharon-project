@@ -1,0 +1,15 @@
+{
+ "raw": "{\"transcription\": \"203.2480\\n2026 סמסטר ב מועד א', 12.07.2026\\nמרצה: פרופ' יורי רבינוביץ'\"}",
+ "transcription": "203.2480\n2026 סמסטר ב מועד א', 12.07.2026\nמרצה: פרופ' יורי רבינוביץ'",
+ "error": null,
+ "status": 200,
+ "usage_prompt_tokens": 256,
+ "usage_completion_tokens": 56,
+ "usage_total_tokens": 312,
+ "thinking_chars": 0,
+ "done_reason": "stop",
+ "item": "pr_docB_p1_b1",
+ "category": "formula_printed",
+ "run": 1,
+ "latency_s": 13.69
+}

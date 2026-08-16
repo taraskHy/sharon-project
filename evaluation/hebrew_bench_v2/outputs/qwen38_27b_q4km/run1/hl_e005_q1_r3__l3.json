@@ -1,0 +1,15 @@
+{
+ "raw": "{\"transcription\": \"אמרתי: [?] רציתי לראות איך זה ייראה /אבל כל כך הרבה זמן לא היה לי\"}",
+ "transcription": "אמרתי: [?] רציתי לראות איך זה ייראה /אבל כל כך הרבה זמן לא היה לי",
+ "error": null,
+ "status": 200,
+ "usage_prompt_tokens": 193,
+ "usage_completion_tokens": 37,
+ "usage_total_tokens": 230,
+ "thinking_chars": 0,
+ "done_reason": "stop",
+ "item": "hl_e005_q1_r3__l3",
+ "category": "handwritten_line",
+ "run": 1,
+ "latency_s": 10.19
+}

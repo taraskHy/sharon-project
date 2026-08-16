@@ -1,0 +1,40 @@
+{
+ "item": "hl_e006_q1_r8__l1",
+ "raw_text": "אם [ללא] אימרים אין לדעת אם קיים קשר סיבובי בין האם לילד. אם קיים קשר סיבובי בין האם לילד, אז נראה",
+ "suggested_text": "אם [ללא] אימרים אין לדעת אם קיים קשר סיבובי בין האם לילד. אם קיים קשר סיבובי בין האם לילד, אז נראה",
+ "transcription": "אם [ללא] אימרים אין לדעת אם קיים קשר סיבובי בין האם לילד. אם קיים קשר סיבובי בין האם לילד, אז נראה",
+ "edits": [],
+ "uncertain_regions": [],
+ "semantic_change_risk": false,
+ "needs_review": false,
+ "retrieved": [
+  {
+   "chunk_id": "4963b4bf70e69016",
+   "source": "עיבוד תמונה.pdf",
+   "page": 42,
+   "similarity": 0.4939
+  },
+  {
+   "chunk_id": "99d8357322ce8235",
+   "source": "עיבוד תמונה.pdf",
+   "page": 111,
+   "similarity": 0.478
+  },
+  {
+   "chunk_id": "7ee29312e007e610",
+   "source": "עיבוד תמונה.pdf",
+   "page": 23,
+   "similarity": 0.4769
+  },
+  {
+   "chunk_id": "453ff0622950c94f",
+   "source": "עיבוד תמונה.pdf",
+   "page": 41,
+   "similarity": 0.4654
+  }
+ ],
+ "retrieval_empty": false,
+ "error": null,
+ "retrieval_s": 2.53,
+ "repair_s": 5.66
+}

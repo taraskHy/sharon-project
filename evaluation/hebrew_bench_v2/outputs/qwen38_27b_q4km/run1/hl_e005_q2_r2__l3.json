@@ -1,0 +1,15 @@
+{
+ "raw": "{\"transcription\": \"אין כלום, אני לא רוצה ללמוד, אני רוצה ללמוד\"}",
+ "transcription": "אין כלום, אני לא רוצה ללמוד, אני רוצה ללמוד",
+ "error": null,
+ "status": 200,
+ "usage_prompt_tokens": 245,
+ "usage_completion_tokens": 28,
+ "usage_total_tokens": 273,
+ "thinking_chars": 0,
+ "done_reason": "stop",
+ "item": "hl_e005_q2_r2__l3",
+ "category": "handwritten_line",
+ "run": 1,
+ "latency_s": 8.22
+}

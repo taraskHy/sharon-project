@@ -1,0 +1,15 @@
+{
+ "raw": "{\"transcription\": \"אין לי דעה על האם יש צורך בשינוי החוק\"}",
+ "transcription": "אין לי דעה על האם יש צורך בשינוי החוק",
+ "error": null,
+ "status": 200,
+ "usage_prompt_tokens": 301,
+ "usage_completion_tokens": 24,
+ "usage_total_tokens": 325,
+ "thinking_chars": 0,
+ "done_reason": "stop",
+ "item": "hc_e002_q2_r7",
+ "category": "handwritten_cell",
+ "run": 1,
+ "latency_s": 7.81
+}

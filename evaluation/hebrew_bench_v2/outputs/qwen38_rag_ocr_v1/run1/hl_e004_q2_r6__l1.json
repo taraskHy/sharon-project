@@ -1,0 +1,40 @@
+{
+ "item": "hl_e004_q2_r6__l1",
+ "raw_text": "מצערי לא ידעתי שזה קורה לי",
+ "suggested_text": "מצערי לא ידעתי שזה קורה לי",
+ "transcription": "מצערי לא ידעתי שזה קורה לי",
+ "edits": [],
+ "uncertain_regions": [],
+ "semantic_change_risk": false,
+ "needs_review": false,
+ "retrieved": [
+  {
+   "chunk_id": "2436a2554d8fbf99",
+   "source": "עיבוד תמונה.pdf",
+   "page": 113,
+   "similarity": 0.4062
+  },
+  {
+   "chunk_id": "8b681e530bf29c46",
+   "source": "עיבוד תמונה.pdf",
+   "page": 65,
+   "similarity": 0.3985
+  },
+  {
+   "chunk_id": "103a997506b1a39d",
+   "source": "עיבוד תמונה.pdf",
+   "page": 3,
+   "similarity": 0.3974
+  },
+  {
+   "chunk_id": "7f86f1df5233f462",
+   "source": "עיבוד תמונה.pdf",
+   "page": 18,
+   "similarity": 0.3954
+  }
+ ],
+ "retrieval_empty": false,
+ "error": null,
+ "retrieval_s": 2.55,
+ "repair_s": 5.08
+}

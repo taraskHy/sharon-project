@@ -1,0 +1,40 @@
+{
+ "item": "hl_e006_q1_r2__l1",
+ "raw_text": "אני לא יודע מה אני עושה כאן",
+ "suggested_text": "אני לא יודע מה אני עושה כאן",
+ "transcription": "אני לא יודע מה אני עושה כאן",
+ "edits": [],
+ "uncertain_regions": [],
+ "semantic_change_risk": false,
+ "needs_review": false,
+ "retrieved": [
+  {
+   "chunk_id": "25645e2a80543f2f",
+   "source": "עיבוד תמונה.pdf",
+   "page": 72,
+   "similarity": 0.4486
+  },
+  {
+   "chunk_id": "103a997506b1a39d",
+   "source": "עיבוד תמונה.pdf",
+   "page": 3,
+   "similarity": 0.439
+  },
+  {
+   "chunk_id": "7a4f2bf2ef7bfc18",
+   "source": "עיבוד תמונה.pdf",
+   "page": 113,
+   "similarity": 0.4295
+  },
+  {
+   "chunk_id": "55e315ad4355d4e4",
+   "source": "עיבוד תמונה.pdf",
+   "page": 17,
+   "similarity": 0.427
+  }
+ ],
+ "retrieval_empty": false,
+ "error": null,
+ "retrieval_s": 2.55,
+ "repair_s": 5.05
+}

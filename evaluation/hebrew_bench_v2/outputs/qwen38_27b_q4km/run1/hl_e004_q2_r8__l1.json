@@ -1,0 +1,15 @@
+{
+ "raw": "{\"transcription\": \"של Echo 18 תלמידים 2010\"}",
+ "transcription": "של Echo 18 תלמידים 2010",
+ "error": null,
+ "status": 200,
+ "usage_prompt_tokens": 219,
+ "usage_completion_tokens": 21,
+ "usage_total_tokens": 240,
+ "thinking_chars": 0,
+ "done_reason": "stop",
+ "item": "hl_e004_q2_r8__l1",
+ "category": "handwritten_line",
+ "run": 1,
+ "latency_s": 7.06
+}

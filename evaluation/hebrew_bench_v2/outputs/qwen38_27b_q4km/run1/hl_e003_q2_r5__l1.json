@@ -1,0 +1,15 @@
+{
+ "raw": "{\"transcription\": \"אני לא רוצה ללכת ללמוד (או לא) (או) אני לא רוצה ללמוד\"}",
+ "transcription": "אני לא רוצה ללכת ללמוד (או לא) (או) אני לא רוצה ללמוד",
+ "error": null,
+ "status": 200,
+ "usage_prompt_tokens": 297,
+ "usage_completion_tokens": 34,
+ "usage_total_tokens": 331,
+ "thinking_chars": 0,
+ "done_reason": "stop",
+ "item": "hl_e003_q2_r5__l1",
+ "category": "handwritten_line",
+ "run": 1,
+ "latency_s": 9.86
+}

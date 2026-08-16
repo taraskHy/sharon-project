@@ -1,0 +1,15 @@
+{
+ "raw": "{\"transcription\": \"קונסולוביציה עם המסכה (ואם איננייה חד מינידית) וגרמת לשתשטו התמנמה בככון אופקי (פעולה 5) או אנכי (פעולה 6). וכל השפיות האנכיות או האופקיות בהתאמה\"}",
+ "transcription": "קונסולוביציה עם המסכה (ואם איננייה חד מינידית) וגרמת לשתשטו התמנמה בככון אופקי (פעולה 5) או אנכי (פעולה 6). וכל השפיות האנכיות או האופקיות בהתאמה",
+ "error": null,
+ "status": 200,
+ "usage_prompt_tokens": 213,
+ "usage_completion_tokens": 81,
+ "usage_total_tokens": 294,
+ "thinking_chars": 0,
+ "done_reason": "stop",
+ "item": "pr_docA_p3_b3",
+ "category": "printed_rtl",
+ "run": 1,
+ "latency_s": 19.61
+}

@@ -1,0 +1,15 @@
+{
+ "raw": "{\"transcription\": \"C = 2 sin(3π/2)\"}",
+ "transcription": "C = 2 sin(3π/2)",
+ "error": null,
+ "status": 200,
+ "usage_prompt_tokens": 193,
+ "usage_completion_tokens": 18,
+ "usage_total_tokens": 211,
+ "thinking_chars": 0,
+ "done_reason": "stop",
+ "item": "hl_e004_q1_r6__l2",
+ "category": "handwritten_line",
+ "run": 1,
+ "latency_s": 6.84
+}

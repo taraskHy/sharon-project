@@ -1,0 +1,40 @@
+{
+ "item": "hl_e003_q1_r8__l1",
+ "raw_text": "הראה שה office תע DC לא נותן ערכים מהר'ם שכן, ק'י לא נותן",
+ "suggested_text": "הראה שה office תע DC לא נותן ערכים מהר'ם שכן, ק'י לא נותן",
+ "transcription": "הראה שה office תע DC לא נותן ערכים מהר'ם שכן, ק'י לא נותן",
+ "edits": [],
+ "uncertain_regions": [],
+ "semantic_change_risk": false,
+ "needs_review": false,
+ "retrieved": [
+  {
+   "chunk_id": "7f86f1df5233f462",
+   "source": "עיבוד תמונה.pdf",
+   "page": 18,
+   "similarity": 0.4227
+  },
+  {
+   "chunk_id": "dcbc6eb17369a3fa",
+   "source": "עיבוד תמונה.pdf",
+   "page": 56,
+   "similarity": 0.4124
+  },
+  {
+   "chunk_id": "1c8b03963e342677",
+   "source": "עיבוד תמונה.pdf",
+   "page": 112,
+   "similarity": 0.4122
+  },
+  {
+   "chunk_id": "36fb798cd6bc9af3",
+   "source": "עיבוד תמונה.pdf",
+   "page": 104,
+   "similarity": 0.4103
+  }
+ ],
+ "retrieval_empty": false,
+ "error": "JSONDecodeError: Unterminated string starting at: line 7 column 17 (char 200)",
+ "retrieval_s": 2.52,
+ "repair_s": 41.86
+}

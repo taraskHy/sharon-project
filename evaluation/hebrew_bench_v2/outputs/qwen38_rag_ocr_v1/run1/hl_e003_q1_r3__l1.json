@@ -1,0 +1,40 @@
+{
+ "item": "hl_e003_q1_r3__l1",
+ "raw_text": "אין לי הרגלים לקום וחרי התעוריה ב2:00\nאבל מה שרלוונט לראש בעל דגמר \"לר\"",
+ "suggested_text": "אין לי הרגלים לקום וחרי התעוריה ב2:00\nאבל מה שרלוונט לראש בעל דגמר \"לר\"",
+ "transcription": "אין לי הרגלים לקום וחרי התעוריה ב2:00\nאבל מה שרלוונט לראש בעל דגמר \"לר\"",
+ "edits": [],
+ "uncertain_regions": [],
+ "semantic_change_risk": false,
+ "needs_review": false,
+ "retrieved": [
+  {
+   "chunk_id": "f0ee10e7f58d2ac6",
+   "source": "עיבוד תמונה.pdf",
+   "page": 108,
+   "similarity": 0.4362
+  },
+  {
+   "chunk_id": "e3957aa310784480",
+   "source": "עיבוד תמונה.pdf",
+   "page": 9,
+   "similarity": 0.4302
+  },
+  {
+   "chunk_id": "ea896c2f3a29fb2e",
+   "source": "עיבוד תמונה.pdf",
+   "page": 49,
+   "similarity": 0.4289
+  },
+  {
+   "chunk_id": "62ba70ad2e84dcb3",
+   "source": "עיבוד תמונה.pdf",
+   "page": 29,
+   "similarity": 0.4242
+  }
+ ],
+ "retrieval_empty": false,
+ "error": "JSONDecodeError: Unterminated string starting at: line 7 column 17 (char 183)",
+ "retrieval_s": 2.5,
+ "repair_s": 41.36
+}

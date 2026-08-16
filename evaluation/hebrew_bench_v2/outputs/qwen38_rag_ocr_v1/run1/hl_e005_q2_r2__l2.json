@@ -1,0 +1,47 @@
+{
+ "item": "hl_e005_q2_r2__l2",
+ "raw_text": "בניית מערכת thresholding עם גרף תלות (COCO) ואפס",
+ "suggested_text": "בניית מערכת thresholding עם גרף תלות (COCO) ואפס",
+ "transcription": "בניית מערכת thresholding עם גרף תלות (COCO) ואפס",
+ "edits": [
+  {
+   "raw": "COCO",
+   "suggested": "COCO",
+   "reason": "The term 'COCO' appears plausible as-is; no OCR corruption detected. It may be a student's note or reference, possibly unrelated to the course context, but preserved as requested. No correction needed unless context suggests otherwise (e.g., if 'COCO' is not a valid term in this context, but no such context is provided).",
+   "risk": "low"
+  }
+ ],
+ "uncertain_regions": [],
+ "semantic_change_risk": false,
+ "needs_review": false,
+ "retrieved": [
+  {
+   "chunk_id": "712d64d3d92fb2a8",
+   "source": "עיבוד תמונה.pdf",
+   "page": 14,
+   "similarity": 0.5509
+  },
+  {
+   "chunk_id": "3cf3ad0841e0108c",
+   "source": "עיבוד תמונה.pdf",
+   "page": 91,
+   "similarity": 0.5497
+  },
+  {
+   "chunk_id": "005b01a10cc82314",
+   "source": "עיבוד תמונה.pdf",
+   "page": 67,
+   "similarity": 0.5472
+  },
+  {
+   "chunk_id": "d7b0aa554ebddf7c",
+   "source": "עיבוד תמונה.pdf",
+   "page": 79,
+   "similarity": 0.5068
+  }
+ ],
+ "retrieval_empty": false,
+ "error": null,
+ "retrieval_s": 2.59,
+ "repair_s": 9.25
+}

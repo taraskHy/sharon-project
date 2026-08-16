@@ -1,0 +1,15 @@
+{
+ "raw": "{\"transcription\": \"רוב הוויכוחים סביב הבלתי מובן (ב איזה מידה\"}",
+ "transcription": "רוב הוויכוחים סביב הבלתי מובן (ב איזה מידה",
+ "error": null,
+ "status": 200,
+ "usage_prompt_tokens": 219,
+ "usage_completion_tokens": 31,
+ "usage_total_tokens": 250,
+ "thinking_chars": 0,
+ "done_reason": "stop",
+ "item": "hl_e005_q1_r1__l1",
+ "category": "handwritten_line",
+ "run": 1,
+ "latency_s": 8.86
+}

@@ -1,0 +1,40 @@
+{
+ "item": "hl_e005_q2_r2__l3",
+ "raw_text": "אין כלום, אני לא רוצה ללמוד, אני רוצה ללמוד",
+ "suggested_text": "אין כלום, אני לא רוצה ללמוד, אני רוצה ללמוד",
+ "transcription": "אין כלום, אני לא רוצה ללמוד, אני רוצה ללמוד",
+ "edits": [],
+ "uncertain_regions": [],
+ "semantic_change_risk": false,
+ "needs_review": false,
+ "retrieved": [
+  {
+   "chunk_id": "13e611c6334e1f92",
+   "source": "עיבוד תמונה.pdf",
+   "page": 116,
+   "similarity": 0.4356
+  },
+  {
+   "chunk_id": "07c2953cfc3d7c43",
+   "source": "עיבוד תמונה.pdf",
+   "page": 116,
+   "similarity": 0.419
+  },
+  {
+   "chunk_id": "4cd86f3d5aa03067",
+   "source": "עיבוד תמונה.pdf",
+   "page": 24,
+   "similarity": 0.4181
+  },
+  {
+   "chunk_id": "62ba70ad2e84dcb3",
+   "source": "עיבוד תמונה.pdf",
+   "page": 29,
+   "similarity": 0.418
+  }
+ ],
+ "retrieval_empty": false,
+ "error": null,
+ "retrieval_s": 2.53,
+ "repair_s": 5.2
+}

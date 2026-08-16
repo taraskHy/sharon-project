@@ -1,0 +1,40 @@
+{
+ "item": "hl_e004_q2_r4__l2",
+ "raw_text": "כלומר, כן יש גם Quantization של אינסטרומנטים מסוימים",
+ "suggested_text": "כלומר, כן יש גם Quantization של אינסטרומנטים מסוימים",
+ "transcription": "כלומר, כן יש גם Quantization של אינסטרומנטים מסוימים",
+ "edits": [],
+ "uncertain_regions": [],
+ "semantic_change_risk": false,
+ "needs_review": false,
+ "retrieved": [
+  {
+   "chunk_id": "64c37ae6bd43465b",
+   "source": "עיבוד תמונה.pdf",
+   "page": 28,
+   "similarity": 0.5154
+  },
+  {
+   "chunk_id": "bf1a0dcebf3d3be1",
+   "source": "עיבוד תמונה.pdf",
+   "page": 7,
+   "similarity": 0.5151
+  },
+  {
+   "chunk_id": "6bbdc5e368b53f21",
+   "source": "עיבוד תמונה.pdf",
+   "page": 112,
+   "similarity": 0.5076
+  },
+  {
+   "chunk_id": "291866c342c6dff0",
+   "source": "עיבוד תמונה.pdf",
+   "page": 19,
+   "similarity": 0.5028
+  }
+ ],
+ "retrieval_empty": false,
+ "error": null,
+ "retrieval_s": 2.55,
+ "repair_s": 5.28
+}

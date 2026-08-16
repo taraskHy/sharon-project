@@ -1,0 +1,40 @@
+{
+ "item": "hl_e007_q1_r1__l1",
+ "raw_text": "לא ידוע לי אם יש תוכנית כזו, אבל אני חושב שזה ייתכן. אני לא בטוח אם זה יקרה, אבל אני מקווה שכן.",
+ "suggested_text": "לא ידוע לי אם יש תוכנית כזו, אבל אני חושב שזה ייתכן. אני לא בטוח אם זה יקרה, אבל אני מקווה שכן.",
+ "transcription": "לא ידוע לי אם יש תוכנית כזו, אבל אני חושב שזה ייתכן. אני לא בטוח אם זה יקרה, אבל אני מקווה שכן.",
+ "edits": [],
+ "uncertain_regions": [],
+ "semantic_change_risk": false,
+ "needs_review": false,
+ "retrieved": [
+  {
+   "chunk_id": "9889b14e1688e203",
+   "source": "עיבוד תמונה.pdf",
+   "page": 15,
+   "similarity": 0.4428
+  },
+  {
+   "chunk_id": "40cac31d68f2ea44",
+   "source": "עיבוד תמונה.pdf",
+   "page": 3,
+   "similarity": 0.4413
+  },
+  {
+   "chunk_id": "196472e276a0fdee",
+   "source": "עיבוד תמונה.pdf",
+   "page": 28,
+   "similarity": 0.4406
+  },
+  {
+   "chunk_id": "64c37ae6bd43465b",
+   "source": "עיבוד תמונה.pdf",
+   "page": 28,
+   "similarity": 0.4389
+  }
+ ],
+ "retrieval_empty": false,
+ "error": null,
+ "retrieval_s": 2.55,
+ "repair_s": 5.73
+}

@@ -1,0 +1,15 @@
+{
+ "raw": "{\"transcription\": \"במידע עמינים במידע עמינים\\nג' (התקבלו) תע\" }",
+ "transcription": "במידע עמינים במידע עמינים\nג' (התקבלו) תע",
+ "error": null,
+ "status": 200,
+ "usage_prompt_tokens": 275,
+ "usage_completion_tokens": 33,
+ "usage_total_tokens": 308,
+ "thinking_chars": 0,
+ "done_reason": "stop",
+ "item": "hc_e002_q2_r5",
+ "category": "handwritten_cell",
+ "run": 1,
+ "latency_s": 9.47
+}

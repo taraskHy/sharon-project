@@ -1,0 +1,15 @@
+{
+ "raw": "{\"transcription\": \"על כלל, כי ארצות (סמ' ארצות) לא הו\"}",
+ "transcription": "על כלל, כי ארצות (סמ' ארצות) לא הו",
+ "error": null,
+ "status": 200,
+ "usage_prompt_tokens": 193,
+ "usage_completion_tokens": 29,
+ "usage_total_tokens": 222,
+ "thinking_chars": 0,
+ "done_reason": "stop",
+ "item": "hl_e004_q2_r3__l1",
+ "category": "handwritten_line",
+ "run": 1,
+ "latency_s": 8.88
+}

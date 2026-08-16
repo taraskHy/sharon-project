@@ -1,0 +1,15 @@
+{
+ "raw": "{\"transcription\": \"6. הרעשה עם רעש גאומיני ואחכ קונבולוציה עם המסכה: e^(-(y-y0)^2/2σ)\"}",
+ "transcription": "6. הרעשה עם רעש גאומיני ואחכ קונבולוציה עם המסכה: e^(-(y-y0)^2/2σ)",
+ "error": null,
+ "status": 200,
+ "usage_prompt_tokens": 213,
+ "usage_completion_tokens": 47,
+ "usage_total_tokens": 260,
+ "thinking_chars": 0,
+ "done_reason": "stop",
+ "item": "pr_docA_p3_b0",
+ "category": "printed_rtl",
+ "run": 1,
+ "latency_s": 11.98
+}

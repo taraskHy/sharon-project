@@ -1,0 +1,15 @@
+{
+ "raw": "{\"transcription\": \"831712 ס'ג (6.09121212.6 (5522.0)\"}",
+ "transcription": "831712 ס'ג (6.09121212.6 (5522.0)",
+ "error": null,
+ "status": 200,
+ "usage_prompt_tokens": 219,
+ "usage_completion_tokens": 37,
+ "usage_total_tokens": 256,
+ "thinking_chars": 0,
+ "done_reason": "stop",
+ "item": "hl_e005_q2_r3__l2",
+ "category": "handwritten_line",
+ "run": 1,
+ "latency_s": 9.88
+}

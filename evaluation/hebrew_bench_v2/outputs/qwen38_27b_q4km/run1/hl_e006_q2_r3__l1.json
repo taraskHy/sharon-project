@@ -1,0 +1,15 @@
+{
+ "raw": "{\"transcription\": \"ב ו/ו הכנסת הוויזואלית לרשות כלאשם ר' ה'ל'ל מציגה כדבר כל א'לסבוק הוויזואלית לרשות כלאשם ר' ה'ל'ל מציגה כדבר כל\"}",
+ "transcription": "ב ו/ו הכנסת הוויזואלית לרשות כלאשם ר' ה'ל'ל מציגה כדבר כל א'לסבוק הוויזואלית לרשות כלאשם ר' ה'ל'ל מציגה כדבר כל",
+ "error": null,
+ "status": 200,
+ "usage_prompt_tokens": 245,
+ "usage_completion_tokens": 78,
+ "usage_total_tokens": 323,
+ "thinking_chars": 0,
+ "done_reason": "stop",
+ "item": "hl_e006_q2_r3__l1",
+ "category": "handwritten_line",
+ "run": 1,
+ "latency_s": 18.3
+}

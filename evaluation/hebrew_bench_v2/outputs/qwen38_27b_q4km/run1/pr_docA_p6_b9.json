@@ -1,0 +1,15 @@
+{
+ "raw": "{\"transcription\": \"6. קונבולציה עם המסכה [1 0 0 1] A/D/H\"}",
+ "transcription": "6. קונבולציה עם המסכה [1 0 0 1] A/D/H",
+ "error": null,
+ "status": 200,
+ "usage_prompt_tokens": 259,
+ "usage_completion_tokens": 31,
+ "usage_total_tokens": 290,
+ "thinking_chars": 0,
+ "done_reason": "stop",
+ "item": "pr_docA_p6_b9",
+ "category": "formula_printed",
+ "run": 1,
+ "latency_s": 9.05
+}

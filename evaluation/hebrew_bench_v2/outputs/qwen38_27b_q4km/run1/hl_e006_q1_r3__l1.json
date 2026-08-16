@@ -1,0 +1,15 @@
+{
+ "raw": "{\"transcription\": \"קליגוב תאורה ריאם זארי סופר! כן D\"}",
+ "transcription": "קליגוב תאורה ריאם זארי סופר! כן D",
+ "error": null,
+ "status": 200,
+ "usage_prompt_tokens": 219,
+ "usage_completion_tokens": 27,
+ "usage_total_tokens": 246,
+ "thinking_chars": 0,
+ "done_reason": "stop",
+ "item": "hl_e006_q1_r3__l1",
+ "category": "handwritten_line",
+ "run": 1,
+ "latency_s": 8.34
+}

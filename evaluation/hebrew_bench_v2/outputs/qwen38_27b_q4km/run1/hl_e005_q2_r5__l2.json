@@ -1,0 +1,15 @@
+{
+ "raw": "{\"transcription\": \"היי, יש לי שאלה: איך אני יכול/ה לעשות את זה? תודה\"}",
+ "transcription": "היי, יש לי שאלה: איך אני יכול/ה לעשות את זה? תודה",
+ "error": null,
+ "status": 200,
+ "usage_prompt_tokens": 193,
+ "usage_completion_tokens": 29,
+ "usage_total_tokens": 222,
+ "thinking_chars": 0,
+ "done_reason": "stop",
+ "item": "hl_e005_q2_r5__l2",
+ "category": "handwritten_line",
+ "run": 1,
+ "latency_s": 8.59
+}

@@ -1,0 +1,15 @@
+{
+ "raw": "{\"transcription\": \"ב. carry את כל או רגולציה של רגולציה\"}",
+ "transcription": "ב. carry את כל או רגולציה של רגולציה",
+ "error": null,
+ "status": 200,
+ "usage_prompt_tokens": 245,
+ "usage_completion_tokens": 24,
+ "usage_total_tokens": 269,
+ "thinking_chars": 0,
+ "done_reason": "stop",
+ "item": "hl_e004_q2_r2__l1",
+ "category": "handwritten_line",
+ "run": 1,
+ "latency_s": 7.53
+}

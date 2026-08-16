@@ -1,0 +1,40 @@
+{
+ "item": "hl_e004_q2_r8__l2",
+ "raw_text": "עם רכיב 10%, עם 5% עם 15%",
+ "suggested_text": "עם רכיב 10%, עם 5% עם 15%",
+ "transcription": "עם רכיב 10%, עם 5% עם 15%",
+ "edits": [],
+ "uncertain_regions": [],
+ "semantic_change_risk": false,
+ "needs_review": false,
+ "retrieved": [
+  {
+   "chunk_id": "6fb8333594ef6317",
+   "source": "עיבוד תמונה.pdf",
+   "page": 8,
+   "similarity": 0.4969
+  },
+  {
+   "chunk_id": "ab79dad37e58752e",
+   "source": "עיבוד תמונה.pdf",
+   "page": 99,
+   "similarity": 0.4904
+  },
+  {
+   "chunk_id": "5831e724d2a66686",
+   "source": "עיבוד תמונה.pdf",
+   "page": 100,
+   "similarity": 0.4825
+  },
+  {
+   "chunk_id": "4fcc67a0a5db3ecb",
+   "source": "עיבוד תמונה.pdf",
+   "page": 39,
+   "similarity": 0.48
+  }
+ ],
+ "retrieval_empty": false,
+ "error": null,
+ "retrieval_s": 2.48,
+ "repair_s": 5.59
+}

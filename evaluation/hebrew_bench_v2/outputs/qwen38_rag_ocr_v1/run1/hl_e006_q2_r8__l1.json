@@ -1,0 +1,40 @@
+{
+ "item": "hl_e006_q2_r8__l1",
+ "raw_text": "אין סעיף 2. סעיף 2 הוא לא 2 כל סעיף 2 הוא סעיף 2",
+ "suggested_text": "אין סעיף 2. סעיף 2 הוא לא 2 כל סעיף 2 הוא סעיף 2",
+ "transcription": "אין סעיף 2. סעיף 2 הוא לא 2 כל סעיף 2 הוא סעיף 2",
+ "edits": [],
+ "uncertain_regions": [],
+ "semantic_change_risk": false,
+ "needs_review": false,
+ "retrieved": [
+  {
+   "chunk_id": "a6b040a0c6ebdedc",
+   "source": "עיבוד תמונה.pdf",
+   "page": 85,
+   "similarity": 0.4627
+  },
+  {
+   "chunk_id": "4ca9b9709e7fc06a",
+   "source": "עיבוד תמונה.pdf",
+   "page": 60,
+   "similarity": 0.4623
+  },
+  {
+   "chunk_id": "f9d59480b98ffc40",
+   "source": "עיבוד תמונה.pdf",
+   "page": 92,
+   "similarity": 0.4596
+  },
+  {
+   "chunk_id": "3f1f38be8e1481e8",
+   "source": "עיבוד תמונה.pdf",
+   "page": 74,
+   "similarity": 0.454
+  }
+ ],
+ "retrieval_empty": false,
+ "error": "JSONDecodeError: Unterminated string starting at: line 7 column 17 (char 225)",
+ "retrieval_s": 2.48,
+ "repair_s": 41.41
+}

@@ -1,0 +1,129 @@
+run1 assoc_docB_p2_b1 pairs 4/4 hyp='א: 0.39; ב: 0.47; ג: 0.51; ד: 0.55'
+run1 assoc_docB_p2_b12 pairs 4/4 hyp='א: 3/19; ב: 4/19; ג: 5/19; ד: 6/19'
+run1 assoc_docB_p2_b3 pairs 4/4 hyp='א: 0.401; ב: 0.427; ג: 0.437; ד: 0.475'
+run1 assoc_docB_p2_b5 pairs 0/4 hyp='א: 3/5; ב: 1/2; ג: 1/3; ד: 1/6'
+run1 assoc_docB_p2_b7 pairs 3/3 hyp='א: 0.29; ב: 0.5; ג: 1; ד: אין אחד מהם'
+run1 hc_e002_q1_r1 cer=2.05 hyp='העובדה שהמחלה היא לא מחלה נפשית אלא מחלה גנטית'
+run1 hc_e002_q1_r2 cer=0.79 hyp='בשעה שהמטאליק נק העניינים נשארו'
+run1 hc_e002_q1_r3 cer=0.69 hyp='הטפאה עם עכברית\nהעברית אפס קיום פארקיו'
+run1 hc_e002_q1_r4 cer=0.66 hyp='בסוף נשארו רק הגוריים'
+run1 hc_e002_q1_r5 cer=0.64 hyp='נראה איבר X סלם הקדמית פרו'
+run1 hc_e002_q1_r6 cer=0.71 hyp='אני לא אקרו ע סקר ה קריא ופיק'
+run1 hc_e002_q1_r7 cer=0.79 hyp='סוגה על מודעות לרכיב על קליעה בפרקטיקה על מודעות לרכיב נכנסי'
+run1 hc_e002_q1_r8 cer=0.79 hyp='אין ספק כי סביר להניח כי תאריך 7.10.15 נקבע על ידי הנתבעת, ו'
+run1 hc_e002_q2_r1 [hard] flagged=False cer=0.78
+run1 hc_e002_q2_r2 cer=0.73 hyp='אני לא יודע מה אני רוצה לעשות עם החיים שלי'
+run1 hc_e002_q2_r3 cer=0.77 hyp='עשה איחודים עם איחודים (אנ) אקליד עם אקליד'
+run1 hc_e002_q2_r4 [hard] flagged=False cer=114.71
+run1 hc_e002_q2_r5 [hard] flagged=False cer=0.79
+run1 hc_e002_q2_r6 [hard] flagged=False cer=0.74
+run1 hc_e002_q2_r7 [hard] flagged=False cer=0.76
+run1 hc_e002_q2_r8 cer=1.04 hyp='אין קשר סך הכל אחריותיך וקבלת X אין קשר סך הכל אחריותיך וקבל'
+run1 hl_e003_q1_r1__l1 cer=0.59 hyp='לא נראה מרחב העירם התקופים\nשם אסור קבלון התרצם (התקופים)'
+run1 hl_e003_q1_r2__l2 cer=0.87 hyp="pass וסל [struck-through] ארג'אן ה'אוסטין (DC) (DC) ה'אוסטין"
+run1 hl_e003_q1_r3__l1 cer=0.66 hyp='אין לי הרגלים לקום וחרי התעוריה ב2:00\nאבל מה שרלוונט לראש בע'
+run1 hl_e003_q1_r4__l1 cer=0.73 hyp='נכון אם תמשיך לעשות את זה תצטרך לעשות את זה שוב ושוב'
+run1 hl_e003_q1_r5__l1 cer=0.75 hyp='הישראלי והספרדי בעל אפליקציה X-1000 ניסיון'
+run1 hl_e003_q1_r6__l1 cer=0.79 hyp='הרשם והעובד בע'
+run1 hl_e003_q1_r7__l1 cer=0.79 hyp='מן שהן מחייבות את מוסד ה DC'
+run1 hl_e003_q1_r8__l1 cer=0.65 hyp="הראה שה office תע DC לא נותן ערכים מהר'ם שכן, ק'י לא נותן"
+run1 hl_e003_q2_r1__l1 cer=0.82 hyp='15 [?] נוסע במסלול קציר פרט מס'
+run1 hl_e003_q2_r2__l1 cer=0.79 hyp='על פי כוונה מודעת של אופטימיות'
+run1 hl_e003_q2_r3__l1 cer=0.50 hyp='מספרים וספרים עם תמונות והדרכים\nמספרים עם ספרים והדרכים\nהדרכ'
+run1 hl_e003_q2_r4__l1 cer=0.70 hyp='לכן צריך לשים על כל Uniform את ה"ס"ס של כל ת"ס'
+run1 hl_e003_q2_r5__l1 cer=0.75 hyp='אני לא רוצה ללכת ללמוד (או לא) (או) אני לא רוצה ללמוד'
+run1 hl_e003_q2_r6__l1 cer=0.69 hyp='סכום ההשכרה של 132 יח"י נהגו הכולל 132 יח"י נהגו הכולל'
+run1 hl_e003_q2_r7__l1 cer=0.62 hyp='הוכיח נוסף התקבלו, מן החניכי ב 2\nהוכיח נוסף התקבלו מן סלון'
+run1 hl_e003_q2_r8__l1 cer=0.99 hyp='האם יש גבול בין תוכן מילולי ללא תוכן מילולי? האם יש גבול בין'
+run1 hl_e004_q1_r1__l1 cer=0.90 hyp='באמצעות WAVELETS'
+run1 hl_e004_q1_r2__l1 cer=0.94 hyp='High pass filter סוג סוג של מסנן'
+run1 hl_e004_q1_r3__l1 cer=0.76 hyp='עם תוכנית מלאה של מודול על סכום'
+run1 hl_e004_q1_r3__l2 [hard] flagged=False cer=0.88
+run1 hl_e004_q1_r4__l1 cer=0.65 hyp='Low Pass Filter'
+run1 hl_e004_q1_r5__l1 cer=0.94 hyp="א' 9911, 206016, WAVELETS 3\nx 9'3 (8'99)"
+run1 hl_e004_q1_r6__l1 cer=1.04 hyp='אורך גל 500NM WAVELENGTH'
+run1 hl_e004_q1_r6__l2 cer=1.09 hyp='C = 2 sin(3π/2)'
+run1 hl_e004_q1_r7__l2 [hard] flagged=False cer=0.74
+run1 hl_e004_q1_r8__l1 cer=0.73 hyp="מעשה כי פעם סד' סד' סד'}"
+run1 hl_e004_q2_r1__l1 [hard] flagged=False cer=0.83
+run1 hl_e004_q2_r1__l2 cer=0.75 hyp='כלומר, כל סוג של בשר'
+run1 hl_e004_q2_r2__l1 [hard] flagged=False cer=0.74
+run1 hl_e004_q2_r3__l1 cer=0.80 hyp="על כלל, כי ארצות (סמ' ארצות) לא הו"
+run1 hl_e004_q2_r4__l1 cer=0.85 hyp='Uniform algo in optimal > [?]'
+run1 hl_e004_q2_r4__l2 cer=0.69 hyp='כלומר, כן יש גם Quantization של אינסטרומנטים מסוימים'
+run1 hl_e004_q2_r5__l1 cer=0.74 hyp='1.5% 826 2% 25% uniform 2'
+run1 hl_e004_q2_r5__l2 cer=1.67 hyp='[unreadable]'
+run1 hl_e004_q2_r6__l1 cer=0.72 hyp='מצערי לא ידעתי שזה קורה לי'
+run1 hl_e004_q2_r6__l2 [hard] flagged=False cer=0.83
+run1 hl_e004_q2_r7__l2 cer=0.82 hyp='אין מידע על ממצאים אובייקטיביים, אין תלונות על כאב'
+run1 hl_e004_q2_r8__l1 cer=0.92 hyp='של Echo 18 תלמידים 2010'
+run1 hl_e004_q2_r8__l2 cer=0.96 hyp='עם רכיב 10%, עם 5% עם 15%'
+run1 hl_e005_q1_r1__l1 cer=0.86 hyp='רוב הוויכוחים סביב הבלתי מובן (ב איזה מידה'
+run1 hl_e005_q1_r1__l2 [hard] flagged=False cer=0.68
+run1 hl_e005_q1_r2__l1 cer=0.72 hyp='במידה והתקבלה תשובה נכונה'
+run1 hl_e005_q1_r2__l2 [hard] flagged=False cer=7.83
+run1 hl_e005_q1_r3__l2 cer=0.67 hyp='האם יש קשר בין high-frequency וצבע טבעי'
+run1 hl_e005_q1_r3__l3 cer=0.85 hyp='אמרתי: [?] רציתי לראות איך זה ייראה /אבל כל כך הרבה זמן לא ה'
+run1 hl_e005_q1_r4__l1 [hard] flagged=False cer=0.82
+run1 hl_e005_q1_r4__l2 cer=0.77 hyp="23. ע' א' אומרת כי כל דבר (אמריא) יש לו ערך"
+run1 hl_e005_q1_r5__l2 cer=0.78 hyp='1. אסור לעבור את הליניית הרכבת'
+run1 hl_e005_q1_r5__l3 cer=0.92 hyp='x יי'
+run1 hl_e005_q1_r6__l1 cer=0.81 hyp="היה זה כיצד? כיצד יתאפשר כי ברגע שאתה נכנס ל'אני'"
+run1 hl_e005_q1_r6__l2 cer=18.43 hyp='1130. תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תא'
+run1 hl_e005_q1_r7__l1 [hard] flagged=False cer=0.78
+run1 hl_e005_q1_r7__l2 cer=0.81 hyp='במידה וסטודנט מנסה לבדוק (בגלל שיש לו דעה) את'
+run1 hl_e005_q1_r8__l2 cer=13.00 hyp='תנאי, זה, ו, זה, [?], כולל, כולל, כולל, כולל, כולל, כולל, כו'
+run1 hl_e005_q1_r8__l3 cer=0.69 hyp='כי לא שווה לי את ראינו מאדוע ברגע שאני רואה עיניה אור'
+run1 hl_e005_q2_r1__l1 cer=0.71 hyp='העובדה שהמחשב הוא כלי, מערכת, פרוג'
+run1 hl_e005_q2_r1__l2 [hard] flagged=False cer=0.66
+run1 hl_e005_q2_r2__l2 [hard] flagged=False cer=0.67
+run1 hl_e005_q2_r2__l3 [hard] flagged=False cer=0.77
+run1 hl_e005_q2_r3__l2 cer=1.00 hyp="831712 ס'ג (6.09121212.6 (5522.0)"
+run1 hl_e005_q2_r4__l2 [hard] flagged=False cer=0.65
+run1 hl_e005_q2_r4__l3 [hard] flagged=False cer=0.81
+run1 hl_e005_q2_r5__l2 cer=0.80 hyp='היי, יש לי שאלה: איך אני יכול/ה לעשות את זה? תודה'
+run1 hl_e005_q2_r5__l3 cer=0.76 hyp='כלומר, כלומר, e - e_max לטעמינו, e - e_max לטעמינו'
+run1 hl_e005_q2_r6__l2 cer=0.92 hyp='אין לי מושג'
+run1 hl_e005_q2_r7__l2 cer=0.85 hyp="אין, אבל יש סוגים שונים של ג'אז, כמו סווינג, בי-בופ, וכו'"
+run1 hl_e005_q2_r7__l3 [hard] flagged=False cer=0.59
+run1 hl_e005_q2_r8__l1 cer=0.82 hyp='בדיקה של סוגים שונים של תוכנות (למשל, תוכנות מערכת)'
+run1 hl_e005_q2_r8__l2 cer=0.76 hyp='בכלל x לאיך ש אלו ואלו זיכ (כ. ויזכרם'
+run1 hl_e006_q1_r1__l1 [hard] flagged=False cer=0.78
+run1 hl_e006_q1_r2__l1 cer=0.78 hyp='אני לא יודע מה אני עושה כאן'
+run1 hl_e006_q1_r3__l1 cer=0.51 hyp='קליגוב תאורה ריאם זארי סופר! כן D'
+run1 hl_e006_q1_r4__l1 [hard] flagged=False cer=0.83
+run1 hl_e006_q1_r5__l1 cer=0.79 hyp='בדיקת עומסים של מערכת נמוגמית'
+run1 hl_e006_q1_r6__l1 cer=0.72 hyp="כשהם ג'קסון ו'אליס י'א ס'אליס ג'אקסון"
+run1 hl_e006_q1_r7__l1 cer=0.69 hyp='הצלם קריין — DC זמן נמוך ולא במא'
+run1 hl_e006_q1_r8__l1 [hard] flagged=False cer=0.71
+run1 hl_e006_q2_r1__l1 [hard] flagged=False cer=0.98
+run1 hl_e006_q2_r3__l1 [hard] flagged=False cer=0.78
+run1 hl_e006_q2_r4__l1 [hard] flagged=False cer=3.67
+run1 hl_e006_q2_r5__l2 cer=2.50 hyp='[unreadable]'
+run1 hl_e006_q2_r6__l1 cer=0.81 hyp='התכנון לא נכון 1,000 ש'
+run1 hl_e006_q2_r7__l1 cer=7.80 hyp='אזי ד\' ב\' כ\' א\' ב\' ג\' ד\' ה\' ו\' ז\' ח\' ט\' י\' י"א י"ב י"ג י"ד י'
+run1 hl_e006_q2_r7__l2 cer=0.69 hyp='אפשר לסמן את כל קבוצת הסימנים (כולל את ה-) .'
+run1 hl_e006_q2_r8__l1 cer=0.75 hyp='אין סעיף 2. סעיף 2 הוא לא 2 כל סעיף 2 הוא סעיף 2'
+run1 hl_e007_q1_r1__l1 [hard] flagged=False cer=0.77
+run1 pr_docA_p1_b0 cer=0.04 hyp='בחיוה בקורס עיבוד תמונה'
+run1 pr_docA_p1_b1 cer=0.68 hyp='סמסטר אי מועד אי תשפ'
+run1 pr_docA_p1_b2 cer=0.04 hyp="שם המרצה: פרופי חגית הל-אור. שם המתרגל: מר' נעמאן קובטי"
+run1 pr_docA_p2_b0 cer=0.00 hyp='שאלה מספר 1: (32 נקודות)'
+run1 pr_docA_p2_b1 cer=0.00 hyp='לפניכם התמונה הבאה:'
+run1 pr_docA_p2_b3 cer=0.05 hyp='לאחר הפעלה בנים פרמית WAVELETS של תמונת התוצאה. בעמוד האב נת'
+run1 pr_docA_p2_b4 cer=0.17 hyp='התאמינו בי כל פעולת ופרמיד Wavelet התורעצה המתאימה לה. כלוא '
+run1 pr_docA_p3_b0 cer=0.30 hyp='6. הרעשה עם רעש גאומיני ואחכ קונבולוציה עם המסכה: e^(-(y-y0)'
+run1 pr_docA_p3_b3 cer=0.17 hyp='קונסולוביציה עם המסכה (ואם איננייה חד מינידית) וגרמת לשתשטו '
+run1 pr_docA_p3_b6 cer=0.50 hyp='7. הגברת בהירות : A/H/B - I_new(x,y) = I(x,y) + 100'
+run1 pr_docA_p3_b8 cer=0.16 hyp='ב- Brightness Shift (פעלה 7) רק ח-DC יעשף ויחקן ליותר בהיר כ'
+run1 pr_docA_p3_b9 cer=0.13 hyp='שאת התדרים ייאפשר, בעוד שב- scale (פעולה 8) כל הפרמידה תוכפל'
+run1 pr_docA_p4_b0 cer=0.00 hyp='המשך שאלה מספר 1'
+run1 pr_docA_p5_b0 cer=0.00 hyp='שאלה מספר 2: (32 נקודות)'
+run1 pr_docA_p5_b8 cer=0.00 hyp='1. הפעלת גלאי שפה Canny E/C/B'
+run1 pr_docA_p5_b9 cer=0.16 hyp='2. מטישים את התמונה ברוחב מסכה וקואסימית ואז מפעילים גלאי שפ'
+run1 pr_docA_p6_b1 cer=0.11 hyp='OQ מתכנסת ל 20 BINS לא אחידים על פי צפיות הפיקסלים בהקטנטומג'
+run1 pr_docA_p6_b9 cer=0.03 hyp='6. קונבולציה עם המסכה [1 0 0 1] A/D/H'
+run1 pr_docA_p8_b0 cer=0.00 hyp='שאלה מספר 3 (36 נקודות)'
+run1 pr_docB_p1_b1 cer=0.23 hyp="203.2480\n2026 סמסטר ב מועד א', 12.07.2026\nמרצה: פרופ' יורי ר"
+run1 pr_docB_p2_b14 cer=0.77 hyp='(א) 264 (ב) 271 (ג) 273 (ד) אין אחד מהם ל'
+run1 pr_docB_p2_b7 cer=0.76 hyp='(א) 0.29 (ב) 0.5 (ג) 1 (ד) אף אחד מהנ"ל'

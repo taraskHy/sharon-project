@@ -1,0 +1,15 @@
+{
+ "raw": "{\"transcription\": \"הצלם קריין — DC זמן נמוך ולא במא\"}",
+ "transcription": "הצלם קריין — DC זמן נמוך ולא במא",
+ "error": null,
+ "status": 200,
+ "usage_prompt_tokens": 219,
+ "usage_completion_tokens": 23,
+ "usage_total_tokens": 242,
+ "thinking_chars": 0,
+ "done_reason": "stop",
+ "item": "hl_e006_q1_r7__l1",
+ "category": "handwritten_line",
+ "run": 1,
+ "latency_s": 8.5
+}

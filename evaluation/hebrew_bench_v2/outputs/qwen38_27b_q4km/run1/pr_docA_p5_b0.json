@@ -1,0 +1,15 @@
+{
+ "raw": "{\"transcription\": \"שאלה מספר 2: (32 נקודות)\"}",
+ "transcription": "שאלה מספר 2: (32 נקודות)",
+ "error": null,
+ "status": 200,
+ "usage_prompt_tokens": 236,
+ "usage_completion_tokens": 23,
+ "usage_total_tokens": 259,
+ "thinking_chars": 0,
+ "done_reason": "stop",
+ "item": "pr_docA_p5_b0",
+ "category": "printed_rtl",
+ "run": 1,
+ "latency_s": 7.19
+}

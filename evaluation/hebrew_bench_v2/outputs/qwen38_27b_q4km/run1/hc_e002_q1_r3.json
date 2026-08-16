@@ -1,0 +1,15 @@
+{
+ "raw": "{\"transcription\": \"הטפאה עם עכברית\\nהעברית אפס קיום פארקיו\"}",
+ "transcription": "הטפאה עם עכברית\nהעברית אפס קיום פארקיו",
+ "error": null,
+ "status": 200,
+ "usage_prompt_tokens": 301,
+ "usage_completion_tokens": 30,
+ "usage_total_tokens": 331,
+ "thinking_chars": 0,
+ "done_reason": "stop",
+ "item": "hc_e002_q1_r3",
+ "category": "handwritten_cell",
+ "run": 1,
+ "latency_s": 8.92
+}

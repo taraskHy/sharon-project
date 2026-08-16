@@ -1,0 +1,49 @@
+{
+ "item": "hl_e003_q2_r1__l1",
+ "raw_text": "15 [?] נוסע במסלול קציר פרט מס",
+ "suggested_text": "15. [?] נוסע במסלול קציר פרט מס",
+ "transcription": "15. [?] נוסע במסלול קציר פרט מס",
+ "edits": [
+  {
+   "raw": "15 [?]",
+   "suggested": "15. [?]",
+   "reason": "Added a period after '15' to match standard punctuation in exam answers. The bracketed placeholder '[?]' is preserved as it likely indicates an incomplete or uncertain part of the answer, which is plausible given the context of a handwritten exam answer with OCR errors. No correction is made to the content inside the brackets as it may be intentional or corrupted OCR (e.g., missing text or placeholder).",
+   "risk": "low"
+  }
+ ],
+ "uncertain_regions": [
+  "[?]"
+ ],
+ "semantic_change_risk": false,
+ "needs_review": true,
+ "retrieved": [
+  {
+   "chunk_id": "4fcc67a0a5db3ecb",
+   "source": "עיבוד תמונה.pdf",
+   "page": 39,
+   "similarity": 0.4859
+  },
+  {
+   "chunk_id": "693d8b7cfb67ce67",
+   "source": "עיבוד תמונה.pdf",
+   "page": 96,
+   "similarity": 0.4602
+  },
+  {
+   "chunk_id": "d19db78b60d65d89",
+   "source": "עיבוד תמונה.pdf",
+   "page": 76,
+   "similarity": 0.4568
+  },
+  {
+   "chunk_id": "24c8f00fe9c730fe",
+   "source": "עיבוד תמונה.pdf",
+   "page": 29,
+   "similarity": 0.4503
+  }
+ ],
+ "retrieval_empty": false,
+ "error": null,
+ "retrieval_s": 2.5,
+ "repair_s": 10.08
+}

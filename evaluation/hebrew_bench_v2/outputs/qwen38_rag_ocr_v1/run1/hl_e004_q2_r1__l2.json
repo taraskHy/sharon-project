@@ -1,0 +1,40 @@
+{
+ "item": "hl_e004_q2_r1__l2",
+ "raw_text": "כלומר, כל סוג של בשר",
+ "suggested_text": "כלומר, כל סוג של בשר",
+ "transcription": "כלומר, כל סוג של בשר",
+ "edits": [],
+ "uncertain_regions": [],
+ "semantic_change_risk": false,
+ "needs_review": false,
+ "retrieved": [
+  {
+   "chunk_id": "6bbdc5e368b53f21",
+   "source": "עיבוד תמונה.pdf",
+   "page": 112,
+   "similarity": 0.4201
+  },
+  {
+   "chunk_id": "3ab0299761be46d5",
+   "source": "עיבוד תמונה.pdf",
+   "page": 95,
+   "similarity": 0.4146
+  },
+  {
+   "chunk_id": "c34b774025661738",
+   "source": "עיבוד תמונה.pdf",
+   "page": 96,
+   "similarity": 0.4143
+  },
+  {
+   "chunk_id": "fad59ae8c469a20b",
+   "source": "עיבוד תמונה.pdf",
+   "page": 95,
+   "similarity": 0.4122
+  }
+ ],
+ "retrieval_empty": false,
+ "error": null,
+ "retrieval_s": 2.56,
+ "repair_s": 4.92
+}

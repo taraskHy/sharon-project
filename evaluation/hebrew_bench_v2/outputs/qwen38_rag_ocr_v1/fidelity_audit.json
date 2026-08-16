@@ -1,0 +1,315 @@
+[
+ {
+  "item": "hc_e002_q1_r2",
+  "image_readability": "Single line of loopy blue-ink Hebrew cursive, 1287x222 px, five word clusters (right-to-left): [בשעה]-like, a 7-stroke word (the disputed one), a clear two-letter word ending in ק, a word like העניים/התעפים, and a final word with a long sweeping tail. Legible at 4-6x upscale for gross letter structure (ascenders/descenders, N-shaped mem, tall lamed, arch+descender qof); the two small letters between the mem and the tall lamed in word 2 are genuinely ambiguous.",
+  "undocumented_rewrite": true,
+  "edit_findings": [
+   {
+    "raw_token": "המטאליק",
+    "suggested_token": "המצלמה",
+    "classification": "UNSUPPORTED_NORMALIZATION",
+    "visual_evidence": "Word 2 (right-to-left) shows: a tall J-like stroke, an N-shaped cursive mem, a double-hump then a low peaked bump (2 small letters), a tall ascender (lamed), a small tick (yod-like), and a final arch whose left leg drops clearly below the baseline (~22 px in original units) -- a cursive qof, not a he (cursive he has no descender). There is no second N-shaped mem between the tall lamed and the final letter, and nothing '3'-shaped that would read as tzadi. So the letters -מה at the end of 'המצלמה' and the צ are not in the strokes; the raw ending -ל?ק (tall lamed, tick, arch+descender) is what is actually written. Middle letters (ט/א vs anything else) are ambiguous, but the replacement's final two letters contradict the visible descender.",
+    "chunk_influence": "No verbatim 'מצלמה' in any retrieved chunk; root צ.ל.מ appears as 'שצולמה' in chunk 195497a5c1acf8ae (the chunk with 'תמונה ... סנסורים ... פוטונים' cited in the edit reason). Edit is context-driven."
+   },
+   {
+    "raw_token": "נק",
+    "suggested_token": "נקבה את",
+    "classification": "UNSUPPORTED_NORMALIZATION",
+    "visual_evidence": "Undocumented change (not in edits list). Word 3 in the image is exactly two strokes: a ')' arc (cursive resh or nun) followed by a cursive qof with a long descender, then clear white space before the next word. There are no strokes for ב, ה, or a separate word 'את'. The suggested text inserts two letters and a whole word that do not exist on the page; the raw two-letter reading (נק, more likely רק linguistically) is stroke-supported.",
+    "chunk_influence": "'נקבה' verbatim: none. Stem 'נקב' appears as 'נקבל' twice in chunk 2436a2554d8fbf99; 'את' trivial. Insertion appears hallucinated rather than image-driven; edit reason even refers to preserving 'נקבה' as if it were in the raw."
+   }
+  ],
+  "overall_classification": "UNSUPPORTED_NORMALIZATION",
+  "confidence": "high",
+  "notes": "Only one edit is documented, but the suggested_text also expands 'נק' to 'נקבה את' -- an undocumented insertion of letters/words with zero stroke support (undocumented_rewrite=true). The documented edit המטאליק->המצלמה is context-plausible (camera/image-processing course) but the visible word ends in a descender letter (qof) with a tall lamed and a small tick before it, not '-למה'; no chunk contains 'מצלמה' verbatim. Untouched tokens: raw 'שה' prefix of word 2 is itself doubtful (the first stroke looks like a lone tall lamed/nun rather than שה) and word 3's first letter looks as much like resh as nun, but neither is an edit. Crops used for zooming were written to the scratchpad only (r2_right4x.png, r2_left4x.png, r2_word2b_5x.png, r2_word3_6x.png, r2_word1_5x.png)."
+ },
+ {
+  "item": "hc_e002_q1_r8",
+  "image_readability": "1287x247 crop, three lines of blue-ink cursive Hebrew inside a box, moderately legible. One word on line 2 is crossed out and there is a scribble at the end of line 3. What is actually visible reads roughly: line 1 'בדוגמה לפעולה 7, מבהיר את התמונה' (the digit-7/gamma-like glyph is the only non-Hebrew mark), line 2 'אבל פה [strikeout] האיזורים בהירים יותר', line 3 'נראים יותר שינוי מהאיזורים הכהים'. Neither the raw text (a legal-sounding sentence about a date 7.10.15 and a defendant) nor the suggested text corresponds to what is written; the raw is a wholesale OCR hallucination that shares essentially only the '7' with the image.",
+  "undocumented_rewrite": false,
+  "edit_findings": [
+   {
+    "raw_token": "תאריך 7.10.15",
+    "suggested_token": "f",
+    "classification": "UNSUPPORTED_NORMALIZATION",
+    "visual_evidence": "The only Latin-like glyph in the crop is a single '7'-shaped mark on line 1 after 'לפעולה': a horizontal top bar joined to a diagonal stroke descending to the lower-left, followed by a comma. A lowercase 'f' would need a tall vertical ascender with a hook and a crossbar; no such stroke exists anywhere. There is also no 'תאריך' and no '.10.15' in the image, so the raw is itself hallucinated, but the replacement 'f' has zero stroke support and is a course-vocabulary insertion.",
+    "chunk_influence": "3f1f38be8e1481e8 ('סביר ש-f', 'R(f)', 'הקנס על f', 'ה-f'); also da50e30e8c6f11c4 ('prior f', 'R(f)') and d19db78b60d65d89 (f_s in formula). The phrase 'סביר ש-f' in 3f1f38be8e1481e8 closely mirrors the produced 'סביר להניח כי f'."
+   },
+   {
+    "raw_token": "הנתבעת",
+    "suggested_token": "ה-prior",
+    "classification": "UNSUPPORTED_NORMALIZATION",
+    "visual_evidence": "No Latin script word appears anywhere in the crop other than the lone '7'-like glyph; there is no sequence of strokes resembling 'p-r-i-o-r' (no descender p, no dotted i, no r shapes). The raw 'הנתבעת' also does not correspond to any visible word (line 1 near that position actually reads 'מבהיר את התמונה'), so both readings are unsupported; the suggested one is driven purely by the retrieved course chunks.",
+    "chunk_influence": "3f1f38be8e1481e8 ('מה prior', 'הprior-ים', 'הprior term'); d19db78b60d65d89 ('ה prior'); da50e30e8c6f11c4 ('prior f', 'ה prior')."
+   }
+  ],
+  "overall_classification": "UNSUPPORTED_NORMALIZATION",
+  "confidence": "high",
+  "notes": "Both documented edits are course-term insertions with no visual support: 'f' and 'prior' were pulled from the retrieved chunks, not from the strokes. Additional concern for the parent: the raw OCR is a complete hallucination (legal boilerplate) of a note that is actually about brightness/gamma ('...7, מבהיר את התמונה / האיזורים בהירים יותר / נראים יותר שינוי מהאיזורים הכהים'). The RAG repair did not detect this and instead re-hallucinated the sentence into a course-plausible claim ('סביר להניח כי f נקבע על ידי ה-prior') that the student never wrote. This is not a correction of a student mistake (so not classed SEMANTIC_CORRECTION_RISK under the rubric), but it is fabrication of course-correct content from a hallucinated base and should be treated as a fidelity failure at least as serious. Zoomed 2x crops of each line were generated in the scratchpad (r8_top.png, r8_mid.png, r8_bot.png) to verify the glyph shapes."
+ },
+ {
+  "item": "hl_e003_q1_r1__l1",
+  "image_readability": "Two lines of blue-ink cursive Hebrew, 1287x196 px, quite legible after 3x zoom. Line 1 (right-to-left) reads clearly as \"ניתן לראות ברמת התדרים הגבוהים\"; line 2 reads \"שיש שם בכיוון התנועה (הטשטוש)\". The raw OCR is already heavily wrong (e.g. \"מרחב\" for \"ברמת\", \"העירם\" for \"התדרים\"), and none of the suggested replacements move the text toward what is actually written.",
+  "undocumented_rewrite": true,
+  "edit_findings": [
+   {
+    "raw_token": "מרחב העירם",
+    "suggested_token": "מרחב הרציף",
+    "classification": "UNSUPPORTED_NORMALIZATION",
+    "visual_evidence": "The word after ברמת (OCR: מרחב) is clearly התדרים: cursive ה, a hooked ת, angular ד, curved ר, small י tick, and a closed-loop cursive final ם with no descender. הרציף would require צ and a final ף with a long descender below the baseline; there is none. The replacement is not supported by the strokes; only the leading ה is shared.",
+    "chunk_influence": "1fa37682cd0776c9 (contains 'במרחב הרציף' twice) — direct term transfer"
+   },
+   {
+    "raw_token": "אסור",
+    "suggested_token": "אינן",
+    "classification": "UNSUPPORTED_NORMALIZATION",
+    "visual_evidence": "UNDOCUMENTED edit (not in edits list). The corresponding position in line 2 shows the short word שם (rounded cursive ש followed by a closed-loop final ם), preceded by שיש. Neither אסור nor אינן matches the strokes; אינן looks like a grammatical patch to make the fabricated sentence 'התקופים שם אינן קבילות' read fluently.",
+    "chunk_influence": "none (אינן does not occur in any chunk; only unrelated 'אינסופי/אינסוף' in 1fa37682cd0776c9)"
+   },
+   {
+    "raw_token": "קבלון",
+    "suggested_token": "קבילות",
+    "classification": "UNSUPPORTED_NORMALIZATION",
+    "visual_evidence": "Edits list documents this as 'קיבלן' but suggested_text actually contains 'קבילות' — mismatch. The word in the image is בכיוון: cursive ב, כ, י tick, two ו strokes, and a final ן with a long vertical descender. No ק (no descender at word start), no ל ascender, no ת. Neither reading is supported.",
+    "chunk_influence": "3cf3ad0841e0108c (stem ק-ב-ל only: 'שקיבלנו', 'מתקבל'; the word קבילות itself does not appear)"
+   },
+   {
+    "raw_token": "התרצם",
+    "suggested_token": "לטרנספורם",
+    "classification": "UNSUPPORTED_NORMALIZATION",
+    "visual_evidence": "The word before the parenthesis is התנועה: two-part cursive ה, ת, נ, ו, an open cursive ע curl, ה. Six letters, no ל ascender at start, no ט, no ס/פ, no final ם. The 9-letter לטרנספורם has no stroke support at all; it is a course-vocabulary insertion.",
+    "chunk_influence": "1fa37682cd0776c9 ('מטרת הטרנספורם', 'הטרנספורם ההפוך'), f71fe312fd3ecd6f ('שטרנספורם', 'טרנספורם הפוך')"
+   },
+   {
+    "raw_token": "התקופים",
+    "suggested_token": "התקופים",
+    "classification": "OTHER",
+    "visual_evidence": "No-op edit (listed but unchanged). For the record, the image shows הגבוהים at the end of line 1 (ה, hooked ג, ב, ו, ה, י, closed-loop ם) and הטשטוש inside the parentheses on line 2 (ה, ט, ש, ט, ו, ש); the raw OCR token התקופים matches neither, and leaving it unchanged does not affect fidelity one way or the other.",
+    "chunk_influence": "none"
+   },
+   {
+    "raw_token": "[newline between lines; no punctuation]",
+    "suggested_token": "'. ' after הרציף, trailing '.', newline collapsed to space",
+    "classification": "OTHER",
+    "visual_evidence": "UNDOCUMENTED. No period is written anywhere in the crop; the raw '\\n' correctly reflected the two physical lines. Formatting/punctuation invention, not an image question, but it merges two visual lines into one sentence and imposes a sentence break the student did not write.",
+    "chunk_influence": "none"
+   }
+  ],
+  "overall_classification": "UNSUPPORTED_NORMALIZATION",
+  "confidence": "high",
+  "notes": "The handwriting actually reads: 'ניתן לראות ברמת התדרים הגבוהים / שיש שם בכיוון התנועה (הטשטוש)'. The raw OCR was already largely wrong, and the repair replaced garbled tokens with course-retrieved vocabulary (הרציף, טרנספורם) plus grammatical glue (אינן, קבילות) to fabricate a fluent but invented sentence about 'the continuous space' and 'periods not admissible for transform'. Zero of the four substantive substitutions are supported by strokes; two are traceable to chunk 1fa37682cd0776c9. Not classified as SEMANTIC_CORRECTION_RISK because no actual student mistake is being 'corrected' (the student's real statement about high frequencies along the motion/blur direction is not a mistake), but the sentence-level meaning is entirely fabricated. Edits list is inconsistent with suggested_text (documents 'קיבלן', text has 'קבילות'; omits אסור->אינן and punctuation), hence undocumented_rewrite=true. Zoom crops saved in scratchpad as zoom_hl_e003_*.png."
+ },
+ {
+  "item": "hl_e003_q2_r1__l1",
+  "image_readability": "1287x223 crop of blue-ink Hebrew cursive, ~2.5 lines, fairly legible. Line 1 (RTL): a \"ב\"-shaped item marker at far right, then a heavily scribbled-out word with \"פיקסלי\" written beneath it as a replacement, then approximately \"השפה שנקטעו קיבלו ערך 255\". Line 2: roughly \"לעומת(?) ^ שאר הפיקסלים (הרוב)\". Line 3 is cut off at the bottom edge. The raw OCR text (\"15 [?] נוסע במסלול קציר פרט מס\") bears essentially no resemblance to what is written; the only digits in the image are \"255\" (zoomed: unambiguous, no trailing dot).",
+  "undocumented_rewrite": false,
+  "edit_findings": [
+   {
+    "raw_token": "15 [?]",
+    "suggested_token": "15. [?]",
+    "classification": "UNSUPPORTED_NORMALIZATION",
+    "visual_evidence": "There is no '15' in the image at all. The only number is '255' at the left end of line 1 (zoomed: clearly '2','5','5' with no period after it; the sentence continues onto line 2). The 'ב'-shaped item marker at the far right of line 1 also has no visible dot next to it (immediately followed by a dense scribble). So the inserted period corresponds to no stroke anywhere; the model added it purely on the stated convention ('standard punctuation in exam answers'). Punctuation-only and low-stakes, but it is a change with zero image support applied to a token that is itself hallucinated.",
+    "chunk_influence": "none — no '15' or '15.' in any retrieved chunk (chunks contain 10, 20, 25, 30, 250; the only 10 in 693d8b7cfb67ce67); the change is convention-driven, not chunk-driven"
+   }
+  ],
+  "overall_classification": "UNSUPPORTED_NORMALIZATION",
+  "confidence": "medium",
+  "notes": "The single documented edit (add a period after '15') fully accounts for the raw->suggested diff, so undocumented_rewrite=false. The dominant fidelity problem here is upstream of the repair: the raw OCR is a wholesale hallucination of a legible line (visible text is approx. 'ב. [scribble->פיקסלי] השפה שנקטעו קיבלו ערך 255 / לעומת שאר הפיקסלים (הרוב)'), and the RAG repair neither noticed nor fixed that — it only cosmetically punctuated a non-existent token. Classified as UNSUPPORTED_NORMALIZATION because the change has no visual support and is driven by a plausibility/format convention rather than the strokes; note it is not chunk-driven and its practical harm is negligible. Confidence medium: '255' and the absence of a trailing period are clear on zoom; the 'ב' marker area is partly obscured by the scribble, so a tiny dot there cannot be 100% excluded."
+ },
+ {
+  "item": "hl_e004_q1_r3__l2",
+  "image_readability": "1287x81 px crop of a single line of blue-ink handwriting. Left end: the Latin word \"Brightness\" (clearly legible) with a sentence-final period to its left (RTL line end). To its right, small Hebrew cursive, legible at 3-5x zoom: cluster A (what OCR read as 70\") = a short tick (yod), a slanted vertical stroke (vav), a wavy n-like curl (cursive tav), and a 7-shaped hook (cursive reish) -> the word יותר. Cluster B (OCR \"(1)ce\") = an e-shaped loop (cursive shin), a reversed-C arc (kaf), then two vertical strokes with a small tick underneath. Then a clear capital \"E\". Right end (OCR \"1.2 > 1.8\"): a tall stroke, a small n-like squiggle, a rounded reversed-C arc, then a clearly legible \"1.8\" (with a comma/period between the digits). Strokes are thin but sharp; no smearing.",
+  "undocumented_rewrite": false,
+  "edit_findings": [
+   {
+    "raw_token": "70\"",
+    "suggested_token": "70°",
+    "classification": "UNSUPPORTED_NORMALIZATION",
+    "visual_evidence": "The strokes OCR'd as 70\" are not digits at all: they are the Hebrew cursive word יותר (RTL: yod tick, vav stroke, wavy tav, reish that resembles a 7). The two marks that were read as \" are one slanted vertical stroke (vav) and one short tick (yod) — two separate open line-strokes at mid/upper height. There is no closed small circle anywhere in the cluster, so a degree sign is not supported by the ink. Between the two garbage readings, \" (two ticks) is actually closer to the strokes than ° (a ring). The rewrite is justified in the edit reason by course context (brightness / gamma correction 'often involves angles or scaling factors'), not by the strokes, and it injects a unit/meaning (70 degrees) that the student never wrote.",
+    "chunk_influence": "none — the token 70° / ° does not appear in any retrieved chunk; the topical justification (brightness, gamma correction) overlaps chunks b1fe7d2a38de1deb and 3b87159fcc4a5cca but neither contains 70 or a degree symbol"
+   },
+   {
+    "raw_token": "E",
+    "suggested_token": "E",
+    "classification": "OTHER",
+    "visual_evidence": "Identity (no-op) edit. The strokes show a clear capital Latin E; leaving it unchanged is correct.",
+    "chunk_influence": "none"
+   },
+   {
+    "raw_token": "1.2 > 1.8",
+    "suggested_token": "1.2 > 1.8",
+    "classification": "OTHER",
+    "visual_evidence": "Identity (no-op) edit. Only the '1.8' at the far right is clearly a number; the strokes read as '1.2 >' are a tall stroke, a small n-like squiggle and a rounded reversed-C arc (kaf-like), i.e. probably Hebrew letters rather than digits/comparator. But no change was made, so nothing to adjudicate.",
+    "chunk_influence": "none"
+   }
+  ],
+  "overall_classification": "UNSUPPORTED_NORMALIZATION",
+  "confidence": "high",
+  "notes": "The only real text change is \\\" -> ° inside a token that is itself a mis-OCR of the Hebrew word יותר; the repair keeps the wrong Latin/numeric interpretation and swaps one punctuation glyph for another based on course-topic reasoning, with no ring-shaped stroke in the image. Not a semantic correction (it does not make a student claim more correct), and not protocol cleanup. Zoomed cluster images were written to the scratchpad (clusterA/B/C.png) for inspection only."
+ },
+ {
+  "item": "hl_e004_q2_r2__l1",
+  "image_readability": "1287x164 crop, blue-ink Hebrew cursive, one full line plus the top of a second line. Line 1 (RTL) opens with a list marker resembling \"ב\" then a clearly legible Latin cursive word \"Canny\" (capital C, a, two n-arches, y with looped descender), then a period, a short 3-glyph word (vertical stroke, \"2\"-shaped bet-like glyph, tall arc), a short word starting with a \"y/γ\"-shaped ayin plus a small closed loop with a trailing wave, a 5-glyph word (tall arc, \"6\"-loop, tall arc, vertical stroke, \"e\"-like spiral), then \"ולק\" (likely ולכן with כ+ן ligature), \"נקבל\", \"פחות\" — the last three are quite legible. Partial line 2 shows \"ה- 255 ולק C.\" Overall medium legibility; the Latin word and the last three Hebrew words are clear, the middle words are hard to read but their letter shapes (loops/spirals) are visible.",
+  "undocumented_rewrite": true,
+  "edit_findings": [
+   {
+    "raw_token": "carry",
+    "suggested_token": "קיימת",
+    "classification": "UNSUPPORTED_NORMALIZATION",
+    "visual_evidence": "At this position the strokes are unmistakably Latin cursive: a capital C, an 'a', two rounded n-arches (not the flatter rr shape), and a 'y' with a looped descender — the word is 'Canny'. The raw 'carry' is a nn/rr misread of the same Latin word; the suggested Hebrew word 'קיימת' (kuf, yod, yod, mem, tav) has zero stroke support — there are no Hebrew glyphs, no descender-kuf loop, no final tav at that position. The repair moved away from the image rather than toward it.",
+    "chunk_influence": "stem 'קיים' appears in chunk 1d26fd0f26dcca1b ('כי רק אז קיי\\nם מיפוי הופכי') — stem match only, not the exact token"
+   },
+   {
+    "raw_token": "או רגולציה",
+    "suggested_token": "הורגלציה",
+    "classification": "UNSUPPORTED_NORMALIZATION",
+    "visual_evidence": "Undocumented rewrite (not in edits list). The strokes at this region show a short word beginning with a 'y/γ'-shaped ayin followed by a small closed loop with a trailing wave (likely a 2-letter word such as עם/על), then a 5-glyph word composed of a tall lamed-like arc, a '6'-shaped loop (tet-like), another tall arc, a vertical vav-like stroke and an 'e'-like spiral (shin/pe-like). There are no resh hooks, no gimel, no '3'-shaped tsadi, no yod, no n-shaped he — neither 'רגולציה' nor 'הורגלציה' matches the strokes; the suggested token is a context-style rewrite of an already-hallucinated raw token.",
+    "chunk_influence": "none — 'הורגלציה'/'רגולציה' do not appear in any chunk (only 'הרגילה' in 4963b4bf70e69016 shares surface letters, different stem)"
+   },
+   {
+    "raw_token": "רגולציה",
+    "suggested_token": "הורגלציה",
+    "classification": "UNSUPPORTED_NORMALIZATION",
+    "visual_evidence": "Undocumented rewrite (second occurrence). The corresponding tail of the line reads (RTL) 'ולק'(likely ולכן, kuf-like loop+descender) 'נקבל' (small nun, kuf with descender, 2-shaped bet, tall lamed) 'פחות' (pe, chet, vav, tav) — legible and entirely unlike ר-ג-ו-ל-צ-י-ה in either spelling. Neither raw nor suggested is supported; the change is not image-driven.",
+    "chunk_influence": "none"
+   }
+  ],
+  "overall_classification": "UNSUPPORTED_NORMALIZATION",
+  "confidence": "high",
+  "notes": "The only recoverable token in the raw OCR was 'carry' -> the strokes clearly read 'Canny' (Latin), and the RAG repair instead replaced it with a Hebrew word 'קיימת', destroying a correct course term (Canny edge detector) with no stroke support. Beyond 'Canny' the raw OCR is largely hallucinated (visible line is roughly: 'ב. Canny [short word] [ע-word] [ל?ל?ש-word] ולכן נקבל פחות'), and the suggested text silently rewrote 'או רגולציה'/'רגולציה' to the non-word 'הורגלציה' twice without documenting it in the edits list. The edit 'reason' field is itself degenerate (repetitive, contains a Korean-script artifact '맥סיקס'). No edit is image-supported; nothing here is a semantic move toward correctness, so the overall label is UNSUPPORTED_NORMALIZATION rather than SEMANTIC_CORRECTION_RISK. Note: Bash/PowerShell were rate-limited during this audit, so zooming was done by loading the crop in the browser pane and scaling the image element; the manifest and crop were the only files consulted."
+ },
+ {
+  "item": "hl_e005_q1_r3__l3",
+  "image_readability": "Single line (1287x71 px) of blue-ink Hebrew cursive, RTL, ~11 glyph clusters plus a Latin-looking 'x.y.z' token near the middle, a word resembling 'התמונה' followed by a short horizontal dash and a parenthesized token near the left, and a cut-off '(' at the far left edge. Strokes are moderately legible at 3x zoom but heavily cursive; individual words are hard to pin down. No oblique '/' stroke is identifiable anywhere on the line (only the horizontal dash left-of-center). The visible content (Latin x.y.z, parentheses, 'התמונה'-like word) does not obviously correspond to the raw transcription, but that is outside the diff audit.",
+  "undocumented_rewrite": true,
+  "edit_findings": [
+   {
+    "raw_token": "/אבל",
+    "suggested_token": "/ אבל",
+    "classification": "OTHER",
+    "visual_evidence": "Whitespace-only change: a space inserted between the slash and 'אבל'. No stroke correlate exists for spacing around a slash; moreover no oblique slash stroke is identifiable in the crop at all (only a short horizontal dash between the 'התמונה'-like word and a parenthesized token, left-of-center). The letters of 'אבל' are unchanged, so no character-level adjudication applies. Not a protocol artifact (no JSON wrapper/quotes/escapes) and not a course-term substitution; it is an undocumented formatting normalization (edits list is empty).",
+    "chunk_influence": "none for the whitespace change; the unchanged word 'אבל' appears as a common function word in 21dcdb439c3a2b37 and 00219acc83f1b56b, but no chunk contains '/ אבל' or motivates the spacing."
+   }
+  ],
+  "overall_classification": "OTHER",
+  "confidence": "high",
+  "notes": "The only difference between raw_text and suggested_text is one inserted space after '/', and the edits list is empty, so the rewrite is undocumented (undocumented_rewrite=true). It carries no image-fidelity or semantic risk by itself. Separate observation (not part of the diff audit): the raw transcription itself appears poorly aligned with the visible strokes -- the crop shows a Latin 'x.y.z'-like token, a parenthesized token with a leading dash, and a word resembling 'התמונה', none of which are represented in the raw text, and no slash stroke is visible; the raw is likely partly hallucinated. Zoomed crops used for inspection: C:\\Users\\ethan\\AppData\\Local\\Temp\\claude\\C--Users-ethan-PycharmProjects-sharon-project\\259aad08-7961-42b4-8b26-4b6581c55153\\scratchpad\\z_0.png, z_1.png, z_2.png."
+ },
+ {
+  "item": "hl_e005_q1_r5__l3",
+  "image_readability": "Single line of blue-ink Hebrew cursive (1287x84 px), clean white background, quite legible at 3-5x zoom. RTL reading from the right edge: a Latin \"x\", a clear white gap, then Hebrew words. The strokes immediately after x are a short vertical (yod) followed by a taller vertical (vav), then a cursive tav and a resh -> \"יותר\"; then \"ולכן\", \"תמונה\", a C/כ-like arc, then several more short words (approx. \"ה'ו הכי מתאימה - רואים לו במונה\"). No \"=\" sign and no subscripted \"x_w\" appears anywhere in the crop. The raw OCR (\"x יי\") captured only the first ~10% of the line.",
+  "undocumented_rewrite": false,
+  "edit_findings": [
+   {
+    "raw_token": "x יי",
+    "suggested_token": "x = x_w",
+    "classification": "UNSUPPORTED_NORMALIZATION",
+    "visual_evidence": "Zoomed at 5x on the rightmost ~120 px: the strokes are a Latin x, then empty space (no two horizontal bars, so no '='), then a short vertical stroke (yod) and a taller vertical stroke (vav) that continue into a cursive tav (n-with-hook shape) and a resh hook, i.e. the Hebrew word יותר, followed by ולכן, תמונה etc. The raw 'יי' is a partial misread of 'יו' (start of יותר); the suggested '= x_w' has zero stroke support: there is no equals sign, no second x, no subscript w. The replacement text is lifted from the retrieved course chunk, not from the handwriting. Note also that raw_text covers only the first two tokens of a full-line crop, so the whole rest of the line is missing in both raw and suggested outputs; the repair did not restore any of it.",
+    "chunk_influence": "05c27a6424b7d3a8 (contains 𝑥𝑥−𝑥𝑥𝑤𝑤 / 𝑥𝑥𝑒𝑒−𝑥𝑥𝑤𝑤, i.e. x - x_w, x_e - x_w — the source of the 'x_w' token; no other chunk contains x_w)"
+   }
+  ],
+  "overall_classification": "UNSUPPORTED_NORMALIZATION",
+  "confidence": "high",
+  "notes": "The single documented edit replaces a garbled-but-image-derived fragment ('יי' = misread of 'יו' of יותר) with a course formula 'x = x_w' copied from chunk 05c27a6424b7d3a8; the strokes are unambiguously Hebrew letters (יותר ולכן תמונה ...), not math. This is a context-driven fabrication with no visual support — effectively hallucinated course content injected into the student's answer, which would inflate its apparent course-relevance. I did not tag it SEMANTIC_CORRECTION_RISK only because the raw text was OCR garbage rather than a real student mistake being 'corrected'; if the protocol treats invented course formulas as semantic risk, escalate. Secondary observation (not a repair fault): the raw OCR truncated this line after 'x יי'; the visible line is roughly 'x יותר ולכן תמונה C ה'ו הכי מתאימה - רואים לו במונה'. Tool note: shell tools were rate-limited, so zooming was done by rendering the PNG scaled in the browser pane; the manifest and crop were the only files read."
+ },
+ {
+  "item": "hl_e005_q2_r7__l2",
+  "image_readability": "1287x65 px single-line crop, blue-ink cursive Hebrew with one Latin token; moderately legible after 3x upscaling. Reading right-to-left the strokes show approximately: \"פ'קסל [?ווסק'/ווקט'] של תמונה [יגדיל?/יכיל?] אותו כמות של gray-level\". \"של\", \"תמונה\", \"אותו\", \"כמות\" and the English \"gray-level\" are clearly legible; the rightmost word (top clipped, looks like פיקסל), the second word, and the verb after תמונה are uncertain. Nothing resembling ג'אז / סווינג / בי-בופ / רעש / גאוסיאני / פלפל is anywhere in the strokes.",
+  "undocumented_rewrite": true,
+  "edit_findings": [
+   {
+    "raw_token": "ג'אז",
+    "suggested_token": "רעש",
+    "classification": "UNSUPPORTED_NORMALIZATION",
+    "visual_evidence": "No word in the crop has the ר-ע-ש stroke pattern (open-top ר, tri-pronged ע, three-armed ש), and none has ג-'-א-ז either. The position where the raw text places this token corresponds in the image to a clearly legible \"תמונה\" (ת-מ-ו-נ-ה) following \"של\". The raw OCR appears to be a hallucination unrelated to the strokes, and the replacement is likewise not written on the page. The choice of רעש is explained by the reasoning text purely via course context.",
+    "chunk_influence": "4519027a82bb9264 (\"סוג שלישי של רעש\", \"רעש גאוסיאני\")"
+   },
+   {
+    "raw_token": "סווינג, בי-בופ",
+    "suggested_token": "רעש גאוסיאני, רעש פלפל",
+    "classification": "SEMANTIC_CORRECTION_RISK",
+    "visual_evidence": "The left portion of the line reads \"אותו כמות של gray-level\" (Latin \"gray-level\" unmistakable; \"כמות\" = כ-מ-ו-ת legible). There are no strokes that could be read as גאוסיאני (long word with א-ו-ס-י-א-נ-י) or פלפל (two פ-ל pairs) or as רעש; nor as סווינג/בי-בופ. The repair inserts specific canonical course terms (Gaussian noise, pepper noise) lifted from the retrieved chunk, manufacturing a course-correct-sounding student answer that the student did not write. Meaning moves decisively toward correctness with zero visual support, which is the semantic-correction failure mode (here compounded by the raw text itself being hallucinated).",
+    "chunk_influence": "4519027a82bb9264 (\"רעש גאוסיאני\" verbatim; \"מלח פלפל\" supplies פלפל; רעש repeated)"
+   },
+   {
+    "raw_token": "וכו'",
+    "suggested_token": "וכו'.",
+    "classification": "OTHER",
+    "visual_evidence": "Trailing period appended; not listed in the edits array. Neither וכו' nor a terminal period is visible on the line (the line ends at \"gray-level\" on the left). Cosmetic punctuation addition, undocumented.",
+    "chunk_influence": "none"
+   }
+  ],
+  "overall_classification": "SEMANTIC_CORRECTION_RISK",
+  "confidence": "high",
+  "notes": "This item is a total fidelity failure on both sides: the raw OCR text (jazz/swing/bebop) bears no relation to the visible strokes, and the RAG repair replaced it with a different, course-plausible sentence (types of noise: Gaussian, pepper) also unrelated to the strokes. The actual line reads roughly \"פ'קסל [?] של תמונה [?] אותו כמות של gray-level\". Both edits are chunk-driven (chunk 4519027a82bb9264) with no stroke support; the second edit fabricates a correct-looking course answer, hence the semantic-correction risk. Confidence is high that neither raw nor suggested reading is supported; my own transcription of the ambiguous words (2nd token, verb after תמונה) is medium-confidence and not needed for the verdict. Possible crop/text misalignment upstream should be checked, but under this protocol the repair is not image-supported."
+ },
+ {
+  "item": "hl_e005_q2_r8__l2",
+  "image_readability": "1287x80 px single-line strip of blue-ink Hebrew cursive on white, moderately legible at 8-16x zoom. Right-to-left it shows: a 6-glyph word ending in a kof-like glyph with a long left descender; a clear Latin 'x'; a single unbroken 7-stroke cluster (short vertical, tall stroke with bottom-left foot, tick, curved down-stroke, dot, vertical, resh/dalet-shaped hook at baseline); a two-glyph token (closed loop with top-left bar + a small a/n-shaped glyph); a 5-stroke cluster (tick, two verticals, N-shape, vertical); a 4-glyph word (5-shaped glyph, tall vertical, kaf-hook, he-shape = arch + detached left tick); an arc with an inner dot and a period; then loop, tall lamed, vertical, two hooks, N-shape, he-shape. No closing parenthesis at the far left. Individual letter identity is uncertain in several places, but glyph counts, descenders and word gaps are clear enough to adjudicate the edits.",
+  "undocumented_rewrite": true,
+  "edit_findings": [
+   {
+    "raw_token": "x לאיך",
+    "suggested_token": "x לא ידוע",
+    "classification": "UNSUPPORTED_NORMALIZATION",
+    "visual_evidence": "The token immediately left of the 'x' is ONE contiguous cluster of ~7 stroke groups with no internal word gap (inter-stroke gaps ~10-18px vs ~30-40px gaps to neighbouring tokens), so a two-word reading 'לא ידוע' has no spacing support. Its final (leftmost) glyph is a resh/dalet-shaped hook (top bar + right stem) sitting on the baseline with no descender and no y/8-shaped ayin form, so the strokes support neither a final ך nor a final ע. There is no visible dalet+vav+ayin sequence; the middle strokes are tick / curved down-stroke / dot+vertical (an alef-like 'lc' pair). Neither raw 'לאיך' nor suggested 'לא ידוע' matches the ink well, but the suggestion adds letters and a word break that are not there.",
+    "chunk_influence": "none — 'ידוע' does not occur in any retrieved chunk; only the trivial 'לא' appears (e.g. 4963b4bf 'לא חייב', 0a029e1b 'לא מאבדת')"
+   },
+   {
+    "raw_token": "זיכ",
+    "suggested_token": "זיכרון",
+    "classification": "UNSUPPORTED_NORMALIZATION",
+    "visual_evidence": "The word is 4 glyphs: a 5-shaped zayin/gimel, a full-height vertical (vav), a kaf hook (ↄ), and a he-shape (arch with detached left tick) at baseline. There is no resh, no following vav, and no final nun with a descender anywhere after the kaf; the next ink is a separate arc-with-inner-dot and a period. 'רון' is invented; the ink reads like a 4-letter word ending in ה (e.g. זוכה/זיכה-like), not זיכרון.",
+    "chunk_influence": "none — 'זיכרון'/'זיכר' absent from all four chunks (4963b4bf, 0a029e1b, 6cce560c, 2e43c92a)"
+   },
+   {
+    "raw_token": "בכלל",
+    "suggested_token": "בכללי,",
+    "classification": "UNSUPPORTED_NORMALIZATION",
+    "visual_evidence": "Undocumented edit. The first word ends (leftmost) in a glyph with a right-side bowl and a long straight descender from its lower-left (kof-like); there is no trailing yod tick between it and the 'x'. Adding a final י is not supported by any stroke; the comma is not written either.",
+    "chunk_influence": "4963b4bf contains 'באופן כללי יותר מאשר קודם' (stem כללי) — likely source of the normalization"
+   },
+   {
+    "raw_token": "ש אלו",
+    "suggested_token": "(deleted)",
+    "classification": "UNSUPPORTED_NORMALIZATION",
+    "visual_evidence": "Undocumented deletion. Between the 7-stroke cluster and the 5-stroke 'ואלו' cluster there is clearly visible ink: a two-glyph token (closed loop with a top-left bar, then a small a/n-shaped glyph). Whatever its correct reading, ink is present, so silently dropping the token is not image-supported.",
+    "chunk_influence": "none"
+   },
+   {
+    "raw_token": "(כ. ויזכרם",
+    "suggested_token": "(כ. ויזכרם)",
+    "classification": "OTHER",
+    "visual_evidence": "Undocumented punctuation insertion: the far-left end of the line is a he-shaped glyph (arch + detached tick) followed by blank paper; no closing parenthesis is written. Same for the inserted comma after 'ידוע'. Minor, non-content, but not visible in the ink.",
+    "chunk_influence": "none"
+   }
+  ],
+  "overall_classification": "UNSUPPORTED_NORMALIZATION",
+  "confidence": "medium",
+  "notes": "The suggested_text differs from raw_text in more places than the two documented edits: 'בכלל'->'בכללי,', deletion of 'ש אלו', added comma after 'ידוע', added ')' at end. Both documented repairs add letters (ידוע; רון) that have no corresponding strokes — the disputed clusters have fixed glyph counts and neither shows a descender-bearing ן/ך or an ayin at the position required. Letter-level identity of several glyphs (the 3-shaped initial, the alef-like dot+vertical pairs) is genuinely uncertain, so I do not claim a definitive alternative transcription; the finding is that the RAG output invents characters and drops visible ink rather than resolving genuine confusion pairs. Chunk texts were checked for every suggested token; only 'כללי' has a chunk hit."
+ },
+ {
+  "item": "hl_e006_q1_r5__l1",
+  "image_readability": "Single line (1287x72 px) of blue-ink Hebrew cursive, RTL, ending with a period; contains Latin tokens \"x\", \"k\"-like and \"y\"-like glyphs. Strokes are legible at 4-6x zoom but the cursive is loose. The line does NOT visually correspond well to the raw OCR string: it appears to read roughly \"כש[...]  בכיוון x  [k/א?][ל?][~4 letters]ות  בכיוון y  מטושטשות .\" (about 8 tokens), whereas raw_text has 5 words. The last word before the period is clearly an 8-letter word ending in \"-ות\" with two vav-like verticals and two G-shaped tet-like glyphs (reads as מטושטשות, 'blurred'), and the first word is an ~9-stroke word starting כ/ש..., ending in a u-shaped glyph, not ת/ה. So the raw OCR is itself largely garbled/hallucinated for this crop and the repair operates on non-words.",
+  "undocumented_rewrite": true,
+  "edit_findings": [
+   {
+    "raw_token": "נמוגמית",
+    "suggested_token": "נמגמית",
+    "classification": "UNSUPPORTED_NORMALIZATION",
+    "visual_evidence": "The stroke group at the corresponding (leftmost, pre-period) position is an 8-letter word: mem (N-shape), tet (C-with-inner-curl), vav (short vertical), shin (u-with-curl), tet, shin, vav, tav with long leftward tail = מטושטשות. It contains at least two clear vav-like verticals; deleting a vav (נמוגמית -> נמגמית) moves further from what is written, not closer. Neither the raw nor the suggested token is a real Hebrew word or matches the strokes; the change is justified only by a fabricated claim that 'נמגמית' is a common course term. No ר/כ, ו/י type confusion pair is being resolved toward the ink.",
+    "chunk_influence": "none — 'נמגמית'/'נמגמ' does not occur in any of the 4 chunks (00a9e3b49d778b0c, 078505a74f4f18be, cfe29ed1a9bf51e1, 4b1889b17f91fc48); only the unrelated stem 'נמו' (הנמוך/בנמוכים) appears in 078505a74f4f18be and cfe29ed1a9bf51e1"
+   },
+   {
+    "raw_token": "בדיקת",
+    "suggested_token": "בדיקה",
+    "classification": "OTHER",
+    "visual_evidence": "UNDOCUMENTED change (not in edits list). The first (rightmost) word in the crop is a ~9-glyph word: kaf-like open C, a double-loop glyph (shin/ayin), a small looped glyph, mem (N-shape), tet, shin, tet, a short vertical, and a final u-shaped glyph — it does not read as בדיקת or בדיקה, and its final glyph is neither a tav nor a he. So the ת->ה swap has no visual basis; it also degrades grammar (construct 'בדיקת עומסים' -> ungrammatical 'בדיקה עומסים'), so it is not a semantic-correctness move either. It is a silent, ungrounded rewrite.",
+    "chunk_influence": "none — 'בדיקה'/'בדיקת' does not appear in any retrieved chunk"
+   }
+  ],
+  "overall_classification": "UNSUPPORTED_NORMALIZATION",
+  "confidence": "medium",
+  "notes": "Key observations: (1) The raw OCR string 'בדיקת עומסים של מערכת נמוגמית' bears little resemblance to the ink; the visible line contains Latin x/y tokens, a repeated word that looks like בכיוון, and ends with מטושטשות. So this item is a repair applied on top of a largely hallucinated baseline. (2) The documented edit swaps one non-word for another non-word, removing a vav that the ink (two vav-like verticals in the last word) does not support; the model's 'reason' invents a course term ('נמגמית') that is absent from the retrieved chunks and from Hebrew — a hallucinated-context normalization, hence UNSUPPORTED_NORMALIZATION rather than PLAUSIBLE_BUT_AMBIGUOUS. (3) An additional undocumented rewrite בדיקת->בדיקה occurred (edits list incomplete). Not SEMANTIC_CORRECTION_RISK: neither change moves the sentence toward a course-correct statement. Confidence medium because I could not fully decode the whole line, but I am confident neither disputed token pair matches the strokes. Blind protocol observed: only the manifest and crop were opened."
+ }
+]

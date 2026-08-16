@@ -1,0 +1,40 @@
+{
+ "item": "hl_e005_q1_r2__l1",
+ "raw_text": "במידה והתקבלה תשובה נכונה",
+ "suggested_text": "במידה והתקבלה תשובה נכונה",
+ "transcription": "במידה והתקבלה תשובה נכונה",
+ "edits": [],
+ "uncertain_regions": [],
+ "semantic_change_risk": false,
+ "needs_review": false,
+ "retrieved": [
+  {
+   "chunk_id": "627ede3ec9836f1e",
+   "source": "עיבוד תמונה.pdf",
+   "page": 103,
+   "similarity": 0.5051
+  },
+  {
+   "chunk_id": "bcf0ba6fa00aa7c6",
+   "source": "עיבוד תמונה.pdf",
+   "page": 32,
+   "similarity": 0.5009
+  },
+  {
+   "chunk_id": "e6230e3e26df17de",
+   "source": "עיבוד תמונה.pdf",
+   "page": 73,
+   "similarity": 0.5004
+  },
+  {
+   "chunk_id": "e89829841faa555b",
+   "source": "עיבוד תמונה.pdf",
+   "page": 26,
+   "similarity": 0.4985
+  }
+ ],
+ "retrieval_empty": false,
+ "error": null,
+ "retrieval_s": 2.52,
+ "repair_s": 5.03
+}

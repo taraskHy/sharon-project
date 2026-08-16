@@ -1,0 +1,15 @@
+{
+ "raw": "{\"transcription\": \"אם אדם צריך להגיש תלונה\"}",
+ "transcription": "אם אדם צריך להגיש תלונה",
+ "error": null,
+ "status": 200,
+ "usage_prompt_tokens": 193,
+ "usage_completion_tokens": 19,
+ "usage_total_tokens": 212,
+ "thinking_chars": 0,
+ "done_reason": "stop",
+ "item": "hl_e005_q1_r4__l1",
+ "category": "handwritten_line",
+ "run": 1,
+ "latency_s": 6.66
+}

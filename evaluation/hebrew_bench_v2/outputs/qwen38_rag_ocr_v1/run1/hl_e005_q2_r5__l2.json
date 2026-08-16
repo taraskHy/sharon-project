@@ -1,0 +1,40 @@
+{
+ "item": "hl_e005_q2_r5__l2",
+ "raw_text": "היי, יש לי שאלה: איך אני יכול/ה לעשות את זה? תודה",
+ "suggested_text": "היי, יש לי שאלה: איך אני יכול/ה לעשות את זה? תודה",
+ "transcription": "היי, יש לי שאלה: איך אני יכול/ה לעשות את זה? תודה",
+ "edits": [],
+ "uncertain_regions": [],
+ "semantic_change_risk": false,
+ "needs_review": false,
+ "retrieved": [
+  {
+   "chunk_id": "24c8f00fe9c730fe",
+   "source": "עיבוד תמונה.pdf",
+   "page": 29,
+   "similarity": 0.5473
+  },
+  {
+   "chunk_id": "eb16105641eea93e",
+   "source": "עיבוד תמונה.pdf",
+   "page": 23,
+   "similarity": 0.5451
+  },
+  {
+   "chunk_id": "41d860ccac30ba26",
+   "source": "עיבוד תמונה.pdf",
+   "page": 34,
+   "similarity": 0.5303
+  },
+  {
+   "chunk_id": "2b9ed62bac35149f",
+   "source": "עיבוד תמונה.pdf",
+   "page": 67,
+   "similarity": 0.525
+  }
+ ],
+ "retrieval_empty": false,
+ "error": null,
+ "retrieval_s": 2.53,
+ "repair_s": 5.53
+}

@@ -1,0 +1,15 @@
+{
+ "raw": "{\"transcription\": \"בניית מערכת thresholding עם גרף תלות (COCO) ואפס\"}",
+ "transcription": "בניית מערכת thresholding עם גרף תלות (COCO) ואפס",
+ "error": null,
+ "status": 200,
+ "usage_prompt_tokens": 219,
+ "usage_completion_tokens": 27,
+ "usage_total_tokens": 246,
+ "thinking_chars": 0,
+ "done_reason": "stop",
+ "item": "hl_e005_q2_r2__l2",
+ "category": "handwritten_line",
+ "run": 1,
+ "latency_s": 7.95
+}

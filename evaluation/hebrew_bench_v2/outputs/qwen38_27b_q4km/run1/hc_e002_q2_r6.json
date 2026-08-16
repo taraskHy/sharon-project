@@ -1,0 +1,15 @@
+{
+ "raw": "{\"transcription\": \"המכשיר בהתאם לנדרש, וכן מציין את סוג ה- Echo, כגון: Echo, Echo 2, Echo 3, וכו'\"}",
+ "transcription": "המכשיר בהתאם לנדרש, וכן מציין את סוג ה- Echo, כגון: Echo, Echo 2, Echo 3, וכו'",
+ "error": null,
+ "status": 200,
+ "usage_prompt_tokens": 301,
+ "usage_completion_tokens": 50,
+ "usage_total_tokens": 351,
+ "thinking_chars": 0,
+ "done_reason": "stop",
+ "item": "hc_e002_q2_r6",
+ "category": "handwritten_cell",
+ "run": 1,
+ "latency_s": 12.67
+}

@@ -1,0 +1,15 @@
+{
+ "raw": "{\"transcription\": \"אני לא אקרו ע סקר ה קריא ופיק\"}",
+ "transcription": "אני לא אקרו ע סקר ה קריא ופיק",
+ "error": null,
+ "status": 200,
+ "usage_prompt_tokens": 275,
+ "usage_completion_tokens": 23,
+ "usage_total_tokens": 298,
+ "thinking_chars": 0,
+ "done_reason": "stop",
+ "item": "hc_e002_q1_r6",
+ "category": "handwritten_cell",
+ "run": 1,
+ "latency_s": 7.44
+}

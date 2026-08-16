@@ -1,0 +1,40 @@
+{
+ "item": "hl_e004_q2_r6__l2",
+ "raw_text": "16. אין צורך ב'א. X. (חוקה) 1. יש צורך ב'ג' או ב'ד' לזיהוי (ב'ד' ב'ג'",
+ "suggested_text": "16. אין צורך ב'א. X. (חוקה) 1. יש צורך ב'ג' או ב'ד' לזיהוי (ב'ד' ב'ג'",
+ "transcription": "16. אין צורך ב'א. X. (חוקה) 1. יש צורך ב'ג' או ב'ד' לזיהוי (ב'ד' ב'ג'",
+ "edits": [],
+ "uncertain_regions": [],
+ "semantic_change_risk": false,
+ "needs_review": false,
+ "retrieved": [
+  {
+   "chunk_id": "4963b4bf70e69016",
+   "source": "עיבוד תמונה.pdf",
+   "page": 42,
+   "similarity": 0.4982
+  },
+  {
+   "chunk_id": "c9df2979d6f61e66",
+   "source": "עיבוד תמונה.pdf",
+   "page": 32,
+   "similarity": 0.481
+  },
+  {
+   "chunk_id": "af9ab1b72e323a7c",
+   "source": "עיבוד תמונה.pdf",
+   "page": 98,
+   "similarity": 0.4778
+  },
+  {
+   "chunk_id": "7d909c1841d575fe",
+   "source": "עיבוד תמונה.pdf",
+   "page": 45,
+   "similarity": 0.4713
+  }
+ ],
+ "retrieval_empty": false,
+ "error": "JSONDecodeError: Unterminated string starting at: line 7 column 17 (char 304)",
+ "retrieval_s": 2.67,
+ "repair_s": 42.59
+}

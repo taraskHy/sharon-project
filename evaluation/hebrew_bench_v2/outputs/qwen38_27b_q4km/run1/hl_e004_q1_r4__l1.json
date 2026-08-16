@@ -1,0 +1,15 @@
+{
+ "raw": "{\"transcription\": \"Low Pass Filter\"}",
+ "transcription": "Low Pass Filter",
+ "error": null,
+ "status": 200,
+ "usage_prompt_tokens": 245,
+ "usage_completion_tokens": 10,
+ "usage_total_tokens": 255,
+ "thinking_chars": 0,
+ "done_reason": "stop",
+ "item": "hl_e004_q1_r4__l1",
+ "category": "handwritten_line",
+ "run": 1,
+ "latency_s": 4.84
+}

@@ -1,0 +1,40 @@
+{
+ "item": "hl_e004_q1_r6__l1",
+ "raw_text": "אורך גל 500NM WAVELENGTH",
+ "suggested_text": "אורך גל 500NM WAVELENGTH",
+ "transcription": "אורך גל 500NM WAVELENGTH",
+ "edits": [],
+ "uncertain_regions": [],
+ "semantic_change_risk": false,
+ "needs_review": false,
+ "retrieved": [
+  {
+   "chunk_id": "9aa0794ae6075786",
+   "source": "עיבוד תמונה.pdf",
+   "page": 108,
+   "similarity": 0.5853
+  },
+  {
+   "chunk_id": "2ac9a600fd48bdbb",
+   "source": "עיבוד תמונה.pdf",
+   "page": 7,
+   "similarity": 0.5232
+  },
+  {
+   "chunk_id": "087decec4cff35d4",
+   "source": "עיבוד תמונה.pdf",
+   "page": 71,
+   "similarity": 0.4857
+  },
+  {
+   "chunk_id": "ab3a8f926c33542a",
+   "source": "עיבוד תמונה.pdf",
+   "page": 60,
+   "similarity": 0.4801
+  }
+ ],
+ "retrieval_empty": false,
+ "error": "JSONDecodeError: Unterminated string starting at: line 7 column 17 (char 135)",
+ "retrieval_s": 2.56,
+ "repair_s": 42.16
+}

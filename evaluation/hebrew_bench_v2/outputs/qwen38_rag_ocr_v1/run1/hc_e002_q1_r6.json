@@ -1,0 +1,40 @@
+{
+ "item": "hc_e002_q1_r6",
+ "raw_text": "אני לא אקרו ע סקר ה קריא ופיק",
+ "suggested_text": "אני לא אקרו ע סקר ה קריא ופיק",
+ "transcription": "אני לא אקרו ע סקר ה קריא ופיק",
+ "edits": [],
+ "uncertain_regions": [],
+ "semantic_change_risk": false,
+ "needs_review": false,
+ "retrieved": [
+  {
+   "chunk_id": "2e25977dc9e2aae7",
+   "source": "עיבוד תמונה.pdf",
+   "page": 13,
+   "similarity": 0.4189
+  },
+  {
+   "chunk_id": "c6e82073fc3237a8",
+   "source": "עיבוד תמונה.pdf",
+   "page": 19,
+   "similarity": 0.4154
+  },
+  {
+   "chunk_id": "2e43c92a8b6dff51",
+   "source": "עיבוד תמונה.pdf",
+   "page": 100,
+   "similarity": 0.4137
+  },
+  {
+   "chunk_id": "dc86280efd3fa1a7",
+   "source": "עיבוד תמונה.pdf",
+   "page": 109,
+   "similarity": 0.4071
+  }
+ ],
+ "retrieval_empty": false,
+ "error": "JSONDecodeError: Unterminated string starting at: line 7 column 17 (char 130)",
+ "retrieval_s": 2.5,
+ "repair_s": 41.91
+}

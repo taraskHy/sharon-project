@@ -1,0 +1,40 @@
+{
+ "item": "hc_e002_q2_r6",
+ "raw_text": "המכשיר בהתאם לנדרש, וכן מציין את סוג ה- Echo, כגון: Echo, Echo 2, Echo 3, וכו'",
+ "suggested_text": "המכשיר בהתאם לנדרש, וכן מציין את סוג ה- Echo, כגון: Echo, Echo 2, Echo 3, וכו'",
+ "transcription": "המכשיר בהתאם לנדרש, וכן מציין את סוג ה- Echo, כגון: Echo, Echo 2, Echo 3, וכו'",
+ "edits": [],
+ "uncertain_regions": [],
+ "semantic_change_risk": false,
+ "needs_review": false,
+ "retrieved": [
+  {
+   "chunk_id": "02697ab52036142c",
+   "source": "עיבוד תמונה.pdf",
+   "page": 91,
+   "similarity": 0.5356
+  },
+  {
+   "chunk_id": "f91f41bc5d2114e4",
+   "source": "עיבוד תמונה.pdf",
+   "page": 109,
+   "similarity": 0.5347
+  },
+  {
+   "chunk_id": "48acf9a5d2f4a71d",
+   "source": "עיבוד תמונה.pdf",
+   "page": 110,
+   "similarity": 0.5163
+  },
+  {
+   "chunk_id": "9a9a87a297b2d94a",
+   "source": "עיבוד תמונה.pdf",
+   "page": 72,
+   "similarity": 0.5012
+  }
+ ],
+ "retrieval_empty": false,
+ "error": "JSONDecodeError: Unterminated string starting at: line 7 column 17 (char 188)",
+ "retrieval_s": 2.53,
+ "repair_s": 42.3
+}

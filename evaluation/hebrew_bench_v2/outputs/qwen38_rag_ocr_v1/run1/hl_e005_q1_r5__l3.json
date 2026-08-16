@@ -1,0 +1,47 @@
+{
+ "item": "hl_e005_q1_r5__l3",
+ "raw_text": "x יי",
+ "suggested_text": "x = x_w",
+ "transcription": "x = x_w",
+ "edits": [
+  {
+   "raw": "x יי",
+   "suggested": "x = x_w",
+   "reason": "The OCR likely misread the handwritten symbol as 'יי' (which is Hebrew for 'yes' or 'two'), but in context of image processing and the course material, it's plausible the student intended to write 'x = x_w', which is a common variable assignment in interpolation formulas. The context suggests a variable x being defined in terms of x_w, and the OCR corruption is likely a misreading of '=' or a misaligned symbol. No correction is made unless contextually necessary, but this is the most plausible OCR repair based on course context and common notation. The student's intent is preserved as 'x = x_w'.",
+   "risk": "low"
+  }
+ ],
+ "uncertain_regions": [],
+ "semantic_change_risk": false,
+ "needs_review": false,
+ "retrieved": [
+  {
+   "chunk_id": "05c27a6424b7d3a8",
+   "source": "עיבוד תמונה.pdf",
+   "page": 26,
+   "similarity": 0.4898
+  },
+  {
+   "chunk_id": "8418c2498b776ad9",
+   "source": "עיבוד תמונה.pdf",
+   "page": 12,
+   "similarity": 0.4806
+  },
+  {
+   "chunk_id": "c008fa32a06a0e21",
+   "source": "עיבוד תמונה.pdf",
+   "page": 33,
+   "similarity": 0.4487
+  },
+  {
+   "chunk_id": "a53ffd0b95ab12a1",
+   "source": "עיבוד תמונה.pdf",
+   "page": 102,
+   "similarity": 0.4483
+  }
+ ],
+ "retrieval_empty": false,
+ "error": null,
+ "retrieval_s": 3.98,
+ "repair_s": 11.02
+}

@@ -1,0 +1,40 @@
+{
+ "item": "hl_e003_q2_r7__l1",
+ "raw_text": "הוכיח נוסף התקבלו, מן החניכי ב 2\nהוכיח נוסף התקבלו מן סלון",
+ "suggested_text": "הוכיח נוסף התקבלו, מן החניכי ב 2\nהוכיח נוסף התקבלו מן סלון",
+ "transcription": "הוכיח נוסף התקבלו, מן החניכי ב 2\nהוכיח נוסף התקבלו מן סלון",
+ "edits": [],
+ "uncertain_regions": [],
+ "semantic_change_risk": false,
+ "needs_review": false,
+ "retrieved": [
+  {
+   "chunk_id": "99d8357322ce8235",
+   "source": "עיבוד תמונה.pdf",
+   "page": 111,
+   "similarity": 0.4581
+  },
+  {
+   "chunk_id": "4cd86f3d5aa03067",
+   "source": "עיבוד תמונה.pdf",
+   "page": 24,
+   "similarity": 0.4452
+  },
+  {
+   "chunk_id": "787bd3ba3016808e",
+   "source": "עיבוד תמונה.pdf",
+   "page": 102,
+   "similarity": 0.4314
+  },
+  {
+   "chunk_id": "dab9a140425d60ea",
+   "source": "עיבוד תמונה.pdf",
+   "page": 113,
+   "similarity": 0.4233
+  }
+ ],
+ "retrieval_empty": false,
+ "error": "JSONDecodeError: Unterminated string starting at: line 7 column 17 (char 224)",
+ "retrieval_s": 2.52,
+ "repair_s": 41.83
+}

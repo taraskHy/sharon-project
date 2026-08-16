@@ -1,0 +1,21 @@
+{
+ "config_id": "qwen38_27b_q4km",
+ "backend": "ollama_native",
+ "model": "qwen3.8:27b-q4_K_M",
+ "preproc": "contrast",
+ "max_edge": 1100,
+ "min_interval_s": 0.0,
+ "runs": 1,
+ "categories": "all",
+ "n_items": 129,
+ "extra_body": {
+  "think": false,
+  "options": {
+   "num_ctx": 8192,
+   "repeat_penalty": 1.0
+  }
+ },
+ "started": "2026-08-16 12:53:18",
+ "total_wall_s": 1642.0,
+ "calls_made": 124
+}

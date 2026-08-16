@@ -1,0 +1,40 @@
+{
+ "item": "hl_e005_q2_r4__l2",
+ "raw_text": "17.3.17. optimal quantization מ'אליקל 26. הערכה של ס'ל'ט",
+ "suggested_text": "17.3.17. optimal quantization מ'אליקל 26. הערכה של ס'ל'ט",
+ "transcription": "17.3.17. optimal quantization מ'אליקל 26. הערכה של ס'ל'ט",
+ "edits": [],
+ "uncertain_regions": [],
+ "semantic_change_risk": false,
+ "needs_review": false,
+ "retrieved": [
+  {
+   "chunk_id": "590c3062e75e39c8",
+   "source": "עיבוד תמונה.pdf",
+   "page": 105,
+   "similarity": 0.4826
+  },
+  {
+   "chunk_id": "b8d47c1331cc7e08",
+   "source": "עיבוד תמונה.pdf",
+   "page": 43,
+   "similarity": 0.4733
+  },
+  {
+   "chunk_id": "191cb23005a13272",
+   "source": "עיבוד תמונה.pdf",
+   "page": 10,
+   "similarity": 0.4702
+  },
+  {
+   "chunk_id": "4fcc67a0a5db3ecb",
+   "source": "עיבוד תמונה.pdf",
+   "page": 39,
+   "similarity": 0.4679
+  }
+ ],
+ "retrieval_empty": false,
+ "error": "JSONDecodeError: Unterminated string starting at: line 7 column 17 (char 173)",
+ "retrieval_s": 2.5,
+ "repair_s": 41.89
+}

@@ -1,0 +1,40 @@
+{
+ "item": "hl_e003_q1_r4__l1",
+ "raw_text": "נכון אם תמשיך לעשות את זה תצטרך לעשות את זה שוב ושוב",
+ "suggested_text": "נכון אם תמשיך לעשות את זה תצטרך לעשות את זה שוב ושוב",
+ "transcription": "נכון אם תמשיך לעשות את זה תצטרך לעשות את זה שוב ושוב",
+ "edits": [],
+ "uncertain_regions": [],
+ "semantic_change_risk": false,
+ "needs_review": false,
+ "retrieved": [
+  {
+   "chunk_id": "725714ba485d9188",
+   "source": "עיבוד תמונה.pdf",
+   "page": 84,
+   "similarity": 0.4661
+  },
+  {
+   "chunk_id": "9a8417986ccaec71",
+   "source": "עיבוד תמונה.pdf",
+   "page": 60,
+   "similarity": 0.4587
+  },
+  {
+   "chunk_id": "76e741805dd763ab",
+   "source": "עיבוד תמונה.pdf",
+   "page": 39,
+   "similarity": 0.4578
+  },
+  {
+   "chunk_id": "7d909c1841d575fe",
+   "source": "עיבוד תמונה.pdf",
+   "page": 45,
+   "similarity": 0.4564
+  }
+ ],
+ "retrieval_empty": false,
+ "error": "JSONDecodeError: Unterminated string starting at: line 7 column 17 (char 261)",
+ "retrieval_s": 2.52,
+ "repair_s": 41.62
+}

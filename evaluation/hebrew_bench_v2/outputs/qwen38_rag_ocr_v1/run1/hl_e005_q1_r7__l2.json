@@ -1,0 +1,40 @@
+{
+ "item": "hl_e005_q1_r7__l2",
+ "raw_text": "במידה וסטודנט מנסה לבדוק (בגלל שיש לו דעה) את",
+ "suggested_text": "במידה וסטודנט מנסה לבדוק (בגלל שיש לו דעה) את",
+ "transcription": "במידה וסטודנט מנסה לבדוק (בגלל שיש לו דעה) את",
+ "edits": [],
+ "uncertain_regions": [],
+ "semantic_change_risk": false,
+ "needs_review": false,
+ "retrieved": [
+  {
+   "chunk_id": "7d909c1841d575fe",
+   "source": "עיבוד תמונה.pdf",
+   "page": 45,
+   "similarity": 0.5078
+  },
+  {
+   "chunk_id": "2e43c92a8b6dff51",
+   "source": "עיבוד תמונה.pdf",
+   "page": 100,
+   "similarity": 0.49
+  },
+  {
+   "chunk_id": "e0ff60bcd5868861",
+   "source": "עיבוד תמונה.pdf",
+   "page": 4,
+   "similarity": 0.4825
+  },
+  {
+   "chunk_id": "55e315ad4355d4e4",
+   "source": "עיבוד תמונה.pdf",
+   "page": 17,
+   "similarity": 0.4789
+  }
+ ],
+ "retrieval_empty": false,
+ "error": null,
+ "retrieval_s": 2.48,
+ "repair_s": 5.3
+}

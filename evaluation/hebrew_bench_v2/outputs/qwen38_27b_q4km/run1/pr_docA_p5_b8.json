@@ -1,0 +1,15 @@
+{
+ "raw": "{\"transcription\": \"1. הפעלת גלאי שפה Canny E/C/B\"}",
+ "transcription": "1. הפעלת גלאי שפה Canny E/C/B",
+ "error": null,
+ "status": 200,
+ "usage_prompt_tokens": 227,
+ "usage_completion_tokens": 22,
+ "usage_total_tokens": 249,
+ "thinking_chars": 0,
+ "done_reason": "stop",
+ "item": "pr_docA_p5_b8",
+ "category": "mixed_he_en",
+ "run": 1,
+ "latency_s": 7.11
+}

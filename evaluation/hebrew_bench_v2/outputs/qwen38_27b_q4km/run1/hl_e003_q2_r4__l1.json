@@ -1,0 +1,15 @@
+{
+ "raw": "{\"transcription\": \"לכן צריך לשים על כל Uniform את ה\\\"ס\\\"ס של כל ת\\\"ס\"}",
+ "transcription": "לכן צריך לשים על כל Uniform את ה\"ס\"ס של כל ת\"ס",
+ "error": null,
+ "status": 200,
+ "usage_prompt_tokens": 245,
+ "usage_completion_tokens": 27,
+ "usage_total_tokens": 272,
+ "thinking_chars": 0,
+ "done_reason": "stop",
+ "item": "hl_e003_q2_r4__l1",
+ "category": "handwritten_line",
+ "run": 1,
+ "latency_s": 8.61
+}

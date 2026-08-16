@@ -1,0 +1,40 @@
+{
+ "item": "hl_e005_q1_r7__l1",
+ "raw_text": "היכנס תהיה לא נכון",
+ "suggested_text": "היכנס תהיה לא נכון",
+ "transcription": "היכנס תהיה לא נכון",
+ "edits": [],
+ "uncertain_regions": [],
+ "semantic_change_risk": false,
+ "needs_review": false,
+ "retrieved": [
+  {
+   "chunk_id": "5c75851dcfe50e4c",
+   "source": "עיבוד תמונה.pdf",
+   "page": 33,
+   "similarity": 0.4891
+  },
+  {
+   "chunk_id": "e6230e3e26df17de",
+   "source": "עיבוד תמונה.pdf",
+   "page": 73,
+   "similarity": 0.4803
+  },
+  {
+   "chunk_id": "027077d560655488",
+   "source": "עיבוד תמונה.pdf",
+   "page": 96,
+   "similarity": 0.4772
+  },
+  {
+   "chunk_id": "25521d1fcc8def27",
+   "source": "עיבוד תמונה.pdf",
+   "page": 107,
+   "similarity": 0.4752
+  }
+ ],
+ "retrieval_empty": false,
+ "error": "JSONDecodeError: Unterminated string starting at: line 7 column 17 (char 129)",
+ "retrieval_s": 2.5,
+ "repair_s": 41.83
+}

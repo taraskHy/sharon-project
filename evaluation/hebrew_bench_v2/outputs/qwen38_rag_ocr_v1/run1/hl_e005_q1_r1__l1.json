@@ -1,0 +1,40 @@
+{
+ "item": "hl_e005_q1_r1__l1",
+ "raw_text": "רוב הוויכוחים סביב הבלתי מובן (ב איזה מידה",
+ "suggested_text": "רוב הוויכוחים סביב הבלתי מובן (ב איזה מידה",
+ "transcription": "רוב הוויכוחים סביב הבלתי מובן (ב איזה מידה",
+ "edits": [],
+ "uncertain_regions": [],
+ "semantic_change_risk": false,
+ "needs_review": false,
+ "retrieved": [
+  {
+   "chunk_id": "8418c2498b776ad9",
+   "source": "עיבוד תמונה.pdf",
+   "page": 12,
+   "similarity": 0.4722
+  },
+  {
+   "chunk_id": "cf68dd150a5d5844",
+   "source": "עיבוד תמונה.pdf",
+   "page": 26,
+   "similarity": 0.4594
+  },
+  {
+   "chunk_id": "e3957aa310784480",
+   "source": "עיבוד תמונה.pdf",
+   "page": 9,
+   "similarity": 0.458
+  },
+  {
+   "chunk_id": "2c7fb83e9f5f5e31",
+   "source": "עיבוד תמונה.pdf",
+   "page": 110,
+   "similarity": 0.4568
+  }
+ ],
+ "retrieval_empty": false,
+ "error": "JSONDecodeError: Unterminated string starting at: line 7 column 17 (char 175)",
+ "retrieval_s": 2.5,
+ "repair_s": 41.66
+}

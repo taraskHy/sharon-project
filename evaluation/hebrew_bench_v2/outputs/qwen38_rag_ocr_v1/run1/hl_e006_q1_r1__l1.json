@@ -1,0 +1,40 @@
+{
+ "item": "hl_e006_q1_r1__l1",
+ "raw_text": "מבוא לתוכנית מחשבים! כל סוגי הנתונים (כמו ריאל, מחרוזת, ...).",
+ "suggested_text": "מבוא לתוכנית מחשבים! כל סוגי הנתונים (כמו ריאל, מחרוזת, ...).",
+ "transcription": "מבוא לתוכנית מחשבים! כל סוגי הנתונים (כמו ריאל, מחרוזת, ...).",
+ "edits": [],
+ "uncertain_regions": [],
+ "semantic_change_risk": false,
+ "needs_review": false,
+ "retrieved": [
+  {
+   "chunk_id": "c0ded09ee7da6947",
+   "source": "עיבוד תמונה.pdf",
+   "page": 118,
+   "similarity": 0.5296
+  },
+  {
+   "chunk_id": "f19d47e2ea26d4b0",
+   "source": "עיבוד תמונה.pdf",
+   "page": 1,
+   "similarity": 0.5259
+  },
+  {
+   "chunk_id": "3c72cc1dfbfe1e8e",
+   "source": "עיבוד תמונה.pdf",
+   "page": 6,
+   "similarity": 0.5215
+  },
+  {
+   "chunk_id": "a8159ef97d685323",
+   "source": "עיבוד תמונה.pdf",
+   "page": 2,
+   "similarity": 0.5193
+  }
+ ],
+ "retrieval_empty": false,
+ "error": "JSONDecodeError: Unterminated string starting at: line 7 column 17 (char 184)",
+ "retrieval_s": 2.5,
+ "repair_s": 41.05
+}

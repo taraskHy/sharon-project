@@ -1,0 +1,40 @@
+{
+ "item": "hl_e005_q2_r1__l1",
+ "raw_text": "העובדה שהמחשב הוא כלי, מערכת, פרוג",
+ "suggested_text": "העובדה שהמחשב הוא כלי, מערכת, פרוג",
+ "transcription": "העובדה שהמחשב הוא כלי, מערכת, פרוג",
+ "edits": [],
+ "uncertain_regions": [],
+ "semantic_change_risk": false,
+ "needs_review": false,
+ "retrieved": [
+  {
+   "chunk_id": "3ec7a2503ad6d6f3",
+   "source": "עיבוד תמונה.pdf",
+   "page": 4,
+   "similarity": 0.5268
+  },
+  {
+   "chunk_id": "71bc9ab755699b58",
+   "source": "עיבוד תמונה.pdf",
+   "page": 109,
+   "similarity": 0.5121
+  },
+  {
+   "chunk_id": "a8159ef97d685323",
+   "source": "עיבוד תמונה.pdf",
+   "page": 2,
+   "similarity": 0.5117
+  },
+  {
+   "chunk_id": "1e12291eb7dc0e05",
+   "source": "עיבוד תמונה.pdf",
+   "page": 73,
+   "similarity": 0.5099
+  }
+ ],
+ "retrieval_empty": false,
+ "error": "JSONDecodeError: Unterminated string starting at: line 7 column 17 (char 144)",
+ "retrieval_s": 2.56,
+ "repair_s": 41.61
+}

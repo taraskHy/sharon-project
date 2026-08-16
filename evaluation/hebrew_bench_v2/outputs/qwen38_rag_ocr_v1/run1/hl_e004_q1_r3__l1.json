@@ -1,0 +1,40 @@
+{
+ "item": "hl_e004_q1_r3__l1",
+ "raw_text": "עם תוכנית מלאה של מודול על סכום",
+ "suggested_text": "עם תוכנית מלאה של מודול על סכום",
+ "transcription": "עם תוכנית מלאה של מודול על סכום",
+ "edits": [],
+ "uncertain_regions": [],
+ "semantic_change_risk": false,
+ "needs_review": false,
+ "retrieved": [
+  {
+   "chunk_id": "c0ded09ee7da6947",
+   "source": "עיבוד תמונה.pdf",
+   "page": 118,
+   "similarity": 0.5024
+  },
+  {
+   "chunk_id": "ccc8962b010c71ed",
+   "source": "עיבוד תמונה.pdf",
+   "page": 87,
+   "similarity": 0.493
+  },
+  {
+   "chunk_id": "1fb7c09180428d0d",
+   "source": "עיבוד תמונה.pdf",
+   "page": 16,
+   "similarity": 0.4874
+  },
+  {
+   "chunk_id": "7468083bbea23e98",
+   "source": "עיבוד תמונה.pdf",
+   "page": 48,
+   "similarity": 0.4857
+  }
+ ],
+ "retrieval_empty": false,
+ "error": null,
+ "retrieval_s": 2.53,
+ "repair_s": 5.19
+}

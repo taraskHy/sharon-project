@@ -1,0 +1,15 @@
+{
+ "raw": "{\"transcription\": \"אין ספק כי סביר להניח כי תאריך 7.10.15 נקבע על ידי הנתבעת, וזאת על מנת להימנע מתשלום הריבית\"}",
+ "transcription": "אין ספק כי סביר להניח כי תאריך 7.10.15 נקבע על ידי הנתבעת, וזאת על מנת להימנע מתשלום הריבית",
+ "error": null,
+ "status": 200,
+ "usage_prompt_tokens": 301,
+ "usage_completion_tokens": 58,
+ "usage_total_tokens": 359,
+ "thinking_chars": 0,
+ "done_reason": "stop",
+ "item": "hc_e002_q1_r8",
+ "category": "handwritten_cell",
+ "run": 1,
+ "latency_s": 14.34
+}

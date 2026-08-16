@@ -1,0 +1,15 @@
+{
+ "raw": "{\"transcription\": \"17.3.17. optimal quantization מ'אליקל 26. הערכה של ס'ל'ט\"}",
+ "transcription": "17.3.17. optimal quantization מ'אליקל 26. הערכה של ס'ל'ט",
+ "error": null,
+ "status": 200,
+ "usage_prompt_tokens": 193,
+ "usage_completion_tokens": 37,
+ "usage_total_tokens": 230,
+ "thinking_chars": 0,
+ "done_reason": "stop",
+ "item": "hl_e005_q2_r4__l2",
+ "category": "handwritten_line",
+ "run": 1,
+ "latency_s": 10.25
+}

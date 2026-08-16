@@ -1,0 +1,40 @@
+{
+ "item": "hl_e005_q1_r1__l2",
+ "raw_text": "אני לא רוצה שזה יהיה כזה משהו, אבל אני",
+ "suggested_text": "אני לא רוצה שזה יהיה כזה משהו, אבל אני",
+ "transcription": "אני לא רוצה שזה יהיה כזה משהו, אבל אני",
+ "edits": [],
+ "uncertain_regions": [],
+ "semantic_change_risk": false,
+ "needs_review": false,
+ "retrieved": [
+  {
+   "chunk_id": "d211b57a8eb29b49",
+   "source": "עיבוד תמונה.pdf",
+   "page": 5,
+   "similarity": 0.4436
+  },
+  {
+   "chunk_id": "07c2953cfc3d7c43",
+   "source": "עיבוד תמונה.pdf",
+   "page": 116,
+   "similarity": 0.437
+  },
+  {
+   "chunk_id": "62ba70ad2e84dcb3",
+   "source": "עיבוד תמונה.pdf",
+   "page": 29,
+   "similarity": 0.4323
+  },
+  {
+   "chunk_id": "4b1889b17f91fc48",
+   "source": "עיבוד תמונה.pdf",
+   "page": 30,
+   "similarity": 0.4302
+  }
+ ],
+ "retrieval_empty": false,
+ "error": null,
+ "retrieval_s": 2.48,
+ "repair_s": 5.17
+}

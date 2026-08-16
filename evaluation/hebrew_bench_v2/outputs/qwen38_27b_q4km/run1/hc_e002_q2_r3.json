@@ -1,0 +1,15 @@
+{
+ "raw": "{\"transcription\": \"עשה איחודים עם איחודים (אנ) אקליד עם אקליד\"}",
+ "transcription": "עשה איחודים עם איחודים (אנ) אקליד עם אקליד",
+ "error": null,
+ "status": 200,
+ "usage_prompt_tokens": 275,
+ "usage_completion_tokens": 31,
+ "usage_total_tokens": 306,
+ "thinking_chars": 0,
+ "done_reason": "stop",
+ "item": "hc_e002_q2_r3",
+ "category": "handwritten_cell",
+ "run": 1,
+ "latency_s": 8.98
+}

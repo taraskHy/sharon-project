@@ -1,0 +1,15 @@
+{
+ "raw": "{\"transcription\": \"העובדה שהמחלה היא לא מחלה נפשית אלא מחלה גנטית\"}",
+ "transcription": "העובדה שהמחלה היא לא מחלה נפשית אלא מחלה גנטית",
+ "error": null,
+ "status": 200,
+ "usage_prompt_tokens": 301,
+ "usage_completion_tokens": 29,
+ "usage_total_tokens": 330,
+ "thinking_chars": 0,
+ "done_reason": "stop",
+ "item": "hc_e002_q1_r1",
+ "category": "handwritten_cell",
+ "run": 1,
+ "latency_s": 8.67
+}

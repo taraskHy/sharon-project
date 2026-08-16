@@ -1,0 +1,47 @@
+{
+ "item": "hc_e002_q1_r2",
+ "raw_text": "בשעה שהמטאליק נק העניינים נשארו",
+ "suggested_text": "בשעה שהמצלמה נקבה את העניינים נשארו",
+ "transcription": "בשעה שהמצלמה נקבה את העניינים נשארו",
+ "edits": [
+  {
+   "raw": "המטאליק",
+   "suggested": "המצלמה",
+   "reason": "בהתבסס על הקשר הטכני (תמונה, עיבוד תמונה, רעש, פוטונים), 'המטאליק' הוא כנראה שגיאה ב-OCR של 'המצלמה'. 'מצלמה' היא מונח רלוונטי בקורס, בעוד 'מטאליק' אינו רלוונטי. השינוי מותאם לתוכן הקורס ומשמר את המילה 'נקבה' כמונח שגוי, אך עם תיקון למשמעות טכנית אפשרית (ככל הנראה 'נקבה' = 'נקבה' או 'נקבה' = 'נקבה' - אך זה לא רלוונטי לתקן).",
+   "risk": "low"
+  }
+ ],
+ "uncertain_regions": [],
+ "semantic_change_risk": false,
+ "needs_review": false,
+ "retrieved": [
+  {
+   "chunk_id": "2436a2554d8fbf99",
+   "source": "עיבוד תמונה.pdf",
+   "page": 113,
+   "similarity": 0.3951
+  },
+  {
+   "chunk_id": "3df31bf61e8f8040",
+   "source": "עיבוד תמונה.pdf",
+   "page": 81,
+   "similarity": 0.3744
+  },
+  {
+   "chunk_id": "195497a5c1acf8ae",
+   "source": "עיבוד תמונה.pdf",
+   "page": 23,
+   "similarity": 0.3648
+  },
+  {
+   "chunk_id": "71fe03a899a9f932",
+   "source": "עיבוד תמונה.pdf",
+   "page": 101,
+   "similarity": 0.3607
+  }
+ ],
+ "retrieval_empty": false,
+ "error": null,
+ "retrieval_s": 2.55,
+ "repair_s": 11.83
+}

@@ -1,0 +1,15 @@
+{
+ "raw": "{\"transcription\": \"(א) 264 (ב) 271 (ג) 273 (ד) אין אחד מהם ל\"}",
+ "transcription": "(א) 264 (ב) 271 (ג) 273 (ד) אין אחד מהם ל",
+ "error": null,
+ "status": 200,
+ "usage_prompt_tokens": 192,
+ "usage_completion_tokens": 35,
+ "usage_total_tokens": 227,
+ "thinking_chars": 0,
+ "done_reason": "stop",
+ "item": "pr_docB_p2_b14",
+ "category": "formula_printed",
+ "run": 1,
+ "latency_s": 9.98
+}

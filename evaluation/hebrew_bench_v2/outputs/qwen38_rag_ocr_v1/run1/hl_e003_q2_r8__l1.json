@@ -1,0 +1,40 @@
+{
+ "item": "hl_e003_q2_r8__l1",
+ "raw_text": "האם יש גבול בין תוכן מילולי ללא תוכן מילולי? האם יש גבול בין תוכן מילולי ללא תוכן מילולי?",
+ "suggested_text": "האם יש גבול בין תוכן מילולי ללא תוכן מילולי? האם יש גבול בין תוכן מילולי ללא תוכן מילולי?",
+ "transcription": "האם יש גבול בין תוכן מילולי ללא תוכן מילולי? האם יש גבול בין תוכן מילולי ללא תוכן מילולי?",
+ "edits": [],
+ "uncertain_regions": [],
+ "semantic_change_risk": false,
+ "needs_review": false,
+ "retrieved": [
+  {
+   "chunk_id": "9813d2e59a89a8ca",
+   "source": "עיבוד תמונה.pdf",
+   "page": 95,
+   "similarity": 0.4901
+  },
+  {
+   "chunk_id": "f77b63546d90fd73",
+   "source": "עיבוד תמונה.pdf",
+   "page": 89,
+   "similarity": 0.4764
+  },
+  {
+   "chunk_id": "11ea98d369ea8b28",
+   "source": "עיבוד תמונה.pdf",
+   "page": 89,
+   "similarity": 0.4516
+  },
+  {
+   "chunk_id": "c34b774025661738",
+   "source": "עיבוד תמונה.pdf",
+   "page": 96,
+   "similarity": 0.4502
+  }
+ ],
+ "retrieval_empty": false,
+ "error": null,
+ "retrieval_s": 2.66,
+ "repair_s": 5.92
+}
