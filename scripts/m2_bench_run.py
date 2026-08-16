@@ -195,17 +195,22 @@ class ChatVLM:
     """OpenAI-compatible chat endpoint (Ollama local or OpenRouter hosted)."""
 
     def __init__(self, base_url, model, api_key=None, structured=True,
-                 timeout=600.0, max_tokens=500):
+                 timeout=600.0, max_tokens=500, extra_body=None):
         import httpx
 
         headers = {"Authorization": f"Bearer {api_key}"} if api_key else {}
         self.client = httpx.Client(timeout=timeout, headers=headers)
         self.base_url, self.model = base_url, model
         self.structured, self.max_tokens = structured, max_tokens
+        # Provider-specific request keys merged verbatim into every request
+        # (e.g. Ollama {"think": false, "options": {"num_ctx": 8192}}); the
+        # prompt/schema/parser contract is untouched.
+        self.extra_body = dict(extra_body or {})
 
     def transcribe(self, png: bytes, prompt: str, structured: bool | None = None) -> dict:
         structured = self.structured if structured is None else structured
         payload = {
+            **self.extra_body,
             "model": self.model,
             "temperature": 0,
             "max_tokens": self.max_tokens,
@@ -392,7 +397,8 @@ ALIBABA_SG_ENDPOINT = "https://dashscope-intl.aliyuncs.com/compatible-mode/v1"
 
 def make_adapter(args):
     if args.backend == "qwen_local":
-        return ChatVLM(args.base_url, args.model, structured=True)
+        extra = json.loads(args.extra_body) if getattr(args, "extra_body", "") else None
+        return ChatVLM(args.base_url, args.model, structured=True, extra_body=extra)
     if args.backend == "openrouter":
         key = os.environ.get("OPENROUTER_API_KEY")
         if not key:
@@ -448,6 +454,11 @@ def main() -> int:
                     help="hard stop once cumulative TOTAL tokens (prompt+"
                          "image+output, as reported by the provider) reach "
                          "this; persisted in usage.json across resumes")
+    ap.add_argument("--extra-body", default="",
+                    help="JSON object merged verbatim into every qwen_local "
+                         "request (provider options such as Ollama "
+                         '{"think": false, "options": {...}}); recorded in '
+                         "config.json")
     args = ap.parse_args()
 
     manifest = json.loads((BENCH / "items.json").read_text(encoding="utf-8"))["items"]
@@ -467,6 +478,7 @@ def main() -> int:
         "preproc": args.preproc, "max_edge": args.max_edge,
         "min_interval_s": args.min_interval, "runs": args.runs,
         "categories": args.categories or "all", "n_items": len(manifest),
+        "extra_body": json.loads(args.extra_body) if args.extra_body else None,
         "started": time.strftime("%Y-%m-%d %H:%M:%S"),
     }, indent=1), encoding="utf-8")
 
