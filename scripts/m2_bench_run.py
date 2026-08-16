@@ -274,6 +274,69 @@ class ChatVLM:
                 "rate_limited_out": True}
 
 
+class OllamaNativeVLM:
+    """Ollama native /api/chat. Same prompt/schema/result contract as ChatVLM
+    (raw, transcription, error, status, usage_*), differing only in
+    transport. Needed because Ollama's OpenAI-compatible endpoint IGNORES
+    the `think` key on thinking-capable models (verified 2026-08-16 on
+    qwen3.8: 500 reasoning tokens, empty content) while /api/chat honors
+    it — the only way to run such models in direct/non-thinking mode."""
+
+    def __init__(self, base_url, model, think=False, options=None,
+                 timeout=1800.0, max_tokens=500):
+        import httpx
+
+        self.client = httpx.Client(timeout=timeout)
+        # accept either http://host:11434 or http://host:11434/v1
+        self.base_url = base_url.rstrip("/")
+        if self.base_url.endswith("/v1"):
+            self.base_url = self.base_url[:-3]
+        self.model, self.think = model, think
+        self.options = dict(options or {})
+        self.max_tokens = max_tokens
+
+    def transcribe(self, png: bytes, prompt: str, structured: bool | None = None) -> dict:
+        structured = True if structured is None else structured
+        body = {
+            "model": self.model, "stream": False, "think": self.think,
+            "options": {**self.options, "temperature": 0, "num_predict": self.max_tokens},
+            "messages": [
+                {"role": "system", "content": prompt},
+                {"role": "user", "content": "Transcribe now.",
+                 "images": [base64.standard_b64encode(png).decode()]},
+            ],
+        }
+        if structured:
+            body["format"] = SCHEMA
+        resp = self.client.post(f"{self.base_url}/api/chat", json=body)
+        try:
+            data = resp.json()
+        except ValueError:
+            return {"raw": "", "transcription": None,
+                    "error": f"non-JSON response: {resp.text[:200]}",
+                    "status": resp.status_code}
+        if resp.status_code != 200 or "message" not in data:
+            return {"raw": "", "transcription": None,
+                    "error": f"HTTP {resp.status_code}: {str(data)[:300]}",
+                    "status": resp.status_code}
+        msg = data["message"]
+        raw = msg.get("content") or ""
+        thinking = msg.get("thinking") or ""
+        try:
+            parsed = json.loads(raw).get("transcription")
+        except json.JSONDecodeError:
+            text, _ops = parse_declared_envelope(raw)
+            parsed = text if text is not None else (raw.strip() or None)
+        return {"raw": raw, "transcription": parsed, "error": None,
+                "status": resp.status_code,
+                "usage_prompt_tokens": data.get("prompt_eval_count"),
+                "usage_completion_tokens": data.get("eval_count"),
+                "usage_total_tokens": ((data.get("prompt_eval_count") or 0)
+                                       + (data.get("eval_count") or 0)) or None,
+                "thinking_chars": len(thinking),
+                "done_reason": data.get("done_reason")}
+
+
 class Gemini:
     """generativelanguage.googleapis.com generateContent (REST, no SDK)."""
 
@@ -399,6 +462,11 @@ def make_adapter(args):
     if args.backend == "qwen_local":
         extra = json.loads(args.extra_body) if getattr(args, "extra_body", "") else None
         return ChatVLM(args.base_url, args.model, structured=True, extra_body=extra)
+    if args.backend == "ollama_native":
+        extra = json.loads(args.extra_body) if getattr(args, "extra_body", "") else {}
+        return OllamaNativeVLM(args.base_url, args.model,
+                               think=bool(extra.get("think", False)),
+                               options=extra.get("options"))
     if args.backend == "openrouter":
         key = os.environ.get("OPENROUTER_API_KEY")
         if not key:
@@ -458,8 +526,12 @@ def main() -> int:
                     help="JSON object merged verbatim into every qwen_local "
                          "request (provider options such as Ollama "
                          '{"think": false, "options": {...}}); recorded in '
-                         "config.json")
+                         "config.json. May be a path to a .json file "
+                         "(recommended on Windows shells, which strip quotes "
+                         "from inline JSON arguments).")
     args = ap.parse_args()
+    if args.extra_body and Path(args.extra_body).is_file():
+        args.extra_body = Path(args.extra_body).read_text(encoding="utf-8")
 
     manifest = json.loads((BENCH / "items.json").read_text(encoding="utf-8"))["items"]
     if args.categories:
@@ -537,7 +609,7 @@ def main() -> int:
             try:
                 # association answers die inside the constrained JSON grammar
                 # on the local model — use free text there and parse post-hoc
-                if item["category"] == "option_row_association" and isinstance(adapter, ChatVLM):
+                if item["category"] == "option_row_association" and isinstance(adapter, (ChatVLM, OllamaNativeVLM)):
                     res = adapter.transcribe(png, prompt, structured=False)
                 else:
                     res = adapter.transcribe(png, prompt)

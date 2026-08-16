@@ -46,3 +46,22 @@ layer differs from the frozen local-Qwen arm.
 ## Scoring discipline
 ONLY scripts/m2_bench_eval.py produces canonical CER/WER; if it cannot
 load, inference outputs are preserved and scoring stops.
+
+## Amendment 2026-08-16 (before any reference scoring): transport = Ollama native /api/chat
+
+The first launch attempt (OpenAI-compat backend qwen_local) produced, on the
+first smoke item, status 200 / 500 completion tokens / EMPTY content: the
+model spent its whole budget in `reasoning`. Reproduced deterministically:
+Ollama's /v1/chat/completions IGNORES `"think": false` (with or without
+response_format), while Ollama's native /api/chat honors it (same crop,
+same frozen prompt+schema: direct JSON answer in 26 s / 40 tokens,
+thinking_len 0). The earlier sanity call had merely fit a direct answer
+inside the 500-token budget on an easier crop.
+
+Fix (transport only): backend `ollama_native` = OllamaNativeVLM — same
+frozen prompt, {"transcription"} schema (as /api/chat `format`),
+temperature 0, num_predict 500 (== max_tokens 500), think:false,
+options {num_ctx 8192, repeat_penalty 1.0}, same result schema + parser +
+resume. Nothing in the frozen experimental configuration changed. The one
+invalid empty record produced under the ignored-think path was deleted
+before relaunch; no reference was opened at any point.
