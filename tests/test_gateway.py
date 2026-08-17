@@ -67,9 +67,44 @@ def test_gateway_unknown_task_and_unknown_key():
         ModelGateway.from_dict({"models": {"a": {"backend": "mock", "model": "m", "bogus": 1}}})
 
 
-def test_gateway_ollama_requires_base_url():
+def test_gateway_openai_requires_base_url_and_ollama_routes_native():
     with pytest.raises(GatewayConfigError):
-        ModelGateway.from_dict({"models": {"mc_resolve": {"backend": "ollama", "model": "q"}}})
+        ModelGateway.from_dict({"models": {"mc_resolve": {"backend": "openai", "model": "q"}}})
+    seen = {}
+
+    def factory(cfg):
+        seen["backend"] = cfg.backend
+        seen["eg"] = cfg.extra_generation
+        return MockBackend(config=cfg, responses=[Out(text="ok")])
+
+    gw = ModelGateway.from_dict({"models": {"mc_resolve": {"backend": "ollama", "model": "q",
+                                                            "extra_generation": {"think": False}}}},
+                                backend_factory=factory)
+    gw.call(task="mc_resolve", system="s", content_blocks=[{"type": "text", "text": "t"}], output_model=Out)
+    assert seen["backend"] == "ollama_native" and seen["eg"]["think"] is False
+
+
+def test_ollama_native_backend_sends_think_false_and_format(monkeypatch):
+    from autograder.backends.ollama_native import OllamaNativeBackend
+    captured = {}
+
+    def handler(req: httpx.Request):
+        captured["path"] = req.url.path
+        captured["body"] = json.loads(req.content)
+        return httpx.Response(200, json={"model": "q", "done_reason": "stop", "prompt_eval_count": 12,
+                                         "eval_count": 5, "message": {"role": "assistant",
+                                                                      "content": '{"text": "hi"}',
+                                                                      "thinking": ""}})
+
+    be = OllamaNativeBackend(BackendConfig(backend="ollama_native", model="q", max_tokens=99,
+                                           extra_generation={"think": False, "options": {"num_ctx": 8192}}),
+                             transport=httpx.MockTransport(handler))
+    out = be.parse(system="SYS", content_blocks=[{"type": "text", "text": "hello"}, IMG], output_model=Out)
+    assert out.text == "hi" and captured["path"] == "/api/chat"
+    b = captured["body"]
+    assert b["think"] is False and b["options"]["num_ctx"] == 8192 and b["options"]["num_predict"] == 99
+    assert b["format"]["type"] == "object" and b["messages"][1]["images"]
+    assert be.last_usage["input_tokens"] == 12 and be.last_usage["thinking_chars"] == 0
 
 
 def test_gateway_never_hardcodes_models():

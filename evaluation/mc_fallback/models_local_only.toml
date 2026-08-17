@@ -1,0 +1,12 @@
+# Local-only gateway config for the MC fallback benchmark: NO cloud tasks.
+[defaults]
+structured_mode = "json_schema"
+temperature = 0.0
+timeout_s = 900.0
+
+[models.mc_resolve]
+backend = "ollama"
+model = "qwen3.8:27b-q4_K_M"
+max_tokens = 120
+extra_generation = { think = false, options = { num_ctx = 8192, repeat_penalty = 1.0 } }
+prompt_version = "mc-v1"

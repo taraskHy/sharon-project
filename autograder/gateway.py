@@ -79,8 +79,10 @@ class TaskRoute:
             eg["reasoning"] = self.reasoning
         if self.provider:
             eg["provider"] = self.provider
+        # "ollama" routes to the NATIVE /api/chat backend (honors think:false
+        # and num_ctx); "openai" is the generic OpenAI-compatible endpoint.
         return BackendConfig(
-            backend="openai" if self.backend in ("ollama", "openai") else self.backend,
+            backend="ollama_native" if self.backend == "ollama" else self.backend,
             model=self.model,
             base_url=self.base_url,
             structured_mode=self.structured_mode,
@@ -127,7 +129,7 @@ class ModelGateway:
             if r.enabled and not r.model:
                 raise GatewayConfigError(
                     f"task {name!r} has no model configured (unset ${{ENV}} reference?)")
-            if r.backend in ("ollama", "openai") and not r.base_url:
+            if r.backend == "openai" and not r.base_url:
                 raise GatewayConfigError(f"task {name!r} ({r.backend}) needs base_url")
         self.routes = routes
         self._factory = backend_factory or create_backend

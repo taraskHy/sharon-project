@@ -1,0 +1,39 @@
+{
+ "exam": "exam-009",
+ "question_id": "1",
+ "sub_item_id": "8",
+ "candidates": [
+  "C",
+  "D"
+ ],
+ "resolution": {
+  "selected": null,
+  "state": "unclear",
+  "confidence": 0.0,
+  "source": "review"
+ },
+ "trace": [
+  {
+   "stage": "deterministic",
+   "candidates": [
+    "C",
+    "D"
+   ],
+   "state": "multiple_marks"
+  },
+  {
+   "stage": "local",
+   "status": "ok",
+   "read": {
+    "selected": null,
+    "candidates": [
+     "C",
+     "D"
+    ],
+    "state": "unclear",
+    "confidence": "low"
+   }
+  }
+ ],
+ "latency_s": 8.7
+}

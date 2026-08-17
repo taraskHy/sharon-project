@@ -1,0 +1,1 @@
+{"fingerprint": "46295a7d5c3a124773031a4047e9a041feb2810d93b433d7d9b9c98a308f63c8", "stored": "2026-08-17 04:41:57", "meta": {"task": "mc_resolve", "model": "qwen3.8:27b-q4_K_M"}, "value": {"selected": null, "candidates": ["C", "D"], "state": "unclear", "confidence": "low"}}

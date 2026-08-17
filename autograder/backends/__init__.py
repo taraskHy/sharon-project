@@ -36,6 +36,10 @@ def create_backend(config: BackendConfig) -> VisionBackend:
         from .openrouter import OpenRouterBackend
 
         return OpenRouterBackend(config)
+    if config.backend == "ollama_native":
+        from .ollama_native import OllamaNativeBackend
+
+        return OllamaNativeBackend(config)
     raise BackendError(
-        f"unknown backend {config.backend!r} (expected: openai | mock | anthropic | openrouter)"
+        f"unknown backend {config.backend!r} (expected: openai | mock | anthropic | openrouter | ollama_native)"
     )

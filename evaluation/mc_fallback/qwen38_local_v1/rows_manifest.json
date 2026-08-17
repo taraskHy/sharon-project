@@ -1,0 +1,93 @@
+[
+ {
+  "exam": "exam-001",
+  "question_id": "1",
+  "sub_item_id": "7",
+  "candidates": [
+   "D",
+   "C"
+  ]
+ },
+ {
+  "exam": "exam-007",
+  "question_id": "1",
+  "sub_item_id": "4",
+  "candidates": [
+   "D",
+   "C"
+  ]
+ },
+ {
+  "exam": "exam-008",
+  "question_id": "1",
+  "sub_item_id": "7",
+  "candidates": [
+   "D",
+   "A",
+   "C"
+  ]
+ },
+ {
+  "exam": "exam-008",
+  "question_id": "1",
+  "sub_item_id": "10",
+  "candidates": [
+   "D",
+   "C"
+  ]
+ },
+ {
+  "exam": "exam-009",
+  "question_id": "1",
+  "sub_item_id": "3",
+  "candidates": [
+   "D",
+   "B"
+  ]
+ },
+ {
+  "exam": "exam-009",
+  "question_id": "1",
+  "sub_item_id": "8",
+  "candidates": [
+   "C",
+   "D"
+  ]
+ },
+ {
+  "exam": "exam-010",
+  "question_id": "1",
+  "sub_item_id": "7",
+  "candidates": [
+   "A",
+   "C"
+  ]
+ },
+ {
+  "exam": "exam-011",
+  "question_id": "1",
+  "sub_item_id": "4",
+  "candidates": [
+   "D",
+   "B"
+  ]
+ },
+ {
+  "exam": "exam-013",
+  "question_id": "1",
+  "sub_item_id": "8",
+  "candidates": [
+   "D",
+   "B"
+  ]
+ },
+ {
+  "exam": "exam-013",
+  "question_id": "1",
+  "sub_item_id": "9",
+  "candidates": [
+   "B",
+   "C"
+  ]
+ }
+]

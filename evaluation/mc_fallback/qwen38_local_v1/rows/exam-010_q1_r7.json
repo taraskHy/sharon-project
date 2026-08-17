@@ -1,0 +1,39 @@
+{
+ "exam": "exam-010",
+ "question_id": "1",
+ "sub_item_id": "7",
+ "candidates": [
+  "A",
+  "C"
+ ],
+ "resolution": {
+  "selected": "A",
+  "state": "single_mark",
+  "confidence": 0.95,
+  "source": "local_model"
+ },
+ "trace": [
+  {
+   "stage": "deterministic",
+   "candidates": [
+    "A",
+    "C"
+   ],
+   "state": "multiple_marks"
+  },
+  {
+   "stage": "local",
+   "status": "ok",
+   "read": {
+    "selected": "A",
+    "candidates": [
+     "A",
+     "C"
+    ],
+    "state": "single_mark",
+    "confidence": "high"
+   }
+  }
+ ],
+ "latency_s": 8.69
+}

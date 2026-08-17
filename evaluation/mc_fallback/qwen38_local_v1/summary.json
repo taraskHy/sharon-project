@@ -1,0 +1,158 @@
+{
+ "stats": {
+  "n_ambiguous": 10,
+  "resolved": 1,
+  "correct": 1,
+  "incorrect": 0,
+  "agreement": 1,
+  "disagreement": 0,
+  "unclear": 9,
+  "no_reference": 0,
+  "accuracy_on_resolved_with_reference": 1.0,
+  "cloud_escalation_rate_pct": 90.0,
+  "human_review_rate_pct_if_no_cloud": 90.0
+ },
+ "rows": [
+  {
+   "exam": "exam-001",
+   "question_id": "1",
+   "sub_item_id": "7",
+   "candidates": [
+    "D",
+    "C"
+   ],
+   "qwen": null,
+   "audited": "D",
+   "state": "unclear",
+   "source": "review",
+   "latency_s": 33.14
+  },
+  {
+   "exam": "exam-007",
+   "question_id": "1",
+   "sub_item_id": "4",
+   "candidates": [
+    "D",
+    "C"
+   ],
+   "qwen": null,
+   "audited": "C",
+   "state": "unclear",
+   "source": "review",
+   "latency_s": 8.7
+  },
+  {
+   "exam": "exam-008",
+   "question_id": "1",
+   "sub_item_id": "7",
+   "candidates": [
+    "D",
+    "A",
+    "C"
+   ],
+   "qwen": null,
+   "audited": "D",
+   "state": "unclear",
+   "source": "review",
+   "latency_s": 9.14
+  },
+  {
+   "exam": "exam-008",
+   "question_id": "1",
+   "sub_item_id": "10",
+   "candidates": [
+    "D",
+    "C"
+   ],
+   "qwen": null,
+   "audited": "D",
+   "state": "unclear",
+   "source": "review",
+   "latency_s": 13.81
+  },
+  {
+   "exam": "exam-009",
+   "question_id": "1",
+   "sub_item_id": "3",
+   "candidates": [
+    "D",
+    "B"
+   ],
+   "qwen": null,
+   "audited": "B",
+   "state": "unclear",
+   "source": "review",
+   "latency_s": 8.73
+  },
+  {
+   "exam": "exam-009",
+   "question_id": "1",
+   "sub_item_id": "8",
+   "candidates": [
+    "C",
+    "D"
+   ],
+   "qwen": null,
+   "audited": "D",
+   "state": "unclear",
+   "source": "review",
+   "latency_s": 8.7
+  },
+  {
+   "exam": "exam-010",
+   "question_id": "1",
+   "sub_item_id": "7",
+   "candidates": [
+    "A",
+    "C"
+   ],
+   "qwen": "A",
+   "audited": "A",
+   "state": "single_mark",
+   "source": "local_model",
+   "latency_s": 8.69
+  },
+  {
+   "exam": "exam-011",
+   "question_id": "1",
+   "sub_item_id": "4",
+   "candidates": [
+    "D",
+    "B"
+   ],
+   "qwen": null,
+   "audited": "B",
+   "state": "unclear",
+   "source": "review",
+   "latency_s": 8.45
+  },
+  {
+   "exam": "exam-013",
+   "question_id": "1",
+   "sub_item_id": "8",
+   "candidates": [
+    "D",
+    "B"
+   ],
+   "qwen": null,
+   "audited": "D",
+   "state": "unclear",
+   "source": "review",
+   "latency_s": 13.77
+  },
+  {
+   "exam": "exam-013",
+   "question_id": "1",
+   "sub_item_id": "9",
+   "candidates": [
+    "B",
+    "C"
+   ],
+   "qwen": null,
+   "audited": "B",
+   "state": "unclear",
+   "source": "review",
+   "latency_s": 9.09
+  }
+ ]
+}
