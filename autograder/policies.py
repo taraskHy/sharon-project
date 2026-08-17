@@ -115,8 +115,8 @@ def infer_policy_from_key(explanation_required: bool, explanation_weight: float,
     """Stage 1 of policy inference: deterministic rules from the key/package.
     Returns (policy or None if ambiguous, evidence)."""
     notes = (grading_notes or "").lower()
-    if not explanation_required or explanation_weight <= 0:
-        return "choice_only", "key: explanation not required / weight 0"
+    if not explanation_required and explanation_weight <= 0:
+        return "choice_only", "key: explanation not required and weight 0"
     for kw in ("wrong answer zero", "wrong choice zero", "תשובה שגויה - אפס", "תשובה שגויה 0",
                "no points if wrong", "0 for wrong"):
         if kw in notes:
@@ -129,4 +129,4 @@ def infer_policy_from_key(explanation_required: bool, explanation_weight: float,
             return "choice_and_explanation_independent", f"grading_notes matches {kw!r}"
     if explanation_weight >= 0.99:
         return "explanation_can_rescue_wrong_choice", "explanation carries all points"
-    return None, "ambiguous: explanation required with partial weight, no explicit rule"
+    return None, "ambiguous: explanation required without an explicit wrong-choice rule"
