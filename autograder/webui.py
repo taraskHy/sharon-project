@@ -215,9 +215,66 @@ grading_args = {
     "--survey-image-edge": int(survey_image_edge),
 }
 
-tab_new, tab_jobs, tab_courses = st.tabs(
-    ["➕ New batch", "📊 Jobs & results", "📚 Courses (experimental RAG)"]
+tab_new, tab_jobs, tab_courses, tab_settings = st.tabs(
+    ["➕ New batch", "📊 Jobs & results", "📚 Courses (experimental RAG)", "⚙ Models & OpenRouter"]
 )
+
+
+# ---------------------------------------------------------------------------
+# Models & OpenRouter — settings/admin. The API key is read from the
+# environment by the backend and is NEVER displayed, stored, or logged here.
+# ---------------------------------------------------------------------------
+with tab_settings:
+    from autograder import reviewui as _rui
+
+    st.caption(
+        "Task → model routing comes from models.toml (copy models.example.toml). "
+        "The OpenRouter key is read only from the OPENROUTER_API_KEY environment "
+        "variable and is never shown or stored."
+    )
+    _models_path = REPO_ROOT / "models.toml"
+    _gw = None
+    _gw_err = None
+    if _models_path.exists():
+        try:
+            from autograder.gateway import ModelGateway
+            from autograder.requestcache import RequestCache
+            from autograder.usage import UsageLedger
+
+            _gw = ModelGateway.from_file(
+                _models_path,
+                cache=RequestCache(REPO_ROOT / "gateway_cache"),
+                ledger=UsageLedger(REPO_ROOT / "gateway_ledger" / "usage.jsonl"),
+            )
+        except Exception as e:  # noqa: BLE001
+            _gw_err = str(e)
+    key_present = bool(os.environ.get("OPENROUTER_API_KEY"))
+    summary = _rui.settings_summary(
+        gateway=_gw, ledger=getattr(_gw, "ledger", None), cache=getattr(_gw, "cache", None),
+        openrouter_key_present=key_present,
+    )
+    c1, c2, c3 = st.columns(3)
+    c1.metric("OpenRouter", "enabled" if summary["openrouter_enabled"] else "disabled")
+    c2.metric("API key in environment", "present" if key_present else "missing")
+    c3.metric("models.toml", "loaded" if _gw else ("error" if _gw_err else "absent"))
+    if _gw_err:
+        st.error(f"models.toml could not be loaded: {_gw_err}")
+    if summary["tasks"]:
+        st.markdown("**Task → configured model**")
+        st.table([{"task": t, **v} for t, v in summary["tasks"].items()])
+    if summary["usage"]:
+        u = summary["usage"]
+        st.markdown("**Usage (ledger)**")
+        m = st.columns(5)
+        m[0].metric("Cloud requests", u.get("cloud_requests"))
+        m[1].metric("Total tokens", u.get("total_tokens"))
+        m[2].metric("Reported cost", u.get("reported_cost"))
+        m[3].metric("Cache-hit rate", u.get("cache_hit_rate"))
+        m[4].metric("% exams fully local", u.get("pct_exams_fully_local"))
+    if summary["cache"]:
+        st.caption(f"request cache: {summary['cache']}")
+    if _gw is not None and st.button("Test connection (minimal-token health probe)"):
+        st.write(_rui.test_connection(_gw))
 
 # ---------------------------------------------------------------------------
 # Courses — persistent course-material store for the EXPERIMENTAL
@@ -655,6 +712,35 @@ with tab_jobs:
             with st.expander("Human-review reasons"):
                 for item in result["needs_human_review"]:
                     st.markdown(f"- **{item['question_id']}.{item['sub_item_id']}** — {item['reason']}")
+            # Fast REVIEW: one-click resolutions persisted per exam (never edits result.json)
+            from autograder import reviewui as _rui2
+
+            ext_path = exam_dir / "extraction.json"
+            extraction = json.loads(ext_path.read_text(encoding="utf-8")) if ext_path.exists() else None
+            rstore = _rui2.ResolutionStore(exam_dir)
+            resolved = rstore.load()
+            with st.expander(f"⚡ Quick review ({len(result['needs_human_review'])} items, "
+                             f"{len(resolved)} resolved)"):
+                for it in _rui2.build_review_items(picked, result, extraction):
+                    key = f"{it.question_id}:{it.sub_item_id}"
+                    done = resolved.get(key)
+                    st.markdown(f"**{it.kind.upper()} {key}** — {it.reason[:140]}"
+                                + (f"  ✅ *{done['decision']}*" if done else ""))
+                    if it.kind == "mc":
+                        st.caption(f"deterministic candidates: {it.deterministic_candidate} | "
+                                   f"local: {it.local_candidate} | cloud: {it.cloud_candidate}")
+                    elif it.kind == "ocr":
+                        st.caption(f"primary: {it.primary_transcription!r} | secondary: {it.secondary_transcription!r}")
+                    elif it.kind == "grading":
+                        st.caption(f"selected {it.selected_option} | proposed {it.proposed_score}/{it.max_score} "
+                                   f"| rubric {it.rubric_items} | {it.grading_evidence}")
+                    cols = st.columns(max(1, min(4, len(it.options))))
+                    for i, opt in enumerate(it.options[:4]):
+                        if cols[i].button(opt, key=f"rv_{picked}_{key}_{i}"):
+                            rstore.resolve(it.question_id, it.sub_item_id, decision=opt)
+                            st.rerun()
+                    if it.kind == "variant" and it.apply_to_all_eligible:
+                        st.caption("variant decisions can be applied to every exam in this job (apply-to-all)")
 
         d = st.columns(2)
         d[0].download_button(
