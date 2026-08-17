@@ -241,17 +241,16 @@ with tab_settings:
             from autograder.requestcache import RequestCache
             from autograder.usage import UsageLedger
 
-            _gw = ModelGateway.from_file(
-                _models_path,
-                cache=RequestCache(REPO_ROOT / "gateway_cache"),
-                ledger=UsageLedger(REPO_ROOT / "gateway_ledger" / "usage.jsonl"),
-            )
+            from autograder.orchestrator import setup_from_config
+
+            _rt = setup_from_config(_models_path, REPO_ROOT)
+            _gw = _rt.gateway
         except Exception as e:  # noqa: BLE001
             _gw_err = str(e)
     key_present = bool(os.environ.get("OPENROUTER_API_KEY"))
     summary = _rui.settings_summary(
         gateway=_gw, ledger=getattr(_gw, "ledger", None), cache=getattr(_gw, "cache", None),
-        openrouter_key_present=key_present,
+        budget=getattr(_gw, "budget", None), openrouter_key_present=key_present,
     )
     c1, c2, c3 = st.columns(3)
     c1.metric("OpenRouter", "enabled" if summary["openrouter_enabled"] else "disabled")
@@ -273,6 +272,12 @@ with tab_settings:
         m[4].metric("% exams fully local", u.get("pct_exams_fully_local"))
     if summary["cache"]:
         st.caption(f"request cache: {summary['cache']}")
+    if summary["budget"]:
+        b = summary["budget"]
+        st.markdown("**Budget (effective limits; — = unlimited)**")
+        st.table([{"limit": k, "value": v} for k, v in b["limits"].items()])
+        st.caption(f"spent this process: {b['input_tokens']} in / {b['output_tokens']} out tokens, "
+                   f"cost {b['cost']}; paused: {b['paused']}" + (f" ({b['pause_reason']})" if b["paused"] else ""))
     if _gw is not None and st.button("Test connection (minimal-token health probe)"):
         st.write(_rui.test_connection(_gw))
 

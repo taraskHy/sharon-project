@@ -51,9 +51,14 @@ def setup_from_config(models_config: str | Path, state_root: str | Path,
     cache = RequestCache(root / "gateway_cache")
     ledger = UsageLedger(root / "gateway_ledger" / "usage.jsonl")
     warnings: list[str] = []
-    bm = BudgetManager(budget or BudgetLimits(), ledger=ledger, warn=warnings.append)
-    gw = ModelGateway.from_file(models_config, cache=cache, ledger=ledger, budget=bm,
+    # Build the gateway first (parses [budget]); then wire the manager from
+    # config unless the caller supplied explicit limits. No [budget] or
+    # enabled=false -> unlimited manager (still counts usage).
+    gw = ModelGateway.from_file(models_config, cache=cache, ledger=ledger, budget=None,
                                 **({"backend_factory": backend_factory} if backend_factory else {}))
+    limits = budget or BudgetLimits.from_config(gw.budget_config) or BudgetLimits()
+    bm = BudgetManager(limits, ledger=ledger, warn=warnings.append)
+    gw.budget = bm
     return Runtime(gw, cache, ledger, bm, root, warnings)
 
 

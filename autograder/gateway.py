@@ -135,6 +135,7 @@ class ModelGateway:
         self.cache = cache        # duck-typed: get(fp) / put(fp, obj, meta)
         self.ledger = ledger      # duck-typed: record(entry: dict)
         self.budget = budget      # duck-typed: check(meta) -> None | raise; charge(entry)
+        self.budget_config: dict | None = None
 
     # -- construction --------------------------------------------------------
 
@@ -151,7 +152,9 @@ class ModelGateway:
             if unknown:
                 raise GatewayConfigError(f"task {task!r}: unknown keys {sorted(unknown)}")
             routes[task] = TaskRoute(task=task, **merged)
-        return cls(routes, **kw)
+        gw = cls(routes, **kw)
+        gw.budget_config = data.get("budget") or None   # raw [budget] table for the runtime
+        return gw
 
     @classmethod
     def from_file(cls, path: str | Path, **kw) -> "ModelGateway":

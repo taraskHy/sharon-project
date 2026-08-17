@@ -96,7 +96,43 @@ class BudgetLimits:
     max_cost: float | None = None
     max_calls_per_day: int | None = None
     max_calls_per_month: int | None = None
-    soft_fraction: float = 0.8   # warn at 80% of any hard limit
+    soft_fraction: float = 0.8
+
+    # config-key aliases accepted from models.toml [budget]
+    _ALIASES = {
+        "max_input_tokens_per_job": "max_input_tokens",
+        "max_output_tokens_per_job": "max_output_tokens",
+        "max_cost_per_job": "max_cost",
+    }
+
+    @classmethod
+    def from_config(cls, section: dict | None) -> "BudgetLimits | None":
+        """Build from a models.toml [budget] table. Missing section or
+        enabled=false -> None (no budget). 0 / omitted / null = unlimited."""
+        if not section or not section.get("enabled", True):
+            return None
+        kw = {}
+        for k, v in section.items():
+            if k == "enabled":
+                continue
+            name = cls._ALIASES.get(k, k)
+            if name not in cls.__dataclass_fields__:
+                raise ValueError(f"[budget]: unknown key {k!r}")
+            if name == "soft_fraction":
+                kw[name] = float(v)
+            else:
+                kw[name] = None if (v is None or float(v) <= 0) else (float(v) if name == "max_cost" else int(v))
+        return cls(**kw)
+
+    def effective(self) -> dict:
+        """Human-readable limits for the settings UI (unlimited shown as such)."""
+        out = {}
+        for f in self.__dataclass_fields__:
+            if f.startswith("_"):
+                continue
+            v = getattr(self, f)
+            out[f] = v if v is not None else ("—" if f != "soft_fraction" else v)
+        return out   # warn at 80% of any hard limit
 
 
 @dataclass
@@ -164,4 +200,4 @@ class BudgetManager:
         return {"input_tokens": self._in_tok, "output_tokens": self._out_tok,
                 "cost": round(self._cost, 6), "calls_per_job": dict(self._calls_job),
                 "paused": self.paused, "pause_reason": self.pause_reason,
-                "limits": self.limits.__dict__}
+                "limits": self.limits.effective()}

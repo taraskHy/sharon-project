@@ -166,3 +166,52 @@ def test_budget_ignores_local_and_paused_gateway_keeps_results(tmp_path):
         gw.call(task="grade_primary", system="s", content_blocks=[{"type": "text", "text": "OTHER"}],
                 output_model=Out, meta={"job_id": "j", "exam_id": "e"})
     assert counter["calls"] == 1                                 # never silently downgraded/retried
+
+
+# ------------------------------------------------- [budget] config wiring ----
+
+
+def test_budget_limits_from_config_semantics():
+    L = BudgetLimits.from_config({"enabled": True, "max_calls_per_job": 5, "max_input_tokens_per_job": 0,
+                                  "max_output_tokens_per_job": 1000, "max_cost_per_job": 0.5,
+                                  "max_calls_per_day": 0, "soft_fraction": 0.5})
+    assert L.max_calls_per_job == 5 and L.max_input_tokens is None          # 0 = unlimited
+    assert L.max_output_tokens == 1000 and L.max_cost == 0.5 and L.max_calls_per_day is None
+    assert L.soft_fraction == 0.5
+    assert BudgetLimits.from_config({"enabled": False, "max_calls_per_job": 1}) is None
+    assert BudgetLimits.from_config(None) is None
+    with pytest.raises(ValueError):
+        BudgetLimits.from_config({"bogus_limit": 3})
+    eff = L.effective()
+    assert eff["max_input_tokens"] == "—" and eff["max_calls_per_job"] == 5
+
+
+def test_setup_from_config_wires_budget_and_ui_summary(tmp_path, monkeypatch):
+    from autograder.orchestrator import setup_from_config
+    from autograder.reviewui import settings_summary
+    cfg = tmp_path / "models.toml"
+    cfg.write_text('[models.grade_primary]\nbackend="openrouter"\nmodel="vendor/m"\n'
+                   '[budget]\nenabled=true\nmax_calls_per_job=2\nmax_cost_per_job=0\nsoft_fraction=0.5\n',
+                   encoding="utf-8")
+    monkeypatch.setenv("OPENROUTER_API_KEY", "sk-or-SECRET")
+    calls = {"n": 0}
+
+    def factory(c):
+        def responder(model, system, blocks):
+            calls["n"] += 1
+            return Out(text="ok")
+        return MockBackend(config=c, responder=responder)
+
+    rt = setup_from_config(cfg, tmp_path / "state", backend_factory=factory)
+    assert rt.gateway.budget is rt.budget and rt.budget.limits.max_calls_per_job == 2
+    assert rt.budget.limits.max_cost is None
+    meta = {"job_id": "j", "exam_id": "e"}
+    rt.gateway.call(task="grade_primary", system="s", content_blocks=[{"type": "text", "text": "a"}], output_model=Out, meta=meta)
+    rt.gateway.call(task="grade_primary", system="s", content_blocks=[{"type": "text", "text": "b"}], output_model=Out, meta=meta)
+    with pytest.raises(BudgetExceeded):
+        rt.gateway.call(task="grade_primary", system="s", content_blocks=[{"type": "text", "text": "c"}], output_model=Out, meta=meta)
+    assert calls["n"] == 2 and rt.warnings   # soft warning fired at 50%
+    s = settings_summary(gateway=rt.gateway, ledger=rt.ledger, budget=rt.budget, cache=rt.cache,
+                         openrouter_key_present=True)
+    assert s["budget"]["limits"]["max_calls_per_job"] == 2 and s["budget"]["paused"] is True
+    assert "SECRET" not in json.dumps(s)
