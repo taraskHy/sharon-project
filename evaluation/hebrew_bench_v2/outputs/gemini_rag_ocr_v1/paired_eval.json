@@ -1,0 +1,181 @@
+{
+ "config_id": "gemini_rag_ocr_v1",
+ "n": 32,
+ "mean_cer_raw": 0.4124,
+ "mean_cer_suggested": 0.3546,
+ "median_cer_raw": 0.4432,
+ "median_cer_suggested": 0.337,
+ "usable_025_raw": 9,
+ "usable_025_suggested": 14,
+ "usable_050_raw": 20,
+ "usable_050_suggested": 21,
+ "texts_changed": 16,
+ "improved": 11,
+ "worsened": 4,
+ "neutral": 1,
+ "repair_errors": 3,
+ "semantic_risk_flags": 0,
+ "needs_review": 1,
+ "changed_items": [
+  {
+   "item": "hl_e006_q1_r2__l1",
+   "changed": true,
+   "cer_raw": 0.3333,
+   "cer_sug": 0.0588,
+   "edits": 0,
+   "semantic_change_risk": false,
+   "needs_review": false,
+   "error": null
+  },
+  {
+   "item": "hl_e003_q2_r1__l1",
+   "changed": true,
+   "cer_raw": 0.4333,
+   "cer_sug": 0.2,
+   "edits": 1,
+   "semantic_change_risk": false,
+   "needs_review": false,
+   "error": null
+  },
+  {
+   "item": "hc_e002_q1_r3",
+   "changed": true,
+   "cer_raw": 0.6122,
+   "cer_sug": 0.3878,
+   "edits": 2,
+   "semantic_change_risk": false,
+   "needs_review": false,
+   "error": null
+  },
+  {
+   "item": "hl_e003_q1_r4__l1",
+   "changed": true,
+   "cer_raw": 0.4658,
+   "cer_sug": 0.2466,
+   "edits": 1,
+   "semantic_change_risk": false,
+   "needs_review": false,
+   "error": null
+  },
+  {
+   "item": "hl_e003_q1_r6__l1",
+   "changed": true,
+   "cer_raw": 0.3077,
+   "cer_sug": 0.0962,
+   "edits": 1,
+   "semantic_change_risk": false,
+   "needs_review": false,
+   "error": null
+  },
+  {
+   "item": "hl_e003_q1_r8__l1",
+   "changed": true,
+   "cer_raw": 0.4638,
+   "cer_sug": 0.2609,
+   "edits": 1,
+   "semantic_change_risk": false,
+   "needs_review": false,
+   "error": null
+  },
+  {
+   "item": "hl_e005_q1_r2__l2",
+   "changed": true,
+   "cer_raw": 0.6375,
+   "cer_sug": 0.4625,
+   "edits": 1,
+   "semantic_change_risk": false,
+   "needs_review": true,
+   "error": null
+  },
+  {
+   "item": "hl_e003_q1_r1__l1",
+   "changed": true,
+   "cer_raw": 0.3443,
+   "cer_sug": 0.1803,
+   "edits": 1,
+   "semantic_change_risk": false,
+   "needs_review": false,
+   "error": null
+  },
+  {
+   "item": "hl_e007_q1_r1__l1",
+   "changed": true,
+   "cer_raw": 0.6832,
+   "cer_sug": 0.5446,
+   "edits": 0,
+   "semantic_change_risk": false,
+   "needs_review": false,
+   "error": null
+  },
+  {
+   "item": "hl_e006_q1_r1__l1",
+   "changed": true,
+   "cer_raw": 0.7679,
+   "cer_sug": 0.6429,
+   "edits": 1,
+   "semantic_change_risk": false,
+   "needs_review": false,
+   "error": null
+  },
+  {
+   "item": "hl_e004_q1_r3__l1",
+   "changed": true,
+   "cer_raw": 1.1176,
+   "cer_sug": 1.0,
+   "edits": 1,
+   "semantic_change_risk": false,
+   "needs_review": false,
+   "error": null
+  },
+  {
+   "item": "hc_e002_q1_r4",
+   "changed": true,
+   "cer_raw": 0.0,
+   "cer_sug": 0.0,
+   "edits": 0,
+   "semantic_change_risk": false,
+   "needs_review": false,
+   "error": null
+  },
+  {
+   "item": "hl_e004_q1_r2__l1",
+   "changed": true,
+   "cer_raw": 0.0571,
+   "cer_sug": 0.0857,
+   "edits": 1,
+   "semantic_change_risk": false,
+   "needs_review": false,
+   "error": null
+  },
+  {
+   "item": "hl_e004_q1_r3__l2",
+   "changed": true,
+   "cer_raw": 0.1875,
+   "cer_sug": 0.2188,
+   "edits": 1,
+   "semantic_change_risk": false,
+   "needs_review": false,
+   "error": null
+  },
+  {
+   "item": "hl_e003_q1_r5__l1",
+   "changed": true,
+   "cer_raw": 1.0192,
+   "cer_sug": 1.0769,
+   "edits": 3,
+   "semantic_change_risk": false,
+   "needs_review": false,
+   "error": null
+  },
+  {
+   "item": "hl_e003_q2_r8__l1",
+   "changed": true,
+   "cer_raw": 0.4706,
+   "cer_sug": 0.5882,
+   "edits": 5,
+   "semantic_change_risk": false,
+   "needs_review": false,
+   "error": null
+  }
+ ]
+}

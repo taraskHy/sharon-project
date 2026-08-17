@@ -32,6 +32,10 @@ def create_backend(config: BackendConfig) -> VisionBackend:
         from .anthropic_backend import AnthropicBackend
 
         return AnthropicBackend(config)
+    if config.backend == "openrouter":
+        from .openrouter import OpenRouterBackend
+
+        return OpenRouterBackend(config)
     raise BackendError(
-        f"unknown backend {config.backend!r} (expected: openai | mock | anthropic)"
+        f"unknown backend {config.backend!r} (expected: openai | mock | anthropic | openrouter)"
     )

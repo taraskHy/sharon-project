@@ -15,3 +15,7 @@ eval_prob/
 evaluation/hebrew_bench_v2/ink_strokes/
 evaluation/hebrew_bench_v2/grading_cache/
 courses/
+
+models.toml
+gateway_cache/
+gateway_ledger/

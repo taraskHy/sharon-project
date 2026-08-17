@@ -1,0 +1,82 @@
+# Model gateway configuration — copy to models.toml (gitignored) and edit.
+# Every task maps to a backend + model. Model slugs come from configuration
+# only; ${ENV_VAR} references are expanded at load time and OpenRouter tasks
+# with an unset variable fail loudly at gateway construction.
+#
+# Backends: openrouter | ollama (OpenAI-compatible endpoint) | mock
+# The OpenRouter key is read ONLY from the OPENROUTER_API_KEY environment
+# variable — never put it in this file.
+
+[defaults]
+structured_mode = "json_schema"
+temperature = 0.0
+timeout_s = 300.0
+
+# ---- cloud tasks (OpenRouter) — slugs deliberately left to the environment ----
+
+[models.ocr_primary]
+backend = "openrouter"
+model = "${OCR_PRIMARY_MODEL}"
+max_tokens = 400
+reasoning = { effort = "none" }        # routine OCR: no reasoning
+prompt_version = "ocr-v1"
+
+[models.ocr_verify]
+backend = "openrouter"
+model = "${OCR_VERIFY_MODEL}"
+max_tokens = 400
+reasoning = { effort = "low" }
+prompt_version = "ocr-verify-v1"
+
+[models.grade_primary]
+backend = "openrouter"
+model = "${GRADE_PRIMARY_MODEL}"
+max_tokens = 300                       # routine grading: tiny structured output
+reasoning = { effort = "none" }
+prompt_version = "grade-v1"
+
+[models.grade_escalate]
+backend = "openrouter"
+model = "${GRADE_ESCALATE_MODEL}"
+max_tokens = 600
+reasoning = { effort = "high" }        # reasoning reserved for escalation
+prompt_version = "grade-v1"
+
+[models.mc_resolve_cloud]
+backend = "openrouter"
+model = "${MC_RESOLVE_CLOUD_MODEL}"
+max_tokens = 120
+reasoning = { effort = "none" }
+prompt_version = "mc-v1"
+
+[models.variant_resolve_cloud]
+backend = "openrouter"
+model = "${VARIANT_RESOLVE_CLOUD_MODEL}"
+max_tokens = 300
+prompt_version = "variant-v1"
+
+# ---- local auxiliary tasks (Ollama, thinking disabled) ----
+
+[models.mc_resolve]
+backend = "ollama"
+base_url = "http://localhost:11434/v1"
+model = "qwen3.8:27b-q4_K_M"
+max_tokens = 120
+extra_generation = { think = false }
+prompt_version = "mc-v1"
+
+[models.variant_resolve]
+backend = "ollama"
+base_url = "http://localhost:11434/v1"
+model = "qwen3.8:27b-q4_K_M"
+max_tokens = 300
+extra_generation = { think = false }
+prompt_version = "variant-v1"
+
+[models.policy_infer]
+backend = "ollama"
+base_url = "http://localhost:11434/v1"
+model = "qwen3.8:27b-q4_K_M"
+max_tokens = 300
+extra_generation = { think = false }
+prompt_version = "policy-v1"
