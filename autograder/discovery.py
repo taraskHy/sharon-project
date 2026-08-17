@@ -245,7 +245,13 @@ def resolve_policy_with_models(*, question_id: str, rubric_text: str, gateway,
 def discover_package(*, key: AnswerKey, key_bytes: bytes, exam_bytes: bytes | None = None,
                      exam_text_layer: str = "", cover_png_b64: str | None = None,
                      rubric_texts: dict[str, str] | None = None, gateway=None,
-                     meta: dict | None = None) -> DiscoveryResult:
+                     meta: dict | None = None,
+                     printed_items_by_variant: dict[str, dict[str, list[tuple[str, str]]]] | None = None
+                     ) -> DiscoveryResult:
+    """printed_items_by_variant: variant -> question_id -> [(printed_id, text)]
+    read from each variant's booklet; enables automatic reordering
+    alignment. Without it, only identity can be assumed (and the pipeline's
+    derived-alignment check still review-flags real reorderings)."""
     fp = package_fingerprint(key_bytes, exam_bytes or b"")
     versions = deterministic_versions(key, exam_text_layer)
     vlist = list(versions.value)
@@ -253,10 +259,25 @@ def discover_package(*, key: AnswerKey, key_bytes: bytes, exam_bytes: bytes | No
     if markers.source == "unresolved" and gateway is not None and cover_png_b64:
         markers = resolve_markers_with_models(versions=vlist, cover_png_b64=cover_png_b64,
                                               gateway=gateway, meta=meta)
-    if len(vlist) > 1:
+    align_unresolved: list[str] = []
+    if len(vlist) > 1 and printed_items_by_variant:
+        from .alignment import align_variant, alignment_contract
+
+        results = {v: align_variant(key, v, printed_items_by_variant.get(v, {}), gateway=gateway, meta=meta)
+                   for v in vlist if v in printed_items_by_variant}
+        contract, align_unresolved = alignment_contract(results)
+        for v in vlist:
+            if v not in printed_items_by_variant:
+                align_unresolved.append(v)
+        srcs = {q.source for r in results.values() for q in r.questions.values()}
+        src = ("cloud_model" if "cloud_model" in srcs else "local_model" if "local_model" in srcs
+               else "deterministic")
+        alignment = DiscoveryFact(contract or None, src if contract else "unresolved",
+                                  f"derived per-variant alignment; unresolved variants: {align_unresolved or 'none'}")
+    elif len(vlist) > 1:
         alignment = DiscoveryFact({v: {"identity": True} for v in vlist}, "deterministic",
-                                  "identity alignment assumed; the pipeline's derived-alignment "
-                                  "check review-flags any variant whose printed order differs")
+                                  "identity alignment assumed (no per-variant booklet text supplied); the "
+                                  "pipeline's derived-alignment check review-flags real reorderings")
     else:
         alignment = DiscoveryFact(None, "deterministic", "single version: no alignment needed")
     template = deterministic_template(key, exam_text_layer)
@@ -271,6 +292,7 @@ def discover_package(*, key: AnswerKey, key_bytes: bytes, exam_bytes: bytes | No
     needs_human = [f"policy:{qid}" for qid, f in policies.items() if f.source == "unresolved"]
     if markers.source == "unresolved" and len(vlist) > 1:
         needs_human.append("variants")
+    needs_human += [f"alignment:{v}" for v in align_unresolved]
     return DiscoveryResult(package_fingerprint=fp, versions=versions, variants_config=markers,
                            alignment=alignment, template=template, policies=policies,
                            needs_human=needs_human, built=time.strftime("%Y-%m-%d %H:%M:%S"))
