@@ -154,6 +154,48 @@ def _question_needs_judging(q: KeyQuestion) -> bool:
     )
 
 
+_POLICIES: dict[str, str] = {}
+_POLICY_MIN_CONF = 0.9
+_EARLY_EXIT_LOG: list[dict] = []
+
+
+def set_grading_policies(policies: dict[str, str] | None, min_confidence: float = 0.9) -> None:
+    """Install per-question grading policies (question_id -> policy name).
+    Empty/None restores today's behavior (every transcribed explanation is
+    judged). Policies gate explanation judging BEFORE any model call."""
+    global _POLICIES, _POLICY_MIN_CONF
+    _POLICIES = dict(policies or {})
+    _POLICY_MIN_CONF = min_confidence
+    _EARLY_EXIT_LOG.clear()
+
+
+def early_exit_log() -> list[dict]:
+    """Persisted record of every deterministic early exit taken this run."""
+    return list(_EARLY_EXIT_LOG)
+
+
+def _policy_gate(q: KeyQuestion, se: SubItemExtraction, version: str):
+    """Return an EarlyExitDecision for this sub-item, or None when no policy
+    is installed for the question (-> unchanged legacy path)."""
+    policy = _POLICIES.get(q.id)
+    if not policy:
+        return None
+    from .policies import MCResolution, decide_before_ocr
+
+    ks = next((s for s in q.sub_items if s.id == se.sub_item_id), None)
+    if ks is None:
+        return None
+    sel = normalize_answer(se.final_answer)
+    state = ("single_mark" if se.status == "answered" and sel
+             else "blank" if se.status == "unanswered"
+             else "multiple_marks" if se.status == "ambiguous" else "unclear")
+    mc = MCResolution(sel, state, float(se.confidence or 0.0), "deterministic",
+                      list(se.candidate_answers or []))
+    return decide_before_ocr(policy=policy, mc=mc, accepted=_accepted(ks, version),
+                             points_selection=float(ks.points), points_max=float(ks.points),
+                             min_confidence=_POLICY_MIN_CONF)
+
+
 def judge_question(
     llm: VisionBackend,
     q: KeyQuestion,
@@ -167,6 +209,20 @@ def judge_question(
     to_judge: list[SubItemExtraction] = []
 
     for se in ext_q.sub_items:
+        gate = _policy_gate(q, se, version)
+        if gate is not None and gate.skip_explanation:
+            # Deterministic early exit: the configured policy settles this
+            # sub-item from the MC selection alone — NO explanation judging,
+            # NO model call, regardless of whether an explanation exists.
+            _EARLY_EXIT_LOG.append({"question_id": q.id, "sub_item_id": se.sub_item_id,
+                                    "policy": _POLICIES.get(q.id), "flag": gate.persist_flag,
+                                    "reason": gate.reason})
+            evaluations[se.sub_item_id] = ExplanationEvaluation(
+                sub_item_id=se.sub_item_id,
+                verdict="missing",
+                reasoning=f"[{gate.persist_flag}] {gate.reason} — explanation not evaluated by policy",
+            )
+            continue
         text = (se.explanation_transcription or "").strip()
         if text:
             to_judge.append(se)
