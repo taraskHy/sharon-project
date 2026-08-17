@@ -19,3 +19,5 @@ courses/
 models.toml
 gateway_cache/
 gateway_ledger/
+
+evaluation/openrouter_smoke/state/
