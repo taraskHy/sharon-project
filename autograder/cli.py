@@ -572,6 +572,24 @@ def run_grade_pipeline(
         for note in apply_template_to_key(key, template):
             _log(f"template: {note}")
 
+    # Optional gateway runtime (opt-in): MC resolution chain + policy gate.
+    # Without --models-config the validated pipeline runs unchanged.
+    _models_cfg = getattr(args, "models_config", None)
+    if _models_cfg:
+        from . import orchestrator as _orch
+
+        _rt = _orch.setup_from_config(_models_cfg, out.parent if out.parent.name else out)
+        _pols = None
+        _pol_file = getattr(args, "grading_policies", None)
+        if _pol_file:
+            _pols = json.loads(Path(_pol_file).read_text(encoding="utf-8"))
+        else:
+            from .discovery import deterministic_policies
+
+            _pols = {q: f.value for q, f in deterministic_policies(key).items() if f.value}
+        _orch.install_hooks(_rt, _pols)
+        _log(f"gateway runtime enabled ({_models_cfg}); policies for {len(_pols)} question(s)")
+
     if pages is None:
         _log(f"loading exam scan {exam_path}")
         pages = load_pages(exam_path, max_image_edge)
@@ -922,6 +940,19 @@ def build_parser() -> argparse.ArgumentParser:
             "Without an entry for a variant, model-derived alignment is used "
             "and every affected sub-item is review-flagged as unresolved"
         ),
+    )
+    common.add_argument(
+        "--models-config", default=None,
+        help=(
+            "Path to models.toml enabling the task gateway (OpenRouter/local "
+            "routing, request cache, usage ledger, budgets), the MC resolution "
+            "chain and per-question grading-policy early exits. Absent = the "
+            "validated legacy pipeline, unchanged."
+        ),
+    )
+    common.add_argument(
+        "--grading-policies", default=None,
+        help="Optional JSON file {question_id: policy} overriding discovered policies",
     )
     common.add_argument(
         "--template", default=None,
