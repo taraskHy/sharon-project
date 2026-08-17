@@ -318,6 +318,20 @@ def _propose_disambiguation(
         return f"model proposal unavailable ({e})"
 
 
+_MC_RESOLVER = None
+
+
+def set_mc_resolver(fn) -> None:
+    """Install the MC resolution chain (a callable like mcresolve.resolve_row
+    with the gateway bound). None restores the validated advisory-only path."""
+    global _MC_RESOLVER
+    _MC_RESOLVER = fn
+
+
+def get_mc_resolver():
+    return _MC_RESOLVER
+
+
 def extract_question_banded(
     llm: VisionBackend,
     q: KeyQuestion,
@@ -411,13 +425,40 @@ def extract_question_banded(
                 )
             )
         else:
-            if progress:
-                progress(
-                    f"question {q.id} row {sub.id}: {len(marked)} marks "
-                    f"({', '.join(marked)}) — flagging for review, asking model "
-                    "for an advisory disambiguation"
-                )
-            proposal = _propose_disambiguation(llm, band, page_number, sub.id, marked)
+            # Optional resolution chain (deterministic -> local -> cloud);
+            # None (default) preserves the validated advisory-only behavior.
+            chain = get_mc_resolver()
+            if chain is not None:
+                res, trace = chain(band_png=band.png_bytes, letters=letters_rtl,
+                                   candidates=marked, meta={"question_id": q.id, "sub_item_id": sub.id})
+                if res.resolved() and res.selected in marked:
+                    if progress:
+                        progress(f"question {q.id} row {sub.id}: {len(marked)} marks — "
+                                 f"resolved to {res.selected} by {res.source}")
+                    rows.append(
+                        SubItemExtraction(
+                            sub_item_id=sub.id, status="answered", answer_origin="answer_sheet",
+                            source_page=page_number, source_region=f"answer table row {sub.id}",
+                            final_answer=res.selected, candidate_answers=marked, marks_observed=marks,
+                            interpretation_rationale=(
+                                f"multiple real marks ({', '.join(marked)}); resolved to {res.selected} "
+                                f"via {res.source} (chain: {[s['stage'] for s in trace.stages]}). {detail}"),
+                            confidence=res.confidence,
+                        )
+                    )
+                    continue
+                if progress:
+                    progress(f"question {q.id} row {sub.id}: {len(marked)} marks — chain unresolved "
+                             f"({res.source}); flagging for review")
+                proposal = f"resolution chain unresolved (stages: {[s['stage'] for s in trace.stages]})"
+            else:
+                if progress:
+                    progress(
+                        f"question {q.id} row {sub.id}: {len(marked)} marks "
+                        f"({', '.join(marked)}) — flagging for review, asking model "
+                        "for an advisory disambiguation"
+                    )
+                proposal = _propose_disambiguation(llm, band, page_number, sub.id, marked)
             rows.append(
                 SubItemExtraction(
                     sub_item_id=sub.id,
