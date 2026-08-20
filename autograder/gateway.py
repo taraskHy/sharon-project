@@ -32,6 +32,7 @@ from typing import Any, Callable, TypeVar
 from pydantic import BaseModel
 
 from .backends import BackendConfig, BackendError, VisionBackend, create_backend
+from .privacy import PrivacyError, safe_ledger_entry, scan_blocks
 
 T = TypeVar("T", bound=BaseModel)
 
@@ -138,6 +139,11 @@ class ModelGateway:
         self.ledger = ledger      # duck-typed: record(entry: dict)
         self.budget = budget      # duck-typed: check(meta) -> None | raise; charge(entry)
         self.budget_config: dict | None = None
+        # Privacy: student identity has no place in a provider payload. Blocks
+        # carrying an identifying key abort the request; path-like strings are
+        # recorded here rather than raised (a student could write one by hand).
+        self.privacy_guard = True
+        self.privacy_warnings: list[str] = []
 
     # -- construction --------------------------------------------------------
 
@@ -201,6 +207,11 @@ class ModelGateway:
              max_tokens: int | None = None) -> CallResult:
         route = self.route(task)
         meta = dict(meta or {})
+        if self.privacy_guard:
+            hard, soft = scan_blocks(content_blocks)
+            if hard:
+                raise PrivacyError(f"task {task!r}: " + "; ".join(hard))
+            self.privacy_warnings.extend(soft)
         fp = None
         if self.cache is not None and route.cacheable:
             from .requestcache import fingerprint
@@ -241,7 +252,8 @@ class ModelGateway:
                 "provider", "request_id", "input_tokens", "cached_input_tokens",
                 "output_tokens", "reasoning_tokens", "total_tokens", "reported_cost")},
         }
-        self.ledger.record(entry)
+        self.ledger.record(safe_ledger_entry(entry))
 
 
-__all__ = ["ModelGateway", "TaskRoute", "CallResult", "GatewayConfigError", "BackendError"]
+__all__ = ["ModelGateway", "TaskRoute", "CallResult", "GatewayConfigError", "BackendError",
+           "PrivacyError"]
