@@ -80,6 +80,14 @@ def resolve_row(*, band_png: bytes, letters: list[str], candidates: list[str],
     None -> immediate REVIEW, preserving today's behavior)."""
     trace = ChainTrace()
     trace.add("deterministic", candidates=list(candidates), state="multiple_marks")
+    # A crop that is not a decodable image cannot be read by any model: spend
+    # no calls discovering that (imagequality; deterministic, ~1 ms).
+    from .imagequality import triage_crop
+
+    quality = triage_crop(band_png)
+    if quality.status == "INVALID":
+        trace.add("image_quality", status=quality.status, detail=quality.detail)
+        return MCResolution(None, "unclear", 0.0, "review", list(candidates)), trace
     if gateway is None:
         return MCResolution(None, "multiple_marks", 0.0, "review", list(candidates)), trace
 

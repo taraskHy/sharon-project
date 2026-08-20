@@ -150,3 +150,62 @@ def test_exam_maxima_are_checked_against_the_key():
     key = make_key()
     r = check_exam_invariants(_exam(), key)
     assert any("question_max_matches_key" == c for c in r.checked)
+
+
+# --------------------------------------------- integration: the live path ----
+
+
+def test_grade_exam_runs_the_deterministic_self_check(monkeypatch):
+    """The scoring arithmetic is plain Python, so a violation is a real defect:
+    it is reported and routed to a human, never silently corrected."""
+    from autograder import grade as grade_mod
+    from autograder.config import GraderConfig
+    from autograder.grade import VersionDecision, grade_exam
+    from autograder.schema import ExamExtraction, QuestionExtraction, SubItemExtraction
+
+    key = make_key()
+    q = key.questions[0]
+    ext = ExamExtraction(questions=[QuestionExtraction(
+        question_id=qq.id, source_pages=[1], authoritative_source="sheet",
+        sub_items=[SubItemExtraction(sub_item_id=s.id, status="unanswered",
+                                     interpretation_rationale="", confidence=1.0)
+                   for s in qq.sub_items]) for qq in key.questions])
+    vd = VersionDecision("A1", "", False)
+    clean = grade_exam(key, ext, {}, vd, GraderConfig())
+    assert not any(r.question_id == "*" and "consistency check" in r.reason
+                   for r in clean.needs_human_review)
+
+    # a corrupted total must be caught by the check, not accepted
+    import autograder.invariants as inv_mod
+    real = inv_mod.check_exam_invariants
+
+    def broken(result, key=None):
+        result.total_awarded = 999.0
+        return real(result, key)
+
+    monkeypatch.setattr(inv_mod, "check_exam_invariants", broken)
+    flagged = grade_exam(key, ext, {}, vd, GraderConfig())
+    assert flagged.needs_human_review[0].question_id == "*"
+    assert "consistency check" in flagged.needs_human_review[0].reason
+    assert any("invariants violated" in m for m in flagged.mark_interpretations)
+
+
+def test_undecodable_crop_spends_no_model_calls():
+    """imagequality in the live MC chain: an unreadable crop cannot be read by
+    any model, so no call is made to discover that."""
+    from autograder.mcresolve import resolve_row
+
+    calls = {"n": 0}
+
+    class _GW:
+        def route(self, task):
+            return True
+
+        def call(self, **kw):
+            calls["n"] += 1
+            raise AssertionError("no model call should happen on an undecodable crop")
+
+    res, trace = resolve_row(band_png=b"not-an-image", letters=["A", "B"], candidates=["A", "B"],
+                             gateway=_GW())
+    assert calls["n"] == 0 and res.source == "review"
+    assert any(s["stage"] == "image_quality" for s in trace.stages)

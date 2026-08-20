@@ -670,7 +670,7 @@ def grade_exam(
             f"note: the answer key states total_points={key.total_points:g} but the "
             f"question maxima sum to {total_max:g}; using the per-question sum"
         )
-    return ExamResult(
+    result = ExamResult(
         exam_file=exam_file,
         graded_at=graded_at,
         model=model,
@@ -683,3 +683,19 @@ def grade_exam(
         needs_human_review=needs_review,
         mark_interpretations=mark_interpretations,
     )
+
+    # Deterministic self-check: the arithmetic above is plain Python, so a
+    # violation here means a real defect, not a model mistake. It is reported
+    # (and routed to a human), never silently corrected.
+    from .invariants import check_exam_invariants
+
+    inv = check_exam_invariants(result, key)
+    if not inv.ok:
+        result.mark_interpretations.append(
+            "grade invariants violated: " + "; ".join(inv.problems[:5]))
+        result.needs_human_review.insert(0, ReviewItem(
+            question_id="*", sub_item_id="*",
+            reason=("this exam's scores fail a deterministic consistency check "
+                    f"({len(inv.problems)} problem(s): {'; '.join(inv.problems[:3])}) — "
+                    "the totals must be verified before the grade is used")))
+    return result

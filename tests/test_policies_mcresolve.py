@@ -148,7 +148,20 @@ def _gw(local_reads=None, cloud_reads=None, tasks=("mc_resolve", "mc_resolve_clo
     return ModelGateway.from_dict({"models": models}, backend_factory=factory), calls
 
 
-PNG = b"\x89PNGfake"
+def _band_png() -> bytes:
+    """A real (tiny) band image: the resolver now triages the crop before
+    spending model calls, so a stub byte string is rejected as an undecodable
+    image — correctly."""
+    import numpy as np
+
+    from autograder.tablecrop import _encode_png_gray
+
+    a = np.full((40, 200), 255, dtype=np.uint8)
+    a[10:30, 40:60] = 20            # one dark mark
+    return _encode_png_gray(a)
+
+
+PNG = _band_png()
 
 
 def test_deterministic_confident_never_calls_local():
