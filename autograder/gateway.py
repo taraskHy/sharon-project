@@ -139,6 +139,7 @@ class ModelGateway:
         self.ledger = ledger      # duck-typed: record(entry: dict)
         self.budget = budget      # duck-typed: check(meta) -> None | raise; charge(entry)
         self.budget_config: dict | None = None
+        self.pricing_config: dict | None = None
         # Privacy: student identity has no place in a provider payload. Blocks
         # carrying an identifying key abort the request; path-like strings are
         # recorded here rather than raised (a student could write one by hand).
@@ -162,6 +163,7 @@ class ModelGateway:
             routes[task] = TaskRoute(task=task, **merged)
         gw = cls(routes, **kw)
         gw.budget_config = data.get("budget") or None   # raw [budget] table for the runtime
+        gw.pricing_config = data.get("pricing") or None  # raw [pricing] table (estimator only)
         return gw
 
     @classmethod
