@@ -27,6 +27,7 @@ from .discovery import VariantCatalogStore, discover_package, write_sidecars
 from .gateway import GatewayConfigError, ModelGateway
 from .gradingpack import (DEFAULT_RAG_CHAR_BUDGET, DEFAULT_RAG_TOP_K, PackStore,
                           build_all_packs, source_fingerprint)
+from .preflight import alignment_from_discovery, preflight_package
 from .requestcache import RequestCache
 from .schema import AnswerKey
 from .usage import BudgetExceeded, BudgetLimits, BudgetManager, UsageLedger
@@ -104,9 +105,19 @@ def prepare_exam_package(runtime: Runtime | None, *, key: AnswerKey, key_bytes: 
         packs = build_all_packs(key, policies, course_id=course_id, retrieve=retrieve, embed_fn=embed_fn,
                                 rag_top_k=rag_top_k, rag_char_budget=rag_char_budget)
         store.save(packs, fp)
+    # Package-level preflight: a structural defect must surface ONCE here, not
+    # as one review per student later (see preflight.py / docs).
+    versions = list(disc.versions.value or key.versions or [])
+    pre = preflight_package(
+        key=key, variants=versions,
+        alignment=alignment_from_discovery(disc.alignment.value, versions, key),
+        policies=policies,
+        rubric_question_ids=list((rubric_texts or {}).keys()) or None,
+        template=disc.template.value, unresolved=disc.unresolved())
     return {"discovery": disc, "policies": policies, "packs": packs, "sidecars_written": [str(p) for p in written],
             "unresolved": disc.unresolved(), "package_fingerprint": disc.package_fingerprint,
-            "pack_fingerprint": fp}
+            "pack_fingerprint": fp, "preflight": pre, "package_status": pre.status,
+            "setup_required": [f.as_dict() for f in pre.blocking]}
 
 
 def install_hooks(runtime: Runtime | None, policies: dict[str, str] | None,
