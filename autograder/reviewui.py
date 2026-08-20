@@ -18,6 +18,8 @@ from dataclasses import asdict, dataclass, field
 from pathlib import Path
 from typing import Literal, Optional
 
+from .reviewqueue import ReviewCase, classify_reason, group_cases, prioritize, queue_summary
+
 
 @dataclass
 class ReviewItem:
@@ -45,13 +47,23 @@ class ReviewItem:
     # variant
     apply_to_all_eligible: bool = False
     options: list[str] = field(default_factory=list)   # one-click choices
+    # queue metadata (reviewqueue: stable code, priority, mechanical grouping)
+    reason_code: str = ""
+    explanation: str = ""
+    points_affected: float = 0.0
+    priority_tier: int = 4
+    group_fingerprint: Optional[str] = None
+    batch_warning_code: Optional[str] = None
+    batch_warning_students: int = 0
 
 
 def build_review_items(exam_id: str, result: dict, extraction: dict | None = None,
                        chain_traces: dict | None = None, packs: dict | None = None,
-                       crops: dict | None = None) -> list[ReviewItem]:
+                       crops: dict | None = None, warnings: list | None = None) -> list[ReviewItem]:
     """Assemble review items from a persisted result (+ optional extraction,
-    MC chain traces, grading packs, and crop bytes keyed by (q, sub))."""
+    MC chain traces, grading packs, crop bytes keyed by (q, sub), and the
+    batch warnings that may explain several of them at once). Returned in
+    review PRIORITY order (reviewqueue) — ordering only, never a grade."""
     items: list[ReviewItem] = []
     ext_index = {}
     for q in (extraction or {}).get("questions", []):
@@ -92,7 +104,64 @@ def build_review_items(exam_id: str, result: dict, extraction: dict | None = Non
                                     question_context=(pack.to_grader_context(include_solution=False)[:800] if pack else None),
                                     primary_transcription=row.get("explanation_transcription"),
                                     options=["accept proposed", "set score", "mark unintelligible"]))
+    for it in items:
+        annotate_item(it, warnings=warnings)
+    items.sort(key=lambda i: (i.priority_tier, -i.batch_warning_students, -i.points_affected,
+                              i.question_id, i.sub_item_id))
     return items
+
+
+def annotate_item(item: ReviewItem, warnings: list | None = None) -> ReviewItem:
+    """Attach the stable reason code, the structured explanation, the priority
+    tier and the mechanical group fingerprint (see ``reviewqueue``)."""
+    case = to_case(item, warnings=warnings)
+    item.reason_code = case.reason_code
+    item.explanation = case.explanation()
+    item.points_affected = case.points_affected
+    item.priority_tier = case.tier()
+    item.group_fingerprint = case.mechanical_fingerprint
+    item.batch_warning_code = case.batch_warning_code
+    item.batch_warning_students = case.batch_warning_students
+    item.apply_to_all_eligible = case.reusable
+    return item
+
+
+def to_case(item: ReviewItem, warnings: list | None = None) -> "ReviewCase":
+    """Map one UI review item onto the typed queue case."""
+    code = classify_reason(item.reason, item.kind)
+    facts: dict = {}
+    kind = None
+    if item.kind == "mc":
+        facts = {"deterministic": list(item.deterministic_candidate),
+                 "local": item.local_candidate, "cloud": item.cloud_candidate}
+        if item.local_candidate and item.cloud_candidate and item.local_candidate != item.cloud_candidate:
+            code = "MC_CONFLICT"
+    elif item.kind == "ocr":
+        facts = {"primary": item.primary_transcription, "secondary": item.secondary_transcription,
+                 "disputed": list(item.disputed_regions)}
+        if item.secondary_transcription and item.secondary_transcription != item.primary_transcription:
+            code = "OCR_PROVIDER_DISAGREEMENT"
+    elif item.kind == "variant":
+        kind = "variant_marker"
+        facts = {"candidates": list(item.options), "fact": item.reason[:200]}
+    else:
+        facts = {"primary_score": item.proposed_score, "max_score": item.max_score,
+                 "disputed_rubric_items": list(item.rubric_items),
+                 "problems": [item.grading_evidence] if item.grading_evidence else []}
+    points = float(item.max_score or 0.0) - float(item.proposed_score or 0.0) \
+        if item.max_score is not None else 0.0
+    case = ReviewCase(exam_id=item.exam_id, question_id=item.question_id,
+                      sub_item_id=item.sub_item_id, reason_code=code,
+                      points_affected=max(points, 0.0), max_points=float(item.max_score or 0.0),
+                      facts=facts, mechanical_kind=kind)
+    for w in (warnings or []):
+        covers = (getattr(w, "scope", "") == "batch"
+                  or (getattr(w, "scope", "") == "question"
+                      and getattr(w, "scope_id", None) == item.question_id))
+        if covers and getattr(w, "affected_students", 0) > case.batch_warning_students:
+            case.batch_warning_code = getattr(w, "code", None)
+            case.batch_warning_students = int(getattr(w, "affected_students", 0))
+    return case
 
 
 # ------------------------------------------------------------ resolutions --
@@ -117,21 +186,50 @@ class ResolutionStore:
         return d
 
     def apply_to_all(self, job_dir: str | Path, kind: str, question_id: str, sub_item_id: str,
-                     *, decision: str, value=None) -> int:
+                     *, decision: str, value=None, fingerprint: str | None = None,
+                     scope: dict | None = None) -> int:
         """Only VARIANT/LAYOUT decisions may be broadcast; semantic grading
-        decisions are refused (raises ValueError)."""
+        decisions are refused (raises ValueError).
+
+        ``scope`` (from ``reviewqueue.apply_scope``) restricts the broadcast to
+        the exact matching mechanical cases and is persisted verbatim, so it is
+        always auditable which decision covered which items and on what
+        fingerprint."""
         if kind not in ("variant", "layout"):
             raise ValueError("apply-to-all is allowed only for variant/layout decisions")
-        n = 0
+        targets = None
+        if scope:
+            targets = {i["exam_id"] for i in scope.get("items", [])}
+            fingerprint = fingerprint or scope.get("fingerprint")
+        n, applied = 0, []
         for exam_dir in sorted(Path(job_dir).glob("exams/*")):
-            if exam_dir.is_dir():
-                ResolutionStore(exam_dir).resolve(question_id, sub_item_id, decision=decision, value=value,
-                                                  by="lecturer:apply-to-all")
-                n += 1
+            if not exam_dir.is_dir() or (targets is not None and exam_dir.name not in targets):
+                continue
+            ResolutionStore(exam_dir).resolve(question_id, sub_item_id, decision=decision, value=value,
+                                              by="lecturer:apply-to-all")
+            applied.append(exam_dir.name)
+            n += 1
+        rec = {"ts": time.strftime("%Y-%m-%d %H:%M:%S"), "kind": kind, "decision": decision,
+               "value": value, "fingerprint": fingerprint, "question_id": question_id,
+               "sub_item_id": sub_item_id, "applied_to": applied, "scope": scope}
+        p = Path(job_dir) / "apply_to_all.jsonl"
+        p.parent.mkdir(parents=True, exist_ok=True)
+        with p.open("a", encoding="utf-8") as f:
+            f.write(json.dumps(rec, ensure_ascii=False) + "\n")
         return n
 
 
 # ------------------------------------------------------ settings summary ----
+
+
+def review_queue(items: list[ReviewItem]) -> dict:
+    """What the REVIEW tab renders: prioritised items, mechanical groups, and
+    how many decisions the lecturer actually has to make."""
+    cases = [to_case(i) for i in items]
+    groups = group_cases(cases)
+    return {"items": [i for i in items],
+            "summary": queue_summary(cases),
+            "groups": [g.as_dict() for g in groups]}
 
 
 def settings_summary(gateway=None, ledger=None, budget=None, cache=None,
