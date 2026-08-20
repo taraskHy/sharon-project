@@ -302,3 +302,48 @@ def test_a_pack_is_reusable_across_students():
     blob = json.dumps(p.to_json(), ensure_ascii=False)
     assert TRANSCRIPTION not in blob and "exam-" not in blob
     assert p.audit()["question_id"] == "1"
+
+
+# ------------------------------------------- §4 default: retrieval is OFF ----
+
+
+def test_the_default_rag_policy_is_disabled_and_retrieves_nothing():
+    """An unspecified policy must not silently send course context: the
+    benefit is unmeasured and it costs input tokens on every grading call."""
+    from autograder.gradingpack import QuestionGradingPack
+
+    calls = []
+    key = make_key()
+    p = build_pack(key, key.questions[0], grading_policy="choice_and_explanation_independent",
+                   course_id="CV", retrieve=fake_retrieve(calls))     # no rag_policy given
+    assert p.rag_policy == "RAG_DISABLED" and calls == []
+    assert p.rag_evidence == [] and p.rag_chars == 0 and p.rag_config == {}
+    assert "Course context" not in p.to_grader_context()
+    # the dataclass default itself, independent of the builder
+    assert QuestionGradingPack.__dataclass_fields__["rag_policy"].default == "RAG_DISABLED"
+
+
+def test_no_course_context_reaches_the_grader_under_the_default(tmp_path):
+    """End of the chain: nothing retrieved, nothing in the prompt."""
+    from autograder.gradingpack import build_all_packs
+    from autograder.reliability import ReliabilityConfig, run_reliability_judging
+    from autograder.schema import ExamExtraction, QuestionExtraction, SubItemExtraction
+    from tests.test_grading_modes import FakeRuntime
+
+    key = make_key()
+    ext = ExamExtraction(questions=[QuestionExtraction(
+        question_id="1", source_pages=[1], authoritative_source="sheet",
+        sub_items=[SubItemExtraction(sub_item_id="1", status="answered", final_answer="F",
+                                     explanation_transcription=TRANSCRIPTION,
+                                     explanation_legibility="full",
+                                     interpretation_rationale="", confidence=1.0)])])
+    rt = FakeRuntime(tmp_path, {"grade_primary": [GradeResult(score=4.0)]})
+    calls = []
+    run_reliability_judging(key=key, extraction=ext, version="A1",
+                            config=ReliabilityConfig(mode="reliability"), gateway=rt.gateway,
+                            packs=build_all_packs(key, {}), exam_id="exam-001",
+                            rag_attach=lambda pk: attach_rag(pk, course_id="CV",
+                                                             retrieve=fake_retrieve(calls)))
+    assert calls == []                                  # the policy wins over availability
+    prompt = rt.blocks["grade_primary"][0][0]["text"]
+    assert "Course context" not in prompt and "לפלסיאן" not in prompt

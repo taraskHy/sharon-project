@@ -74,7 +74,7 @@ autograder grade  --backend openai --base-url http://localhost:11434/v1 --model 
 |---|---|
 | [docs/architecture.md](docs/architecture.md) | pipeline stages, backend layer, grading-policy decisions |
 | [docs/variants.md](docs/variants.md) | cover-page flower → exam variant (A1/A2/A3), question-order alignment, mapping evidence |
-| [docs/reliability-layer.md](docs/reliability-layer.md) | evidence-grounded grading, batch anomalies, grade invariants, review reason codes/priority/grouping, decision traces, package preflight, cost estimates, privacy, integration status |
+| [docs/reliability-layer.md](docs/reliability-layer.md) | grading modes (legacy/reliability/shadow), evidence-grounded grading, batch anomalies, grade invariants, review reason codes/priority/grouping, decision traces, package preflight, cost estimates, privacy, integration status |
 | [docs/model-comparison.md](docs/model-comparison.md) | open-model research, licenses, hardware, hosted-API survey, final choice |
 | [docs/deployment.md](docs/deployment.md) | local / university-server / hosted deployment, hardware requirements |
 | [docs/datasets.md](docs/datasets.md) | dataset layout, manifests, split, label discipline |

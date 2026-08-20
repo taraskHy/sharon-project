@@ -204,37 +204,82 @@ facts and what is needed for each — instead of grading 180 exams and producing
 
 ---
 
+## 19. Grading pipeline modes (the wiring)
+
+The explanation-grading seam in ``cli.run_grade_pipeline`` selects one of
+three routes with ``--grading-mode``:
+
+| mode | what runs | authoritative | artefacts |
+|---|---|---|---|
+| ``legacy`` (default) | the validated ``ExplanationJudgement`` judge | legacy | unchanged |
+| ``reliability`` | the route in ``reliability.py`` | reliability | ``decisions.jsonl`` |
+| ``shadow`` | BOTH | **legacy** | ``decisions.jsonl`` + ``shadow_comparison.json`` |
+
+``reliability`` and ``shadow`` require ``--models-config``: the pipeline never
+calls a provider directly, only the task gateway. In shadow mode the legacy
+grade is computed and written first, the reliability route is then run inside
+a guard, and its score is produced by the SAME deterministic scorer into a
+throwaway object — a shadow failure cannot touch the authoritative grade, and
+``apply_review_items`` refuses a shadow run outright.
+
+In every mode the final number comes from ``grade.grade_exam``. The grader's
+own score is recorded as ``proposed_score`` and is never a student's grade.
+
+``shadow_comparison.json`` carries, per item: legacy points, reliability
+points, the grader's proposal, the delta, both review states, both reason
+codes and the route difference; plus batch aggregates (exact score agreement,
+mean absolute delta, review-rate delta, route and reason-code differences) and
+the early-exit accounting. That is everything a later strong-PC migration
+decision needs, without another architectural change.
+
+### Uncalibrated heuristics are advisory
+
+The OCR suspicion signals and the image-quality thresholds are NOT calibrated.
+They may flag an item and route it to REVIEW; they may not cost a student
+points. Only evidence-backed findings withhold judgement:
+
+* a verifier looked at the crop and disagreed with the reading;
+* the crop is empty or undecodable (there is nothing to read);
+* the extractor itself reports the handwriting as illegible/partial.
+
+Everything else (short-token suspicion, low contrast, skew, clipping) grades
+normally and adds a REVIEW flag. Batch anomaly detection never touches a grade
+at all.
+
 ## Integration status
 
 | Component | Status |
 |---|---|
-| Package preflight | **A** — in `orchestrator.prepare_exam_package` and the UI |
+| Grading pipeline modes (legacy/reliability/shadow) | **A** — selected at the real seam in `cli.run_grade_pipeline` |
+| Evidence-grounded grading | **A** — enforced on every item the reliability route grades |
+| Grade invariants (question + exam level) | **A** — question level in the route, exam level in `grade_exam` |
+| OCR/grading status separation + routing | **A** — tested at the seam in both directions |
+| Decision traces + early-exit accounting | **A** — written per item AS the route executes |
+| DecisionSignals capture | **A** — recorded into every persisted trace |
+| Package preflight + blocking gate | **A** — orchestrator, the CLI gate and the UI |
 | Privacy filtering | **A** — enforced inside `ModelGateway.call` and the ledger |
 | Review reason codes / priority / grouping | **A** — `reviewui` + web UI |
-| Batch anomaly detection | **A** — batch view over persisted results |
-| Grade invariants (exam level) | **A** — `grade_exam` self-check |
-| Image triage (undecodable crop) | **A** — `mcresolve.resolve_row` |
+| Batch anomaly detection | **A** — batch view over persisted results (warning-only) |
+| Image triage (undecodable/empty crop) | **A** — MC chain + the reliability route |
 | Cost estimator | **A** — job view (needs a parsed `answer_key.json`) |
-| Evidence-grounded grading | **B** — enforced in `escalation.validate_grade`, which the live CLI path does not yet call |
-| Grade invariants (question level) | **B** — same path as above |
-| OCR/grading status separation + routing | **B** — mock-tested; the live path still uses the legacy batch judge |
-| DecisionSignals capture | **B** — produced by the escalation engine, consumed by nothing live yet |
-| Image triage (blank/contrast/clip/skew) | **B** — not yet called before the OCR/explanation pass |
-| Decision traces + early-exit accounting | **B** — recorded on demand; the pipeline does not yet write `decisions.jsonl`, and the UI says so when it falls back |
-| RAG grading policies | **B** — routed inside `escalate_grade`; policy choice unmeasured |
+| Shadow comparison contract | **A** — written by shadow mode, rendered in the UI |
+| Image triage (contrast/clip/skew thresholds) | **B** — computed and recorded, deliberately ADVISORY (uncalibrated) |
+| RAG grading policies | **B** — routed per policy; the winning policy is unmeasured, default off |
 | Exact reuse store | **B** — mechanism + tests; not yet consulted by the discovery path |
 | Canary suites | **C/D** — mechanism only; no suite populated, deliberately |
-| Model/prompt provenance | **C** — recorded correctly from a `CallResult`; real provider fields (`provider`, `generation_id`) are unverified against a live response |
+| Model/prompt provenance | **C** — correct from a `CallResult`; provider-reported fields unverified against a live response |
 
 **A** = in the production route · **B** = implemented and integration-tested
 with mocks · **C** = infrastructure exists, real model behaviour unvalidated ·
 **D** = deferred to strong-PC empirical work.
 
-The honest headline: the **escalation engine (and therefore evidence-grounded
-grading, typed statuses and signal capture) is still not wired into
-`cli.run_grade_pipeline`**, which continues to judge explanations in batch via
-`ExplanationJudgement`. That rewire changes grading behaviour and cannot be
-validated without a model, so it was not attempted here.
+**The honest headline:** the reliability route is now genuinely wired into
+`cli.run_grade_pipeline`, but it has never run against a real model. Every
+figure it would produce — REVIEW rate, evidence-fabrication rate, escalation
+rate, cost — is unmeasured. That is exactly what `shadow` mode is for: run it
+alongside the legacy grader on the strong PC, read `shadow_comparison.json`,
+and only then consider making `reliability` the default. Until that
+comparison exists, `legacy` stays the default.
 
 ---
 
@@ -242,6 +287,17 @@ validated without a model, so it was not attempted here.
 
 None of these may run on the laptop: each needs a GPU, a real provider, or a
 large batch.
+
+### T0 — shadow-mode migration comparison (the new first test)
+*Objective:* run a real batch with `--grading-mode shadow` and read
+`shadow_comparison.json`: exact score agreement, mean absolute delta, the
+review-rate difference, harmful changes, and how much of the batch the
+reliability route settles automatically. This is the evidence needed before
+`reliability` may become the default.
+*Command:* `autograder grade --grading-mode shadow --models-config models.toml ...`
+*Needs:* the configured grading model; roughly one grading call per written
+answer (plus escalations). *Resources:* network only if cloud-routed.
+*Blocking:* nothing else should be decided about the route before this runs.
 
 ### T1 — RAG grading-policy A/B (§16)
 *Objective:* choose between `RAG_ON_UNCERTAIN`, `RAG_ON_ESCALATION` and
