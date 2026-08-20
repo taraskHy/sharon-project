@@ -39,6 +39,27 @@ class RagEvidence:
 
 
 @dataclass
+class RubricItemSpec:
+    """One declared rubric item.
+
+    ``requires_evidence`` is the ONLY sanctioned way to grade an item without
+    a quoted span of the student's own words (the span check itself lives in
+    ``evidence.py`` — the pack never holds student text): the exemption is
+    declared per item here, never by weakening the check globally.
+    ``excludes``/``requires`` declare mutual exclusion and prerequisites,
+    enforced deterministically by ``invariants.py``.
+    """
+
+    id: str
+    text: str
+    points: float | None = None
+    requires_evidence: bool = True
+    excludes: list[str] = field(default_factory=list)
+    requires: list[str] = field(default_factory=list)
+    kind: str = "semantic"        # semantic | deterministic
+
+
+@dataclass
 class QuestionGradingPack:
     question_id: str
     question_text: str                    # answer-free (title + sub-item prompts)
@@ -49,6 +70,9 @@ class QuestionGradingPack:
     scoring_rules: list[str]
     grading_policy: str                   # see policies.py
     official_solution: dict[str, str]     # sub_item -> reference_explanation (where allowed)
+    rubric_items: list[RubricItemSpec] = field(default_factory=list)
+    evidence_policy: str = "required"     # required | optional | disabled (see evidence.py)
+    score_granularity: float | None = None   # e.g. 0.5 -> only half-point scores are valid
     rag_evidence: list[RagEvidence] = field(default_factory=list)
     rag_config: dict[str, Any] = field(default_factory=dict)
     provenance: dict[str, Any] = field(default_factory=dict)
@@ -67,9 +91,12 @@ class QuestionGradingPack:
         """Compact text block for the grader prompt — small by design."""
         lines = [f"Question {self.question_id} ({self.question_type}, max {self.max_score:g} pts):",
                  self.question_text.strip()]
-        if self.rubric:
+        specs = self.rubric_specs()
+        if specs:
             lines.append("Rubric:")
-            lines += [f"  R{i+1}: {r}" for i, r in enumerate(self.rubric)]
+            for s in specs.values():
+                need = "" if s.requires_evidence else "  (no quoted span needed)"
+                lines.append(f"  {s.id}: {s.text}{need}")
         if self.scoring_rules:
             lines.append("Scoring rules: " + " | ".join(self.scoring_rules))
         if include_solution and self.official_solution:
@@ -80,8 +107,17 @@ class QuestionGradingPack:
             lines += [f"  <{e.chunk_id}|{e.source}> {e.text}" for e in self.rag_evidence]
         return "\n".join(lines)
 
+    def rubric_specs(self) -> dict[str, RubricItemSpec]:
+        """Declared rubric items, or R1..Rn derived from the plain rubric
+        lines. Derived items require evidence — the exemption must be
+        declared, never assumed."""
+        if self.rubric_items:
+            return {s.id: s for s in self.rubric_items}
+        return {f"R{i+1}": RubricItemSpec(id=f"R{i+1}", text=r)
+                for i, r in enumerate(self.rubric)}
+
     def rubric_item_ids(self) -> list[str]:
-        return [f"R{i+1}" for i in range(len(self.rubric))]
+        return list(self.rubric_specs())
 
     def to_json(self) -> str:
         return json.dumps(asdict(self), ensure_ascii=False, indent=1)
@@ -90,6 +126,7 @@ class QuestionGradingPack:
     def from_json(cls, text: str) -> "QuestionGradingPack":
         d = json.loads(text)
         d["rag_evidence"] = [RagEvidence(**e) for e in d.get("rag_evidence", [])]
+        d["rubric_items"] = [RubricItemSpec(**s) for s in d.get("rubric_items", [])]
         return cls(**d)
 
 
@@ -124,6 +161,10 @@ def build_pack(key: AnswerKey, q: KeyQuestion, *, grading_policy: str,
     if prompts and len(prompts) <= 12:
         question_text += "\n" + "\n".join(f"- ({s.id}) {s.prompt.strip()}" for s in q.sub_items if s.prompt)
     rubric, rules = _rubric_from_key(q, key.general_rules)
+    # choice_only questions carry no semantic rubric decisions, so there is
+    # nothing to quote from the student's writing (and rubric items on such a
+    # pack are already a validation error elsewhere).
+    evidence_policy = "disabled" if grading_policy == "choice_only" else "required"
     pack = QuestionGradingPack(
         question_id=q.id,
         question_text=question_text,
@@ -133,6 +174,8 @@ def build_pack(key: AnswerKey, q: KeyQuestion, *, grading_policy: str,
         rubric=rubric,
         scoring_rules=rules,
         grading_policy=grading_policy,
+        rubric_items=[RubricItemSpec(id=f"R{i+1}", text=r) for i, r in enumerate(rubric)],
+        evidence_policy=evidence_policy,
         official_solution={s.id: s.reference_explanation for s in q.sub_items
                            if include_solution and s.reference_explanation},
         provenance={"key_source": source_label, "exam_title": key.exam_title,
