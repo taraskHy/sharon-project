@@ -43,19 +43,45 @@ def test_prepare_exam_package_persists_and_reuses(tmp_path):
 
     out1 = prepare_exam_package(None, key=key, key_bytes=b"K1", key_path=keyp,
                                 exam_text_layer="נוסח A1 נוסח A2 נוסח A3", course_id="CV",
-                                course_index_hash="idx1", retrieve=retrieve, packages_root=tmp_path / "state")
+                                course_index_hash="idx1", retrieve=retrieve, rag_policy="RAG_ALWAYS",
+                                    packages_root=tmp_path / "state")
     assert set(out1["packs"]) == {q.id for q in key.questions}
     assert (keyp.with_name("exam.answer_key.variants.json")).exists()   # emitted sidecar
     n_first = calls["n"]
     out2 = prepare_exam_package(None, key=key, key_bytes=b"K1", key_path=keyp,
                                 exam_text_layer="נוסח A1 נוסח A2 נוסח A3", course_id="CV",
-                                course_index_hash="idx1", retrieve=retrieve, packages_root=tmp_path / "state")
+                                course_index_hash="idx1", retrieve=retrieve, rag_policy="RAG_ALWAYS",
+                                    packages_root=tmp_path / "state")
     assert calls["n"] == n_first                    # packs reused, no re-retrieval
     assert out2["package_fingerprint"] == out1["package_fingerprint"]
     out3 = prepare_exam_package(None, key=key, key_bytes=b"K1", key_path=keyp,
                                 exam_text_layer="נוסח A1 נוסח A2 נוסח A3", course_id="CV",
-                                course_index_hash="idx2", retrieve=retrieve, packages_root=tmp_path / "state")
+                                course_index_hash="idx2", retrieve=retrieve, rag_policy="RAG_ALWAYS",
+                                packages_root=tmp_path / "state")
     assert calls["n"] > n_first                     # course index changed -> packs rebuilt
+
+
+def test_packages_do_not_retrieve_course_context_by_default(tmp_path):
+    """Grading-side retrieval is opt-in: an unspecified RAG policy sends no
+    course context and performs no retrieval at all."""
+    key = make_key()
+    keyp = tmp_path / "pkg" / "exam.answer_key.json"
+    keyp.parent.mkdir()
+    keyp.write_text("{}", encoding="utf-8")
+    calls = {"n": 0}
+
+    def retrieve(course_id, query, top_k, embed_fn=None):
+        calls["n"] += 1
+        return [{"chunk_id": "c1", "source": "s", "page": 1, "similarity": 0.8, "text": "קטע"}]
+
+    out = prepare_exam_package(None, key=key, key_bytes=b"K1", key_path=keyp,
+                               course_id="CV", course_index_hash="idx1", retrieve=retrieve,
+                               packages_root=tmp_path / "state")
+    assert calls["n"] == 0
+    for pack in out["packs"].values():
+        assert pack.rag_policy == "RAG_DISABLED"
+        assert pack.rag_evidence == [] and pack.rag_chars == 0
+        assert "Course context" not in pack.to_grader_context()
 
 
 def test_model_failure_pauses_not_destroys(tmp_path):

@@ -30,6 +30,27 @@ SETUP_REQUIRED = "PACKAGE_SETUP_REQUIRED"
 _VALID_ID = re.compile(r"^[A-Za-z0-9][A-Za-z0-9_.\-]*$")
 
 
+#: Category per finding code. Blocking findings stop the batch ONCE at
+#: package level; non-blocking ones are recorded and grading proceeds.
+CATEGORIES = {
+    "NO_VARIANTS": "structure", "INVALID_VARIANT_ID": "structure",
+    "DUPLICATE_VARIANT_ID": "structure", "VARIANT_NOT_IN_KEY": "structure",
+    "ALIGNMENT_UNRESOLVED": "alignment", "ALIGNMENT_UNKNOWN_QUESTION": "alignment",
+    "ALIGNMENT_UNKNOWN_SUB_ITEM": "alignment", "ALIGNMENT_INCOMPLETE": "alignment",
+    "DUPLICATE_CANONICAL_ASSIGNMENT": "alignment",
+    "EMPTY_KEY": "key", "DUPLICATE_QUESTION_ID": "key", "DUPLICATE_SUB_ITEM_ID": "key",
+    "MISSING_MAX_SCORE": "key", "MAX_SCORE_INCONSISTENT": "key",
+    "MISSING_KEY_ANSWER": "key", "KEY_ANSWER_UNVERIFIED": "key",
+    "RUBRIC_UNKNOWN_QUESTION": "key",
+    "POLICY_UNKNOWN_QUESTION": "policy", "INVALID_POLICY": "policy",
+    "POLICY_MISSING": "policy",
+    "MISSING_CROP_REGION": "template", "TEMPLATE_MISSING": "template",
+    "TOTAL_SCORE_UNDETERMINED": "structure", "TOTAL_SCORE_MISMATCH": "informational",
+    "DISCOVERY_UNRESOLVED": "structure",
+    "RAG_UNAVAILABLE": "informational", "VARIANT_DISTRIBUTION_UNUSUAL": "distribution",
+}
+
+
 @dataclass
 class PreflightFact:
     code: str
@@ -38,6 +59,14 @@ class PreflightFact:
     subject_id: str
     message: str
     needed: str = ""             # what a human must supply to resolve it
+    category: str = ""
+
+    def __post_init__(self):
+        self.category = self.category or CATEGORIES.get(self.code, "structure")
+
+    @property
+    def blocking(self) -> bool:
+        return self.severity == "blocking"
 
     def as_dict(self) -> dict:
         return asdict(self)
@@ -68,7 +97,15 @@ class PreflightReport:
                 "total_possible_score": self.total_possible_score,
                 "variants": list(self.variants), "checked": list(self.checked),
                 "blocking": [f.as_dict() for f in self.blocking],
-                "warnings": [f.as_dict() for f in self.warnings]}
+                "warnings": [f.as_dict() for f in self.warnings],
+                "by_category": self.by_category()}
+
+    def by_category(self) -> dict[str, dict[str, int]]:
+        out: dict[str, dict[str, int]] = {}
+        for f in self.facts:
+            slot = out.setdefault(f.category, {"blocking": 0, "warning": 0})
+            slot[f.severity] = slot.get(f.severity, 0) + 1
+        return out
 
     def summary(self) -> str:
         if self.ok:
@@ -306,3 +343,58 @@ def reviews_avoided(report: PreflightReport, n_exams: int) -> int:
     """How many per-student review items this ONE package warning replaces —
     the number the lecturer would otherwise have had to work through."""
     return max(0, len(report.blocking) * max(n_exams, 0))
+
+
+# --------------------------------------------------------------------------
+# blocking gate (§6): stop ONCE at package level, never per student
+# --------------------------------------------------------------------------
+
+
+class PackageSetupRequired(RuntimeError):
+    """The package is structurally unresolved. Raised ONCE, before any student
+    exam is graded, so a single defect cannot become one review per student."""
+
+    def __init__(self, report: PreflightReport):
+        self.report = report
+        super().__init__(report.summary())
+
+
+def gate_package(report: PreflightReport) -> PreflightReport:
+    """Raise on a blocking finding; return the report otherwise. Non-blocking
+    findings (unusual-but-valid distribution, optional RAG unavailable,
+    informational metadata) never stop grading."""
+    if report.blocking:
+        raise PackageSetupRequired(report)
+    return report
+
+
+def package_report_for_key(key, key_path=None, *, policies=None,
+                           rubric_question_ids=None) -> PreflightReport:
+    """Deterministic preflight from the answer key plus whatever sidecars sit
+    next to it. Reads files only — no model, no discovery, no network."""
+    import json
+    from pathlib import Path
+
+    alignment_raw = None
+    template = None
+    if key_path is not None:
+        p = Path(key_path)
+        stem = p.with_suffix("") if p.suffix.lower() == ".json" else p
+        for suffix, target in (("alignment", "alignment"), ("template", "template")):
+            cand = stem.with_name(stem.name + f".{suffix}.json")
+            if not cand.exists() and p.name.endswith(".answer_key.json"):
+                cand = p.with_name(p.name.replace(".json", f".{suffix}.json"))
+            if cand.exists():
+                try:
+                    data = json.loads(cand.read_text(encoding="utf-8"))
+                except Exception:  # noqa: BLE001 — an unreadable sidecar is simply absent
+                    continue
+                if target == "alignment":
+                    alignment_raw = data
+                else:
+                    template = data
+    versions = list(getattr(key, "versions", []) or [])
+    return preflight_package(
+        key=key, variants=versions,
+        alignment=alignment_from_discovery(alignment_raw, versions, key),
+        policies=policies, rubric_question_ids=rubric_question_ids, template=template)

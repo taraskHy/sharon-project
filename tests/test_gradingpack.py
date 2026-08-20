@@ -48,7 +48,8 @@ def test_rag_top_k_and_char_budget_respected():
     q1 = key.questions[0]
     r = fake_retrieve_factory(CHUNKS)
     p = build_pack(key, q1, grading_policy="choice_and_explanation_independent",
-                   course_id="CV", retrieve=r, rag_top_k=2, rag_char_budget=500)
+                   course_id="CV", retrieve=r, rag_top_k=2, rag_char_budget=500,
+                   rag_policy="RAG_ALWAYS")            # retrieval is opt-in (default disabled)
     assert r.calls[0]["top_k"] == 2 and r.calls[0]["course_id"] == "CV"
     assert len(p.rag_evidence) <= 2
     assert sum(len(e.text) for e in p.rag_evidence) <= 500     # ellipsis counted
@@ -77,7 +78,8 @@ def test_store_reuse_and_source_change_invalidates(tmp_path):
     key = make_key()
     r = fake_retrieve_factory(CHUNKS)
     policies = {q.id: "choice_and_explanation_independent" for q in key.questions}
-    packs = build_all_packs(key, policies, course_id="CV", retrieve=r, rag_top_k=1)
+    packs = build_all_packs(key, policies, course_id="CV", retrieve=r, rag_top_k=1,
+                            rag_policy="RAG_ALWAYS")
     store = PackStore(tmp_path / "packs")
     fp = source_fingerprint(b"KEYBYTES", "idx-abc", policies, 1, 1200)
     store.save(packs, fp)

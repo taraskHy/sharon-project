@@ -71,6 +71,7 @@ def prepare_exam_package(runtime: Runtime | None, *, key: AnswerKey, key_bytes: 
                          retrieve=None, embed_fn=None,
                          rag_top_k: int = DEFAULT_RAG_TOP_K,
                          rag_char_budget: int = DEFAULT_RAG_CHAR_BUDGET,
+                         rag_policy: str = "RAG_DISABLED",
                          packages_root: str | Path | None = None,
                          write_missing_sidecars: bool = True) -> dict:
     """Once per exam package: discovery (variants/template/policies) ->
@@ -98,12 +99,14 @@ def prepare_exam_package(runtime: Runtime | None, *, key: AnswerKey, key_bytes: 
     catalog.save(disc)
     written = write_sidecars(disc, key_path) if write_missing_sidecars else []
     policies = {qid: f.value for qid, f in disc.policies.items() if f.value}
-    fp = source_fingerprint(key_bytes, course_index_hash, policies, rag_top_k, rag_char_budget)
+    fp = source_fingerprint(key_bytes, course_index_hash, policies, rag_top_k, rag_char_budget,
+                            rag_policy=rag_policy)
     store = PackStore(root / "packs" / disc.package_fingerprint)
     packs = store.load(fp)
     if packs is None:
         packs = build_all_packs(key, policies, course_id=course_id, retrieve=retrieve, embed_fn=embed_fn,
-                                rag_top_k=rag_top_k, rag_char_budget=rag_char_budget)
+                                rag_top_k=rag_top_k, rag_char_budget=rag_char_budget,
+                                rag_policy=rag_policy)
         store.save(packs, fp)
     # Package-level preflight: a structural defect must surface ONCE here, not
     # as one review per student later (see preflight.py / docs).

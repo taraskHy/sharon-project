@@ -115,7 +115,8 @@ def test_decision_trace_falls_back_honestly_without_a_recorded_route(tmp_path):
     exam_dir = tmp_path / "exams" / "exam-002"
     exam_dir.mkdir(parents=True)
     text = decision_trace_for(exam_dir, result_for("exam-002"), "1", "1")
-    assert "reconstructed from the persisted result" in text and "AUTO" in text
+    assert text.startswith("RECONSTRUCTED SUMMARY - NOT AN EXECUTION TRACE")
+    assert "recorded no decision trace" in text and "AUTO" in text
     assert "score: 4.0/4.0" in text
     missing = decision_trace_for(exam_dir, result_for("exam-002"), "9", "9")
     assert "no decision record" in missing
@@ -199,3 +200,38 @@ def test_settings_view_still_exposes_no_secret(monkeypatch):
                                 backend_factory=lambda c: MockBackend(config=c))
     s = reviewui.settings_summary(gateway=gw, openrouter_key_present=True)
     assert "SECRET" not in json.dumps(s)
+
+
+def test_ui_renders_a_recorded_trace_and_a_shadow_comparison(tmp_path, monkeypatch):
+    """The trace view shows the PERSISTED route when one exists, and the shadow
+    comparison is presented as a recorded proposal."""
+    from streamlit.testing.v1 import AppTest
+
+    from autograder.trace import DecisionTrace, DecisionTraceStore
+
+    monkeypatch.setenv("GRADER_JOBS_DIR", str(tmp_path / "jobs"))
+    job_dir = _job_with_results(tmp_path, healthy_batch(8))
+    exam_dir = job_dir / "exams" / "exam-000"
+    t = DecisionTrace("exam-000", "1", "1", grading_policy="wrong_choice_zero")
+    t.deterministic("single clean mark in column F")
+    t.skipped("grade_primary", "wrong_choice_zero", avoided={"grading": 1, "cloud": 1})
+    DecisionTraceStore(exam_dir / "decisions.jsonl").append(t.finish("AUTO", "AUTO", "policy"))
+    (exam_dir / "shadow_comparison.json").write_text(json.dumps({
+        "authoritative": "legacy", "note": "recorded proposal, never applied",
+        "items": [{"question_id": "1", "sub_item_id": "1", "legacy_points": 4.0,
+                   "reliability_points": 0.0, "score_delta": -4.0, "legacy_review": False,
+                   "reliability_state": "REVIEW", "reliability_reason_code": "GRADE_UNCERTAIN",
+                   "route_difference": "reliability_only_review"}],
+        "totals": {"legacy_total": 8.0, "reliability_total": 4.0},
+        "agreement": {"exact_score_agreement": 50.0, "mean_abs_delta": 2.0,
+                      "legacy_review_items": 0, "reliability_review_items": 1}}),
+        encoding="utf-8")
+
+    at = AppTest.from_file(str(REPO / "autograder" / "webui.py"), default_timeout=60)
+    at.run()
+    assert not at.exception, f"UI raised: {at.exception}"
+    from autograder.reviewui import decision_trace_for
+
+    text = decision_trace_for(exam_dir, json.loads((exam_dir / "result.json")
+                                                   .read_text(encoding="utf-8")), "1", "1")
+    assert "RECONSTRUCTED" not in text and "skipped grade_primary: wrong_choice_zero" in text

@@ -355,8 +355,11 @@ def decision_trace_for(exam_dir: str | Path, result: dict, question_id: str,
     if row is None:
         return "no decision record and no graded row for this item"
     state = "REVIEW" if row.get("needs_review") else "AUTO"
-    lines = [f"{Path(exam_dir).name} q{question_id}/{sub_item_id} -> {state} "
-             "(reconstructed from the persisted result; no stage trace was recorded for this run)",
+    lines = ["RECONSTRUCTED SUMMARY - NOT AN EXECUTION TRACE",
+             "(this run recorded no decision trace: the fields below are read back "
+             "from the persisted result, not from the route that produced it)",
+             "",
+             f"{Path(exam_dir).name} q{question_id}/{sub_item_id} -> {state}",
              f"  score: {row.get('points_total')}/{row.get('points_max')}",
              f"  selection: {row.get('student_answer')} (accepted: {row.get('accepted_answers')})",
              f"  reason: {(row.get('reason') or '')[:300]}"]

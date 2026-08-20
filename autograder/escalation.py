@@ -31,6 +31,7 @@ from .evidence import CreditedItem, validate_evidence
 from .gradingpack import QuestionGradingPack
 from .signals import (OCR_UNRESOLVED as OCR_UNRESOLVED_, DecisionSignals, GradingSignals,
                       OCRSignals, grade_status_from, ocr_status_from)
+from .usage import BudgetExceeded
 
 # ------------------------------------------------------------ OCR stage -----
 
@@ -307,6 +308,10 @@ def escalate_grade(*, pack: QuestionGradingPack, selected: str | None, transcrip
     try:
         primary = gateway.call(task=primary_task, system=GRADE_SYSTEM, content_blocks=blocks,
                                output_model=GradeResult, meta={**m, "stage": "grade"}).value
+    except BudgetExceeded:
+        # Budget exhaustion is a job-level PAUSE signal, not a grading failure:
+        # the item must stay pending, not be recorded as an unresolved grade.
+        raise
     except Exception as e:  # noqa: BLE001
         return GradeDecision("review", None, "none", [f"primary failed: {type(e).__name__}"],
                              "primary grader failed", "GRADE_INVALID",
@@ -358,6 +363,8 @@ def escalate_grade(*, pack: QuestionGradingPack, selected: str | None, transcrip
         second = gateway.call(task=escalate_task, system=GRADE_SYSTEM, content_blocks=esc_blocks,
                               output_model=GradeResult,
                               meta={**m, "pack_hash": esc_pack.hash, "stage": "escalation"}).value
+    except BudgetExceeded:
+        raise
     except Exception as e:  # noqa: BLE001
         return GradeDecision("review", primary, "primary", v.problems + [f"escalation failed: {type(e).__name__}"],
                              "escalation failed", status, sig)

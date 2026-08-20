@@ -574,12 +574,14 @@ def run_grade_pipeline(
 
     # Optional gateway runtime (opt-in): MC resolution chain + policy gate.
     # Without --models-config the validated pipeline runs unchanged.
+    _rt = None
+    _pols: dict[str, str] = {}
+    _mode = (getattr(args, "grading_mode", None) or "legacy").lower()
     _models_cfg = getattr(args, "models_config", None)
     if _models_cfg:
         from . import orchestrator as _orch
 
         _rt = _orch.setup_from_config(_models_cfg, out.parent if out.parent.name else out)
-        _pols = None
         _pol_file = getattr(args, "grading_policies", None)
         if _pol_file:
             _pols = json.loads(Path(_pol_file).read_text(encoding="utf-8"))
@@ -589,6 +591,19 @@ def run_grade_pipeline(
             _pols = {q: f.value for q, f in deterministic_policies(key).items() if f.value}
         _orch.install_hooks(_rt, _pols)
         _log(f"gateway runtime enabled ({_models_cfg}); policies for {len(_pols)} question(s)")
+
+    if _mode != "legacy":
+        from .preflight import gate_package, package_report_for_key
+        from .reliability import GradingModeError
+
+        if _rt is None:
+            raise GradingModeError(
+                f"--grading-mode {_mode} requires --models-config: the pipeline never "
+                "calls a provider directly, only through the task gateway")
+        # ONE package-level stop, before any student exam is graded: a
+        # structural defect must not become one review per student.
+        _pre = gate_package(package_report_for_key(key, args.key, policies=_pols))
+        _log(f"package preflight: {_pre.summary().splitlines()[0]}")
 
     if pages is None:
         _log(f"loading exam scan {exam_path}")
@@ -794,7 +809,40 @@ def run_grade_pipeline(
             _log(f"SWAP SUSPECT: {line}")
         _write_json(extraction, extraction_path)  # persist the added flags
 
-    judgements = judge_all(backend, key, extraction, version_decision.version, progress=_log)
+    # ---- the explanation-grading seam: legacy / reliability / shadow ------
+    #
+    # legacy      the validated ExplanationJudgement path (default, unchanged)
+    # reliability the reliability route decides each written answer
+    # shadow      BOTH run; legacy stays authoritative and the reliability
+    #             route only records what it would have decided
+    rel_run = None
+    judgements = None
+    if _mode in ("legacy", "shadow"):
+        judgements = judge_all(backend, key, extraction, version_decision.version, progress=_log)
+    if _mode != "legacy":
+        from .gradingpack import build_all_packs
+        from .reliability import ReliabilityConfig, run_reliability_judging
+        from .trace import DecisionTraceStore
+
+        _rel_cfg = ReliabilityConfig(
+            mode=_mode, rag_policy=(getattr(args, "rag_policy", None) or "RAG_DISABLED"))
+        _packs = build_all_packs(key, _pols, rag_policy=_rel_cfg.rag_policy)
+        _exam_id = exam_label or Path(exam_path).stem
+        try:
+            rel_run = run_reliability_judging(
+                key=key, extraction=extraction, version=version_decision.version,
+                config=_rel_cfg, gateway=_rt.gateway, packs=_packs, policies=_pols,
+                exam_id=_exam_id, trace_store=DecisionTraceStore(out / "decisions.jsonl"),
+                variant_source=(variant_record or {}).get("mapping_source"),
+                alignment_source=alignment_note, progress=_log)
+        except Exception as e:  # noqa: BLE001
+            if _mode == "reliability":
+                raise
+            # shadow must NEVER be able to affect the authoritative grade
+            _log(f"shadow route failed ({type(e).__name__}: {e}); legacy result unaffected")
+        if _mode == "reliability" and rel_run is not None:
+            judgements = rel_run.evaluations
+            _log(f"reliability route: {rel_run.by_state()}")
 
     result = grade_exam(
         key,
@@ -815,6 +863,32 @@ def run_grade_pipeline(
             "uncertain": version_decision.uncertain,
             "question_alignment": alignment_note,
         }
+    if _mode == "reliability" and rel_run is not None:
+        from .reliability import apply_review_items
+
+        apply_review_items(result, rel_run)
+    if _mode == "shadow" and rel_run is not None:
+        # The legacy result above is already final. The shadow score is scored
+        # by the SAME deterministic scorer into a throwaway object and is only
+        # ever written to shadow_comparison.json — never to result.json.
+        from .reliability import compare_shadow
+
+        shadow_result = grade_exam(
+            key, extraction, rel_run.evaluations, version_decision, config, survey=survey,
+            exam_file=exam_label or Path(exam_path).name,
+            graded_at=_dt.datetime.now().isoformat(timespec="seconds"),
+            model=f"shadow:{backend.identity}")
+        for item in rel_run.review_items:
+            if (item.question_id, item.sub_item_id) not in {
+                    (r.question_id, r.sub_item_id) for r in shadow_result.needs_human_review}:
+                shadow_result.needs_human_review.append(item)
+        comparison = compare_shadow(legacy_result=result, shadow_result=shadow_result,
+                                    run=rel_run)
+        (out / "shadow_comparison.json").write_text(
+            json.dumps(comparison, ensure_ascii=False, indent=1), encoding="utf-8")
+        _log(f"shadow comparison written ({comparison['agreement']['exact_score_agreement']}% "
+             "exact score agreement); the legacy grade is authoritative")
+
     _write_json(result, out / "result.json")
     (out / "report.md").write_text(render_markdown(result), encoding="utf-8")
     _log(f"wrote {out / 'report.md'}")
@@ -953,6 +1027,24 @@ def build_parser() -> argparse.ArgumentParser:
     common.add_argument(
         "--grading-policies", default=None,
         help="Optional JSON file {question_id: policy} overriding discovered policies",
+    )
+    common.add_argument(
+        "--grading-mode", default="legacy", choices=["legacy", "reliability", "shadow"],
+        help=(
+            "How written answers are graded. 'legacy' (default) = the validated "
+            "ExplanationJudgement path, unchanged. 'reliability' = the evidence/"
+            "invariant/escalation route (needs --models-config). 'shadow' = run "
+            "both; the legacy grade stays authoritative and the reliability route "
+            "only records what it would have decided, in shadow_comparison.json."
+        ),
+    )
+    common.add_argument(
+        "--rag-policy", default="RAG_DISABLED",
+        choices=["RAG_DISABLED", "RAG_ALWAYS", "RAG_ON_UNCERTAIN", "RAG_ON_ESCALATION"],
+        help=(
+            "Grading-side course-context policy. Default RAG_DISABLED: the benefit "
+            "is unmeasured and no unmeasured optional context is sent silently."
+        ),
     )
     common.add_argument(
         "--template", default=None,

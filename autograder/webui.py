@@ -874,6 +874,29 @@ with tab_jobs:
                         st.caption("this cause is exactly mechanical — one decision can be applied "
                                    "to every identical case (apply-to-all)")
 
+        # ---- shadow mode: a recorded proposal, never an applied grade ----
+        _shadow_path = exam_dir / "shadow_comparison.json"
+        if _shadow_path.exists():
+            _cmp = json.loads(_shadow_path.read_text(encoding="utf-8"))
+            _agree = _cmp.get("agreement", {})
+            with st.expander("🧪 Shadow comparison (recorded only — NOT applied)"):
+                st.info(_cmp.get("note", ""))
+                s = st.columns(4)
+                s[0].metric("Exact score agreement", f"{_agree.get('exact_score_agreement', 0)}%")
+                s[1].metric("Mean |delta|", _agree.get("mean_abs_delta"))
+                s[2].metric("Legacy review items", _agree.get("legacy_review_items"))
+                s[3].metric("Reliability review items", _agree.get("reliability_review_items"))
+                st.caption(f"Authoritative: {_cmp.get('authoritative')} · totals "
+                           f"{_cmp.get('totals', {}).get('legacy_total')} (applied) vs "
+                           f"{_cmp.get('totals', {}).get('reliability_total')} (proposal)")
+                st.dataframe([
+                    {"question": i["question_id"], "item": i["sub_item_id"],
+                     "legacy": i["legacy_points"], "proposal": i["reliability_points"],
+                     "delta": i["score_delta"], "legacy review": i["legacy_review"],
+                     "reliability state": i["reliability_state"],
+                     "reason": i["reliability_reason_code"], "route": i["route_difference"]}
+                    for i in _cmp.get("items", [])], width="stretch")
+
         # ---- decision trace: why did this item get this grade? ----
         with st.expander("🔍 Why was this graded this way?"):
             from autograder import reviewui as _rui3

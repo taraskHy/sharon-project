@@ -34,3 +34,16 @@ def no_network(monkeypatch):
     monkeypatch.setattr(socket, "create_connection", _blocked)
     monkeypatch.setattr(socket.socket, "connect", _blocked)
     return None
+
+
+@pytest.fixture(autouse=True)
+def _reset_pipeline_hooks():
+    """``orchestrator.install_hooks`` mutates PROCESS-GLOBAL state (the MC
+    resolution chain and the per-question grading policies). A test that
+    enables the gateway runtime must not change how the next test's pipeline
+    behaves, so the hooks are removed after every test."""
+    yield
+    from autograder import extract, grade
+
+    grade.set_grading_policies(None)
+    extract.set_mc_resolver(None)

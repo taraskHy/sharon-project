@@ -292,7 +292,7 @@ def test_changing_retrieval_configuration_invalidates_the_pack_store_fingerprint
     assert base != source_fingerprint(b"KEY", "idx-a", pol, 2, 900)         # budget
     assert base != source_fingerprint(b"KEY", "idx-a", {"1": "wrong_choice_zero"}, 2, 1200)
     assert base != source_fingerprint(b"KEY2", "idx-a", pol, 2, 1200)       # key/rubric
-    assert base != source_fingerprint(b"KEY", "idx-a", pol, 2, 1200, rag_policy="RAG_DISABLED")
+    assert base != source_fingerprint(b"KEY", "idx-a", pol, 2, 1200, rag_policy="RAG_ALWAYS")
 
 
 def test_a_pack_is_reusable_across_students():

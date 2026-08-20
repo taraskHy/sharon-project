@@ -36,6 +36,9 @@ SKIP_REASONS = (
     "local_resolver",                # a local model resolved it; no cloud call
     "persisted_result",              # a previous successful run's result
     "blank_crop",                    # nothing to transcribe (image triage)
+    "no_suspicion_signal",           # the reading tripped no suspicion signal
+    "ocr_unresolved",                # the reading is not trusted: grading not attempted
+    "no_grading_pack",               # no question pack available for this question
 )
 
 _AVOIDED_KINDS = ("ocr", "grading", "mc", "cloud")
@@ -62,14 +65,23 @@ class DecisionRecord:
     exam_id: str
     question_id: str
     sub_item_id: str = ""
+    item_id: str = ""                         # anonymous internal id (privacy.py)
     final_state: str = "AUTO"
     reason_code: str = "AUTO"
     reason: str = ""
     grading_policy: Optional[str] = None
+    rag_policy: Optional[str] = None
     variant: Optional[str] = None
     variant_source: Optional[str] = None      # deterministic|local|cloud|human|reused
     alignment_source: Optional[str] = None
     pack_hash: Optional[str] = None
+    mc_route: Optional[str] = None            # how the selection was settled
+    ocr_status: Optional[str] = None          # signals.OCRStatus
+    grade_status: Optional[str] = None        # signals.GradeStatus
+    evidence: Optional[dict] = None           # evidence.EvidenceValidation.as_dict()
+    invariants: Optional[dict] = None         # invariants.InvariantReport.as_dict()
+    escalation: Optional[dict] = None         # {stage, outcome, score_delta, problems}
+    proposed_score: Optional[float] = None    # the grader's number (never authoritative)
     stages: list[StageRecord] = field(default_factory=list)
     deterministic_decisions: list[str] = field(default_factory=list)
     signals: dict[str, Any] = field(default_factory=dict)
@@ -127,7 +139,24 @@ class DecisionRecord:
         if self.reason:
             lines.append(f"  reason: {self.reason}")
         if self.grading_policy:
-            lines.append(f"  grading policy: {self.grading_policy}")
+            lines.append(f"  grading policy: {self.grading_policy}"
+                         + (f" · RAG policy: {self.rag_policy}" if self.rag_policy else ""))
+        if self.ocr_status or self.grade_status:
+            lines.append(f"  status: OCR {self.ocr_status or '—'} · grading "
+                         f"{self.grade_status or '—'}"
+                         + (f" · selection {self.mc_route}" if self.mc_route else ""))
+        if self.evidence:
+            ev = self.evidence
+            lines.append(f"  evidence: {len(ev.get('verified') or [])} verified, "
+                         f"{len(ev.get('fabricated') or [])} unsupported, "
+                         f"{len(ev.get('missing') or [])} missing")
+        if self.invariants is not None and not self.invariants.get("ok", True):
+            lines.append(f"  invariants FAILED: {'; '.join(self.invariants.get('problems', []))[:200]}")
+        if self.escalation:
+            e = self.escalation
+            lines.append(f"  escalation: stage {e.get('stage')} -> {e.get('outcome')}"
+                         + (f" (score delta {e.get('score_delta')})"
+                            if e.get("score_delta") is not None else ""))
         if self.variant:
             lines.append(f"  variant: {self.variant} (source: {self.variant_source or '?'}"
                          + (f", alignment: {self.alignment_source}" if self.alignment_source else "") + ")")
@@ -190,13 +219,29 @@ class DecisionTrace:
         return self
 
     def package(self, *, variant=None, variant_source=None, alignment_source=None,
-                grading_policy=None, pack_hash=None) -> "DecisionTrace":
+                grading_policy=None, pack_hash=None, rag_policy=None) -> "DecisionTrace":
         r = self.record
         r.variant = variant if variant is not None else r.variant
         r.variant_source = variant_source or r.variant_source
         r.alignment_source = alignment_source or r.alignment_source
         r.grading_policy = grading_policy or r.grading_policy
         r.pack_hash = pack_hash or r.pack_hash
+        r.rag_policy = rag_policy or r.rag_policy
+        return self
+
+    def statuses(self, *, mc_route=None, ocr_status=None, grade_status=None,
+                 evidence=None, invariants=None, escalation=None,
+                 proposed_score=None) -> "DecisionTrace":
+        """Typed outcomes of the route's checks, recorded as they happen."""
+        r = self.record
+        r.mc_route = mc_route or r.mc_route
+        r.ocr_status = ocr_status or r.ocr_status
+        r.grade_status = grade_status or r.grade_status
+        r.evidence = evidence if evidence is not None else r.evidence
+        r.invariants = invariants if invariants is not None else r.invariants
+        r.escalation = escalation if escalation is not None else r.escalation
+        if proposed_score is not None:
+            r.proposed_score = proposed_score
         return self
 
     def finish(self, final_state: str, reason_code: str, reason: str = "", *,

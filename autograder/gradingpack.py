@@ -29,10 +29,10 @@ from .schema import AnswerKey, KeyQuestion
 DEFAULT_RAG_TOP_K = 2
 DEFAULT_RAG_CHAR_BUDGET = 1200
 
-#: Grading-side RAG policies (see docs). RAG_ALWAYS is today's behaviour and
-#: stays the default: which policy is actually most efficient is an EMPIRICAL
-#: question that has not been measured yet, and guessing here would freeze an
-#: unvalidated choice into production.
+#: Grading-side RAG policies (see docs). The DEFAULT IS RAG_DISABLED: the
+#: benefit of grading-side retrieval has not been measured, it costs input
+#: tokens on every grading call, and no unmeasured optional context should be
+#: sent silently. Retrieval is opt-in per package until the A/B decides it.
 RAG_POLICIES = ("RAG_DISABLED", "RAG_ALWAYS", "RAG_ON_UNCERTAIN", "RAG_ON_ESCALATION")
 
 
@@ -88,7 +88,7 @@ class QuestionGradingPack:
     score_granularity: float | None = None   # e.g. 0.5 -> only half-point scores are valid
     rag_evidence: list[RagEvidence] = field(default_factory=list)
     rag_config: dict[str, Any] = field(default_factory=dict)
-    rag_policy: str = "RAG_ALWAYS"
+    rag_policy: str = "RAG_DISABLED"
     # -- audit fields (derived from content; see refresh_audit) --------------
     question_text_hash: str = ""
     rubric_hash: str = ""
@@ -204,7 +204,7 @@ def build_pack(key: AnswerKey, q: KeyQuestion, *, grading_policy: str,
                rag_char_budget: int = DEFAULT_RAG_CHAR_BUDGET,
                include_solution: bool = True,
                source_label: str = "answer_key",
-               rag_policy: str = "RAG_ALWAYS",
+               rag_policy: str = "RAG_DISABLED",
                rag_index_fingerprint: str | None = None) -> QuestionGradingPack:
     """Assemble one pack. ``retrieve`` is injected (courses.retrieve or a
     test double) so this module never imports network/model code."""
@@ -244,7 +244,7 @@ def build_pack(key: AnswerKey, q: KeyQuestion, *, grading_policy: str,
         attach_rag(pack, course_id=course_id, retrieve=retrieve, embed_fn=embed_fn,
                    rag_top_k=rag_top_k, rag_char_budget=rag_char_budget,
                    index_fingerprint=rag_index_fingerprint, in_place=True)
-    elif course_id:
+    elif rag_policy in ("RAG_ON_UNCERTAIN", "RAG_ON_ESCALATION") and course_id:
         pack.rag_config = {"course_id": course_id, "top_k": rag_top_k,
                            "char_budget": rag_char_budget, "chars_used": 0,
                            "index_config_hash": rag_index_fingerprint, "deferred": True}
@@ -342,7 +342,7 @@ class PackStore:
 
 def source_fingerprint(key_bytes: bytes, course_index_hash: str | None,
                        policies: dict[str, str], rag_top_k: int, rag_char_budget: int,
-                       pack_version: str = "v1", rag_policy: str = "RAG_ALWAYS") -> str:
+                       pack_version: str = "v1", rag_policy: str = "RAG_DISABLED") -> str:
     """Any change to the key, the course index, the grading policies or the
     retrieval configuration invalidates every pack built from them."""
     return hashlib.sha256(json.dumps({
