@@ -93,3 +93,11 @@ max_cost_per_job = 0
 max_calls_per_day = 0
 max_calls_per_month = 0
 soft_fraction = 0.8
+
+# ---- local pricing table (ESTIMATOR ONLY; never fetched from the network) ----
+# USD per 1M tokens. Without this table the pre-run estimator shows call and
+# token counts but no dollar figure — it never guesses a price.
+#
+# [pricing."vendor/model-slug"]
+# input = 0.15
+# output = 0.60
