@@ -278,7 +278,7 @@ def validate_grade(g: GradeResult, pack: QuestionGradingPack, *, selection_corre
 class GradeDecision:
     outcome: Literal["auto", "review"]
     result: Optional[GradeResult]
-    stage: Literal["primary", "escalated", "none"]
+    stage: str                          # none | primary | primary_rag | escalated
     problems: list[str] = field(default_factory=list)
     reason: str = ""
     status: str = "GRADE_OK"            # signals.GradeStatus
@@ -288,7 +288,20 @@ class GradeDecision:
 def escalate_grade(*, pack: QuestionGradingPack, selected: str | None, transcription: str,
                    version: str | None, selection_correct: bool | None, gateway,
                    meta: dict | None = None, primary_task: str = "grade_primary",
-                   escalate_task: str = "grade_escalate", score_tolerance: float = 0.5) -> GradeDecision:
+                   escalate_task: str = "grade_escalate", score_tolerance: float = 0.5,
+                   rag_attach=None) -> GradeDecision:
+    """``rag_attach(pack) -> pack`` is the injected grading-side retrieval. It
+    is consulted ONLY where the pack's RAG policy says so:
+
+        RAG_DISABLED / RAG_ALWAYS   never called here (RAG_ALWAYS is already
+                                    baked into the pack at build time)
+        RAG_ON_UNCERTAIN            after an unclean primary, retry the PRIMARY
+                                    grader once with course context
+        RAG_ON_ESCALATION           give the escalation grader course context
+
+    Retrieval is grading-side only: the query is built from the question and
+    rubric, never from the student's words (see gradingpack.rag_query).
+    """
     m = {**(meta or {}), "pack_hash": pack.hash, "question_id": pack.question_id}
     blocks = grade_prompt(pack, selected=selected, transcription=transcription, version=version)
     try:
@@ -305,22 +318,55 @@ def escalate_grade(*, pack: QuestionGradingPack, selected: str | None, transcrip
         return GradeDecision("auto", primary, "primary", reason="primary clean",
                              status="GRADE_OK", signals=sig)
     status = grade_status_from(validation_ok=v.ok, uncertain=primary.uncertain)
+
+    policy = getattr(pack, "rag_policy", "RAG_ALWAYS")
+    rag_pack = None
+    if policy == "RAG_ON_UNCERTAIN" and rag_attach is not None:
+        rag_pack = rag_attach(pack)
+        rag_blocks = grade_prompt(rag_pack, selected=selected, transcription=transcription,
+                                  version=version)
+        try:
+            retried = gateway.call(task=primary_task, system=GRADE_SYSTEM, content_blocks=rag_blocks,
+                                   output_model=GradeResult,
+                                   meta={**m, "pack_hash": rag_pack.hash, "stage": "grade_rag"}).value
+        except Exception:  # noqa: BLE001 — a failed retry just leaves us where we were
+            retried = None
+        if retried is not None:
+            v_rag = validate_grade(retried, rag_pack, selection_correct=selection_correct,
+                                   selected=selected, transcription=transcription)
+            if v_rag.ok:
+                sig_rag = _grading_signals(retried, v_rag)
+                sig_rag.rag_used = True
+                return GradeDecision("auto", retried, "primary_rag", v.problems,
+                                     "course context resolved the primary grading",
+                                     "GRADE_OK", sig_rag)
+
     try:
         gateway.route(escalate_task)
     except Exception:  # noqa: BLE001
         return GradeDecision("review", primary, "primary", v.problems,
                              "inconsistent; no escalation model configured", status, sig)
+    esc_pack = pack
+    if policy == "RAG_ON_ESCALATION" and rag_attach is not None:
+        esc_pack = rag_attach(pack)
+    elif rag_pack is not None:
+        esc_pack = rag_pack
+    esc_blocks = (blocks if esc_pack is pack else
+                  grade_prompt(esc_pack, selected=selected, transcription=transcription,
+                               version=version))
     try:
-        second = gateway.call(task=escalate_task, system=GRADE_SYSTEM, content_blocks=blocks,
-                              output_model=GradeResult, meta={**m, "stage": "escalation"}).value
+        second = gateway.call(task=escalate_task, system=GRADE_SYSTEM, content_blocks=esc_blocks,
+                              output_model=GradeResult,
+                              meta={**m, "pack_hash": esc_pack.hash, "stage": "escalation"}).value
     except Exception as e:  # noqa: BLE001
         return GradeDecision("review", primary, "primary", v.problems + [f"escalation failed: {type(e).__name__}"],
                              "escalation failed", status, sig)
-    v2 = validate_grade(second, pack, selection_correct=selection_correct, selected=selected,
+    v2 = validate_grade(second, esc_pack, selection_correct=selection_correct, selected=selected,
                         transcription=transcription)
     consistent = (v2.ok and abs(second.score - primary.score) <= score_tolerance
                   and set(second.met_ids()) == set(primary.met_ids()))
     sig2 = _grading_signals(second, v2)
+    sig2.rag_used = esc_pack is not pack
     sig2.primary_score = primary.score
     sig2.escalation_score = second.score
     sig2.score_delta = round(abs(second.score - primary.score), 4)

@@ -16,6 +16,7 @@ student wording, or the selected MC option (see tests).
 
 from __future__ import annotations
 
+import copy
 import hashlib
 import json
 import time
@@ -27,6 +28,18 @@ from .schema import AnswerKey, KeyQuestion
 
 DEFAULT_RAG_TOP_K = 2
 DEFAULT_RAG_CHAR_BUDGET = 1200
+
+#: Grading-side RAG policies (see docs). RAG_ALWAYS is today's behaviour and
+#: stays the default: which policy is actually most efficient is an EMPIRICAL
+#: question that has not been measured yet, and guessing here would freeze an
+#: unvalidated choice into production.
+RAG_POLICIES = ("RAG_DISABLED", "RAG_ALWAYS", "RAG_ON_UNCERTAIN", "RAG_ON_ESCALATION")
+
+
+def _hash_text(value) -> str:
+    if not isinstance(value, str):
+        value = json.dumps(value, sort_keys=True, ensure_ascii=False, default=str)
+    return hashlib.sha256(value.encode("utf-8")).hexdigest()[:16]
 
 
 @dataclass
@@ -75,11 +88,48 @@ class QuestionGradingPack:
     score_granularity: float | None = None   # e.g. 0.5 -> only half-point scores are valid
     rag_evidence: list[RagEvidence] = field(default_factory=list)
     rag_config: dict[str, Any] = field(default_factory=dict)
+    rag_policy: str = "RAG_ALWAYS"
+    # -- audit fields (derived from content; see refresh_audit) --------------
+    question_text_hash: str = ""
+    rubric_hash: str = ""
+    solution_hash: str = ""
+    rag_index_fingerprint: str | None = None
+    rag_chars: int = 0
     provenance: dict[str, Any] = field(default_factory=dict)
     version: str = "v1"
     hash: str = ""
 
+    def refresh_audit(self) -> None:
+        """Recompute the derived audit hashes. Any change to the question
+        text, the rubric, the official solution or the retrieved context
+        changes them — and therefore the pack hash and every cache key
+        derived from it."""
+        self.question_text_hash = _hash_text(self.question_text)
+        self.rubric_hash = _hash_text([asdict(s) for s in self.rubric_specs().values()])
+        self.solution_hash = _hash_text(self.official_solution)
+        self.rag_chars = sum(len(e.text) for e in self.rag_evidence)
+        self.rag_index_fingerprint = (self.rag_config or {}).get("index_config_hash")
+
+    def audit(self) -> dict:
+        """Everything needed to explain what this pack was built from."""
+        self.refresh_audit()
+        return {
+            "question_id": self.question_id, "pack_version": self.version, "pack_hash": self.hash,
+            "question_text_hash": self.question_text_hash, "rubric_hash": self.rubric_hash,
+            "solution_hash": self.solution_hash, "grading_policy": self.grading_policy,
+            "evidence_policy": self.evidence_policy, "rag_policy": self.rag_policy,
+            "rag_chunk_ids": [e.chunk_id for e in self.rag_evidence],
+            "rag_scores": [round(e.similarity, 4) for e in self.rag_evidence],
+            "rag_sources": sorted({e.source for e in self.rag_evidence}),
+            "rag_index_fingerprint": self.rag_index_fingerprint,
+            "rag_chars": self.rag_chars,
+            "rag_tokens_estimate": round(self.rag_chars / 4),
+            "rubric_item_ids": self.rubric_item_ids(),
+            "provenance": dict(self.provenance),
+        }
+
     def compute_hash(self) -> str:
+        self.refresh_audit()
         d = asdict(self)
         d.pop("hash", None)
         d.pop("provenance", None)   # provenance is descriptive; content decides identity
@@ -153,7 +203,9 @@ def build_pack(key: AnswerKey, q: KeyQuestion, *, grading_policy: str,
                rag_top_k: int = DEFAULT_RAG_TOP_K,
                rag_char_budget: int = DEFAULT_RAG_CHAR_BUDGET,
                include_solution: bool = True,
-               source_label: str = "answer_key") -> QuestionGradingPack:
+               source_label: str = "answer_key",
+               rag_policy: str = "RAG_ALWAYS",
+               rag_index_fingerprint: str | None = None) -> QuestionGradingPack:
     """Assemble one pack. ``retrieve`` is injected (courses.retrieve or a
     test double) so this module never imports network/model code."""
     question_text = q.title.strip()
@@ -182,29 +234,69 @@ def build_pack(key: AnswerKey, q: KeyQuestion, *, grading_policy: str,
                     "built": time.strftime("%Y-%m-%d %H:%M:%S"),
                     "course_id": course_id},
     )
-    if course_id and retrieve is not None and rag_top_k > 0:
-        query = "\n".join([q.title, *rubric, *[s.prompt for s in q.sub_items if s.prompt]])[:1500]
-        try:
-            hits = retrieve(course_id, query, rag_top_k, embed_fn) if embed_fn else retrieve(course_id, query, rag_top_k)
-        except TypeError:
-            hits = retrieve(course_id, query, rag_top_k)
-        used = 0
-        for h in hits:
-            text = (h.get("text") or "").strip()
-            room = rag_char_budget - used
-            if room <= 1:
-                break
-            if len(text) > room:
-                text = text[:room - 1].rstrip() + "…"   # ellipsis counted in budget
-            used += len(text)
-            pack.rag_evidence.append(RagEvidence(
-                chunk_id=h["chunk_id"], source=h.get("source", "?"), page=h.get("page"),
-                similarity=float(h.get("similarity", 0.0)), text=text))
+    if rag_policy not in RAG_POLICIES:
+        raise ValueError(f"unknown RAG policy {rag_policy!r} (expected one of {RAG_POLICIES})")
+    pack.rag_policy = rag_policy
+    # RAG_ALWAYS embeds the course context once, at build time. The lazy
+    # policies leave the pack context-free and retrieve only when grading
+    # actually needs help (see attach_rag) — no retrieval on the easy majority.
+    if rag_policy == "RAG_ALWAYS":
+        attach_rag(pack, course_id=course_id, retrieve=retrieve, embed_fn=embed_fn,
+                   rag_top_k=rag_top_k, rag_char_budget=rag_char_budget,
+                   index_fingerprint=rag_index_fingerprint, in_place=True)
+    elif course_id:
         pack.rag_config = {"course_id": course_id, "top_k": rag_top_k,
-                           "char_budget": rag_char_budget, "chars_used": used,
-                           "index_config_hash": None}
+                           "char_budget": rag_char_budget, "chars_used": 0,
+                           "index_config_hash": rag_index_fingerprint, "deferred": True}
     pack.compute_hash()
     return pack
+
+
+def rag_query(pack: QuestionGradingPack) -> str:
+    """The retrieval query for a pack: question text + rubric ONLY. The
+    student's own words are never part of it — grading-side retrieval must
+    not be steered by what the student happened to write."""
+    return "\n".join([pack.question_text, *pack.rubric])[:1500]
+
+
+def attach_rag(pack: QuestionGradingPack, *, course_id: str | None,
+               retrieve: Callable[..., list[dict]] | None, embed_fn: Callable | None = None,
+               rag_top_k: int = DEFAULT_RAG_TOP_K,
+               rag_char_budget: int = DEFAULT_RAG_CHAR_BUDGET,
+               index_fingerprint: str | None = None,
+               in_place: bool = False) -> QuestionGradingPack:
+    """Attach a SMALL, budgeted, provenance-tagged set of course chunks.
+
+    Returns a COPY with a new hash unless ``in_place``. Used at build time
+    under RAG_ALWAYS and lazily under RAG_ON_UNCERTAIN / RAG_ON_ESCALATION.
+    """
+    target = pack if in_place else copy.deepcopy(pack)
+    if not (course_id and retrieve is not None and rag_top_k > 0):
+        return target
+    query = rag_query(target)
+    try:
+        hits = retrieve(course_id, query, rag_top_k, embed_fn) if embed_fn else retrieve(course_id, query, rag_top_k)
+    except TypeError:
+        hits = retrieve(course_id, query, rag_top_k)
+    target.rag_evidence = []
+    used = 0
+    for h in hits:
+        text = (h.get("text") or "").strip()
+        room = rag_char_budget - used
+        if room <= 1:
+            break
+        if len(text) > room:
+            text = text[:room - 1].rstrip() + "…"   # ellipsis counted in budget
+        used += len(text)
+        target.rag_evidence.append(RagEvidence(
+            chunk_id=h["chunk_id"], source=h.get("source", "?"), page=h.get("page"),
+            similarity=float(h.get("similarity", 0.0)), text=text))
+    target.rag_config = {"course_id": course_id, "top_k": rag_top_k,
+                         "char_budget": rag_char_budget, "chars_used": used,
+                         "index_config_hash": index_fingerprint}
+    if not in_place:
+        target.compute_hash()
+    return target
 
 
 def build_all_packs(key: AnswerKey, policies: dict[str, str], **kw) -> dict[str, QuestionGradingPack]:
@@ -250,9 +342,12 @@ class PackStore:
 
 def source_fingerprint(key_bytes: bytes, course_index_hash: str | None,
                        policies: dict[str, str], rag_top_k: int, rag_char_budget: int,
-                       pack_version: str = "v1") -> str:
+                       pack_version: str = "v1", rag_policy: str = "RAG_ALWAYS") -> str:
+    """Any change to the key, the course index, the grading policies or the
+    retrieval configuration invalidates every pack built from them."""
     return hashlib.sha256(json.dumps({
         "key": hashlib.sha256(key_bytes).hexdigest(),
         "index": course_index_hash, "policies": dict(sorted(policies.items())),
         "top_k": rag_top_k, "budget": rag_char_budget, "version": pack_version,
+        "rag_policy": rag_policy,
     }, sort_keys=True).encode()).hexdigest()[:16]
