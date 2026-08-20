@@ -655,6 +655,125 @@ with tab_jobs:
 
     state = jobs.load_state(job_dir)
 
+    # ---- package preflight: ONE setup warning instead of one review per student ----
+    st.divider()
+    st.subheader("Package setup")
+    _pk = job_dir / "uploads" / "answer_key.json"
+    if not _pk.exists():
+        st.caption("Package checks appear once the answer key has been parsed.")
+    else:
+        try:
+            from autograder.key_parser import load_answer_key
+            from autograder.preflight import (READY, alignment_from_discovery,
+                                              preflight_package, reviews_avoided)
+
+            _k = load_answer_key(_pk)
+            _al_path = job_dir / "uploads" / "answer_key.alignment.json"
+            _al = json.loads(_al_path.read_text(encoding="utf-8")) if _al_path.exists() else None
+            _rep = preflight_package(
+                key=_k, variants=list(_k.versions),
+                alignment=alignment_from_discovery(_al, list(_k.versions), _k))
+            if _rep.status == READY:
+                st.success(_rep.summary())
+            else:
+                st.error(f"**{_rep.status}** — fix these once, at package level. "
+                         f"Left unresolved they would produce about "
+                         f"{reviews_avoided(_rep, len(state['exams']))} individual review items.")
+                st.dataframe([{"code": f.code, "what": f"{f.subject} {f.subject_id}",
+                               "problem": f.message, "needed": f.needed}
+                              for f in _rep.blocking], width="stretch")
+            if _rep.warnings:
+                with st.expander(f"Package warnings ({len(_rep.warnings)}) — not blocking"):
+                    st.dataframe([{"code": f.code, "what": f"{f.subject} {f.subject_id}",
+                                   "note": f.message} for f in _rep.warnings], width="stretch")
+        except Exception as exc:  # noqa: BLE001 — never block the UI on a check
+            st.caption(f"Package check unavailable: {type(exc).__name__}")
+
+    # ---- pre-run ESTIMATE (never mixed with the ledger's actual usage) ----
+    st.divider()
+    st.subheader("Estimated cloud usage")
+    _key_path = job_dir / "uploads" / "answer_key.json"
+    if not _key_path.exists():
+        st.caption("The estimate appears once the answer key has been parsed "
+                   "(uploads/answer_key.json).")
+    else:
+        try:
+            from autograder.estimate import estimate_job, load_pricing
+            from autograder.key_parser import load_answer_key
+
+            _key = load_answer_key(_key_path)
+            _pol_path = job_dir / "uploads" / "answer_key.policies.json"
+            _pol = json.loads(_pol_path.read_text(encoding="utf-8")) if _pol_path.exists() else None
+            _gw = st.session_state.get("gateway")
+            _est = estimate_job(key=_key, exams=len(state["exams"]), policies=_pol, gateway=_gw,
+                                pricing=load_pricing(getattr(_gw, "pricing_config", None)
+                                                     and {"pricing": _gw.pricing_config}))
+            e = st.columns(5)
+            e[0].metric("ESTIMATED cloud calls", f"{_est.estimated_cloud_calls:g}")
+            e[1].metric("ESTIMATED input tokens", f"{_est.estimated_input_tokens:,}")
+            e[2].metric("ESTIMATED output tokens", f"{_est.estimated_output_tokens:,}")
+            e[3].metric("ESTIMATED cost",
+                        "—" if _est.estimated_cost is None else f"${_est.estimated_cost:,.2f}")
+            e[4].metric("Deterministic items",
+                        f"{_est.sub_items_deterministic}/{_est.sub_items_total}")
+            st.caption("⚠ " + _est.disclaimer
+                       + (f" ({_est.cost_unavailable_reason})" if _est.cost_unavailable_reason else "")
+                       + f" Escalation assumptions: {_est.assumptions['source']}.")
+            with st.expander("Estimate breakdown (per call type)"):
+                st.dataframe([{"call type": k, "ESTIMATED calls": v}
+                              for k, v in _est.estimated_calls.items()], width="stretch")
+        except Exception as exc:  # noqa: BLE001 — an estimate must never block the UI
+            st.caption(f"Estimate unavailable: {type(exc).__name__}")
+
+    # ---- batch-level view: systemic warnings first, then the review queue ----
+    st.divider()
+    st.subheader("Batch checks")
+    from autograder import reviewui as _rui
+
+    _results = _rui.load_job_results(job_dir)
+    if not _results:
+        st.caption("No graded exams yet — batch checks appear once results exist.")
+    else:
+        _extractions = {}
+        for _eid in _results:
+            _ep = job_dir / "exams" / _eid / "extraction.json"
+            if _ep.exists():
+                try:
+                    _extractions[_eid] = json.loads(_ep.read_text(encoding="utf-8"))
+                except Exception:  # noqa: BLE001
+                    pass
+        _ov = _rui.batch_overview(_results, _extractions)
+        _sev = {"critical": "🔴", "warning": "🟠", "info": "🔵"}
+        if _ov["warnings"]:
+            st.error(f"{len(_ov['warnings'])} batch-level warning(s) — check these BEFORE "
+                     "working through individual reviews: one cause here can explain many of them.")
+            st.dataframe([
+                {"severity": _sev.get(w["severity"], "") + " " + w["severity"],
+                 "code": w["code"], "scope": f"{w['scope']} {w['scope_id']}",
+                 "students": w["affected_students"], "items": w["affected_items"],
+                 "what it means": w["explanation"]}
+                for w in _ov["warnings"]], width="stretch")
+        else:
+            st.success("No batch-level anomaly detected (variant mix, blank/crop/OCR rates, "
+                       "score distribution and alignment all look ordinary for this batch).")
+        _s = _ov["summary"]
+        m = st.columns(4)
+        m[0].metric("Review cases", _s["cases"])
+        m[1].metric("Decisions needed", _s["decisions_required"],
+                    help="Cases sharing an exact mechanical cause are resolved by ONE decision.")
+        m[2].metric("Absorbed by grouping", _s["cases_absorbed_by_grouping"])
+        m[3].metric("Graded exams", _ov["exams"])
+        if _s["cases"]:
+            with st.expander("Review queue (priority order, grouped)"):
+                st.caption("Priority affects ORDER only — it never changes a grade.")
+                st.dataframe([
+                    {"priority": g["explanation"].splitlines()[0] if g["explanation"] else "",
+                     "reason": g["reason_code"], "cases": g["size"],
+                     "students": ", ".join(g["students"][:4]),
+                     "one decision covers all": g["apply_to_all_eligible"],
+                     "scope": g["scope"]}
+                    for g in _ov["groups"]], width="stretch")
+
     st.divider()
     st.subheader("Exam details")
     exam_ids = sorted(state["exams"])
@@ -729,8 +848,15 @@ with tab_jobs:
                 for it in _rui2.build_review_items(picked, result, extraction):
                     key = f"{it.question_id}:{it.sub_item_id}"
                     done = resolved.get(key)
-                    st.markdown(f"**{it.kind.upper()} {key}** — {it.reason[:140]}"
+                    st.markdown(f"**`{it.reason_code}` {key}** — {it.points_affected:g} pt(s) at "
+                                f"stake · priority tier {it.priority_tier}"
                                 + (f"  ✅ *{done['decision']}*" if done else ""))
+                    if it.explanation:
+                        st.code(it.explanation, language=None)
+                    if it.batch_warning_code:
+                        st.warning(f"A batch-level issue ({it.batch_warning_code}) affects "
+                                   f"{it.batch_warning_students} students and may explain this "
+                                   "item — resolve that first.")
                     if it.kind == "mc":
                         st.caption(f"deterministic candidates: {it.deterministic_candidate} | "
                                    f"local: {it.local_candidate} | cloud: {it.cloud_candidate}")
@@ -744,8 +870,22 @@ with tab_jobs:
                         if cols[i].button(opt, key=f"rv_{picked}_{key}_{i}"):
                             rstore.resolve(it.question_id, it.sub_item_id, decision=opt)
                             st.rerun()
-                    if it.kind == "variant" and it.apply_to_all_eligible:
-                        st.caption("variant decisions can be applied to every exam in this job (apply-to-all)")
+                    if it.apply_to_all_eligible:
+                        st.caption("this cause is exactly mechanical — one decision can be applied "
+                                   "to every identical case (apply-to-all)")
+
+        # ---- decision trace: why did this item get this grade? ----
+        with st.expander("🔍 Why was this graded this way?"):
+            from autograder import reviewui as _rui3
+
+            trace_rows = [(q["question_id"], s["sub_item_id"])
+                          for q in result.get("questions", [])
+                          for s in q.get("sub_results", [])]
+            if trace_rows:
+                labels = [f"{q}.{s}" for q, s in trace_rows]
+                chosen = st.selectbox("Item", labels, key=f"trace_{picked}")
+                qid, sid = trace_rows[labels.index(chosen)]
+                st.code(_rui3.decision_trace_for(exam_dir, result, qid, sid), language=None)
 
         d = st.columns(2)
         d[0].download_button(

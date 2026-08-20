@@ -257,3 +257,110 @@ def test_connection(gateway, task: str = "grade_primary") -> dict:
     except Exception as e:  # noqa: BLE001
         msg = str(e)
         return {"ok": False, "detail": msg[:300], "backend": None, "model": None}
+
+
+# ------------------------------------------------- batch view (UI backend) --
+
+
+def load_job_results(job_dir: str | Path) -> dict[str, dict]:
+    """Every persisted result.json in a job, keyed by internal exam id."""
+    out: dict[str, dict] = {}
+    for exam_dir in sorted(Path(job_dir).glob("exams/*")):
+        p = exam_dir / "result.json"
+        if p.is_file():
+            try:
+                out[exam_dir.name] = json.loads(p.read_text(encoding="utf-8"))
+            except Exception:  # noqa: BLE001 — a partial write is simply not there yet
+                continue
+    return out
+
+
+def observations_from_results(results: dict[str, dict], extractions: dict[str, dict] | None = None):
+    """Map persisted artefacts onto the batch-anomaly observation shapes."""
+    from .anomaly import ExamObservation, ItemObservation
+
+    items, exams = [], []
+    extractions = extractions or {}
+    for exam_id, result in results.items():
+        variant = result.get("detected_version")
+        detection = (result.get("version_detection") or "")
+        exams.append(ExamObservation(
+            exam_id=exam_id, variant=variant,
+            variant_unknown=not variant or "UNCERTAIN" in detection,
+            template=(result.get("backend_info") or {}).get("template")))
+        pages = {}
+        for qx in (extractions.get(exam_id) or {}).get("questions", []):
+            for s in qx.get("sub_items", []):
+                pages[(qx["question_id"], s["sub_item_id"])] = s.get("source_page")
+        for q in result.get("questions", []):
+            for s in q.get("sub_results", []):
+                reason = (s.get("reason") or "").lower()
+                text = s.get("explanation_transcription") or ""
+                items.append(ItemObservation(
+                    exam_id=exam_id, question_id=q.get("question_id", ""),
+                    sub_item_id=s.get("sub_item_id", ""), variant=variant,
+                    page=pages.get((q.get("question_id"), s.get("sub_item_id"))),
+                    blank=s.get("status") == "unanswered",
+                    ambiguous_mc=s.get("status") == "ambiguous",
+                    ocr_failed=("could not be read" in reason or "illegible" in reason),
+                    ocr_chars=len(text) if text else 0,
+                    review=bool(s.get("needs_review")), review_reason=s.get("reason"),
+                    score=s.get("points_total"), max_score=s.get("points_max")))
+    return items, exams
+
+
+def batch_overview(results: dict[str, dict], extractions: dict[str, dict] | None = None,
+                   expected_variant_distribution: dict[str, float] | None = None) -> dict:
+    """Everything the batch view shows: anomaly warnings first (one systemic
+    warning can explain many individual reviews), then the prioritised,
+    grouped review queue."""
+    from .anomaly import detect_batch_anomalies
+
+    items, exams = observations_from_results(results, extractions)
+    warnings = detect_batch_anomalies(items, exams,
+                                      expected_variant_distribution=expected_variant_distribution)
+    review_items: list[ReviewItem] = []
+    for exam_id, result in results.items():
+        review_items += build_review_items(exam_id, result, (extractions or {}).get(exam_id),
+                                           warnings=warnings)
+    cases = [to_case(i, warnings=warnings) for i in review_items]
+    return {"warnings": [w.as_dict() for w in warnings],
+            "review_items": review_items,
+            "summary": queue_summary(cases),
+            "groups": [g.as_dict() for g in group_cases(cases)],
+            "exams": len(results), "items": len(items)}
+
+
+def decision_trace_for(exam_dir: str | Path, result: dict, question_id: str,
+                       sub_item_id: str) -> str:
+    """The compact "why did this get this grade?" view for ONE item.
+
+    Prefers a recorded decision trace (decisions.jsonl). Falls back to the
+    persisted result, which is always available, and says so — it never
+    invents a route the pipeline did not record.
+    """
+    from .trace import DecisionRecord, DecisionTraceStore, StageRecord
+
+    store = DecisionTraceStore(Path(exam_dir) / "decisions.jsonl")
+    rec = store.find(Path(exam_dir).name, question_id, sub_item_id)
+    if rec:
+        stages = [StageRecord(**{k: v for k, v in s.items()
+                                 if k in StageRecord.__dataclass_fields__})
+                  for s in rec.get("stages", [])]
+        return DecisionRecord(**{**{k: v for k, v in rec.items()
+                                    if k in DecisionRecord.__dataclass_fields__},
+                                 "stages": stages}).explain()
+    row = next((s for q in result.get("questions", []) if q.get("question_id") == question_id
+                for s in q.get("sub_results", []) if s.get("sub_item_id") == sub_item_id), None)
+    if row is None:
+        return "no decision record and no graded row for this item"
+    state = "REVIEW" if row.get("needs_review") else "AUTO"
+    lines = [f"{Path(exam_dir).name} q{question_id}/{sub_item_id} -> {state} "
+             "(reconstructed from the persisted result; no stage trace was recorded for this run)",
+             f"  score: {row.get('points_total')}/{row.get('points_max')}",
+             f"  selection: {row.get('student_answer')} (accepted: {row.get('accepted_answers')})",
+             f"  reason: {(row.get('reason') or '')[:300]}"]
+    ev = row.get("explanation_evaluation") or {}
+    if ev:
+        lines.append(f"  explanation verdict: {ev.get('verdict')}")
+    return "\n".join(lines)

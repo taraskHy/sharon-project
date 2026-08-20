@@ -346,11 +346,14 @@ def _variant_anomalies(exams: list[ExamObservation], items: list[ItemObservation
 
 def _template_mismatch(exams: list[ExamObservation], items: list[ItemObservation],
                        cfg: AnomalyConfig) -> list[BatchWarning]:
+    # "no template recorded anywhere" means the pipeline does not track
+    # templates for this package — that is silence, not a mismatch.
+    templates_tracked = any(e.template for e in exams)
     out = []
     for code, pred, wording in (
         ("PAGE_COUNT_MISMATCH_CLUSTER", lambda e: e.page_count_mismatch,
          "{n} exams ({rate:.0%}) do not have the page structure this package expects"),
-        ("TEMPLATE_MISMATCH_CLUSTER", lambda e: e.template is None,
+        ("TEMPLATE_MISMATCH_CLUSTER", lambda e: templates_tracked and e.template is None,
          "{n} exams ({rate:.0%}) could not be matched to any known page template"),
         ("ALIGNMENT_FAILURE_CLUSTER", lambda e: e.alignment_failed,
          "{n} exams ({rate:.0%}) share an unresolved question alignment"),

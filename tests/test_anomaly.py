@@ -171,13 +171,24 @@ def test_high_unknown_variant_rate_is_one_package_level_warning():
 
 def test_alignment_and_template_clusters():
     items, exams = batch()
-    for e in exams:
+    for e in exams[:-1]:            # one exam still matches a template...
         e.alignment_failed = True
         e.template = None
         e.page_count_mismatch = True
     got = codes(detect_batch_anomalies(items, exams))
     assert {"ALIGNMENT_FAILURE_CLUSTER", "TEMPLATE_MISMATCH_CLUSTER",
             "PAGE_COUNT_MISMATCH_CLUSTER"} <= set(got)
+
+
+def test_a_batch_that_tracks_no_templates_at_all_is_not_a_mismatch():
+    """Silence is not evidence: a pipeline that records no template for any
+    exam must not be reported as a template mismatch for every exam."""
+    items, exams = batch()
+    for e in exams:
+        e.template = None
+    for i in items:
+        i.template = None
+    assert "TEMPLATE_MISMATCH_CLUSTER" not in codes(detect_batch_anomalies(items, exams))
 
 
 def test_alignment_failures_on_one_question_are_grouped():
