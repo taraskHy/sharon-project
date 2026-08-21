@@ -23,3 +23,6 @@ gateway_ledger/
 evaluation/openrouter_smoke/state/
 
 evaluation/grading_rag_ab_v1/state/
+
+# Graphify generated graph state (rebuild with: graphify update)
+graphify-out/

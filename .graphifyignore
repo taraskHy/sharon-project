@@ -1,0 +1,33 @@
+# Graphify ignore — keeps the graph code-focused (navigation aid only).
+# Merged with .gitignore automatically (.venv*, out/, eval_out*/, jobs/,
+# caches, key_cache/, gateway_cache/ etc. are already excluded there).
+
+# Data corpora / frozen benchmark & evaluation trees
+# (thousands of JSON run records, exam scans, annotation backups — not architecture)
+evaluation/
+held-out test set/
+prob_data/
+sample_data/
+datasets/
+%temp%/
+
+# Non-code file types.
+# NOTE: graphify classifies .json as "code" (tree-sitter-json); in this repo
+# JSON is exam/eval/fixture data, so exclude it globally.
+# .md/.txt are "document" types requiring LLM semantic extraction — the initial
+# graph is static AST only, so they are excluded to keep the corpus pure code.
+*.json
+*.md
+*.txt
+*.csv
+*.pdf
+*.png
+*.jpg
+*.jpeg
+*.log
+*.whl
+*.xml
+*.properties
+
+# Graphify's own generated state (never index the graph itself)
+graphify-out/
