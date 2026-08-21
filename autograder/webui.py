@@ -215,6 +215,49 @@ grading_args = {
     "--survey-image-edge": int(survey_image_edge),
 }
 
+# ---------------------------------------------------------------------------
+# sidebar: grading route — the production mode/config actually reaches jobs.
+# The flags land in job.json (grading_args) and are forwarded verbatim to
+# every `autograder grade` subprocess. No key/secrets are involved here.
+# ---------------------------------------------------------------------------
+with st.sidebar:
+    st.subheader("Grading route")
+    _models_toml = REPO_ROOT / "models.toml"
+    if _models_toml.exists():
+        grading_mode = st.selectbox(
+            "Grading mode", ["legacy", "reliability", "shadow"], index=0,
+            help=(
+                "legacy = the validated judge path, unchanged. "
+                "reliability = the evidence/invariant/escalation route through "
+                "the task gateway (models.toml). shadow = both run; the legacy "
+                "grade stays authoritative and the reliability route is "
+                "recorded only (shadow_comparison.json)."
+            ),
+        )
+    else:
+        grading_mode = "legacy"
+        st.caption(
+            "Grading mode: legacy. Create models.toml (copy "
+            "models.example.toml) to enable the reliability/shadow routes."
+        )
+    rag_policy = "RAG_DISABLED"
+    if grading_mode != "legacy":
+        rag_policy = st.selectbox(
+            "Grading RAG policy",
+            ["RAG_DISABLED", "RAG_ALWAYS", "RAG_ON_UNCERTAIN", "RAG_ON_ESCALATION"],
+            index=0,
+            help=(
+                "Course-context policy for the grader. Default RAG_DISABLED — "
+                "the benefit is unmeasured and no unmeasured optional context "
+                "is sent silently. Retrieval itself is always local."
+            ),
+        )
+
+if grading_mode != "legacy":
+    grading_args["--grading-mode"] = grading_mode
+    grading_args["--models-config"] = str(_models_toml)
+    grading_args["--rag-policy"] = rag_policy
+
 tab_new, tab_jobs, tab_courses, tab_settings = st.tabs(
     ["➕ New batch", "📊 Jobs & results", "📚 Courses (experimental RAG)", "⚙ Models & OpenRouter"]
 )
@@ -525,14 +568,21 @@ with tab_new:
             p.write_bytes(uploaded.getvalue())
             staged_exams.append(p)
         rubric = st.session_state.get("rubric_path")
+        _job_grading_args = dict(grading_args)
+        if (grading_mode != "legacy" and course_choice != "(none)"
+                and rag_policy != "RAG_DISABLED"):
+            # The course id names a LOCAL index; the subprocess retrieves from
+            # it according to --rag-policy. Never a cloud call.
+            _job_grading_args["--course"] = course_choice
         job_dir = jobs.create_job(
                 course_id=None if course_choice == "(none)" else course_choice,
             key=Path(key_path),
             exams=staged_exams,
             rubric=Path(rubric) if rubric else None,
             backend_args=backend_args,
-            grading_args=grading_args,
+            grading_args=_job_grading_args,
             mask=mask,
+            grading_mode=grading_mode,
         )
         st.session_state["selected_job"] = job_dir.name
         job = jobs.load_job(job_dir)

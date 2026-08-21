@@ -1073,6 +1073,21 @@ def build_parser() -> argparse.ArgumentParser:
         ),
     )
     common.add_argument(
+        "--course", default=None,
+        help=(
+            "Course id whose LOCAL persistent index supplies grading-side RAG "
+            "context (non-legacy modes, consulted per --rag-policy). Retrieval "
+            "is always local — never a cloud call."
+        ),
+    )
+    common.add_argument(
+        "--packs-root", default=None,
+        help=(
+            "Directory where per-question grading packs are persisted once and "
+            "reused across all students of a batch (default: <out>/../packs)."
+        ),
+    )
+    common.add_argument(
         "--template", default=None,
         help=(
             "Path to the exam template JSON describing grading modes and the "

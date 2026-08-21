@@ -160,6 +160,7 @@ def create_job(
     job_root: Path | None = None,
     job_id: str | None = None,
     course_id: str | None = None,
+    grading_mode: str | None = None,
 ) -> Path:
     """Materialise a new job directory. ``backend_args``/``grading_args`` are
     CLI flag name -> value mappings (e.g. {"--model": "qwen3-vl:8b-instruct"}).
@@ -203,7 +204,12 @@ def create_job(
         "key": key_rel,
         "rubric": rubric_rel,
         "mask": bool(mask),
-        "course_id": course_id,  # informational; used by the experimental RAG arm only
+        "course_id": course_id,  # informational; --course in grading_args is authoritative
+        # Informational display field. The AUTHORITATIVE propagation is the
+        # flags in grading_args (--grading-mode/--models-config/--rag-policy),
+        # forwarded verbatim to every grade subprocess. Old jobs without any
+        # of these run exactly as before (legacy defaults).
+        "grading_mode": grading_mode or "legacy",
         "backend_args": backend_args or {},
         "grading_args": grading_args or {},
         "intake_issues": intake.issues,
@@ -317,6 +323,13 @@ def _stage_from_line(line: str) -> str | None:
         if pattern.search(line):
             return stage
     return None
+
+
+def _package_setup_blocked(log_tail: str) -> bool:
+    """A PackageSetupRequired failure is structural: every remaining exam in
+    the batch would fail identically, so the job stops after the FIRST one —
+    one package blocker, never N per-student failures."""
+    return "PackageSetupRequired" in (log_tail or "")
 
 
 def run_job(job_dir: str | Path, poll_interval: float = 0.5) -> int:
@@ -442,6 +455,16 @@ def run_job(job_dir: str | Path, poll_interval: float = 0.5) -> int:
             exam_state["error"] = (
                 f"grade subprocess exited {proc.returncode}; log tail:\n{tail}"
             )
+            if _package_setup_blocked(tail):
+                state["current"] = None
+                state["status"] = "failed"
+                state["error"] = (
+                    "package setup required — a structural package defect would "
+                    "fail every exam identically; fix the package (see "
+                    f"exams/{anon}/grade.log), then run the job again"
+                )
+                _save_state(job_dir, state)
+                return 0
         state["current"] = None
         _save_state(job_dir, state)
 
