@@ -51,8 +51,9 @@ def test_packs_built_once_and_reused_across_students(tmp_path, monkeypatch):
     rt = FakeRuntime(tmp_path, _grade_responses())
     _grade(tmp_path, monkeypatch, "student-1", runtime=rt, key_path=key_path)
     assert len(builds) == 1
-    manifest = json.loads((tmp_path / "packs" / "manifest.json").read_text(encoding="utf-8"))
-    assert manifest["packs"]                      # persisted once
+    manifests = list((tmp_path / "packs").glob("*/manifest.json"))
+    assert len(manifests) == 1                    # one fingerprint-namespaced store
+    assert json.loads(manifests[0].read_text(encoding="utf-8"))["packs"]
 
     rt2 = FakeRuntime(tmp_path / "rt2", _grade_responses())
     _grade(tmp_path, monkeypatch, "student-2", runtime=rt2, key_path=key_path,
@@ -66,15 +67,18 @@ def test_rubric_change_invalidates_persisted_packs(tmp_path, monkeypatch):
     save_answer_key(key, key_path)
     rt = FakeRuntime(tmp_path, _grade_responses())
     _grade(tmp_path, monkeypatch, "s1", runtime=rt, key_path=key_path)
-    fp1 = json.loads((tmp_path / "packs" / "manifest.json").read_text(encoding="utf-8"))
+    stores1 = {p.parent.name for p in (tmp_path / "packs").glob("*/manifest.json")}
+    assert len(stores1) == 1
 
     key.questions[0].grading_notes = "a NEW rubric line the lecturer added"
     save_answer_key(key, key_path)                # key bytes change -> new fingerprint
     rt2 = FakeRuntime(tmp_path / "rt2", _grade_responses())
     _grade(tmp_path, monkeypatch, "s2", runtime=rt2, key_path=key_path,
            exam_name="02_50.pdf")
-    fp2 = json.loads((tmp_path / "packs" / "manifest.json").read_text(encoding="utf-8"))
-    assert fp1["source_fingerprint"] != fp2["source_fingerprint"]
+    stores2 = {p.parent.name for p in (tmp_path / "packs").glob("*/manifest.json")}
+    # a second, DIFFERENT fingerprint-namespaced store: the old packs were not
+    # overwritten and the changed rubric never reuses them
+    assert len(stores2) == 2 and stores1 < stores2
 
 
 def test_fingerprint_axes_cover_solution_index_and_rag_config():
@@ -90,6 +94,24 @@ def test_fingerprint_axes_cover_solution_index_and_rag_config():
     assert base != gp.source_fingerprint(b"KEY", "idx-a", pol, 2, 1200,
                                          rag_policy="RAG_ON_UNCERTAIN")
     assert base != gp.source_fingerprint(b"KEY", "idx-a", pol, 2, 1200, pack_version="v1")
+
+
+def test_store_rejects_pack_files_that_mismatch_their_manifest(tmp_path):
+    """A pack file that does not match the manifest it sits under (interrupted
+    save, foreign write beneath a shared root) must rebuild, never grade."""
+    key = make_key()
+    packs = gp.build_all_packs(key, {})
+    store = gp.PackStore(tmp_path / "packs")
+    fp = gp.source_fingerprint(b"K", None, {}, 2, 1200)
+    store.save(packs, fp)
+    assert store.load(fp) is not None
+    # corrupt one pack file in place (content no longer matches its hash)
+    tampered = gp.QuestionGradingPack.from_json(
+        (tmp_path / "packs" / "q1.json").read_text(encoding="utf-8"))
+    tampered.rubric = ["a foreign rubric line"]
+    tampered.compute_hash()
+    (tmp_path / "packs" / "q1.json").write_text(tampered.to_json(), encoding="utf-8")
+    assert store.load(fp) is None                 # hash mismatch -> rebuild
 
 
 def test_prepared_rag_round_trips_through_the_store(tmp_path):

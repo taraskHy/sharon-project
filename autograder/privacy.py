@@ -28,9 +28,12 @@ from pathlib import PurePath
 from typing import Any, Iterable, Optional
 
 #: Metadata keys that may accompany a provider request (routing/accounting only).
+#: exam_id is the ANONYMIZED internal id (jobs intake / safe_log_name) — never
+#: a raw filename. The rag_* keys are numbers-only RAG accounting.
 PROVIDER_META_ALLOWED = frozenset({
-    "job_id", "item_id", "question_id", "sub_item_id", "stage", "task",
+    "job_id", "exam_id", "item_id", "question_id", "sub_item_id", "stage", "task",
     "pack_hash", "prompt_version", "attempt", "variant",
+    "rag_policy", "rag_chars", "rag_chunks",
 })
 
 #: Metadata keys that must never reach a provider (and never a log line).

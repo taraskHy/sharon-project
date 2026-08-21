@@ -334,11 +334,12 @@ with tab_courses:
     from autograder import courses as course_store
 
     st.caption(
-        "Course summaries power the experimental OCR-repair arm only. "
-        "Never upload answer keys or rubrics here — key-like filenames are "
-        "refused automatically, and extracted content is screened for "
-        "answer-key/rubric indicators (flagged files are refused unless you "
-        "explicitly override below)."
+        "Course material feeds (a) the experimental OCR-repair arm and (b) "
+        "grading-side RAG context when a non-legacy grading mode selects a "
+        "course and a RAG policy. Never upload answer keys or rubrics here — "
+        "key-like filenames are refused automatically, and extracted content "
+        "is screened for answer-key/rubric indicators (flagged files are "
+        "refused unless you explicitly override below)."
     )
     existing = course_store.list_courses()
     col_a, col_b = st.columns([2, 3])
@@ -574,6 +575,11 @@ with tab_new:
             # The course id names a LOCAL index; the subprocess retrieves from
             # it according to --rag-policy. Never a cloud call.
             _job_grading_args["--course"] = course_choice
+        elif grading_mode != "legacy" and rag_policy != "RAG_DISABLED":
+            st.warning(
+                f"RAG policy {rag_policy} is selected but no course is chosen — "
+                "no retrieval will run and grading proceeds without course context."
+            )
         job_dir = jobs.create_job(
                 course_id=None if course_choice == "(none)" else course_choice,
             key=Path(key_path),

@@ -357,7 +357,9 @@ def decision_trace_for(exam_dir: str | Path, result: dict, question_id: str,
         candidates += list(file_ids)
     rec = None
     for cand in dict.fromkeys(candidates):
-        rec = next((d for d in rows
+        # LAST match wins: a re-graded exam may leave superseded records; the
+        # newest one describes the run that produced the current result.json.
+        rec = next((d for d in reversed(rows)
                     if d.get("exam_id") == cand and d.get("question_id") == question_id
                     and (not sub_item_id or d.get("sub_item_id") == sub_item_id)), None)
         if rec:

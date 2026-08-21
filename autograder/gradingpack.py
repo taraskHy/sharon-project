@@ -417,11 +417,17 @@ class PackStore:
         if man.get("source_fingerprint") != source_fingerprint:
             return None   # key/rubric/course index changed -> rebuild
         out = {}
-        for qid in man["packs"]:
+        for qid, want_hash in man["packs"].items():
             p = self.root / f"q{qid}.json"
             if not p.exists():
                 return None
-            out[qid] = QuestionGradingPack.from_json(p.read_text(encoding="utf-8"))
+            pack = QuestionGradingPack.from_json(p.read_text(encoding="utf-8"))
+            if want_hash and pack.hash != want_hash:
+                # A pack file that does not match the manifest it sits under
+                # (interrupted save, foreign write beneath a shared root) must
+                # never be silently graded with — rebuild instead.
+                return None
+            out[qid] = pack
         return out
 
 

@@ -870,49 +870,66 @@ def run_grade_pipeline(
         _rel_cfg = ReliabilityConfig(
             mode=_mode, rag_policy=(getattr(args, "rag_policy", None) or "RAG_DISABLED"))
 
-        # Persistent pack lifecycle: packs are built ONCE per exam package and
-        # reused verbatim for every student (PackStore); any change to the
-        # key, policies, course index, retrieval config, RAG policy, or pack
-        # schema changes the source fingerprint and rebuilds. Retrieval at
-        # build/preparation time is LOCAL (bge-m3 course index) — it never
-        # costs provider tokens; RAG_DISABLED performs no retrieval at all.
-        _course = getattr(args, "course", None)
-        _retrieve = None
-        _index_hash = None
-        if _course and _rel_cfg.rag_policy != "RAG_DISABLED":
-            from . import courses as _courses
+        # Ledger/trace exam id: the anonymized label when one exists (jobs,
+        # eval), otherwise an opaque digest of the filename — a raw upload
+        # name must never reach ledger lines (privacy.safe_log_name).
+        from .privacy import safe_log_name as _safe_log_name
 
-            _retrieve = _courses.retrieve
-            _index_hash = _courses.index_status(_course).get("config_hash")
-        _packs_root = Path(
-            getattr(args, "packs_root", None)
-            or ((out.parent / "packs") if out.parent.name else (out / "packs")))
-        _pack_fp = source_fingerprint(
-            Path(args.key).read_bytes(), _index_hash, _pols,
-            DEFAULT_RAG_TOP_K, DEFAULT_RAG_CHAR_BUDGET, rag_policy=_rel_cfg.rag_policy)
-        _store = PackStore(_packs_root)
-        _packs = _store.load(_pack_fp)
-        if _packs is None:
-            _packs = build_all_packs(
-                key, _pols, rag_policy=_rel_cfg.rag_policy, course_id=_course,
-                retrieve=_retrieve, rag_index_fingerprint=_index_hash)
-            _store.save(_packs, _pack_fp)
-            _log(f"grading packs built and persisted (fingerprint {_pack_fp})")
-        else:
-            _log(f"grading packs reused from the pack store (fingerprint {_pack_fp})")
-
-        _exam_id = exam_label or Path(exam_path).stem
-        _ocr_fn = None
-        if _defer_ocr:
-            from .extract import lazy_explanation_ocr
-            from .privacy import anonymous_item_id as _anon_id
-
-            def _ocr_fn(q, se, _gw=_rt.gateway, _survey=survey, _pages=pages):
-                return lazy_explanation_ocr(
-                    _gw, q, se, _survey, _pages,
-                    meta={"exam_id": _exam_id, "question_id": q.id, "stage": "ocr",
-                          "item_id": _anon_id("job", _exam_id, q.id, se.sub_item_id)})
+        _exam_id = exam_label or _safe_log_name(Path(exam_path).stem)
+        # A re-run supersedes the previous route: the trace file must describe
+        # THE run that produced result.json, not an append-only mixed history.
+        (out / "decisions.jsonl").unlink(missing_ok=True)
+        rel_error = None
         try:
+            # Persistent pack lifecycle: packs are built ONCE per exam package
+            # and reused verbatim for every student. The store directory is
+            # namespaced BY fingerprint, so different keys/jobs sharing a
+            # --packs-root never overwrite each other's manifests; any change
+            # to the key, template, policies, course index, retrieval config,
+            # RAG policy, or pack schema changes the fingerprint and rebuilds.
+            # Retrieval at build/preparation time is LOCAL (bge-m3 course
+            # index) — it never costs provider tokens; RAG_DISABLED performs
+            # no retrieval at all. In shadow mode ANY failure below (index,
+            # embedder, retrieval, judging) is swallowed: the authoritative
+            # legacy result must be unaffected.
+            _course = getattr(args, "course", None)
+            _retrieve = None
+            _index_hash = None
+            if _course and _rel_cfg.rag_policy != "RAG_DISABLED":
+                from . import courses as _courses
+
+                _retrieve = _courses.retrieve
+                _index_hash = _courses.index_status(_course).get("config_hash")
+            _packs_root = Path(
+                getattr(args, "packs_root", None)
+                or ((out.parent / "packs") if out.parent.name else (out / "packs")))
+            _key_material = Path(args.key).read_bytes() + (
+                template_fingerprint(template).encode() if template is not None else b"")
+            _pack_fp = source_fingerprint(
+                _key_material, _index_hash, _pols,
+                DEFAULT_RAG_TOP_K, DEFAULT_RAG_CHAR_BUDGET, rag_policy=_rel_cfg.rag_policy)
+            _store = PackStore(_packs_root / _pack_fp)
+            _packs = _store.load(_pack_fp)
+            if _packs is None:
+                _packs = build_all_packs(
+                    key, _pols, rag_policy=_rel_cfg.rag_policy, course_id=_course,
+                    retrieve=_retrieve, rag_index_fingerprint=_index_hash)
+                _store.save(_packs, _pack_fp)
+                _log(f"grading packs built and persisted (fingerprint {_pack_fp})")
+            else:
+                _log(f"grading packs reused from the pack store (fingerprint {_pack_fp})")
+
+            _ocr_fn = None
+            if _defer_ocr:
+                from .extract import lazy_explanation_ocr
+                from .privacy import anonymous_item_id as _anon_id
+
+                def _ocr_fn(q, se, _gw=_rt.gateway, _survey=survey, _pages=pages):
+                    return lazy_explanation_ocr(
+                        _gw, q, se, _survey, _pages,
+                        meta={"exam_id": _exam_id, "question_id": q.id, "stage": "ocr",
+                              "item_id": _anon_id("job", _exam_id, q.id, se.sub_item_id)})
+
             rel_run = run_reliability_judging(
                 key=key, extraction=extraction, version=version_decision.version,
                 config=_rel_cfg, gateway=_rt.gateway, packs=_packs, policies=_pols,

@@ -341,7 +341,7 @@ def escalate_grade(*, pack: QuestionGradingPack, selected: str | None, transcrip
                              rag_chars=pack.rag_chars)
     status = grade_status_from(validation_ok=v.ok, uncertain=primary.uncertain)
 
-    policy = getattr(pack, "rag_policy", "RAG_ALWAYS")
+    policy = getattr(pack, "rag_policy", "RAG_DISABLED")
     rag_pack = None
     if policy == "RAG_ON_UNCERTAIN" and rag_attach is not None:
         rag_pack = rag_attach(pack)
