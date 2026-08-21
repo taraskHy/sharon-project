@@ -81,6 +81,7 @@ class DecisionRecord:
     evidence: Optional[dict] = None           # evidence.EvidenceValidation.as_dict()
     invariants: Optional[dict] = None         # invariants.InvariantReport.as_dict()
     escalation: Optional[dict] = None         # {stage, outcome, score_delta, problems}
+    rag: Optional[dict] = None                # {policy, used, available, chunk_ids, chars}
     proposed_score: Optional[float] = None    # the grader's number (never authoritative)
     stages: list[StageRecord] = field(default_factory=list)
     deterministic_decisions: list[str] = field(default_factory=list)
@@ -141,6 +142,17 @@ class DecisionRecord:
         if self.grading_policy:
             lines.append(f"  grading policy: {self.grading_policy}"
                          + (f" · RAG policy: {self.rag_policy}" if self.rag_policy else ""))
+        if self.rag:
+            g = self.rag
+            used = bool(g.get("used"))
+            line = f"  RAG: {'used' if used else 'not used'}"
+            if used:
+                line += f" ({len(g.get('chunk_ids') or [])} chunks, {g.get('chars') or 0} chars)"
+            if g.get("available") is False:
+                line += " · retrieval unavailable (graded without course context)"
+            lines.append(line)
+            if g.get("chunk_ids"):
+                lines.append("  course evidence chunks: " + ", ".join(g["chunk_ids"]))
         if self.ocr_status or self.grade_status:
             lines.append(f"  status: OCR {self.ocr_status or '—'} · grading "
                          f"{self.grade_status or '—'}"
@@ -229,6 +241,17 @@ class DecisionTrace:
         r.rag_policy = rag_policy or r.rag_policy
         return self
 
+    def rag(self, *, policy=None, used=None, available=None, chunk_ids=None,
+            chars=None) -> "DecisionTrace":
+        """Record what grading-side retrieval actually did for this item."""
+        cur = dict(self.record.rag or {})
+        for k, v in (("policy", policy), ("used", used), ("available", available),
+                     ("chunk_ids", chunk_ids), ("chars", chars)):
+            if v is not None:
+                cur[k] = v
+        self.record.rag = cur
+        return self
+
     def statuses(self, *, mc_route=None, ocr_status=None, grade_status=None,
                  evidence=None, invariants=None, escalation=None,
                  proposed_score=None) -> "DecisionTrace":
@@ -274,6 +297,8 @@ class EarlyExitLedger:
         for r in records:
             self.add(r)
 
+    _EARLY_EXIT_REASONS = ("choice_only", "wrong_choice_zero", "deterministic_mc")
+
     def as_dict(self) -> dict:
         n = len(self.records) or 1
         by_reason: dict[str, int] = {}
@@ -281,12 +306,17 @@ class EarlyExitLedger:
         explanations_skipped = 0
         reviews_avoided = 0
         cache_hits = 0
+        early_exit_skips = {"ocr_explanation": 0, "grading_rag": 0,
+                            "grade_primary": 0, "grade_escalate": 0}
         for r in self.records:
             for s in r.stages:
                 if s.status == "skipped" and s.skip_reason:
                     by_reason[s.skip_reason] = by_reason.get(s.skip_reason, 0) + 1
                     if s.stage in ("ocr_explanation", "explanation_judge", "ocr_primary"):
                         explanations_skipped += 1
+                    if (s.stage in early_exit_skips
+                            and s.skip_reason in self._EARLY_EXIT_REASONS):
+                        early_exit_skips[s.stage] += 1
                 for k, v in (s.avoided or {}).items():
                     avoided[k] = avoided.get(k, 0) + int(v)
                 if s.status == "executed" and s.cache_hit:
@@ -296,6 +326,8 @@ class EarlyExitLedger:
                     for s in r.stages):
                 reviews_avoided += 1     # escalation resolved what would have been a REVIEW
         fully_local = sum(1 for r in self.records if r.fully_local)
+        with_rag = [r for r in self.records if (r.rag or {}).get("used")]
+        rag_chars = sum(int((r.rag or {}).get("chars") or 0) for r in with_rag)
         return {
             "questions": len(self.records),
             "explanations_skipped": explanations_skipped,
@@ -307,6 +339,18 @@ class EarlyExitLedger:
             "cache_hits": cache_hits,
             "fully_local_questions": fully_local,
             "pct_graded_fully_locally": round(100 * fully_local / n, 1),
+            # grading-side RAG accounting (numbers only)
+            "items_with_rag": len(with_rag),
+            "pct_items_with_rag": round(100 * len(with_rag) / n, 1),
+            "rag_chars_total": rag_chars,
+            "rag_tokens_est_total": round(rag_chars / 4),
+            "rag_tokens_est_per_rag_item": (round(rag_chars / 4 / len(with_rag), 1)
+                                            if with_rag else None),
+            # what the MC/policy early exit saved, per stage
+            "ocr_skipped_by_early_exit": early_exit_skips["ocr_explanation"],
+            "rag_skipped_by_early_exit": early_exit_skips["grading_rag"],
+            "grader_skipped_by_early_exit": early_exit_skips["grade_primary"],
+            "escalation_skipped_by_early_exit": early_exit_skips["grade_escalate"],
             "by_skip_reason": dict(sorted(by_reason.items())),
             "by_final_state": {s: sum(1 for r in self.records if r.final_state == s)
                                for s in FINAL_STATES},

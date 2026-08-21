@@ -454,6 +454,12 @@ def _decide_item(*, q, ks, se, version, policy, pack, config, gateway, crops, ra
         t.skipped("grade_escalate", "no_suspicion_signal", detail=decision.reason,
                   avoided={"grading": 1, "cloud": 1})
     signals.grading = decision.signals
+    t.rag(policy=(pack.rag_policy if pack else config.rag_policy),
+          used=bool(decision.rag_chunk_ids),
+          available=(decision.signals.rag_available
+                     if decision.signals.rag_available is not None
+                     else (pack.rag_available if pack else None)),
+          chunk_ids=list(decision.rag_chunk_ids or []), chars=decision.rag_chars)
     result = decision.result
     proposed = float(result.score) if result is not None else None
     status = (GRADE_OK if decision.outcome == "auto" else

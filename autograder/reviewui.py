@@ -342,7 +342,26 @@ def decision_trace_for(exam_dir: str | Path, result: dict, question_id: str,
     from .trace import DecisionRecord, DecisionTraceStore, StageRecord
 
     store = DecisionTraceStore(Path(exam_dir) / "decisions.jsonl")
-    rec = store.find(Path(exam_dir).name, question_id, sub_item_id)
+    rows = store.read()
+    # Stable lookup. Records are written with exam_id = exam label OR the exam
+    # file stem, while this UI knows the output DIRECTORY name — an ad-hoc run
+    # whose --out basename differs would hide its trace (audit finding). The
+    # per-exam decisions.jsonl lives inside the exam dir, so try every stable
+    # identifier, and when the file carries a single exam_id, accept it.
+    candidates = [Path(exam_dir).name]
+    exam_file = (result or {}).get("exam_file")
+    if exam_file:
+        candidates += [Path(str(exam_file)).stem, str(exam_file)]
+    file_ids = {d.get("exam_id") for d in rows}
+    if len(file_ids) == 1:
+        candidates += list(file_ids)
+    rec = None
+    for cand in dict.fromkeys(candidates):
+        rec = next((d for d in rows
+                    if d.get("exam_id") == cand and d.get("question_id") == question_id
+                    and (not sub_item_id or d.get("sub_item_id") == sub_item_id)), None)
+        if rec:
+            break
     if rec:
         stages = [StageRecord(**{k: v for k, v in s.items()
                                  if k in StageRecord.__dataclass_fields__})
