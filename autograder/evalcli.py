@@ -116,11 +116,13 @@ def cmd_eval_batch(args) -> int:
     from .cli import (
         _fingerprints,
         _stored_fingerprints,
+        guard_direct_cloud_backend,
         resolve_config,
         run_grade_pipeline,
     )
 
     backend_config, max_image_edge, survey_image_edge = resolve_config(args)
+    guard_direct_cloud_backend(backend_config)
     backend = create_backend(backend_config)
     eval_root = Path(args.out)
     eval_root.mkdir(parents=True, exist_ok=True)
@@ -358,10 +360,11 @@ _PROBE_SYSTEM = (
 
 
 def cmd_audit_leakage(args) -> int:
-    from .cli import resolve_config
+    from .cli import guard_direct_cloud_backend, resolve_config
     from .ingest import labeled_page_blocks
 
     backend_config, max_image_edge, _ = resolve_config(args)
+    guard_direct_cloud_backend(backend_config)
     backend = create_backend(backend_config)
     records = _load_split_records(args)[: args.limit or 5]
     eval_root = Path(args.out)

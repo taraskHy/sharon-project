@@ -481,6 +481,30 @@ def _key_version_problems(
     return problems[:8]
 
 
+def guard_direct_cloud_backend(backend_config: BackendConfig) -> None:
+    """The legacy direct-backend path (extraction/survey/variant/key parsing
+    and the legacy explanation judge) bypasses the task gateway — no privacy
+    scan, no request cache, no budget check, no usage ledger. It must
+    therefore never carry OpenRouter traffic: classification uses the
+    EFFECTIVE provider (base_url wins over the nominal backend name), so
+    `--backend openai --base-url https://openrouter.ai/...` is refused too.
+
+    OpenRouter runs only through --models-config (the task gateway), where
+    every call passes privacy -> cache -> budget -> provider -> ledger.
+    """
+    from .usage import effective_provider
+
+    if effective_provider(backend_config.backend, backend_config.base_url) == "openrouter":
+        raise BackendError(
+            "refusing to send exam content to OpenRouter over the direct legacy "
+            "backend path: it bypasses privacy filtering, the request cache, "
+            "budget enforcement and the usage ledger. Configure the OpenRouter "
+            "task routes in models.toml and run with --models-config (and "
+            "--grading-mode reliability|shadow for graded work) so every call "
+            "passes the task gateway."
+        )
+
+
 def cmd_doctor(args) -> int:
     backend_config, _, _ = resolve_config(args)
     try:
@@ -501,6 +525,7 @@ def cmd_parse_key(args) -> int:
     out = Path(args.out)
     out.mkdir(parents=True, exist_ok=True)
     backend_config, max_image_edge, _ = resolve_config(args)
+    guard_direct_cloud_backend(backend_config)
     backend = create_backend(backend_config)
     current = _fingerprints(args, backend, max_image_edge, include_exam=False)
     stored = _stored_fingerprints(out)
@@ -899,6 +924,7 @@ def cmd_grade(args) -> int:
     out = Path(args.out)
     out.mkdir(parents=True, exist_ok=True)
     backend_config, max_image_edge, survey_image_edge = resolve_config(args)
+    guard_direct_cloud_backend(backend_config)
     backend = create_backend(backend_config)
     result = run_grade_pipeline(
         args, backend, out, max_image_edge, survey_image_edge=survey_image_edge

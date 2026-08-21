@@ -15,13 +15,68 @@ resumable). Never downgrades to a different model.
 from __future__ import annotations
 
 import json
+import re
 import time
 from collections import defaultdict
 from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any, Callable
+from urllib.parse import urlparse
 
 CLOUD_BACKENDS = {"openrouter", "gemini", "anthropic"}
+
+_OPENROUTER_MARKER = "openrouter.ai"
+_LOCAL_HOSTS = {"localhost", "127.0.0.1", "0.0.0.0", "::1", "host.docker.internal"}
+_PRIVATE_NET = re.compile(r"^(10\.|192\.168\.|172\.(1[6-9]|2\d|3[01])\.)")
+
+
+def _is_local_url(base_url: str | None) -> bool:
+    if not base_url:
+        # No URL: the backend name decides (provider-default endpoints).
+        return True
+    host = (urlparse(base_url).hostname or "").lower()
+    return (host in _LOCAL_HOSTS or host.endswith(".local")
+            or bool(_PRIVATE_NET.match(host)))
+
+
+def effective_provider(backend: str | None, base_url: str | None) -> str:
+    """The provider a request will ACTUALLY reach.
+
+    Cloud classification must follow the effective configuration, never the
+    nominal backend string alone: an OpenAI-compatible route pointed at
+    openrouter.ai IS OpenRouter for budget, ledger, and provider metadata.
+    """
+    b = (backend or "").lower()
+    if _OPENROUTER_MARKER in (base_url or "").lower():
+        return "openrouter"
+    if b == "ollama_native":
+        return "ollama"
+    return b
+
+
+def is_cloud_route(backend: str | None, base_url: str | None) -> bool:
+    """True when a route reaches a remote paid/cloud provider.
+
+    Local OpenAI-compatible servers (Ollama, vLLM, LM Studio, ...) are not
+    cloud. A NON-local OpenAI-compatible endpoint is treated as cloud even
+    when it is not OpenRouter — an unknown remote endpoint must never escape
+    accounting by being nominally 'openai'.
+    """
+    p = effective_provider(backend, base_url)
+    if p in CLOUD_BACKENDS:
+        return True
+    if p == "openai":
+        return not _is_local_url(base_url)
+    return False
+
+
+def _row_is_cloud(entry: dict) -> bool:
+    """Cloud classification for a persisted ledger row. New rows carry the
+    computed 'cloud' flag; rows written before the effective-provider fix
+    fall back to the backend-name rule they were classified under."""
+    if "cloud" in entry:
+        return bool(entry.get("cloud"))
+    return entry.get("backend") in CLOUD_BACKENDS
 
 
 class UsageLedger:
@@ -44,7 +99,7 @@ class UsageLedger:
 
     def aggregate(self, job_id: str | None = None) -> dict:
         rows = [e for e in self.entries() if job_id is None or e.get("job_id") == job_id]
-        cloud = [e for e in rows if e.get("backend") in CLOUD_BACKENDS]
+        cloud = [e for e in rows if _row_is_cloud(e)]
         cloud_calls = [e for e in cloud if not e.get("cache_hit")]
         n_cache = sum(1 for e in cloud if e.get("cache_hit"))
         by_exam: dict[str, dict] = defaultdict(lambda: {"cloud_calls": 0, "tokens": 0, "escalations": 0})
@@ -151,7 +206,10 @@ class BudgetManager:
     pause_reason: str | None = None
 
     def _counts_toward(self, route) -> bool:
-        return (not self.cloud_only) or route.backend in CLOUD_BACKENDS
+        # Effective-provider rule: backend="openai" + an OpenRouter base_url is
+        # OpenRouter and must never escape budget enforcement by its name.
+        return (not self.cloud_only) or is_cloud_route(
+            getattr(route, "backend", None), getattr(route, "base_url", None))
 
     def _check_one(self, name: str, value: float, limit: float | None) -> None:
         """`value` is the amount that WOULD be consumed if this call proceeds
@@ -180,7 +238,7 @@ class BudgetManager:
             today = time.strftime("%Y-%m-%d")
             month = today[:7]
             rows = [e for e in self.ledger.entries()
-                    if e.get("backend") in CLOUD_BACKENDS and not e.get("cache_hit")]
+                    if _row_is_cloud(e) and not e.get("cache_hit")]
             self._check_one("calls_per_day", sum(1 for e in rows if str(e.get("ts", "")).startswith(today)) + 1,
                             L.max_calls_per_day)
             self._check_one("calls_per_month", sum(1 for e in rows if str(e.get("ts", "")).startswith(month)) + 1,

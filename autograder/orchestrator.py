@@ -168,7 +168,10 @@ def handle_model_failure(exc: Exception, job_dir: str | Path, exam_id: str, stag
 
 
 def openrouter_configured(runtime: Runtime | None) -> bool:
+    from .usage import effective_provider
+
     if runtime is None:
         return False
-    return any(r.backend == "openrouter" and r.enabled for r in runtime.gateway.routes.values()) \
+    return any(r.enabled and effective_provider(r.backend, r.base_url) == "openrouter"
+               for r in runtime.gateway.routes.values()) \
         and bool(os.environ.get("OPENROUTER_API_KEY"))

@@ -244,12 +244,20 @@ class ModelGateway:
     def _ledger_record(self, res: CallResult, meta: dict) -> None:
         if self.ledger is None:
             return
+        from .usage import effective_provider, is_cloud_route
+
         entry = {
             "ts": time.strftime("%Y-%m-%d %H:%M:%S"),
             "task": res.task, "backend": res.route.backend, "model": res.route.model,
+            # Effective classification: an openai-compat route pointed at
+            # openrouter.ai is recorded (and budgeted) as OpenRouter/cloud.
+            "effective_provider": effective_provider(res.route.backend, res.route.base_url),
+            "cloud": is_cloud_route(res.route.backend, res.route.base_url),
             "cache_hit": res.cache_hit, "latency_s": res.latency_s,
             "retries": res.retries,
-            **{k: meta.get(k) for k in ("job_id", "exam_id", "question_id", "stage")},
+            **{k: meta.get(k) for k in ("job_id", "exam_id", "question_id", "stage",
+                                        "pack_hash", "rag_policy", "rag_chars",
+                                        "rag_chunks")},
             **{k: res.usage.get(k) for k in (
                 "provider", "request_id", "input_tokens", "cached_input_tokens",
                 "output_tokens", "reasoning_tokens", "total_tokens", "reported_cost")},
