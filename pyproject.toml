@@ -5,7 +5,7 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "autograder"
 version = "0.1.0"
-description = "Automatic grading of scanned student exams (Hebrew RTL, handwritten marks) using the Claude API"
+description = "Automatic grading of scanned student exams (Hebrew RTL, handwritten marks) via a provider-independent model gateway"
 requires-python = ">=3.11"
 dependencies = [
     "httpx>=0.27",
@@ -28,6 +28,6 @@ include = ["autograder*"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
-# repo root on sys.path so tests can import the dev tooling under tools/
-# (tools/ is deliberately NOT part of the installed autograder package)
+# repo root on sys.path so test modules can import each other via the
+# tests package (e.g. `from tests.test_grade import make_key`)
 pythonpath = ["."]
