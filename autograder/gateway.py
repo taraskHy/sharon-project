@@ -43,6 +43,13 @@ class GatewayConfigError(ValueError):
     """Bad or incomplete gateway configuration (never raised mid-request)."""
 
 
+#: Sentinel model value for a role whose model is DELIBERATELY not chosen yet
+#: (model selection pending). Unlike an empty model (config mistake -> whole
+#: config refused at construction) an UNSELECTED route loads fine; only using
+#: it refuses, with a message pointing at the candidate registry.
+UNSELECTED = "UNSELECTED"
+
+
 def _expand_env(value: Any) -> Any:
     """Expand ${VAR} references. Unset variables expand to '' so a task with
     an unconfigured model fails validation loudly rather than at call time."""
@@ -130,6 +137,8 @@ class ModelGateway:
             if r.enabled and not r.model:
                 raise GatewayConfigError(
                     f"task {name!r} has no model configured (unset ${{ENV}} reference?)")
+            # model = "UNSELECTED" is a valid loaded state (selection pending);
+            # route() refuses it per-use with a candidate-registry pointer.
             if r.backend == "openai" and not r.base_url:
                 raise GatewayConfigError(f"task {name!r} ({r.backend}) needs base_url")
         self.routes = routes
@@ -186,6 +195,12 @@ class ModelGateway:
                 f"(configured: {sorted(self.routes)})") from None
         if not r.enabled:
             raise GatewayConfigError(f"task {task!r} is disabled in configuration")
+        if r.model == UNSELECTED:
+            raise GatewayConfigError(
+                f"task {task!r} is UNSELECTED: no model has been chosen for this "
+                "role yet. Run the role's benchmark, pick a candidate (see "
+                "evaluation/model_selection/candidates.toml), and set the task's "
+                "model / its ${ENV} slug in models.toml")
         return r
 
     def backend_for(self, task: str) -> VisionBackend:
@@ -225,7 +240,10 @@ class ModelGateway:
                 self._ledger_record(res, meta)
                 return res
         if self.budget is not None:
-            self.budget.check(task=task, route=route, meta=meta)
+            from .usage import predicted_call_cost
+            self.budget.check(task=task, route=route, meta=meta,
+                              predicted_cost=predicted_call_cost(
+                                  route, system, content_blocks, self.pricing_config))
         backend = self.backend_for(task)
         t0 = time.monotonic()
         value = backend.parse(system=system, content_blocks=content_blocks,
@@ -266,4 +284,4 @@ class ModelGateway:
 
 
 __all__ = ["ModelGateway", "TaskRoute", "CallResult", "GatewayConfigError", "BackendError",
-           "PrivacyError"]
+           "PrivacyError", "UNSELECTED"]

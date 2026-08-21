@@ -149,6 +149,13 @@ class BudgetLimits:
     max_input_tokens: int | None = None
     max_output_tokens: int | None = None
     max_cost: float | None = None
+    # Cross-RUN ceiling: cumulative reported cost summed over the PERSISTED
+    # ledger of this state root (all processes/runs that share it), so an
+    # experiment campaign keeps one hard total (e.g. 10.00 USD) across many
+    # benchmark invocations. The soft_fraction warning applies (0.8 -> warn
+    # at 8.00 of 10.00). Requires every run of the campaign to use the SAME
+    # state root / ledger file.
+    max_cost_total: float | None = None
     max_calls_per_day: int | None = None
     max_calls_per_month: int | None = None
     soft_fraction: float = 0.8
@@ -176,7 +183,8 @@ class BudgetLimits:
             if name == "soft_fraction":
                 kw[name] = float(v)
             else:
-                kw[name] = None if (v is None or float(v) <= 0) else (float(v) if name == "max_cost" else int(v))
+                kw[name] = None if (v is None or float(v) <= 0) else (
+                    float(v) if name in ("max_cost", "max_cost_total") else int(v))
         return cls(**kw)
 
     def effective(self) -> dict:
@@ -223,8 +231,23 @@ class BudgetManager:
             self._warned.add(name)
             self.warn(f"soft budget {name}: {value} of {limit}")
 
-    def check(self, *, task: str, route, meta: dict) -> None:
-        """Called BEFORE a non-cached provider call."""
+    def _ledger_cost(self) -> float:
+        """Cumulative reported cost over the PERSISTED ledger (cloud,
+        non-cache rows). Every gateway call is ledger-recorded before the
+        next check runs, so this already includes this process's spend —
+        never add the in-memory ``_cost`` on top (it would double count)."""
+        if self.ledger is None:
+            return self._cost
+        return sum(float(e.get("reported_cost") or 0) for e in self.ledger.entries()
+                   if _row_is_cloud(e) and not e.get("cache_hit"))
+
+    def check(self, *, task: str, route, meta: dict,
+              predicted_cost: float = 0.0) -> None:
+        """Called BEFORE a non-cached provider call.
+
+        ``predicted_cost`` is a deterministic pre-call estimate of THIS call's
+        cost (see ``predicted_call_cost``): with it, the call that WOULD cross
+        a cost ceiling is refused, instead of only its successor."""
         if not self._counts_toward(route):
             return
         job, exam = meta.get("job_id") or "?", meta.get("exam_id") or "?"
@@ -233,7 +256,10 @@ class BudgetManager:
         self._check_one("calls_per_exam", self._calls_exam[exam] + 1, L.max_calls_per_exam)
         self._check_one("input_tokens", self._in_tok, L.max_input_tokens)
         self._check_one("output_tokens", self._out_tok, L.max_output_tokens)
-        self._check_one("cost", self._cost, L.max_cost)
+        self._check_one("cost", self._cost + predicted_cost, L.max_cost)
+        if L.max_cost_total is not None:
+            self._check_one("cost_total", self._ledger_cost() + predicted_cost,
+                            L.max_cost_total)
         if self.ledger is not None and (L.max_calls_per_day or L.max_calls_per_month):
             today = time.strftime("%Y-%m-%d")
             month = today[:7]
@@ -259,3 +285,82 @@ class BudgetManager:
                 "cost": round(self._cost, 6), "calls_per_job": dict(self._calls_job),
                 "paused": self.paused, "pause_reason": self.pause_reason,
                 "limits": self.limits.effective()}
+
+
+# ------------------------------------------------------------------------
+# experiment-budget helpers (model-selection campaigns)
+# ------------------------------------------------------------------------
+
+
+def predicted_call_cost(route, system: str, content_blocks: list[dict],
+                        pricing: dict | None) -> float:
+    """Deterministic, conservative pre-call cost estimate in USD.
+
+    Uses ONLY the local models.toml [pricing] table (USD per 1M tokens, never
+    fetched from the network): text sized at chars/4 tokens, a flat 1100
+    tokens per image block, and the route's full ``max_tokens`` as output.
+    A model absent from the pricing table estimates 0.0 — the budget then
+    enforces known (ledger) spend only, so campaigns MUST list every cloud
+    candidate in [pricing] for refuse-before-crossing to work."""
+    if not pricing:
+        return 0.0
+    price = pricing.get(getattr(route, "model", "") or "")
+    if not isinstance(price, dict):
+        return 0.0
+    chars = len(system or "")
+    images = 0
+    for block in content_blocks or []:
+        if block.get("type") == "text":
+            chars += len(block.get("text") or "")
+        elif block.get("type") == "image":
+            images += 1
+    input_tokens = chars / 4 + images * 1100
+    output_tokens = float(getattr(route, "max_tokens", 0) or 0)
+    return (input_tokens * float(price.get("input") or 0)
+            + output_tokens * float(price.get("output") or 0)) / 1e6
+
+
+def aggregate_by(rows: list[dict], key: str) -> dict[str, dict]:
+    """Cloud non-cache calls grouped by one ledger field (model / task):
+    calls, tokens, reported cost. Raw material for experiment run reports."""
+    out: dict[str, dict] = {}
+    for e in rows:
+        if not _row_is_cloud(e) or e.get("cache_hit"):
+            continue
+        k = str(e.get(key) or "?")
+        g = out.setdefault(k, {"calls": 0, "input_tokens": 0, "output_tokens": 0,
+                               "total_tokens": 0, "reported_cost": 0.0})
+        g["calls"] += 1
+        g["input_tokens"] += int(e.get("input_tokens") or 0)
+        g["output_tokens"] += int(e.get("output_tokens") or 0)
+        g["total_tokens"] += int(e.get("total_tokens") or 0)
+        g["reported_cost"] = round(g["reported_cost"] + float(e.get("reported_cost") or 0), 6)
+    return out
+
+
+def run_cost_report(ledger: UsageLedger, baseline_rows: int) -> dict:
+    """The mandatory per-benchmark-run accounting: cost before / run cost /
+    cost after, plus calls and tokens by model and by task.
+
+    ``baseline_rows`` is ``len(ledger.entries())`` captured BEFORE the run
+    started; everything after that offset is attributed to the run."""
+    rows = ledger.entries()
+    before, run = rows[:baseline_rows], rows[baseline_rows:]
+
+    def _cost(rs: list[dict]) -> float:
+        return round(sum(float(e.get("reported_cost") or 0) for e in rs
+                         if _row_is_cloud(e) and not e.get("cache_hit")), 6)
+
+    cost_before = _cost(before)
+    run_cost = _cost(run)
+    return {
+        "rows_before": baseline_rows,
+        "rows_after": len(rows),
+        "cost_before": cost_before,
+        "run_cost": run_cost,
+        "cost_after": round(cost_before + run_cost, 6),
+        "run_calls": sum(1 for e in run if _row_is_cloud(e) and not e.get("cache_hit")),
+        "run_cache_hits": sum(1 for e in run if _row_is_cloud(e) and e.get("cache_hit")),
+        "by_model": aggregate_by(run, "model"),
+        "by_task": aggregate_by(run, "task"),
+    }

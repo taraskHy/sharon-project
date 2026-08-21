@@ -72,8 +72,8 @@ class KeyQuestion(BaseModel):
     max_points: float = Field(
         description=(
             "Maximum points for the whole question. May be lower than the sum of "
-            "sub-item points when the rubric caps the total (e.g. 20 items x 2 "
-            "points capped at 36)."
+            "sub-item points when the rubric caps the total (e.g. 12 items x 3 "
+            "points capped at 30)."
         )
     )
     sub_items: list[KeySubItem]

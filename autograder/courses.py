@@ -162,6 +162,7 @@ def add_source(course_id: str, filename: str, data: bytes,
     out = {"stored": True, "filename": safe, "sha256": sha}
     if reason:
         out["suspicious_override"] = reason
+        _record_override(d, safe, reason)
     return out
 
 
@@ -171,6 +172,29 @@ def remove_source(course_id: str, filename: str) -> bool:
         p.unlink()
         return True
     return False
+
+
+def _record_override(course_dir_path: Path, filename: str, reason: str) -> None:
+    """Persist an operator override into course.json — a corpus that contains
+    operator-approved flagged material must be distinguishable from a clean
+    one in every later audit (never just a transient UI warning)."""
+    meta_path = course_dir_path / "course.json"
+    meta = json.loads(meta_path.read_text(encoding="utf-8")) if meta_path.exists() else {}
+    overrides = [o for o in meta.get("suspicious_overrides", [])
+                 if o.get("filename") != filename]
+    overrides.append({"filename": filename, "reason": reason,
+                      "ts": time.strftime("%Y-%m-%d %H:%M:%S")})
+    meta["suspicious_overrides"] = overrides
+    meta_path.write_text(json.dumps(meta, ensure_ascii=False, indent=1),
+                         encoding="utf-8")
+
+
+def _overridden_names(course_dir_path: Path) -> set[str]:
+    meta_path = course_dir_path / "course.json"
+    if not meta_path.exists():
+        return set()
+    meta = json.loads(meta_path.read_text(encoding="utf-8"))
+    return {o.get("filename") for o in meta.get("suspicious_overrides", [])}
 
 
 def _extract_docx(data: bytes) -> list[tuple[Optional[str], str]]:
@@ -334,10 +358,29 @@ def build_index(course_id: str, embed_fn: Callable | None = None,
     embed_model = getattr(embed_fn, "model_name", "injected")
     chunk_cfg = {**DEFAULT_CHUNK_CONFIG, **(chunk_config or {})}
 
+    # Build-time re-screen: the add_source gates only cover the UI door.
+    # Files placed in sources/ out-of-band (manual copy, sync tooling, a
+    # crash between write and screen) must face the SAME gates here, or the
+    # index silently ingests key/rubric material. Operator-overridden files
+    # (persisted in course.json) are the only sanctioned exceptions.
+    overridden = _overridden_names(d)
+    excluded: list[dict] = []
     all_chunks: list[dict] = []
     src_hashes: dict[str, str] = {}
     for src in sorted((d / "sources").glob("*")):
+        if src.suffix.lower() not in SUPPORTED_SUFFIXES:
+            excluded.append({"file": src.name,
+                             "reason": f"unsupported type {src.suffix!r}"})
+            continue
+        if KEY_LIKE.search(src.name):
+            excluded.append({"file": src.name,
+                             "reason": "key/rubric-like filename"})
+            continue
         parsed = parse_source(src)
+        reason = content_suspicion(parsed["blocks"])
+        if reason and src.name not in overridden:
+            excluded.append({"file": src.name, "reason": reason})
+            continue
         src_hashes[src.name] = parsed["sha256"]
         (d / "parsed" / f"{parsed['sha256'][:16]}.json").write_text(
             json.dumps(parsed, ensure_ascii=False), encoding="utf-8")
@@ -363,6 +406,10 @@ def build_index(course_id: str, embed_fn: Callable | None = None,
         "dim": int(vecs.shape[1]),
         "built": time.strftime("%Y-%m-%d %H:%M:%S"),
         "config_hash": _config_hash(src_hashes, embed_model, chunk_cfg),
+        # Audit trail: what the build-time screen kept out, and which indexed
+        # files entered only via a persisted operator override.
+        "excluded_sources": excluded,
+        "suspicious_overrides": sorted(overridden & set(src_hashes)),
     }
     (d / "rag_index" / "index_manifest.json").write_text(
         json.dumps(manifest, ensure_ascii=False, indent=1), encoding="utf-8")

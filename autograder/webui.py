@@ -17,6 +17,7 @@ from __future__ import annotations
 import ctypes
 import json
 import os
+import shutil
 import subprocess
 import sys
 import time
@@ -33,7 +34,8 @@ from autograder.template import ExamTemplate  # noqa: E402
 
 st.set_page_config(page_title="Exam Autograder", page_icon="📝", layout="wide")
 
-KNOWN_PACKAGE_DIRS = [REPO_ROOT / "prob_data", REPO_ROOT / "sample_data"]
+
+from autograder.reviewui import package_dirs  # noqa: E402  (configurable discovery roots)
 
 
 # --------------------------------------------------------------------------
@@ -95,7 +97,7 @@ def spawn_runner(job_dir: Path) -> None:
 def discover_packages() -> dict[str, dict]:
     """Configured exam packages = a key file with a .template.json sidecar."""
     packages: dict[str, dict] = {}
-    for d in KNOWN_PACKAGE_DIRS:
+    for d in package_dirs():
         if not d.is_dir():
             continue
         for tpl_path in sorted(d.glob("*.template.json")):
@@ -591,6 +593,14 @@ with tab_new:
             grading_mode=grading_mode,
         )
         st.session_state["selected_job"] = job_dir.name
+        # The staging dir holds raw uploads under their ORIGINAL filenames
+        # (which may encode grades/private paths). create_job copied what it
+        # needs into anonymized job storage — the staged originals must not
+        # accumulate on disk and defeat intake anonymization at rest.
+        try:
+            shutil.rmtree(staging, ignore_errors=True)
+        finally:
+            st.session_state.pop("staging_dir", None)
         job = jobs.load_job(job_dir)
         st.success(
             f"Job **{job_dir.name}** created with {len(job['exams'])} exam(s). "

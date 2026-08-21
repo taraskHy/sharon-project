@@ -13,6 +13,15 @@ temperature = 0.0
 timeout_s = 300.0
 
 # ---- cloud tasks (OpenRouter) — slugs deliberately left to the environment ----
+#
+# Role states:
+#   model = "${SOME_MODEL}"  chosen via environment; an ENABLED task whose
+#                            variable is unset fails loudly at load time.
+#   model = "UNSELECTED"     model selection pending: the config loads, but
+#                            any run/benchmark that needs the role refuses
+#                            with a pointer to the candidate registry
+#                            (evaluation/model_selection/candidates.toml).
+# No cloud role has a default model: winners are chosen empirically per role.
 
 [models.ocr_primary]
 backend = "openrouter"
@@ -81,6 +90,32 @@ max_tokens = 300
 extra_generation = { think = false }
 prompt_version = "policy-v1"
 
+# ---- optional tasks referenced by code but disabled until configured ----
+# alignment.model_align_question tries align_resolve (local) then
+# align_resolve_cloud; discovery.resolve_policy_with_models tries
+# policy_infer then policy_infer_cloud. Absent routes are simply skipped
+# (deterministic/identity fallbacks + review flags); uncomment to enable.
+#
+# [models.align_resolve]
+# backend = "ollama"
+# base_url = "http://localhost:11434/v1"
+# model = "qwen3.8:27b-q4_K_M"
+# max_tokens = 300
+# extra_generation = { think = false }
+# prompt_version = "align-v1"
+#
+# [models.align_resolve_cloud]
+# backend = "openrouter"
+# model = "UNSELECTED"          # or "${ALIGN_RESOLVE_CLOUD_MODEL}"
+# max_tokens = 300
+# prompt_version = "align-v1"
+#
+# [models.policy_infer_cloud]
+# backend = "openrouter"
+# model = "UNSELECTED"          # or "${POLICY_INFER_CLOUD_MODEL}"
+# max_tokens = 300
+# prompt_version = "policy-v1"
+
 # ---- budgets (0 or omitted = unlimited; enabled=false disables enforcement) ----
 
 [budget]
@@ -90,6 +125,12 @@ max_calls_per_exam = 0
 max_input_tokens_per_job = 0
 max_output_tokens_per_job = 0
 max_cost_per_job = 0
+# Cross-RUN hard ceiling on cumulative reported cost, summed over this state
+# root's persisted gateway ledger — set 10.00 for the model-selection
+# campaign ($8 warning via soft_fraction 0.8). All campaign runs must share
+# ONE state root so one ledger carries the total; with a [pricing] entry for
+# the model, the call that WOULD cross the ceiling is refused up front.
+max_cost_total = 0
 max_calls_per_day = 0
 max_calls_per_month = 0
 soft_fraction = 0.8

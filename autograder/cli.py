@@ -768,7 +768,11 @@ def run_grade_pipeline(
         if alignment is None:
             cache_dir = Path(getattr(args, "key_cache_dir", None) or keycache.default_cache_dir())
             align_fp = alignment_fingerprint(current["key"], version_decision.version)
-            alignment = load_cached_alignment(cache_dir, align_fp)
+            # --no-key-cache must bypass the READ too: a fresh-state run may
+            # never silently reuse an alignment derived from another exam's
+            # scan (the store guard below already honored the flag).
+            alignment = (None if getattr(args, "no_key_cache", False)
+                         else load_cached_alignment(cache_dir, align_fp))
             if alignment is not None:
                 _log(
                     f"question alignment for {version_decision.version}: reused "

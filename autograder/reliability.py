@@ -208,6 +208,16 @@ def run_reliability_judging(*, key: AnswerKey, extraction: ExamExtraction, versi
         raise GradingModeError(
             f"grading mode {config.mode!r} needs a task gateway (--models-config); "
             "it never calls a provider directly")
+    # Run-level refusal for the REQUIRED role: a batch must never degrade a
+    # missing/UNSELECTED grade_primary route into one silent REVIEW per item.
+    # Optional roles (ocr_verify, grade_escalate, ocr_primary) still degrade
+    # gracefully per design; the primary grader is not optional.
+    try:
+        gateway.route(config.primary_task)
+    except Exception as e:  # noqa: BLE001 — any unusable route refuses the run
+        raise GradingModeError(
+            f"grading mode {config.mode!r} cannot start: required model role "
+            f"{config.primary_task!r} is not usable ({e})") from e
     packs = packs or {}
     policies = policies or {}
     crops = crops or {}
@@ -353,11 +363,14 @@ def _decide_item(*, q, ks, se, version, policy, pack, config, gateway, crops, ra
     # ---- 2. OCR status: is the reading itself trustworthy? -----------------
     text = (se.explanation_transcription or "").strip()
     legibility = se.explanation_legibility
+    crop = crops.get((q.id, sid))
+    quality = _crop_quality(crop)
     if not text and legibility in ("illegible", "partial"):
         # Writing exists but could not be read: an OCR problem, never a
         # grading one. It must not be handed to a stronger grader.
         t.statuses(ocr_status=OCR_UNRESOLVED)
         signals.ocr.output_chars = 0
+        signals.ocr.primary_legibility = legibility
         t.skipped("grade_primary", "ocr_unresolved",
                   detail=f"unreadable handwriting (legibility {legibility})",
                   avoided={"grading": 1, "cloud": 1})
@@ -367,23 +380,69 @@ def _decide_item(*, q, ks, se, version, policy, pack, config, gateway, crops, ra
                       _evaluation(sid, "illegible",
                                   f"unreadable handwriting (legibility {legibility})"))
     if not text:
+        # An empty transcription may be trusted as "no writing" only when no
+        # image evidence contradicts it: a non-blank crop, or a self-report
+        # of a 'full' reading with no text, is an OCR problem to review —
+        # never a silent AUTO 'missing' (which would zero the explanation).
+        if crop is not None and quality != "BLANK":
+            t.statuses(ocr_status=OCR_UNRESOLVED)
+            signals.ocr.output_chars = 0
+            signals.ocr.crop_quality_status = quality
+            signals.ocr.primary_legibility = legibility
+            t.skipped("grade_primary", "ocr_unresolved",
+                      detail=f"empty transcription over a non-blank crop (quality {quality})",
+                      avoided={"grading": 1, "cloud": 1})
+            return finish("REVIEW", "OCR_UNRESOLVED",
+                          f"the transcription is empty but the answer image is not blank "
+                          f"(image quality: {quality}) — possibly unread writing",
+                          _evaluation(sid, "illegible",
+                                      "empty transcription over a non-blank crop"))
+        if legibility == "full":
+            t.statuses(ocr_status=OCR_UNRESOLVED)
+            signals.ocr.output_chars = 0
+            signals.ocr.primary_legibility = legibility
+            t.skipped("grade_primary", "ocr_unresolved",
+                      detail="contradictory OCR output: legibility 'full' with empty text",
+                      avoided={"grading": 1, "cloud": 1})
+            return finish("REVIEW", "OCR_UNRESOLVED",
+                          "the OCR model reported a fully legible answer but returned an "
+                          "empty transcription — contradictory output",
+                          _evaluation(sid, "illegible", "contradictory empty OCR output"))
         t.statuses(ocr_status=OCR_OK)
         t.skipped("grade_primary", "explanation_not_required",
                   detail="no written explanation to grade", avoided={"grading": 1, "cloud": 1})
         return finish("AUTO", "AUTO", "no written explanation found for this sub-item",
                       _evaluation(sid, "missing", "no written explanation found for this sub-item"))
 
-    crop = crops.get((q.id, sid))
-    quality = _crop_quality(crop)
-    ocr = escalate_ocr(transcription=text, crop_png_b64=crop,
-                       gateway=gateway if ocr_available else None,
-                       quality_status=quality,
-                       meta={"item_id": item_id, "question_id": q.id})
+    # The OCR model's own structured uncertainty ('partial'/'illegible' with
+    # text present) is an OCR-side signal: it must at least flag the item.
+    self_declared = ([f"self_declared_{legibility}"]
+                     if legibility in ("partial", "illegible") else None)
+    try:
+        ocr = escalate_ocr(transcription=text, crop_png_b64=crop,
+                           gateway=gateway if ocr_available else None,
+                           quality_status=quality, task=config.ocr_verify_task,
+                           extra_suspicion=self_declared,
+                           meta={"item_id": item_id, "question_id": q.id,
+                                 "job_id": job_id or None, "exam_id": exam_id or None})
+    except BudgetExceeded as e:
+        t.failed("ocr_verify", f"budget exhausted: {e}", task=config.ocr_verify_task)
+        return finish("PAUSED", "BUDGET_PAUSED", f"budget exhausted: {e}", None)
     signals.ocr = ocr.signals
+    signals.ocr.primary_legibility = legibility
     if ocr.verify is not None:
         t.executed("ocr_verify", task=config.ocr_verify_task,
-                   model=_model_for(gateway, config.ocr_verify_task), cloud=True,
+                   model=ocr.call_meta.get("model") or _model_for(gateway, config.ocr_verify_task),
+                   cache_hit=ocr.call_meta.get("cache_hit"),
+                   usage=ocr.call_meta.get("usage"),
+                   request_id=ocr.call_meta.get("request_id"),
+                   latency_s=ocr.call_meta.get("latency_s"),
+                   cloud=ocr.call_meta.get("cloud", True),
                    reason=ocr.reason)
+    elif ocr.attempted:
+        # A request was actually made and failed: trace it as FAILED — never
+        # as a skip with avoided-cost credit.
+        t.failed("ocr_verify", ocr.reason, task=config.ocr_verify_task)
     else:
         t.skipped("ocr_verify",
                   "no_suspicion_signal" if not ocr.suspicion.suspicious else "ocr_unresolved",
@@ -430,7 +489,8 @@ def _decide_item(*, q, ks, se, version, policy, pack, config, gateway, crops, ra
         decision = escalate_grade(pack=view, selected=mc.selected, transcription=text,
                                   version=version, selection_correct=selection_correct,
                                   gateway=gateway, rag_attach=rag_attach,
-                                  meta={"item_id": item_id, "question_id": q.id},
+                                  meta={"item_id": item_id, "question_id": q.id,
+                                        "job_id": job_id or None, "exam_id": exam_id or None},
                                   primary_task=config.primary_task,
                                   escalate_task=config.escalate_task)
     except BudgetExceeded as e:

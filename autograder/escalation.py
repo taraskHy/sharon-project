@@ -31,7 +31,7 @@ from .evidence import CreditedItem, validate_evidence
 from .gradingpack import QuestionGradingPack
 from .signals import (OCR_UNRESOLVED as OCR_UNRESOLVED_, DecisionSignals, GradingSignals,
                       OCRSignals, grade_status_from, ocr_status_from)
-from .usage import BudgetExceeded
+from .usage import BudgetExceeded, is_cloud_route
 
 # ------------------------------------------------------------ OCR stage -----
 
@@ -65,8 +65,10 @@ def ocr_suspicion(text: str, *, expected_min_chars: int = 3, max_repeat_ratio: f
         s.append("no_hebrew")
     if re.search(r"\[\?\]|\[unreadable\]|לא קריא", t):
         s.append("self_flagged_unreadable")
-    # short technical tokens are the known dangerous class -> flag for verify
-    if len(_LATIN_TOKEN.findall(t)) >= 1 and len(t) < 40:
+    # short technical tokens are the known dangerous class -> flag for verify.
+    # Digits/operators count: a short formula ("x=3", "5+3=8") is exactly as
+    # substitution-prone as a short Latin token and must not bypass review.
+    if (len(_LATIN_TOKEN.findall(t)) >= 1 or _DIGIT_TOKEN.search(t)) and len(t) < 40:
         s.append("short_technical_token")
     return OCRSuspicion(bool(s), s)
 
@@ -76,7 +78,9 @@ class OCRVerifyResult(BaseModel):
     omissions: list[str] = Field(default_factory=list)
     substitutions: list[str] = Field(default_factory=list)
     additions: list[str] = Field(default_factory=list)
-    confidence: Literal["high", "medium", "low"] = "medium"
+    # Fail-closed default: an OMITTED self-assessment must never satisfy the
+    # AUTO gate (which requires high/medium), so silence defaults to "low".
+    confidence: Literal["high", "medium", "low"] = "low"
 
 
 OCR_VERIFY_SYSTEM = (
@@ -100,6 +104,13 @@ class OCRDecision:
     reason: str = ""
     status: str = "OCR_OK"              # signals.OCRStatus
     signals: OCRSignals = field(default_factory=OCRSignals)
+    # Call accountability: whether a verifier request was actually attempted
+    # (an attempted-but-failed call must be traced as FAILED, never as a
+    # skip with avoided-cost credit) and, on success, the real call
+    # metadata (model/cache_hit/usage/latency/cloud) for the trace.
+    attempted: bool = False
+    error: str = ""
+    call_meta: dict = field(default_factory=dict)
 
 
 def _ocr_signals(text: str, susp: OCRSuspicion, verify: dict | None,
@@ -114,11 +125,17 @@ def _ocr_signals(text: str, susp: OCRSuspicion, verify: dict | None,
 
 def escalate_ocr(*, transcription: str, crop_png_b64: str | None, gateway=None,
                  meta: dict | None = None, task: str = "ocr_verify",
-                 quality_status: str | None = None) -> OCRDecision:
+                 quality_status: str | None = None,
+                 extra_suspicion: list[str] | None = None) -> OCRDecision:
     """OCR-side escalation ONLY. It is never triggered by grading difficulty:
     the caller reaches it because the READING is in doubt (deterministic
-    suspicion signals, or a pre-OCR image-quality verdict)."""
+    suspicion signals, a pre-OCR image-quality verdict, or caller-supplied
+    ``extra_suspicion`` such as the OCR model's own partial-legibility
+    self-report)."""
     susp = ocr_suspicion(transcription)
+    if extra_suspicion:
+        susp.signals.extend(extra_suspicion)
+        susp.suspicious = bool(susp.signals)
     if quality_status and quality_status != "OK":
         # An unreadable/blank/clipped crop is an imaging problem: no amount of
         # verifier agreement should turn it into AUTO.
@@ -143,20 +160,33 @@ def escalate_ocr(*, transcription: str, crop_png_b64: str | None, gateway=None,
             {"type": "image", "source": {"type": "base64", "media_type": "image/png", "data": crop_png_b64}},
             {"type": "text", "text": "Proposed transcription:\n" + transcription + "\nCheck fidelity now."},
         ], output_model=OCRVerifyResult, meta={**(meta or {}), "stage": "escalation"})
+    except BudgetExceeded:
+        # Budget exhaustion is a job-level PAUSE signal, not a verifier
+        # failure: mirror escalate_grade so the caller pauses the run instead
+        # of silently degrading the item to REVIEW.
+        raise
     except Exception as e:  # noqa: BLE001
         return OCRDecision("review", transcription, susp, reason=f"verifier failed: {type(e).__name__}",
-                           status=OCR_UNRESOLVED_,
+                           status=OCR_UNRESOLVED_, attempted=True, error=type(e).__name__,
                            signals=_ocr_signals(transcription, susp, None, quality_status))
     v = res.value
     vd = v.model_dump()
     sig = _ocr_signals(transcription, susp, vd, quality_status)
+    call_meta = {
+        "model": res.route.model,
+        "cache_hit": res.cache_hit,
+        "usage": dict(res.usage or {}),
+        "request_id": (res.usage or {}).get("request_id"),
+        "latency_s": res.latency_s,
+        "cloud": is_cloud_route(res.route.backend, res.route.base_url),
+    }
     if v.verdict == "supported" and v.confidence in ("high", "medium") and not (v.omissions or v.substitutions or v.additions):
         sig.provider_agreement = True
         return OCRDecision("auto", transcription, susp, vd, reason="verifier supports transcription",
-                           status="OCR_OK", signals=sig)
+                           status="OCR_OK", signals=sig, attempted=True, call_meta=call_meta)
     sig.provider_agreement = False
     return OCRDecision("review", transcription, susp, vd, reason="verifier disagreement",
-                       status=OCR_UNRESOLVED_, signals=sig)
+                       status=OCR_UNRESOLVED_, signals=sig, attempted=True, call_meta=call_meta)
 
 
 # ---------------------------------------------------------- grading stage ---

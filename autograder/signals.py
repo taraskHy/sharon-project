@@ -71,6 +71,7 @@ class OCRSignals:
     schema_valid: Optional[bool] = None
     suspicion_signals: list[str] = field(default_factory=list)
     model_reported_confidence: Optional[str] = None
+    primary_legibility: Optional[str] = None    # the OCR model's own legibility self-report
 
 
 @dataclass

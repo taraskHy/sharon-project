@@ -24,7 +24,7 @@ Extract, for every question:
   rules you must capture faithfully:
   * "no credit for an answer without an explanation" -> explanation_required=true
   * per-sub-item point values (often question_points / number_of_items)
-  * caps: e.g. 20 items x 2 points but the question maximum is 36 (a built-in
+  * caps: e.g. 12 items x 3 points but the question maximum is 30 (a built-in
     allowance for errors). Set max_points to the CAP and points to the per-item
     value; do not scale items down.
   * where the authoritative answers live (e.g. "only the separate answer table
@@ -33,26 +33,27 @@ Extract, for every question:
 Conventions to watch for in answer-key documents:
 - MULTIPLE EXAM VERSIONS: keys often encode several exam versions in one
   document, e.g. by listing several letters per item where TEXT COLOUR selects
-  the version ("the colours are R,B,G for versions A1,A2,A3"). Look for a
-  legend. Populate correct_by_version with one entry per version. If there is
-  only one version, use the key "default".
+  the version (a legend like "the colours are colour-1, colour-2, colour-3 for
+  versions V1,V2,V3"). Look for a legend. Populate correct_by_version with one
+  entry per version. If there is only one version, use the key "default".
   CRITICAL DECODING RULE: when a sub-item shows a GROUP of several answer
-  letters (e.g. "F/F/G", "A/H/B", or letters printed in different colours),
-  that group IS the per-version answer list. The legend declares which
-  colour/position belongs to which version id, IN ORDER — e.g. a legend
-  "colours are R,B,G for A1,A2,A3" means the red (first) letter is A1's
-  answer, the blue (second) is A2's, the green (third) is A3's. Expand every
+  letters (e.g. "B/B/E", or letters printed in different colours), that group
+  IS the per-version answer list. The legend declares which colour/position
+  belongs to which version id, IN ORDER — the first legend colour's letter is
+  the first version's answer, the second the second's, and so on. Expand every
   such group into correct_by_version with one entry per version.
-  WORKED EXAMPLE: item shows "F/F/G", legend says colours R,B,G correspond
-  to A1,A2,A3 → correct_by_version = {"A1": ["F"], "A2": ["F"], "A3": ["G"]}.
-  Note A3 differs — copying one letter to every version is a DECODE ERROR.
+  WORKED EXAMPLE (synthetic): item shows "B/B/E", legend maps three colours to
+  versions V1,V2,V3 in order → correct_by_version =
+  {"V1": ["B"], "V2": ["B"], "V3": ["E"]}.
+  Note V3 differs — copying one letter to every version is a DECODE ERROR.
   Preserve each position's own letter exactly; versions differ on purpose.
   EVERY sub-item must end up with an answer for EVERY version, and version
-  notes ("in version 2 the answer is 3") override the group for that version.
-- ACCEPTED ALTERNATIVES: red or inline notes such as "we decided to accept both
-  answers A and B due to imprecise wording" mean the list of accepted answers
-  for that sub-item contains both. Version-dependent notes ("in version 2 the
-  answer is 3; in versions 1 and 3 it is 4") go into correct_by_version.
+  notes ("in version V2 this item's answer is option D") override the group
+  for that version.
+- ACCEPTED ALTERNATIVES: red or inline notes such as "we decided to accept
+  both listed options due to imprecise wording" mean the list of accepted
+  answers for that sub-item contains both. Version-dependent notes ("in one
+  version the answer differs from the others") go into correct_by_version.
 - HIGHLIGHTING: correct MC options are often marked by highlight colour.
 - Reference reasoning: explanatory paragraphs under an item are the reference
   explanation for judging student justifications; transcribe their substance.
@@ -96,7 +97,7 @@ Report:
    a short location description and the question ids they serve.
    CRITICAL: students sometimes fill an answer table under the wrong printed
    title and fix it by hand (crossing out the printed question number, writing
-   another, adding a note like "I mixed up questions 1 and 2"). Report the
+   another, adding a note like "I swapped these two tables"). Report the
    question each answer area ACTUALLY answers after such corrections, and
    explain the evidence.
 
@@ -118,7 +119,7 @@ Report:
    verbatim, state its interpretation and its scope.
 
 4. INK SEPARATION: describe the student's own writing (colour/style) versus
-   instructor/grader annotations (ticks, crosses, scores like "28/32", written
+   instructor/grader annotations (ticks, crosses, scores like "17/20", written
    comments, usually a different colour, often red). Later passes must ignore
    grader annotations entirely — they are NOT student answers.
 
@@ -195,8 +196,8 @@ Report, for each page:
    serves, and which question(s) it ACTUALLY serves. Students sometimes fill
    an answer table under the wrong printed title and fix it by hand: a
    crossed-out printed question number, a handwritten replacement number, a
-   note like "I mixed up / swapped the tables" (e.g. Hebrew "התבלבלתי בין
-   השאלות"), arrows between pages. INSPECT THE TITLE DIGITS CHARACTER BY
+   swap note in any language (Hebrew or English, e.g. "swapped the tables"),
+   arrows between pages. INSPECT THE TITLE DIGITS CHARACTER BY
    CHARACTER for strikethrough or an overwritten digit, and READ every
    handwritten line near the page heading — these corrections are small,
    faint, and easy to miss, and missing one misgrades two whole questions.
@@ -219,7 +220,7 @@ Report, for each page:
    transcription, transcribe what you can and still state the note's
    evident meaning — these notes govern extraction and must not be dropped.
 
-Instructor/grader ink (ticks, crosses, scores like "28/32", comments,
+Instructor/grader ink (ticks, crosses, scores like "17/20", comments,
 usually a different colour such as red) is NOT the student's writing: never
 treat it as a student note or correction; do not let it influence
 serves_questions.
@@ -368,9 +369,10 @@ the transcription of the student's explanation.
 
 Judge ONLY the explanation's content against the reference reasoning:
 - "valid": expresses the correct core reasoning, even with different wording,
-  language mixing, abbreviations, or minor imprecision. The exam's own rubric
-  warns that empty justifications like "this is what's left" earn nothing —
-  an explanation must contain actual reasoning to be valid.
+  language mixing, abbreviations, or minor imprecision. A content-free
+  justification (restating the choice, or elimination phrases like "this is
+  what's left") contains no reasoning and is not "valid" on its own, unless
+  the rubric supplied for this question explicitly grants credit for it.
 - "partially_valid": contains a correct central idea but misses or gets wrong
   a material part of the reasoning.
 - "invalid": wrong, circular ("because it matches"), or content-free.

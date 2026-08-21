@@ -167,7 +167,7 @@ def merge_closeread(survey: ExamSurvey, closeread: SheetCloseRead) -> ExamSurvey
 
     seen = {(n.page_number, n.verbatim_text.strip()) for n in survey.marking_conventions}
     for note in closeread.marking_conventions:
-        # A bare score fraction ("28/32") is instructor grading ink, not a
+        # A bare score fraction ("17/20") is instructor grading ink, not a
         # student marking convention — models occasionally transcribe them
         # here despite the prompt; drop them deterministically.
         if _SCORE_FRACTION.match(note.verbatim_text.strip()):

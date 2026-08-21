@@ -1,0 +1,125 @@
+# Model-selection candidate registry — CANDIDATES ONLY, no winners.
+#
+# This file is DATA for the model-selection phase, not grading logic. Model
+# slugs (and any prices you note alongside them) are mutable external facts:
+# they may change or disappear, and promotional pricing must never be baked
+# into code. The final winner for every role is selected EMPIRICALLY by the
+# benchmark protocols in docs/model-selection.md, run through ModelGateway
+# under the experiment budget in this file's [budget] section — never by
+# default, preference, or vendor loyalty.
+#
+# status values:
+#   UNSELECTED      no winner chosen; cloud runs needing this role must refuse
+#   SELECTED_LOCAL  a local deterministic/model route is the standing choice
+#
+# Wiring: each role maps to a ModelGateway task + the ${ENV} slug that
+# models.toml reads. "UNSELECTED" is expressed operationally by leaving the
+# task's env slug unset / the task unconfigured — the gateway then fails
+# loudly at construction and the run refuses before any exam is graded.
+
+[meta]
+version = 1
+updated = "2026-08-21"
+rule = "no candidate becomes a production default without a recorded benchmark run (dataset role, config hash, prompt version, model, results)"
+
+# ---- experiment budget for ALL future OpenRouter model-selection runs ----
+# Hard ceiling across the whole project’s experimental spend, enforced via
+# the gateway budget config (see docs/model-selection.md §budget): no call
+# may execute if predicted/known cumulative spend would cross the ceiling.
+[budget]
+experiment_total_usd = 10.00
+warn_usd = 8.00
+
+[roles.ocr_primary]
+status = "UNSELECTED"
+gateway_task = "ocr_primary"
+env_slug = "OCR_PRIMARY_MODEL"
+vision = true
+candidates = [
+    "google/gemini-3.7-flash",
+    "openai/gpt-5.6-luna",
+    "anthropic/claude-sonnet-5",
+]
+benchmark = "B1 OCR (frozen hebrew_bench_v2 protocol)"
+
+[roles.ocr_verify]
+status = "UNSELECTED"
+gateway_task = "ocr_verify"
+env_slug = "OCR_VERIFY_MODEL"
+vision = true
+candidates = [
+    "openai/gpt-5.6-luna",
+    "anthropic/claude-sonnet-5",
+    "google/gemini-3.7-flash",
+]
+benchmark = "B2 OCR-verifier (image+frozen transcription only)"
+
+[roles.grade_primary]
+status = "UNSELECTED"
+gateway_task = "grade_primary"
+env_slug = "GRADE_PRIMARY_MODEL"
+vision = false
+candidates = [
+    "openai/gpt-5.6-luna-pro",
+    "google/gemini-3.7-flash",
+    "anthropic/claude-sonnet-5",
+]
+benchmark = "B3 grade-primary (frozen transcriptions)"
+
+[roles.grade_escalate]
+status = "UNSELECTED"
+gateway_task = "grade_escalate"
+env_slug = "GRADE_ESCALATE_MODEL"
+vision = false
+candidates = [
+    "openai/gpt-5.6-sol",
+    "anthropic/claude-opus-5",
+    "anthropic/claude-sonnet-5",
+]
+benchmark = "B4 grade-escalation (genuinely-escalated subset only)"
+
+[roles.mc_resolve_cloud]
+status = "UNSELECTED"
+gateway_task = "mc_resolve_cloud"
+env_slug = "MC_RESOLVE_CLOUD_MODEL"
+vision = true
+candidates = [
+    "openai/gpt-5.6-luna",
+    "google/gemini-3.7-flash",
+]
+benchmark = "B5a MC resolution (audited MC dataset)"
+
+[roles.variant_resolve]
+status = "UNSELECTED"
+gateway_task = "variant_resolve_cloud"
+env_slug = "VARIANT_RESOLVE_CLOUD_MODEL"
+vision = true
+candidates = [
+    "openai/gpt-5.6-luna",
+    "google/gemini-3.7-flash",
+]
+benchmark = "B5b variant-marker reading (audited variant dataset)"
+
+[roles.align_resolve]
+status = "UNSELECTED"
+gateway_task = "align_resolve_cloud"
+env_slug = "ALIGN_RESOLVE_CLOUD_MODEL"
+vision = false
+candidates = [
+    "openai/gpt-5.6-luna-pro",
+    "google/gemini-3.7-flash",
+]
+benchmark = "B5c alignment permutation (audited alignment dataset)"
+
+# ---- standing local routes (kept; not part of the cloud candidate race) ----
+
+[roles.mc_resolve_local]
+status = "SELECTED_LOCAL"
+gateway_task = "mc_resolve"
+model = "local Ollama (see models.toml [models.mc_resolve])"
+note = "deterministic CV first; local resolver before any cloud MC call"
+
+[roles.rag_embed]
+status = "SELECTED_LOCAL"
+model = "bge-m3 via local Ollama"
+note = "course RAG embedding/retrieval stays local; no cloud embedding"

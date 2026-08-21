@@ -25,3 +25,11 @@ survey_image_edge = 640                  # cheap whole-document survey render; e
                                          # re-reads authoritative answer-sheet pages at
                                          # max_image_edge (see docs/architecture.md)
 max_tokens = 8000                        # output cap per model call
+
+[ui]
+# Directories the web UI scans for configured exam packages (a key file plus
+# its .template.json sidecar). Relative paths resolve against the repo root;
+# the GRADER_PACKAGE_DIRS environment variable (os.pathsep-separated)
+# overrides this list. Point it at wherever YOUR packages live — dataset
+# directories are configuration, never hardcoded behavior.
+package_dirs = ["packages", "sample_data"]

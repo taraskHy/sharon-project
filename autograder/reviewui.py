@@ -3,22 +3,59 @@
 Review items are assembled from persisted job artefacts into three fast
 shapes (OCR / MC / GRADING), each carrying exactly the evidence the
 lecturer needs for a one-click decision. Resolutions persist to
-<exam_dir>/review_resolutions.json (never mutating result.json in place),
-and are re-applied by the pipeline on resume. VARIANT/LAYOUT decisions
-that are exactly reusable expose apply-to-all; semantic grading decisions
-never do.
+<exam_dir>/review_resolutions.json (never mutating result.json in place).
+NOTE: recorded resolutions are currently DISPLAY-ONLY — no pipeline code
+re-applies them on resume yet (planned for the next UI phase). VARIANT/
+LAYOUT decisions that are exactly reusable expose apply-to-all; semantic
+grading decisions never do.
 """
 
 from __future__ import annotations
 
 import base64
 import json
+import os
 import time
 from dataclasses import asdict, dataclass, field
 from pathlib import Path
 from typing import Literal, Optional
 
 from .reviewqueue import ReviewCase, classify_reason, group_cases, prioritize, queue_summary
+
+_REPO_ROOT = Path(__file__).resolve().parents[1]
+
+
+def package_dirs(repo_root: Path | None = None) -> list[Path]:
+    """Package-discovery roots for the web UI — CONFIGURATION, never
+    dataset-specific code.
+
+    Precedence: the GRADER_PACKAGE_DIRS environment variable
+    (os.pathsep-separated paths, relative ones resolved against the repo
+    root), then grader.toml ``[ui] package_dirs``, then the neutral default
+    of ``packages/`` plus the shipped ``sample_data/`` demo package.
+    Historical dataset directories are deliberately NOT hardcoded here:
+    point the configuration at them instead."""
+    root = Path(repo_root) if repo_root is not None else _REPO_ROOT
+
+    def _resolve(p: str | Path) -> Path:
+        path = Path(p).expanduser()
+        return path if path.is_absolute() else root / path
+
+    env = os.environ.get("GRADER_PACKAGE_DIRS", "")
+    if env.strip():
+        return [_resolve(p) for p in env.split(os.pathsep) if p.strip()]
+    cfg = root / "grader.toml"
+    if cfg.exists():
+        import tomllib
+
+        try:
+            with open(cfg, "rb") as fh:
+                dirs = (tomllib.load(fh).get("ui") or {}).get("package_dirs")
+            if isinstance(dirs, list) and dirs:
+                return [_resolve(d) for d in dirs]
+        except Exception:  # noqa: BLE001 — a broken grader.toml must not kill the UI
+            pass
+    return [root / "packages", root / "sample_data"]
 
 
 @dataclass
