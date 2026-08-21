@@ -26,3 +26,8 @@ evaluation/grading_rag_ab_v1/state/
 
 # Graphify generated graph state (rebuild with: graphify update)
 graphify-out/
+
+# AI collaboration harness (developer tooling) — local state only
+tools/ai_collab/runs/
+tools/ai_collab/cache/
+tools/ai_collab/config.toml

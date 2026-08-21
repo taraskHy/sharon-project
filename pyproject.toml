@@ -28,3 +28,6 @@ include = ["autograder*"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
+# repo root on sys.path so tests can import the dev tooling under tools/
+# (tools/ is deliberately NOT part of the installed autograder package)
+pythonpath = ["."]
