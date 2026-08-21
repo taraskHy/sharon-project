@@ -13,8 +13,8 @@ from autograder.canary import (AcceptanceRules, CanaryCase, CanaryStore, CanaryS
                                compare_to_baseline, run_suite)
 from autograder.escalation import GradeResult, RubricItemGrade, escalate_grade
 from autograder.gateway import ModelGateway
-from autograder.gradingpack import (RAG_POLICIES, attach_rag, build_pack, rag_query,
-                                    source_fingerprint)
+from autograder.gradingpack import (RAG_POLICIES, activate_rag, attach_rag, build_pack,
+                                    rag_query, source_fingerprint)
 from autograder.provenance import DecisionProvenance, drift_between, provenance_from_call
 from tests.test_escalation import _gw
 from tests.test_grade import make_key
@@ -197,38 +197,58 @@ def test_rag_always_embeds_context_at_build_time():
     assert "Course context" in p.to_grader_context()
 
 
-def test_rag_on_uncertain_retrieves_only_after_an_unclean_primary():
+def test_rag_on_uncertain_prepares_at_build_and_activates_only_when_unclean():
     calls = []
     p = pack("RAG_ON_UNCERTAIN", fake_retrieve(calls))
-    assert calls == [] and p.rag_evidence == []                  # nothing at build time
+    # PREPARATION: exactly one free LOCAL retrieval at pack build. The grader
+    # context stays empty — no provider tokens are spent by preparation.
+    assert len(calls) == 1
+    assert p.rag_evidence == [] and [e.chunk_id for e in p.rag_prepared] == ["c0", "c1"]
+    assert "Course context" not in p.to_grader_context()
     clean = GradeResult(score=2, rubric_items=[
         RubricItemGrade(id="R1", met=True, student_evidence="התדרים הגבוהים נשמרים")])
     gw, n = _gw({"grade_primary": [clean]})
     d = escalate_grade(pack=p, selected="F", transcription=TRANSCRIPTION, version="A1",
-                       selection_correct=True, gateway=gw,
-                       rag_attach=lambda pk: attach_rag(pk, course_id="CV", retrieve=fake_retrieve(calls)))
-    assert d.outcome == "auto" and calls == []                   # easy case: no retrieval at all
+                       selection_correct=True, gateway=gw, rag_attach=activate_rag)
+    assert d.outcome == "auto" and len(calls) == 1               # easy case: no activation
 
     gw2, n2 = _gw({"grade_primary": [GradeResult(score=99), clean], "grade_escalate": [clean]})
     d2 = escalate_grade(pack=p, selected="F", transcription=TRANSCRIPTION, version="A1",
-                        selection_correct=True, gateway=gw2,
-                        rag_attach=lambda pk: attach_rag(pk, course_id="CV", retrieve=fake_retrieve(calls)))
-    assert len(calls) == 1 and d2.stage == "primary_rag" and d2.outcome == "auto"
+                        selection_correct=True, gateway=gw2, rag_attach=activate_rag)
+    assert len(calls) == 1                                        # ACTIVATION reuses the cache
+    assert d2.stage == "primary_rag" and d2.outcome == "auto"
     assert d2.signals.rag_used and n2["grade_escalate"] == 0     # RAG resolved it before escalating
+    assert d2.rag_chunk_ids == ["c0", "c1"] and d2.rag_chars > 0
 
 
 def test_rag_on_escalation_gives_context_only_to_the_escalation_grader():
     calls = []
     p = pack("RAG_ON_ESCALATION", fake_retrieve(calls))
+    assert len(calls) == 1 and p.rag_evidence == []              # prepared, not active
     clean = GradeResult(score=2, rubric_items=[
         RubricItemGrade(id="R1", met=True, student_evidence="התדרים הגבוהים נשמרים")])
     unsure = GradeResult(score=2, uncertain=True)
     gw, n = _gw({"grade_primary": [unsure], "grade_escalate": [clean]})
     d = escalate_grade(pack=p, selected="F", transcription=TRANSCRIPTION, version="A1",
-                       selection_correct=True, gateway=gw,
-                       rag_attach=lambda pk: attach_rag(pk, course_id="CV", retrieve=fake_retrieve(calls)))
+                       selection_correct=True, gateway=gw, rag_attach=activate_rag)
     assert len(calls) == 1 and n["grade_primary"] == 1 and n["grade_escalate"] == 1
     assert d.outcome == "auto" and d.stage == "escalated" and d.signals.rag_used
+
+
+def test_optional_rag_unavailable_degrades_to_no_rag_grading():
+    """RAG_ON_UNCERTAIN with no course/retriever: the retry is skipped, the
+    flow continues to escalation, and nothing REVIEWs because of retrieval."""
+    p = pack("RAG_ON_UNCERTAIN", None, course_id=None)
+    assert p.rag_available is False and p.rag_prepared == []
+    clean = GradeResult(score=2, rubric_items=[
+        RubricItemGrade(id="R1", met=True, student_evidence="התדרים הגבוהים נשמרים")])
+    unsure = GradeResult(score=2, uncertain=True)
+    gw, n = _gw({"grade_primary": [unsure], "grade_escalate": [clean]})
+    d = escalate_grade(pack=p, selected="F", transcription=TRANSCRIPTION, version="A1",
+                       selection_correct=True, gateway=gw, rag_attach=activate_rag)
+    assert d.outcome == "auto" and d.stage == "escalated"        # resolved WITHOUT RAG
+    assert d.signals.rag_available is False and not d.signals.rag_used
+    assert n["grade_primary"] == 1                               # no pointless RAG retry
 
 
 def test_retrieval_is_never_steered_by_the_student_words():
@@ -263,7 +283,7 @@ def test_pack_audit_records_every_source_it_was_built_from():
     calls = []
     p = pack("RAG_ALWAYS", fake_retrieve(calls))
     a = p.audit()
-    assert a["question_id"] == "1" and a["pack_hash"] == p.hash and a["pack_version"] == "v1"
+    assert a["question_id"] == "1" and a["pack_hash"] == p.hash and a["pack_version"] == "v2"
     assert a["question_text_hash"] and a["rubric_hash"] and a["solution_hash"]
     assert a["rag_policy"] == "RAG_ALWAYS" and a["rag_chunk_ids"] == ["c0", "c1"]
     assert a["rag_scores"] == [0.81, 0.62] and a["rag_sources"] == ["lecture3.pdf"]

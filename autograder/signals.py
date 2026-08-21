@@ -89,6 +89,10 @@ class GradingSignals:
     primary_escalation_agreement: Optional[bool] = None
     explicit_uncertainty: Optional[bool] = None
     rag_used: Optional[bool] = None
+    #: False when an optional-RAG policy wanted context but none was available
+    #: (no course/retriever/index). Grading continued without it — recorded,
+    #: never a REVIEW cause by itself.
+    rag_available: Optional[bool] = None
     model_reported_confidence: Optional[str] = None
 
 

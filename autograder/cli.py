@@ -845,19 +845,52 @@ def run_grade_pipeline(
     if _mode in ("legacy", "shadow"):
         judgements = judge_all(backend, key, extraction, version_decision.version, progress=_log)
     if _mode != "legacy":
-        from .gradingpack import build_all_packs
+        from .gradingpack import (DEFAULT_RAG_CHAR_BUDGET, DEFAULT_RAG_TOP_K, PackStore,
+                                  activate_rag, build_all_packs, source_fingerprint)
         from .reliability import ReliabilityConfig, run_reliability_judging
         from .trace import DecisionTraceStore
 
         _rel_cfg = ReliabilityConfig(
             mode=_mode, rag_policy=(getattr(args, "rag_policy", None) or "RAG_DISABLED"))
-        _packs = build_all_packs(key, _pols, rag_policy=_rel_cfg.rag_policy)
+
+        # Persistent pack lifecycle: packs are built ONCE per exam package and
+        # reused verbatim for every student (PackStore); any change to the
+        # key, policies, course index, retrieval config, RAG policy, or pack
+        # schema changes the source fingerprint and rebuilds. Retrieval at
+        # build/preparation time is LOCAL (bge-m3 course index) — it never
+        # costs provider tokens; RAG_DISABLED performs no retrieval at all.
+        _course = getattr(args, "course", None)
+        _retrieve = None
+        _index_hash = None
+        if _course and _rel_cfg.rag_policy != "RAG_DISABLED":
+            from . import courses as _courses
+
+            _retrieve = _courses.retrieve
+            _index_hash = _courses.index_status(_course).get("config_hash")
+        _packs_root = Path(
+            getattr(args, "packs_root", None)
+            or ((out.parent / "packs") if out.parent.name else (out / "packs")))
+        _pack_fp = source_fingerprint(
+            Path(args.key).read_bytes(), _index_hash, _pols,
+            DEFAULT_RAG_TOP_K, DEFAULT_RAG_CHAR_BUDGET, rag_policy=_rel_cfg.rag_policy)
+        _store = PackStore(_packs_root)
+        _packs = _store.load(_pack_fp)
+        if _packs is None:
+            _packs = build_all_packs(
+                key, _pols, rag_policy=_rel_cfg.rag_policy, course_id=_course,
+                retrieve=_retrieve, rag_index_fingerprint=_index_hash)
+            _store.save(_packs, _pack_fp)
+            _log(f"grading packs built and persisted (fingerprint {_pack_fp})")
+        else:
+            _log(f"grading packs reused from the pack store (fingerprint {_pack_fp})")
+
         _exam_id = exam_label or Path(exam_path).stem
         try:
             rel_run = run_reliability_judging(
                 key=key, extraction=extraction, version=version_decision.version,
                 config=_rel_cfg, gateway=_rt.gateway, packs=_packs, policies=_pols,
                 exam_id=_exam_id, trace_store=DecisionTraceStore(out / "decisions.jsonl"),
+                rag_attach=activate_rag,
                 variant_source=(variant_record or {}).get("mapping_source"),
                 alignment_source=alignment_note, progress=_log)
         except Exception as e:  # noqa: BLE001

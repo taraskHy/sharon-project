@@ -204,13 +204,17 @@ class GradeResult(BaseModel):
 
 
 GRADE_SYSTEM = (
-    "You grade ONE student answer against the provided question pack (rubric "
-    "and scoring rules are authoritative; course context is supplemental). "
-    "Preserve the student's wording as given — never rewrite it. Return the "
-    "score (within the stated maximum) and one entry per rubric item: its id, "
-    "whether it is met, and — when met — a SHORT span copied VERBATIM from the "
-    "student transcription that supports it (copy it exactly; never paraphrase, "
-    "translate, correct or invent a span; if no span in the transcription "
+    "You grade ONE student answer against the provided question pack. Grade "
+    "only according to the supplied rubric, and only what the student actually "
+    "wrote. Course context, when present, is supplemental reference material "
+    "for judging CORRECTNESS — it is never evidence of what the student wrote: "
+    "never assume the student wrote something merely because it appears in the "
+    "course context. Preserve the student's wording as given — never rewrite "
+    "it. Return the score (within the stated maximum) and one entry per rubric "
+    "item: its id, whether it is met, and — when met — a SHORT span copied "
+    "VERBATIM from the student transcription that supports it (copy it "
+    "exactly; never paraphrase, translate, correct or invent a span; spans "
+    "from the course context do not count; if no span in the transcription "
     "supports the item, the item is not met). Set uncertain=true if the "
     "transcription or the rubric leaves the score genuinely undecidable. Reply "
     "with ONLY the JSON object."
@@ -284,6 +288,16 @@ class GradeDecision:
     reason: str = ""
     status: str = "GRADE_OK"            # signals.GradeStatus
     signals: GradingSignals = field(default_factory=GradingSignals)
+    rag_chunk_ids: list[str] = field(default_factory=list)   # chunks in the DECIDING request
+    rag_chars: int = 0
+
+
+def _rag_meta(p: QuestionGradingPack) -> dict:
+    """Numbers-only RAG accounting attached to every grading call's meta, so
+    the ledger can separate RAG-added input from the base context."""
+    return {"rag_policy": getattr(p, "rag_policy", None),
+            "rag_chars": int(getattr(p, "rag_chars", 0) or 0),
+            "rag_chunks": len(getattr(p, "rag_evidence", []) or [])}
 
 
 def escalate_grade(*, pack: QuestionGradingPack, selected: str | None, transcription: str,
@@ -307,7 +321,8 @@ def escalate_grade(*, pack: QuestionGradingPack, selected: str | None, transcrip
     blocks = grade_prompt(pack, selected=selected, transcription=transcription, version=version)
     try:
         primary = gateway.call(task=primary_task, system=GRADE_SYSTEM, content_blocks=blocks,
-                               output_model=GradeResult, meta={**m, "stage": "grade"}).value
+                               output_model=GradeResult,
+                               meta={**m, **_rag_meta(pack), "stage": "grade"}).value
     except BudgetExceeded:
         # Budget exhaustion is a job-level PAUSE signal, not a grading failure:
         # the item must stay pending, not be recorded as an unresolved grade.
@@ -321,19 +336,29 @@ def escalate_grade(*, pack: QuestionGradingPack, selected: str | None, transcrip
     sig = _grading_signals(primary, v)
     if v.ok:
         return GradeDecision("auto", primary, "primary", reason="primary clean",
-                             status="GRADE_OK", signals=sig)
+                             status="GRADE_OK", signals=sig,
+                             rag_chunk_ids=[e.chunk_id for e in pack.rag_evidence],
+                             rag_chars=pack.rag_chars)
     status = grade_status_from(validation_ok=v.ok, uncertain=primary.uncertain)
 
     policy = getattr(pack, "rag_policy", "RAG_ALWAYS")
     rag_pack = None
     if policy == "RAG_ON_UNCERTAIN" and rag_attach is not None:
         rag_pack = rag_attach(pack)
+        if rag_pack is pack or not rag_pack.rag_evidence:
+            # Optional RAG is unavailable (no course/retriever/index or the
+            # search returned nothing): grading continues WITHOUT it — the
+            # absence of retrieval is recorded, never a failure or a REVIEW.
+            sig.rag_available = False
+            rag_pack = None
+    if rag_pack is not None:
         rag_blocks = grade_prompt(rag_pack, selected=selected, transcription=transcription,
                                   version=version)
         try:
             retried = gateway.call(task=primary_task, system=GRADE_SYSTEM, content_blocks=rag_blocks,
                                    output_model=GradeResult,
-                                   meta={**m, "pack_hash": rag_pack.hash, "stage": "grade_rag"}).value
+                                   meta={**m, **_rag_meta(rag_pack), "pack_hash": rag_pack.hash,
+                                         "stage": "grade_rag"}).value
         except Exception:  # noqa: BLE001 — a failed retry just leaves us where we were
             retried = None
         if retried is not None:
@@ -344,7 +369,9 @@ def escalate_grade(*, pack: QuestionGradingPack, selected: str | None, transcrip
                 sig_rag.rag_used = True
                 return GradeDecision("auto", retried, "primary_rag", v.problems,
                                      "course context resolved the primary grading",
-                                     "GRADE_OK", sig_rag)
+                                     "GRADE_OK", sig_rag,
+                                     rag_chunk_ids=[e.chunk_id for e in rag_pack.rag_evidence],
+                                     rag_chars=rag_pack.rag_chars)
 
     try:
         gateway.route(escalate_task)
@@ -354,6 +381,9 @@ def escalate_grade(*, pack: QuestionGradingPack, selected: str | None, transcrip
     esc_pack = pack
     if policy == "RAG_ON_ESCALATION" and rag_attach is not None:
         esc_pack = rag_attach(pack)
+        if esc_pack is pack or not esc_pack.rag_evidence:
+            sig.rag_available = False        # degrade to no-RAG escalation, never REVIEW
+            esc_pack = pack
     elif rag_pack is not None:
         esc_pack = rag_pack
     esc_blocks = (blocks if esc_pack is pack else
@@ -362,7 +392,8 @@ def escalate_grade(*, pack: QuestionGradingPack, selected: str | None, transcrip
     try:
         second = gateway.call(task=escalate_task, system=GRADE_SYSTEM, content_blocks=esc_blocks,
                               output_model=GradeResult,
-                              meta={**m, "pack_hash": esc_pack.hash, "stage": "escalation"}).value
+                              meta={**m, **_rag_meta(esc_pack), "pack_hash": esc_pack.hash,
+                                    "stage": "escalation"}).value
     except BudgetExceeded:
         raise
     except Exception as e:  # noqa: BLE001
@@ -374,17 +405,21 @@ def escalate_grade(*, pack: QuestionGradingPack, selected: str | None, transcrip
                   and set(second.met_ids()) == set(primary.met_ids()))
     sig2 = _grading_signals(second, v2)
     sig2.rag_used = esc_pack is not pack
+    sig2.rag_available = sig.rag_available
     sig2.primary_score = primary.score
     sig2.escalation_score = second.score
     sig2.score_delta = round(abs(second.score - primary.score), 4)
     sig2.primary_escalation_agreement = bool(consistent)
+    esc_rag_ids = [e.chunk_id for e in esc_pack.rag_evidence]
     if v2.ok and (consistent or primary.uncertain and not second.uncertain):
         # second stage clean AND either agrees with primary, or resolves the
         # primary's declared uncertainty with a clean, self-consistent grade
         return GradeDecision("auto", second, "escalated", v.problems,
-                             "escalation resolved consistently", "GRADE_OK", sig2)
+                             "escalation resolved consistently", "GRADE_OK", sig2,
+                             rag_chunk_ids=esc_rag_ids, rag_chars=esc_pack.rag_chars)
     return GradeDecision("review", second if v2.ok else primary, "escalated", v.problems + v2.problems,
-                         "unresolved disagreement after escalation", "GRADE_DISAGREEMENT", sig2)
+                         "unresolved disagreement after escalation", "GRADE_DISAGREEMENT", sig2,
+                         rag_chunk_ids=esc_rag_ids, rag_chars=esc_pack.rag_chars)
 
 
 def _grading_signals(g: GradeResult, v: GradeValidation) -> GradingSignals:
