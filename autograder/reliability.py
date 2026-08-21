@@ -5,9 +5,12 @@ Three explicit modes (``--grading-mode``):
 ``legacy``       the validated ``ExplanationJudgement`` path, unchanged. Default.
 ``reliability``  this module decides each written answer:
 
-                     frozen transcription
+                     MC resolution + grading-policy early exit
+                       (BEFORE any OCR or grading work)
+                       -> lazy explanation OCR where deferred (gateway task
+                          ocr_primary — only items that survived the gate)
+                       -> frozen transcription
                        -> typed OCR status (never "fixed" by a stronger grader)
-                       -> grading policy early exit (before ANY OCR/grading work)
                        -> grade_primary through the gateway
                        -> evidence validation + question invariants
                        -> escalation / grading RAG where the policy allows
@@ -194,6 +197,7 @@ def run_reliability_judging(*, key: AnswerKey, extraction: ExamExtraction, versi
                             trace_store: DecisionTraceStore | None = None,
                             crops: dict[tuple[str, str], str] | None = None,
                             rag_attach: Callable[[QuestionGradingPack], QuestionGradingPack] | None = None,
+                            ocr_fn: Callable | None = None,
                             variant_source: str | None = None,
                             alignment_source: str | None = None,
                             progress: Callable[[str], None] | None = None) -> ReliabilityRun:
@@ -231,7 +235,7 @@ def run_reliability_judging(*, key: AnswerKey, extraction: ExamExtraction, versi
             decision = _decide_item(
                 q=q, ks=ks, se=se, version=version, policy=policy, pack=pack,
                 config=config, gateway=gateway, crops=crops, rag_attach=rag_attach,
-                pack_cache=pack_cache, exam_id=exam_id, job_id=job_id,
+                ocr_fn=ocr_fn, pack_cache=pack_cache, exam_id=exam_id, job_id=job_id,
                 variant_source=variant_source, alignment_source=alignment_source,
                 grade_available=grade_available, ocr_available=ocr_available,
                 paused=run.paused, pause_reason=run.pause_reason)
@@ -262,7 +266,7 @@ def _route_ok(gateway, task: str) -> bool:
 
 
 def _decide_item(*, q, ks, se, version, policy, pack, config, gateway, crops, rag_attach,
-                 pack_cache, exam_id, job_id, variant_source, alignment_source,
+                 ocr_fn=None, pack_cache, exam_id, job_id, variant_source, alignment_source,
                  grade_available, ocr_available, paused, pause_reason) -> ItemDecision:
     sid = se.sub_item_id
     item_id = anonymous_item_id(job_id or "job", exam_id or "exam", q.id, sid)
@@ -311,6 +315,40 @@ def _decide_item(*, q, ks, se, version, policy, pack, config, gateway, crops, ra
                       avoided={"grading": 1, "cloud": 1})
             return finish("REVIEW", "MC_UNRESOLVED", gate.reason,
                           _evaluation(sid, "missing", gate.reason))
+
+    # ---- 1b. lazy explanation OCR: the gate above proved it is needed ------
+    #
+    # In reliability mode the extraction pass deliberately deferred every
+    # gradeable explanation ("deferred"); the transcription happens HERE,
+    # per item, through the gateway (task ocr_primary) — so an item the
+    # policy gate settled deterministically never pays for OCR at all. The
+    # result is written back into the extraction sub-item and becomes the
+    # frozen student transcription (created once, then immutable).
+    if se.explanation_legibility == "deferred" and not (se.explanation_transcription or "").strip():
+        if ocr_fn is None:
+            t.skipped("grade_primary", "ocr_unresolved",
+                      detail="transcription was deferred but no lazy OCR is available",
+                      avoided={"grading": 1, "cloud": 1})
+            return finish("REVIEW", "OCR_UNRESOLVED",
+                          "the explanation transcription was deferred and no lazy OCR "
+                          "route is available to produce it",
+                          _evaluation(sid, "illegible", "deferred transcription unavailable"))
+        try:
+            ocr_res = ocr_fn(q, se)
+        except BudgetExceeded as e:
+            t.failed("ocr_explanation", f"budget exhausted: {e}", task="ocr_primary")
+            return finish("PAUSED", "BUDGET_PAUSED", f"budget exhausted: {e}", None)
+        except Exception as e:  # noqa: BLE001 — an OCR provider failure is a REVIEW
+            t.failed("ocr_explanation", f"{type(e).__name__}: {e}", task="ocr_primary")
+            return finish("REVIEW", "PROVIDER_FAILED",
+                          f"lazy explanation OCR failed: {type(e).__name__}",
+                          _evaluation(sid, "illegible", "the OCR model could not be reached"))
+        t.executed("ocr_explanation", task=ocr_res.get("task"), model=ocr_res.get("model"),
+                   cache_hit=ocr_res.get("cache_hit"), usage=ocr_res.get("usage"),
+                   request_id=ocr_res.get("request_id"),
+                   latency_s=ocr_res.get("latency_s"), cloud=True)
+        se.explanation_transcription = ocr_res.get("transcription")
+        se.explanation_legibility = ocr_res.get("legibility") or "none"
 
     # ---- 2. OCR status: is the reading itself trustworthy? -----------------
     text = (se.explanation_transcription or "").strip()

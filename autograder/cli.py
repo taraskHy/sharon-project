@@ -630,6 +630,23 @@ def run_grade_pipeline(
         _pre = gate_package(package_report_for_key(key, args.key, policies=_pols))
         _log(f"package preflight: {_pre.summary().splitlines()[0]}")
 
+    # Lazy explanation OCR (reliability mode only): the extraction pass reads
+    # marks/selections and DEFERS every gradeable explanation; the reliability
+    # route transcribes per item, through the gateway task ocr_primary, only
+    # AFTER the MC/policy gate proves the transcription is needed. Requires an
+    # ocr_primary route; without one the validated eager extraction runs
+    # unchanged. Shadow mode stays eager — the authoritative legacy judge
+    # needs the transcriptions up front.
+    _defer_ocr = False
+    if _mode == "reliability" and _rt is not None:
+        try:
+            _rt.gateway.route("ocr_primary")
+            _defer_ocr = True
+            _log("explanation OCR is LAZY: deferred until after the MC/policy gate "
+                 "(gateway task ocr_primary)")
+        except Exception:  # noqa: BLE001 — no route configured: eager as before
+            _defer_ocr = False
+
     if pages is None:
         _log(f"loading exam scan {exam_path}")
         pages = load_pages(exam_path, max_image_edge)
@@ -775,7 +792,7 @@ def run_grade_pipeline(
     # reuse another variant's extraction artefacts.
     extraction_fp = current["exam"] + (
         f"|variant:{version_decision.version}" if version_decision is not None else ""
-    )
+    ) + ("|deferred-ocr" if _defer_ocr else "")
     extraction_path = out / "extraction.json"
     if _reuse(args, extraction_path, extraction_fp, stored.get("extraction") or stored.get("exam")):
         _log(f"resume: reusing {extraction_path}")
@@ -785,7 +802,7 @@ def run_grade_pipeline(
     else:
         extraction = extract_exam(
             backend, key, survey, pages, progress=_log, alignment=alignment,
-            template=template,
+            template=template, transcribe_explanations=not _defer_ocr,
         )
         if alignment_note and alignment_note != "operator-override":
             # Any non-operator alignment (derived, cached-derived, identity
@@ -885,12 +902,22 @@ def run_grade_pipeline(
             _log(f"grading packs reused from the pack store (fingerprint {_pack_fp})")
 
         _exam_id = exam_label or Path(exam_path).stem
+        _ocr_fn = None
+        if _defer_ocr:
+            from .extract import lazy_explanation_ocr
+            from .privacy import anonymous_item_id as _anon_id
+
+            def _ocr_fn(q, se, _gw=_rt.gateway, _survey=survey, _pages=pages):
+                return lazy_explanation_ocr(
+                    _gw, q, se, _survey, _pages,
+                    meta={"exam_id": _exam_id, "question_id": q.id, "stage": "ocr",
+                          "item_id": _anon_id("job", _exam_id, q.id, se.sub_item_id)})
         try:
             rel_run = run_reliability_judging(
                 key=key, extraction=extraction, version=version_decision.version,
                 config=_rel_cfg, gateway=_rt.gateway, packs=_packs, policies=_pols,
                 exam_id=_exam_id, trace_store=DecisionTraceStore(out / "decisions.jsonl"),
-                rag_attach=activate_rag,
+                rag_attach=activate_rag, ocr_fn=_ocr_fn,
                 variant_source=(variant_record or {}).get("mapping_source"),
                 alignment_source=alignment_note, progress=_log)
         except Exception as e:  # noqa: BLE001
@@ -898,6 +925,10 @@ def run_grade_pipeline(
                 raise
             # shadow must NEVER be able to affect the authoritative grade
             _log(f"shadow route failed ({type(e).__name__}: {e}); legacy result unaffected")
+        if _defer_ocr and rel_run is not None:
+            # Lazily produced transcriptions are frozen to disk: extraction.json
+            # now records exactly what the route read (created once, immutable).
+            _write_json(extraction, extraction_path)
         if _mode == "reliability" and rel_run is not None:
             judgements = rel_run.evaluations
             _log(f"reliability route: {rel_run.by_state()}")

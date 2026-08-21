@@ -477,7 +477,10 @@ class SubItemExtraction(BaseModel):
         default=None,
         description="Near-verbatim transcription of the student's written justification, if any.",
     )
-    explanation_legibility: Literal["none", "full", "partial", "illegible"] = "none"
+    #: "deferred" = the extraction pass deliberately did NOT transcribe the
+    #: explanation (reliability mode, lazy OCR): the reliability route
+    #: transcribes it only AFTER the MC/policy gate proves it is needed.
+    explanation_legibility: Literal["none", "full", "partial", "illegible", "deferred"] = "none"
     marks_observed: list[MarkObservation] = Field(default_factory=list)
     interpretation_rationale: str = Field(
         description="How the final answer (or the ambiguity) was decided from the visible marks."
@@ -547,6 +550,19 @@ class ExamExtraction(BaseModel):
             if q.question_id == qid:
                 return q
         raise KeyError(f"question {qid!r} not in extraction")
+
+
+class ExplanationTranscription(BaseModel):
+    """Lazy per-item explanation OCR (gateway task ocr_primary, reliability
+    mode). Runs only AFTER the MC/policy gate proved the explanation is
+    actually needed — never during the up-front extraction pass."""
+
+    sub_item_id: str
+    transcription: Optional[str] = Field(
+        default=None,
+        description="Verbatim transcription of the written explanation, or null if none exists.",
+    )
+    legibility: Literal["none", "full", "partial", "illegible"] = "none"
 
 
 # --------------------------------------------------------------------------

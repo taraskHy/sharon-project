@@ -298,6 +298,21 @@ also set an uncertainty_note explaining what is unclear.
 """
 
 
+EXPLANATION_OCR_SYSTEM = """\
+You transcribe ONE student's handwritten explanation from a scanned exam.
+Locate the written explanation belonging to the requested sub-item and
+transcribe it VERBATIM (Hebrew, possibly mixed with English technical tokens,
+numbers, and operators). Never correct, complete, translate, or improve the
+text — preserve the student's wording and errors exactly as written. Do not
+transcribe printed text, other sub-items, or instructor ink.
+
+If no written explanation exists for the sub-item, return transcription null
+and legibility "none". If writing exists but cannot be read reliably, return
+legibility "illegible" (or "partial" when only part is readable — transcribe
+the readable part). Reply with ONLY the JSON object.
+"""
+
+
 BAND_EXTRACTION_SYSTEM = """\
 You are reading ONE ROW of a multiple-choice answer table cropped from a
 scanned exam answer sheet (Hebrew, right-to-left). The image shows the

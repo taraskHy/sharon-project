@@ -78,7 +78,7 @@ def _survey_context_for_question(qid: str, survey: ExamSurvey) -> dict:
     }
 
 
-def _question_structure(q: KeyQuestion) -> str:
+def _question_structure(q: KeyQuestion, transcribe_explanations: bool = True) -> str:
     """Question structure WITHOUT correct answers (extraction must stay blind
     to the key so it reports what the student wrote, not what is right)."""
     lines = [
@@ -90,7 +90,14 @@ def _question_structure(q: KeyQuestion) -> str:
         lines.append(f"  - sub-item {s.id}: {s.prompt}")
     if q.answer_source:
         lines.append(f"Authoritative answer location per exam instructions: {q.answer_source}")
-    if q.explanation_required:
+    if not transcribe_explanations:
+        lines.append(
+            "TRANSCRIPTION IS DEFERRED for this pass: report marks/selected "
+            "options, statuses and confidences only. Do NOT transcribe any "
+            "written explanation text (explanation_transcription stays null) — "
+            "a later pass transcribes only the explanations that are needed."
+        )
+    elif q.explanation_required:
         lines.append("Each sub-item requires a short written justification by the student.")
     elif q.type in ("multiple_choice", "matching") and q.explanation_weight == 0:
         lines.append(
@@ -99,6 +106,17 @@ def _question_structure(q: KeyQuestion) -> str:
             "selected option only (explanation_transcription stays null)."
         )
     return "\n".join(lines)
+
+
+def _explanations_gradeable(q: KeyQuestion) -> bool:
+    """Same predicate as grade._question_needs_judging (kept inline to avoid
+    an import cycle): does this question's written explanation carry points?"""
+    return (
+        q.explanation_required
+        or q.explanation_weight > 0
+        or str(getattr(q.type, "value", q.type)) in
+        ("selection_with_explanation", "matching_with_explanation", "open")
+    )
 
 
 # Questions with more sub-items than this are extracted in consecutive
@@ -115,12 +133,13 @@ def _extract_chunk(
     sub_items: list,
     survey: ExamSurvey,
     relevant: list[PageImage],
+    transcribe_explanations: bool = True,
 ) -> QuestionExtraction:
     ids = [s.id for s in sub_items]
     chunk_q = q.model_copy(deep=True)
     chunk_q.sub_items = sub_items
     blocks: list[dict] = [
-        {"type": "text", "text": _question_structure(chunk_q)},
+        {"type": "text", "text": _question_structure(chunk_q, transcribe_explanations)},
         {
             "type": "text",
             "text": (
@@ -546,12 +565,14 @@ def extract_question(
     survey: ExamSurvey,
     pages: list[PageImage],
     chunk_size: int = EXTRACTION_CHUNK_SIZE,
+    transcribe_explanations: bool = True,
 ) -> QuestionExtraction:
     relevant = _pages_for_question(q.id, survey, pages)
     chunks = [
         q.sub_items[i : i + chunk_size] for i in range(0, len(q.sub_items), chunk_size)
     ] or [[]]
-    parts = [_extract_chunk(llm, q, chunk, survey, relevant) for chunk in chunks]
+    parts = [_extract_chunk(llm, q, chunk, survey, relevant, transcribe_explanations)
+             for chunk in chunks]
     extraction = _merge_chunk_extractions(q, parts) if len(parts) > 1 else parts[0]
     extraction = _reconcile_sub_items(q, extraction)
     _flag_uniform_collapse(q, extraction)
@@ -653,12 +674,20 @@ def extract_exam(
     progress=None,
     alignment=None,
     template=None,
+    transcribe_explanations: bool = True,
 ) -> ExamExtraction:
     """``alignment`` (a validated VariantAlignment) relabels each question
     into the variant's PRINTED sub-item numbering for the model — the
     numbering the student actually saw and filled into the answer sheet —
     and the results are remapped back to the key's canonical ids before
-    reconciliation and scoring."""
+    reconciliation and scoring.
+
+    ``transcribe_explanations=False`` (reliability mode, lazy OCR): the pass
+    reads marks/selections only. Explanations of gradeable questions are
+    marked legibility="deferred" STRUCTURALLY (not by prompt trust) and are
+    transcribed later, per item, only after the MC/policy gate proves the
+    transcription is needed.
+    """
     from .variant import printed_view, remap_extraction
 
     entries = {e.question_id: e for e in alignment.questions} if alignment else {}
@@ -670,6 +699,7 @@ def extract_exam(
         if _banding_applies(q, template, entry):
             qx = extract_question_banded(llm, q, survey, pages, template, progress)
             if qx is not None:
+                _enforce_deferred(q, qx, transcribe_explanations)
                 questions.append(qx)
                 continue
         if entry is not None and not entry.identical_order:
@@ -679,11 +709,14 @@ def extract_exam(
                     f"question {q.id}: variant prints sub-items in a different "
                     f"order — extracting in printed numbering, remapping to key ids"
                 )
-            qx = extract_question(llm, view, survey, pages)
+            qx = extract_question(llm, view, survey, pages,
+                                  transcribe_explanations=transcribe_explanations)
             qx = remap_extraction(qx, entry)
             qx.question_id = q.id
         else:
-            qx = extract_question(llm, q, survey, pages)
+            qx = extract_question(llm, q, survey, pages,
+                                  transcribe_explanations=transcribe_explanations)
+        _enforce_deferred(q, qx, transcribe_explanations)
         questions.append(qx)
     extraction = ExamExtraction(questions=questions)
     # The sheet's condition is established by the close-read at high
@@ -698,6 +731,53 @@ def extract_exam(
         if progress:
             progress(f"authority: {line}")
     return extraction
+
+
+def _enforce_deferred(q: KeyQuestion, qx: QuestionExtraction,
+                      transcribe_explanations: bool) -> None:
+    """Structural guarantee for the deferred pass: no transcription survives
+    it regardless of prompt compliance. Gradeable-explanation sub-items are
+    marked "deferred" (transcribe later, on demand); the rest are "none"."""
+    if transcribe_explanations:
+        return
+    gradeable = _explanations_gradeable(q)
+    for s in qx.sub_items:
+        s.explanation_transcription = None
+        s.explanation_legibility = "deferred" if gradeable else "none"
+
+
+def lazy_explanation_ocr(gateway, q: KeyQuestion, se: SubItemExtraction,
+                         survey: ExamSurvey, pages: list[PageImage], *,
+                         task: str = "ocr_primary", meta: dict | None = None) -> dict:
+    """Transcribe ONE deferred explanation through the task gateway.
+
+    Runs only from the reliability route, only after the MC/policy gate
+    proved the explanation is needed. Going through the gateway means every
+    lazy OCR call gets the privacy scan, the request cache, budget checks
+    and the usage ledger — the same guarantees as every other cloud task.
+    """
+    from .prompts import EXPLANATION_OCR_SYSTEM
+    from .schema import ExplanationTranscription
+
+    relevant = _pages_for_question(q.id, survey, pages)
+    blocks: list[dict] = [
+        {"type": "text", "text": _question_structure(q)},
+        {"type": "text", "text": f"Relevant scan pages follow ({len(relevant)} pages)."},
+        *labeled_page_blocks(relevant),
+        {"type": "text", "text": (
+            f"Transcribe the student's written explanation for sub-item "
+            f"{se.sub_item_id} of question {q.id} now. Report sub_item_id "
+            f"{se.sub_item_id!r}."
+        )},
+    ]
+    res = gateway.call(task=task, system=EXPLANATION_OCR_SYSTEM, content_blocks=blocks,
+                       output_model=ExplanationTranscription, meta=dict(meta or {}))
+    v = res.value
+    return {"transcription": v.transcription, "legibility": v.legibility, "task": task,
+            "model": res.route.model, "cache_hit": res.cache_hit,
+            "usage": dict(res.usage or {}),
+            "request_id": (res.usage or {}).get("request_id"),
+            "latency_s": res.latency_s}
 
 
 _CONDITION_WORST_FIRST = ["damaged", "ambiguous", "blank", "present"]
