@@ -171,10 +171,35 @@ def test_guard_rejects_openai_compatible_openrouter_url():
             BackendConfig(backend="openai", model="vendor/m", base_url=OPENROUTER_URL))
 
 
+def test_guard_rejects_anthropic_direct_content_route():
+    """UNIVERSAL RULE: no cloud provider may receive exam content outside the
+    gateway — the formerly tolerated anthropic dev route included."""
+    with pytest.raises(BackendError, match="anthropic"):
+        guard_direct_cloud_backend(BackendConfig(backend="anthropic", model="claude-x"))
+
+
+def test_guard_rejects_generic_remote_openai_compatible_endpoints():
+    with pytest.raises(BackendError, match="task gateway"):
+        guard_direct_cloud_backend(
+            BackendConfig(backend="openai", model="m", base_url=REMOTE_OPENAI_URL))
+
+
 def test_guard_allows_local_openai_compatible_backends():
     guard_direct_cloud_backend(
         BackendConfig(backend="openai", model="qwen", base_url=LOCAL_URL))
+    guard_direct_cloud_backend(
+        BackendConfig(backend="openai", model="qwen",
+                      base_url="http://192.168.1.20:8000/v1"))
     guard_direct_cloud_backend(BackendConfig(backend="mock", model="m"))
+    guard_direct_cloud_backend(
+        BackendConfig(backend="ollama_native", model="qwen", base_url=LOCAL_URL))
+
+
+def test_cli_grade_refuses_anthropic_via_flags(tmp_path):
+    rc = main(["grade", "--exam", str(tmp_path / "missing.pdf"),
+               "--key", str(_key_json(tmp_path)), "--out", str(tmp_path / "out"),
+               "--backend", "anthropic"])
+    assert rc == 2   # refused before any backend construction or file access
 
 
 def _key_json(tmp_path):

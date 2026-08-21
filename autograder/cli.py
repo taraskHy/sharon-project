@@ -10,10 +10,15 @@ Usage:
 
 Backend selection (provider-independent — see docs/deployment.md):
 
-    --backend openai     any OpenAI-compatible server: Ollama, vLLM, TGI,
-                         llama.cpp server, LM Studio, OpenRouter, Groq, ...
+    --backend openai     any LOCAL OpenAI-compatible server: Ollama, vLLM,
+                         TGI, llama.cpp server, LM Studio, ...
     --backend mock       offline fixtures (tests / plumbing checks)
-    --backend anthropic  optional, development comparison only
+    --backend anthropic  doctor connectivity probe only — grading/parsing with
+                         ANY cloud provider (anthropic, openrouter, remote
+                         OpenAI-compatible endpoints) is refused on this
+                         direct path and must go through the task gateway
+                         (--models-config): privacy -> cache -> budget ->
+                         provider -> ledger.
 
 Backend flags may also come from a TOML file via --config (CLI flags win):
 
@@ -482,26 +487,30 @@ def _key_version_problems(
 
 
 def guard_direct_cloud_backend(backend_config: BackendConfig) -> None:
-    """The legacy direct-backend path (extraction/survey/variant/key parsing
-    and the legacy explanation judge) bypasses the task gateway — no privacy
-    scan, no request cache, no budget check, no usage ledger. It must
-    therefore never carry OpenRouter traffic: classification uses the
-    EFFECTIVE provider (base_url wins over the nominal backend name), so
-    `--backend openai --base-url https://openrouter.ai/...` is refused too.
+    """UNIVERSAL RULE: any request carrying exam/student content must pass the
+    task gateway (privacy -> cache -> budget -> provider -> ledger). The
+    legacy direct-backend path (extraction/survey/variant/key parsing and the
+    legacy explanation judge) has none of those safeguards, so it may only
+    talk to LOCAL backends (Ollama/vLLM/LM Studio/llama.cpp/...) or mocks.
 
-    OpenRouter runs only through --models-config (the task gateway), where
-    every call passes privacy -> cache -> budget -> provider -> ledger.
+    Classification uses the EFFECTIVE configuration (usage.is_cloud_route):
+    openrouter/anthropic/gemini by name, openrouter.ai by URL, and ANY remote
+    OpenAI-compatible endpoint. Content-free connectivity probes (doctor, the
+    UI health check) are exempt by simply not calling this guard.
     """
-    from .usage import effective_provider
+    from .usage import effective_provider, is_cloud_route
 
-    if effective_provider(backend_config.backend, backend_config.base_url) == "openrouter":
+    if is_cloud_route(backend_config.backend, backend_config.base_url):
+        provider = effective_provider(backend_config.backend, backend_config.base_url)
         raise BackendError(
-            "refusing to send exam content to OpenRouter over the direct legacy "
-            "backend path: it bypasses privacy filtering, the request cache, "
-            "budget enforcement and the usage ledger. Configure the OpenRouter "
-            "task routes in models.toml and run with --models-config (and "
-            "--grading-mode reliability|shadow for graded work) so every call "
-            "passes the task gateway."
+            f"refusing to send exam content to the cloud provider {provider!r} "
+            "over the direct legacy backend path: it bypasses privacy "
+            "filtering, the request cache, budget enforcement and the usage "
+            "ledger. Route this provider through models.toml task routes and "
+            "run with --models-config (and --grading-mode reliability|shadow "
+            "for graded work) so every call passes the task gateway. "
+            "Local/self-hosted endpoints and --backend mock remain available "
+            "on the direct path."
         )
 
 

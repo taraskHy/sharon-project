@@ -935,7 +935,10 @@ with tab_jobs:
         if _shadow_path.exists():
             _cmp = json.loads(_shadow_path.read_text(encoding="utf-8"))
             _agree = _cmp.get("agreement", {})
-            with st.expander("🧪 Shadow comparison (recorded only — NOT applied)"):
+            with st.expander("🧪 Shadow comparison — SHADOW / NON-AUTHORITATIVE (recorded only, NOT applied)"):
+                st.warning("SHADOW / NON-AUTHORITATIVE — every figure below is the "
+                           "shadow route's recorded proposal. The student's actual "
+                           "grade is the legacy result above.")
                 st.info(_cmp.get("note", ""))
                 s = st.columns(4)
                 s[0].metric("Exact score agreement", f"{_agree.get('exact_score_agreement', 0)}%")

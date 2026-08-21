@@ -63,3 +63,23 @@ def test_reconstruction_fallback_remains_loudly_labeled(tmp_path):
     exam_dir.mkdir()
     text = decision_trace_for(exam_dir, RESULT, "2", "1")   # no decisions.jsonl at all
     assert "RECONSTRUCTED SUMMARY - NOT AN EXECUTION TRACE" in text
+
+
+def test_shadow_traces_are_labeled_non_authoritative(tmp_path):
+    """A trace recorded by the SHADOW route is a proposal — it must never be
+    readable as the student's actual recorded grade."""
+    exam_dir = tmp_path / "shadow-out"
+    _store_with_record(exam_dir, exam_id="custom-label")
+    (exam_dir / "shadow_comparison.json").write_text("{}", encoding="utf-8")
+    text = decision_trace_for(exam_dir, RESULT, "2", "1")
+    assert text.startswith("SHADOW / NON-AUTHORITATIVE")
+    assert "actual recorded grade is the legacy result" in text
+    assert "wrong_choice_zero" in text                     # the real trace still renders
+
+
+def test_reliability_traces_carry_no_shadow_label(tmp_path):
+    exam_dir = tmp_path / "reliability-out"
+    _store_with_record(exam_dir, exam_id="custom-label")   # no shadow_comparison.json
+    text = decision_trace_for(exam_dir, RESULT, "2", "1")
+    assert "SHADOW / NON-AUTHORITATIVE" not in text
+    assert "RECONSTRUCTED" not in text

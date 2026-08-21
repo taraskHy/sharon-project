@@ -368,9 +368,18 @@ def decision_trace_for(exam_dir: str | Path, result: dict, question_id: str,
         stages = [StageRecord(**{k: v for k, v in s.items()
                                  if k in StageRecord.__dataclass_fields__})
                   for s in rec.get("stages", [])]
-        return DecisionRecord(**{**{k: v for k, v in rec.items()
+        text = DecisionRecord(**{**{k: v for k, v in rec.items()
                                     if k in DecisionRecord.__dataclass_fields__},
                                  "stages": stages}).explain()
+        if (Path(exam_dir) / "shadow_comparison.json").exists():
+            # The recorded route belongs to the SHADOW run: it is a proposal,
+            # never the student's grade — label it so it cannot be confused
+            # with the authoritative legacy result in result.json.
+            return ("SHADOW / NON-AUTHORITATIVE\n"
+                    "(this trace records the shadow reliability route's proposal; "
+                    "the student's actual recorded grade is the legacy result in "
+                    "result.json)\n\n" + text)
+        return text
     row = next((s for q in result.get("questions", []) if q.get("question_id") == question_id
                 for s in q.get("sub_results", []) if s.get("sub_item_id") == sub_item_id), None)
     if row is None:
