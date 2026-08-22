@@ -1,3 +1,4 @@
 # Frozen benchmark artifacts are stored BYTE-EXACT: no end-of-line conversion,
 # so recorded sha256 hashes match the repository blobs on every platform.
 evaluation/hebrew_bench_v2/** -text
+evaluation/model_selection/datasets/** -text
