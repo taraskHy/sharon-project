@@ -262,6 +262,46 @@ def cmd_bench_repair_grading_evidence(args) -> int:
     return 0
 
 
+def cmd_bench_evidence_repairs(args) -> int:
+    """Status + integrity of the manual GRADE_PRIMARY evidence repairs (read-only)."""
+    from .evidence_repairs import verify_repairs
+    d = Path(args.datasets_root) / args.role
+    if not (d / "manifest.json").exists():
+        _log(f"REFUSED: no frozen dataset at {d}")
+        return 3
+    rep = verify_repairs(d)
+    if not args.json:
+        print(f"{rep['repaired']} of {rep['expected']} expected line repair(s) recorded "
+              f"({rep['by_disposition']}); remaining: {rep['remaining'] or 'none'}")
+        for p in rep["problems"]:
+            print(f"  PROBLEM {p['line_id']}: {p['problem']}")
+        print(f"frozen OCR benchmark: " + ", ".join(f"{k}={v[:12]}…" for k, v in rep["frozen_bench_sha256"].items()))
+        print("repair tool: .venv\\Scripts\\python.exe -m streamlit run scripts\\evidence_repair_ui.py "
+              "-- --browser.gatherUsageStats false")
+        return 0 if not rep["problems"] else 1
+    _emit(rep, True)
+    return 0 if not rep["problems"] else 1
+
+
+def cmd_bench_apply_evidence_repairs(args) -> int:
+    """Fold completed human repairs into the grading dataset (records a manifest revision)."""
+    from .datasets import DatasetBuildError
+    from .evidence_repairs import RepairError, apply_repairs
+    d = Path(args.datasets_root) / args.role
+    try:
+        out = apply_repairs(d, dry_run=bool(args.dry_run), allow_partial=bool(args.allow_partial))
+    except (RepairError, DatasetBuildError) as e:
+        _log(f"REFUSED: {e}")
+        return 3
+    _emit(out, True)
+    if out["written"]:
+        _log(f"[repairs] model input CHANGED: inputs_sha256 {out['previous_inputs_sha256'][:12]}… -> "
+             f"{out['inputs_sha256'][:12]}… (recorded in the manifest revisions)")
+        _log("[repairs] rebuild the labeling bundle to serve the repaired evidence: "
+             "python -m labeling_app build-bundle --replace")
+    return 0
+
+
 def cmd_bench_missing_transcriptions(args) -> int:
     """Which grading cases are NOT measurable for model accuracy because a
     recorded student line has no audited transcription — and exactly which line
@@ -483,6 +523,21 @@ def add_bench_commands(sub) -> None:
     p = bs.add_parser("owner-labels", help="grading roles: how many cases the owner still has to label")
     common(p)
     p.set_defaults(func=cmd_bench_owner_labels)
+
+    p = bs.add_parser("evidence-repairs",
+                      help="status + integrity of the manual GRADE_PRIMARY evidence repairs (human line "
+                           "transcriptions stored outside the frozen OCR benchmark)")
+    common(p)
+    p.set_defaults(func=cmd_bench_evidence_repairs)
+
+    p = bs.add_parser("apply-evidence-repairs",
+                      help="fold completed human line repairs into the grading dataset (changes the model input; "
+                           "records a manifest revision; never touches hebrew_bench_v2)")
+    common(p)
+    p.add_argument("--dry-run", action="store_true")
+    p.add_argument("--allow-partial", action="store_true",
+                   help="apply the repairs recorded so far instead of requiring all of them")
+    p.set_defaults(func=cmd_bench_apply_evidence_repairs)
 
     p = bs.add_parser("missing-transcriptions",
                       help="grading roles: cases excluded from accuracy because a recorded line has no audited "

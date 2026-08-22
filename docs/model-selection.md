@@ -384,6 +384,61 @@ awaiting a human transcription of one restored line each (all nine upstream line
 annotations are `bad_segmentation`, i.e. the line crop itself is mis-segmented, so
 the remedy is a recrop + transcription, not typing over a bad crop).
 
+### Repairing those nine lines (`evidence_repairs`, 2026-08-23)
+
+The repair is **GRADE_PRIMARY dataset preparation, not an OCR-benchmark change**.
+`evaluation/hebrew_bench_v2` — its 129 items, its 102 audited references, its
+checksums and every historical OCR result — is never written; `apply_repairs`
+hashes `items.json`, `references.json`, `reference_audit.json` and
+`reference_audit_manifest.json` before and after and refuses on any difference.
+Repairs live beside the grading dataset, like the other human side files:
+
+```
+evaluation/model_selection/datasets/grade_primary/
+  manual_evidence_repairs.jsonl            one record per repaired line
+  manual_evidence_repairs/crops/<line>.png the human-defined crop
+```
+
+**Geometry is derived, never guessed.** Every upstream line crop of a cell is a
+pixel-exact sub-image of that cell's `*_cell_clean.png` (zero pixel difference),
+so `case_geometry` proves which file is the cell by requiring *every* recorded
+line to locate exactly inside it, and reports each line's band plus the bands no
+audited line covers. The default repair rectangle is the largest such uncovered
+band; the owner can move the top/bottom edges (lines are full-width bands). Each
+record stores the rectangle, the cell's sha256 and the crop's sha256, so
+`verify_repairs` re-renders the crop from the recorded geometry and compares
+bytes. Nothing is inferred from a filename.
+
+A repair may conclude that the sliver is **not a line of writing at all**
+(`disposition: no_text_segmentation_artifact`) — the line is then resolved with
+no text rather than an invented one.
+
+```bash
+# 1. transcribe (local, no OCR, no model, no network, no Cloudflare)
+.venv\Scripts\python.exe -m streamlit run scripts\evidence_repair_ui.py -- --browser.gatherUsageStats false
+# 2. check
+python -m autograder bench evidence-repairs --role grade_primary
+# 3. fold into the dataset (changes the model input; records a manifest revision)
+python -m autograder bench apply-evidence-repairs --role grade_primary [--dry-run]
+```
+
+`apply_repairs` splices each repaired line into the transcription **at its own
+position in authoritative line order**, sets `transcription_complete: true`,
+empties `lines_without_audited_transcription`, and records `evidence_repairs` on
+the case. The historic per-line record is kept, not overwritten: the
+mis-segmented crop stays in `original_image` / `original_transcription_status`
+next to the new `repair` block. Case ids, scores, `rubric_met` and label
+provenance are untouched — the repair changes the model's INPUT, never the
+ground truth.
+
+Because the model input changes, so does the dataset checksum. That is recorded
+explicitly in `manifest.revisions` (`kind: manual_grade_evidence_repair`) with
+the previous and new `inputs_sha256`/`labels_sha256`, `inputs_changed: true`, the
+repaired line ids, the repair-store hash, the frozen-bench hashes, and a note
+that any run or bundle built against the previous `inputs_sha256` is a different
+evidence version. Rebuild the labeling bundle after applying
+(`python -m labeling_app build-bundle --replace`).
+
 ### Spend safety — the live-call sequence (Part 7)
 
 ```
