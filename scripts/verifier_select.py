@@ -351,7 +351,7 @@ def freeze_selected(store, selection: dict, split_name: str,
     try:
         for path, rows in ((inputs_path, selection["inputs"]), (labels_path, selection["labels"])):
             tmp = path.with_suffix(f".{os.getpid()}.{uuid.uuid4().hex[:8]}.tmp")
-            with open(tmp, "w", encoding="utf-8") as fh:
+            with open(tmp, "w", encoding="utf-8", newline="\n") as fh:
                 for row in rows:
                     fh.write(json.dumps(row, ensure_ascii=False) + "\n")
             tmps.append((tmp, path))

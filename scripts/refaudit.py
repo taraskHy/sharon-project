@@ -101,7 +101,9 @@ def _atomic_write_json(path: Path, obj) -> None:
     # writes through one shared tmp file and then promote a torn result.
     tmp = path.with_suffix(f"{path.suffix}.{os.getpid()}.{uuid.uuid4().hex[:8]}.tmp")
     try:
-        with open(tmp, "w", encoding="utf-8") as fh:
+        # newline="\n": artifact bytes (and therefore recorded hashes) must be
+        # identical on every platform — never CRLF-translated on Windows.
+        with open(tmp, "w", encoding="utf-8", newline="\n") as fh:
             json.dump(obj, fh, ensure_ascii=False, indent=1)
             fh.write("\n")
         os.replace(tmp, path)

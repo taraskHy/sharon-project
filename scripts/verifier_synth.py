@@ -405,7 +405,7 @@ def freeze_synthetic(store, synth: dict, expect: dict | None = None,
     try:
         for name, rows in paths.items():
             tmp = out_dir / f"{name}.{os.getpid()}.{uuid.uuid4().hex[:8]}.tmp"
-            with open(tmp, "w", encoding="utf-8") as fh:
+            with open(tmp, "w", encoding="utf-8", newline="\n") as fh:
                 for row in rows:
                     fh.write(json.dumps(row, ensure_ascii=False) + "\n")
             tmps.append((tmp, out_dir / name))
