@@ -100,6 +100,24 @@ other numbers.
   HELD_OUT split; every case of one image lives in one split (zero image
   overlap by construction).
 
+- *Frozen 2026-08-22 (Split A):* 102 positives + 201 real negatives = 303
+  cases; DEV = e002, e003, e007 (33 images); CALIBRATION = e004 (23);
+  HELD_OUT = e005, e006 (46). Decision, rationale, writer assignment,
+  image ids per split, raw-pool hashes and the zero-overlap assertion are
+  persisted in `verifier_bench/selected/manifest.json` (+ `CHECKSUMS.sha256`).
+- *SYNTHETIC_NEAR_MISS* (second component, `scripts/verifier_synth.py`,
+  proposal only until approved) — the real pool has only 9 subtle
+  negatives, so this layer tests small grading-relevant errors: deterministic
+  generic OCR-fidelity corruptions of the frozen audited references (digit
+  substitution, operator substitution/removal, decimal-point corruption,
+  super/subscript loss, one-character deletion, short-token omission, short
+  token duplication), ≤2 per image, rules fixed before any model output
+  (`RULES_VERSION`), each case inheriting its image's split from the frozen
+  REAL manifest. Never "corrected answers". Reported SEPARATELY from REAL:
+  REAL → FAR, FRR, SUPPORTED precision, REVIEW rate; SYNTHETIC → FAR
+  overall, FAR by corruption type, FAR on the numeric group; COMBINED only
+  secondarily, never hiding either source.
+
 **Model-selection objective for OCR_VERIFY — safety first.** Primary
 metric: **FALSE ACCEPT RATE** = incorrect transcription classified
 SUPPORTED (on negatives). Also reported: false reject rate (correct

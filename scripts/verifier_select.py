@@ -328,9 +328,21 @@ def write_proposal(store, selection: dict, raw: dict | None = None) -> Path:
     return out
 
 
-def freeze_selected(store, selection: dict, split_name: str) -> dict:
-    """Write verifier_bench/selected/ (inputs, labels, manifest). Only after
-    the owner approved the composition; the raw pool is untouched."""
+def freeze_selected(store, selection: dict, split_name: str,
+                    rationale: str = "", expect_counts: tuple | None = None) -> dict:
+    """Write verifier_bench/selected/ (inputs, labels, manifest, checksums).
+    Only after the owner approved the composition; the raw pool is untouched.
+    ``expect_counts=(positives, negatives, total)`` refuses a freeze whose
+    composition differs from what was proposed and approved."""
+    report = selection["report"]
+    if not report["zero_image_overlap_between_splits"]:
+        raise SelectionError("refusing to freeze: image overlap between splits")
+    if expect_counts is not None:
+        got = (report["positive_cases"], report["selected_negatives"],
+               report["total_selected_cases"])
+        if tuple(expect_counts) != got:
+            raise SelectionError(f"composition {got} differs from the approved "
+                                 f"{tuple(expect_counts)} — not freezing")
     out_dir = store.bench_dir / RAW_DIRNAME / SELECTED_DIRNAME
     out_dir.mkdir(parents=True, exist_ok=True)
     inputs_path = out_dir / "cases_inputs.jsonl"
@@ -349,20 +361,38 @@ def freeze_selected(store, selection: dict, split_name: str) -> dict:
         for tmp, _ in tmps:
             tmp.unlink(missing_ok=True)
         raise
+    image_ids_per_split: dict[str, list[str]] = {}
+    for lab in selection["labels"]:
+        image_ids_per_split.setdefault(lab["split"], set()).add(lab["item_id"])
+    image_ids_per_split = {s: sorted(v) for s, v in sorted(image_ids_per_split.items())}
     manifest = {
-        "_policy": ("Frozen SELECTED verifier benchmark. cases_inputs.jsonl is the "
+        "_policy": ("Frozen SELECTED verifier benchmark (REAL historical OCR errors "
+                    "+ one positive per audited image). cases_inputs.jsonl is the "
                     "ONLY model-visible file (opaque id, crop, candidate); "
                     "cases_labels.jsonl is evaluation-side only. Primary model-"
                     "selection metric: FALSE ACCEPT RATE (incorrect transcription "
                     "classified SUPPORTED); never overall accuracy."),
         "frozen_at": refaudit._now(),
-        "split_proposal": split_name,
-        "report": selection["report"],
+        "decision": {"split": split_name,
+                     "writer_assignment": SPLIT_PROPOSALS[split_name],
+                     "rationale": rationale},
+        "image_ids_per_split": image_ids_per_split,
+        "zero_image_overlap_between_splits": True,   # asserted above
+        "report": report,                            # incl. error-kind metadata
+        "raw_pool": report["raw_pool_provenance"],
         "inputs_sha256": _sha(inputs_path.read_bytes()),
         "labels_sha256": _sha(labels_path.read_bytes()),
         "audit_sha256": refaudit._sha256_json(store.entries_canonical()),
     }
-    refaudit._atomic_write_json(out_dir / "manifest.json", manifest)
+    manifest_path = out_dir / "manifest.json"
+    refaudit._atomic_write_json(manifest_path, manifest)
+    # Persist the manifest's own hash alongside (a manifest cannot contain it).
+    checksums = "\n".join(
+        f"{_sha((out_dir / name).read_bytes())}  {name}"
+        for name in ("cases_inputs.jsonl", "cases_labels.jsonl", "manifest.json")) + "\n"
+    tmp = out_dir / f"CHECKSUMS.{os.getpid()}.tmp"
+    tmp.write_text(checksums, encoding="utf-8")
+    os.replace(tmp, out_dir / "CHECKSUMS.sha256")
     return manifest
 
 
@@ -395,7 +425,10 @@ def main(argv=None) -> int:
     ap.add_argument("--split", default="A", choices=sorted(SPLIT_PROPOSALS))
     sub = ap.add_subparsers(dest="cmd", required=True)
     sub.add_parser("propose", help="build + report the composition; writes selection_proposal.json")
-    sub.add_parser("freeze", help="write verifier_bench/selected/ (after owner approval)")
+    fr = sub.add_parser("freeze", help="write verifier_bench/selected/ (after owner approval)")
+    fr.add_argument("--rationale", default="", help="owner's split rationale (persisted)")
+    fr.add_argument("--expect-counts", default=None,
+                    help="positives,negatives,total approved by the owner; refuses on mismatch")
     args = ap.parse_args(argv)
     store = refaudit.AuditStore(Path(args.bench_dir) if args.bench_dir else None)
     try:
@@ -409,7 +442,14 @@ def main(argv=None) -> int:
         _print_report(selection["report"])
         print(f"proposal written: {out}")
         return 0
-    manifest = freeze_selected(store, selection, args.split)
+    expect = (tuple(int(x) for x in args.expect_counts.split(","))
+              if args.expect_counts else None)
+    try:
+        manifest = freeze_selected(store, selection, args.split,
+                                   rationale=args.rationale, expect_counts=expect)
+    except SelectionError as exc:
+        print(f"REFUSED: {exc}")
+        return 2
     _print_report(selection["report"])
     print(f"frozen: {store.bench_dir / RAW_DIRNAME / SELECTED_DIRNAME}  inputs_sha256={manifest['inputs_sha256'][:12]}...")
     return 0
