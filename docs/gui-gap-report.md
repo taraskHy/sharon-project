@@ -188,3 +188,19 @@ Per-surface inventory:
   grade), resolutions never mutate `result.json`, shadow output stays labeled
   non-authoritative, estimates never mix with actual ledger usage, and the API key
   is never displayed or stored.
+
+## Resolution (2026-08-22 — main GUI phase)
+
+`autograder/webui.py` was restructured into six sidebar screens — Dashboard,
+Exam setup (6-step wizard), Grading progress, Review queue, Results / export,
+Advanced / diagnostics (`tests/test_webui_screens.py`). Gap dispositions,
+each source-verified before the change:
+
+| gap | verdict | fix |
+|---|---|---|
+| dead `st.session_state["gateway"]` estimator wiring (`webui.py:773` old) | CONFIRMED — nothing ever wrote the key, so the estimate could never show a cost | the estimator now builds its gateway from `models.toml` against the batch's own state root (`setup_from_config(models.toml, <job>/exams)`; no backend constructed, no call); caption states "No models.toml — call counts only" when absent |
+| `build_review_items` called without crops/traces/packs (`webui.py:914` old) | CONFIRMED | the Review queue passes the batch's persisted grading packs (`<job>/exams/packs/*`) and batch warnings; crops are NOT fabricated — the screen says "no image evidence available" and states the producer reason (`backend_info.evidence_crops`) |
+| `build_review_items` read graded rows from `sub_items` while persisted results use `sub_results` (`reviewui.py:134` old) | CONFIRMED (found during the fix) | reads `sub_results` first, `sub_items` as fallback |
+| grouping / priorities / apply-to-all unwired | CONFIRMED (caption only) | grouped queue with reason titles + priority tiers; apply-to-all buttons wired to `ResolutionStore.apply_to_all(..., scope=apply_scope(group))` for exactly-mechanical groups (variant/layout); records `apply_to_all.jsonl` |
+| spend truth not surfaced from the persistent ledger (settings tab used `REPO_ROOT` ledger, jobs wrote `<job>/exams/gateway_ledger`) | CONFIRMED | `autograder/spend.py` over the batch ledger + the campaign ledger; Dashboard / Progress / Advanced read those files, never in-memory counters; OpenRouter key usage (GET /api/v1/key) shown next to them only on explicit click when a credential exists |
+| generic "AI uncertain" wording | CONFIRMED risk | every review item renders `REASON_CODE — title` from `reviewqueue.REASONS` + `render_explanation`; no generic message |

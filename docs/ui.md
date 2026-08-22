@@ -17,6 +17,19 @@ $env:OLLAMA_CONTEXT_LENGTH="16384"; ollama serve   # once, in its own terminal
 ollama pull qwen3-vl:8b-instruct                   # once
 ```
 
+## Screens (sidebar navigation)
+
+| screen | what it is for |
+|---|---|
+| Dashboard | selected course / exam package, package readiness, students / auto graded / needs review / failures, progress, OpenRouter budget & spend (persistent ledgers), primary actions |
+| Exam setup | 1 course -> 2 exam (package or upload) -> 3 key / rubric / solution -> 4 automatic discovery (variants, alignment; overrides optional) -> 5 question policies -> 6 preflight -> students -> create batch |
+| Grading progress | processed/total, AUTO / REVIEW / FAILED, current exam, OCR calls, grader calls, cache hits, cloud cost (ledger), estimated remaining cost (only with a pricing table), Pause / Stop / Resume; package setup, cloud-usage ESTIMATE, batch checks |
+| Review queue | batch-level causes first; grouped queue with apply-to-all for exactly-mechanical causes; per item: typed reason (`CODE — title`), explanation, evidence (crop when available, else stated), immutable transcription, rubric / proposed score / disagreements, decision trace, decision buttons |
+| Results / export | final deterministic grade, per-question and per-item scores, review history (resolutions + apply-to-all), shadow comparison (non-authoritative), decision trace, downloads |
+| Advanced / diagnostics | role -> model with UNSELECTED marked, model-selection status, grading route & RAG / course store, budget & ledgers, OpenRouter credential presence (never the key) + on-demand key usage, verifier crop availability, gateway probe, readiness check |
+
+The zero-key readiness check is also a CLI: `python -m autograder readiness`.
+
 ## Workflow
 
 1. **Sidebar — model backend.** Defaults come from `grader.toml` when

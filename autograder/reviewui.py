@@ -117,6 +117,11 @@ def build_review_items(exam_id: str, result: dict, extraction: dict | None = Non
         se = ext_index.get((qid, sid), {})
         crop = crops.get((qid, sid))
         b64 = base64.standard_b64encode(crop).decode() if crop else None
+        # Persisted ExamResult rows live under "sub_results" (schema.py);
+        # "sub_items" is accepted for older/synthetic results.
+        row = next((x for qq in result.get("questions", []) if qq.get("question_id") == qid
+                    for x in (qq.get("sub_results") or qq.get("sub_items") or [])
+                    if x.get("sub_item_id") == sid), {})
         if se.get("status") == "ambiguous" or "multiple live marks" in reason or "resolution chain" in reason:
             trace = (chain_traces or {}).get((qid, sid), {})
             items.append(ReviewItem("mc", exam_id, qid, sid, reason, crop_png_b64=b64,
@@ -125,14 +130,13 @@ def build_review_items(exam_id: str, result: dict, extraction: dict | None = Non
                                     options=list(se.get("candidate_answers", [])) + ["blank", "unclear"]))
         elif "unintelligible" in reason or "could not be read" in reason or "verifier" in reason:
             items.append(ReviewItem("ocr", exam_id, qid, sid, reason, crop_png_b64=b64,
-                                    primary_transcription=se.get("explanation_transcription"),
+                                    primary_transcription=(se.get("explanation_transcription")
+                                                           or row.get("explanation_transcription")),
                                     secondary_transcription=(chain_traces or {}).get(("ocr", qid, sid)),
                                     disputed_regions=list((chain_traces or {}).get(("ocr_regions", qid, sid), [])),
                                     options=["accept primary", "accept secondary", "mark unreadable"]))
         else:
             pack = (packs or {}).get(qid)
-            row = next((x for qq in result.get("questions", []) if qq.get("question_id") == qid
-                        for x in qq.get("sub_items", []) if x.get("sub_item_id") == sid), {})
             items.append(ReviewItem("grading", exam_id, qid, sid, reason, crop_png_b64=b64,
                                     selected_option=row.get("student_answer"),
                                     proposed_score=row.get("points_total"), max_score=row.get("points_max"),

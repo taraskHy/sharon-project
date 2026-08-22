@@ -168,6 +168,7 @@ def test_ui_renders_the_new_panels_for_a_broken_batch(tmp_path, monkeypatch):
     _job_with_results(tmp_path, broken_batch(8))
 
     at = AppTest.from_file(str(REPO / "autograder" / "webui.py"), default_timeout=60)
+    at.session_state["screen"] = "⏳ Grading progress"   # the batch-status screen
     at.run()
     assert not at.exception, f"UI raised: {at.exception}"
     headers = {str(s.value) for s in at.subheader}
@@ -185,6 +186,7 @@ def test_ui_reports_a_clean_batch_as_clean(tmp_path, monkeypatch):
     _job_with_results(tmp_path, healthy_batch(8))
 
     at = AppTest.from_file(str(REPO / "autograder" / "webui.py"), default_timeout=60)
+    at.session_state["screen"] = "⏳ Grading progress"   # the batch-status screen
     at.run()
     assert not at.exception, f"UI raised: {at.exception}"
     assert any("No batch-level anomaly" in str(s.value) for s in at.success)
@@ -228,6 +230,7 @@ def test_ui_renders_a_recorded_trace_and_a_shadow_comparison(tmp_path, monkeypat
         encoding="utf-8")
 
     at = AppTest.from_file(str(REPO / "autograder" / "webui.py"), default_timeout=60)
+    at.session_state["screen"] = "⏳ Grading progress"   # the batch-status screen
     at.run()
     assert not at.exception, f"UI raised: {at.exception}"
     from autograder.reviewui import decision_trace_for

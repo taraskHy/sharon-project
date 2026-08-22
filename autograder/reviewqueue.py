@@ -16,6 +16,8 @@ Three rules govern this module:
 
 from __future__ import annotations
 
+import re
+
 import hashlib
 import json
 from dataclasses import asdict, dataclass, field
@@ -76,10 +78,19 @@ _TEXT_RULES: tuple[tuple[str, str], ...] = (
 )
 
 
+_TYPED_PREFIX = re.compile(r"\s*\[([A-Z_]+)\]")
+
+
 def classify_reason(text: str, kind: str | None = None) -> str:
     """Map a persisted free-text review reason onto a stable code. New code
     paths pass the code directly; this exists so older artefacts and the
     deterministic grader's prose reasons still get a typed code."""
+    # A typed code emitted by the reliability route ('[OCR_UNRESOLVED] ...')
+    # is authoritative: text heuristics must never re-classify it (the
+    # explanatory text may legitimately mention 'evidence', 'variant', ...).
+    _m = _TYPED_PREFIX.match(text or "")
+    if _m and _m.group(1) in REASONS:
+        return _m.group(1)
     t = (text or "").lower()
     if t.upper() in REASONS:
         return t.upper()
