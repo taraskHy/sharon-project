@@ -1,0 +1,107 @@
+{
+ "run_id": "dev__smoke__all__openai-gpt-5.6-luna__13b6db7cb2",
+ "mode": "dry_run",
+ "cases": 12,
+ "skipped_resume": 0,
+ "predicted_cost_total": null,
+ "pricing_table_available": false,
+ "rows": [
+  {
+   "case_id": "00feaf8e02db",
+   "split": "DEV",
+   "component": "REAL",
+   "predicted_cost": 0.0,
+   "text_chars": 697,
+   "images": 1
+  },
+  {
+   "case_id": "0133ab372ac6",
+   "split": "DEV",
+   "component": "REAL",
+   "predicted_cost": 0.0,
+   "text_chars": 1468,
+   "images": 1
+  },
+  {
+   "case_id": "0289fef8d421",
+   "split": "DEV",
+   "component": "REAL",
+   "predicted_cost": 0.0,
+   "text_chars": 645,
+   "images": 1
+  },
+  {
+   "case_id": "04b029980631",
+   "split": "DEV",
+   "component": "REAL",
+   "predicted_cost": 0.0,
+   "text_chars": 667,
+   "images": 1
+  },
+  {
+   "case_id": "09dbed54cf80",
+   "split": "DEV",
+   "component": "REAL",
+   "predicted_cost": 0.0,
+   "text_chars": 653,
+   "images": 1
+  },
+  {
+   "case_id": "0c99d9cc57c5",
+   "split": "DEV",
+   "component": "REAL",
+   "predicted_cost": 0.0,
+   "text_chars": 673,
+   "images": 1
+  },
+  {
+   "case_id": "22c929892737",
+   "split": "DEV",
+   "component": "REAL",
+   "predicted_cost": 0.0,
+   "text_chars": 650,
+   "images": 1
+  },
+  {
+   "case_id": "289938912c5e",
+   "split": "DEV",
+   "component": "REAL",
+   "predicted_cost": 0.0,
+   "text_chars": 634,
+   "images": 1
+  },
+  {
+   "case_id": "0135da37774d",
+   "split": "DEV",
+   "component": "SYNTHETIC",
+   "predicted_cost": 0.0,
+   "text_chars": 704,
+   "images": 1
+  },
+  {
+   "case_id": "17f5d940e0be",
+   "split": "DEV",
+   "component": "SYNTHETIC",
+   "predicted_cost": 0.0,
+   "text_chars": 657,
+   "images": 1
+  },
+  {
+   "case_id": "1e4c8270489b",
+   "split": "DEV",
+   "component": "SYNTHETIC",
+   "predicted_cost": 0.0,
+   "text_chars": 707,
+   "images": 1
+  },
+  {
+   "case_id": "2329007554b8",
+   "split": "DEV",
+   "component": "SYNTHETIC",
+   "predicted_cost": 0.0,
+   "text_chars": 686,
+   "images": 1
+  }
+ ],
+ "leakage_check": "passed"
+}

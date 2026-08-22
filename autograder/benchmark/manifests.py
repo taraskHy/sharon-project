@@ -214,6 +214,108 @@ def _load_refaudit():
     return mod
 
 
+#: The ONLY reference provenance classes admitted to strict OCR scoring.
+VALID_REFERENCE_CLASSES = ("audited_confirmed", "audited_corrected", "text_layer_mechanical")
+
+
+def reference_provenance(ra, store, item: dict, ref_entry: dict, scoring_ref) -> dict:
+    """Classify one item's scoring reference explicitly:
+
+        audited_confirmed       owner tier, manual audit CONFIRMED the original text
+        audited_corrected       owner tier, manual audit CORRECTED the text (audited text used)
+        text_layer_mechanical   born-digital item outside the manual audit scope; reference
+                                is the embedded PDF text layer (objective, mechanical provenance)
+        INVALID:<why>           anything else (unchecked, ambiguous, unknown provenance,
+                                human tier with mechanical provenance, ...)
+
+    Strict model-selection scoring admits ONLY the three valid classes
+    (VALID_REFERENCE_CLASSES); the runner refuses otherwise — no silent
+    fallback to an unaudited historical reference."""
+    iid = item["id"]
+    tier = item.get("tier")
+    provenance = str(ref_entry.get("provenance", "") or "")
+    mechanical = bool(getattr(ra, "_MECHANICAL_PROVENANCE").search(provenance))
+    if store.is_eligible(iid):
+        status = scoring_ref.status
+        if status == "confirmed":
+            return {"provenance_class": "audited_confirmed", "valid": True,
+                    "detail": f"tier {tier}; manual audit confirmed the original transcription"}
+        if status == "corrected":
+            return {"provenance_class": "audited_corrected", "valid": True,
+                    "detail": f"tier {tier}; manual audit corrected the transcription (audited text used)"}
+        return {"provenance_class": f"INVALID:audit_status_{status}", "valid": False,
+                "detail": f"tier {tier}; audit status {status!r} is not admissible for strict scoring"}
+    # outside the manual audit scope: must be a mechanical (text-layer) provenance
+    if tier == "text-layer" and mechanical:
+        return {"provenance_class": "text_layer_mechanical", "valid": True,
+                "detail": f"tier {tier}; {provenance}"}
+    return {"provenance_class": "INVALID:unknown_provenance", "valid": False,
+            "detail": f"tier {tier}; provenance {provenance!r} is neither audited nor a text layer"}
+
+
+def reference_breakdown(manifest: "BenchmarkManifest") -> dict:
+    """The explicit 129-item accounting (Part 1): by category x provenance
+    class, audit requirement, reference source, frozen/audited status."""
+    if manifest.role != "ocr_primary":
+        raise ValueError("reference_breakdown is defined for the ocr_primary manifest")
+    rows = []
+    for c in manifest.cases:
+        rows.append({"item_id": c.case_id, "category": c.meta.get("category"), "tier": c.meta.get("tier"),
+                     "manual_audit_required": c.meta.get("tier") == "owner",
+                     "provenance_class": c.label.get("provenance_class"),
+                     "reference_source": c.label.get("reference_source"),
+                     "reference_status": c.label.get("reference_status"),
+                     "valid_for_strict_scoring": bool(c.label.get("provenance_valid")),
+                     "split": c.split})
+    by_class: dict[str, int] = {}
+    by_cat: dict[str, dict[str, int]] = {}
+    for r in rows:
+        by_class[r["provenance_class"]] = by_class.get(r["provenance_class"], 0) + 1
+        by_cat.setdefault(r["category"], {})
+        by_cat[r["category"]][r["provenance_class"]] = by_cat[r["category"]].get(r["provenance_class"], 0) + 1
+    hand = [r for r in rows if r["manual_audit_required"]]
+    other = [r for r in rows if not r["manual_audit_required"]]
+    return {
+        "total": len(rows),
+        "handwritten_manual_audit": {
+            "count": len(hand),
+            "confirmed": sum(1 for r in hand if r["provenance_class"] == "audited_confirmed"),
+            "corrected": sum(1 for r in hand if r["provenance_class"] == "audited_corrected"),
+            "ambiguous": sum(1 for r in hand if r["provenance_class"].startswith("INVALID:audit_status_ambiguous")),
+            "invalid": sum(1 for r in hand if not r["valid_for_strict_scoring"]),
+            "by_category": {k: v for k, v in by_cat.items() if any(r["category"] == k for r in hand)},
+        },
+        "other_categories_text_layer": {
+            "count": len(other),
+            "why_trustworthy": ("born-digital PDFs: the reference is the embedded text layer (mechanical, "
+                                "objective provenance recorded per item in references.json); never model output, "
+                                "never a manual transcription; outside the manual audit scope by rule"),
+            "by_category": {k: v for k, v in by_cat.items() if any(r["category"] == k for r in other)},
+            "invalid": sum(1 for r in other if not r["valid_for_strict_scoring"]),
+        },
+        "by_provenance_class": by_class,
+        "all_valid_for_strict_scoring": all(r["valid_for_strict_scoring"] for r in rows),
+        "invalid_items": [r["item_id"] for r in rows if not r["valid_for_strict_scoring"]],
+        "frozen": {"audit_sha256": manifest.hashes.get("audit_sha256"),
+                   "items_sha256": manifest.hashes.get("items_sha256"),
+                   "references_sha256": manifest.hashes.get("references_sha256")},
+        "rows": rows,
+    }
+
+
+def validate_reference_provenance(manifest: "BenchmarkManifest", case_ids: list[str] | None = None) -> None:
+    """Deterministic gate for strict OCR scoring: every participating item
+    must carry one of VALID_REFERENCE_CLASSES. Raises BenchmarkIntegrityError
+    listing the offenders — never falls back silently."""
+    bad = [c.case_id for c in manifest.cases
+           if (case_ids is None or c.case_id in case_ids)
+           and c.label.get("provenance_class") not in VALID_REFERENCE_CLASSES]
+    if bad:
+        raise BenchmarkIntegrityError(
+            f"{len(bad)} item(s) lack an admissible reference provenance for strict scoring "
+            f"(admissible: {VALID_REFERENCE_CLASSES}): {bad[:10]}{'...' if len(bad) > 10 else ''}")
+
+
 def load_ocr_primary(root: Path = DEFAULT_BENCH_ROOT) -> BenchmarkManifest:
     ra = _load_refaudit()
     store = ra.AuditStore(root)
@@ -236,11 +338,13 @@ def load_ocr_primary(root: Path = DEFAULT_BENCH_ROOT) -> BenchmarkManifest:
     except FileNotFoundError:
         writer_split = {}
     w2s = {w: s for s, ws in writer_split.items() for w in ws}
+    refs_raw = json.loads((root / "references.json").read_text(encoding="utf-8"))
     cases: list[BenchCase] = []
     eligible = 0
     for it in items:
         iid = it["id"]
         ref = ra.reference_for_scoring(store, iid, "final")
+        prov = reference_provenance(ra, store, it, refs_raw.get(iid) or {}, ref)
         split = w2s.get(it.get("writer"), "DEV") if it.get("writer") else "DEV"
         cases.append(BenchCase(
             case_id=iid, split=split, component="ALL",
@@ -248,6 +352,9 @@ def load_ocr_primary(root: Path = DEFAULT_BENCH_ROOT) -> BenchmarkManifest:
                     "task": it.get("task", "")},
             label={"reference": ref.reference, "reference_status": ref.status,
                    "reference_source": ref.source, "use_for_strict_cer": ref.use_for_strict_cer,
+                   "provenance_class": prov["provenance_class"],
+                   "provenance_valid": prov["valid"],
+                   "provenance_detail": prov["detail"],
                    "tier": it.get("tier"), "hard": bool(it.get("hard", False))},
             meta={"writer": it.get("writer"), "category": it["category"], "tier": it.get("tier")}))
         eligible += 1 if ref.reference is not None else 0
@@ -284,7 +391,7 @@ DECLARED_ROLE_NOTES = {
         "B3: frozen transcriptions + NO-RAG grading packs; no OCR model runs during grading selection",
         "label reality: no per-item instructor labels exist yet; until an owner-scored subset exists only "
         "decision/AUTO/REVIEW/validation metrics are computed and accuracy metrics are reported as unavailable",
-        "build: `autograder bench build-grading` (benchmark/datasets.py) once the frozen transcription set is chosen",
+        "build: `autograder bench build-grading` (benchmark/datasets.py); owner labels via scripts/grade_label_ui.py",
     ],
     "grade_escalate": [
         "B4: the escalation subset of B3 (primary unclean / uncertain / disagreement) + pre-registered G-cells",
@@ -321,6 +428,16 @@ def load_declared(role: str, datasets_root: Path = DEFAULT_DATASETS_ROOT) -> Ben
     labels = {r["case_id"]: r for r in _read_jsonl(labels_p)}
     if set(inputs) != set(labels):
         raise BenchmarkIntegrityError(f"{role}: inputs/labels case-id sets differ")
+    hashes = {"inputs_sha256": h_in, "labels_sha256": h_lab, "manifest_sha256": sha256_file(man_path)}
+    owner_merged = 0
+    if role in ("grade_primary", "grade_escalate"):
+        # human labels live in a SEPARATE incremental file; only confirmed
+        # entries become scoring labels; its hash joins the run identity
+        from .ownerlabels import OwnerLabelStore, merge_owner_labels
+        store = OwnerLabelStore(d)
+        if store.path.exists():
+            owner_merged = merge_owner_labels(labels, store)
+            hashes["owner_labels_sha256"] = store.sha256()
     cases = []
     for cid, inp in inputs.items():
         lab = labels[cid]
@@ -328,15 +445,16 @@ def load_declared(role: str, datasets_root: Path = DEFAULT_DATASETS_ROOT) -> Ben
             case_id=cid, split=str(lab.get("split", "DEV")).upper(),
             component=str(lab.get("component", "ALL")),
             inputs=dict(inp), label={k: v for k, v in lab.items() if k not in ("case_id", "split", "component")},
-            meta={k: lab.get(k) for k in ("writer", "exam_id", "question_id") if k in lab}))
+            meta={k: lab.get(k) for k in ("writer", "exam_id", "question_id", "sub_item_id") if k in lab}))
     comps = sorted({c.component for c in cases})
+    extra = dict(man.get("extra", {}))
+    extra["owner_labels_merged"] = owner_merged
     return BenchmarkManifest(
         role=role, name=man.get("name", f"{role} benchmark"), status=man.get("status", STATUS_FROZEN),
-        root=d, hashes={"inputs_sha256": h_in, "labels_sha256": h_lab,
-                        "manifest_sha256": sha256_file(man_path)},
+        root=d, hashes=hashes,
         components=comps, cases=cases, policy=str(man.get("policy", "")),
         notes=notes + list(man.get("notes", [])),
-        split_assignment=man.get("split_assignment", {}), extra=man.get("extra", {}))
+        split_assignment=man.get("split_assignment", {}), extra=extra)
 
 
 def load_manifest(role: str, *, bench_root: Path = DEFAULT_BENCH_ROOT,
@@ -369,4 +487,5 @@ def all_manifest_summaries(*, bench_root: Path = DEFAULT_BENCH_ROOT,
 __all__ = ["SPLITS", "ROLES", "ROLE_TASKS", "STATUS_FROZEN", "STATUS_DERIVED", "STATUS_NOT_BUILT",
            "BenchCase", "BenchmarkManifest", "BenchmarkIntegrityError", "BenchmarkNotBuilt",
            "load_manifest", "load_ocr_verify", "load_ocr_primary", "load_declared",
+           "reference_provenance", "reference_breakdown", "validate_reference_provenance", "VALID_REFERENCE_CLASSES",
            "all_manifest_summaries", "sha256_file", "DEFAULT_BENCH_ROOT", "DEFAULT_DATASETS_ROOT"]

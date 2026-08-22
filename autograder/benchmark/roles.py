@@ -263,6 +263,10 @@ class OcrPrimaryAdapter:
                "reference_status": case.label.get("reference_status"),
                "schema_failure": output is None, "cer": None, "usable_25": None, "usable_50": None,
                "number_sign_error": None, "scored": False}
+        if not case.label.get("provenance_valid"):
+            # never score against an inadmissible reference (no silent fallback)
+            row["skip_reason"] = f"invalid_reference_source:{case.label.get('provenance_class')}"
+            return row
         if ref is None or hyp is None:
             row["skip_reason"] = "no_reference" if ref is None else "schema_failure"
             return row
@@ -292,6 +296,7 @@ class OcrPrimaryAdapter:
             "hard_items": _block([r for r in ok if r.get("hard")]),
             "schema_failures": sum(1 for r in scored if r["schema_failure"]),
             "unscored_no_reference": sum(1 for r in scored if r.get("skip_reason") == "no_reference"),
+            "refused_invalid_reference": sum(1 for r in scored if str(r.get("skip_reason", "")).startswith("invalid_reference_source")),
             "usage": _usage_stats(raw_rows),
         }
 

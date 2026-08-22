@@ -90,6 +90,10 @@ class RunSpec:
     warn_usd: float | None = None           # default: registry [budget] warn_usd (8.00)
     hard_usd: float | None = None           # default: registry [budget] experiment_total_usd (10.00)
     validation_retries: int = 0             # NEVER silently repair malformed output in a benchmark
+    subset: str | None = None               # "smoke" -> the frozen pre-registered DEV smoke subset
+    skip_key_preflight: bool = False        # tests only: skip the GET /api/v1/key preflight step
+    final_evaluation: bool = False          # ONLY the `bench final-eval` path sets this (HELD_OUT live run)
+    smoke_root: Path | None = None
 
 
 @dataclass
@@ -168,7 +172,12 @@ def leakage_check(case: BenchCase, request: Request, model_visible_fields: tuple
         raise LeakageError(f"{case.case_id}: inputs carry non-whitelisted fields {sorted(extra)}")
     full = request.text_for_inspection()
     content = "\n".join(str(b.get("text", "")) for b in request.content_blocks if b.get("type") == "text")
-    input_values = {str(v) for v in case.inputs.values() if isinstance(v, (str, int, float))}
+    input_values: set[str] = set()
+    for v in case.inputs.values():
+        if isinstance(v, (str, int, float)):
+            input_values.add(str(v))
+        elif isinstance(v, (list, tuple)):          # e.g. the generic version ids / option letters
+            input_values.update(str(x) for x in v if isinstance(x, (str, int, float)))
     for k, v in case.label.items():
         # A label value that is part of a model-visible input (e.g. the
         # audited reference sitting inside a token-duplication candidate) is
@@ -265,9 +274,34 @@ def files_root_for(manifest: BenchmarkManifest, bench_root: Path) -> Path:
     return Path(bench_root) if manifest.role in ("ocr_verify", "ocr_primary") else Path(manifest.root)
 
 
+def _live_preflight(spec: RunSpec, gw, route, cases, adapter, files_root) -> dict:
+    """Part 7 sequence before ANY provider request of a live run. The key
+    metadata fetch is explicit and happens HERE only (never automatically
+    elsewhere); the local ledger controls the ceiling."""
+    from ..cloudcheck import openrouter_credential_present
+    from ..spend import campaign_preflight
+    from ..usage import predicted_call_cost
+    fetcher = None
+    backend = gw.backend_for(route.task)
+    if hasattr(backend, "key_metadata"):
+        fetcher = backend.key_metadata          # GET /api/v1/key, on demand, secret-free parse
+    pricing = getattr(gw, "pricing_config", None)
+    predicted = 0.0
+    for c in cases[: max(1, min(len(cases), 50))]:
+        req = adapter.build_request(dict(c.inputs), files_root)
+        predicted += predicted_call_cost(route, req.system, req.content_blocks, pricing) or 0.0
+    ledger_path = gw.ledger.path if getattr(gw, "ledger", None) is not None else Path(spec.state_root) / "gateway_ledger" / "usage.jsonl"
+    hard = spec.hard_usd if spec.hard_usd is not None else 10.0
+    warn = spec.warn_usd if spec.warn_usd is not None else 8.0
+    return campaign_preflight(credential_present=openrouter_credential_present(), fetch_key_metadata=fetcher,
+                              ledger=ledger_path, state_root=Path(spec.state_root), predicted_cost=predicted,
+                              warn_usd=warn, hard_usd=hard)
+
+
 def run_id_for(spec: RunSpec, candidate: str, config_hash: str) -> str:
     comp = (spec.component or "all").lower()
-    return f"{spec.split.lower()}__{comp}__{_slug(candidate)}__{config_hash[:10]}"
+    sub = f"{spec.subset}__" if spec.subset else ""
+    return f"{spec.split.lower()}__{sub}{comp}__{_slug(candidate)}__{config_hash[:10]}"
 
 
 # ----------------------------------------------------------------------------
@@ -292,17 +326,38 @@ def run_benchmark(spec: RunSpec, *, gateway=None, registry: CandidateRegistry | 
         raise ValueError(f"{spec.role}: unknown component {spec.component!r}; have {manifest.components}")
 
     # ---- held-out discipline (before anything else) -------------------------
-    if split == "HELD_OUT" and not spec.confirm_held_out:
-        raise HeldOutRefused(
-            "HELD_OUT is reserved: it must not be used for candidate selection or prompt tuning. "
-            "To execute it deliberately pass --split held_out --confirm-held-out; the execution is "
-            f"logged permanently in {spec.held_out_log} and the split can no longer be treated as untouched")
+    if split == "HELD_OUT":
+        if spec.dry_run:
+            raise HeldOutRefused(
+                "HELD_OUT is reserved for final evaluation and cannot be previewed/dry-run. "
+                "Develop and select on DEV / CALIBRATION; the final evaluation path is "
+                "`bench final-eval` (live, explicitly confirmed, permanently logged)")
+        if not (spec.final_evaluation and spec.confirm_held_out):
+            raise HeldOutRefused(
+                "HELD_OUT can only be executed through the explicit final-evaluation path: "
+                "`bench final-eval --role R --candidate SLUG --confirm-held-out "
+                "--i-understand-this-spends-money`. The execution is logged permanently in "
+                f"{spec.held_out_log}; inspected held-out results can never again be treated as unseen")
+    if spec.subset is not None:
+        if spec.subset != "smoke":
+            raise ValueError(f"unknown subset {spec.subset!r}; the only pre-registered subset is 'smoke'")
+        if split != "DEV":
+            raise ValueError("the smoke subset is DEV-only by construction; pass --split dev")
 
     candidate = resolve_candidate(spec, registry)
     adapter = adapter_for(spec.role)
     cases = manifest.by_split(split, spec.component)
+    if spec.subset == "smoke":
+        from .smoke import DEFAULT_SMOKE_ROOT, smoke_case_ids
+        ids = set(smoke_case_ids(spec.role, manifest, spec.smoke_root or DEFAULT_SMOKE_ROOT))
+        cases = [c for c in cases if c.case_id in ids]
     if spec.limit:
         cases = cases[: spec.limit]
+    if spec.role == "ocr_primary":
+        # strict OCR scoring: every participating item must have an admissible
+        # reference provenance (Part 1) — refuse, never fall back silently
+        from .manifests import validate_reference_provenance
+        validate_reference_provenance(manifest, [c.case_id for c in cases])
     if not cases:
         raise ValueError(f"{spec.role}: no cases for split {split}"
                          + (f" component {spec.component}" if spec.component else ""))
@@ -315,6 +370,7 @@ def run_benchmark(spec: RunSpec, *, gateway=None, registry: CandidateRegistry | 
     route = build_route(spec, candidate, prov["prompt_version"], adapter.default_max_tokens)
     config = {
         "role": spec.role, "task": route.task, "split": split, "component": spec.component,
+        "subset": spec.subset,
         "candidate": candidate, "backend": spec.backend, "base_url": spec.base_url,
         "route": route.fingerprint_fields(), "adapter_version": adapter.adapter_version,
         "validation_retries": spec.validation_retries, **prov,
@@ -327,16 +383,6 @@ def run_benchmark(spec: RunSpec, *, gateway=None, registry: CandidateRegistry | 
     run_dir.mkdir(parents=True, exist_ok=True)
     run_json = run_dir / "run.json"
     outputs_path = run_dir / "outputs.jsonl"
-
-    if split == "HELD_OUT":
-        _append_jsonl(spec.held_out_log, {
-            "ts": ts(), "role": spec.role, "split": split, "component": spec.component,
-            "candidate": candidate, "run_id": run_id, "mode": "dry_run" if spec.dry_run else "live",
-            "cases": len(cases), "config_hash": config_hash, "note": spec.note,
-            "consequence": "HELD_OUT has been executed; once these results are inspected and used to "
-                           "change the system, this split is no longer untouched (demote to DEV; see "
-                           "docs/model-selection.md §split discipline)"})
-        log(f"HELD_OUT execution logged permanently to {spec.held_out_log}")
 
     existing = json.loads(run_json.read_text(encoding="utf-8")) if run_json.exists() else None
     if existing and existing.get("config_hash") != config_hash:
@@ -361,14 +407,38 @@ def run_benchmark(spec: RunSpec, *, gateway=None, registry: CandidateRegistry | 
 
     warnings: list[str] = []
     gw = None
+    preflight: dict | None = None
     if not spec.dry_run:
         gw = gateway or build_gateway(spec, route, registry, warnings.append)
         # Cloud readiness is explained in one sentence, never a stack trace.
         from ..cloudcheck import require_cloud_task
         require_cloud_task(gw, route.task)
         ledger_baseline = len(gw.ledger.entries()) if getattr(gw, "ledger", None) is not None else 0
+        # ---- live-call preflight (Part 7): credential -> key metadata (explicit)
+        # -> checkpoint -> compare with ledger -> budget safe? -> allowed.
+        # Only cloud routes are gated; local/mock routes have no account side.
+        from ..usage import is_cloud_route
+        if is_cloud_route(route.backend, route.base_url) and not spec.skip_key_preflight:
+            preflight = _live_preflight(spec, gw, route, cases, adapter, files_root)
+            if not preflight.get("allowed"):
+                raise RuntimeError(f"live preflight refused the run before any provider request: "
+                                   f"{preflight.get('reason')}")
     else:
         ledger_baseline = 0
+
+    if split == "HELD_OUT":
+        _append_jsonl(spec.held_out_log, {
+            "ts": ts(), "role": spec.role, "split": split, "component": spec.component,
+            "candidate": candidate, "run_id": run_id, "mode": "final_evaluation_live",
+            "cases": len(cases), "config_hash": config_hash, "git_commit": _git_commit(),
+            "prompt_version": prov["prompt_version"], "prompt_sha256": prov["prompt_sha256"],
+            "schema_sha256": prov["schema_sha256"], "adapter_version": adapter.adapter_version,
+            "manifest_hashes": manifest.hashes, "note": spec.note,
+            "consequence": "HELD_OUT has been executed; once these results are inspected and used to "
+                           "change the system, this split is no longer untouched and must be demoted "
+                           "to DEV (docs/model-selection.md §split discipline)"})
+        log(f"HELD_OUT final evaluation logged permanently to {spec.held_out_log}")
+
 
     predicted_total = 0.0
     plan_rows: list[dict] = []
@@ -464,7 +534,8 @@ def run_benchmark(spec: RunSpec, *, gateway=None, registry: CandidateRegistry | 
 
     record.update({"updated_at": ts(), "cases_done": n_done, "cases_failed": n_failed,
                    "cases_skipped_resume": n_skipped, "stopped_reason": stopped,
-                   "last_mode": "dry_run" if spec.dry_run else "live", "warnings": warnings})
+                   "last_mode": "dry_run" if spec.dry_run else "live", "warnings": warnings,
+                   "last_preflight": preflight})
     _write_json(run_json, record)
     return RunResult(run_id=run_id, run_dir=run_dir, role=spec.role, split=split, component=spec.component,
                      candidate=candidate, dry_run=spec.dry_run, cases_selected=len(cases), cases_done=n_done,

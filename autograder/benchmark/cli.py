@@ -71,9 +71,11 @@ def cmd_bench_inspect(args) -> int:
     summ = m.summary()
     if args.case_id or args.preview:
         split = (args.split or "DEV").upper()
-        if split != "DEV" and not args.confirm_held_out:
-            _log(f"refusing to preview {split} cases: only DEV may be inspected while developing "
-                 "(pass --confirm-held-out to override deliberately; the override is logged)")
+        if split == "HELD_OUT":
+            _log("HELD_OUT is reserved for final evaluation and cannot be previewed/dry-run.")
+            return 3
+        if split != "DEV":
+            _log(f"refusing to preview {split} cases: only DEV may be inspected while developing")
             return 2
         cases = m.by_split(split, args.component)
         if args.case_id:
@@ -93,9 +95,10 @@ def cmd_bench_inspect(args) -> int:
     return 0
 
 
-def _spec_from_args(args, dry_run: bool) -> RunSpec:
+def _spec_from_args(args, dry_run: bool, *, final_evaluation: bool = False) -> RunSpec:
     return RunSpec(
         role=args.role, split=args.split, candidate=args.candidate, component=args.component,
+        subset=getattr(args, "subset", None), final_evaluation=final_evaluation,
         backend=args.backend, base_url=args.base_url,
         models_config=Path(args.models_config) if args.models_config else None,
         registry_path=Path(args.registry), bench_root=Path(args.bench_root),
@@ -106,8 +109,8 @@ def _spec_from_args(args, dry_run: bool) -> RunSpec:
         note=args.note or "", max_tokens=args.max_tokens)
 
 
-def _run(args, dry_run: bool) -> int:
-    spec = _spec_from_args(args, dry_run)
+def _run(args, dry_run: bool, *, final_evaluation: bool = False) -> int:
+    spec = _spec_from_args(args, dry_run, final_evaluation=final_evaluation)
     try:
         res = run_benchmark(spec, progress=_log)
     except HeldOutRefused as e:
@@ -147,11 +150,135 @@ def cmd_bench_dry_run(args) -> int:
 
 
 def cmd_bench_run(args) -> int:
+    if args.split == "held_out":
+        _log("REFUSED: HELD_OUT is reserved for final evaluation; use `bench final-eval` "
+             "(explicitly confirmed, permanently logged).")
+        return 3
     if not args.i_understand_this_spends_money:
         _log("REFUSED: a live benchmark run spends OpenRouter budget. Re-run with "
              "--i-understand-this-spends-money (the $8 warning / $10 hard stop still apply).")
         return 3
     return _run(args, dry_run=False)
+
+
+def cmd_bench_final_eval(args) -> int:
+    """The ONLY path that may execute HELD_OUT: live, confirmed, logged."""
+    if not args.confirm_held_out:
+        _log("REFUSED: final evaluation on HELD_OUT requires --confirm-held-out. Once executed and "
+             "inspected, the held-out split can never again be treated as unseen.")
+        return 3
+    if not args.i_understand_this_spends_money:
+        _log("REFUSED: final evaluation spends OpenRouter budget; pass --i-understand-this-spends-money.")
+        return 3
+    args.split = "held_out"
+    return _run(args, dry_run=False, final_evaluation=True)
+
+
+def cmd_bench_smoke(args) -> int:
+    from .smoke import SMOKE_RULES, freeze_smoke, load_smoke, propose_smoke, smoke_status
+    m = load_manifest(args.role, bench_root=Path(args.bench_root), datasets_root=Path(args.datasets_root))
+    root = Path(args.smoke_root)
+    if args.smoke_command == "propose":
+        _emit(propose_smoke(args.role, m), True)
+        return 0
+    if args.smoke_command == "freeze":
+        try:
+            d = freeze_smoke(args.role, m, root)
+        except Exception as e:  # noqa: BLE001
+            _log(f"REFUSED: {e}")
+            return 3
+        _emit({"frozen": str(root / f"{args.role}_smoke.json"), "cases": len(d["cases"]),
+               "selection_sha256": d["selection_sha256"], "unfilled_slots": d["unfilled_slots"]}, True)
+        return 0
+    if args.smoke_command == "show":
+        st = smoke_status(args.role, m, root)
+        if st.get("frozen") and st.get("valid"):
+            st["cases_detail"] = load_smoke(args.role, m, root)["cases"]
+        _emit(st, True)
+        return 0
+    _log("unknown smoke command")
+    return 2
+
+
+def cmd_bench_build(args) -> int:
+    """Dataset builders — local deterministic processing only, NO model calls.
+    Each refuses to overwrite an existing frozen dataset."""
+    from . import datasets as ds
+    root = Path(args.datasets_root)
+    try:
+        if args.build_command == "build-grading":
+            man = ds.build_grading_dataset(root / "grade_primary",
+                                           key_json=Path(args.key_json) if args.key_json else None,
+                                           bench_root=Path(args.bench_root))
+            _emit({"built": str(root / "grade_primary"), "cases": man["cases"],
+                   "excluded_cells": man.get("excluded_cells"), "inputs_sha256": man["inputs_sha256"],
+                   "labels_sha256": man["labels_sha256"],
+                   "owner_action": "label the cases with: python -m streamlit run scripts/grade_label_ui.py"}, True)
+        elif args.build_command == "build-mc":
+            man = ds.build_mc_dataset(root / "mc_resolve_cloud")
+            _emit({"built": str(root / "mc_resolve_cloud"), "cases": man["cases"],
+                   "ambiguous_rows_per_exam": man["extra"]["ambiguous_rows_per_exam"],
+                   "inputs_sha256": man["inputs_sha256"], "labels_sha256": man["labels_sha256"]}, True)
+        elif args.build_command == "build-variant":
+            man = ds.build_variant_dataset(root / "variant_resolve")
+            _emit({"built": str(root / "variant_resolve"), "cases": man["cases"],
+                   "inputs_sha256": man["inputs_sha256"], "labels_sha256": man["labels_sha256"]}, True)
+        elif args.build_command == "build-escalation":
+            if not args.from_run:
+                _log("REFUSED: --from-run <grade_primary run dir> is required (escalation cases are harvested, "
+                     "never chosen by hand); status stays PENDING_PRIMARY_RESULTS")
+                return 3
+            man = ds.build_escalation_dataset(root / "grade_escalate", from_run_dir=Path(args.from_run),
+                                              grade_dataset_dir=root / "grade_primary")
+            _emit({"built": str(root / "grade_escalate"), "cases": man["cases"]}, True)
+        elif args.build_command == "build-align":
+            _log("NOT AVAILABLE: the printed variant booklets (test/003_70.pdf A2, test/002_76.pdf A3) are image "
+                 "scans without a text layer, so the model-visible printed (id, text) list needs an OCR pass; "
+                 "synthesizing printed text from canonical text is solved by the deterministic stage (margin 0.75) "
+                 "and would not exercise the model role. The operator-verified mapping "
+                 "(sample_data/Exam_solution.alignment.json) is the label once printed texts exist.")
+            return 5
+        else:
+            _log("unknown build command")
+            return 2
+    except (ds.DatasetExists, ds.DatasetBuildError) as e:
+        _log(f"REFUSED: {e}")
+        return 3
+    return 0
+
+
+def cmd_bench_owner_labels(args) -> int:
+    from .ownerlabels import OwnerLabelStore
+    d = Path(args.datasets_root) / args.role
+    m = load_manifest(args.role, bench_root=Path(args.bench_root), datasets_root=Path(args.datasets_root))
+    store = OwnerLabelStore(d)
+    summ = store.summary([c.case_id for c in m.cases])
+    summ["role"] = args.role
+    _emit(summ, True)
+    return 0
+
+
+def cmd_bench_references(args) -> int:
+    from .manifests import reference_breakdown
+    m = load_manifest("ocr_primary", bench_root=Path(args.bench_root), datasets_root=Path(args.datasets_root))
+    b = reference_breakdown(m)
+    if args.json:
+        _emit(b, True)
+        return 0
+    h, o = b["handwritten_manual_audit"], b["other_categories_text_layer"]
+    print(f"{b['total']} total")
+    print(f"├── handwritten (manual audit required): {h['count']}")
+    print(f"│   ├── confirmed: {h['confirmed']}")
+    print(f"│   ├── corrected: {h['corrected']}")
+    print(f"│   ├── ambiguous: {h['ambiguous']}")
+    print(f"│   └── by category: {h['by_category']}")
+    print(f"└── other categories (text layer, no manual audit): {o['count']}")
+    print(f"    ├── by category: {o['by_category']}")
+    print(f"    └── why trustworthy: {o['why_trustworthy']}")
+    print(f"by provenance class: {b['by_provenance_class']}")
+    print(f"all valid for strict scoring: {b['all_valid_for_strict_scoring']}; invalid items: {b['invalid_items']}")
+    print(f"frozen: {b['frozen']}")
+    return 0
 
 
 def cmd_bench_report(args) -> int:
@@ -208,11 +335,10 @@ def add_bench_commands(sub) -> None:
     p = bs.add_parser("list", help="roles, dataset status, candidates"); common(p, needs_role=False)
     p.set_defaults(func=cmd_bench_list)
 
-    p = bs.add_parser("inspect", help="manifest summary; DEV request preview"); common(p)
+    p = bs.add_parser("inspect", help="manifest summary; DEV request preview (HELD_OUT never previewable)"); common(p)
     p.add_argument("--split", default="dev", type=str.lower, choices=[s.lower() for s in SPLITS])
     p.add_argument("--case-id", default=None)
     p.add_argument("--preview", action="store_true", help="render the first case's model-visible request")
-    p.add_argument("--confirm-held-out", action="store_true")
     p.set_defaults(func=cmd_bench_inspect)
 
     for name, fn, help_ in (("dry-run", cmd_bench_dry_run, "plan + predicted cost; ZERO provider calls"),
@@ -225,12 +351,53 @@ def add_bench_commands(sub) -> None:
         p.add_argument("--limit", type=int, default=None)
         p.add_argument("--max-tokens", type=int, default=None)
         p.add_argument("--note", default="")
-        p.add_argument("--confirm-held-out", action="store_true")
+        p.add_argument("--subset", default=None, choices=["smoke"],
+                       help="smoke = the frozen pre-registered DEV smoke subset (first live execution)")
         p.add_argument("--allow-unlisted", action="store_true")
         if name == "run":
             p.add_argument("--retry-failed", action="store_true", help="explicitly re-attempt failed cases (recorded)")
             p.add_argument("--i-understand-this-spends-money", action="store_true")
-        p.set_defaults(func=fn)
+        p.set_defaults(func=fn, confirm_held_out=False)
+
+    p = bs.add_parser("final-eval", help="FINAL evaluation on HELD_OUT (live only; confirmed; permanently logged)")
+    common(p)
+    p.add_argument("--candidate", required=True)
+    p.add_argument("--backend", default="openrouter")
+    p.add_argument("--base-url", default=None)
+    p.add_argument("--models-config", default=None)
+    p.add_argument("--limit", type=int, default=None)
+    p.add_argument("--max-tokens", type=int, default=None)
+    p.add_argument("--note", default="")
+    p.add_argument("--confirm-held-out", action="store_true")
+    p.add_argument("--allow-unlisted", action="store_true")
+    p.add_argument("--retry-failed", action="store_true")
+    p.add_argument("--i-understand-this-spends-money", action="store_true")
+    p.set_defaults(func=cmd_bench_final_eval, subset=None)
+
+    p = bs.add_parser("smoke", help="pre-registered DEV smoke subsets: propose | freeze | show")
+    p.add_argument("smoke_command", choices=["propose", "freeze", "show"])
+    common(p)
+    from .smoke import DEFAULT_SMOKE_ROOT
+    p.add_argument("--smoke-root", default=str(DEFAULT_SMOKE_ROOT))
+    p.set_defaults(func=cmd_bench_smoke)
+
+    p = bs.add_parser("references", help="ocr_primary: the explicit 129-item reference provenance breakdown")
+    common(p, needs_role=False)
+    p.set_defaults(func=cmd_bench_references)
+
+    for name, help_ in (("build-grading", "GRADE_PRIMARY inputs from audited cell transcriptions + the frozen key (no labels)"),
+                        ("build-mc", "MC_RESOLVE from prob scans: deterministic band crops of ambiguous rows + audited answers"),
+                        ("build-variant", "VARIANT_RESOLVE marker-region crops + audited variant ids"),
+                        ("build-escalation", "GRADE_ESCALATE harvested from a grade_primary run (--from-run)"),
+                        ("build-align", "ALIGN_RESOLVE (reports why it is not available yet)")):
+        p = bs.add_parser(name, help=help_); common(p, needs_role=False)
+        p.add_argument("--key-json", default=None, help="build-grading: frozen answer-key JSON (default: auto-detect)")
+        p.add_argument("--from-run", default=None, help="build-escalation: grade_primary run directory")
+        p.set_defaults(func=cmd_bench_build, build_command=name)
+
+    p = bs.add_parser("owner-labels", help="grading roles: how many cases the owner still has to label")
+    common(p)
+    p.set_defaults(func=cmd_bench_owner_labels)
 
     p = bs.add_parser("report", help="one run or all runs of a role"); common(p, needs_role=False)
     p.add_argument("--role", default=None, choices=ROLES)

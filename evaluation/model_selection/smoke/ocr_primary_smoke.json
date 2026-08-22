@@ -1,0 +1,81 @@
+{
+ "role": "ocr_primary",
+ "split": "DEV",
+ "rules_version": "smoke-rules-v1 (2026-08-22, DEV only, min-id per slot)",
+ "manifest_hashes": {
+  "items_sha256": "25463e91b95db8eecfc306644dd0839f65e42910d4161f6991383b6f4a524a8b",
+  "references_sha256": "4a93e826e6e94777d445e64ae2c3f5ed10def46aa021ff763a45a9807fb913b5",
+  "audit_sha256": "eace95fc6dc684c88f1fea2142414a68ad8f421257ac012faf6bcfc9ae07f50c",
+  "audit_manifest_sha256": "65ac16385979480945938f45f0d3e5e3255afa7bcb41c4ea7afe2ff2ebcc405f"
+ },
+ "cases": [
+  {
+   "slot": "ordinary_handwritten_line",
+   "why": "ordinary Hebrew handwriting: a non-hard handwritten line without digits",
+   "case_id": "hl_e003_q1_r1__l1",
+   "component": "ALL",
+   "split": "DEV",
+   "category": "handwritten_line"
+  },
+  {
+   "slot": "difficult_handwriting",
+   "why": "difficult handwriting: an item the benchmark marks hard=True",
+   "case_id": "hc_e002_q2_r1",
+   "component": "ALL",
+   "split": "DEV",
+   "category": "handwritten_cell"
+  },
+  {
+   "slot": "short_answer",
+   "why": "short answer: the shortest human-transcribed reference (<= 25 chars)",
+   "case_id": "hc_e002_q1_r1",
+   "component": "ALL",
+   "split": "DEV",
+   "category": "handwritten_cell"
+  },
+  {
+   "slot": "longer_answer",
+   "why": "longer answer: a human-transcribed reference of >= 100 chars",
+   "case_id": "hc_e002_q2_r6",
+   "component": "ALL",
+   "split": "DEV",
+   "category": "handwritten_cell"
+  },
+  {
+   "slot": "formula_numeric",
+   "why": "formula / numeric content: a printed formula item containing operators",
+   "case_id": "pr_docA_p1_b1",
+   "component": "ALL",
+   "split": "DEV",
+   "category": "formula_printed"
+  },
+  {
+   "slot": "mixed_hebrew_english",
+   "why": "mixed Hebrew / English technical text",
+   "case_id": "pr_docA_p2_b3",
+   "component": "ALL",
+   "split": "DEV",
+   "category": "mixed_he_en"
+  },
+  {
+   "slot": "handwritten_cell_numeric",
+   "why": "multi-line handwritten cell with digits (non-hard)",
+   "case_id": "hc_e002_q1_r7",
+   "component": "ALL",
+   "split": "DEV",
+   "category": "handwritten_cell"
+  },
+  {
+   "slot": "option_row_association",
+   "why": "RTL option-letter/value association row (structure, not prose)",
+   "case_id": "assoc_docB_p2_b1",
+   "component": "ALL",
+   "split": "DEV",
+   "category": "option_row_association"
+  }
+ ],
+ "unfilled_slots": [],
+ "selection_sha256": "cc5c9f1ff9911a6821bc49c00131b17770d9a5574baa3e41eb47ecb9d5ef73ec",
+ "frozen_at": "2026-08-22 05:09:06",
+ "_policy": "Pre-registered DEV smoke subset for the first live execution of a candidate. Frozen before any new model output; never modified or optimized after results. Model-visible inputs are still ONLY the manifest's inputs for these case ids."
+}

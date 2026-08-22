@@ -187,6 +187,7 @@ def _mock_gateway(tmp_path: Path, responder, budget: BudgetManager | None = None
 
 def _spec(tmp_path: Path, **kw) -> RunSpec:
     base = dict(role="align_resolve", split="dev", candidate="mock/model-a", backend="mock",
+                skip_key_preflight=True,
                 registry_path=_registry(tmp_path), datasets_root=tmp_path / "ds", state_root=tmp_path / "state",
                 runs_root=tmp_path / "runs", held_out_log=tmp_path / "HELD_OUT.jsonl", dry_run=False)
     base.update(kw)
@@ -231,18 +232,42 @@ def test_live_run_persists_raw_outputs_and_resumes(tmp_path, no_network):
     assert res4.run_dir != res.run_dir
 
 
-def test_held_out_requires_confirmation_and_is_logged(tmp_path, no_network):
+def test_held_out_cannot_be_dry_run_and_only_final_eval_executes_it(tmp_path, no_network):
     _tiny_align_dataset(tmp_path / "ds")
-    with pytest.raises(HeldOutRefused):
+    # dry-run is refused regardless of confirmation flags
+    with pytest.raises(HeldOutRefused, match="cannot be previewed/dry-run"):
         run_benchmark(_spec(tmp_path, split="held_out", dry_run=True))
-    assert not (tmp_path / "HELD_OUT.jsonl").exists()
-    res = run_benchmark(_spec(tmp_path, split="held_out", dry_run=True, confirm_held_out=True, note="test"))
+    with pytest.raises(HeldOutRefused, match="cannot be previewed/dry-run"):
+        run_benchmark(_spec(tmp_path, split="held_out", dry_run=True, confirm_held_out=True, final_evaluation=True))
+    # a live run through the ordinary path is refused even when confirmed
+    gw = _mock_gateway(tmp_path, _responder)
+    with pytest.raises(HeldOutRefused, match="final-evaluation path"):
+        run_benchmark(_spec(tmp_path, split="held_out", confirm_held_out=True), gateway=gw)
+    with pytest.raises(HeldOutRefused):
+        run_benchmark(_spec(tmp_path, split="held_out", final_evaluation=True), gateway=gw)
+    assert not (tmp_path / "HELD_OUT.jsonl").exists()          # nothing was logged for refusals
+    # the explicit final-evaluation path executes and logs permanently with provenance
+    res = run_benchmark(_spec(tmp_path, split="held_out", confirm_held_out=True, final_evaluation=True,
+                              note="final"), gateway=gw)
+    assert res.cases_selected == 1 and res.cases_done == 1
     log = held_out_executions(tmp_path / "HELD_OUT.jsonl")
-    assert len(log) == 1 and log[0]["role"] == "align_resolve" and log[0]["mode"] == "dry_run"
-    assert log[0]["run_id"] == res.run_id and "no longer untouched" in log[0]["consequence"]
+    assert len(log) == 1 and log[0]["mode"] == "final_evaluation_live" and log[0]["run_id"] == res.run_id
+    for k in ("config_hash", "prompt_sha256", "schema_sha256", "adapter_version", "manifest_hashes", "git_commit"):
+        assert k in log[0]
+    assert "no longer untouched" in log[0]["consequence"]
     # calibration and dev are never logged there
     run_benchmark(_spec(tmp_path, split="calibration", dry_run=True))
     assert len(held_out_executions(tmp_path / "HELD_OUT.jsonl")) == 1
+
+
+def test_held_out_log_is_not_written_when_the_run_cannot_execute(tmp_path, monkeypatch):
+    """A refused credential/readiness check must not leave a HELD_OUT record."""
+    monkeypatch.delenv("OPENROUTER_API_KEY", raising=False)
+    _tiny_align_dataset(tmp_path / "ds")
+    with pytest.raises(Exception):
+        run_benchmark(_spec(tmp_path, split="held_out", confirm_held_out=True, final_evaluation=True,
+                            backend="openrouter"))
+    assert not (tmp_path / "HELD_OUT.jsonl").exists()
 
 
 def test_unselected_and_unlisted_candidates_are_refused(tmp_path):

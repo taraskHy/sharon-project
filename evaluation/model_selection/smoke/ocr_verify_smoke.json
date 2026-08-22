@@ -1,0 +1,104 @@
+{
+ "role": "ocr_verify",
+ "split": "DEV",
+ "rules_version": "smoke-rules-v1 (2026-08-22, DEV only, min-id per slot)",
+ "manifest_hashes": {
+  "real_inputs_sha256": "f98ebda8aa6634f49eea30204f1374497fd0fd626418a8adea91f34c0447af0a",
+  "real_labels_sha256": "68b72cb1f67439255c59cc05a8b06590eaab3bc28478954053cf1302e6482bf2",
+  "real_manifest_sha256": "5e383be078bb0af5449cf5cdeddea3d4924b29b6ba0d2a58cdaa5409dfbc152b",
+  "synthetic_inputs_sha256": "9d7d81b75560f9a925140fc8a55c6a71b54b40eed570387d458e4af6080d118c",
+  "synthetic_labels_sha256": "9418e7cfabacf9fd0bd9b9cb37e0dd9110c93c183c8f31cad26905a1013a0d50",
+  "synthetic_manifest_sha256": "26b9887aa16fd750085342dd5c3a2710cba30d6243dc5bfe7607970b4e485cba",
+  "audit_sha256": "eace95fc6dc684c88f1fea2142414a68ad8f421257ac012faf6bcfc9ae07f50c"
+ },
+ "cases": [
+  {
+   "slot": "supported_1",
+   "why": "REAL positive: the audited transcription itself (must be SUPPORTED)",
+   "case_id": "00feaf8e02db",
+   "component": "REAL",
+   "split": "DEV"
+  },
+  {
+   "slot": "supported_2",
+   "why": "REAL positive #2",
+   "case_id": "04b029980631",
+   "component": "REAL",
+   "split": "DEV"
+  },
+  {
+   "slot": "supported_3",
+   "why": "REAL positive #3",
+   "case_id": "0c99d9cc57c5",
+   "component": "REAL",
+   "split": "DEV"
+  },
+  {
+   "slot": "real_omission",
+   "why": "REAL historical error: omission only",
+   "case_id": "22c929892737",
+   "component": "REAL",
+   "split": "DEV"
+  },
+  {
+   "slot": "real_substitution",
+   "why": "REAL historical error: substitution only",
+   "case_id": "09dbed54cf80",
+   "component": "REAL",
+   "split": "DEV"
+  },
+  {
+   "slot": "real_unsupported_addition",
+   "why": "REAL historical error including an unsupported addition",
+   "case_id": "0133ab372ac6",
+   "component": "REAL",
+   "split": "DEV"
+  },
+  {
+   "slot": "real_number_sign_formula",
+   "why": "REAL historical error touching a number/sign/formula token",
+   "case_id": "0289fef8d421",
+   "component": "REAL",
+   "split": "DEV"
+  },
+  {
+   "slot": "real_subtle",
+   "why": "REAL subtle error (severity 'subtle') — the hard false-accept case",
+   "case_id": "289938912c5e",
+   "component": "REAL",
+   "split": "DEV"
+  },
+  {
+   "slot": "synthetic_digit_substitution",
+   "why": "SYNTHETIC near miss: digit substitution (numeric group)",
+   "case_id": "1e4c8270489b",
+   "component": "SYNTHETIC",
+   "split": "DEV"
+  },
+  {
+   "slot": "synthetic_short_token_omission",
+   "why": "SYNTHETIC near miss: short token omission",
+   "case_id": "17f5d940e0be",
+   "component": "SYNTHETIC",
+   "split": "DEV"
+  },
+  {
+   "slot": "synthetic_char_deletion",
+   "why": "SYNTHETIC near miss: single character deletion",
+   "case_id": "0135da37774d",
+   "component": "SYNTHETIC",
+   "split": "DEV"
+  },
+  {
+   "slot": "synthetic_token_duplication",
+   "why": "SYNTHETIC near miss: token duplication / addition",
+   "case_id": "2329007554b8",
+   "component": "SYNTHETIC",
+   "split": "DEV"
+  }
+ ],
+ "unfilled_slots": [],
+ "selection_sha256": "5362db1f07d9bb96b0e0c3b1d636a28fc1acfff4f633eb8a38404aeca8364f1a",
+ "frozen_at": "2026-08-22 05:09:07",
+ "_policy": "Pre-registered DEV smoke subset for the first live execution of a candidate. Frozen before any new model output; never modified or optimized after results. Model-visible inputs are still ONLY the manifest's inputs for these case ids."
+}
