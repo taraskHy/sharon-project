@@ -1,0 +1,443 @@
+{
+ "_policy": "Frozen SYNTHETIC_NEAR_MISS verifier component. Model-visible: cases_inputs.jsonl only (opaque id, crop, candidate). Report SEPARATELY from the REAL component (FAR overall + FAR by corruption type, esp. numeric); COMBINED only secondarily.",
+ "frozen_at": "2026-08-22 04:03:20",
+ "rules_version": "synthetic-near-miss-rules-v1 (2026-08-22, fixed before any model output)",
+ "selection_policy_version": "selection-policy-v2 (hash-rotated text slot + optional numeric slot)",
+ "source_audit_sha256": "eace95fc6dc684c88f1fea2142414a68ad8f421257ac012faf6bcfc9ae07f50c",
+ "real_benchmark": {
+  "manifest_sha256": "5e383be078bb0af5449cf5cdeddea3d4924b29b6ba0d2a58cdaa5409dfbc152b",
+  "inputs_sha256": "f98ebda8aa6634f49eea30204f1374497fd0fd626418a8adea91f34c0447af0a",
+  "labels_sha256": "68b72cb1f67439255c59cc05a8b06590eaab3bc28478954053cf1302e6482bf2",
+  "raw_pool": {
+   "inputs_sha256": "133897978c1301bd55253bdadf711f35b702d293af7cdc1148b3269a2d6e7ab8",
+   "labels_sha256": "df61cb85c4862ac11bf97796fd55cc17a9751bbe6e832f9ed2f022805ac5b5c5",
+   "cases": 690
+  },
+  "decision": {
+   "split": "A",
+   "writer_assignment": {
+    "DEV": [
+     "e002",
+     "e003",
+     "e007"
+    ],
+    "CALIBRATION": [
+     "e004"
+    ],
+    "HELD_OUT": [
+     "e005",
+     "e006"
+    ]
+   },
+   "rationale": "Owner decision 2026-08-22: Split A. held-out gets two substantial independent handwriting sources (e005, e006); zero image overlap already verified; Split B would reduce held-out hand diversity; e007 is a single item so it belongs in DEV."
+  }
+ },
+ "split_assignment": {
+  "DEV": [
+   "e002",
+   "e003",
+   "e007"
+  ],
+  "CALIBRATION": [
+   "e004"
+  ],
+  "HELD_OUT": [
+   "e005",
+   "e006"
+  ]
+ },
+ "image_ids_per_split": {
+  "CALIBRATION": [
+   "hl_e004_q1_r1__l1",
+   "hl_e004_q1_r2__l1",
+   "hl_e004_q1_r3__l1",
+   "hl_e004_q1_r3__l2",
+   "hl_e004_q1_r4__l1",
+   "hl_e004_q1_r5__l1",
+   "hl_e004_q1_r6__l1",
+   "hl_e004_q1_r6__l2",
+   "hl_e004_q1_r7__l2",
+   "hl_e004_q1_r8__l1",
+   "hl_e004_q2_r1__l1",
+   "hl_e004_q2_r1__l2",
+   "hl_e004_q2_r2__l1",
+   "hl_e004_q2_r3__l1",
+   "hl_e004_q2_r4__l1",
+   "hl_e004_q2_r4__l2",
+   "hl_e004_q2_r5__l1",
+   "hl_e004_q2_r5__l2",
+   "hl_e004_q2_r6__l1",
+   "hl_e004_q2_r6__l2",
+   "hl_e004_q2_r7__l2",
+   "hl_e004_q2_r8__l1",
+   "hl_e004_q2_r8__l2"
+  ],
+  "DEV": [
+   "hc_e002_q1_r1",
+   "hc_e002_q1_r2",
+   "hc_e002_q1_r3",
+   "hc_e002_q1_r4",
+   "hc_e002_q1_r5",
+   "hc_e002_q1_r6",
+   "hc_e002_q1_r7",
+   "hc_e002_q1_r8",
+   "hc_e002_q2_r1",
+   "hc_e002_q2_r2",
+   "hc_e002_q2_r3",
+   "hc_e002_q2_r4",
+   "hc_e002_q2_r5",
+   "hc_e002_q2_r6",
+   "hc_e002_q2_r7",
+   "hc_e002_q2_r8",
+   "hl_e003_q1_r1__l1",
+   "hl_e003_q1_r2__l2",
+   "hl_e003_q1_r3__l1",
+   "hl_e003_q1_r4__l1",
+   "hl_e003_q1_r5__l1",
+   "hl_e003_q1_r6__l1",
+   "hl_e003_q1_r7__l1",
+   "hl_e003_q1_r8__l1",
+   "hl_e003_q2_r1__l1",
+   "hl_e003_q2_r2__l1",
+   "hl_e003_q2_r3__l1",
+   "hl_e003_q2_r4__l1",
+   "hl_e003_q2_r5__l1",
+   "hl_e003_q2_r6__l1",
+   "hl_e003_q2_r7__l1",
+   "hl_e003_q2_r8__l1",
+   "hl_e007_q1_r1__l1"
+  ],
+  "HELD_OUT": [
+   "hl_e005_q1_r1__l1",
+   "hl_e005_q1_r1__l2",
+   "hl_e005_q1_r2__l1",
+   "hl_e005_q1_r2__l2",
+   "hl_e005_q1_r3__l2",
+   "hl_e005_q1_r3__l3",
+   "hl_e005_q1_r4__l1",
+   "hl_e005_q1_r4__l2",
+   "hl_e005_q1_r5__l2",
+   "hl_e005_q1_r5__l3",
+   "hl_e005_q1_r6__l1",
+   "hl_e005_q1_r6__l2",
+   "hl_e005_q1_r7__l1",
+   "hl_e005_q1_r7__l2",
+   "hl_e005_q1_r8__l2",
+   "hl_e005_q1_r8__l3",
+   "hl_e005_q2_r1__l1",
+   "hl_e005_q2_r1__l2",
+   "hl_e005_q2_r2__l2",
+   "hl_e005_q2_r2__l3",
+   "hl_e005_q2_r3__l2",
+   "hl_e005_q2_r4__l2",
+   "hl_e005_q2_r4__l3",
+   "hl_e005_q2_r5__l2",
+   "hl_e005_q2_r5__l3",
+   "hl_e005_q2_r6__l2",
+   "hl_e005_q2_r7__l2",
+   "hl_e005_q2_r7__l3",
+   "hl_e005_q2_r8__l1",
+   "hl_e005_q2_r8__l2",
+   "hl_e006_q1_r1__l1",
+   "hl_e006_q1_r2__l1",
+   "hl_e006_q1_r3__l1",
+   "hl_e006_q1_r4__l1",
+   "hl_e006_q1_r5__l1",
+   "hl_e006_q1_r6__l1",
+   "hl_e006_q1_r7__l1",
+   "hl_e006_q1_r8__l1",
+   "hl_e006_q2_r1__l1",
+   "hl_e006_q2_r3__l1",
+   "hl_e006_q2_r4__l1",
+   "hl_e006_q2_r5__l2",
+   "hl_e006_q2_r6__l1",
+   "hl_e006_q2_r7__l1",
+   "hl_e006_q2_r7__l2",
+   "hl_e006_q2_r8__l1"
+  ]
+ },
+ "case_ids_per_split": {
+  "CALIBRATION": [
+   "137289f17edc",
+   "186cea3d8abf",
+   "30f9bd4eddc0",
+   "3e90657cffa0",
+   "49236a6d64a5",
+   "4a82ba65161b",
+   "53eddaed894d",
+   "5cd4ffcfabd8",
+   "638d4549ea57",
+   "681879ff062a",
+   "74693a7f47df",
+   "761eb5aeefdc",
+   "7bc9f3a0d252",
+   "82a672440ad4",
+   "834ee8548b20",
+   "86c07d400a15",
+   "90555fac5eed",
+   "9a88111f9d73",
+   "9bec3d745102",
+   "a596f79aab2c",
+   "b9c5b88e8812",
+   "c02f2005fe91",
+   "c1a1fc1407ce",
+   "d1bf15be1a58",
+   "d9037f53eb29",
+   "f3aae99c0058",
+   "f7543984caa3"
+  ],
+  "DEV": [
+   "0135da37774d",
+   "17f5d940e0be",
+   "1933a4b8e742",
+   "1e4c8270489b",
+   "2329007554b8",
+   "2b99901f615f",
+   "2fe4245e6496",
+   "3d48de3ef33a",
+   "4445ebfa10a6",
+   "47d1f753869e",
+   "539fa90e3a83",
+   "5639b39e2f0d",
+   "573cf75aab28",
+   "58334b295865",
+   "5da0f2768fa7",
+   "63ad919f3935",
+   "65c0f0fc5fb2",
+   "678a27dc8fae",
+   "6916398957e1",
+   "6f68b42db4e7",
+   "718134738de9",
+   "719036455b77",
+   "71c6cf0f100b",
+   "7d193ec40242",
+   "8130778c54b9",
+   "852c67fc3fa0",
+   "8928c38c466b",
+   "8b647a141d89",
+   "903f89de1973",
+   "94756492045c",
+   "9e9492c7bfc6",
+   "a1a0a1cbbd07",
+   "ac669e24c42a",
+   "affb2b32879f",
+   "b286bfd16c7d",
+   "b2e03279b86a",
+   "bd52002155c4",
+   "c021a7910178",
+   "d67fdaa9e3c7",
+   "e00eddfa431f",
+   "e3297aa3e1fb",
+   "f4b15eeb3e13",
+   "fb2bcde69e9a",
+   "fcea0cf8cdb2"
+  ],
+  "HELD_OUT": [
+   "00cda0232f57",
+   "06eef9819f5a",
+   "1377444e1431",
+   "14d212f32b01",
+   "14fc577afb32",
+   "23239673e23b",
+   "2a4560485d51",
+   "2d7aa374fff7",
+   "2ee1b0e444e9",
+   "309351fa5416",
+   "34f9d68c14c1",
+   "3b519c77a72b",
+   "418fe23fe098",
+   "471098a18dbb",
+   "4aba0723b977",
+   "513eee6841ce",
+   "51fd54b7c041",
+   "591d150fe46e",
+   "6125db33e484",
+   "62850e73c38f",
+   "64639b4ad6cf",
+   "65c58049ba86",
+   "70361defea81",
+   "77590e55262a",
+   "78b493f57ff6",
+   "78d90e226a30",
+   "7a26510cd1fb",
+   "7b68ec4e027b",
+   "830f8e967bb5",
+   "833794ea5cb6",
+   "86e3bd52adef",
+   "8c6701c93af1",
+   "91bc2855738d",
+   "936f726338fb",
+   "9728b1435aef",
+   "98b739e05dfd",
+   "9ba9d3f6c31b",
+   "b0c8888ebffe",
+   "b1e80a94a407",
+   "b20d0d4cdba4",
+   "bd670f5cee28",
+   "c3830cde46fe",
+   "c3dc950f0e79",
+   "c4ce3466e414",
+   "c61b467c41b7",
+   "d184f3c4257f",
+   "d52c69abe421",
+   "db1a61f4fe5e",
+   "db4343b50a2d",
+   "dfd5eaef82ca",
+   "e2781ea0b3ac",
+   "e3c51b3cac82",
+   "e7388cb3a6e3",
+   "e83ed6ee2a38",
+   "ea9db392493f",
+   "eb2b9ffe2163",
+   "edf8ff0bd36e",
+   "ee8c6a4e73d9",
+   "f08f564a1e24",
+   "f2c2940b6c53",
+   "f4733d46f9bb",
+   "f97481099652",
+   "fa82d901bfdc",
+   "fb5df1114a20",
+   "fdefae53a5bb"
+  ]
+ },
+ "composition": {
+  "total": 136,
+  "text": 102,
+  "numeric_math": 34,
+  "by_type": {
+   "digit_substitution": 26,
+   "operator_substitution": 8,
+   "decimal_point_corruption": 0,
+   "superscript_subscript_loss": 0,
+   "char_deletion": 29,
+   "short_token_omission": 39,
+   "token_duplication_addition": 34
+  },
+  "by_split": {
+   "DEV": 44,
+   "CALIBRATION": 27,
+   "HELD_OUT": 65
+  }
+ },
+ "zero_image_overlap_between_splits": true,
+ "report": {
+  "rules_version": "synthetic-near-miss-rules-v1 (2026-08-22, fixed before any model output)",
+  "selection_policy_version": "selection-policy-v2 (hash-rotated text slot + optional numeric slot)",
+  "rules": [
+   "digit_substitution",
+   "operator_substitution",
+   "decimal_point_corruption",
+   "superscript_subscript_loss",
+   "char_deletion",
+   "short_token_omission",
+   "token_duplication_addition"
+  ],
+  "synthetic_cases_total": 136,
+  "text_cases": 102,
+  "numeric_cases": 34,
+  "cases_by_corruption_type": {
+   "char_deletion": 29,
+   "token_duplication_addition": 34,
+   "short_token_omission": 39,
+   "operator_substitution": 8,
+   "digit_substitution": 26
+  },
+  "cases_by_group": {
+   "text": 102,
+   "numeric": 34
+  },
+  "images_with_no_text_corruption": [],
+  "images_with_numeric_material_but_no_numeric_case": [],
+  "rule_applicability_counts": {
+   "char_deletion": 101,
+   "short_token_omission": 95,
+   "token_duplication_addition": 100,
+   "digit_substitution": 27,
+   "operator_substitution": 10
+  },
+  "images_covered": 102,
+  "eligible_images": 102,
+  "writers_covered": {
+   "e002": 22,
+   "e003": 21,
+   "e004": 27,
+   "e005": 42,
+   "e006": 23,
+   "e007": 1
+  },
+  "cases_per_image_distribution": {
+   "1": 68,
+   "2": 34
+  },
+  "by_split": {
+   "DEV": {
+    "cases": 44,
+    "images": 33,
+    "writers": [
+     "e002",
+     "e003",
+     "e007"
+    ],
+    "numeric_group_cases": 11
+   },
+   "CALIBRATION": {
+    "cases": 27,
+    "images": 23,
+    "writers": [
+     "e004"
+    ],
+    "numeric_group_cases": 4
+   },
+   "HELD_OUT": {
+    "cases": 65,
+    "images": 46,
+    "writers": [
+     "e005",
+     "e006"
+    ],
+    "numeric_group_cases": 19
+   }
+  },
+  "duplicate_removals": {},
+  "images_without_safe_corruption": [],
+  "zero_image_overlap_between_splits": true,
+  "inherits_split_from": {
+   "selected_manifest_sha256": "5e383be078bb0af5449cf5cdeddea3d4924b29b6ba0d2a58cdaa5409dfbc152b",
+   "decision": {
+    "split": "A",
+    "writer_assignment": {
+     "DEV": [
+      "e002",
+      "e003",
+      "e007"
+     ],
+     "CALIBRATION": [
+      "e004"
+     ],
+     "HELD_OUT": [
+      "e005",
+      "e006"
+     ]
+    },
+    "rationale": "Owner decision 2026-08-22: Split A. held-out gets two substantial independent handwriting sources (e005, e006); zero image overlap already verified; Split B would reduce held-out hand diversity; e007 is a single item so it belongs in DEV."
+   }
+  },
+  "metrics_contract": {
+   "REAL": [
+    "FAR",
+    "FRR",
+    "SUPPORTED precision",
+    "REVIEW rate"
+   ],
+   "SYNTHETIC_NEAR_MISS": [
+    "FAR overall",
+    "FAR by corruption type",
+    "FAR numeric group (number/operator/formula)"
+   ],
+   "COMBINED": "secondary only; never hides either source"
+  }
+ },
+ "inputs_sha256": "9d7d81b75560f9a925140fc8a55c6a71b54b40eed570387d458e4af6080d118c",
+ "labels_sha256": "9418e7cfabacf9fd0bd9b9cb37e0dd9110c93c183c8f31cad26905a1013a0d50",
+ "audit_sha256": "eace95fc6dc684c88f1fea2142414a68ad8f421257ac012faf6bcfc9ae07f50c"
+}

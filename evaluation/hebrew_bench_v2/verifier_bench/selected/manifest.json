@@ -1,0 +1,235 @@
+{
+ "_policy": "Frozen SELECTED verifier benchmark (REAL historical OCR errors + one positive per audited image). cases_inputs.jsonl is the ONLY model-visible file (opaque id, crop, candidate); cases_labels.jsonl is evaluation-side only. Primary model-selection metric: FALSE ACCEPT RATE (incorrect transcription classified SUPPORTED); never overall accuracy.",
+ "frozen_at": "2026-08-22 03:46:09",
+ "decision": {
+  "split": "A",
+  "writer_assignment": {
+   "DEV": [
+    "e002",
+    "e003",
+    "e007"
+   ],
+   "CALIBRATION": [
+    "e004"
+   ],
+   "HELD_OUT": [
+    "e005",
+    "e006"
+   ]
+  },
+  "rationale": "Owner decision 2026-08-22: Split A. held-out gets two substantial independent handwriting sources (e005, e006); zero image overlap already verified; Split B would reduce held-out hand diversity; e007 is a single item so it belongs in DEV."
+ },
+ "image_ids_per_split": {
+  "CALIBRATION": [
+   "hl_e004_q1_r1__l1",
+   "hl_e004_q1_r2__l1",
+   "hl_e004_q1_r3__l1",
+   "hl_e004_q1_r3__l2",
+   "hl_e004_q1_r4__l1",
+   "hl_e004_q1_r5__l1",
+   "hl_e004_q1_r6__l1",
+   "hl_e004_q1_r6__l2",
+   "hl_e004_q1_r7__l2",
+   "hl_e004_q1_r8__l1",
+   "hl_e004_q2_r1__l1",
+   "hl_e004_q2_r1__l2",
+   "hl_e004_q2_r2__l1",
+   "hl_e004_q2_r3__l1",
+   "hl_e004_q2_r4__l1",
+   "hl_e004_q2_r4__l2",
+   "hl_e004_q2_r5__l1",
+   "hl_e004_q2_r5__l2",
+   "hl_e004_q2_r6__l1",
+   "hl_e004_q2_r6__l2",
+   "hl_e004_q2_r7__l2",
+   "hl_e004_q2_r8__l1",
+   "hl_e004_q2_r8__l2"
+  ],
+  "DEV": [
+   "hc_e002_q1_r1",
+   "hc_e002_q1_r2",
+   "hc_e002_q1_r3",
+   "hc_e002_q1_r4",
+   "hc_e002_q1_r5",
+   "hc_e002_q1_r6",
+   "hc_e002_q1_r7",
+   "hc_e002_q1_r8",
+   "hc_e002_q2_r1",
+   "hc_e002_q2_r2",
+   "hc_e002_q2_r3",
+   "hc_e002_q2_r4",
+   "hc_e002_q2_r5",
+   "hc_e002_q2_r6",
+   "hc_e002_q2_r7",
+   "hc_e002_q2_r8",
+   "hl_e003_q1_r1__l1",
+   "hl_e003_q1_r2__l2",
+   "hl_e003_q1_r3__l1",
+   "hl_e003_q1_r4__l1",
+   "hl_e003_q1_r5__l1",
+   "hl_e003_q1_r6__l1",
+   "hl_e003_q1_r7__l1",
+   "hl_e003_q1_r8__l1",
+   "hl_e003_q2_r1__l1",
+   "hl_e003_q2_r2__l1",
+   "hl_e003_q2_r3__l1",
+   "hl_e003_q2_r4__l1",
+   "hl_e003_q2_r5__l1",
+   "hl_e003_q2_r6__l1",
+   "hl_e003_q2_r7__l1",
+   "hl_e003_q2_r8__l1",
+   "hl_e007_q1_r1__l1"
+  ],
+  "HELD_OUT": [
+   "hl_e005_q1_r1__l1",
+   "hl_e005_q1_r1__l2",
+   "hl_e005_q1_r2__l1",
+   "hl_e005_q1_r2__l2",
+   "hl_e005_q1_r3__l2",
+   "hl_e005_q1_r3__l3",
+   "hl_e005_q1_r4__l1",
+   "hl_e005_q1_r4__l2",
+   "hl_e005_q1_r5__l2",
+   "hl_e005_q1_r5__l3",
+   "hl_e005_q1_r6__l1",
+   "hl_e005_q1_r6__l2",
+   "hl_e005_q1_r7__l1",
+   "hl_e005_q1_r7__l2",
+   "hl_e005_q1_r8__l2",
+   "hl_e005_q1_r8__l3",
+   "hl_e005_q2_r1__l1",
+   "hl_e005_q2_r1__l2",
+   "hl_e005_q2_r2__l2",
+   "hl_e005_q2_r2__l3",
+   "hl_e005_q2_r3__l2",
+   "hl_e005_q2_r4__l2",
+   "hl_e005_q2_r4__l3",
+   "hl_e005_q2_r5__l2",
+   "hl_e005_q2_r5__l3",
+   "hl_e005_q2_r6__l2",
+   "hl_e005_q2_r7__l2",
+   "hl_e005_q2_r7__l3",
+   "hl_e005_q2_r8__l1",
+   "hl_e005_q2_r8__l2",
+   "hl_e006_q1_r1__l1",
+   "hl_e006_q1_r2__l1",
+   "hl_e006_q1_r3__l1",
+   "hl_e006_q1_r4__l1",
+   "hl_e006_q1_r5__l1",
+   "hl_e006_q1_r6__l1",
+   "hl_e006_q1_r7__l1",
+   "hl_e006_q1_r8__l1",
+   "hl_e006_q2_r1__l1",
+   "hl_e006_q2_r3__l1",
+   "hl_e006_q2_r4__l1",
+   "hl_e006_q2_r5__l2",
+   "hl_e006_q2_r6__l1",
+   "hl_e006_q2_r7__l1",
+   "hl_e006_q2_r7__l2",
+   "hl_e006_q2_r8__l1"
+  ]
+ },
+ "zero_image_overlap_between_splits": true,
+ "report": {
+  "split_proposal": "A",
+  "split_definition": {
+   "DEV": [
+    "e002",
+    "e003",
+    "e007"
+   ],
+   "CALIBRATION": [
+    "e004"
+   ],
+   "HELD_OUT": [
+    "e005",
+    "e006"
+   ]
+  },
+  "unique_handwriting_items": 102,
+  "writers_represented": {
+   "e002": 16,
+   "e003": 16,
+   "e004": 23,
+   "e005": 30,
+   "e006": 16,
+   "e007": 1
+  },
+  "positive_cases": 102,
+  "real_correct_raw_candidates_not_added": 9,
+  "unique_negatives_after_dedup": 340,
+  "selected_negatives": 201,
+  "total_selected_cases": 303,
+  "cases_per_image_distribution": {
+   "2": 3,
+   "3": 99
+  },
+  "max_negatives_per_image_rule": 2,
+  "documented_exceptions": [],
+  "error_kind_counts_overlapping": {
+   "substitution": 195,
+   "unsupported_addition": 74,
+   "number_sign_formula": 119,
+   "omission": 102
+  },
+  "number_sign_formula_coverage": {
+   "negative_cases": 119,
+   "images_with_number_sign_case": 75
+  },
+  "severity_counts": {
+   "severe": 178,
+   "moderate": 14,
+   "subtle": 9
+  },
+  "by_split": {
+   "DEV": {
+    "cases": 99,
+    "positives": 33,
+    "negatives": 66,
+    "unique_images": 33,
+    "writers": [
+     "e002",
+     "e003",
+     "e007"
+    ],
+    "number_sign_cases": 25
+   },
+   "CALIBRATION": {
+    "cases": 67,
+    "positives": 23,
+    "negatives": 44,
+    "unique_images": 23,
+    "writers": [
+     "e004"
+    ],
+    "number_sign_cases": 29
+   },
+   "HELD_OUT": {
+    "cases": 137,
+    "positives": 46,
+    "negatives": 91,
+    "unique_images": 46,
+    "writers": [
+     "e005",
+     "e006"
+    ],
+    "number_sign_cases": 65
+   }
+  },
+  "images_in_multiple_splits": [],
+  "zero_image_overlap_between_splits": true,
+  "raw_pool_provenance": {
+   "inputs_sha256": "133897978c1301bd55253bdadf711f35b702d293af7cdc1148b3269a2d6e7ab8",
+   "labels_sha256": "df61cb85c4862ac11bf97796fd55cc17a9751bbe6e832f9ed2f022805ac5b5c5",
+   "cases": 690
+  }
+ },
+ "raw_pool": {
+  "inputs_sha256": "133897978c1301bd55253bdadf711f35b702d293af7cdc1148b3269a2d6e7ab8",
+  "labels_sha256": "df61cb85c4862ac11bf97796fd55cc17a9751bbe6e832f9ed2f022805ac5b5c5",
+  "cases": 690
+ },
+ "inputs_sha256": "f98ebda8aa6634f49eea30204f1374497fd0fd626418a8adea91f34c0447af0a",
+ "labels_sha256": "68b72cb1f67439255c59cc05a8b06590eaab3bc28478954053cf1302e6482bf2",
+ "audit_sha256": "eace95fc6dc684c88f1fea2142414a68ad8f421257ac012faf6bcfc9ae07f50c"
+}

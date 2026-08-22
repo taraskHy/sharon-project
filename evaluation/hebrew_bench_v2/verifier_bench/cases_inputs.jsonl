@@ -1,0 +1,690 @@
+{"case_id": "032dd8743c61", "crop": "crops/hl_e003_q1_r1__l1.png", "candidate_transcription": "{\"transcription\": \"ניתן לראות ברמות התדרים הגבוהים שיש שפות בכיוון התנועה"}
+{"case_id": "939ef6f2bedc", "crop": "crops/hl_e003_q1_r2__l2.png", "candidate_transcription": "רק התדרים הגבוהים נשמרו ב-High"}
+{"case_id": "ba6da4f4ebe1", "crop": "crops/hl_e003_q1_r3__l1.png", "candidate_transcription": "עוצמת התדרים הגבוהים אחרי הפעולה גדלה"}
+{"case_id": "b963403fc1cb", "crop": "crops/hl_e003_q1_r4__l1.png", "candidate_transcription": "{\"transcription\": \"ניתן לראות שרק תדרים נמוכים נשמרו ולכן כל הרמות של הת"}
+{"case_id": "7681da570c8a", "crop": "crops/hl_e003_q1_r5__l1.png", "candidate_transcription": "ובלט\"\n        \"בתדרים הגבוהים\"\n        The word \"ציר\" appears twice? Once above \"בכיוון"}
+{"case_id": "fb2f8268b560", "crop": "crops/hl_e003_q1_r6__l1.png", "candidate_transcription": "{\"transcription\": \"הרעש והטשטוש שלו בכיוון ציר ה-y מובלט בתדרים הגבוה"}
+{"case_id": "dabd38a8ab6e", "crop": "crops/hl_e003_q1_r7__l1.png", "candidate_transcription": "הרמה העליונה שכוללת את DC"}
+{"case_id": "cfecfcb969bb", "crop": "crops/hl_e003_q1_r8__l1.png", "candidate_transcription": "{\"transcription\": \"ברמה העליונה שכוללת את DC ניתן לראות שערכים בהירים יותר, נ"}
+{"case_id": "461a86c438d3", "crop": "crops/hl_e003_q2_r1__l1.png", "candidate_transcription": "{\"transcription\": \"כל השפות שנקלטו קיבלו ערך 255 לעומת שאר הפי"}
+{"case_id": "02eca818b2aa", "crop": "crops/hl_e003_q2_r2__l1.png", "candidate_transcription": "הטשטוש הוריד רעש ולכן פחות פיקסלים"}
+{"case_id": "6990ed1f775e", "crop": "crops/hl_e003_q2_r3__l1.png", "candidate_transcription": "{\"transcription\": \"מספר הפיקסלים לא השתנה והערכים מתפרסים על כל ספק"}
+{"case_id": "2ecd5db98dc8", "crop": "crops/hl_e003_q2_r4__l1.png", "candidate_transcription": "ניתן לראות שלעומת Uniform יש פחות ערכים אפשריים"}
+{"case_id": "d9e08dda45eb", "crop": "crops/hl_e003_q2_r5__l1.png", "candidate_transcription": "לכל BIN (סה\"כ 20) יש ערך שנבחר בצורה"}
+{"case_id": "f761581e5df0", "crop": "crops/hl_e003_q2_r6__l1.png", "candidate_transcription": "טווח הערכים גדול יותר מהטווח בהיסטוגרמה"}
+{"case_id": "0688acb26c40", "crop": "crops/hl_e003_q2_r7__l1.png", "candidate_transcription": "הוכפל מספר הפיקסלים בכל התמונה פי 2"}
+{"case_id": "1a6926e1ba67", "crop": "crops/hl_e003_q2_r8__l1.png", "candidate_transcription": "{\"transcription\": \"ניתן לראות שמספר הפיקסלים בכל עוצמה חוזר ימינה באותו"}
+{"case_id": "faab2035fb7c", "crop": "crops/hl_e004_q1_r1__l1.png", "candidate_transcription": "ה WAVELETS משתמשת בכל החלפות"}
+{"case_id": "465daa79b739", "crop": "crops/hl_e004_q1_r2__l1.png", "candidate_transcription": "התדר הנמוך נעלם בגלל Highpass Filter"}
+{"case_id": "a8eab4b465de", "crop": "crops/hl_e004_q1_r3__l1.png", "candidate_transcription": "sh-y-y-b-t) - wait, it looks like מ-ח-ו-ד-ד-ת? No."}
+{"case_id": "1565b09d6ce6", "crop": "crops/hl_e004_q1_r3__l2.png", "candidate_transcription": "לא כמו E שיהיו יותר Brightness."}
+{"case_id": "72a05dbde151", "crop": "crops/hl_e005_q1_r1__l1.png", "candidate_transcription": "נראה בתמונה טשטוש של motion blur על שפות אשר"}
+{"case_id": "0be1388b6704", "crop": "crops/hl_e005_q1_r1__l2.png", "candidate_transcription": "{\"transcription\": \"הם לא ברורות כמו שאמורות להיות והם לא בציר x (ול"}
+{"case_id": "72c3eea51ca2", "crop": "crops/hl_e005_q1_r2__l1.png", "candidate_transcription": "בתמונה מופיעים שמות של התמונה המקורית בתדר גבוה"}
+{"case_id": "42c333c891b0", "crop": "crops/hl_e005_q1_r2__l2.png", "candidate_transcription": "{\"transcription\": \"וגם הן נשים לב שהפועל מבוצע על תמונה הכי רעה - בבי\\\""}
+{"case_id": "5665af311e4a", "crop": "crops/hl_e006_q1_r1__l1.png", "candidate_transcription": "{\"transcription\": \"motion blur וטשטוש! הלוואי על התמונה (כמו echo) רואים ברמה יד"}
+{"case_id": "98708f0fbcb7", "crop": "crops/hl_e006_q1_r2__l1.png", "candidate_transcription": "{\"transcription\": \"בהפעלת high pass לא ישאר תדרים נמוכים גם לא ישאר DC.\""}
+{"case_id": "8d91143d6996", "crop": "crops/hl_e006_q1_r3__l1.png", "candidate_transcription": "בחידוד תמונה רואים יותר שפות ולכן D ."}
+{"case_id": "d32ffd58da5c", "crop": "crops/hl_e007_q1_r1__l1.png", "candidate_transcription": "{\"transcription\": \"ניתן לראות כי בשכבות של הגלים הכחולים לא שומרים על אותה"}
+{"case_id": "0d295c0e3101", "crop": "crops/hc_e002_q1_r1.png", "candidate_transcription": "יש לטשטש בכל התדרים"}
+{"case_id": "d17d3f258a55", "crop": "crops/hc_e002_q1_r2.png", "candidate_transcription": "נשאלת השאלה רק התדרים הגבוהים"}
+{"case_id": "c28befdbb333", "crop": "crops/hc_e002_q1_r3.png", "candidate_transcription": "{\"transcription\": \"העוצמה של ה דרגות הגבוהות\\nבפרמידה חלקה"}
+{"case_id": "60c560fe29f3", "crop": "crops/hc_e002_q1_r4.png", "candidate_transcription": "נשאר בתמונה רק התדרים\nהנמוכים"}
+{"case_id": "d469f7c17662", "crop": "crops/hl_e003_q1_r1__l1.png", "candidate_transcription": "{\"transcription\": \"ניתן לראות ברמות התדרים הגבוהים שיש שפות בכיוון התנועה"}
+{"case_id": "f42c678f3362", "crop": "crops/hl_e003_q1_r2__l2.png", "candidate_transcription": "סים (DC`\n\nLet's re-read the Hebrew.\nLine 1: `רק התדרים הגבוהים נ"}
+{"case_id": "22768142c55e", "crop": "crops/hl_e003_q1_r3__l1.png", "candidate_transcription": "עוצמת התדרים הגבוהים אחרי הפעולה גדלה"}
+{"case_id": "39e608a1fecb", "crop": "crops/hl_e003_q1_r4__l1.png", "candidate_transcription": "{\"transcription\": \"ניתן לראות שרק תדרים נמוכים נשמרו ולכן כל הרמות של הת"}
+{"case_id": "b704ef871461", "crop": "crops/hl_e004_q1_r1__l1.png", "candidate_transcription": "ה WAVELETS משתמשת בכל החלפות"}
+{"case_id": "c759bff96991", "crop": "crops/hl_e004_q1_r2__l1.png", "candidate_transcription": "התדר הנמוך נעלם בגלל Highpass Filter"}
+{"case_id": "06da0b1ab952", "crop": "crops/hl_e004_q1_r3__l1.png", "candidate_transcription": "sh-y-y-b-t) - wait, it looks like מ-ח-ו-ד-ד-ת? No."}
+{"case_id": "ca189b7bac6e", "crop": "crops/hl_e003_q1_r1__l1.png", "candidate_transcription": "ניתן לראות ברמות התדרים הגבוהים שיש שפות בכיוון התנועה"}
+{"case_id": "a08cb756f2fc", "crop": "crops/hl_e003_q1_r2__l2.png", "candidate_transcription": "רק התדרים הגבוהים נשמרו ב-High"}
+{"case_id": "af39b740ae8e", "crop": "crops/hl_e003_q1_r3__l1.png", "candidate_transcription": "עוצמת התדרים הגבוהים אחרי הפעולה גדלה"}
+{"case_id": "450ac57f018d", "crop": "crops/hl_e003_q1_r4__l1.png", "candidate_transcription": "ניתן לראות שרק תדרים נמוכים נשמרו ולכן כל הרמות של הת"}
+{"case_id": "359ac4b8fa71", "crop": "crops/hl_e003_q1_r5__l1.png", "candidate_transcription": "ובלט\"\n        \"בתדרים הגבוהים\"\n        The word \"ציר\" appears twice? Once above \"בכיוון"}
+{"case_id": "b01d1eba3485", "crop": "crops/hl_e003_q1_r6__l1.png", "candidate_transcription": "הרעש והטשטוש שלו בכיוון ציר ה-y מובלט בתדרים הגבוה"}
+{"case_id": "69ba8dff036a", "crop": "crops/hl_e003_q1_r7__l1.png", "candidate_transcription": "הרמה העליונה שכוללת את DC"}
+{"case_id": "3d5e54bed71f", "crop": "crops/hl_e003_q1_r8__l1.png", "candidate_transcription": "ברמה העליונה שכוללת את DC ניתן לראות שערכים בהירים יותר, נ"}
+{"case_id": "417cd3673b54", "crop": "crops/hl_e003_q2_r1__l1.png", "candidate_transcription": "כל השפות שנקלטו קיבלו ערך 255 לעומת שאר הפי"}
+{"case_id": "e0b23ffa4937", "crop": "crops/hl_e003_q2_r2__l1.png", "candidate_transcription": "הטשטוש הוריד רעש ולכן פחות פיקסלים"}
+{"case_id": "47f9c2144455", "crop": "crops/hl_e003_q2_r3__l1.png", "candidate_transcription": "מספר הפיקסלים לא השתנה והערכים מתפרסים על כל ספק"}
+{"case_id": "9becebe80347", "crop": "crops/hl_e003_q2_r4__l1.png", "candidate_transcription": "ניתן לראות שלעומת Uniform יש פחות ערכים אפשריים"}
+{"case_id": "0c730af016f6", "crop": "crops/hl_e003_q2_r5__l1.png", "candidate_transcription": "לכל BIN (סה\"כ 20) יש ערך שנבחר בצורה"}
+{"case_id": "dd5d7533d74c", "crop": "crops/hl_e003_q2_r6__l1.png", "candidate_transcription": "טווח הערכים גדול יותר מהטווח בהיסטוגרמה"}
+{"case_id": "90f95eda5149", "crop": "crops/hl_e003_q2_r7__l1.png", "candidate_transcription": "הוכפל מספר הפיקסלים בכל התמונה פי 2"}
+{"case_id": "51160347a891", "crop": "crops/hl_e003_q2_r8__l1.png", "candidate_transcription": "ניתן לראות שמספר הפיקסלים בכל עוצמה חוזר ימינה באותו"}
+{"case_id": "f277b26db347", "crop": "crops/hl_e004_q1_r1__l1.png", "candidate_transcription": "ה WAVELETS משתמשת בכל החלפות"}
+{"case_id": "381f4cb8dbb7", "crop": "crops/hl_e004_q1_r2__l1.png", "candidate_transcription": "התדר הנמוך נעלם בגלל Highpass Filter"}
+{"case_id": "b1c73478e748", "crop": "crops/hl_e004_q1_r3__l1.png", "candidate_transcription": "sh-y-y-b-t) - wait, it looks like מ-ח-ו-ד-ד-ת? No."}
+{"case_id": "32b476efc75d", "crop": "crops/hl_e004_q1_r3__l2.png", "candidate_transcription": "לא כמו E שיהיו יותר Brightness."}
+{"case_id": "4d646a0f0a08", "crop": "crops/hl_e005_q1_r1__l1.png", "candidate_transcription": "נראה בתמונה טשטוש של motion blur על שפות אשר"}
+{"case_id": "13571b028c08", "crop": "crops/hl_e005_q1_r1__l2.png", "candidate_transcription": "הם לא ברורות כמו שאמורות להיות והם לא בציר x (ול"}
+{"case_id": "d06532b7f43b", "crop": "crops/hl_e005_q1_r2__l1.png", "candidate_transcription": "בתמונה מופיעים שמות של התמונה המקורית בתדר גבוה"}
+{"case_id": "ad5b1bb0f205", "crop": "crops/hl_e005_q1_r2__l2.png", "candidate_transcription": "וגם הן נשים לב שהפועל מבוצע על תמונה הכי רעה - בבי\""}
+{"case_id": "65480a347165", "crop": "crops/hl_e006_q1_r1__l1.png", "candidate_transcription": "motion blur וטשטוש! הלוואי על התמונה (כמו echo) רואים ברמה יד"}
+{"case_id": "cb12884384b3", "crop": "crops/hl_e006_q1_r2__l1.png", "candidate_transcription": "בהפעלת high pass לא ישאר תדרים נמוכים גם לא ישאר DC."}
+{"case_id": "ad487ad7b2fa", "crop": "crops/hl_e006_q1_r3__l1.png", "candidate_transcription": "בחידוד תמונה רואים יותר שפות ולכן D ."}
+{"case_id": "0ab5997fd84a", "crop": "crops/hl_e007_q1_r1__l1.png", "candidate_transcription": "ניתן לראות כי בשכבות של הגלים הכחולים לא שומרים על אותה"}
+{"case_id": "e0a6322f496d", "crop": "crops/hc_e002_q1_r1.png", "candidate_transcription": "יש לטשטש בכל התדרים"}
+{"case_id": "7b640938a604", "crop": "crops/hc_e002_q1_r2.png", "candidate_transcription": "נשאלת השאלה רק התדרים הגבוהים"}
+{"case_id": "57a7378446ae", "crop": "crops/hc_e002_q1_r3.png", "candidate_transcription": "העוצמה של ה דרגות הגבוהות\nבפרמידה חלקה"}
+{"case_id": "0ebc988c5e96", "crop": "crops/hc_e002_q1_r4.png", "candidate_transcription": "נשאר בתמונה רק התדרים\nהנמוכים"}
+{"case_id": "eda9544eab60", "crop": "crops/hl_e003_q1_r1__l1.png", "candidate_transcription": "ניתן לראות בדפוסי התדרים הגבוהים שיש שפות בכיוון התנועה"}
+{"case_id": "cfd5acdf9898", "crop": "crops/hl_e003_q1_r2__l2.png", "candidate_transcription": "רק התדרים הגבוהים נשמרו ב-High"}
+{"case_id": "80390868e77e", "crop": "crops/hl_e003_q1_r3__l1.png", "candidate_transcription": "עוצמת התדרים הגבוהים אחרי הפעולה גדלה"}
+{"case_id": "b03ede257fb7", "crop": "crops/hl_e003_q1_r4__l1.png", "candidate_transcription": "ניתן לראות שרק תדרים נמוכים נשמרו ולכן כל הרמות של התמונה"}
+{"case_id": "5ebe492d5dcb", "crop": "crops/hl_e003_q1_r5__l1.png", "candidate_transcription": "ובתדרים הנמוכים\n        \"בתדרים הגבוהים\"\n        התשובה 'ציר' מופיעה פעמיים? פעם אחת מעל 'בכיוון"}
+{"case_id": "a2a583cba371", "crop": "crops/hl_e003_q1_r6__l1.png", "candidate_transcription": "הרעש והטשטוש שלו בכיוון ציר ה-y מובילים לתדרים גבוהים"}
+{"case_id": "eea742437087", "crop": "crops/hl_e003_q1_r7__l1.png", "candidate_transcription": "הרמה העליונה שכוללת את DC"}
+{"case_id": "e75da0906dac", "crop": "crops/hl_e003_q1_r8__l1.png", "candidate_transcription": "ברמה העליונה שכוללת את DC ניתן לראות שערכים בהירים יותר, נ"}
+{"case_id": "c983695cfa8a", "crop": "crops/hl_e003_q2_r1__l1.png", "candidate_transcription": "כל השפות שנקלטו קיבלו ערך 255 לעומת שאר הפיקסלים"}
+{"case_id": "3a77e9e2df4d", "crop": "crops/hl_e003_q2_r2__l1.png", "candidate_transcription": "הטשטוש הוריד רעש ולכן פחות פיקסלים"}
+{"case_id": "843b5d7c940c", "crop": "crops/hl_e003_q2_r3__l1.png", "candidate_transcription": "{\"transcription\": \"מספר הפיקסלים לא השתנה והערכים מתפרסים על כל ספק"}
+{"case_id": "46239a477efa", "crop": "crops/hl_e003_q2_r4__l1.png", "candidate_transcription": "ניתן לראות שלעומת Uniform יש פחות ערכים אפשריים"}
+{"case_id": "16fbe655959a", "crop": "crops/hl_e003_q2_r5__l1.png", "candidate_transcription": "לכל BIN (סה\"כ 20) יש ערך שנבחר בצורה"}
+{"case_id": "5e9fe0e05c91", "crop": "crops/hl_e003_q2_r6__l1.png", "candidate_transcription": "טווח הערכים גדול יותר מהטווח בהיסטוגרמה"}
+{"case_id": "909119769cfa", "crop": "crops/hl_e003_q2_r7__l1.png", "candidate_transcription": "הוכפל מספר הפיקסלים בכל התמונה פי 2"}
+{"case_id": "c5dc4417a2dd", "crop": "crops/hl_e003_q2_r8__l1.png", "candidate_transcription": "ניתן לראות שמספר הפיקסלים בכל עוצמה חוזר ל-1/2N ביחס ל-N המקורי, ולכן התמונה נראית כהה יותר."}
+{"case_id": "a6aeffabb2e4", "crop": "crops/hl_e004_q1_r1__l1.png", "candidate_transcription": "ה WAVELETS משתמשת בכל החלפות"}
+{"case_id": "12f83421bd8a", "crop": "crops/hl_e004_q1_r2__l1.png", "candidate_transcription": "התדר הנמוך נעלם בגלל High pass Filter"}
+{"case_id": "fdf5e508434f", "crop": "crops/hl_e004_q1_r3__l1.png", "candidate_transcription": "shear - wait, it looks like מ-ח-ו-ד-ד-ת? No."}
+{"case_id": "24b2237ded17", "crop": "crops/hl_e004_q1_r3__l2.png", "candidate_transcription": "לא כמו Y, יהיו יותר brightness."}
+{"case_id": "d7dba04639df", "crop": "crops/hl_e005_q1_r1__l1.png", "candidate_transcription": "נראה בתמונה טשטוש של motion blur על שפות אשר"}
+{"case_id": "8d372f32b4a8", "crop": "crops/hl_e005_q1_r1__l2.png", "candidate_transcription": "{\"transcription\": \"הם לא ברורות כמו שאמורות להיות והם לא בציר x (ול"}
+{"case_id": "b8c0b822344d", "crop": "crops/hl_e005_q1_r2__l1.png", "candidate_transcription": "בתמונה מופיעים שמות של התמונה המקורית בתדר גבוה"}
+{"case_id": "73494d353648", "crop": "crops/hl_e005_q1_r2__l2.png", "candidate_transcription": "וגם הן נשים לב שהפועל מבוצע על תמונה הכי רעה - בבי\\"}
+{"case_id": "2712af17c766", "crop": "crops/hl_e006_q1_r1__l1.png", "candidate_transcription": "motion blur וטשטוש! הלוואי על התמונה (כמו echo) רואים ברמה יד"}
+{"case_id": "6c542b6ea93f", "crop": "crops/hl_e006_q1_r2__l1.png", "candidate_transcription": "בהפעלת high pass לא ישאר תדרים נמוכים גם לא ישאר DC."}
+{"case_id": "63bcf46e694a", "crop": "crops/hl_e006_q1_r3__l1.png", "candidate_transcription": "בחידוד תמונה רואים יותר שפות ולכן D ."}
+{"case_id": "fbcf97a42628", "crop": "crops/hl_e007_q1_r1__l1.png", "candidate_transcription": "ניתן לראות כי בשכבות של הגלים הכחולים לא שומרים על אותה"}
+{"case_id": "ba235fdc4294", "crop": "crops/hc_e002_q1_r1.png", "candidate_transcription": "יש לטשטש בכל התדרים"}
+{"case_id": "00b8906491fb", "crop": "crops/hc_e002_q1_r2.png", "candidate_transcription": "נשאלת השאלה רק התדרים הגבוהים"}
+{"case_id": "5b7637b1d035", "crop": "crops/hc_e002_q1_r3.png", "candidate_transcription": "העוצמה של התדרים הגבוהים\nבפרמידה חלקה"}
+{"case_id": "5e3eb4ab087a", "crop": "crops/hc_e002_q1_r4.png", "candidate_transcription": "נשאר בתמונה רק התדרים הנמוכים"}
+{"case_id": "d09559905e6d", "crop": "crops/hl_e003_q1_r1__l1.png", "candidate_transcription": "ניתן לראות הרמת התבהרות מצאתי שישית ביוון התנועה ההיא אשל"}
+{"case_id": "f3f230432f07", "crop": "crops/hl_e003_q1_r2__l2.png", "candidate_transcription": "ריקי ההרים הגבוהים נשמה בו שם בכך ממש ממש ציני אוהל"}
+{"case_id": "f30e37179c12", "crop": "crops/hl_e003_q1_r3__l1.png", "candidate_transcription": "בוגרות הנה הגבוהים אחרי הפניה קורה הרמת הנכות הראתה אבות יותר"}
+{"case_id": "8623a3a3c481", "crop": "crops/hl_e003_q1_r4__l1.png", "candidate_transcription": "ניתן לראות נורה תהריים נמוכים, המשחק כמו בית של הנהגים הגבוהים באופ"}
+{"case_id": "1ddda9ed392b", "crop": "crops/hl_e004_q1_r1__l1.png", "candidate_transcription": "הזה אמר במה מהעברת של מחלקות"}
+{"case_id": "bd6701c88c1c", "crop": "crops/hl_e004_q1_r3__l1.png", "candidate_transcription": "הממדינה מוסדות יותר היא מצב 5 הבאות"}
+{"case_id": "015c001e81aa", "crop": "crops/hl_e005_q1_r1__l2.png", "candidate_transcription": "ני בא ברורות העל אמנות להינות מהן לא בזרע (א) בנ"}
+{"case_id": "9e642c000bf0", "crop": "crops/hl_e005_q1_r2__l1.png", "candidate_transcription": "בתמונה מהישג גבות את התמונה אז המקורית בתדר בנוה"}
+{"case_id": "d6ca4cf2b636", "crop": "crops/hl_e005_q1_r2__l2.png", "candidate_transcription": "וגם בן נגיע זה הפעלת מוצקה או שתה כפי הנדר תצוגה אקורדים ודחקי"}
+{"case_id": "a4b18146a4bd", "crop": "crops/hl_e006_q1_r1__l1.png", "candidate_transcription": "נתאות בהספסופה האזנה בהתפנה בכבד את המזרקת הניס הונבל הכיווני הזכות"}
+{"case_id": "c0b3551d4555", "crop": "crops/hl_e006_q1_r2__l1.png", "candidate_transcription": "בהפלת אם את זאת תפרים גם ליאונים עם"}
+{"case_id": "e71447961904", "crop": "crops/hl_e006_q1_r3__l1.png", "candidate_transcription": "בחירה תמונה רואים יותר נפות אלה ה"}
+{"case_id": "ae1d62e22aea", "crop": "crops/hl_e007_q1_r1__l1.png", "candidate_transcription": "נית לראות כי בבית אל הגב הפלא גומרים שנה את הצאה סבור התמונה ניתמראות את הגג שלו מנוחה,"}
+{"case_id": "fc4dde5b28e5", "crop": "crops/hc_e002_q1_r1.png", "candidate_transcription": "את שטשטוש בריטי הנהרות,"}
+{"case_id": "603fbae5ebdb", "crop": "crops/hl_e003_q1_r1__l1.png", "candidate_transcription": "שני שלכתובת המוות התנ\"ך על הגגד נשים"}
+{"case_id": "c851f2c78f61", "crop": "crops/hl_e003_q1_r2__l2.png", "candidate_transcription": "תתתתתתתתכנס לתמוך בית המשתמש שנים בהם מתבצעת הגשה"}
+{"case_id": "2c628ae1eb61", "crop": "crops/hl_e003_q1_r3__l1.png", "candidate_transcription": "נוצרת המכנים נגינהים אנטוני הביתה תגיד ל"}
+{"case_id": "ba15778d12d0", "crop": "crops/hl_e003_q1_r4__l1.png", "candidate_transcription": "אכן ראיתי משורר את הצנום נמוך בושם שנאי ובת"}
+{"case_id": "612461613380", "crop": "crops/hl_e004_q1_r1__l1.png", "candidate_transcription": "הזה אמר במה מהעברת של מחלקות"}
+{"case_id": "4fc04b34d926", "crop": "crops/hl_e004_q1_r2__l1.png", "candidate_transcription": "התהר הנמוך נסעת בשל התוקף זעם 30 נאות"}
+{"case_id": "fcdb73e97563", "crop": "crops/hl_e004_q1_r3__l1.png", "candidate_transcription": "הממדינה מוסדות יותר היא מצב 5 הבאות"}
+{"case_id": "bde947f9734a", "crop": "crops/hl_e004_q1_r3__l2.png", "candidate_transcription": "ולא כמו 4 שנינו יותר משמאל המש"}
+{"case_id": "4b5ee86b2b89", "crop": "crops/hl_e005_q1_r1__l1.png", "candidate_transcription": "נראה התמונה שאם אתה לחתונת בן גדות יותר"}
+{"case_id": "b3871f5e558a", "crop": "crops/hl_e005_q1_r1__l2.png", "candidate_transcription": "הו לא ברורות המלך אמרות גבינת מהם לא בצד בואו ב"}
+{"case_id": "c4152401be53", "crop": "crops/hl_e005_q1_r2__l1.png", "candidate_transcription": "בתמונה מהישג גבות את התמונה אז המקורית בתדר בנוה"}
+{"case_id": "f5ddc66039ed", "crop": "crops/hl_e005_q1_r2__l2.png", "candidate_transcription": "וגת בן נגיע זה הפעלת מנוצחת או שתה כפי הנדר צבאאאר\"ים אחדי"}
+{"case_id": "206183dc4f91", "crop": "crops/hl_e006_q1_r1__l1.png", "candidate_transcription": "ת המתאמנת הסנסנית זה נברתי קודם כי הקונדסליגה המאגר נקיזוזוברה"}
+{"case_id": "6f0fb8df7d9a", "crop": "crops/hl_e006_q1_r2__l1.png", "candidate_transcription": "בגרס בדלת, נס בקרב אם לא ישאר תקרים את הצרכים"}
+{"case_id": "e0cbff831bc9", "crop": "crops/hl_e006_q1_r3__l1.png", "candidate_transcription": "בחירה תמונה רואים יותר נפות אלה ה"}
+{"case_id": "1a445379da73", "crop": "crops/hl_e007_q1_r1__l1.png", "candidate_transcription": "ננת באנגולה סארת הביתבנה בינת תנא אוהב, הם טל מנומר ה\"השמן אותה"}
+{"case_id": "ab2026cc454d", "crop": "crops/hc_e002_q1_r1.png", "candidate_transcription": "את המשתמשת המשתנה והשאלות ששום בינג הנהר תת"}
+{"case_id": "8319aad0d74e", "crop": "crops/hc_e002_q1_r2.png", "candidate_transcription": "נשאלה המתנה רק היתה היא הגנה היא"}
+{"case_id": "40ad61e1fa21", "crop": "crops/hc_e002_q1_r3.png", "candidate_transcription": "ההסברה של החצר בארי לאותה קבורת"}
+{"case_id": "1c120ee6dd6c", "crop": "crops/hc_e002_q1_r4.png", "candidate_transcription": "יש הנאמדות בתמונה רק התבדיתי"}
+{"case_id": "dd2265c86e3c", "crop": "crops/hl_e003_q1_r1__l1.png", "candidate_transcription": "ניתן לראות הרמת התבהרות מצאתי שירות ביוון התנועה והייאוש ל"}
+{"case_id": "40d1d6816240", "crop": "crops/hl_e003_q1_r2__l2.png", "candidate_transcription": "כדי ההרים הדבוקים ונשמרו בינונית עם מתכננת הצרכת הקברות מצבה"}
+{"case_id": "de279693bfad", "crop": "crops/hl_e003_q1_r3__l1.png", "candidate_transcription": "תערובות הנהיים הגבוהים שנחתו הפרה את הרשות הנמרצות הראות שובות יותר"}
+{"case_id": "1643e70f2120", "crop": "crops/hl_e003_q1_r4__l1.png", "candidate_transcription": "ניתן לראות נורה תיקריים נמוכים המשחק במולדתו של הנהגים מהגבוהים באופ"}
+{"case_id": "da306fb88336", "crop": "crops/hl_e004_q1_r1__l1.png", "candidate_transcription": "הזה אמר במה מהעברת כל החלפות"}
+{"case_id": "900528997c34", "crop": "crops/hl_e004_q1_r2__l1.png", "candidate_transcription": "התהר הזבוך נסעת בשל התוקף זעם 30 את"}
+{"case_id": "93add02de283", "crop": "crops/hl_e004_q1_r3__l1.png", "candidate_transcription": "הממדינה מוסדות יותר היא מצב 5 הבאות"}
+{"case_id": "0ad7d41a55e9", "crop": "crops/hl_e004_q1_r3__l2.png", "candidate_transcription": "ולא כמו 4 שנינו יותר משמאל המש"}
+{"case_id": "6b6598aa94ea", "crop": "crops/hl_e005_q1_r1__l1.png", "candidate_transcription": "נראה התמונה שאם אתה לחתונת בן גדות אור"}
+{"case_id": "ec085fd7eaa4", "crop": "crops/hl_e005_q1_r1__l2.png", "candidate_transcription": "הו לא ברורות המלך ג'והרות גבינת נהנו לא בצד בואו ב"}
+{"case_id": "c74eb380ea31", "crop": "crops/hl_e005_q1_r2__l1.png", "candidate_transcription": "בתמונה מהשיג מגמות אמי, התמונה אז המיקרית בתדר ביניה"}
+{"case_id": "d9646a239571", "crop": "crops/hl_e005_q1_r2__l2.png", "candidate_transcription": "וגת בן נגיע זה הפעלת מנוצחת או שתה כפי הנדר צבא אגרות אחדו"}
+{"case_id": "2a896f7b4666", "crop": "crops/hl_e006_q1_r1__l1.png", "candidate_transcription": "תא תיאמו מהספסופה הגנה נחתה בכמות האבה המצב התכנית התנסות בהכיוונים הכנת האזנות"}
+{"case_id": "638244f64610", "crop": "crops/hl_e006_q1_r2__l1.png", "candidate_transcription": "בהפרטת אם אתם לאינאה תברים בית גם פסיפס עם"}
+{"case_id": "8af3dbe57c82", "crop": "crops/hl_e006_q1_r3__l1.png", "candidate_transcription": "בחירה תמונה רואים יותר נפות אלה ה"}
+{"case_id": "b36510d11ab4", "crop": "crops/hl_e007_q1_r1__l1.png", "candidate_transcription": "נית לראות כי בבית אל הגב הפלא גומרים שנה את הצאה סבור התמונה נותומראות את הגג שלו מנוחה,"}
+{"case_id": "dd8c42462418", "crop": "crops/hc_e002_q1_r1.png", "candidate_transcription": "שתתתתתתתתתתתתתתתתתתתתתתתתתתתתתתתתתתתתתתתתתתתתתתתתתתתתתתתתתששששש בראי הנ"}
+{"case_id": "544ea8db92ce", "crop": "crops/hc_e002_q1_r2.png", "candidate_transcription": "ושא הנתונה רק התכהים הגנו הינה"}
+{"case_id": "385a3782c9cc", "crop": "crops/hc_e002_q1_r3.png", "candidate_transcription": "הפנה או הרצאת הפחות בגרמניה הזה בורוס אותהורו"}
+{"case_id": "51bc76b72c02", "crop": "crops/hc_e002_q1_r4.png", "candidate_transcription": "שהנימוק מונה רק הת"}
+{"case_id": "a2c479af42d6", "crop": "crops/hl_e003_q1_r1__l1.png", "candidate_transcription": "ניתן לראות הרמת התבהרות מצאתי שירות ביוון התנועה והייאוש ל"}
+{"case_id": "0354c69798b0", "crop": "crops/hl_e003_q1_r2__l2.png", "candidate_transcription": "כדי ההרים הדבוקים ונשמרו בינונית עם מתכננת הצרכת הקברות מצבה"}
+{"case_id": "c0637343fa11", "crop": "crops/hl_e003_q1_r3__l1.png", "candidate_transcription": "תערובות הנהיים הגבוהים שנחתו הפרה את הרשות הנמרצות הראות שובות יותר"}
+{"case_id": "2ba24541d094", "crop": "crops/hl_e003_q1_r4__l1.png", "candidate_transcription": "ניתן לראות נורה תיקריים נמוכים המשחק במולדתו של הנהגים מהגבוהים באופ"}
+{"case_id": "c3872a47e3c6", "crop": "crops/hl_e004_q1_r1__l1.png", "candidate_transcription": "הזה אמר במה מהעברת של מחלקות"}
+{"case_id": "f098ffb15d1a", "crop": "crops/hl_e004_q1_r2__l1.png", "candidate_transcription": "התהר הנמוך נסעת בשל התוקף זעם 30 נאות"}
+{"case_id": "631fa7dbc809", "crop": "crops/hl_e004_q1_r3__l1.png", "candidate_transcription": "הממדינה מוסדות יותר היא מצב 5 הבאות"}
+{"case_id": "ae785d5d1739", "crop": "crops/hl_e004_q1_r3__l2.png", "candidate_transcription": "ולא כמו 4 שנינו יותר משמאל המש"}
+{"case_id": "d6b03433b8a1", "crop": "crops/hl_e005_q1_r1__l1.png", "candidate_transcription": "נראה התמונה שאם אתה לחתונת בן גדות יותר"}
+{"case_id": "0bb69c821201", "crop": "crops/hl_e005_q1_r1__l2.png", "candidate_transcription": "הו לא ברורות המלך אמרות גבינת מהם לא בצד בואו ב"}
+{"case_id": "bdad7afa8bda", "crop": "crops/hl_e005_q1_r2__l1.png", "candidate_transcription": "בתמונה מהישג גבות את התמונה אז המקורית בתדר בנוה"}
+{"case_id": "81b297007934", "crop": "crops/hl_e005_q1_r2__l2.png", "candidate_transcription": "וגת בן נגיע זה הפעלת מנוצחת או שתה כפי הנדר צבאאאר\"ים אחדי"}
+{"case_id": "39452bd63396", "crop": "crops/hl_e006_q1_r1__l1.png", "candidate_transcription": "תא תיאמו מהספסופה הגנה נחתה בכמות האבה המצב התכנית התנסות בהכיוונים הכנת האזנות"}
+{"case_id": "9f9ea2b4def1", "crop": "crops/hl_e006_q1_r2__l1.png", "candidate_transcription": "בהפרטת אם אתם לאינאה תברים בית גם פסיפס עם"}
+{"case_id": "09fbebec7851", "crop": "crops/hl_e006_q1_r3__l1.png", "candidate_transcription": "בחירה תמונה רואים יותר נפות אלה ה"}
+{"case_id": "947c919b78bf", "crop": "crops/hl_e007_q1_r1__l1.png", "candidate_transcription": "נית לראות כי בבית אל הגב הפלא גומרים שנה את הצאה סבור התמונה נותומראות את הגג שלו מנוחה,"}
+{"case_id": "c69270d26b67", "crop": "crops/hc_e002_q1_r1.png", "candidate_transcription": "שתתתתתתתתתתתתתתתתתתתתתתתתתתתתתתתתתתתתתתתתתתתתתתתתתתתתתתתתתששששש בראי הנ"}
+{"case_id": "f1d53dc8e3e0", "crop": "crops/hc_e002_q1_r2.png", "candidate_transcription": "ושא הנתונה רק התכהים הגנו הינה"}
+{"case_id": "293bee1d3a0d", "crop": "crops/hc_e002_q1_r3.png", "candidate_transcription": "הפנה או הרצאת הפחות בגרמניה הזה בורוס אותהורו"}
+{"case_id": "8ed392c1431d", "crop": "crops/hc_e002_q1_r4.png", "candidate_transcription": "שהנימוק מונה רק הת"}
+{"case_id": "97bbc606367e", "crop": "crops/hl_e003_q1_r1__l1.png", "candidate_transcription": "לא נראה מרחב העירם התקופים\nשם אסור קבלון התרצם (התקופים)"}
+{"case_id": "1fe0394fffd0", "crop": "crops/hl_e003_q1_r2__l2.png", "candidate_transcription": "pass וסל [struck-through] ארג'אן ה'אוסטין (DC) (DC) ה'אוסטין (DC) High-2 ורנע)"}
+{"case_id": "e01ce4d521ad", "crop": "crops/hl_e003_q1_r3__l1.png", "candidate_transcription": "אין לי הרגלים לקום וחרי התעוריה ב2:00\nאבל מה שרלוונט לראש בעל דגמר \"לר\""}
+{"case_id": "25283069c607", "crop": "crops/hl_e003_q1_r4__l1.png", "candidate_transcription": "נכון אם תמשיך לעשות את זה תצטרך לעשות את זה שוב ושוב"}
+{"case_id": "0f9123dde22d", "crop": "crops/hl_e003_q1_r5__l1.png", "candidate_transcription": "הישראלי והספרדי בעל אפליקציה X-1000 ניסיון"}
+{"case_id": "6a34423ebb2b", "crop": "crops/hl_e003_q1_r6__l1.png", "candidate_transcription": "הרשם והעובד בע"}
+{"case_id": "d9c986e44cdb", "crop": "crops/hl_e003_q1_r7__l1.png", "candidate_transcription": "מן שהן מחייבות את מוסד ה DC"}
+{"case_id": "c650ba6c617d", "crop": "crops/hl_e003_q1_r8__l1.png", "candidate_transcription": "הראה שה office תע DC לא נותן ערכים מהר'ם שכן, ק'י לא נותן"}
+{"case_id": "747f0ff9f7a4", "crop": "crops/hl_e003_q2_r1__l1.png", "candidate_transcription": "15 [?] נוסע במסלול קציר פרט מס"}
+{"case_id": "d3efbb34b38c", "crop": "crops/hl_e003_q2_r2__l1.png", "candidate_transcription": "על פי כוונה מודעת של אופטימיות"}
+{"case_id": "0bde7232c9f1", "crop": "crops/hl_e003_q2_r3__l1.png", "candidate_transcription": "מספרים וספרים עם תמונות והדרכים\nמספרים עם ספרים והדרכים\nהדרכים"}
+{"case_id": "e72255cde9b1", "crop": "crops/hl_e003_q2_r4__l1.png", "candidate_transcription": "לכן צריך לשים על כל Uniform את ה\"ס\"ס של כל ת\"ס"}
+{"case_id": "d78607795b5f", "crop": "crops/hl_e003_q2_r5__l1.png", "candidate_transcription": "אני לא רוצה ללכת ללמוד (או לא) (או) אני לא רוצה ללמוד"}
+{"case_id": "80741f8882c9", "crop": "crops/hl_e003_q2_r6__l1.png", "candidate_transcription": "סכום ההשכרה של 132 יח\"י נהגו הכולל 132 יח\"י נהגו הכולל"}
+{"case_id": "0eec2d53ac90", "crop": "crops/hl_e003_q2_r7__l1.png", "candidate_transcription": "הוכיח נוסף התקבלו, מן החניכי ב 2\nהוכיח נוסף התקבלו מן סלון"}
+{"case_id": "fcf111b5f092", "crop": "crops/hl_e003_q2_r8__l1.png", "candidate_transcription": "האם יש גבול בין תוכן מילולי ללא תוכן מילולי? האם יש גבול בין תוכן מילולי ללא תוכן מילולי?"}
+{"case_id": "e67cb1b47c1a", "crop": "crops/hl_e004_q1_r1__l1.png", "candidate_transcription": "באמצעות WAVELETS"}
+{"case_id": "12f66a6a8693", "crop": "crops/hl_e004_q1_r2__l1.png", "candidate_transcription": "High pass filter סוג סוג של מסנן"}
+{"case_id": "dac2d7403bad", "crop": "crops/hl_e004_q1_r3__l1.png", "candidate_transcription": "עם תוכנית מלאה של מודול על סכום"}
+{"case_id": "86e96716e379", "crop": "crops/hl_e004_q1_r3__l2.png", "candidate_transcription": "Brightness 70\" (1)ce E 1.2 > 1.8"}
+{"case_id": "973f7efc7e62", "crop": "crops/hl_e004_q1_r4__l1.png", "candidate_transcription": "Low Pass Filter"}
+{"case_id": "12af9d821f14", "crop": "crops/hl_e004_q1_r5__l1.png", "candidate_transcription": "א' 9911, 206016, WAVELETS 3\nx 9'3 (8'99)"}
+{"case_id": "0d748d77708b", "crop": "crops/hl_e004_q1_r6__l1.png", "candidate_transcription": "אורך גל 500NM WAVELENGTH"}
+{"case_id": "83465c73f495", "crop": "crops/hl_e004_q1_r6__l2.png", "candidate_transcription": "C = 2 sin(3π/2)"}
+{"case_id": "55ab9ed95206", "crop": "crops/hl_e004_q1_r7__l2.png", "candidate_transcription": "עדיין לא נקבעו תאריכים"}
+{"case_id": "9bf0117d6b1a", "crop": "crops/hl_e004_q1_r8__l1.png", "candidate_transcription": "מעשה כי פעם סד' סד' סד'}"}
+{"case_id": "036e10a5e0eb", "crop": "crops/hl_e004_q2_r1__l1.png", "candidate_transcription": "אם יש כניסה חופשית ללשון ויש ספרים"}
+{"case_id": "3b8acf511c9d", "crop": "crops/hl_e004_q2_r1__l2.png", "candidate_transcription": "כלומר, כל סוג של בשר"}
+{"case_id": "74c978bab10d", "crop": "crops/hl_e004_q2_r2__l1.png", "candidate_transcription": "ב. carry את כל או רגולציה של רגולציה"}
+{"case_id": "e2443f6a59ec", "crop": "crops/hl_e004_q2_r3__l1.png", "candidate_transcription": "על כלל, כי ארצות (סמ' ארצות) לא הו"}
+{"case_id": "ede4ffb62f15", "crop": "crops/hl_e004_q2_r4__l1.png", "candidate_transcription": "Uniform algo in optimal > [?]"}
+{"case_id": "0fd246bbd5e7", "crop": "crops/hl_e004_q2_r4__l2.png", "candidate_transcription": "כלומר, כן יש גם Quantization של אינסטרומנטים מסוימים"}
+{"case_id": "99b0d5c19b9c", "crop": "crops/hl_e004_q2_r5__l1.png", "candidate_transcription": "1.5% 826 2% 25% uniform 2"}
+{"case_id": "d5550727bb9b", "crop": "crops/hl_e004_q2_r5__l2.png", "candidate_transcription": "[unreadable]"}
+{"case_id": "10fa04fce4aa", "crop": "crops/hl_e004_q2_r6__l1.png", "candidate_transcription": "מצערי לא ידעתי שזה קורה לי"}
+{"case_id": "40d128538283", "crop": "crops/hl_e004_q2_r6__l2.png", "candidate_transcription": "16. אין צורך ב'א. X. (חוקה) 1. יש צורך ב'ג' או ב'ד' לזיהוי (ב'ד' ב'ג'"}
+{"case_id": "bdaadbe67cc2", "crop": "crops/hl_e004_q2_r7__l2.png", "candidate_transcription": "אין מידע על ממצאים אובייקטיביים, אין תלונות על כאב"}
+{"case_id": "e88e0c4920db", "crop": "crops/hl_e004_q2_r8__l1.png", "candidate_transcription": "של Echo 18 תלמידים 2010"}
+{"case_id": "50877bf3917d", "crop": "crops/hl_e004_q2_r8__l2.png", "candidate_transcription": "עם רכיב 10%, עם 5% עם 15%"}
+{"case_id": "9439520ddea2", "crop": "crops/hl_e005_q1_r1__l1.png", "candidate_transcription": "רוב הוויכוחים סביב הבלתי מובן (ב איזה מידה"}
+{"case_id": "9b93fcdc6a0f", "crop": "crops/hl_e005_q1_r1__l2.png", "candidate_transcription": "אני לא רוצה שזה יהיה כזה משהו, אבל אני"}
+{"case_id": "c62f8dc6dfed", "crop": "crops/hl_e005_q1_r2__l1.png", "candidate_transcription": "במידה והתקבלה תשובה נכונה"}
+{"case_id": "3bcc8aacacd3", "crop": "crops/hl_e005_q1_r2__l2.png", "candidate_transcription": "124 כל סוג של אקסל וכל זמן שיש אקסל, כל אקסל, כל אקסל, כל אקסל, כל אקסל, כל אקסל, כל אקסל, כל אקסל, כל אקסל, כל אקסל, כל אקסל, כל אקסל, כל אקסל, כל אקסל, כל אקסל, כל אקסל, כל אקסל, כל אקסל, כל אקסל, כל אקסל, כל אקסל, כל אקסל, כל אקסל, כל אקסל, כל אקסל, כל אקסל, כל אקסל, כל אקסל, כל אקסל, כל אקסל, כל אקסל, כל אקסל, כל אקסל, כל אקסל, כל אקסל, כל אקסל, כל אקסל, כל אקסל, כל אקסל, כל אקסל, כל אקסל, כל אקסל, כל אקסל, כל אקסל, כל אקסל, כל אקסל, כל אקסל, כל אקסל, כל אקסל, כל אקסל, כל אקסל, כל אקסל, כל אקסל, כל אקסל, כל אקסל, כל אקסל, כל אקסל, כל אקסל, כל אקסל, כל אקסל, כל אקסל, כל אקסל, כל אקסל, כל אקסל, כל אקסל, כל אקסל, כל אקסל, כל אקסל, כל אקסל, כל אקסל, כל אקסל, כל אקסל, כל אקסל, כל אקסל, כל אקסל, כל אקסל, כל אקסל, כל אקסל, כל אקסל, כל אקסל"}
+{"case_id": "8b59ec433b2a", "crop": "crops/hl_e005_q1_r3__l2.png", "candidate_transcription": "האם יש קשר בין high-frequency וצבע טבעי"}
+{"case_id": "d776176ba211", "crop": "crops/hl_e005_q1_r3__l3.png", "candidate_transcription": "אמרתי: [?] רציתי לראות איך זה ייראה /אבל כל כך הרבה זמן לא היה לי"}
+{"case_id": "7b41c1d94926", "crop": "crops/hl_e005_q1_r4__l1.png", "candidate_transcription": "אם אדם צריך להגיש תלונה"}
+{"case_id": "a99429703791", "crop": "crops/hl_e005_q1_r4__l2.png", "candidate_transcription": "23. ע' א' אומרת כי כל דבר (אמריא) יש לו ערך"}
+{"case_id": "16347d84e91b", "crop": "crops/hl_e005_q1_r5__l2.png", "candidate_transcription": "1. אסור לעבור את הליניית הרכבת"}
+{"case_id": "10b21efb52d2", "crop": "crops/hl_e005_q1_r5__l3.png", "candidate_transcription": "x יי"}
+{"case_id": "e6b7df39d1f6", "crop": "crops/hl_e005_q1_r6__l1.png", "candidate_transcription": "היה זה כיצד? כיצד יתאפשר כי ברגע שאתה נכנס ל'אני'"}
+{"case_id": "574317672769", "crop": "crops/hl_e005_q1_r6__l2.png", "candidate_transcription": "1130. תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז ת"}
+{"case_id": "2f7bb775abdc", "crop": "crops/hl_e005_q1_r7__l1.png", "candidate_transcription": "היכנס תהיה לא נכון"}
+{"case_id": "abf08e07f20d", "crop": "crops/hl_e005_q1_r7__l2.png", "candidate_transcription": "במידה וסטודנט מנסה לבדוק (בגלל שיש לו דעה) את"}
+{"case_id": "9f4afe8561c5", "crop": "crops/hl_e005_q1_r8__l2.png", "candidate_transcription": "תנאי, זה, ו, זה, [?], כולל, כולל, כולל, כולל, כולל, כולל, כולל, כולל, כולל, כולל, כולל, כולל, כולל, כולל, כולל, כולל, כולל, כולל, כולל, כולל, כולל, כולל, כולל, כולל, כולל, כולל, כולל, כולל, כולל, כולל, כולל, כולל, כולל, כולל, כולל, כולל, כולל, כולל, כולל, כולל, כולל, כולל, כולל, כולל, כולל, כולל, כולל, כולל, כולל, כולל, כולל, כולל, כולל, כולל, כולל, כולל, כולל, כולל, כולל, כולל, כולל, כולל, כולל, כולל, כולל, כולל, כולל, כולל, כולל, כולל, כולל, כולל, כולל, כולל, כולל, כולל, כולל, כולל, כולל, כולל, כולל, כולל, כולל, כולל, כולל, כולל, כולל, כולל, כולל, כולל, כולל, כולל, כולל, כולל, כולל, כולל, כולל, כולל, כולל, כולל, כולל, כולל, כולל, כולל, כולל, כולל, כולל, כולל, כולל, כולל, כולל, כולל, כולל, כולל, כולל, כולל, כולל, כולל, כולל, כולל, כול"}
+{"case_id": "0a852a941867", "crop": "crops/hl_e005_q1_r8__l3.png", "candidate_transcription": "כי לא שווה לי את ראינו מאדוע ברגע שאני רואה עיניה אור"}
+{"case_id": "63372b9b604b", "crop": "crops/hl_e005_q2_r1__l1.png", "candidate_transcription": "העובדה שהמחשב הוא כלי, מערכת, פרוג"}
+{"case_id": "434a9f77f8fb", "crop": "crops/hl_e005_q2_r1__l2.png", "candidate_transcription": "לא במינו יעשה E(1) לא הכתבון קלוקס-ס ורג'ס ישר"}
+{"case_id": "29718285cd48", "crop": "crops/hl_e005_q2_r2__l2.png", "candidate_transcription": "בניית מערכת thresholding עם גרף תלות (COCO) ואפס"}
+{"case_id": "7a2602ffda3d", "crop": "crops/hl_e005_q2_r2__l3.png", "candidate_transcription": "אין כלום, אני לא רוצה ללמוד, אני רוצה ללמוד"}
+{"case_id": "ca8a38e67ac4", "crop": "crops/hl_e005_q2_r3__l2.png", "candidate_transcription": "831712 ס'ג (6.09121212.6 (5522.0)"}
+{"case_id": "a491b4fe6086", "crop": "crops/hl_e005_q2_r4__l2.png", "candidate_transcription": "17.3.17. optimal quantization מ'אליקל 26. הערכה של ס'ל'ט"}
+{"case_id": "b70b564c3271", "crop": "crops/hl_e005_q2_r4__l3.png", "candidate_transcription": "מקרה של נסיעה ואי-הווה חיה שלב את דפוס (ק'ח) של 100-200"}
+{"case_id": "346d82aa0bfe", "crop": "crops/hl_e005_q2_r5__l2.png", "candidate_transcription": "היי, יש לי שאלה: איך אני יכול/ה לעשות את זה? תודה"}
+{"case_id": "7ec5d3487c4e", "crop": "crops/hl_e005_q2_r5__l3.png", "candidate_transcription": "כלומר, כלומר, e - e_max לטעמינו, e - e_max לטעמינו"}
+{"case_id": "60f37d61cefd", "crop": "crops/hl_e005_q2_r6__l2.png", "candidate_transcription": "אין לי מושג"}
+{"case_id": "a283f2edb911", "crop": "crops/hl_e005_q2_r7__l2.png", "candidate_transcription": "אין, אבל יש סוגים שונים של ג'אז, כמו סווינג, בי-בופ, וכו'"}
+{"case_id": "30c48156d1dd", "crop": "crops/hl_e005_q2_r7__l3.png", "candidate_transcription": "ב-2 יצא נספר כל סוגייה. בזה אקבל 50%."}
+{"case_id": "e0ef9b847787", "crop": "crops/hl_e005_q2_r8__l1.png", "candidate_transcription": "בדיקה של סוגים שונים של תוכנות (למשל, תוכנות מערכת)"}
+{"case_id": "67fa8b0ace60", "crop": "crops/hl_e005_q2_r8__l2.png", "candidate_transcription": "בכלל x לאיך ש אלו ואלו זיכ (כ. ויזכרם"}
+{"case_id": "4f7c4f1f35bc", "crop": "crops/hl_e006_q1_r1__l1.png", "candidate_transcription": "מבוא לתוכנית מחשבים! כל סוגי הנתונים (כמו ריאל, מחרוזת, ...)."}
+{"case_id": "81f6cd4ff121", "crop": "crops/hl_e006_q1_r2__l1.png", "candidate_transcription": "אני לא יודע מה אני עושה כאן"}
+{"case_id": "bd38a5af134f", "crop": "crops/hl_e006_q1_r3__l1.png", "candidate_transcription": "קליגוב תאורה ריאם זארי סופר! כן D"}
+{"case_id": "46670e6d7257", "crop": "crops/hl_e006_q1_r4__l1.png", "candidate_transcription": "11. שאלה 8 נדפסו 5,000,000 מניות של 1 לירה"}
+{"case_id": "42f6083da1fd", "crop": "crops/hl_e006_q1_r5__l1.png", "candidate_transcription": "בדיקת עומסים של מערכת נמוגמית"}
+{"case_id": "51e987ff6d0e", "crop": "crops/hl_e006_q1_r6__l1.png", "candidate_transcription": "כשהם ג'קסון ו'אליס י'א ס'אליס ג'אקסון"}
+{"case_id": "2ce9b54add20", "crop": "crops/hl_e006_q1_r7__l1.png", "candidate_transcription": "הצלם קריין — DC זמן נמוך ולא במא"}
+{"case_id": "1908ebe9b355", "crop": "crops/hl_e006_q1_r8__l1.png", "candidate_transcription": "אם [ללא] אימרים אין לדעת אם קיים קשר סיבובי בין האם לילד. אם קיים קשר סיבובי בין האם לילד, אז נראה"}
+{"case_id": "7ab5a27b2267", "crop": "crops/hl_e006_q2_r1__l1.png", "candidate_transcription": "הרש"}
+{"case_id": "26dd6176efae", "crop": "crops/hl_e006_q2_r3__l1.png", "candidate_transcription": "ב ו/ו הכנסת הוויזואלית לרשות כלאשם ר' ה'ל'ל מציגה כדבר כל א'לסבוק הוויזואלית לרשות כלאשם ר' ה'ל'ל מציגה כדבר כל"}
+{"case_id": "dec6f38b1105", "crop": "crops/hl_e006_q2_r4__l1.png", "candidate_transcription": "ב' Quantization D form 0.5 ← 0.5 Σ, ו־ uniform ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־"}
+{"case_id": "b89d943a9af4", "crop": "crops/hl_e006_q2_r5__l2.png", "candidate_transcription": "[unreadable]"}
+{"case_id": "6c0469cbf0e1", "crop": "crops/hl_e006_q2_r6__l1.png", "candidate_transcription": "התכנון לא נכון 1,000 ש"}
+{"case_id": "e9fbd24d65aa", "crop": "crops/hl_e006_q2_r7__l1.png", "candidate_transcription": "אזי ד' ב' כ' א' ב' ג' ד' ה' ו' ז' ח' ט' י' י\"א י\"ב י\"ג י\"ד י\"ה י\"ו י\"ז י\"ח י\"ט כ' כ\"א כ\"ב כ\"ג כ\"ד כ\"ה כ\"ו כ\"ז כ\"ח כ\"ט ל' ל\"א ל\"ב ל\"ג ל\"ד ל\"ה ל\"ו ל\"ז ל\"ח ל\"ט מ' מ\"א מ\"ב מ\"ג מ\"ד מ\"ה מ\"ו מ\"ז מ\"ח מ\"ט נ' נ\"א נ\"ב נ\"ג נ\"ד נ\"ה נ\"ו נ\"ז נ\"ח נ\"ט ס' ס\"א ס\"ב ס\"ג ס\"ד ס\"ה ס\"ו ס\"ז ס\"ח ס\"ט ע' ע\"א ע\"ב ע\"ג ע\"ד ע\"ה ע\"ו ע\"ז ע\"ח ע\"ט פ' פ\"א פ\"ב פ\"ג פ\"ד פ\"ה פ\"ו פ\"ז פ\"ח פ\"ט צ' צ\"א צ\"ב צ\"ג צ\"ד צ\"ה צ\"ו צ\"ז צ\"ח צ\"ט ק' ק\"א ק\"ב ק\"ג ק\"ד ק\"ה ק\"ו ק\"ז ק\"ח ק\"ט"}
+{"case_id": "6a136e4a2afb", "crop": "crops/hl_e006_q2_r7__l2.png", "candidate_transcription": "אפשר לסמן את כל קבוצת הסימנים (כולל את ה-) ."}
+{"case_id": "92d42d6c4ecb", "crop": "crops/hl_e006_q2_r8__l1.png", "candidate_transcription": "אין סעיף 2. סעיף 2 הוא לא 2 כל סעיף 2 הוא סעיף 2"}
+{"case_id": "9650a1b29b5f", "crop": "crops/hl_e007_q1_r1__l1.png", "candidate_transcription": "לא ידוע לי אם יש תוכנית כזו, אבל אני חושב שזה ייתכן. אני לא בטוח אם זה יקרה, אבל אני מקווה שכן."}
+{"case_id": "4a11d0e2b685", "crop": "crops/hc_e002_q1_r1.png", "candidate_transcription": "העובדה שהמחלה היא לא מחלה נפשית אלא מחלה גנטית"}
+{"case_id": "9a05c748b45b", "crop": "crops/hc_e002_q1_r2.png", "candidate_transcription": "בשעה שהמטאליק נק העניינים נשארו"}
+{"case_id": "ddbc7df78ff4", "crop": "crops/hc_e002_q1_r3.png", "candidate_transcription": "הטפאה עם עכברית\nהעברית אפס קיום פארקיו"}
+{"case_id": "0b3ab46fcadb", "crop": "crops/hc_e002_q1_r4.png", "candidate_transcription": "בסוף נשארו רק הגוריים"}
+{"case_id": "f4f70c7016b7", "crop": "crops/hc_e002_q1_r5.png", "candidate_transcription": "נראה איבר X סלם הקדמית פרו"}
+{"case_id": "faebfd89eb34", "crop": "crops/hc_e002_q1_r6.png", "candidate_transcription": "אני לא אקרו ע סקר ה קריא ופיק"}
+{"case_id": "86e0030f75d6", "crop": "crops/hc_e002_q1_r7.png", "candidate_transcription": "סוגה על מודעות לרכיב על קליעה בפרקטיקה על מודעות לרכיב נכנסים לפרקטיקה"}
+{"case_id": "4fac5e2b9564", "crop": "crops/hc_e002_q1_r8.png", "candidate_transcription": "אין ספק כי סביר להניח כי תאריך 7.10.15 נקבע על ידי הנתבעת, וזאת על מנת להימנע מתשלום הריבית"}
+{"case_id": "1dd9d1c459d6", "crop": "crops/hc_e002_q2_r1.png", "candidate_transcription": "נו יעד סגירה 255/120. אפילו ( פילי, סגירה ילכה ע"}
+{"case_id": "7ddc90858cad", "crop": "crops/hc_e002_q2_r2.png", "candidate_transcription": "אני לא יודע מה אני רוצה לעשות עם החיים שלי"}
+{"case_id": "7f0f8f3b7022", "crop": "crops/hc_e002_q2_r3.png", "candidate_transcription": "עשה איחודים עם איחודים (אנ) אקליד עם אקליד"}
+{"case_id": "2a9a54532475", "crop": "crops/hc_e002_q2_r4.png", "candidate_transcription": "האם יש תנאי קיפול? האם יש תנאי קיפול? האם יש תנאי קיפול? האם יש תנאי קיפול? האם יש תנאי קיפול? האם יש תנאי קיפול? האם יש תנאי קיפול? האם יש תנאי קיפול? האם יש תנאי קיפול? האם יש תנאי קיפול? האם יש תנאי קיפול? האם יש תנאי קיפול? האם יש תנאי קיפול? האם יש תנאי קיפול? האם יש תנאי קיפול? האם יש תנאי קיפול? האם יש תנאי קיפול? האם יש תנאי קיפול? האם יש תנאי קיפול? האם יש תנאי קיפול? האם יש תנאי קיפול? האם יש תנאי קיפול? האם יש תנאי קיפול? האם יש תנאי קיפול? האם יש תנאי קיפול? האם יש תנאי קיפול? האם יש תנאי קיפול? האם יש תנאי קיפול? האם יש תנאי קיפול? האם יש תנאי קיפול? האם יש תנאי קיפול? האם יש תנאי קיפול? האם יש תנאי קיפול? האם יש תנאי קיפול? האם יש תנאי קיפול? האם יש תנאי קיפול? האם יש תנאי קיפול? האם יש תנאי קיפול? האם יש תנאי קיפול? האם יש תנאי קיפול? האם יש תנאי קיפול? האם יש תנאי קיפול? האם יש תנאי קיפול? האם יש תנאי קיפול? האם יש תנאי קיפול"}
+{"case_id": "2d2b2b912be2", "crop": "crops/hc_e002_q2_r5.png", "candidate_transcription": "במידע עמינים במידע עמינים\nג' (התקבלו) תע"}
+{"case_id": "2e00ee274149", "crop": "crops/hc_e002_q2_r6.png", "candidate_transcription": "המכשיר בהתאם לנדרש, וכן מציין את סוג ה- Echo, כגון: Echo, Echo 2, Echo 3, וכו'"}
+{"case_id": "bfc05ce15de4", "crop": "crops/hc_e002_q2_r7.png", "candidate_transcription": "אין לי דעה על האם יש צורך בשינוי החוק"}
+{"case_id": "4d3bb9cba69a", "crop": "crops/hc_e002_q2_r8.png", "candidate_transcription": "אין קשר סך הכל אחריותיך וקבלת X אין קשר סך הכל אחריותיך וקבלת"}
+{"case_id": "cb079e593a54", "crop": "crops/hl_e003_q1_r1__l1.png", "candidate_transcription": "לא נראה מרחב הרציף. התקופים שם אינן קבילות לטרנספורם (התקופים)."}
+{"case_id": "e5e02084727d", "crop": "crops/hl_e003_q1_r2__l2.png", "candidate_transcription": "pass וסל [struck-through] ארג'אן ה'אוסטין (DC) (DC) ה'אוסטין (DC) High-2 ורנע)"}
+{"case_id": "40acc444c877", "crop": "crops/hl_e003_q1_r3__l1.png", "candidate_transcription": "אין לי הרגלים לקום וחרי התעוריה ב2:00\nאבל מה שרלוונט לראש בעל דגמר \"לר\""}
+{"case_id": "e47d94cac1dc", "crop": "crops/hl_e003_q1_r4__l1.png", "candidate_transcription": "נכון אם תמשיך לעשות את זה תצטרך לעשות את זה שוב ושוב"}
+{"case_id": "20b0eda5a283", "crop": "crops/hl_e003_q1_r5__l1.png", "candidate_transcription": "הישראלי והספרדי בעל אפליקציה X-1000 ניסיון"}
+{"case_id": "92924cd1069c", "crop": "crops/hl_e003_q1_r6__l1.png", "candidate_transcription": "הרשם והעובד בע"}
+{"case_id": "8fcfb8b737a4", "crop": "crops/hl_e003_q1_r7__l1.png", "candidate_transcription": "מן שהן מחייבות את מוסד ה DC"}
+{"case_id": "83c4ce8b6323", "crop": "crops/hl_e003_q1_r8__l1.png", "candidate_transcription": "הראה שה office תע DC לא נותן ערכים מהר'ם שכן, ק'י לא נותן"}
+{"case_id": "65c7f12f5298", "crop": "crops/hl_e003_q2_r1__l1.png", "candidate_transcription": "15. [?] נוסע במסלול קציר פרט מס"}
+{"case_id": "ca29855375ad", "crop": "crops/hl_e003_q2_r2__l1.png", "candidate_transcription": "על פי כוונה מודעת של אופטימיות"}
+{"case_id": "8e70cbffd493", "crop": "crops/hl_e003_q2_r3__l1.png", "candidate_transcription": "מספרים וספרים עם תמונות והדרכים\nמספרים עם ספרים והדרכים\nהדרכים"}
+{"case_id": "5ad4bb166740", "crop": "crops/hl_e003_q2_r4__l1.png", "candidate_transcription": "לכן צריך לשים על כל Uniform את ה\"ס\"ס של כל ת\"ס"}
+{"case_id": "d5a5ec1f27f1", "crop": "crops/hl_e003_q2_r5__l1.png", "candidate_transcription": "אני לא רוצה ללכת ללמוד (או לא) (או) אני לא רוצה ללמוד"}
+{"case_id": "c8281c7c0d3a", "crop": "crops/hl_e003_q2_r6__l1.png", "candidate_transcription": "סכום ההשכרה של 132 יח\"י נהגו הכולל 132 יח\"י נהגו הכולל"}
+{"case_id": "e762c0a680b5", "crop": "crops/hl_e003_q2_r7__l1.png", "candidate_transcription": "הוכיח נוסף התקבלו, מן החניכי ב 2\nהוכיח נוסף התקבלו מן סלון"}
+{"case_id": "0ca172af3430", "crop": "crops/hl_e003_q2_r8__l1.png", "candidate_transcription": "האם יש גבול בין תוכן מילולי ללא תוכן מילולי? האם יש גבול בין תוכן מילולי ללא תוכן מילולי?"}
+{"case_id": "16337c1bf1a5", "crop": "crops/hl_e004_q1_r1__l1.png", "candidate_transcription": "באמצעות WAVELETS"}
+{"case_id": "496b09649352", "crop": "crops/hl_e004_q1_r2__l1.png", "candidate_transcription": "High pass filter סוג סוג של מסנן"}
+{"case_id": "9d3277326ddd", "crop": "crops/hl_e004_q1_r3__l1.png", "candidate_transcription": "עם תוכנית מלאה של מודול על סכום"}
+{"case_id": "0b4b97f5181a", "crop": "crops/hl_e004_q1_r3__l2.png", "candidate_transcription": "Brightness 70° (1)ce E 1.2 > 1.8"}
+{"case_id": "7c412e2c632f", "crop": "crops/hl_e004_q1_r4__l1.png", "candidate_transcription": "Low Pass Filter"}
+{"case_id": "73dd56a36f3c", "crop": "crops/hl_e004_q1_r5__l1.png", "candidate_transcription": "א' 9911, 206016, WAVELETS 3\nx 9'3 (8'99)"}
+{"case_id": "e63f1b5c57ee", "crop": "crops/hl_e004_q1_r6__l1.png", "candidate_transcription": "אורך גל 500NM WAVELENGTH"}
+{"case_id": "5308e6a1ac48", "crop": "crops/hl_e004_q1_r6__l2.png", "candidate_transcription": "C = 2 sin(3π/2)"}
+{"case_id": "e1164a1a1797", "crop": "crops/hl_e004_q1_r7__l2.png", "candidate_transcription": "עדיין לא נקבעו תאריכים"}
+{"case_id": "6507b1ac3e59", "crop": "crops/hl_e004_q1_r8__l1.png", "candidate_transcription": "מעשה כי פעם סד' סד' סד'}"}
+{"case_id": "e7999725143f", "crop": "crops/hl_e004_q2_r1__l1.png", "candidate_transcription": "אם יש כניסה חופשית ללשון ויש ספרים"}
+{"case_id": "fc899baaf765", "crop": "crops/hl_e004_q2_r1__l2.png", "candidate_transcription": "כלומר, כל סוג של בשר"}
+{"case_id": "e185a738e6d7", "crop": "crops/hl_e004_q2_r2__l1.png", "candidate_transcription": "ב. קיימת את כל הורגלציה של הורגלציה"}
+{"case_id": "0f5a9a57068d", "crop": "crops/hl_e004_q2_r3__l1.png", "candidate_transcription": "על כלל, כי ארצות (סמ' ארצות) לא הו"}
+{"case_id": "c31745e6be39", "crop": "crops/hl_e004_q2_r4__l1.png", "candidate_transcription": "Uniform algo in optimal > [?]"}
+{"case_id": "873f1adfe466", "crop": "crops/hl_e004_q2_r4__l2.png", "candidate_transcription": "כלומר, כן יש גם Quantization של אינסטרומנטים מסוימים"}
+{"case_id": "d0a8bb461f87", "crop": "crops/hl_e004_q2_r5__l1.png", "candidate_transcription": "1.5% 826 2% 25% uniform 2"}
+{"case_id": "6996a27c0d91", "crop": "crops/hl_e004_q2_r5__l2.png", "candidate_transcription": "[unreadable]"}
+{"case_id": "6d7c796d4015", "crop": "crops/hl_e004_q2_r6__l1.png", "candidate_transcription": "מצערי לא ידעתי שזה קורה לי"}
+{"case_id": "f81f1db05b28", "crop": "crops/hl_e004_q2_r6__l2.png", "candidate_transcription": "16. אין צורך ב'א. X. (חוקה) 1. יש צורך ב'ג' או ב'ד' לזיהוי (ב'ד' ב'ג'"}
+{"case_id": "4048e2137c4f", "crop": "crops/hl_e004_q2_r7__l2.png", "candidate_transcription": "אין מידע על ממצאים אובייקטיביים, אין תלונות על כאב"}
+{"case_id": "ec9d4ac0889b", "crop": "crops/hl_e004_q2_r8__l1.png", "candidate_transcription": "של Echo 18 תלמידים 2010"}
+{"case_id": "e67919a146d5", "crop": "crops/hl_e004_q2_r8__l2.png", "candidate_transcription": "עם רכיב 10%, עם 5% עם 15%"}
+{"case_id": "5502339387a2", "crop": "crops/hl_e005_q1_r1__l1.png", "candidate_transcription": "רוב הוויכוחים סביב הבלתי מובן (ב איזה מידה"}
+{"case_id": "1c09a393c0da", "crop": "crops/hl_e005_q1_r1__l2.png", "candidate_transcription": "אני לא רוצה שזה יהיה כזה משהו, אבל אני"}
+{"case_id": "9eed64922726", "crop": "crops/hl_e005_q1_r2__l1.png", "candidate_transcription": "במידה והתקבלה תשובה נכונה"}
+{"case_id": "5de3d0a7590d", "crop": "crops/hl_e005_q1_r2__l2.png", "candidate_transcription": "124 כל סוג של אקסל וכל זמן שיש אקסל, כל אקסל, כל אקסל, כל אקסל, כל אקסל, כל אקסל, כל אקסל, כל אקסל, כל אקסל, כל אקסל, כל אקסל, כל אקסל, כל אקסל, כל אקסל, כל אקסל, כל אקסל, כל אקסל, כל אקסל, כל אקסל, כל אקסל, כל אקסל, כל אקסל, כל אקסל, כל אקסל, כל אקסל, כל אקסל, כל אקסל, כל אקסל, כל אקסל, כל אקסל, כל אקסל, כל אקסל, כל אקסל, כל אקסל, כל אקסל, כל אקסל, כל אקסל, כל אקסל, כל אקסל, כל אקסל, כל אקסל, כל אקסל, כל אקסל, כל אקסל, כל אקסל, כל אקסל, כל אקסל, כל אקסל, כל אקסל, כל אקסל, כל אקסל, כל אקסל, כל אקסל, כל אקסל, כל אקסל, כל אקסל, כל אקסל, כל אקסל, כל אקסל, כל אקסל, כל אקסל, כל אקסל, כל אקסל, כל אקסל, כל אקסל, כל אקסל, כל אקסל, כל אקסל, כל אקסל, כל אקסל, כל אקסל, כל אקסל, כל אקסל, כל אקסל, כל אקסל, כל אקסל, כל אקסל, כל אקסל, כל אקסל, כל אקסל"}
+{"case_id": "bcf2935dc896", "crop": "crops/hl_e005_q1_r3__l2.png", "candidate_transcription": "האם יש קשר בין high-frequency וצבע טבעי"}
+{"case_id": "ea97d20e27f9", "crop": "crops/hl_e005_q1_r3__l3.png", "candidate_transcription": "אמרתי: [?] רציתי לראות איך זה ייראה / אבל כל כך הרבה זמן לא היה לי"}
+{"case_id": "02964bd15988", "crop": "crops/hl_e005_q1_r4__l1.png", "candidate_transcription": "אם אדם צריך להגיש תלונה"}
+{"case_id": "2fcd710e7c0a", "crop": "crops/hl_e005_q1_r4__l2.png", "candidate_transcription": "23. ע' א' אומרת כי כל דבר (אמריא) יש לו ערך"}
+{"case_id": "c2242a397042", "crop": "crops/hl_e005_q1_r5__l2.png", "candidate_transcription": "1. אסור לעבור את הליניית הרכבת"}
+{"case_id": "58c96158a919", "crop": "crops/hl_e005_q1_r5__l3.png", "candidate_transcription": "x = x_w"}
+{"case_id": "d2b4c71f8a81", "crop": "crops/hl_e005_q1_r6__l1.png", "candidate_transcription": "היה זה כיצד? כיצד יתאפשר כי ברגע שאתה נכנס ל'אני'"}
+{"case_id": "6e0fe1623f42", "crop": "crops/hl_e005_q1_r6__l2.png", "candidate_transcription": "1130. תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז תאז ת"}
+{"case_id": "9320436e3fbe", "crop": "crops/hl_e005_q1_r7__l1.png", "candidate_transcription": "היכנס תהיה לא נכון"}
+{"case_id": "919d546d3cbb", "crop": "crops/hl_e005_q1_r7__l2.png", "candidate_transcription": "במידה וסטודנט מנסה לבדוק (בגלל שיש לו דעה) את"}
+{"case_id": "0da1ffe7345f", "crop": "crops/hl_e005_q1_r8__l2.png", "candidate_transcription": "תנאי, זה, ו, זה, [?], כולל, כולל, כולל, כולל, כולל, כולל, כולל, כולל, כולל, כולל, כולל, כולל, כולל, כולל, כולל, כולל, כולל, כולל, כולל, כולל, כולל, כולל, כולל, כולל, כולל, כולל, כולל, כולל, כולל, כולל, כולל, כולל, כולל, כולל, כולל, כולל, כולל, כולל, כולל, כולל, כולל, כולל, כולל, כולל, כולל, כולל, כולל, כולל, כולל, כולל, כולל, כולל, כולל, כולל, כולל, כולל, כולל, כולל, כולל, כולל, כולל, כולל, כולל, כולל, כולל, כולל, כולל, כולל, כולל, כולל, כולל, כולל, כולל, כולל, כולל, כולל, כולל, כולל, כולל, כולל, כולל, כולל, כולל, כולל, כולל, כולל, כולל, כולל, כולל, כולל, כולל, כולל, כולל, כולל, כולל, כולל, כולל, כולל, כולל, כולל, כולל, כולל, כולל, כולל, כולל, כולל, כולל, כולל, כולל, כולל, כולל, כולל, כולל, כולל, כולל, כולל, כולל, כולל, כולל, כולל, כול"}
+{"case_id": "f36f6ea3680b", "crop": "crops/hl_e005_q1_r8__l3.png", "candidate_transcription": "כי לא שווה לי את ראינו מאדוע ברגע שאני רואה עיניה אור"}
+{"case_id": "e2060cd81e1a", "crop": "crops/hl_e005_q2_r1__l1.png", "candidate_transcription": "העובדה שהמחשב הוא כלי, מערכת, פרוג"}
+{"case_id": "5e9b54a34ca6", "crop": "crops/hl_e005_q2_r1__l2.png", "candidate_transcription": "לא במינו יעשה E(1) לא הכתבון קלוקס-ס ורג'ס ישר"}
+{"case_id": "3d0a01ca291a", "crop": "crops/hl_e005_q2_r2__l2.png", "candidate_transcription": "בניית מערכת thresholding עם גרף תלות (COCO) ואפס"}
+{"case_id": "256297feac4c", "crop": "crops/hl_e005_q2_r2__l3.png", "candidate_transcription": "אין כלום, אני לא רוצה ללמוד, אני רוצה ללמוד"}
+{"case_id": "8d03d13f339b", "crop": "crops/hl_e005_q2_r3__l2.png", "candidate_transcription": "831712 ס'ג (6.09121212.6 (5522.0)"}
+{"case_id": "f6d5e9730f54", "crop": "crops/hl_e005_q2_r4__l2.png", "candidate_transcription": "17.3.17. optimal quantization מ'אליקל 26. הערכה של ס'ל'ט"}
+{"case_id": "4f3a705ecd9e", "crop": "crops/hl_e005_q2_r4__l3.png", "candidate_transcription": "מקרה של נסיעה ואי-הווה חיה שלב את דפוס (ק'ח) של 100-200"}
+{"case_id": "96fd4317ea9b", "crop": "crops/hl_e005_q2_r5__l2.png", "candidate_transcription": "היי, יש לי שאלה: איך אני יכול/ה לעשות את זה? תודה"}
+{"case_id": "317200224159", "crop": "crops/hl_e005_q2_r5__l3.png", "candidate_transcription": "כלומר, כלומר, e - e_max לטעמינו, e - e_max לטעמינו"}
+{"case_id": "353f51d4420b", "crop": "crops/hl_e005_q2_r6__l2.png", "candidate_transcription": "אין לי מושג"}
+{"case_id": "23e89843b98d", "crop": "crops/hl_e005_q2_r7__l2.png", "candidate_transcription": "אין, אבל יש סוגים שונים של רעש, כמו רעש גאוסיאני, רעש פלפל, וכו'."}
+{"case_id": "c387ff963ac2", "crop": "crops/hl_e005_q2_r7__l3.png", "candidate_transcription": "ב-2 יצא נספר כל סוגייה. בזה אקבל 50%."}
+{"case_id": "42aafe0bcbc6", "crop": "crops/hl_e005_q2_r8__l1.png", "candidate_transcription": "בדיקה של סוגים שונים של תוכנות (למשל, תוכנות מערכת)"}
+{"case_id": "57076b7d3147", "crop": "crops/hl_e005_q2_r8__l2.png", "candidate_transcription": "בכללי, x לא ידוע, ואלו זיכרון (כ. ויזכרם)"}
+{"case_id": "e9d7a09efb8d", "crop": "crops/hl_e006_q1_r1__l1.png", "candidate_transcription": "מבוא לתוכנית מחשבים! כל סוגי הנתונים (כמו ריאל, מחרוזת, ...)."}
+{"case_id": "62fa2116d041", "crop": "crops/hl_e006_q1_r2__l1.png", "candidate_transcription": "אני לא יודע מה אני עושה כאן"}
+{"case_id": "885d3906ea7d", "crop": "crops/hl_e006_q1_r3__l1.png", "candidate_transcription": "קליגוב תאורה ריאם זארי סופר! כן D"}
+{"case_id": "5934f1f0d0f3", "crop": "crops/hl_e006_q1_r4__l1.png", "candidate_transcription": "11. שאלה 8 נדפסו 5,000,000 מניות של 1 לירה"}
+{"case_id": "06494a857819", "crop": "crops/hl_e006_q1_r5__l1.png", "candidate_transcription": "בדיקה עומסים של מערכת נמגמית"}
+{"case_id": "b877a819751f", "crop": "crops/hl_e006_q1_r6__l1.png", "candidate_transcription": "כשהם ג'קסון ו'אליס י'א ס'אליס ג'אקסון"}
+{"case_id": "6d310c91a966", "crop": "crops/hl_e006_q1_r7__l1.png", "candidate_transcription": "הצלם קריין — DC זמן נמוך ולא במא"}
+{"case_id": "2527f7e13fe5", "crop": "crops/hl_e006_q1_r8__l1.png", "candidate_transcription": "אם [ללא] אימרים אין לדעת אם קיים קשר סיבובי בין האם לילד. אם קיים קשר סיבובי בין האם לילד, אז נראה"}
+{"case_id": "56c2aadf507a", "crop": "crops/hl_e006_q2_r1__l1.png", "candidate_transcription": "הרש"}
+{"case_id": "b5b39cf74619", "crop": "crops/hl_e006_q2_r3__l1.png", "candidate_transcription": "ב ו/ו הכנסת הוויזואלית לרשות כלאשם ר' ה'ל'ל מציגה כדבר כל א'לסבוק הוויזואלית לרשות כלאשם ר' ה'ל'ל מציגה כדבר כל"}
+{"case_id": "f404cfaaf0a7", "crop": "crops/hl_e006_q2_r4__l1.png", "candidate_transcription": "ב' Quantization D form 0.5 ← 0.5 Σ, ו־ uniform ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־ ו־"}
+{"case_id": "63ff6f04e982", "crop": "crops/hl_e006_q2_r5__l2.png", "candidate_transcription": "[unreadable]"}
+{"case_id": "59d04b4947e0", "crop": "crops/hl_e006_q2_r6__l1.png", "candidate_transcription": "התכנון לא נכון 1,000 ש"}
+{"case_id": "c8b56d04cecd", "crop": "crops/hl_e006_q2_r7__l1.png", "candidate_transcription": "אזי ד' ב' כ' א' ב' ג' ד' ה' ו' ז' ח' ט' י' י\"א י\"ב י\"ג י\"ד י\"ה י\"ו י\"ז י\"ח י\"ט כ' כ\"א כ\"ב כ\"ג כ\"ד כ\"ה כ\"ו כ\"ז כ\"ח כ\"ט ל' ל\"א ל\"ב ל\"ג ל\"ד ל\"ה ל\"ו ל\"ז ל\"ח ל\"ט מ' מ\"א מ\"ב מ\"ג מ\"ד מ\"ה מ\"ו מ\"ז מ\"ח מ\"ט נ' נ\"א נ\"ב נ\"ג נ\"ד נ\"ה נ\"ו נ\"ז נ\"ח נ\"ט ס' ס\"א ס\"ב ס\"ג ס\"ד ס\"ה ס\"ו ס\"ז ס\"ח ס\"ט ע' ע\"א ע\"ב ע\"ג ע\"ד ע\"ה ע\"ו ע\"ז ע\"ח ע\"ט פ' פ\"א פ\"ב פ\"ג פ\"ד פ\"ה פ\"ו פ\"ז פ\"ח פ\"ט צ' צ\"א צ\"ב צ\"ג צ\"ד צ\"ה צ\"ו צ\"ז צ\"ח צ\"ט ק' ק\"א ק\"ב ק\"ג ק\"ד ק\"ה ק\"ו ק\"ז ק\"ח ק\"ט"}
+{"case_id": "fdc6d0201e6c", "crop": "crops/hl_e006_q2_r7__l2.png", "candidate_transcription": "אפשר לסמן את כל קבוצת הסימנים (כולל את ה-) ."}
+{"case_id": "ac673ef78448", "crop": "crops/hl_e006_q2_r8__l1.png", "candidate_transcription": "אין סעיף 2. סעיף 2 הוא לא 2 כל סעיף 2 הוא סעיף 2"}
+{"case_id": "d3db86606d5e", "crop": "crops/hl_e007_q1_r1__l1.png", "candidate_transcription": "לא ידוע לי אם יש תוכנית כזו, אבל אני חושב שזה ייתכן. אני לא בטוח אם זה יקרה, אבל אני מקווה שכן."}
+{"case_id": "96e42dc6fe7e", "crop": "crops/hc_e002_q1_r1.png", "candidate_transcription": "העובדה שהמחלה היא לא מחלה נפשית אלא מחלה גנטית"}
+{"case_id": "f8faaa80d5bb", "crop": "crops/hc_e002_q1_r2.png", "candidate_transcription": "בשעה שהמצלמה נקבה את העניינים נשארו"}
+{"case_id": "ea0d1a7af34e", "crop": "crops/hc_e002_q1_r3.png", "candidate_transcription": "הטפאה עם עכברית\nהעברית אפס קיום פארקיו"}
+{"case_id": "b2b6d540fa1a", "crop": "crops/hc_e002_q1_r4.png", "candidate_transcription": "בסוף נשארו רק הגוריים"}
+{"case_id": "520afc4186c0", "crop": "crops/hc_e002_q1_r5.png", "candidate_transcription": "נראה איבר X סלם הקדמית פרו"}
+{"case_id": "587570ee0d26", "crop": "crops/hc_e002_q1_r6.png", "candidate_transcription": "אני לא אקרו ע סקר ה קריא ופיק"}
+{"case_id": "9e3f3cdf4e41", "crop": "crops/hc_e002_q1_r7.png", "candidate_transcription": "סוגה על מודעות לרכיב על קליעה בפרקטיקה על מודעות לרכיב נכנסים לפרקטיקה"}
+{"case_id": "a308016185f4", "crop": "crops/hc_e002_q1_r8.png", "candidate_transcription": "אין ספק כי סביר להניח כי f נקבע על ידי ה-prior, וזאת על מנת להימנע מתשלום הריבית"}
+{"case_id": "60813c8ad344", "crop": "crops/hc_e002_q2_r1.png", "candidate_transcription": "נו יעד סגירה 255/120. אפילו ( פילי, סגירה ילכה ע"}
+{"case_id": "e4c3d3586e45", "crop": "crops/hc_e002_q2_r2.png", "candidate_transcription": "אני לא יודע מה אני רוצה לעשות עם החיים שלי"}
+{"case_id": "e0beae4975b2", "crop": "crops/hc_e002_q2_r3.png", "candidate_transcription": "עשה איחודים עם איחודים (אנ) אקליד עם אקליד"}
+{"case_id": "cc5e8720c468", "crop": "crops/hc_e002_q2_r4.png", "candidate_transcription": "האם יש תנאי קיפול? האם יש תנאי קיפול? האם יש תנאי קיפול? האם יש תנאי קיפול? האם יש תנאי קיפול? האם יש תנאי קיפול? האם יש תנאי קיפול? האם יש תנאי קיפול? האם יש תנאי קיפול? האם יש תנאי קיפול? האם יש תנאי קיפול? האם יש תנאי קיפול? האם יש תנאי קיפול? האם יש תנאי קיפול? האם יש תנאי קיפול? האם יש תנאי קיפול? האם יש תנאי קיפול? האם יש תנאי קיפול? האם יש תנאי קיפול? האם יש תנאי קיפול? האם יש תנאי קיפול? האם יש תנאי קיפול? האם יש תנאי קיפול? האם יש תנאי קיפול? האם יש תנאי קיפול? האם יש תנאי קיפול? האם יש תנאי קיפול? האם יש תנאי קיפול? האם יש תנאי קיפול? האם יש תנאי קיפול? האם יש תנאי קיפול? האם יש תנאי קיפול? האם יש תנאי קיפול? האם יש תנאי קיפול? האם יש תנאי קיפול? האם יש תנאי קיפול? האם יש תנאי קיפול? האם יש תנאי קיפול? האם יש תנאי קיפול? האם יש תנאי קיפול? האם יש תנאי קיפול? האם יש תנאי קיפול? האם יש תנאי קיפול? האם יש תנאי קיפול? האם יש תנאי קיפול"}
+{"case_id": "d03ca02c8d46", "crop": "crops/hc_e002_q2_r5.png", "candidate_transcription": "במידע עמינים, במידע עמינים, ג' (התקבלו) תע"}
+{"case_id": "1c5d65b5518e", "crop": "crops/hc_e002_q2_r6.png", "candidate_transcription": "המכשיר בהתאם לנדרש, וכן מציין את סוג ה- Echo, כגון: Echo, Echo 2, Echo 3, וכו'"}
+{"case_id": "67f44b6fbc7c", "crop": "crops/hc_e002_q2_r7.png", "candidate_transcription": "אין לי דעה על האם יש צורך בשינוי החוק"}
+{"case_id": "06a50df8b4a7", "crop": "crops/hc_e002_q2_r8.png", "candidate_transcription": "אין קשר סך הכל אחריותיך וקבלת X אין קשר סך הכל אחריותיך וקבלת"}
+{"case_id": "14a960cc730b", "crop": "crops/hl_e003_q1_r1__l1.png", "candidate_transcription": "המגמה הלאויה (Celsius) היא מידה של טמפרטורה"}
+{"case_id": "8df17ac63fb4", "crop": "crops/hl_e003_q1_r3__l1.png", "candidate_transcription": "שְׁלֹמֹה הַמָּלֵךְ עַל יִשְׂרָאֵל וְיִשְׂרָאֵל הַמָּלֵךְ עַל יִשְׂרָאֵל"}
+{"case_id": "ceffbc6dcd5c", "crop": "crops/hl_e003_q1_r4__l1.png", "candidate_transcription": "הַמְּרָאֵל מְעִירִים הַמְּרָאֵל מְעִירִים"}
+{"case_id": "5983ea11f348", "crop": "crops/hl_e003_q1_r5__l1.png", "candidate_transcription": "Clain X-הַלְוָיִם קְבֵרָה וְעֹמֶדֶת הַרְשָׁמָה אֲנִי הַרְשָׁמָה"}
+{"case_id": "a03bef1b0f47", "crop": "crops/hl_e003_q1_r6__l1.png", "candidate_transcription": "y-הַרְבֵּיָהּ | הֲכִי עַל־הַמְּסֻפְרִים הַשְׁאָרִים"}
+{"case_id": "0402465812f7", "crop": "crops/hl_e003_q1_r7__l1.png", "candidate_transcription": "DC ∼ Mise מְהִתָּה הַמְּרֵאָה קֹמֶרֶת"}
+{"case_id": "529058f2d426", "crop": "crops/hl_e003_q1_r8__l1.png", "candidate_transcription": "מרתה קייזר DC_t Affice מנהל מנהלים"}
+{"case_id": "8f83f6116544", "crop": "crops/hl_e003_q2_r1__l1.png", "candidate_transcription": "255 pr 16:p IGRNe WOEN G (הַרְמָ) מִבְּרֵאֲדֹגִיָּמְרִתְוַּעַר אֲחַר"}
+{"case_id": "fc38bc873e46", "crop": "crops/hl_e003_q2_r2__l1.png", "candidate_transcription": "העתקת ה-255 ערך ב-100%"}
+{"case_id": "c12371518f19", "crop": "crops/hl_e003_q2_r3__l1.png", "candidate_transcription": "השעון והריכוזים הורכבים על ידי סוכן שוקי מוניטרי"}
+{"case_id": "0fedde769918", "crop": "crops/hl_e003_q2_r4__l1.png", "candidate_transcription": "and e' Uniform angle N17 | 8/20"}
+{"case_id": "a3a27284dce6", "crop": "crops/hl_e003_q2_r5__l1.png", "candidate_transcription": "היה בינהו (500 20) BIN | >8 א'גופ'ן לְפִינָה נַמְשֵׁעַ נִרְכּוֹ מְיִתְּ בְּנִק"}
+{"case_id": "9cd24b589835", "crop": "crops/hl_e003_q2_r6__l1.png", "candidate_transcription": "כּוֹסְמַה הַשְׁכֵּה קָרִי לְבַדְּנִי אֲפִלּוּ בְּרִאשׁוֹן מִקְרָא הַמְּסֻכֵּה לְבַדְּנִי אֲפִלּוּ בְּרִאשׁוֹן מִקְרָא הַמְּסֻכֵּה לְבַדְּנִי אֲפִלּוּ בְּרִאשׁוֹן מִקְרָא"}
+{"case_id": "c85e7998e5a1", "crop": "crops/hl_e003_q2_r7__l1.png", "candidate_transcription": "הוכן נושא ערך בדיקת הוראה א' ל-2"}
+{"case_id": "a63f465150b0", "crop": "crops/hl_e003_q2_r8__l1.png", "candidate_transcription": "השכלה והערכה של התלמידים במערכת החינוך הישראלית, התחום המוסרי והחברתי, והתחום האקדמי והתורני. מהן ההגדרות?"}
+{"case_id": "e72665e149de", "crop": "crops/hl_e004_q1_r1__l1.png", "candidate_transcription": "ספונטני אופרטור WAVELETS"}
+{"case_id": "d2655b5d6382", "crop": "crops/hl_e004_q1_r2__l1.png", "candidate_transcription": "Highpass Filter συντελεστής παράγοντα ισχύος"}
+{"case_id": "98381ff0e349", "crop": "crops/hl_e004_q1_r3__l1.png", "candidate_transcription": "compare Nudity, just like C3H4,"}
+{"case_id": "b3a0ee2bec11", "crop": "crops/hl_e004_q1_r3__l2.png", "candidate_transcription": "Brightness 750 E 12 > 1.8"}
+{"case_id": "33c0ba4ef9b0", "crop": "crops/hl_e004_q1_r4__l1.png", "candidate_transcription": "Low Pass Filter"}
+{"case_id": "24970b2f8799", "crop": "crops/hl_e004_q1_r5__l1.png", "candidate_transcription": "A'pail, 20696n WAVELETS Q x 913 (??)"}
+{"case_id": "a71009c492a2", "crop": "crops/hl_e004_q1_r6__l1.png", "candidate_transcription": "ספונטני reception WAVELETS"}
+{"case_id": "8695bfdc98a2", "crop": "crops/hl_e004_q1_r6__l2.png", "candidate_transcription": "C \\subsetneq A_1 \\times A_2"}
+{"case_id": "d18daba683e1", "crop": "crops/hl_e004_q1_r7__l2.png", "candidate_transcription": "ספונטני אינטראקציה"}
+{"case_id": "8d957e569c6b", "crop": "crops/hl_e004_q1_r8__l1.png", "candidate_transcription": "c(x,y) ? ccc y' , g'z}"}
+{"case_id": "5255efc44561", "crop": "crops/hl_e004_q2_r1__l1.png", "candidate_transcription": "שאלה 255160 ספקי Funny 'inke MT?"}
+{"case_id": "9130dbd8b473", "crop": "crops/hl_e004_q2_r1__l2.png", "candidate_transcription": "2558 גלוי פורסם עולם"}
+{"case_id": "363a389cf685", "crop": "crops/hl_e004_q2_r2__l1.png", "candidate_transcription": "Canny 255 - .C pfi 20910 יד רכיב עוזר"}
+{"case_id": "5233f575289a", "crop": "crops/hl_e004_q2_r3__l1.png", "candidate_transcription": "השאלה היא: מהו הערך של x, אם 2x = 10?"}
+{"case_id": "0fc3b22f7c6d", "crop": "crops/hl_e004_q2_r4__l1.png", "candidate_transcription": "Uniformly random using Optimal ≥ CDPJ"}
+{"case_id": "1cd4bdcd98ff", "crop": "crops/hl_e004_q2_r4__l2.png", "candidate_transcription": "c) 50% of the students are female, Quantization"}
+{"case_id": "56523696a346", "crop": "crops/hl_e004_q2_r5__l1.png", "candidate_transcription": "X ~ Uniform(0, 1)"}
+{"case_id": "89addc4770b7", "crop": "crops/hl_e004_q2_r5__l2.png", "candidate_transcription": "[unreadable]"}
+{"case_id": "19b8b617a11d", "crop": "crops/hl_e004_q2_r6__l1.png", "candidate_transcription": "השאלה היא: מהו הסיכוי ש-2 מתוך 5 אנשים יתפזרו?"}
+{"case_id": "3d054dc86ff7", "crop": "crops/hl_e004_q2_r6__l2.png", "candidate_transcription": "x 23.6 x CaO, n = 1.57 g / (18.016)"}
+{"case_id": "2ef38a3ce1e7", "crop": "crops/hl_e004_q2_r7__l2.png", "candidate_transcription": "e'p'ip'e niced, by unites civil e'dig' n'ied,"}
+{"case_id": "08bae2a6f638", "crop": "crops/hl_e004_q2_r8__l1.png", "candidate_transcription": "ski Echo 135 מילון גנוב"}
+{"case_id": "28e9584e736a", "crop": "crops/hl_e004_q2_r8__l2.png", "candidate_transcription": "C51 C2,075,000"}
+{"case_id": "92f30383f9c9", "crop": "crops/hl_e005_q1_r1__l1.png", "candidate_transcription": "J(1) קובע דוגמה ל-5 מטרים"}
+{"case_id": "6fc046fb106b", "crop": "crops/hl_e005_q1_r1__l2.png", "candidate_transcription": "y-ג (15) x ק'ר (אַף אָמְרִי) כּוֹלֵי אֲנִיִּים"}
+{"case_id": "387dbb0ec439", "crop": "crops/hl_e005_q1_r2__l1.png", "candidate_transcription": "כשנוצרת אינטראקציה בין שני גורמים שונים"}
+{"case_id": "3074873f64b2", "crop": "crops/hl_e005_q1_r2__l2.png", "candidate_transcription": "{\"transcription\": \"126 cl (25 g) 2(c) 2(0.10,0.1) - קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' ק"}
+{"case_id": "9a458c759bd0", "crop": "crops/hl_e005_q1_r3__l2.png", "candidate_transcription": "COS ωt high-frequency"}
+{"case_id": "e9fe3b937146", "crop": "crops/hl_e005_q1_r3__l3.png", "candidate_transcription": "n Mirc 150.1 |C| CIVILIC (7) x,y,z 1961 כְּרַבְרָה הַמְּחִיר-תְּרוֹמֵי (כְּרַבְרָה)"}
+{"case_id": "3b4bf4a0f3f5", "crop": "crops/hl_e005_q1_r4__l1.png", "candidate_transcription": "גְּלִילַת הָעֲרָבִים אֵינָהּ מְשׁוֹמֶרֶת לְפָנֵי הַמְּסֻכְלִים"}
+{"case_id": "d20f65ae7ec6", "crop": "crops/hl_e005_q1_r4__l2.png", "candidate_transcription": "בְּשַׁעַת הָרִגְלִיָּה (18c) לְחַזְקֵי אֲדֹנִיִּים וְאֶלְמְכֵי הַשְׁרֵיָה"}
+{"case_id": "b099ac31afa5", "crop": "crops/hl_e005_q1_r5__l2.png", "candidate_transcription": "C1042 2.11)5. (x - 7.3) -5(1'01-2 (87 16017)"}
+{"case_id": "8cf2a589576f", "crop": "crops/hl_e005_q1_r5__l3.png", "candidate_transcription": "x וּשְׁכֵלָה / כְּתִיבַת הַמְּסֻוֹרָה - לְחַיַּת אֲדָמִים, לְחַיַּת אֲדָמִים"}
+{"case_id": "23af8f361f64", "crop": "crops/hl_e005_q1_r6__l1.png", "candidate_transcription": "כְּלָבִי 2.15.16. (א) כְּלָבִי 2.15.16. (ב)"}
+{"case_id": "990741002e41", "crop": "crops/hl_e005_q1_r6__l2.png", "candidate_transcription": "וְכָל הַשְׁאֵרִיָּה תְּרוּמָה לְחֹדֶשׁ הַנְּבִיִּים. וְעַל-פְּרֵעַ"}
+{"case_id": "8703f916177a", "crop": "crops/hl_e005_q1_r7__l1.png", "candidate_transcription": "היקרים כהן עוזר אסף פיקס, סרק 700 גל נבמרג"}
+{"case_id": "2a9958f2afc3", "crop": "crops/hl_e005_q1_r7__l2.png", "candidate_transcription": "Hence, the curve C is given by f(x,y) = 0."}
+{"case_id": "635ade026b89", "crop": "crops/hl_e005_q1_r8__l2.png", "candidate_transcription": "0.81 0.91 0.72 0.65, 0.34, 0.21, 0.15, 0.08"}
+{"case_id": "345973f587da", "crop": "crops/hl_e005_q1_r8__l3.png", "candidate_transcription": "ב, תומית ל- N איזה עוצמה גורמת ל- ג'י'ן"}
+{"case_id": "cdd3d479c127", "crop": "crops/hl_e005_q2_r1__l1.png", "candidate_transcription": "כְּלִי הַמָּסְפּוֹר, 0.2 threshold) (Cyclic, σ"}
+{"case_id": "25fd90074ea4", "crop": "crops/hl_e005_q2_r1__l2.png", "candidate_transcription": "איך קוראים ל-80% מההפקה? E [c]"}
+{"case_id": "7be24654604f", "crop": "crops/hl_e005_q2_r2__l2.png", "candidate_transcription": "n > 0.8 δ,07 threshholding σελχ ουσ'γ/δειος"}
+{"case_id": "196b10ffd2e7", "crop": "crops/hl_e005_q2_r2__l3.png", "candidate_transcription": "השאלה היא: איזו ערך של x יש ל- f(x) = 1.5x^2 - 3x + 2, כך ש-f(x) > 0?"}
+{"case_id": "38d5d95e30f1", "crop": "crops/hl_e005_q2_r3__l2.png", "candidate_transcription": "(0.755) [?] ְּרַגִּיָהּ כְּלֵי הַמְּדִינָה"}
+{"case_id": "ed8967d815a2", "crop": "crops/hl_e005_q2_r4__l2.png", "candidate_transcription": "לְהַעֲמִיד אֶת הַשְׁכָּלוֹן, אֲנִי מְחַרְבֵּר לְהַעֲמִיד אֶת הַשְׁכָּלוֹן, אֲנִי מְחַרְבֵּר"}
+{"case_id": "e92b0d2a1bca", "crop": "crops/hl_e005_q2_r4__l3.png", "candidate_transcription": "החוקה שכוללת את ה-100% ו-25% של גלויים (grey-levels)"}
+{"case_id": "a429cc5a3011", "crop": "crops/hl_e005_q2_r5__l2.png", "candidate_transcription": "הַשְׁאָרִיָּה הַמְּחֻלֶּת בְּסֵפֶר הַכֹּרְסָה"}
+{"case_id": "1f210f3fc8fe", "crop": "crops/hl_e005_q2_r5__l3.png", "candidate_transcription": "c_{max}-a _{i}^{n} | \frac{\text{השכלה}}{\text{השכלה}} e.g., \text{השכלה}"}
+{"case_id": "5956c847f98d", "crop": "crops/hl_e005_q2_r6__l2.png", "candidate_transcription": "השכלה והערכה של הוראה ב-1250 מ"}
+{"case_id": "8e4626c7e13c", "crop": "crops/hl_e005_q2_r7__l2.png", "candidate_transcription": "gray-levels 0-255, es cuadrado de la imagen"}
+{"case_id": "23a410ef6d1a", "crop": "crops/hl_e005_q2_r7__l3.png", "candidate_transcription": "2-7 וְגַם הָרִמּוֹן וְאֶרְעֵי הַקְּרָבִים בְּנֵי הַשְׁכֵּמִים"}
+{"case_id": "9810ee2ab6c7", "crop": "crops/hl_e005_q2_r8__l1.png", "candidate_transcription": "0.1 C5 0.46927 1.21 2.8 3.1 5.2 6.5 7.8"}
+{"case_id": "e7cc9dcde685", "crop": "crops/hl_e005_q2_r8__l2.png", "candidate_transcription": "{\"transcription\": \"x 10^4 x 50000000000000000000000000000000"}
+{"case_id": "88213e8d1690", "crop": "crops/hl_e006_q1_r1__l1.png", "candidate_transcription": "Motion blur ! נקודות בודדות (C(ho 170) הגדלתה מרחוק"}
+{"case_id": "f67752a0cf8e", "crop": "crops/hl_e006_q1_r2__l1.png", "candidate_transcription": "כְּלִי הַמָּרֵא וְהַמָּרֵא כְּלִי הַמָּרֵא וְהַמָּרֵא high pressure and high velocity . PC = 2k v' k·δ·ρl!"}
+{"case_id": "e53cc10ee8ef", "crop": "crops/hl_e006_q1_r3__l1.png", "candidate_transcription": "קְרָבִי תְעוּרָה רַחֲמֵי ٢٠١٣ בְּשַׁעַר הַכֹּל"}
+{"case_id": "54343fab398d", "crop": "crops/hl_e006_q1_r4__l1.png", "candidate_transcription": "H . אינטגרל של f(x) על [a,b] = ?"}
+{"case_id": "99194d6baea7", "crop": "crops/hl_e006_q1_r5__l1.png", "candidate_transcription": "conjugation cell x y s near c.c.ll."}
+{"case_id": "24a0d1a3f82e", "crop": "crops/hl_e006_q1_r6__l1.png", "candidate_transcription": "• AUGUI GN א'ג'ן אָדְוּסִקְיַיִם וְאֵלֶּה מְעַרְפִּים"}
+{"case_id": "f1abcc43db1d", "crop": "crops/hl_e006_q1_r7__l1.png", "candidate_transcription": "אַלְמָרִיּוֹת קְרוּבִים — Dc אֲנִיּוֹן גְּדוֹלִיּוֹן מְחַמֵּר"}
+{"case_id": "fc09a7ea99ff", "crop": "crops/hl_e006_q1_r8__l1.png", "candidate_transcription": "אך לא נרמז, אולם ב-2017, הורכבה של 50% מ-2016, ו-2015, והשנה האחרונה היא 2014."}
+{"case_id": "42342aa59da6", "crop": "crops/hl_e006_q2_r1__l1.png", "candidate_transcription": "Canny edge detection using Canny algorithm, σ = 1.2, θ = 0.5, and Canny threshold values are 1 and 3."}
+{"case_id": "7965b3348aaf", "crop": "crops/hl_e006_q2_r3__l1.png", "candidate_transcription": "לְהַחֲזִיר אֶת הַמָּשָׁרְתִּי לְפָנֵי הַכֹּהֲנִים וְאֶל הַמְּדִינָה הַגְּדוֹלָה"}
+{"case_id": "d2bb89d3e0c4", "crop": "crops/hl_e006_q2_r4__l1.png", "candidate_transcription": "ב-Quantization\nUniform 0,5 -4,5\nx→I D→K"}
+{"case_id": "fe009e786817", "crop": "crops/hl_e006_q2_r5__l2.png", "candidate_transcription": "[unreadable]"}
+{"case_id": "815902189aeb", "crop": "crops/hl_e006_q2_r6__l1.png", "candidate_transcription": "לְרַחֲמֵי הָאֱלֹהִים 1,000 ג' 6.25 mg"}
+{"case_id": "481259009f59", "crop": "crops/hl_e006_q2_r7__l1.png", "candidate_transcription": "187.2 21070.1! מְסַפְרֵי הַמָּשׁוֹבִים וְהַמְּגֻלָּהּ לְכָל הַמְּסַפְרֵי הַמָּשׁוֹבִים"}
+{"case_id": "68fc703794f7", "crop": "crops/hl_e006_q2_r7__l2.png", "candidate_transcription": "אינטגרל של f(x) = 2x^3 - 4x + 1"}
+{"case_id": "5d7051d5c1b1", "crop": "crops/hl_e006_q2_r8__l1.png", "candidate_transcription": "הכפיה על הוראת 2% - 5% מ- 700N ל- 200N"}
+{"case_id": "f71c99547571", "crop": "crops/hl_e007_q1_r1__l1.png", "candidate_transcription": "השאלה היא האם יש פתרון לבעיה זו? לא, אין פתרון."}
+{"case_id": "730ca5deb2af", "crop": "crops/hc_e002_q1_r1.png", "candidate_transcription": "נראה שזו תוצאה של אינטראקציה"}
+{"case_id": "d4c911957861", "crop": "crops/hc_e002_q1_r2.png", "candidate_transcription": "השאלה נמצאת בחלק הפתוח של המבחן"}
+{"case_id": "d74c45ec2972", "crop": "crops/hc_e002_q1_r3.png", "candidate_transcription": "המוצר הינו מוגן על ידי חוקי נספח אינטלקטואלי."}
+{"case_id": "eaf30132f221", "crop": "crops/hc_e002_q1_r4.png", "candidate_transcription": "הַמְּגִדּוֹן הָיָה בְּרֵעֵי הַכְּתֻבִים"}
+{"case_id": "849bb1c82932", "crop": "crops/hc_e002_q1_r5.png", "candidate_transcription": "NCHT 231 x 075 הַקְרָעִים, 1916"}
+{"case_id": "5476c1ac652c", "crop": "crops/hc_e002_q1_r6.png", "candidate_transcription": "שְׁלֹמֹה הַמָּלֵךְ עַד שְׁנֵי קְרִיָּה"}
+{"case_id": "9bdcea99599a", "crop": "crops/hc_e002_q1_r7.png", "candidate_transcription": "סף הירשון ערך תקף-ה-מקרה. סף הירשון ערך תקף-ה-מקרה."}
+{"case_id": "67344d202560", "crop": "crops/hc_e002_q1_r8.png", "candidate_transcription": "השנה הורכבה על ידי עוזר המנהל, ד"}
+{"case_id": "4ba9b0748aac", "crop": "crops/hc_e002_q2_r1.png", "candidate_transcription": "הַשְׁמוּרָה הַמְּסֻפֶּרֶת, אֲבִי עַל-כֵּן, בְּרֹאשׁ הַשָּׁנָה, וְעַד שְׁבוּעַת הַשָּׁנָה"}
+{"case_id": "249f7717c86f", "crop": "crops/hc_e002_q2_r2.png", "candidate_transcription": "was telephoned to, is an idea my book was about pain"}
+{"case_id": "10e8f6f0aa8d", "crop": "crops/hc_e002_q2_r3.png", "candidate_transcription": "כְּרַבְיָה עֲדֹנִי בְּרֵעַ הַמְּשֻׁלְטָן אֶת הַמְּסָפְרָה"}
+{"case_id": "0185e72b2730", "crop": "crops/hc_e002_q2_r4.png", "candidate_transcription": "דיברנו בפנינו, נגזרת ממנה, ונקבעה על ידי עורך הדין"}
+{"case_id": "37175db3176d", "crop": "crops/hc_e002_q2_r5.png", "candidate_transcription": "כְּיָר, בַּזֹּחַק קִרְמִין מֵאֲנִיָּה אֶל עֲדַת הַשְׁכָּבִים"}
+{"case_id": "a1689c0bc9dd", "crop": "crops/hc_e002_q2_r6.png", "candidate_transcription": "השכבה התחתונה של המרחב היא שכבת גזים עבים, והשכבה העליונה היא שכבת גזים דקים. השכבה התחתונה של המרחב היא שכבת גזים עבים, והשכבה העליונה היא שכבת גזים דקים."}
+{"case_id": "1ce140875aea", "crop": "crops/hc_e002_q2_r7.png", "candidate_transcription": "קורת ה-10,000 מ"}
+{"case_id": "9d8f40282d6d", "crop": "crops/hc_e002_q2_r8.png", "candidate_transcription": "נְדָבִי 2x8 אֲפַרְסְטְרֵי 6x9 אֲפַרְסְטְרֵי"}
+{"case_id": "31f58c9969f5", "crop": "crops/hl_e003_q1_r1__l1.png", "candidate_transcription": "המגמה הלאויה (Celsius) היא מידה של טמפרטורה"}
+{"case_id": "b8ebea5c2b12", "crop": "crops/hl_e003_q1_r3__l1.png", "candidate_transcription": "שְׁלֹמֹה הַמָּלֵךְ עַל יִשְׂרָאֵל וְיִשְׂרָאֵל הַמָּלֵךְ עַל יִשְׂרָאֵל"}
+{"case_id": "c2b8d98d8a23", "crop": "crops/hl_e003_q1_r4__l1.png", "candidate_transcription": "הַמְּרָאֵל מְעִירִים הַמְּרָאֵל מְעִירִים"}
+{"case_id": "f712f881e303", "crop": "crops/hl_e003_q1_r5__l1.png", "candidate_transcription": "Clain X-הַלְוָיִם קְבֵרָה וְעֹמֶדֶת הַרְשָׁמָה אֲנִי הַרְשָׁמָה"}
+{"case_id": "cc08b9817a28", "crop": "crops/hl_e003_q1_r6__l1.png", "candidate_transcription": "y-הַרְבֵּיָהּ | הֲכִי עַל־הַמְּסֻפְרִים הַשְׁאָרִים"}
+{"case_id": "bbb007ad8cb2", "crop": "crops/hl_e003_q1_r7__l1.png", "candidate_transcription": "DC ∼ Mise מְהִתָּה הַמְּרֵאָה קֹמֶרֶת"}
+{"case_id": "3b6c19ad6da9", "crop": "crops/hl_e003_q1_r8__l1.png", "candidate_transcription": "מרתה קייזר DC_t Affice מנהל מנהלים"}
+{"case_id": "0e45d08948dd", "crop": "crops/hl_e003_q2_r1__l1.png", "candidate_transcription": "255 pr 16:p IGRNe WOEN G (הַרְמָ) מִבְּרֵאֲדֹגִיָּמְרִתְוַּעַר אֲחַר"}
+{"case_id": "47af4e7ec067", "crop": "crops/hl_e003_q2_r2__l1.png", "candidate_transcription": "העתקת ה-255 ערך ב-100%"}
+{"case_id": "d480e94322f4", "crop": "crops/hl_e003_q2_r3__l1.png", "candidate_transcription": "השעון והריכוזים הורכבים על ידי סוכן שוקי מוניטרי"}
+{"case_id": "0d8b27295d5d", "crop": "crops/hl_e003_q2_r4__l1.png", "candidate_transcription": "and e' Uniform angle N17 | 8/20"}
+{"case_id": "3cb9c4bbdb75", "crop": "crops/hl_e003_q2_r5__l1.png", "candidate_transcription": "היה בינהו (500 20) BIN | >8 א'גופ'ן לְפִינָה נַמְשֵׁעַ נִרְכּוֹ מְיִתְּ בְּנִק"}
+{"case_id": "75ad9285d6d4", "crop": "crops/hl_e003_q2_r6__l1.png", "candidate_transcription": "כּוֹסְמַה הַשְׁכֵּה קָרִי לְבַדְּנִי אֲפִלּוּ בְּרִאשׁוֹן מִקְרָא הַמְּסֻכֵּה לְבַדְּנִי אֲפִלּוּ בְּרִאשׁוֹן מִקְרָא הַמְּסֻכֵּה לְבַדְּנִי אֲפִלּוּ בְּרִאשׁוֹן מִקְרָא"}
+{"case_id": "2e4b29f8825a", "crop": "crops/hl_e003_q2_r7__l1.png", "candidate_transcription": "הוכן נושא ערך בדיקת הוראה א' ל-2"}
+{"case_id": "dcabeebe7e11", "crop": "crops/hl_e003_q2_r8__l1.png", "candidate_transcription": "השכלה והערכה של התלמידים במערכת החינוך הישראלית, התחום המוסרי והחברתי, והתחום האקדמי והתורני. מהן ההגדרות?"}
+{"case_id": "12d46ded8caa", "crop": "crops/hl_e004_q1_r1__l1.png", "candidate_transcription": "ספונטני אופרטור WAVELETS"}
+{"case_id": "d26944617172", "crop": "crops/hl_e004_q1_r2__l1.png", "candidate_transcription": "Highpass Filter συντελεστής παράγοντα ισχύος"}
+{"case_id": "705a1731ae22", "crop": "crops/hl_e004_q1_r3__l1.png", "candidate_transcription": "compare Nudity, just like C3H4,"}
+{"case_id": "99d55e0a3b73", "crop": "crops/hl_e004_q1_r3__l2.png", "candidate_transcription": "Brightness 750 E 12 > 1.8"}
+{"case_id": "1e452b5dcbc1", "crop": "crops/hl_e004_q1_r4__l1.png", "candidate_transcription": "Low Pass Filter"}
+{"case_id": "8157f4115fde", "crop": "crops/hl_e004_q1_r5__l1.png", "candidate_transcription": "A'pail, 20696n WAVELETS Q x 913 (??)"}
+{"case_id": "a4e383bf8898", "crop": "crops/hl_e004_q1_r6__l1.png", "candidate_transcription": "ספונטני reception WAVELETS"}
+{"case_id": "22a18b928983", "crop": "crops/hl_e004_q1_r6__l2.png", "candidate_transcription": "C \\subsetneq A_1 \\times A_2"}
+{"case_id": "72ddc49df69c", "crop": "crops/hl_e004_q1_r7__l2.png", "candidate_transcription": "ספונטני אינטראקציה"}
+{"case_id": "76d28b118062", "crop": "crops/hl_e004_q1_r8__l1.png", "candidate_transcription": "c(x,y) ? ccc y' , g'z}"}
+{"case_id": "dfecadc9ef12", "crop": "crops/hl_e004_q2_r1__l1.png", "candidate_transcription": "שאלה 255160 ספקי Funny 'inke MT?"}
+{"case_id": "5faf0cf8a683", "crop": "crops/hl_e004_q2_r1__l2.png", "candidate_transcription": "2558 גלוי פורסם עולם"}
+{"case_id": "35be772c7d3e", "crop": "crops/hl_e004_q2_r2__l1.png", "candidate_transcription": "Canny 255 - .C pfi 20910 יד רכיב עוזר"}
+{"case_id": "fe28a8cc97a5", "crop": "crops/hl_e004_q2_r3__l1.png", "candidate_transcription": "השאלה היא: מהו הערך של x, אם 2x = 10?"}
+{"case_id": "564f45eaaacc", "crop": "crops/hl_e004_q2_r4__l1.png", "candidate_transcription": "Uniformly random using Optimal ≥ CDPJ"}
+{"case_id": "b122174991da", "crop": "crops/hl_e004_q2_r4__l2.png", "candidate_transcription": "c) 50% of the students are female, Quantization"}
+{"case_id": "bc4ac8b26192", "crop": "crops/hl_e004_q2_r5__l1.png", "candidate_transcription": "X ~ Uniform(0, 1)"}
+{"case_id": "ba49ddf060d4", "crop": "crops/hl_e004_q2_r5__l2.png", "candidate_transcription": "[unreadable]"}
+{"case_id": "a9554fb6a578", "crop": "crops/hl_e004_q2_r6__l1.png", "candidate_transcription": "השאלה היא: מהו הסיכוי ש-2 מתוך 5 אנשים יתפזרו?"}
+{"case_id": "087db6144374", "crop": "crops/hl_e004_q2_r6__l2.png", "candidate_transcription": "x 23.6 x CaO, n = 1.57 g / (18.016)"}
+{"case_id": "5358966d8704", "crop": "crops/hl_e004_q2_r7__l2.png", "candidate_transcription": "e'p'ip'e niced, by unites civil e'dig' n'ied,"}
+{"case_id": "acf53183aa8c", "crop": "crops/hl_e004_q2_r8__l1.png", "candidate_transcription": "ski Echo 135 מילון גנוב"}
+{"case_id": "ef42a8f922cf", "crop": "crops/hl_e004_q2_r8__l2.png", "candidate_transcription": "C51 C2,075,000"}
+{"case_id": "281f16671c57", "crop": "crops/hl_e005_q1_r1__l1.png", "candidate_transcription": "J(1) קובע דוגמה ל-5 מטרים"}
+{"case_id": "c7c1813327c0", "crop": "crops/hl_e005_q1_r1__l2.png", "candidate_transcription": "y-ג (15) x ק'ר (אַף אָמְרִי) כּוֹלֵי אֲנִיִּים"}
+{"case_id": "20f9aa16642c", "crop": "crops/hl_e005_q1_r2__l1.png", "candidate_transcription": "כשנוצרת אינטראקציה בין שני גורמים שונים"}
+{"case_id": "d03865590e32", "crop": "crops/hl_e005_q1_r2__l2.png", "candidate_transcription": "126 cl (25 g) 2(c) 2(0.10,0.1) - קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' ק"}
+{"case_id": "41e7dbd877f7", "crop": "crops/hl_e005_q1_r3__l2.png", "candidate_transcription": "COS ωt high-frequency"}
+{"case_id": "cecef811d1fa", "crop": "crops/hl_e005_q1_r3__l3.png", "candidate_transcription": "n Mirc 150.1 |C| CIVILIC (7) x,y,z 1961 כְּרַבְרָה הַמְּחִיר-תְּרוֹמֵי (כְּרַבְרָה)"}
+{"case_id": "9f747ef7008e", "crop": "crops/hl_e005_q1_r4__l1.png", "candidate_transcription": "גְּלִילַת הָעֲרָבִים אֵינָהּ מְשׁוֹמֶרֶת לְפָנֵי הַמְּסֻכְלִים"}
+{"case_id": "a14fd010495f", "crop": "crops/hl_e005_q1_r4__l2.png", "candidate_transcription": "בְּשַׁעַת הָרִגְלִיָּה (18c) לְחַזְקֵי אֲדֹנִיִּים וְאֶלְמְכֵי הַשְׁרֵיָה"}
+{"case_id": "f075e0b6530e", "crop": "crops/hl_e005_q1_r5__l2.png", "candidate_transcription": "C1042 2.11)5. (x - 7.3) -5(1'01-2 (87 16017)"}
+{"case_id": "cc122c914464", "crop": "crops/hl_e005_q1_r5__l3.png", "candidate_transcription": "x וּשְׁכֵלָה / כְּתִיבַת הַמְּסֻוֹרָה - לְחַיַּת אֲדָמִים, לְחַיַּת אֲדָמִים"}
+{"case_id": "cf508558da1d", "crop": "crops/hl_e005_q1_r6__l1.png", "candidate_transcription": "כְּלָבִי 2.15.16. (א) כְּלָבִי 2.15.16. (ב)"}
+{"case_id": "a2bc9ef527b2", "crop": "crops/hl_e005_q1_r6__l2.png", "candidate_transcription": "וְכָל הַשְׁאֵרִיָּה תְּרוּמָה לְחֹדֶשׁ הַנְּבִיִּים. וְעַל-פְּרֵעַ"}
+{"case_id": "76c6840dd6cd", "crop": "crops/hl_e005_q1_r7__l1.png", "candidate_transcription": "היקרים כהן עוזר אסף פיקס, סרק 700 גל נבמרג"}
+{"case_id": "f13ee2df7045", "crop": "crops/hl_e005_q1_r7__l2.png", "candidate_transcription": "Hence, the curve C is given by f(x,y) = 0."}
+{"case_id": "cdbf6bb1a802", "crop": "crops/hl_e005_q1_r8__l2.png", "candidate_transcription": "0.81 0.91 0.72 0.65, 0.34, 0.21, 0.15, 0.08"}
+{"case_id": "b7a2b7c1c585", "crop": "crops/hl_e005_q1_r8__l3.png", "candidate_transcription": "ב, תומית ל- N איזה עוצמה גורמת ל- ג'י'ן"}
+{"case_id": "04da15afee0e", "crop": "crops/hl_e005_q2_r1__l1.png", "candidate_transcription": "כְּלִי הַמָּסְפּוֹר, 0.2 threshold) (Cyclic, σ"}
+{"case_id": "c4ea0400484e", "crop": "crops/hl_e005_q2_r1__l2.png", "candidate_transcription": "איך קוראים ל-80% מההפקה? E [c]"}
+{"case_id": "3d4315b8abd1", "crop": "crops/hl_e005_q2_r2__l2.png", "candidate_transcription": "n > 0.8 δ,07 threshholding σελχ ουσ'γ/δειος"}
+{"case_id": "91d313ee9341", "crop": "crops/hl_e005_q2_r2__l3.png", "candidate_transcription": "השאלה היא: איזו ערך של x יש ל- f(x) = 1.5x^2 - 3x + 2, כך ש-f(x) > 0?"}
+{"case_id": "f4f1bf6c8e69", "crop": "crops/hl_e005_q2_r3__l2.png", "candidate_transcription": "(0.755) [?] ְּרַגִּיָהּ כְּלֵי הַמְּדִינָה"}
+{"case_id": "b5a12a80942c", "crop": "crops/hl_e005_q2_r4__l2.png", "candidate_transcription": "לְהַעֲמִיד אֶת הַשְׁכָּלוֹן, אֲנִי מְחַרְבֵּר לְהַעֲמִיד אֶת הַשְׁכָּלוֹן, אֲנִי מְחַרְבֵּר"}
+{"case_id": "6d5195e4db09", "crop": "crops/hl_e005_q2_r4__l3.png", "candidate_transcription": "החוקה שכוללת את ה-100% ו-25% של גלויים (grey-levels)"}
+{"case_id": "599eeeade7b5", "crop": "crops/hl_e005_q2_r5__l2.png", "candidate_transcription": "הַשְׁאָרִיָּה הַמְּחֻלֶּת בְּסֵפֶר הַכֹּרְסָה"}
+{"case_id": "0829c692d4ce", "crop": "crops/hl_e005_q2_r5__l3.png", "candidate_transcription": "c_{max}-a _{i}^{n} | \frac{\text{השכלה}}{\text{השכלה}} e.g., \text{השכלה}"}
+{"case_id": "9fd13edee9c0", "crop": "crops/hl_e005_q2_r6__l2.png", "candidate_transcription": "השכלה והערכה של הוראה ב-1250 מ"}
+{"case_id": "257c841b8ed7", "crop": "crops/hl_e005_q2_r7__l2.png", "candidate_transcription": "gray-levels 0-255, es cuadrado de la imagen"}
+{"case_id": "0b6e1888c319", "crop": "crops/hl_e005_q2_r7__l3.png", "candidate_transcription": "2-7 וְגַם הָרִמּוֹן וְאֶרְעֵי הַקְּרָבִים בְּנֵי הַשְׁכֵּמִים"}
+{"case_id": "faf9d1e3adee", "crop": "crops/hl_e005_q2_r8__l1.png", "candidate_transcription": "0.1 C5 0.46927 1.21 2.8 3.1 5.2 6.5 7.8"}
+{"case_id": "94282c546b98", "crop": "crops/hl_e005_q2_r8__l2.png", "candidate_transcription": "x 10^4 x 50000000000000000000000000000000"}
+{"case_id": "ee72c7f5e616", "crop": "crops/hl_e006_q1_r1__l1.png", "candidate_transcription": "Motion blur ! נקודות בודדות (C(ho 170) הגדלתה מרחוק"}
+{"case_id": "e26314ae7ecd", "crop": "crops/hl_e006_q1_r2__l1.png", "candidate_transcription": "כְּלִי הַמָּרֵא וְהַמָּרֵא כְּלִי הַמָּרֵא וְהַמָּרֵא high pressure and high velocity . PC = 2k v' k·δ·ρl!"}
+{"case_id": "4a9d2c8e9c62", "crop": "crops/hl_e006_q1_r3__l1.png", "candidate_transcription": "קְרָבִי תְעוּרָה רַחֲמֵי ٢٠١٣ בְּשַׁעַר הַכֹּל"}
+{"case_id": "f97cb58309ec", "crop": "crops/hl_e006_q1_r4__l1.png", "candidate_transcription": "H . אינטגרל של f(x) על [a,b] = ?"}
+{"case_id": "faf12ffeef42", "crop": "crops/hl_e006_q1_r5__l1.png", "candidate_transcription": "conjugation cell x y s near c.c.ll."}
+{"case_id": "e68efe1d3848", "crop": "crops/hl_e006_q1_r6__l1.png", "candidate_transcription": "• AUGUI GN א'ג'ן אָדְוּסִקְיַיִם וְאֵלֶּה מְעַרְפִּים"}
+{"case_id": "c1f4dc65af69", "crop": "crops/hl_e006_q1_r7__l1.png", "candidate_transcription": "אַלְמָרִיּוֹת קְרוּבִים — Dc אֲנִיּוֹן גְּדוֹלִיּוֹן מְחַמֵּר"}
+{"case_id": "144cf6a54212", "crop": "crops/hl_e006_q1_r8__l1.png", "candidate_transcription": "אך לא נרמז, אולם ב-2017, הורכבה של 50% מ-2016, ו-2015, והשנה האחרונה היא 2014."}
+{"case_id": "4586b1b2cde1", "crop": "crops/hl_e006_q2_r1__l1.png", "candidate_transcription": "Canny edge detection using Canny algorithm, σ = 1.2, θ = 0.5, and Canny threshold values are 1 and 3."}
+{"case_id": "d4c838cda366", "crop": "crops/hl_e006_q2_r3__l1.png", "candidate_transcription": "לְהַחֲזִיר אֶת הַמָּשָׁרְתִּי לְפָנֵי הַכֹּהֲנִים וְאֶל הַמְּדִינָה הַגְּדוֹלָה"}
+{"case_id": "cf93515a78b8", "crop": "crops/hl_e006_q2_r4__l1.png", "candidate_transcription": "ב-Quantization\nUniform 0,5 -4,5\nx→I D→K"}
+{"case_id": "9b5de3c0339b", "crop": "crops/hl_e006_q2_r5__l2.png", "candidate_transcription": "[unreadable]"}
+{"case_id": "7c50c18173bd", "crop": "crops/hl_e006_q2_r6__l1.png", "candidate_transcription": "לְרַחֲמֵי הָאֱלֹהִים 1,000 ג' 6.25 mg"}
+{"case_id": "445be230d4fc", "crop": "crops/hl_e006_q2_r7__l1.png", "candidate_transcription": "187.2 21070.1! מְסַפְרֵי הַמָּשׁוֹבִים וְהַמְּגֻלָּהּ לְכָל הַמְּסַפְרֵי הַמָּשׁוֹבִים"}
+{"case_id": "d8e083ad0d2e", "crop": "crops/hl_e006_q2_r7__l2.png", "candidate_transcription": "אינטגרל של f(x) = 2x^3 - 4x + 1"}
+{"case_id": "81e349ead2c7", "crop": "crops/hl_e006_q2_r8__l1.png", "candidate_transcription": "הכפיה על הוראת 2% - 5% מ- 700N ל- 200N"}
+{"case_id": "83133c57b9e3", "crop": "crops/hl_e007_q1_r1__l1.png", "candidate_transcription": "השאלה היא האם יש פתרון לבעיה זו? לא, אין פתרון."}
+{"case_id": "7a94ad1718d2", "crop": "crops/hc_e002_q1_r1.png", "candidate_transcription": "נראה שזו תוצאה של אינטראקציה"}
+{"case_id": "5ee5482c2ce4", "crop": "crops/hc_e002_q1_r2.png", "candidate_transcription": "השאלה נמצאת בחלק הפתוח של המבחן"}
+{"case_id": "43ecad920758", "crop": "crops/hc_e002_q1_r3.png", "candidate_transcription": "המוצר הינו מוגן על ידי חוקי נספח אינטלקטואלי."}
+{"case_id": "8f0afc4fc74a", "crop": "crops/hc_e002_q1_r4.png", "candidate_transcription": "הַמְּגִדּוֹן הָיָה בְּרֵעֵי הַכְּתֻבִים"}
+{"case_id": "a7113303ff00", "crop": "crops/hc_e002_q1_r5.png", "candidate_transcription": "NCHT 231 x 075 הַקְרָעִים, 1916"}
+{"case_id": "93f8c3c56669", "crop": "crops/hc_e002_q1_r6.png", "candidate_transcription": "שְׁלֹמֹה הַמָּלֵךְ עַד שְׁנֵי קְרִיָּה"}
+{"case_id": "613421ba09c9", "crop": "crops/hc_e002_q1_r7.png", "candidate_transcription": "סף הירשון ערך תקף-ה-מקרה. סף הירשון ערך תקף-ה-מקרה."}
+{"case_id": "0a1d9c4e4ee8", "crop": "crops/hc_e002_q1_r8.png", "candidate_transcription": "השנה הורכבה על ידי עוזר המנהל, ד"}
+{"case_id": "966fa09395b6", "crop": "crops/hc_e002_q2_r1.png", "candidate_transcription": "הַשְׁמוּרָה הַמְּסֻפֶּרֶת, אֲבִי עַל-כֵּן, בְּרֹאשׁ הַשָּׁנָה, וְעַד שְׁבוּעַת הַשָּׁנָה"}
+{"case_id": "40a862eec4ca", "crop": "crops/hc_e002_q2_r2.png", "candidate_transcription": "was telephoned to, is an idea my book was about pain"}
+{"case_id": "6ee85062b161", "crop": "crops/hc_e002_q2_r3.png", "candidate_transcription": "כְּרַבְיָה עֲדֹנִי בְּרֵעַ הַמְּשֻׁלְטָן אֶת הַמְּסָפְרָה"}
+{"case_id": "77a66084cda9", "crop": "crops/hc_e002_q2_r4.png", "candidate_transcription": "דיברנו בפנינו, נגזרת ממנה, ונקבעה על ידי עורך הדין"}
+{"case_id": "7d94b9acebbd", "crop": "crops/hc_e002_q2_r5.png", "candidate_transcription": "כְּיָר, בַּזֹּחַק קִרְמִין מֵאֲנִיָּה אֶל עֲדַת הַשְׁכָּבִים"}
+{"case_id": "882b40f302c1", "crop": "crops/hc_e002_q2_r6.png", "candidate_transcription": "השכבה התחתונה של המרחב היא שכבת גזים עבים, והשכבה העליונה היא שכבת גזים דקים. השכבה התחתונה של המרחב היא שכבת גזים עבים, והשכבה העליונה היא שכבת גזים דקים."}
+{"case_id": "ea83a0c19e8d", "crop": "crops/hc_e002_q2_r7.png", "candidate_transcription": "קורת ה-10,000 מ"}
+{"case_id": "adef3637facf", "crop": "crops/hc_e002_q2_r8.png", "candidate_transcription": "נְדָבִי 2x8 אֲפַרְסְטְרֵי 6x9 אֲפַרְסְטְרֵי"}
+{"case_id": "9cf79f847da1", "crop": "crops/hl_e003_q1_r1__l1.png", "candidate_transcription": "המגמה הלאויה (Celsius) היא מידה של טמפרטורה"}
+{"case_id": "acf143713bc7", "crop": "crops/hl_e003_q1_r3__l1.png", "candidate_transcription": "שְׁלֹמֹה הַמָּלֵךְ עַל יִשְׂרָאֵל וְיִשְׂרָאֵל הַמָּלֵךְ עַל יִשְׂרָאֵל"}
+{"case_id": "dc7d4ab31268", "crop": "crops/hl_e003_q1_r4__l1.png", "candidate_transcription": "המראל מעירים המראלים"}
+{"case_id": "13e734abb85a", "crop": "crops/hl_e003_q1_r5__l1.png", "candidate_transcription": "Clain X - הַלְוָיִם קְבֵרָה וְעֹמֶדֶת הַרְשָׁמָה אֲנִי הַרְשָׁמָה"}
+{"case_id": "0cf2617ca60d", "crop": "crops/hl_e003_q1_r6__l1.png", "candidate_transcription": "y-הַרְבֵּיָהּ | הֲכִי עַל־הַמְּסֻפְרִים הַשְׁאָרִים"}
+{"case_id": "3600143c48e5", "crop": "crops/hl_e003_q1_r7__l1.png", "candidate_transcription": "DC ∼ MSE מְהִתָּה הַמְּרֵאָה קֹמֶרֶת"}
+{"case_id": "85ff2468712e", "crop": "crops/hl_e003_q1_r8__l1.png", "candidate_transcription": "מרתה רוטגייזר, PCA תיאור"}
+{"case_id": "cc9c0d0975da", "crop": "crops/hl_e003_q2_r1__l1.png", "candidate_transcription": "255 pr 16: p IGRNe WOEN G (הַרְמָ) מִבְּרֵאֲדֹגִיָּמְרִתְוַּעַר אֲחַר"}
+{"case_id": "dfa3e018fc6d", "crop": "crops/hl_e003_q2_r2__l1.png", "candidate_transcription": "העתקת ה-255 ל-100%"}
+{"case_id": "74149902a44e", "crop": "crops/hl_e003_q2_r3__l1.png", "candidate_transcription": "השעון והריכוזים הורכבים על ידי סוכן שוקי מוניטרי"}
+{"case_id": "6127a547e27f", "crop": "crops/hl_e003_q2_r4__l1.png", "candidate_transcription": "and e' Uniform angle N17 | 8/20"}
+{"case_id": "a6733667e747", "crop": "crops/hl_e003_q2_r5__l1.png", "candidate_transcription": "היה בינהו (500 20) BIN | >8 א'גופ'ן לְפִינָה נַמְשֵׁעַ נִרְכּוֹ מְיִתְּ בְּנִק"}
+{"case_id": "f6298728d560", "crop": "crops/hl_e003_q2_r6__l1.png", "candidate_transcription": "כוסמה השכבה קרי לברדני אפילו בראשון מקראה המסכה לברדני אפילו בראשון מקראה"}
+{"case_id": "48a4166001d5", "crop": "crops/hl_e003_q2_r7__l1.png", "candidate_transcription": "הוכן נושא ערך בדיקת הוראה א' ל-2"}
+{"case_id": "504d436f453e", "crop": "crops/hl_e003_q2_r8__l1.png", "candidate_transcription": "השכלה והערכה של התלמידים במערכת החינוך הישראלית, התחום המוסרי והחברתי, והתחום האקדמי והתורני. מהן ההגדרות?"}
+{"case_id": "bfbf81e0c129", "crop": "crops/hl_e004_q1_r1__l1.png", "candidate_transcription": "ספונטני אופרטור WAVELETS"}
+{"case_id": "6358ec32ef8e", "crop": "crops/hl_e004_q1_r2__l1.png", "candidate_transcription": "Highpass Filter συντελεστής παράγοντα ισχύος"}
+{"case_id": "41ff0b73eed7", "crop": "crops/hl_e004_q1_r3__l1.png", "candidate_transcription": "compare NCC, just like C3H4"}
+{"case_id": "6521c7864d8f", "crop": "crops/hl_e004_q1_r3__l2.png", "candidate_transcription": "Brightness 750 E 12 > 1.8"}
+{"case_id": "29d0cb051f9d", "crop": "crops/hl_e004_q1_r4__l1.png", "candidate_transcription": "Low Pass Filter"}
+{"case_id": "cb2ca5874874", "crop": "crops/hl_e004_q1_r5__l1.png", "candidate_transcription": "A'pail, 20696n WAVELETS Q x 913 (?)"}
+{"case_id": "3cd621f9029b", "crop": "crops/hl_e004_q1_r6__l1.png", "candidate_transcription": "ספונטני reception WAVELETS"}
+{"case_id": "7ec18e17235f", "crop": "crops/hl_e004_q1_r6__l2.png", "candidate_transcription": "C \\subsetneq A_1 \\times A_2"}
+{"case_id": "51fec36e7e06", "crop": "crops/hl_e004_q1_r7__l2.png", "candidate_transcription": "ספונטני אינטראקציה"}
+{"case_id": "60cfb4359e00", "crop": "crops/hl_e004_q1_r8__l1.png", "candidate_transcription": "c(x,y) = ccc(y', z')"}
+{"case_id": "764750073144", "crop": "crops/hl_e004_q2_r1__l1.png", "candidate_transcription": "שאלה 255160 ספקי Funny 'Inke MT?"}
+{"case_id": "2ed1d0e72098", "crop": "crops/hl_e004_q2_r1__l2.png", "candidate_transcription": "2558 גלוי פורסם עולם"}
+{"case_id": "f34268717a02", "crop": "crops/hl_e004_q2_r2__l1.png", "candidate_transcription": "Canny 255 - .C pfi 20910 יד רכיב עוזר"}
+{"case_id": "ae7f7eeda57d", "crop": "crops/hl_e004_q2_r3__l1.png", "candidate_transcription": "השאלה היא: מהו הערך של x, אם 2x = 10?"}
+{"case_id": "3a737ee646a6", "crop": "crops/hl_e004_q2_r4__l1.png", "candidate_transcription": "Uniformly random using Optimal ≥ CDPJ"}
+{"case_id": "5b8e188d73c0", "crop": "crops/hl_e004_q2_r4__l2.png", "candidate_transcription": "c) 50% of the students are female, Quantization"}
+{"case_id": "8c2b1751aa3b", "crop": "crops/hl_e004_q2_r5__l1.png", "candidate_transcription": "X ~ Uniform(0, 1)"}
+{"case_id": "89629b748146", "crop": "crops/hl_e004_q2_r5__l2.png", "candidate_transcription": "[unreadable]"}
+{"case_id": "6f7c5a07e26f", "crop": "crops/hl_e004_q2_r6__l1.png", "candidate_transcription": "השאלה היא: מהו הסיכוי ש-2 מתוך 5 אנשים יתפזרו?"}
+{"case_id": "62d25160160c", "crop": "crops/hl_e004_q2_r6__l2.png", "candidate_transcription": "x 23.6 x CaO, n = 1.57 g / (18.016)"}
+{"case_id": "d34b951f8653", "crop": "crops/hl_e004_q2_r7__l2.png", "candidate_transcription": "e'p'ip'e niced, by unites civil e'dig' n'ied"}
+{"case_id": "4ddf75a09614", "crop": "crops/hl_e004_q2_r8__l1.png", "candidate_transcription": "ski Echo 135 מילון גנוב"}
+{"case_id": "e3e8ff2306d6", "crop": "crops/hl_e004_q2_r8__l2.png", "candidate_transcription": "C51 C2,075,000"}
+{"case_id": "594d65a17667", "crop": "crops/hl_e005_q1_r1__l1.png", "candidate_transcription": "J(1) קובע דוגמה ל-5 מטרים"}
+{"case_id": "a067f018a023", "crop": "crops/hl_e005_q1_r1__l2.png", "candidate_transcription": "y' = (15) x' ק'ר (אף אמרי) כולי אניים"}
+{"case_id": "1a208db7087f", "crop": "crops/hl_e005_q1_r2__l1.png", "candidate_transcription": "כשנוצרת אינטראקציה בין שני גורמים שונים"}
+{"case_id": "dfab178afe38", "crop": "crops/hl_e005_q1_r2__l2.png", "candidate_transcription": "{\"transcription\": \"126 cl (25 g) 2(c) 2(0.10,0.1) - קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' קעג' ק"}
+{"case_id": "75abe6f2ceeb", "crop": "crops/hl_e005_q1_r3__l2.png", "candidate_transcription": "COS ωt high-frequency"}
+{"case_id": "25d04da4bfe3", "crop": "crops/hl_e005_q1_r3__l3.png", "candidate_transcription": "n Mirc 150.1 |C| CIVILIC (7) x,y,z 1961 כְּרַבְרָה הַמְּחִיר-תְּרוֹמֵי (כְּרַבְרָה)"}
+{"case_id": "c282858271ce", "crop": "crops/hl_e005_q1_r4__l1.png", "candidate_transcription": "גְּלִילַת הָעֲרָבִים אֵינָהּ מְשׁוֹמֶרֶת לְפָנֵי הַמְּסֻכְלִים"}
+{"case_id": "854f9b9da03b", "crop": "crops/hl_e005_q1_r4__l2.png", "candidate_transcription": "בְּשַׁעַת הָרִגְלִיָּה (18c) לְחַזְקֵי אֲדֹנִיִּים וְאֶלְמְכֵי הַשְׁרֵיָה"}
+{"case_id": "90bdc80edbf8", "crop": "crops/hl_e005_q1_r5__l2.png", "candidate_transcription": "C1042 2.11)5. (x - 7.3) -5(1'01-2 (87 16017)"}
+{"case_id": "fc486d85d101", "crop": "crops/hl_e005_q1_r5__l3.png", "candidate_transcription": "x וּשְׁכֵלָה / כְּתִיבַת הַמְּסֻוֹרָה - לְחַיַּת אֲדָמִים, לְחַיַּת אֲדָמִים"}
+{"case_id": "f429d111d18f", "crop": "crops/hl_e005_q1_r6__l1.png", "candidate_transcription": "כְּלָבִי 2.15.16. (א) כְּלָבִי 2.15.16. (ב)"}
+{"case_id": "6d1106d342e3", "crop": "crops/hl_e005_q1_r6__l2.png", "candidate_transcription": "וכל השאריה תרומת לחדש הנביאים. ועל-פרע"}
+{"case_id": "be643ca5278a", "crop": "crops/hl_e005_q1_r7__l1.png", "candidate_transcription": "היקרים כהן עוזר אסף פיקס, סרק 700 גל נבמרג"}
+{"case_id": "7c9f8eed6499", "crop": "crops/hl_e005_q1_r7__l2.png", "candidate_transcription": "Hence, the curve C is given by f(x,y) = 0."}
+{"case_id": "c08fc7bd677f", "crop": "crops/hl_e005_q1_r8__l2.png", "candidate_transcription": "0.81 0.91 0.72 0.65, 0.34, 0.21, 0.15, 0.08"}
+{"case_id": "ab8b6ab86f4d", "crop": "crops/hl_e005_q1_r8__l3.png", "candidate_transcription": "ב, תומית ל- N איזה עוצמה גורמת ל- ג'י'ן"}
+{"case_id": "16afc4e7110e", "crop": "crops/hl_e005_q2_r1__l1.png", "candidate_transcription": "כלי המספר, 0.2 threshold) (Cyclic, σ"}
+{"case_id": "d8fbbd250bd8", "crop": "crops/hl_e005_q2_r1__l2.png", "candidate_transcription": "איך קוראים ל-80% מהאנרגיה? E [c]"}
+{"case_id": "82a3cf7c7812", "crop": "crops/hl_e005_q2_r2__l2.png", "candidate_transcription": "n > 0.8 δ,07 thresholding σελχ ουσ'γ/δειος"}
+{"case_id": "c05b35e88b53", "crop": "crops/hl_e005_q2_r2__l3.png", "candidate_transcription": "השאלה היא: איזו ערך של x יש ל- f(x) = 1.5x^2 - 3x + 2, כך ש-f(x) > 0?"}
+{"case_id": "bc329c5b2ca5", "crop": "crops/hl_e005_q2_r3__l2.png", "candidate_transcription": "(0.755) [?] רגילה כלי המדינה"}
+{"case_id": "bfdc967746ae", "crop": "crops/hl_e005_q2_r4__l2.png", "candidate_transcription": "לְהַעֲמִיד אֶת הַשְׁכָּלוֹן, אֲנִי מְחַרְבֵּר לְהַעֲמִיד אֶת הַשְׁכָּלוֹן, אֲנִי מְחַרְבֵּר"}
+{"case_id": "6bdb0cebaf0d", "crop": "crops/hl_e005_q2_r4__l3.png", "candidate_transcription": "החוקה שכוללת את ה-100% ו-25% של גלויים (grey-levels)"}
+{"case_id": "08e18dc16457", "crop": "crops/hl_e005_q2_r5__l2.png", "candidate_transcription": "השאירה המחלצת בספר הכורסה"}
+{"case_id": "18cbd0b51696", "crop": "crops/hl_e005_q2_r5__l3.png", "candidate_transcription": "c_{max} - a_i^n | \\frac{\\text{השכלה}}{\\text{השכלה}} e.g., \\text{השכלה}"}
+{"case_id": "3a3b867c9e1e", "crop": "crops/hl_e005_q2_r6__l2.png", "candidate_transcription": "השכלה והערכה של הוראה ב-1250 מ"}
+{"case_id": "9f59ebc26683", "crop": "crops/hl_e005_q2_r7__l2.png", "candidate_transcription": "gray-levels 0-255, es cuadrado de la imagen"}
+{"case_id": "0503cefffd3e", "crop": "crops/hl_e005_q2_r7__l3.png", "candidate_transcription": "2-7 וְגַם הָרִמּוֹן וְאֶרְעֵי הַקְּרָבִים בְּנֵי הַשְׁכֵּמִים"}
+{"case_id": "31160fe6f76e", "crop": "crops/hl_e005_q2_r8__l1.png", "candidate_transcription": "0.1 C5 0.46927 1.21 2.8 3.1 5.2 6.5 7.8"}
+{"case_id": "552d02c18d33", "crop": "crops/hl_e005_q2_r8__l2.png", "candidate_transcription": "x 10^4 x 50000000000000000000000000000000"}
+{"case_id": "e5f2aaad7907", "crop": "crops/hl_e006_q1_r1__l1.png", "candidate_transcription": "Motion blur! נקודות בודדות (C(ho 170) הגדלתה מרחוק"}
+{"case_id": "ca83558c76be", "crop": "crops/hl_e006_q1_r2__l1.png", "candidate_transcription": "כלי המראה וקצת מראה, כלי המראה וקצת מראה – high pressure and high velocity. PC = 2k v' k·δ·ρl!"}
+{"case_id": "fe8d58c8d671", "crop": "crops/hl_e006_q1_r3__l1.png", "candidate_transcription": "קרבית תערו רחמי 2013 בשאר הכל"}
+{"case_id": "111271d4dc83", "crop": "crops/hl_e006_q1_r4__l1.png", "candidate_transcription": "H. אינטגרל של f(x) על [a,b] = ?"}
+{"case_id": "e86ea2de7e08", "crop": "crops/hl_e006_q1_r5__l1.png", "candidate_transcription": "conjugation cell x y s near c.c.ll."}
+{"case_id": "35bfaff0aeff", "crop": "crops/hl_e006_q1_r6__l1.png", "candidate_transcription": "• AUGUI GN א'ג'ן אָדְוּסִקְיַיִם וְאֵלֶּה מְעַרְפִּים"}
+{"case_id": "92c4fa0a6f47", "crop": "crops/hl_e006_q1_r7__l1.png", "candidate_transcription": "אַלְמָרִיּוֹת קְרוּבִים — Dc אֲנִיּוֹן גְּדוֹלִיּוֹן מְחַמֵּר"}
+{"case_id": "9a6e32de94e6", "crop": "crops/hl_e006_q1_r8__l1.png", "candidate_transcription": "אך לא נרמז, אולם ב-2017, הורכבה של 50% מ-2016, ו-2015, והשנה האחרונה היא 2014."}
+{"case_id": "fcd80faa0102", "crop": "crops/hl_e006_q2_r1__l1.png", "candidate_transcription": "Canny edge detection using Canny algorithm, σ = 1.2, θ = 0.5, and Canny threshold values are 1 and 3."}
+{"case_id": "bf7bb1c4aeca", "crop": "crops/hl_e006_q2_r3__l1.png", "candidate_transcription": "לְהַחֲזִיר אֶת הַמָּשָׁרְתִּי לְפָנֵי הַכֹּהֲנִים וְאֶל הַמְּדִינָה הַגְּדוֹלָה"}
+{"case_id": "2a77c57677ad", "crop": "crops/hl_e006_q2_r4__l1.png", "candidate_transcription": "ב-Quantization Uniform 0,5 - 4,5 x → I D → K"}
+{"case_id": "7ec1918c3471", "crop": "crops/hl_e006_q2_r5__l2.png", "candidate_transcription": "[unreadable]"}
+{"case_id": "f650bf7f8acd", "crop": "crops/hl_e006_q2_r6__l1.png", "candidate_transcription": "לְרַחֲמֵי הָאֱלֹהִים 1,000 ג' 6.25 mg"}
+{"case_id": "701f29605928", "crop": "crops/hl_e006_q2_r7__l1.png", "candidate_transcription": "187.2 21070.1! מספרי המשובים ו המגולה לכל המספרי המשובים"}
+{"case_id": "6734b43e2486", "crop": "crops/hl_e006_q2_r7__l2.png", "candidate_transcription": "אינטגרל של f(x) = 2x^3 - 4x + 1"}
+{"case_id": "3b0068556747", "crop": "crops/hl_e006_q2_r8__l1.png", "candidate_transcription": "הכפיה על הוראת 2% - 5% מ- 700N ל- 200N"}
+{"case_id": "058d6a7c7076", "crop": "crops/hl_e007_q1_r1__l1.png", "candidate_transcription": "השאלה היא האם יש פתרון לבעיה זו? לא, אין פתרון."}
+{"case_id": "bc02d6bafecc", "crop": "crops/hc_e002_q1_r1.png", "candidate_transcription": "נראה שזו תוצאה של אינטראקציה"}
+{"case_id": "fd76bf2ac5eb", "crop": "crops/hc_e002_q1_r2.png", "candidate_transcription": "השאלה נמצאת בחלק הפתוח של המבחן"}
+{"case_id": "83da3b153ca0", "crop": "crops/hc_e002_q1_r3.png", "candidate_transcription": "המוצר הינו מוגן על ידי חוקי נספח אינטלקטואלי."}
+{"case_id": "52e8163c4d44", "crop": "crops/hc_e002_q1_r4.png", "candidate_transcription": "המגידו היה ברעי התובים"}
+{"case_id": "413d5561171e", "crop": "crops/hc_e002_q1_r5.png", "candidate_transcription": "NCC: 231 x 075 הַקְרָעִים, 1916"}
+{"case_id": "aec4983d2e23", "crop": "crops/hc_e002_q1_r6.png", "candidate_transcription": "שְׁלֹמֹה הַמָּלֵךְ עַד שְׁנֵי קְרִיָּה"}
+{"case_id": "4409f3f34790", "crop": "crops/hc_e002_q1_r7.png", "candidate_transcription": "סף הירשון ערך תקף-ה-מקרה. סף הירשון ערך תקף-ה-מקרה."}
+{"case_id": "82c8ba64706c", "crop": "crops/hc_e002_q1_r8.png", "candidate_transcription": "השנה הורכבה על ידי עוזר המנהל, ד"}
+{"case_id": "c8f2107ec7ff", "crop": "crops/hc_e002_q2_r1.png", "candidate_transcription": "השמורה המספרת, אביו על-כן, בראש השנה, ועד שבועות השנה"}
+{"case_id": "693984146b67", "crop": "crops/hc_e002_q2_r2.png", "candidate_transcription": "was telephoned to, is an idea my book was about pain"}
+{"case_id": "5ba63688d2d8", "crop": "crops/hc_e002_q2_r3.png", "candidate_transcription": "כְּרַבְיָה עֲדֹנִי בְּרֵעַ הַמְּשֻׁלְטָן אֶת הַמְּסָפְרָה"}
+{"case_id": "84c548b9395d", "crop": "crops/hc_e002_q2_r4.png", "candidate_transcription": "דיברנו בפנינו, נגזרת ממנה, ונקבעה על ידי עורך הדין"}
+{"case_id": "46f87bb8b34f", "crop": "crops/hc_e002_q2_r5.png", "candidate_transcription": "כְּיָר, בַּזֹּחַק קִרְמִין מֵאֲנִיָּה אֶל עֲדַת הַשְׁכָּבִים"}
+{"case_id": "59f5e5456fe1", "crop": "crops/hc_e002_q2_r6.png", "candidate_transcription": "השכבה התחתונה של המרחב היא שכבת גזים עבים, והשכבה העליונה היא שכבת גזים דקים. השכבה התחתונה של המרחב היא שכבת גזים עבים, והשכבה העליונה היא שכבת גזים דקים."}
+{"case_id": "17d0f7d27de3", "crop": "crops/hc_e002_q2_r7.png", "candidate_transcription": "קורה של 10,000 מ"}
+{"case_id": "277eaa6dd59b", "crop": "crops/hc_e002_q2_r8.png", "candidate_transcription": "נְדָבִי 2x8 אֲפַרְסְטְרֵי 6x9 אֲפַרְסְטְרֵי"}
+{"case_id": "9e444f922456", "crop": "crops/hl_e003_q1_r1__l1.png", "candidate_transcription": "המגמה הלאויה (Circumcision) היא תופעה קולית"}
+{"case_id": "433c53253eb3", "crop": "crops/hl_e003_q1_r1__l1.png", "candidate_transcription": "\\[\n\\begin{array}{l} \\text { (e l e l) } \\text { (e l e l) } \\text { (e l e l) } \\text { (e l e l) } \\\\ \\text { (e l e l) } \\text { (e l e l) } \\text { (e l e l) } \\text { (e l e l) } \\text { (e l e l) } \\text { (e l e l)} \\\\ \\text { (e l e l) } \\text { (e l e l) } \\text { (e l e l)} \\text { (e l e l)} \\text { (e l e l)} \\text { (e l e l)} \\text { (\\text { (e l e l) })} \\text { (e l e l)} \\text { (e l e l)} \\text { (e l e l)} \\text { } \\text { (e l e l)} \\text { (e l e l)} \\text { (e l e l)} \\text { }\n\\]"}
+{"case_id": "e07ddc0c61f5", "crop": "crops/hl_e004_q1_r3__l1.png", "candidate_transcription": "\\[\n\\mathrm{in} _ {2} \\mathrm{in} _ {2} \\mathrm{in} _ {2} \\mathrm{in} _ {2} \\mathrm{in} _ {2} ^ {\\prime} \\mathrm{in} _ {2} ^ {\\prime} \\mathrm{in} _ {2} ^ {\\prime} \\mathrm{in} _ {1} ^ {\\prime} \\mathrm{in} _ {1} ^ {\\prime} \\mathrm{in} _ {1} ^ {\\prime} \\mathrm{out} _ {1} ^ {\\prime} \\mathrm{out} _ {1} ^ {\\prime} \\mathrm{out} _ {1} ^ {\\prime}\n\\]"}
+{"case_id": "c157792772ae", "crop": "crops/hl_e006_q1_r3__l1.png", "candidate_transcription": "תְבָרִי אַלְהָם בְּרִי אַלְהָם"}
+{"case_id": "eec5386cb4d9", "crop": "crops/hl_e006_q1_r3__l1.png", "candidate_transcription": "תְבָרִי אַלְהָם בְּרִי אַלְהָם"}
+{"case_id": "e031dd8ee72e", "crop": "crops/hl_e006_q1_r3__l1.png", "candidate_transcription": "תְבָרִי אַלְהָם בְּרִי אַלְהָם"}

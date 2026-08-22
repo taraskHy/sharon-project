@@ -1,0 +1,8 @@
+{
+ "_policy": "Verifier benchmark cases. cases_inputs.jsonl is the ONLY file whose content may reach the verifier model (crop + candidate transcription). cases_labels.jsonl is evaluation-side only: expected verdicts, error kinds and audited references must never enter a verifier prompt.",
+ "generated_at": "2026-08-22 03:33:59",
+ "cases": 690,
+ "inputs_sha256": "133897978c1301bd55253bdadf711f35b702d293af7cdc1148b3269a2d6e7ab8",
+ "labels_sha256": "df61cb85c4862ac11bf97796fd55cc17a9751bbe6e832f9ed2f022805ac5b5c5",
+ "audit_sha256": "eace95fc6dc684c88f1fea2142414a68ad8f421257ac012faf6bcfc9ae07f50c"
+}

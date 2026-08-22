@@ -1,0 +1,136 @@
+{"case_id": "00cda0232f57", "crop": "crops/hl_e006_q2_r3__l1.png", "candidate_transcription": "שווי ההיסטוגראמא מנסים לעשות שיווין בעוצמת אבל בלי לשבור עמודות מתאים לB(והכוונה [לא קריא] [לא קריא] ערכי אפור)"}
+{"case_id": "0135da37774d", "crop": "crops/hc_e002_q2_r7.png", "candidate_transcription": "צורדת ההיסטוגרמה זהה, אך הגדלים והכמויות הם פי 2, כי גודל התמונה הינו פי 2 עם אותה התלגות"}
+{"case_id": "06eef9819f5a", "crop": "crops/hl_e005_q2_r2__l3.png", "candidate_transcription": "גאוסיאן ולכן ההיסטוגרמה תימרח ורק לאחר מכן נעשה נעשה threshholding כלומר מס' [לא קריא] של 0 ויותר של 255"}
+{"case_id": "137289f17edc", "crop": "crops/hl_e004_q2_r6__l2.png", "candidate_transcription": "טווח שלה בציר (עשינו את זה [לא קריא] בהרצאה למדוד או לא)"}
+{"case_id": "1377444e1431", "crop": "crops/hl_e006_q2_r4__l1.png", "candidate_transcription": "Quantization מנסים להקטין מספר דרגות אפוק מתאים לI,D כלומר 4,5-<I,D מכיוון שבuniform המרחק בין דרגה ודרגה שווה אז [לא קריא] [לא קריא]"}
+{"case_id": "14d212f32b01", "crop": "crops/hl_e006_q2_r6__l1.png", "candidate_transcription": "קונבלוציה עם מסכה מסכה 1,001 תגדיל טווח הדרגות האפור"}
+{"case_id": "14fc577afb32", "crop": "crops/hl_e005_q2_r2__l2.png", "candidate_transcription": "האלגוריתם עושה thresholding בסוף לאחר הפעלת קריא]"}
+{"case_id": "17f5d940e0be", "crop": "crops/hc_e002_q2_r8.png", "candidate_transcription": "כל ערך x בהיסטוגרמה ממופה בהיסטוגרמה החדשה"}
+{"case_id": "186cea3d8abf", "crop": "crops/hl_e004_q1_r3__l2.png", "candidate_transcription": "לא כמו E [לא קריא] יותר Brightess"}
+{"case_id": "1933a4b8e742", "crop": "crops/hc_e002_q1_r6.png", "candidate_transcription": "מריה בציר y עקב הקונבולוציה"}
+{"case_id": "1e4c8270489b", "crop": "crops/hc_e002_q1_r8.png", "candidate_transcription": "בדומה לפעולה 8, מבהיר את התמונה אבל פה האיזורים הבהירים יותר נעשים יותר שינוי מהאזורים הכהים"}
+{"case_id": "23239673e23b", "crop": "crops/hl_e005_q1_r2__l2.png", "candidate_transcription": "וגם הן נשם לב שהפעולה מבוצעת על [לא קריא] הכי [לא קריא] - בסיס - [לא קריא] גאוסיאן [לא קריא]"}
+{"case_id": "2329007554b8", "crop": "crops/hc_e002_q1_r7.png", "candidate_transcription": "סה\"כ הפירמידה נראית תקינה. הדרגה 0 0 שלה בהירה משמעותית מהתמונה המקורית"}
+{"case_id": "2a4560485d51", "crop": "crops/hl_e005_q2_r5__l3.png", "candidate_transcription": "פאופן אחיד בqmax ולכן היסטוגרמה הכי מתאימה"}
+{"case_id": "2b99901f615f", "crop": "crops/hc_e002_q1_r4.png", "candidate_transcription": "נשאר בתמונה רק התדרים הנמוים"}
+{"case_id": "2d7aa374fff7", "crop": "crops/hl_e005_q1_r7__l1.png", "candidate_transcription": "הגברת בהירות [לא קריא] פיקסל ערך 100 ולכן נבחרה"}
+{"case_id": "2ee1b0e444e9", "crop": "crops/hl_e006_q1_r1__l1.png", "candidate_transcription": "motionblur זה טשטוש! הזזה של [לא קריא](כמו echo) רואים ברמה הלפלסיאנית [לא קריא] יש טשטוש בכל הכיוונים! [לא [לא קריא] מוזזות"}
+{"case_id": "2fe4245e6496", "crop": "crops/hl_e003_q2_r1__l1.png", "candidate_transcription": "כל פיקסלי השפות שנקלטו קיבלו  ערך 256 לעומת שאר הפיקסלים(הרוב)"}
+{"case_id": "309351fa5416", "crop": "crops/hl_e005_q2_r3__l2.png", "candidate_transcription": "לאורך כל כל ההיסטוגרמה(0-255)"}
+{"case_id": "30f9bd4eddc0", "crop": "crops/hl_e004_q2_r4__l1.png", "candidate_transcription": "נקבל בOptimal פחות פחות עמודים מUniform"}
+{"case_id": "34f9d68c14c1", "crop": "crops/hl_e005_q2_r2__l3.png", "candidate_transcription": "גאוסיאן ולכן ההיסטוגרמה תימרח ורק לאחר מכן נעשה threshholding כלומר מס'  [לא קריא] של 1 ויותר של 255"}
+{"case_id": "3b519c77a72b", "crop": "crops/hl_e006_q2_r7__l1.png", "candidate_transcription": "שקוף לא משוה דרגות אפור של הפיקסלים ושרשור כאלו"}
+{"case_id": "3d48de3ef33a", "crop": "crops/hl_e003_q2_r5__l1.png", "candidate_transcription": "לכל BIN(20 סה\"כ) ערך שנבחר בצורה אחידה וניתן לראות שבהם חולקו הפיקסלים"}
+{"case_id": "3e90657cffa0", "crop": "crops/hl_e004_q1_r8__l1.png", "candidate_transcription": "ההבל בין כהה לבין לבן גדל"}
+{"case_id": "418fe23fe098", "crop": "crops/hl_e006_q2_r7__l2.png", "candidate_transcription": "יש לנו כפול 2 מכל פקסל ולכן כל עמודה נכפיל אותה ב2"}
+{"case_id": "4445ebfa10a6", "crop": "crops/hc_e002_q1_r5.png", "candidate_transcription": "מריחה בציר x הקונבולוציה"}
+{"case_id": "471098a18dbb", "crop": "crops/hl_e005_q2_r1__l2.png", "candidate_transcription": "אך בחרנו  [לא קריא] ולא E כי מס' הפיקסלים שקרובים ל-1 גדולים יותר"}
+{"case_id": "47d1f753869e", "crop": "crops/hc_e002_q1_r7.png", "candidate_transcription": "סה\"כ הפירמידה נראית תקינה. הדרגה 1 שלה בהירה משמעותית מהתמונה המקורית"}
+{"case_id": "49236a6d64a5", "crop": "crops/hl_e004_q2_r2__l1.png", "candidate_transcription": "זה canny. אבל עם טשטוש ולכן נקבל פחות ב-255 ולן c"}
+{"case_id": "4a82ba65161b", "crop": "crops/hl_e004_q2_r1__l1.png", "candidate_transcription": "בגלל ש [לא קריא] canny נקבל 0 0 או 255 וזה בלי"}
+{"case_id": "4aba0723b977", "crop": "crops/hl_e005_q2_r4__l3.png", "candidate_transcription": "חלוקה מפוזרת ובאותו טווח אבל עם ערכים קבועים [לא קריא] +gray"}
+{"case_id": "513eee6841ce", "crop": "crops/hl_e005_q1_r7__l2.png", "candidate_transcription": "תמונה H כתמונה שמבהירה כל פיקל במידה שווה"}
+{"case_id": "51fd54b7c041", "crop": "crops/hl_e005_q2_r3__l2.png", "candidate_transcription": "לאורך כל ההיסטוגרמה(1-255)"}
+{"case_id": "539fa90e3a83", "crop": "crops/hl_e003_q2_r7__l1.png", "candidate_transcription": "הוכפל מספר הפיקסלים בכל התמונה פי 3 והוכפל מספר הפיקסלים בכל ערך"}
+{"case_id": "53eddaed894d", "crop": "crops/hl_e004_q2_r1__l2.png", "candidate_transcription": "טשטוש לכן נקבל יותר ב256"}
+{"case_id": "5639b39e2f0d", "crop": "crops/hc_e002_q2_r1.png", "candidate_transcription": "עבור גילוי שפות יהיה רוב התמונה ב0 ורק עבור שפות 256"}
+{"case_id": "573cf75aab28", "crop": "crops/hl_e003_q2_r1__l1.png", "candidate_transcription": "כל כל פיקסלי השפות שנקלטו קיבלו ערך 255 לעומת שאר הפיקסלים(הרוב)"}
+{"case_id": "58334b295865", "crop": "crops/hc_e002_q2_r6.png", "candidate_transcription": "המעכה זהה לסכימת תמונה זהה עם תנודה קלה. תמונת echo כזאת תגרום להיסטוגרמה החדשה להיות קרובה להכפלה ב-2 [לא קריא]"}
+{"case_id": "591d150fe46e", "crop": "crops/hl_e006_q1_r8__l1.png", "candidate_transcription": "אם נסווג אותם זה יהיה E/P אבל מכיוון שבחידוד יהיה הוספה לתדרים גבוהים אז יהיה יותר שפות יותר מאם נכפיל ב-3"}
+{"case_id": "5cd4ffcfabd8", "crop": "crops/hl_e004_q1_r3__l1.png", "candidate_transcription": "התמונה מחודת יותר ושמרה על הצבעים"}
+{"case_id": "5da0f2768fa7", "crop": "crops/hc_e002_q2_r6.png", "candidate_transcription": "המעכה זהה לסכימת תמונה זהה עם תנודה קלה. מין תמונת echo כזאת תגרום להיסטוגרמה החדשה להיות קרובה להכפלה ב-3 [לא קריא]"}
+{"case_id": "6125db33e484", "crop": "crops/hl_e005_q1_r6__l1.png", "candidate_transcription": "הוספת רעש גאוסיאני בציר Y מחדד השפות בציר y יתר"}
+{"case_id": "62850e73c38f", "crop": "crops/hl_e005_q1_r4__l1.png", "candidate_transcription": "לאר חידוד שפות בתדר גבוה אנו מפעילים פילטר pass- [לא קריא]"}
+{"case_id": "638d4549ea57", "crop": "crops/hl_e004_q2_r6__l1.png", "candidate_transcription": "הכפלת תמונה ב3 זה לקחת ההסטוגרמה ולהגדיל"}
+{"case_id": "63ad919f3935", "crop": "crops/hc_e002_q2_r1.png", "candidate_transcription": "עבור גילוי שפות יהיה רוב התמונה ב0 ורק עבור שפות שפות 255"}
+{"case_id": "64639b4ad6cf", "crop": "crops/hl_e006_q2_r1__l1.png", "candidate_transcription": "הפעלת canny מחזירה תמונה ערכים 255 0 לכן 1,2 יתאימו לC,E מכיוון ש2 עם טשטוש אז יכול להיות שנאבד שפות ולכן canny c עם טשטוש ולכן C canny עם טשטוש ו [לא קריא]"}
+{"case_id": "65c0f0fc5fb2", "crop": "crops/hl_e003_q1_r5__l1.png", "candidate_transcription": "הרעש והטשטוש שלו בכיוון ציר מובלט בתדרים הגבוהים"}
+{"case_id": "65c58049ba86", "crop": "crops/hl_e005_q1_r2__l2.png", "candidate_transcription": "וגם הן נשים לב שהפעולה מבוצעת על [לא קריא] הכי [לא קריא] - בסיס + [לא קריא] גאוסיאן [לא קריא]"}
+{"case_id": "678a27dc8fae", "crop": "crops/hl_e003_q1_r4__l1.png", "candidate_transcription": "ניתן לראות תדרים נמוכים נשמרו ולכן כל הרמות של התדרים הגבוהים מאופסות"}
+{"case_id": "681879ff062a", "crop": "crops/hl_e004_q2_r6__l1.png", "candidate_transcription": "הכפלת תמונה זה לקחת ההסטוגרמה ולהגדיל"}
+{"case_id": "6916398957e1", "crop": "crops/hc_e002_q1_r1.png", "candidate_transcription": "יש טשטוש בכל התדים"}
+{"case_id": "6f68b42db4e7", "crop": "crops/hl_e003_q1_r1__l1.png", "candidate_transcription": "ניתן לראות ברמות התדרים הגבוהים שיש שיש שפות בכיוון התנועה(הטשטוש)"}
+{"case_id": "70361defea81", "crop": "crops/hl_e006_q2_r1__l1.png", "candidate_transcription": "הפעלת canny מחזירה תמונה עם ערכים 255 0 לכן  1,2 יתאימו לC,E מכיוון ש3 עם טשטוש אז יכול להיות שנאבד שפות ולכן canny c עם טשטוש ולכן C canny עם טשטוש ו  [לא קריא]"}
+{"case_id": "718134738de9", "crop": "crops/hl_e003_q1_r2__l2.png", "candidate_transcription": "רק התדרים הגבוהים נשמרו ב-High pass לכן התדרים הנמוכים מאופסים (כולל dc) dc)"}
+{"case_id": "719036455b77", "crop": "crops/hl_e003_q2_r2__l1.png", "candidate_transcription": "טשטוש הוריד רעש ולכן פחות פיקסלים נקלטו כשפה והערך 255 255 בהיסטוגרמה ירד"}
+{"case_id": "71c6cf0f100b", "crop": "crops/hc_e002_q1_r3.png", "candidate_transcription": "העוצמה הדרגות הגבוהות בפרמידה חזקה ביחס למקורי"}
+{"case_id": "74693a7f47df", "crop": "crops/hl_e004_q2_r8__l2.png", "candidate_transcription": "זה זה יגרור להיסטוגרמה הזו"}
+{"case_id": "761eb5aeefdc", "crop": "crops/hl_e004_q2_r3__l1.png", "candidate_transcription": "יש יש רווחים בין עמודים וגם יש עכשיו עמודים"}
+{"case_id": "77590e55262a", "crop": "crops/hl_e006_q1_r6__l1.png", "candidate_transcription": "רעש עם טשטוש בכיוון y y אז זשפות אנכיות מטושטשות"}
+{"case_id": "78b493f57ff6", "crop": "crops/hl_e005_q2_r1__l2.png", "candidate_transcription": "אך אך בחרנו [לא קריא] ולא E כי מס' הפיקסלים שקרובים ל-0 גדולים יותר"}
+{"case_id": "78d90e226a30", "crop": "crops/hl_e005_q1_r5__l2.png", "candidate_transcription": "הוספת רעש גוסיאני בציר x מחדד השפות בציר"}
+{"case_id": "7a26510cd1fb", "crop": "crops/hl_e005_q2_r8__l2.png", "candidate_transcription": "לארך x ונישאר עם אותו גובה היסטוגרמה"}
+{"case_id": "7b68ec4e027b", "crop": "crops/hl_e005_q1_r4__l1.png", "candidate_transcription": "לאחר חידוד שפות בתדר גבוה אנו מפעילים פילטר pass+ [לא קריא]"}
+{"case_id": "7bc9f3a0d252", "crop": "crops/hl_e004_q1_r7__l2.png", "candidate_transcription": "התמונה התמונה בהירה מהמקורית"}
+{"case_id": "7d193ec40242", "crop": "crops/hl_e003_q1_r6__l1.png", "candidate_transcription": "הרעש והטשטוש שלו בכיוון ציר ה-y מובלט בתדרים הגוהיים"}
+{"case_id": "8130778c54b9", "crop": "crops/hl_e003_q2_r4__l1.png", "candidate_transcription": "ניתן לראות שלעומת Uniform יש פחות ערכים אפשרים"}
+{"case_id": "82a672440ad4", "crop": "crops/hl_e004_q1_r5__l1.png", "candidate_transcription": "הWAVELETS מטושטשת אופקית(מקבייל x)"}
+{"case_id": "830f8e967bb5", "crop": "crops/hl_e006_q2_r8__l1.png", "candidate_transcription": "הכפלת ערכי התמונה ב2 אז כל עמודה תלך למספר עמודה שלה שלה כפול 2"}
+{"case_id": "833794ea5cb6", "crop": "crops/hl_e005_q2_r7__l2.png", "candidate_transcription": "שיקוף אופקי של תמונה יגדיל את את כמות הל gray-level"}
+{"case_id": "834ee8548b20", "crop": "crops/hl_e004_q1_r6__l2.png", "candidate_transcription": "(מקביל ציר"}
+{"case_id": "852c67fc3fa0", "crop": "crops/hl_e003_q2_r2__l1.png", "candidate_transcription": "טשטוש הוריד רעש ולכן פחות פיקסלים נקלטו כשפה והערך 256 בהיסטוגרמה ירד"}
+{"case_id": "86c07d400a15", "crop": "crops/hl_e004_q1_r2__l1.png", "candidate_transcription": "התדר הנמוך נעלם בגלל בגלל HighpassFilter"}
+{"case_id": "86e3bd52adef", "crop": "crops/hl_e005_q1_r6__l2.png", "candidate_transcription": "ולכן תמונה I מראה זו + היא הכי מתאימה"}
+{"case_id": "8928c38c466b", "crop": "crops/hl_e003_q2_r6__l1.png", "candidate_transcription": "סכום המסכה הוא גדול מ-2, לכן טווח הערכים גדול מהטווח בהסטוגרמה המקורית ויותר פרוס"}
+{"case_id": "8b647a141d89", "crop": "crops/hl_e007_q1_r1__l1.png", "candidate_transcription": "ניתן לראות כי בשכבות הגלים הם לא שומרים את אותה תוצאה עבור התמונה ניתן לראות שיש סוג של מתיחה"}
+{"case_id": "8c6701c93af1", "crop": "crops/hl_e005_q2_r5__l2.png", "candidate_transcription": "קוונטיזציה יוניפורמית מחלקת את כל סביבה של להתפלג"}
+{"case_id": "903f89de1973", "crop": "crops/hl_e003_q1_r3__l1.png", "candidate_transcription": "עוצמת התדרים הגבוהים אחרי הפעולה גדלה ולכן הרמות הנמוכות מראת שפות עבות יותר"}
+{"case_id": "90555fac5eed", "crop": "crops/hl_e004_q2_r4__l2.png", "candidate_transcription": "כאן וגם זה נותן בQnatization עמודים לא צפופם הרה"}
+{"case_id": "91bc2855738d", "crop": "crops/hl_e005_q1_r8__l2.png", "candidate_transcription": "פעולה זו גם מגדילה פיקסלים אך בחרנו אותה D"}
+{"case_id": "936f726338fb", "crop": "crops/hl_e005_q1_r4__l2.png", "candidate_transcription": "על על התמונה ולכן רואים התדרים הנמוכים בשחור(בשונה משאר התמונות)"}
+{"case_id": "94756492045c", "crop": "crops/hc_e002_q2_r8.png", "candidate_transcription": "כל ערך x בהיסטוגרמה ממופה ל3x בהיסטוגרמה החדשה"}
+{"case_id": "9728b1435aef", "crop": "crops/hl_e005_q1_r1__l1.png", "candidate_transcription": "נראה בתמונה טשטוש motionblur על שפות אשר"}
+{"case_id": "98b739e05dfd", "crop": "crops/hl_e005_q2_r4__l3.png", "candidate_transcription": "חלוקה מפוזרת ובאותו טווח אבל אבל עם ערכים קבועים [לא קריא] -gray"}
+{"case_id": "9a88111f9d73", "crop": "crops/hl_e004_q1_r6__l1.png", "candidate_transcription": "הWAVELETS מטושטשת אנכית אנכית"}
+{"case_id": "9ba9d3f6c31b", "crop": "crops/hl_e005_q2_r4__l2.png", "candidate_transcription": "עושים חלוקה חדשה לפי האלגוריתם optimal quntization [לא קריא] [לא קריא] קריא]"}
+{"case_id": "9bec3d745102", "crop": "crops/hl_e004_q2_r2__l1.png", "candidate_transcription": "זה canny. אבל עם טשטוש ולכן נקבל פחות ב-256 ולכן c"}
+{"case_id": "9e9492c7bfc6", "crop": "crops/hc_e002_q2_r2.png", "candidate_transcription": "בדומה רק שהטשטוש לפני מוביל לפחות שפות שמתגלות"}
+{"case_id": "a1a0a1cbbd07", "crop": "crops/hl_e003_q1_r7__l1.png", "candidate_transcription": "הרמה העליונה שכוללת את בהירה יותר"}
+{"case_id": "a596f79aab2c", "crop": "crops/hl_e004_q2_r7__l2.png", "candidate_transcription": "שיקוף אופקי של תמונה נותן שיקוף אופקי היסטוגרמה"}
+{"case_id": "ac669e24c42a", "crop": "crops/hl_e003_q2_r8__l1.png", "candidate_transcription": "ניתן לראות שמספר הפיקסלים עוצמה הוזז ימינה באותו מרחק שהיה במקור."}
+{"case_id": "affb2b32879f", "crop": "crops/hl_e003_q2_r6__l1.png", "candidate_transcription": "סכום המסכה הוא גדול מ-1, מ-1, לכן טווח הערכים גדול מהטווח בהסטוגרמה המקורית ויותר פרוס"}
+{"case_id": "b0c8888ebffe", "crop": "crops/hl_e005_q1_r3__l2.png", "candidate_transcription": "הפעל פילטר high+frequency מראה לנו רק תדר אחד של"}
+{"case_id": "b1e80a94a407", "crop": "crops/hl_e005_q1_r1__l2.png", "candidate_transcription": "[לא קריא] לא ברורות כמו שאמורות להיות והם לא לא בציר x ולא ב-y"}
+{"case_id": "b20d0d4cdba4", "crop": "crops/hl_e006_q1_r4__l1.png", "candidate_transcription": "בהפעלת low low pass לא ישאר תדרים גבוהים בכלל ולכן H"}
+{"case_id": "b286bfd16c7d", "crop": "crops/hc_e002_q2_r5.png", "candidate_transcription": "[לא קריא] אחיד מוביל לריווח אחיד הערכים שקיימים בכימוי"}
+{"case_id": "b2e03279b86a", "crop": "crops/hc_e002_q2_r3.png", "candidate_transcription": "פרעה אחידה ההיסטוגרמה המקורית לאורך כל הטווח"}
+{"case_id": "b9c5b88e8812", "crop": "crops/hl_e004_q1_r1__l1.png", "candidate_transcription": "הWAVEELETS מטושטשת בכל בכל החלקים"}
+{"case_id": "bd52002155c4", "crop": "crops/hc_e002_q1_r8.png", "candidate_transcription": "בדומה לפעולה 7, מבהיר את התמונה אבל פה האיזורים הבהירים יותר נעשים יתר שינוי מהאזורים הכהים"}
+{"case_id": "bd670f5cee28", "crop": "crops/hl_e005_q2_r8__l1.png", "candidate_transcription": "עבור כל פיקסל הוא מקבל ערך 3 ולכן נמרח ההיסטוגרמה"}
+{"case_id": "c021a7910178", "crop": "crops/hc_e002_q2_r7.png", "candidate_transcription": "צורדת ההיסטוגרמה זהה, אך הגדלים והכמויות הם פי 2, כי גודל התמונה הינו פי 3 עם אותה התפלגות"}
+{"case_id": "c02f2005fe91", "crop": "crops/hl_e004_q2_r5__l2.png", "candidate_transcription": "עמדים"}
+{"case_id": "c1a1fc1407ce", "crop": "crops/hl_e004_q2_r1__l2.png", "candidate_transcription": "טשטוש נקבל יותר ב255"}
+{"case_id": "c3830cde46fe", "crop": "crops/hl_e006_q1_r8__l1.png", "candidate_transcription": "אם נסווג אותם זה יהיה E/P אבל מכיוון שבחידוד יהיה הוספה לתדרים גבוהים אז יהיה יותר שפות יותר מאם נכפיל"}
+{"case_id": "c3dc950f0e79", "crop": "crops/hl_e005_q2_r8__l1.png", "candidate_transcription": "עבור כל פיקסל הוא מקבל ערך 2 ולן נמרח ההיסטוגרמה"}
+{"case_id": "c4ce3466e414", "crop": "crops/hl_e005_q1_r3__l3.png", "candidate_transcription": "תמונה וזהו אכן ברמה הראשונה x,y,z ולכן בשאר הרמות"}
+{"case_id": "c61b467c41b7", "crop": "crops/hl_e006_q1_r7__l1.png", "candidate_transcription": "הגברת בהירות -< Dc יותר בהיר רואים בA"}
+{"case_id": "d184f3c4257f", "crop": "crops/hl_e005_q1_r8__l3.png", "candidate_transcription": "כי תמונה מראה תמונה ברמה אחרונה בהירה יותר"}
+{"case_id": "d1bf15be1a58", "crop": "crops/hl_e004_q2_r8__l1.png", "candidate_transcription": "המסיכה נותנת Echo ואז"}
+{"case_id": "d52c69abe421", "crop": "crops/hl_e006_q2_r6__l1.png", "candidate_transcription": "קונבלוציה עם מסכה 1,011 תגדיל טווח הדרגות האפור"}
+{"case_id": "d67fdaa9e3c7", "crop": "crops/hl_e003_q2_r5__l1.png", "candidate_transcription": "לכל BIN(21 סה\"כ) יש ערך שנבחר בצורה אחידה וניתן לראות שבהם חולקו הפיקסלים"}
+{"case_id": "d9037f53eb29", "crop": "crops/hl_e004_q2_r1__l1.png", "candidate_transcription": "בגלל ש [לא קריא] canny נקבל 0 או 256 וזה בלי"}
+{"case_id": "db1a61f4fe5e", "crop": "crops/hl_e005_q2_r1__l1.png", "candidate_transcription": "האלגוריתם עושה עושה [לא קריא] בסוף כדי להפריד שפות"}
+{"case_id": "db4343b50a2d", "crop": "crops/hl_e006_q1_r3__l1.png", "candidate_transcription": "בחידוד תמונה רואים יותר שפות ולכן"}
+{"case_id": "dfd5eaef82ca", "crop": "crops/hl_e005_q2_r7__l2.png", "candidate_transcription": "שיקוף אופקי של תמונה יגדיל את כמות הל gray+level"}
+{"case_id": "e00eddfa431f", "crop": "crops/hl_e003_q2_r7__l1.png", "candidate_transcription": "הוכפל מספר מספר הפיקסלים בכל התמונה פי 2 והוכפל מספר הפיקסלים בכל ערך"}
+{"case_id": "e2781ea0b3ac", "crop": "crops/hl_e005_q1_r2__l1.png", "candidate_transcription": "בתמונה מופיעים שנות של של התמונה המקורית בתדר גבוה"}
+{"case_id": "e3297aa3e1fb", "crop": "crops/hc_e002_q2_r4.png", "candidate_transcription": "[לא קריא] אופטימלי, מוביל ל[לא קריא] אופטימלים משמע משמע כולם משומשים בכמות יחסית אחידה"}
+{"case_id": "e3c51b3cac82", "crop": "crops/hl_e005_q1_r6__l2.png", "candidate_transcription": "ולכן תמונה I מראה זו היא הכי מתאימה"}
+{"case_id": "e7388cb3a6e3", "crop": "crops/hl_e005_q2_r7__l3.png", "candidate_transcription": "ב-2 ולכן נבחר נבחר היסטוגרמה דומה [לא קריא] [לא קריא]"}
+{"case_id": "e83ed6ee2a38", "crop": "crops/hl_e006_q1_r5__l1.png", "candidate_transcription": "עם טשטוש בכיוון x אז שפות בכיוון y מטושטשות"}
+{"case_id": "ea9db392493f", "crop": "crops/hl_e006_q1_r7__l1.png", "candidate_transcription": "הגברת בהירות Dc יותר בהיר רואים בA"}
+{"case_id": "eb2b9ffe2163", "crop": "crops/hl_e006_q1_r2__l1.png", "candidate_transcription": "בהפעלת highpass לא ישאר תדרים נמוכם וגם לא ישאר pc"}
+{"case_id": "edf8ff0bd36e", "crop": "crops/hl_e005_q2_r7__l3.png", "candidate_transcription": "ב-3 ולכן נבחר היסטוגרמה דומה  [לא קריא] [לא קריא]"}
+{"case_id": "ee8c6a4e73d9", "crop": "crops/hl_e006_q2_r7__l2.png", "candidate_transcription": "יש לנו כפול 2 מכל פיקסל ולכן כל עמודה נכפיל אותה ב3"}
+{"case_id": "f08f564a1e24", "crop": "crops/hl_e006_q2_r8__l1.png", "candidate_transcription": "הכפלת ערכי התמונה ב3 אז כל עמודה תלך למספר עמודה שלה כפול 2"}
+{"case_id": "f2c2940b6c53", "crop": "crops/hl_e005_q2_r6__l2.png", "candidate_transcription": "קונבולוציה כל פיקסל תיצור ערכים גדולים יותר עם שמירה על הערכים המקוריים ולכן תיווצר היסטוגרמה A"}
+{"case_id": "f3aae99c0058", "crop": "crops/hl_e004_q1_r4__l1.png", "candidate_transcription": "התדר הגדול(High) נעלם בגלל ה Pass Filter"}
+{"case_id": "f4733d46f9bb", "crop": "crops/hl_e005_q1_r7__l1.png", "candidate_transcription": "הגברת בהירות  [לא קריא] לכל  פיקסל ערך 200 ולכן נבחרה"}
+{"case_id": "f4b15eeb3e13", "crop": "crops/hl_e003_q2_r3__l1.png", "candidate_transcription": "מפסר הפיקסלים לא השתנה והערכים מתפסים על כל ספקטרום הערכים האפשרי"}
+{"case_id": "f7543984caa3", "crop": "crops/hl_e004_q2_r5__l1.png", "candidate_transcription": "אותו דבר אבל זה Unoform ולכן נקבל נקבל יותר"}
+{"case_id": "f97481099652", "crop": "crops/hl_e006_q2_r5__l2.png", "candidate_transcription": "הסר"}
+{"case_id": "fa82d901bfdc", "crop": "crops/hl_e005_q1_r3__l2.png", "candidate_transcription": "העל פילטר high-frequency מראה לנו רק תדר אחד של"}
+{"case_id": "fb2bcde69e9a", "crop": "crops/hl_e003_q1_r8__l1.png", "candidate_transcription": "ברמה העליונה שכוללת את DC ניתן לראות שערכים בהרים יותר, נהיו יותר בהירים"}
+{"case_id": "fb5df1114a20", "crop": "crops/hl_e005_q1_r5__l3.png", "candidate_transcription": "x יותר ולכן תמונה c היא הכי מתאימה-רואים בתמונה"}
+{"case_id": "fcea0cf8cdb2", "crop": "crops/hc_e002_q1_r2.png", "candidate_transcription": "נשאר בתמונה רק רק התדרים הגבוהים"}
+{"case_id": "fdefae53a5bb", "crop": "crops/hl_e006_q2_r4__l1.png", "candidate_transcription": "Quantization מנסים להקטין מספר דרגות אפוק מתאים לI,D כלומר 4,5->I,D מכיוון שבuniform המרחק דרגה ודרגה שווה אז [לא קריא] [לא קריא]"}

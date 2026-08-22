@@ -1,0 +1,822 @@
+{
+ "_policy": "Human reference audit for hebrew_bench_v2. This file NEVER overwrites references.json: original_reference is a frozen copy, audited_reference is the human auditor's verdict. Statuses: unchecked|confirmed|corrected|ambiguous. Written atomically after every decision.",
+ "version": 1,
+ "entries": {
+  "hl_e003_q1_r1__l1": {
+   "item_id": "hl_e003_q1_r1__l1",
+   "original_reference": "ניתן לראות ברמות התדרים הגבוהים שיש שפות בכיוון התנועה(הטשטוש)",
+   "audited_reference": "ניתן לראות ברמות התדרים הגבוהים שיש שפות בכיוון התנועה(הטשטוש)",
+   "status": "confirmed",
+   "note": "",
+   "audited_at": "2026-08-22 01:53:24"
+  },
+  "hl_e003_q1_r2__l2": {
+   "item_id": "hl_e003_q1_r2__l2",
+   "original_reference": "רק התדרים הגבוהים נשמרו ב-High pass לכן התדרים הנמוכים מאופסים (כולל dc)",
+   "audited_reference": "רק התדרים הגבוהים נשמרו ב-High pass לכן התדרים הנמוכים מאופסים (כולל dc)",
+   "status": "confirmed",
+   "note": "",
+   "audited_at": "2026-08-22 01:53:44"
+  },
+  "hl_e003_q1_r3__l1": {
+   "item_id": "hl_e003_q1_r3__l1",
+   "original_reference": "עוצמת התדרים הגבוהים אחרי הפעולה גדלה ולכן הרמות הנמוכות מראות שפות עבות יותר",
+   "audited_reference": "עוצמת התדרים הגבוהים אחרי הפעולה גדלה ולכן הרמות הנמוכות מראות שפות עבות יותר",
+   "status": "confirmed",
+   "note": "",
+   "audited_at": "2026-08-22 01:54:01"
+  },
+  "hl_e003_q1_r4__l1": {
+   "item_id": "hl_e003_q1_r4__l1",
+   "original_reference": "ניתן לראות שרק תדרים נמוכים נשמרו ולכן כל הרמות של התדרים הגבוהים מאופסות",
+   "audited_reference": "ניתן לראות שרק תדרים נמוכים נשמרו ולכן כל הרמות של התדרים הגבוהים מאופסות",
+   "status": "confirmed",
+   "note": "",
+   "audited_at": "2026-08-22 01:54:14"
+  },
+  "hl_e003_q1_r5__l1": {
+   "item_id": "hl_e003_q1_r5__l1",
+   "original_reference": "הרעש והטשטוש שלו בכיוון ציר ה-x מובלט בתדרים הגבוהים",
+   "audited_reference": "הרעש והטשטוש שלו בכיוון ציר ה-x מובלט בתדרים הגבוהים",
+   "status": "confirmed",
+   "note": "",
+   "audited_at": "2026-08-22 01:54:25"
+  },
+  "hl_e003_q1_r6__l1": {
+   "item_id": "hl_e003_q1_r6__l1",
+   "original_reference": "הרעש והטשטוש שלו בכיוון ציר ה-y מובלט בתדרים הגבוהים",
+   "audited_reference": "הרעש והטשטוש שלו בכיוון ציר ה-y מובלט בתדרים הגבוהיים",
+   "status": "corrected",
+   "note": "",
+   "audited_at": "2026-08-22 01:55:09"
+  },
+  "hl_e003_q1_r7__l1": {
+   "item_id": "hl_e003_q1_r7__l1",
+   "original_reference": "הרמה העליונה שכוללת DC בהירה יותר",
+   "audited_reference": "הרמה העליונה שכוללת את DC בהירה יותר",
+   "status": "corrected",
+   "note": "",
+   "audited_at": "2026-08-22 01:55:31"
+  },
+  "hl_e003_q1_r8__l1": {
+   "item_id": "hl_e003_q1_r8__l1",
+   "original_reference": "ברמה העליונה שכוללת DC ניתן לראות שערכים בהירים יותר, נהיו יותר בהירים",
+   "audited_reference": "ברמה העליונה שכוללת את DC ניתן לראות שערכים בהירים יותר, נהיו יותר בהירים",
+   "status": "corrected",
+   "note": "",
+   "audited_at": "2026-08-22 01:55:47"
+  },
+  "hl_e003_q2_r1__l1": {
+   "item_id": "hl_e003_q2_r1__l1",
+   "original_reference": "כל פיקסלי השפות שנקלטו קיבלו  ערך 255 לעומת שאר הפיקסלים(הרוב)",
+   "audited_reference": "כל פיקסלי השפות שנקלטו קיבלו  ערך 255 לעומת שאר הפיקסלים(הרוב)",
+   "status": "confirmed",
+   "note": "",
+   "audited_at": "2026-08-22 01:55:57"
+  },
+  "hl_e003_q2_r2__l1": {
+   "item_id": "hl_e003_q2_r2__l1",
+   "original_reference": "טשטוש הוריד רעש ולכן פחות פיקסלים נקלטו בשפהב והערך 255 בהיסטוגרמה ירד",
+   "audited_reference": "טשטוש הוריד רעש ולכן פחות פיקסלים נקלטו כשפה והערך 255 בהיסטוגרמה ירד",
+   "status": "corrected",
+   "note": "",
+   "audited_at": "2026-08-22 01:56:14"
+  },
+  "hl_e003_q2_r3__l1": {
+   "item_id": "hl_e003_q2_r3__l1",
+   "original_reference": "מפסר הפיקסלים לא השתנה והערכים מתפרסים על כל ספקטרום הערכים האפשרי",
+   "audited_reference": "מפסר הפיקסלים לא השתנה והערכים מתפרסים על כל ספקטרום הערכים האפשרי",
+   "status": "confirmed",
+   "note": "",
+   "audited_at": "2026-08-22 01:56:23"
+  },
+  "hl_e003_q2_r4__l1": {
+   "item_id": "hl_e003_q2_r4__l1",
+   "original_reference": "ניתן לראות שלעומת Uniform יש פחות ערכים אפשריים",
+   "audited_reference": "ניתן לראות שלעומת Uniform יש פחות ערכים אפשריים",
+   "status": "confirmed",
+   "note": "",
+   "audited_at": "2026-08-22 01:56:30"
+  },
+  "hl_e003_q2_r5__l1": {
+   "item_id": "hl_e003_q2_r5__l1",
+   "original_reference": "לכל BIN(20 סה\"כ) יש ערך שנבחר בצורה אחידה וניתן לראות שבהם חולקו הפיקסלים",
+   "audited_reference": "לכל BIN(20 סה\"כ) יש ערך שנבחר בצורה אחידה וניתן לראות שבהם חולקו הפיקסלים",
+   "status": "confirmed",
+   "note": "",
+   "audited_at": "2026-08-22 01:56:41"
+  },
+  "hl_e003_q2_r6__l1": {
+   "item_id": "hl_e003_q2_r6__l1",
+   "original_reference": "סכום המסכה הוא גדול מ-1, לכן טווח הערכים גדול מהטווח בהסטוגרמה המקורית ויותר פרוס",
+   "audited_reference": "סכום המסכה הוא גדול מ-1, לכן טווח הערכים גדול מהטווח בהסטוגרמה המקורית ויותר פרוס",
+   "status": "confirmed",
+   "note": "",
+   "audited_at": "2026-08-22 01:56:51"
+  },
+  "hl_e003_q2_r7__l1": {
+   "item_id": "hl_e003_q2_r7__l1",
+   "original_reference": "הוכפל מספר הפיקסלים בכל התמונה פי 2 והוכפל מספר הפיקסלים בכל ערך",
+   "audited_reference": "הוכפל מספר הפיקסלים בכל התמונה פי 2 והוכפל מספר הפיקסלים בכל ערך",
+   "status": "confirmed",
+   "note": "",
+   "audited_at": "2026-08-22 01:57:09"
+  },
+  "hl_e003_q2_r8__l1": {
+   "item_id": "hl_e003_q2_r8__l1",
+   "original_reference": "ניתן לראות שמספר הפיקסלים בכל עוצמה הוזז ימינה באותו מרחק שהיה במקור.",
+   "audited_reference": "ניתן לראות שמספר הפיקסלים בכל עוצמה הוזז ימינה באותו מרחק שהיה במקור.",
+   "status": "confirmed",
+   "note": "",
+   "audited_at": "2026-08-22 01:57:20"
+  },
+  "hl_e004_q1_r1__l1": {
+   "item_id": "hl_e004_q1_r1__l1",
+   "original_reference": "הWAVEELETS מטושטשת בכל החלקים",
+   "audited_reference": "הWAVEELETS מטושטשת בכל החלקים",
+   "status": "confirmed",
+   "note": "",
+   "audited_at": "2026-08-22 01:57:29"
+  },
+  "hl_e004_q1_r2__l1": {
+   "item_id": "hl_e004_q1_r2__l1",
+   "original_reference": "התדר הנמוך נעלם בכלל HighpassFilter",
+   "audited_reference": "התדר הנמוך נעלם בגלל HighpassFilter",
+   "status": "corrected",
+   "note": "",
+   "audited_at": "2026-08-22 01:57:50"
+  },
+  "hl_e004_q1_r3__l1": {
+   "item_id": "hl_e004_q1_r3__l1",
+   "original_reference": "התמונה מחודדת יותר ושמרה על הצבעים",
+   "audited_reference": "התמונה מחודדת יותר ושמרה על הצבעים",
+   "status": "confirmed",
+   "note": "",
+   "audited_at": "2026-08-22 01:57:56"
+  },
+  "hl_e004_q1_r3__l2": {
+   "item_id": "hl_e004_q1_r3__l2",
+   "original_reference": "לא כמו E  [לא קריא] יותר Brightness",
+   "audited_reference": "לא כמו E  [לא קריא] יותר Brightness",
+   "status": "confirmed",
+   "note": "",
+   "audited_at": "2026-08-22 01:58:11"
+  },
+  "hl_e004_q1_r4__l1": {
+   "item_id": "hl_e004_q1_r4__l1",
+   "original_reference": "התדר הגדול(High) נעלם בגלל ה Low Pass Filter",
+   "audited_reference": "התדר הגדול(High) נעלם בגלל ה Low Pass Filter",
+   "status": "confirmed",
+   "note": "",
+   "audited_at": "2026-08-22 01:58:17"
+  },
+  "hl_e004_q1_r5__l1": {
+   "item_id": "hl_e004_q1_r5__l1",
+   "original_reference": "הWAVELETS מטושטשת אופקית(מקביל ציר x)",
+   "audited_reference": "הWAVELETS מטושטשת אופקית(מקבייל ציר x)",
+   "status": "corrected",
+   "note": "",
+   "audited_at": "2026-08-22 01:58:34"
+  },
+  "hl_e004_q1_r6__l1": {
+   "item_id": "hl_e004_q1_r6__l1",
+   "original_reference": "הWAVELETS מטושטשת אנכית",
+   "audited_reference": "הWAVELETS מטושטשת אנכית",
+   "status": "confirmed",
+   "note": "",
+   "audited_at": "2026-08-22 01:58:41"
+  },
+  "hl_e004_q1_r6__l2": {
+   "item_id": "hl_e004_q1_r6__l2",
+   "original_reference": "(מקביל ציר y)",
+   "audited_reference": "(מקביל ציר y)",
+   "status": "confirmed",
+   "note": "",
+   "audited_at": "2026-08-22 01:58:47"
+  },
+  "hl_e004_q1_r7__l2": {
+   "item_id": "hl_e004_q1_r7__l2",
+   "original_reference": "התמונה  [לא קריא] מהמקורית",
+   "audited_reference": "התמונה בהירה מהמקורית",
+   "status": "corrected",
+   "note": "",
+   "audited_at": "2026-08-22 01:59:14"
+  },
+  "hl_e004_q1_r8__l1": {
+   "item_id": "hl_e004_q1_r8__l1",
+   "original_reference": "ההבדל בין כהה לבין לבן גדל",
+   "audited_reference": "ההבדל בין כהה לבין לבן גדל",
+   "status": "confirmed",
+   "note": "",
+   "audited_at": "2026-08-22 01:59:19"
+  },
+  "hl_e004_q2_r1__l1": {
+   "item_id": "hl_e004_q2_r1__l1",
+   "original_reference": "בגלל ש [לא קריא] canny נקבל 0 או 255 וזה בלי",
+   "audited_reference": "בגלל ש [לא קריא] canny נקבל 0 או 255 וזה בלי",
+   "status": "confirmed",
+   "note": "",
+   "audited_at": "2026-08-22 01:59:28"
+  },
+  "hl_e004_q2_r1__l2": {
+   "item_id": "hl_e004_q2_r1__l2",
+   "original_reference": "טשטוש לכן נקבל יותר ב255",
+   "audited_reference": "טשטוש לכן נקבל יותר ב255",
+   "status": "confirmed",
+   "note": "",
+   "audited_at": "2026-08-22 01:59:33"
+  },
+  "hl_e004_q2_r2__l1": {
+   "item_id": "hl_e004_q2_r2__l1",
+   "original_reference": "זה canny.  [לא קריא] עם טשטוש ולכן נקבל פחות ב-255 ולכן c",
+   "audited_reference": "זה canny. אבל עם טשטוש ולכן נקבל פחות ב-255 ולכן c",
+   "status": "corrected",
+   "note": "",
+   "audited_at": "2026-08-22 02:00:00"
+  },
+  "hl_e004_q2_r3__l1": {
+   "item_id": "hl_e004_q2_r3__l1",
+   "original_reference": "יש רווחים בין עמודים וגם יש עכשיו עמודים",
+   "audited_reference": "יש רווחים בין עמודים וגם יש עכשיו עמודים",
+   "status": "confirmed",
+   "note": "",
+   "audited_at": "2026-08-22 02:00:09"
+  },
+  "hl_e004_q2_r4__l1": {
+   "item_id": "hl_e004_q2_r4__l1",
+   "original_reference": "נקבל בOptimal פחות עמודים מUniform",
+   "audited_reference": "נקבל בOptimal פחות עמודים מUniform",
+   "status": "confirmed",
+   "note": "",
+   "audited_at": "2026-08-22 02:00:19"
+  },
+  "hl_e004_q2_r4__l2": {
+   "item_id": "hl_e004_q2_r4__l2",
+   "original_reference": "כאן וגם זה נותן בQnatization עמודים לא צפופים בהרבה",
+   "audited_reference": "כאן וגם זה נותן בQnatization עמודים לא צפופם הרבה",
+   "status": "corrected",
+   "note": "",
+   "audited_at": "2026-08-22 02:13:16"
+  },
+  "hl_e004_q2_r5__l1": {
+   "item_id": "hl_e004_q2_r5__l1",
+   "original_reference": "אותו דבר אבל זה Unoform ולכן נקבל יותר",
+   "audited_reference": "אותו דבר אבל זה Unoform ולכן נקבל יותר",
+   "status": "confirmed",
+   "note": "",
+   "audited_at": "2026-08-22 02:13:22"
+  },
+  "hl_e004_q2_r5__l2": {
+   "item_id": "hl_e004_q2_r5__l2",
+   "original_reference": "עמודים",
+   "audited_reference": "עמודים",
+   "status": "confirmed",
+   "note": "",
+   "audited_at": "2026-08-22 02:13:24"
+  },
+  "hl_e004_q2_r6__l1": {
+   "item_id": "hl_e004_q2_r6__l1",
+   "original_reference": "הכפלת תמונה ב2 זה לקחת ההסטוגרמה ולהגדיל",
+   "audited_reference": "הכפלת תמונה ב2 זה לקחת ההסטוגרמה ולהגדיל",
+   "status": "confirmed",
+   "note": "",
+   "audited_at": "2026-08-22 02:13:35"
+  },
+  "hl_e004_q2_r6__l2": {
+   "item_id": "hl_e004_q2_r6__l2",
+   "original_reference": "טווח שלה בציר x (עשינו את זה  [לא קריא] בהרצאה למדוד או לא)",
+   "audited_reference": "טווח שלה בציר x (עשינו את זה  [לא קריא] בהרצאה למדוד או לא)",
+   "status": "confirmed",
+   "note": "",
+   "audited_at": "2026-08-22 02:13:50"
+  },
+  "hl_e004_q2_r7__l2": {
+   "item_id": "hl_e004_q2_r7__l2",
+   "original_reference": "שיקוף אופקי של התמונה נותן שיקוף אופקי של היסטוגרמה",
+   "audited_reference": "שיקוף אופקי של תמונה נותן שיקוף אופקי של היסטוגרמה",
+   "status": "corrected",
+   "note": "",
+   "audited_at": "2026-08-22 02:14:01"
+  },
+  "hl_e004_q2_r8__l1": {
+   "item_id": "hl_e004_q2_r8__l1",
+   "original_reference": "המסיכה נותנת לנו Echo ואז",
+   "audited_reference": "המסיכה נותנת לנו Echo ואז",
+   "status": "confirmed",
+   "note": "",
+   "audited_at": "2026-08-22 02:14:05"
+  },
+  "hl_e004_q2_r8__l2": {
+   "item_id": "hl_e004_q2_r8__l2",
+   "original_reference": "זה יגרור להיסטוגרמה הזו",
+   "audited_reference": "זה יגרור להיסטוגרמה הזו",
+   "status": "confirmed",
+   "note": "",
+   "audited_at": "2026-08-22 02:14:08"
+  },
+  "hl_e005_q1_r1__l1": {
+   "item_id": "hl_e005_q1_r1__l1",
+   "original_reference": "נראה בתמונה טשטוש של motionblur על שפות אשר",
+   "audited_reference": "נראה בתמונה טשטוש של motionblur על שפות אשר",
+   "status": "confirmed",
+   "note": "",
+   "audited_at": "2026-08-22 02:14:17"
+  },
+  "hl_e005_q1_r1__l2": {
+   "item_id": "hl_e005_q1_r1__l2",
+   "original_reference": "[לא קריא] לא ברורות כמו שאמורות להיות והם לא בציר x ולא ב-y",
+   "audited_reference": "[לא קריא] לא ברורות כמו שאמורות להיות והם לא בציר x ולא ב-y",
+   "status": "confirmed",
+   "note": "",
+   "audited_at": "2026-08-22 02:14:28"
+  },
+  "hl_e005_q1_r2__l1": {
+   "item_id": "hl_e005_q1_r2__l1",
+   "original_reference": "בתמונה מופיעים שנות של התמונה המקורית בתדר גבוה",
+   "audited_reference": "בתמונה מופיעים שנות של התמונה המקורית בתדר גבוה",
+   "status": "confirmed",
+   "note": "",
+   "audited_at": "2026-08-22 02:14:40"
+  },
+  "hl_e005_q1_r2__l2": {
+   "item_id": "hl_e005_q1_r2__l2",
+   "original_reference": "וגם הן נשים לב שהפעולה מבוצעת על התמונה הכי  [לא קריא] - בסיס -  [לא קריא] גאוסיאן  [לא קריא]",
+   "audited_reference": "וגם הן נשים לב שהפעולה מבוצעת על  [לא קריא] הכי  [לא קריא] - בסיס -  [לא קריא] גאוסיאן  [לא קריא]",
+   "status": "corrected",
+   "note": "",
+   "audited_at": "2026-08-22 02:15:28"
+  },
+  "hl_e005_q1_r3__l2": {
+   "item_id": "hl_e005_q1_r3__l2",
+   "original_reference": "הפעל פילטר high-frequency מראה לנו רק תדר אחד של",
+   "audited_reference": "הפעל פילטר high-frequency מראה לנו רק תדר אחד של",
+   "status": "confirmed",
+   "note": "",
+   "audited_at": "2026-08-22 02:15:34"
+  },
+  "hl_e005_q1_r3__l3": {
+   "item_id": "hl_e005_q1_r3__l3",
+   "original_reference": "תמונה וזהו אכן ברמה הראשונה x,y,z ולכן בשאר הרמות היא",
+   "audited_reference": "תמונה וזהו אכן ברמה הראשונה x,y,z ולכן בשאר הרמות היא",
+   "status": "confirmed",
+   "note": "",
+   "audited_at": "2026-08-22 02:15:44"
+  },
+  "hl_e005_q1_r4__l1": {
+   "item_id": "hl_e005_q1_r4__l1",
+   "original_reference": "לאחר חידוד שפות בתדר גבוה אנו מפעילים פילטר  pass- [לא קריא]",
+   "audited_reference": "לאחר חידוד שפות בתדר גבוה אנו מפעילים פילטר  pass- [לא קריא]",
+   "status": "confirmed",
+   "note": "",
+   "audited_at": "2026-08-22 02:15:52"
+  },
+  "hl_e005_q1_r4__l2": {
+   "item_id": "hl_e005_q1_r4__l2",
+   "original_reference": "על התמונה ולכן רואים התדרים הנמוכים בשחור(בשונה משאר התמונות)",
+   "audited_reference": "על התמונה ולכן רואים התדרים הנמוכים בשחור(בשונה משאר התמונות)",
+   "status": "confirmed",
+   "note": "",
+   "audited_at": "2026-08-22 02:16:01"
+  },
+  "hl_e005_q1_r5__l2": {
+   "item_id": "hl_e005_q1_r5__l2",
+   "original_reference": "הוספת רעש גאוסיאני בציר x מחדד השפות בציר",
+   "audited_reference": "הוספת רעש גאוסיאני בציר x מחדד השפות בציר",
+   "status": "confirmed",
+   "note": "",
+   "audited_at": "2026-08-22 02:16:10"
+  },
+  "hl_e005_q1_r5__l3": {
+   "item_id": "hl_e005_q1_r5__l3",
+   "original_reference": "x יותר ולכן תמונה c היא הכי מתאימה-רואים זו בתמונה",
+   "audited_reference": "x יותר ולכן תמונה c היא הכי מתאימה-רואים זו בתמונה",
+   "status": "confirmed",
+   "note": "",
+   "audited_at": "2026-08-22 02:16:20"
+  },
+  "hl_e005_q1_r6__l1": {
+   "item_id": "hl_e005_q1_r6__l1",
+   "original_reference": "הוספת רעש גאוסיאני בציר Y מחדד השפות בציר y יותר",
+   "audited_reference": "הוספת רעש גאוסיאני בציר Y מחדד השפות בציר y יותר",
+   "status": "confirmed",
+   "note": "",
+   "audited_at": "2026-08-22 02:17:42"
+  },
+  "hl_e005_q1_r6__l2": {
+   "item_id": "hl_e005_q1_r6__l2",
+   "original_reference": "ולכן תמונה I מראה זו - היא הכי מתאימה",
+   "audited_reference": "ולכן תמונה I מראה זו - היא הכי מתאימה",
+   "status": "confirmed",
+   "note": "",
+   "audited_at": "2026-08-22 02:17:47"
+  },
+  "hl_e005_q1_r7__l1": {
+   "item_id": "hl_e005_q1_r7__l1",
+   "original_reference": "הגברת בהירות  [לא קריא] לכל  פיקסל ערך 100 ולכן נבחרה",
+   "audited_reference": "הגברת בהירות  [לא קריא] לכל  פיקסל ערך 100 ולכן נבחרה",
+   "status": "confirmed",
+   "note": "",
+   "audited_at": "2026-08-22 02:17:59"
+  },
+  "hl_e005_q1_r7__l2": {
+   "item_id": "hl_e005_q1_r7__l2",
+   "original_reference": "תמונה H כתמונה שמבהירה כל פיקסל במידה שווה",
+   "audited_reference": "תמונה H כתמונה שמבהירה כל פיקסל במידה שווה",
+   "status": "confirmed",
+   "note": "",
+   "audited_at": "2026-08-22 02:18:13"
+  },
+  "hl_e005_q1_r8__l2": {
+   "item_id": "hl_e005_q1_r8__l2",
+   "original_reference": "פעולה זו גם מגדילה פיקסלים אך בחרנו אותה ולא D",
+   "audited_reference": "פעולה זו גם מגדילה פיקסלים אך בחרנו אותה ולא D",
+   "status": "confirmed",
+   "note": "",
+   "audited_at": "2026-08-22 02:18:22"
+  },
+  "hl_e005_q1_r8__l3": {
+   "item_id": "hl_e005_q1_r8__l3",
+   "original_reference": "כי תמונה זו מראה תמונה ברמה אחרונה בהירה יותר",
+   "audited_reference": "כי תמונה זו מראה תמונה ברמה אחרונה בהירה יותר",
+   "status": "confirmed",
+   "note": "",
+   "audited_at": "2026-08-22 02:18:30"
+  },
+  "hl_e005_q2_r1__l1": {
+   "item_id": "hl_e005_q2_r1__l1",
+   "original_reference": "האלגוריתם עושה thresh-iding בסוף כדי להפריד שפות",
+   "audited_reference": "האלגוריתם עושה [לא קריא] בסוף כדי להפריד שפות",
+   "status": "corrected",
+   "note": "",
+   "audited_at": "2026-08-22 02:19:34"
+  },
+  "hl_e005_q2_r1__l2": {
+   "item_id": "hl_e005_q2_r1__l2",
+   "original_reference": "אך בחרנו  [לא קריא] ולא E כי מס' הפיקסלים שקרובים ל-0 גדולים יותר",
+   "audited_reference": "אך בחרנו  [לא קריא] ולא E כי מס' הפיקסלים שקרובים ל-0 גדולים יותר",
+   "status": "confirmed",
+   "note": "",
+   "audited_at": "2026-08-22 02:19:49"
+  },
+  "hl_e005_q2_r2__l2": {
+   "item_id": "hl_e005_q2_r2__l2",
+   "original_reference": "האלגוריתם עושה threshding בסוף לאחר הפעלת  [לא קריא]",
+   "audited_reference": "האלגוריתם עושה thresholding בסוף לאחר הפעלת  [לא קריא]",
+   "status": "corrected",
+   "note": "",
+   "audited_at": "2026-08-22 02:22:30"
+  },
+  "hl_e005_q2_r2__l3": {
+   "item_id": "hl_e005_q2_r2__l3",
+   "original_reference": "גאוסיאן ולכן ההיסטוגרמה תימרח ורק לאחר מכן נעשה threshholding כלומר מס'  [לא קריא] של 0 ויותק של 255",
+   "audited_reference": "גאוסיאן ולכן ההיסטוגרמה תימרח ורק לאחר מכן נעשה threshholding כלומר מס'  [לא קריא] של 0 ויותר של 255",
+   "status": "corrected",
+   "note": "",
+   "audited_at": "2026-08-22 02:23:04"
+  },
+  "hl_e005_q2_r3__l2": {
+   "item_id": "hl_e005_q2_r3__l2",
+   "original_reference": "באורך כל ההיסטוגרמה(0-255)",
+   "audited_reference": "לאורך כל ההיסטוגרמה(0-255)",
+   "status": "corrected",
+   "note": "",
+   "audited_at": "2026-08-22 02:31:46"
+  },
+  "hl_e005_q2_r4__l2": {
+   "item_id": "hl_e005_q2_r4__l2",
+   "original_reference": "עושים חלוקה חדשה לפי האלגוריתם optimal quntization  [לא קריא]  [לא קריא] [לא קריא]",
+   "audited_reference": "עושים חלוקה חדשה לפי האלגוריתם optimal quntization  [לא קריא]  [לא קריא] [לא קריא]",
+   "status": "confirmed",
+   "note": "",
+   "audited_at": "2026-08-22 02:31:56"
+  },
+  "hl_e005_q2_r4__l3": {
+   "item_id": "hl_e005_q2_r4__l3",
+   "original_reference": "חלוקה מפוזרת ובאותו טווח אבל עם ערכים קבועים  [לא קריא] -gray",
+   "audited_reference": "חלוקה מפוזרת ובאותו טווח אבל עם ערכים קבועים  [לא קריא] -gray",
+   "status": "confirmed",
+   "note": "",
+   "audited_at": "2026-08-22 02:32:08"
+  },
+  "hl_e005_q2_r5__l2": {
+   "item_id": "hl_e005_q2_r5__l2",
+   "original_reference": "קוונטיזציה יוניפורמית מחלקת את כל סביבה של q להתפלג",
+   "audited_reference": "קוונטיזציה יוניפורמית מחלקת את כל סביבה של q להתפלג",
+   "status": "confirmed",
+   "note": "",
+   "audited_at": "2026-08-22 02:32:20"
+  },
+  "hl_e005_q2_r5__l3": {
+   "item_id": "hl_e005_q2_r5__l3",
+   "original_reference": "פאופן אחיד בq_max ולכן היסטוגרמה T הכי מתאימה",
+   "audited_reference": "פאופן אחיד בqmax ולכן היסטוגרמה I  הכי מתאימה",
+   "status": "corrected",
+   "note": "",
+   "audited_at": "2026-08-22 02:33:57"
+  },
+  "hl_e005_q2_r6__l2": {
+   "item_id": "hl_e005_q2_r6__l2",
+   "original_reference": "קונבולוציה על כל פיקסל תיצור ערכים גדולים יותר עם שמירה על הערכים המקוריים ולכן תיווצר היסטוגרמה A",
+   "audited_reference": "קונבולוציה על כל פיקסל תיצור ערכים גדולים יותר עם שמירה על הערכים המקוריים ולכן תיווצר היסטוגרמה A",
+   "status": "confirmed",
+   "note": "",
+   "audited_at": "2026-08-22 02:42:30"
+  },
+  "hl_e005_q2_r7__l2": {
+   "item_id": "hl_e005_q2_r7__l2",
+   "original_reference": "שיקוף אופקי של תמונה יגדיל את כמות ה gray-level",
+   "audited_reference": "שיקוף אופקי של תמונה יגדיל את כמות הל gray-level",
+   "status": "corrected",
+   "note": "",
+   "audited_at": "2026-08-22 02:42:52"
+  },
+  "hl_e005_q2_r7__l3": {
+   "item_id": "hl_e005_q2_r7__l3",
+   "original_reference": "ב-2 ולכן נבחר היסטוגרמה דומה  [לא קריא] [לא קריא]",
+   "audited_reference": "ב-2 ולכן נבחר היסטוגרמה דומה  [לא קריא] [לא קריא]",
+   "status": "confirmed",
+   "note": "",
+   "audited_at": "2026-08-22 02:46:12"
+  },
+  "hl_e005_q2_r8__l1": {
+   "item_id": "hl_e005_q2_r8__l1",
+   "original_reference": "עבור כל פיקסל הוא מקבל ערך 2 ולכן נמרח ההיסטוגרמה",
+   "audited_reference": "עבור כל פיקסל הוא מקבל ערך 2 ולכן נמרח ההיסטוגרמה",
+   "status": "confirmed",
+   "note": "",
+   "audited_at": "2026-08-22 02:52:31"
+  },
+  "hl_e005_q2_r8__l2": {
+   "item_id": "hl_e005_q2_r8__l2",
+   "original_reference": "לאורך x ונישאר עם אותו דובה היסטוגרמה",
+   "audited_reference": "לאורך x ונישאר עם אותו גובה היסטוגרמה",
+   "status": "corrected",
+   "note": "",
+   "audited_at": "2026-08-22 02:52:42"
+  },
+  "hl_e006_q1_r1__l1": {
+   "item_id": "hl_e006_q1_r1__l1",
+   "original_reference": "motionblur זה טשטוש והזזה של  [לא קריא](כמו echo) רואים ברמה הלפלסיאנית  [לא קריא] יש טשטוש בכל הכיוונים  [לא קריא] מוזזות",
+   "audited_reference": "motionblur זה טשטוש! הזזה של  [לא קריא](כמו echo) רואים ברמה הלפלסיאנית  [לא קריא] יש טשטוש בכל הכיוונים!  [לא קריא] מוזזות",
+   "status": "corrected",
+   "note": "",
+   "audited_at": "2026-08-22 02:53:25"
+  },
+  "hl_e006_q1_r2__l1": {
+   "item_id": "hl_e006_q1_r2__l1",
+   "original_reference": "בהפעלת highpass לא ישאר תדרים נמוכים וגם לא ישאר pc",
+   "audited_reference": "בהפעלת highpass לא ישאר תדרים נמוכים וגם לא ישאר pc",
+   "status": "corrected",
+   "note": "",
+   "audited_at": "2026-08-22 02:53:36"
+  },
+  "hl_e006_q1_r3__l1": {
+   "item_id": "hl_e006_q1_r3__l1",
+   "original_reference": "בחידוד תמונה רואים יותר שפות ולכן D",
+   "audited_reference": "בחידוד תמונה רואים יותר שפות ולכן D",
+   "status": "corrected",
+   "note": "",
+   "audited_at": "2026-08-22 02:53:40"
+  },
+  "hl_e006_q1_r4__l1": {
+   "item_id": "hl_e006_q1_r4__l1",
+   "original_reference": "בהפעלת  [לא קריא] low pass לא ישאר תדרים גבוהים בכלל ולכן",
+   "audited_reference": "בהפעלת low pass לא ישאר תדרים גבוהים בכלל ולכן H",
+   "status": "corrected",
+   "note": "",
+   "audited_at": "2026-08-22 02:54:02"
+  },
+  "hl_e006_q1_r5__l1": {
+   "item_id": "hl_e006_q1_r5__l1",
+   "original_reference": "עמט עם טשטוש בכיוון x אז שפות בכיוון y מטושטשות",
+   "audited_reference": "רעש עם טשטוש בכיוון x אז שפות בכיוון y מטושטשות",
+   "status": "corrected",
+   "note": "",
+   "audited_at": "2026-08-22 02:54:23"
+  },
+  "hl_e006_q1_r6__l1": {
+   "item_id": "hl_e006_q1_r6__l1",
+   "original_reference": "רעש עם טשטוש בכיוון y אז זשפות אנכיות מטושטשות",
+   "audited_reference": "רעש עם טשטוש בכיוון y אז זשפות אנכיות מטושטשות",
+   "status": "corrected",
+   "note": "",
+   "audited_at": "2026-08-22 02:54:23"
+  },
+  "hl_e006_q1_r7__l1": {
+   "item_id": "hl_e006_q1_r7__l1",
+   "original_reference": "הגברת בהירות -> Dc יותר בהיר רואים בA",
+   "audited_reference": "הגברת בהירות -> Dc יותר בהיר רואים בA",
+   "status": "confirmed",
+   "note": "",
+   "audited_at": "2026-08-22 02:54:36"
+  },
+  "hl_e006_q1_r8__l1": {
+   "item_id": "hl_e006_q1_r8__l1",
+   "original_reference": "אם נסווג אותם זה יהיה E/P אבל מכיוון שבחידוד יהיה הוספה לתדרים גבוהים אז יהיה  [לא קריא] שפות יותר מאם נכפיל ב-2",
+   "audited_reference": "אם נסווג אותם זה יהיה E/P אבל מכיוון שבחידוד יהיה הוספה לתדרים גבוהים אז יהיה יותר שפות יותר מאם נכפיל ב-2",
+   "status": "corrected",
+   "note": "",
+   "audited_at": "2026-08-22 02:55:00"
+  },
+  "hl_e006_q2_r1__l1": {
+   "item_id": "hl_e006_q2_r1__l1",
+   "original_reference": "הפעלת canny מחזירה תמונה עם ערכים 255 0 לכן  1,2 יתאימו לC,E מכיוון ש2 עם טשטוש אז יכול להיות שנאבד שפות ולכן canny c עם טשטוש ו  [לא קריא]",
+   "audited_reference": "הפעלת canny מחזירה תמונה עם ערכים 255 0 לכן  1,2 יתאימו לC,E מכיוון ש2 עם טשטוש אז יכול להיות שנאבד שפות ולכן canny c עם טשטוש ולכן C canny עם טשטוש ו  [לא קריא]",
+   "status": "corrected",
+   "note": "",
+   "audited_at": "2026-08-22 02:57:55"
+  },
+  "hl_e006_q2_r3__l1": {
+   "item_id": "hl_e006_q2_r3__l1",
+   "original_reference": "שיווי ההיסטוגראמא מנסים לעשות שיווין בעוצמת אבל בלי לשבור עמודות מתאים לB(והכוונה  [לא קריא]  [לא קריא])",
+   "audited_reference": "שיווי ההיסטוגראמא מנסים לעשות שיווין בעוצמת אבל בלי לשבור עמודות מתאים לB(והכוונה  [לא קריא]  [לא קריא] ערכי אפור)",
+   "status": "corrected",
+   "note": "",
+   "audited_at": "2026-08-22 02:58:28"
+  },
+  "hl_e006_q2_r4__l1": {
+   "item_id": "hl_e006_q2_r4__l1",
+   "original_reference": "Quantization מנסים להקטין מספר דרגות אפוק מתאים לI,D כלומר 4,5->I,D מכיוון שבuniform המרחק בין דרגה ודרגה שווה אז  [לא קריא] [לא קריא]",
+   "audited_reference": "Quantization מנסים להקטין מספר דרגות אפוק מתאים לI,D כלומר 4,5->I,D מכיוון שבuniform המרחק בין דרגה ודרגה שווה אז  [לא קריא] [לא קריא]",
+   "status": "confirmed",
+   "note": "",
+   "audited_at": "2026-08-22 02:59:41"
+  },
+  "hl_e006_q2_r5__l2": {
+   "item_id": "hl_e006_q2_r5__l2",
+   "original_reference": "הסבר",
+   "audited_reference": "הסבר",
+   "status": "confirmed",
+   "note": "",
+   "audited_at": "2026-08-22 02:59:42"
+  },
+  "hl_e006_q2_r6__l1": {
+   "item_id": "hl_e006_q2_r6__l1",
+   "original_reference": "קונבלוציה עם מסכה 1,001 תגדיל טווח הדרגות האפור",
+   "audited_reference": "קונבלוציה עם מסכה 1,001 תגדיל טווח הדרגות האפור",
+   "status": "confirmed",
+   "note": "",
+   "audited_at": "2026-08-22 03:01:26"
+  },
+  "hl_e006_q2_r7__l1": {
+   "item_id": "hl_e006_q2_r7__l1",
+   "original_reference": "שיקוף לא משוה דרגות אסור של הפיקסלים ושרשור כאילו",
+   "audited_reference": "שיקוף לא משוה דרגות אפור של הפיקסלים ושרשור כאלו",
+   "status": "corrected",
+   "note": "",
+   "audited_at": "2026-08-22 03:02:56"
+  },
+  "hl_e006_q2_r7__l2": {
+   "item_id": "hl_e006_q2_r7__l2",
+   "original_reference": "יש לנו כפול 2 מכל פיקסל ולכן כל עמודה נכפיל אותה ב2",
+   "audited_reference": "יש לנו כפול 2 מכל פיקסל ולכן כל עמודה נכפיל אותה ב2",
+   "status": "confirmed",
+   "note": "",
+   "audited_at": "2026-08-22 03:03:09"
+  },
+  "hl_e006_q2_r8__l1": {
+   "item_id": "hl_e006_q2_r8__l1",
+   "original_reference": "הכפלת ערכי התמונה ב2 אז כל עמודה תלך למספר עמודה שלה כפול 2",
+   "audited_reference": "הכפלת ערכי התמונה ב2 אז כל עמודה תלך למספר עמודה שלה כפול 2",
+   "status": "confirmed",
+   "note": "",
+   "audited_at": "2026-08-22 03:08:34"
+  },
+  "hl_e007_q1_r1__l1": {
+   "item_id": "hl_e007_q1_r1__l1",
+   "original_reference": "ניתן לראות כי בשכבות של הגלים הם לא שומרים  [לא קריא] אותה תוצאה עבור התמונה ניתן לראות שיש סוג של מתיחה",
+   "audited_reference": "ניתן לראות כי בשכבות של הגלים הם לא שומרים את אותה תוצאה עבור התמונה ניתן לראות שיש סוג של מתיחה",
+   "status": "corrected",
+   "note": "",
+   "audited_at": "2026-08-22 03:09:10"
+  },
+  "hc_e002_q1_r1": {
+   "item_id": "hc_e002_q1_r1",
+   "original_reference": "יש טשטוש בכל התדרים",
+   "audited_reference": "יש טשטוש בכל התדרים",
+   "status": "confirmed",
+   "note": "",
+   "audited_at": "2026-08-22 03:09:17"
+  },
+  "hc_e002_q1_r2": {
+   "item_id": "hc_e002_q1_r2",
+   "original_reference": "נשאר בתמונה רק התדרים הגבוהים",
+   "audited_reference": "נשאר בתמונה רק התדרים הגבוהים",
+   "status": "confirmed",
+   "note": "",
+   "audited_at": "2026-08-22 03:09:23"
+  },
+  "hc_e002_q1_r3": {
+   "item_id": "hc_e002_q1_r3",
+   "original_reference": "העוצמה של הדרגות הגבוהות בפרמידה חזקה ביחס למקורי",
+   "audited_reference": "העוצמה של הדרגות הגבוהות בפרמידה חזקה ביחס למקורי",
+   "status": "confirmed",
+   "note": "",
+   "audited_at": "2026-08-22 03:09:30"
+  },
+  "hc_e002_q1_r4": {
+   "item_id": "hc_e002_q1_r4",
+   "original_reference": "נשאר בתמונה רק התדרים הנמוכים",
+   "audited_reference": "נשאר בתמונה רק התדרים הנמוכים",
+   "status": "confirmed",
+   "note": "",
+   "audited_at": "2026-08-22 03:09:36"
+  },
+  "hc_e002_q1_r5": {
+   "item_id": "hc_e002_q1_r5",
+   "original_reference": "מריחה בציר x עקב הקונבולוציה",
+   "audited_reference": "מריחה בציר x עקב הקונבולוציה",
+   "status": "confirmed",
+   "note": "",
+   "audited_at": "2026-08-22 03:09:40"
+  },
+  "hc_e002_q1_r6": {
+   "item_id": "hc_e002_q1_r6",
+   "original_reference": "מריחה בציר y עקב הקונבולוציה",
+   "audited_reference": "מריחה בציר y עקב הקונבולוציה",
+   "status": "confirmed",
+   "note": "",
+   "audited_at": "2026-08-22 03:11:45"
+  },
+  "hc_e002_q1_r7": {
+   "item_id": "hc_e002_q1_r7",
+   "original_reference": "סה\"כ הפירמידה נראית תקינה. הדרגה 0 שלה בהירה משמעותית מהתמונה המקורית",
+   "audited_reference": "סה\"כ הפירמידה נראית תקינה. הדרגה 0 שלה בהירה משמעותית מהתמונה המקורית",
+   "status": "confirmed",
+   "note": "",
+   "audited_at": "2026-08-22 03:11:54"
+  },
+  "hc_e002_q1_r8": {
+   "item_id": "hc_e002_q1_r8",
+   "original_reference": "בדומה לפעולה 7, מבהיר את התמונה אבל פה האיזורים הבהירים יותר נעשים יותר שינוי מהאזורים הכהים",
+   "audited_reference": "בדומה לפעולה 7, מבהיר את התמונה אבל פה האיזורים הבהירים יותר נעשים יותר שינוי מהאזורים הכהים",
+   "status": "confirmed",
+   "note": "",
+   "audited_at": "2026-08-22 03:12:31"
+  },
+  "hc_e002_q2_r1": {
+   "item_id": "hc_e002_q2_r1",
+   "original_reference": "עבור גילוי שפות יהיה רוב התמונה ב-[לא קריא] ורק עבור שפות 255",
+   "audited_reference": "עבור גילוי שפות יהיה רוב התמונה ב0 ורק עבור שפות 255",
+   "status": "corrected",
+   "note": "",
+   "audited_at": "2026-08-22 03:12:51"
+  },
+  "hc_e002_q2_r2": {
+   "item_id": "hc_e002_q2_r2",
+   "original_reference": "בדומה לו, רק שהטשטוש לפני מוביל לפחות שפות שמתגלות",
+   "audited_reference": "בדומה לו, רק שהטשטוש לפני מוביל לפחות שפות שמתגלות",
+   "status": "confirmed",
+   "note": "",
+   "audited_at": "2026-08-22 03:12:59"
+  },
+  "hc_e002_q2_r3": {
+   "item_id": "hc_e002_q2_r3",
+   "original_reference": "פריסה אחידה של ההיסטוגרמה המקורית לאורך כל הטווח",
+   "audited_reference": "פרעה אחידה של ההיסטוגרמה המקורית לאורך כל הטווח",
+   "status": "corrected",
+   "note": "",
+   "audited_at": "2026-08-22 03:13:48"
+  },
+  "hc_e002_q2_r4": {
+   "item_id": "hc_e002_q2_r4",
+   "original_reference": "[לא קריא]",
+   "audited_reference": "[לא קריא] אופטימלי, מוביל ל[לא קריא] אופטימלים משמע כולם משומשים בכמות יחסית אחידה",
+   "status": "corrected",
+   "note": "",
+   "audited_at": "2026-08-22 03:15:09"
+  },
+  "hc_e002_q2_r5": {
+   "item_id": "hc_e002_q2_r5",
+   "original_reference": "[לא קריא] אחיד מוביל לריווח אחיד בין הערכים שקיימים בכימוי",
+   "audited_reference": "[לא קריא] אחיד מוביל לריווח אחיד בין הערכים שקיימים בכימוי",
+   "status": "confirmed",
+   "note": "",
+   "audited_at": "2026-08-22 03:15:22"
+  },
+  "hc_e002_q2_r6": {
+   "item_id": "hc_e002_q2_r6",
+   "original_reference": "המעכה זהה לסכימת תמונה זהה עם תנודה קלה. מין תמונת echo כזאת תגרום להיסטוגרמה החדשה להיות קרובה להכפלה ב-2 [לא קריא]",
+   "audited_reference": "המעכה זהה לסכימת תמונה זהה עם תנודה קלה. מין תמונת echo כזאת תגרום להיסטוגרמה החדשה להיות קרובה להכפלה ב-2 [לא קריא]",
+   "status": "confirmed",
+   "note": "",
+   "audited_at": "2026-08-22 03:16:27"
+  },
+  "hc_e002_q2_r7": {
+   "item_id": "hc_e002_q2_r7",
+   "original_reference": "צורדת ההיסטוגרמה זהה, אך הגדלים והכמויות הם פי 2, כי גודל התמונה הינו [לא קריא]",
+   "audited_reference": "צורדת ההיסטוגרמה זהה, אך הגדלים והכמויות הם פי 2, כי גודל התמונה הינו פי 2 עם אותה התפלגות",
+   "status": "corrected",
+   "note": "",
+   "audited_at": "2026-08-22 03:16:59"
+  },
+  "hc_e002_q2_r8": {
+   "item_id": "hc_e002_q2_r8",
+   "original_reference": "כל ערך x בהיסטוגרמה ממופה ל2x בהיסטוגרמה החדשה",
+   "audited_reference": "כל ערך x בהיסטוגרמה ממופה ל2x בהיסטוגרמה החדשה",
+   "status": "confirmed",
+   "note": "",
+   "audited_at": "2026-08-22 03:18:15"
+  }
+ }
+}

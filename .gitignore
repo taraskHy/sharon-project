@@ -26,3 +26,8 @@ evaluation/grading_rag_ab_v1/state/
 
 # Graphify generated graph state (rebuild with: graphify update)
 graphify-out/
+
+# regenerable benchmark previews/proposals (frozen manifests embed the decisions)
+evaluation/hebrew_bench_v2/audit_metrics_preview.json
+evaluation/hebrew_bench_v2/verifier_bench/selection_proposal.json
+evaluation/hebrew_bench_v2/verifier_bench/synthetic_near_miss_proposal.json
