@@ -287,6 +287,40 @@ carries both through:
     evidence_sha256     = <fingerprint the FINAL was made against>
     evidence_repaired   = true
 
+## Verifying provenance (read-only)
+
+```powershell
+.\.venv\Scripts\python.exe -m labeling_app verify-provenance
+```
+
+Opens ONLY the database (no bundle, no dataset, no eligibility recompute), so it
+works while the server runs and whatever state the bundle is in. It reports what
+provenance the stored labels actually carry — per source, per grader, with
+`entered_by` / `provenance_asserted_by` — and **re-derives from the database's own
+event trail that recording provenance changed no score**: every
+`label_provenance_set` event stored the score the label had at that moment
+(`score_unchanged`), so comparing it with the score stored now either proves the
+backfill was inert or names the label where it was not (exit code 1). It also
+lists authoritative labels sitting on repaired evidence (valid — the repair stays
+recorded) and any stale label. It never writes and never "fixes" anything.
+
+Live deployment, 2026-08-23: 67 labels, all `original_instructor_grade`,
+`entered_by=Erik`, `provenance_asserted_by=owner`, all `saved` at revision 1;
+67 provenance events cross-checked, 0 scores changed; 9 authoritative labels on
+repaired evidence; 0 stale.
+
+## Three dimensions that are never collapsed
+
+| dimension | question it answers | where it lives | evidence repair affects it? |
+| --- | --- | --- | --- |
+| **ground truth** | what score is correct, and how was it derived | `labels.score` + `label_source` / `final_labels.ground_truth_source` | only for `human_independent_grading` |
+| **model evidence** | which crops the model-visible bundle shows, and whether they were ever repaired | `items.evidence_sha256`, `evidence_previous_sha256`, `evidence_changed_at` | that IS the dimension |
+| **transcription completeness** | does the frozen transcription cover every recorded line | dataset `transcription_complete` / `lines_without_audited_transcription` | independent of both |
+
+A case can have solid ground truth, repaired evidence and an incomplete
+transcription at the same time; the benchmark reports all three separately
+(`bench missing-transcriptions`, `role_dataset_status.scorable_for_accuracy`).
+
 ## Multiple graders, agreement, adjudication, FINAL
 
 - `labels` is keyed by `(item_id, grader)` — independent rows; nobody can

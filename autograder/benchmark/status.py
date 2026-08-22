@@ -61,21 +61,49 @@ def role_dataset_status(role: str, manifest: BenchmarkManifest | None = None, *,
     out.update({"cases": len(m.cases), "labeled": labeled, "counts": m.counts(), "hashes": m.hashes,
                 "manifest_status": m.status})
     if role in ("grade_primary", "grade_escalate"):
-        # human labels are owner work: count them explicitly
+        # Three INDEPENDENT dimensions, never collapsed:
+        #   ground truth   — does the case carry a human score?
+        #   model evidence — (recorded per case; a repair never invalidates an
+        #                     authoritative instructor-copied score)
+        #   transcription  — does the frozen transcription cover EVERY recorded
+        #                    line? The grading model reads the transcription, so a
+        #                    case whose transcription misses a line is not
+        #                    measurable for accuracy even when its score is solid.
         pending = len(m.cases) - labeled
+        incomplete = [c.case_id for c in m.cases if c.label.get("transcription_complete") is False]
+        labeled_incomplete = [c.case_id for c in m.cases
+                              if c.label.get(key) is not None and c.label.get("transcription_complete") is False]
+        scorable = labeled - len(labeled_incomplete)
+        out.update({"transcription_incomplete": len(incomplete),
+                    "transcription_incomplete_cases": sorted(incomplete),
+                    "labeled_not_scorable": len(labeled_incomplete),
+                    "scorable_for_accuracy": scorable})
+        transcription_action = (
+            f"transcribe {len(incomplete)} restored line(s) so their case is measurable "
+            f"(`python -m autograder bench missing-transcriptions --role {role}`)" if incomplete else None)
         if labeled == 0:
             out.update({"status": "NEEDS_OWNER_LABELS",
-                        "detail": f"{len(m.cases)} grading cases built; 0 owner-labeled",
+                        "detail": f"{len(m.cases)} grading cases built; 0 owner-labeled"
+                                  + (f"; {len(incomplete)} case(s) also lack a complete transcription" if incomplete else ""),
                         "owner_action": f"label {pending} grading case(s): shared tool `python -m labeling_app serve` "
                                         f"(friends via Cloudflare Tunnel; then `bench import-final-labels`) or the local "
                                         f"owner tool `python -m streamlit run scripts/grade_label_ui.py`"})
         elif pending:
             out.update({"status": "PARTIALLY_READY",
-                        "detail": f"{labeled}/{len(m.cases)} owner-labeled; unlabeled cases are run but "
-                                  "report decision metrics only",
+                        "detail": f"{labeled}/{len(m.cases)} owner-labeled ({scorable} scorable for accuracy); "
+                                  "unlabeled cases are run but report decision metrics only",
                         "owner_action": f"label the remaining {pending} grading case(s)"})
+        elif labeled_incomplete:
+            # every case has ground truth, but some are not measurable yet
+            out.update({"status": "PARTIALLY_READY",
+                        "detail": f"{labeled}/{len(m.cases)} owner-labeled; {scorable} scorable for accuracy — "
+                                  f"{len(labeled_incomplete)} case(s) have ground truth but an INCOMPLETE "
+                                  "transcription (a recorded line has no audited text), so they are excluded "
+                                  "from accuracy metrics until transcribed",
+                        "owner_action": transcription_action})
         else:
-            out.update({"status": "READY", "detail": f"{labeled}/{len(m.cases)} owner-labeled"})
+            out.update({"status": "READY",
+                        "detail": f"{labeled}/{len(m.cases)} owner-labeled, all transcriptions complete"})
         return out
     if labeled == len(m.cases):
         out.update({"status": "READY", "detail": f"{len(m.cases)} cases, all labeled"})

@@ -127,6 +127,34 @@ def cmd_evidence_report(args) -> int:
     return 0
 
 
+def cmd_verify_provenance(args) -> int:
+    """READ-ONLY verification of the stored label provenance. Opens ONLY the
+    database (no bundle, no dataset, no eligibility recompute) so it works while
+    the server runs and whatever state the bundle is in."""
+    from .db import LabelDB
+    data_dir = Path(args.data_dir) if args.data_dir else default_data_dir()
+    db_path = data_dir / "labels.db"
+    if not db_path.exists():
+        print(f"no database at {db_path}", file=sys.stderr)
+        return 2
+    rep = LabelDB(db_path).verify_provenance()
+    print(f"[provenance] labels: {rep['labels_total']} — by source: "
+          + ", ".join(f"{k}={v}" for k, v in rep["labels_by_source"].items() if v), file=sys.stderr)
+    print(f"[provenance] provenance events cross-checked: {rep['provenance_events_checked']}; "
+          f"scores changed since provenance was recorded: {len(rep['scores_changed_since_provenance_recorded'])}",
+          file=sys.stderr)
+    for g, d in sorted(rep["per_grader"].items()):
+        print(f"[provenance]   {g}: {d['labels']} label(s) {d['by_source']} entered_by={d['entered_by']} "
+              f"asserted_by={d['asserted_by']} revisions={d['revisions']} statuses={d['statuses']}", file=sys.stderr)
+    if rep["authoritative_labels_on_repaired_evidence"]:
+        print(f"[provenance] authoritative labels on repaired evidence: "
+              f"{len(rep['authoritative_labels_on_repaired_evidence'])} (valid; the repair stays recorded)",
+              file=sys.stderr)
+    print(f"[provenance] stale labels: {len(rep['stale_labels'])}", file=sys.stderr)
+    print(json.dumps({"db": str(db_path), **rep}, ensure_ascii=False, indent=1))
+    return 0 if rep["scores_unchanged"] else 1
+
+
 def cmd_set_provenance(args) -> int:
     """Record how an existing grader's scores were DERIVED. Never edits a score."""
     data_dir, bundle, db = _open(args)
@@ -297,6 +325,10 @@ def main(argv: list[str] | None = None) -> int:
     k = sub.add_parser("backup"); k.add_argument("--data-dir", default=None); k.add_argument("--bundle", default=None); k.add_argument("--copy-to", default=None); k.add_argument("--dataset", default=None); k.set_defaults(func=cmd_backup)
     t = sub.add_parser("status"); t.add_argument("--data-dir", default=None); t.add_argument("--bundle", default=None); t.add_argument("--dataset", default=None); t.set_defaults(func=cmd_status)
     v = sub.add_parser("evidence-report"); v.add_argument("--data-dir", default=None); v.add_argument("--bundle", default=None); v.add_argument("--dataset", default=None); v.set_defaults(func=cmd_evidence_report)
+    vp = sub.add_parser("verify-provenance", help="READ-ONLY: what provenance the stored labels carry, and proof "
+                                                  "from the audit trail that recording it changed no score")
+    vp.add_argument("--data-dir", default=None)
+    vp.set_defaults(func=cmd_verify_provenance)
     g = sub.add_parser("set-provenance", help="record HOW an existing grader's scores were derived (never edits a score)")
     g.add_argument("--grader", required=True)
     g.add_argument("--source", required=True, choices=list(LABEL_SOURCES))

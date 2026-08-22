@@ -262,6 +262,52 @@ def cmd_bench_repair_grading_evidence(args) -> int:
     return 0
 
 
+def cmd_bench_missing_transcriptions(args) -> int:
+    """Which grading cases are NOT measurable for model accuracy because a
+    recorded student line has no audited transcription — and exactly which line
+    that is. Read-only; the values come from the dataset's own evidence records,
+    nothing is OCR'd or inferred."""
+    m = load_manifest(args.role, bench_root=Path(args.bench_root), datasets_root=Path(args.datasets_root))
+    rows = []
+    for c in sorted(m.cases, key=lambda c: c.case_id):
+        missing = list(c.label.get("lines_without_audited_transcription") or [])
+        if not missing:
+            continue
+        lines = {e.get("sample_id"): e for e in (c.label.get("evidence_lines") or []) if e.get("sample_id")}
+        rows.append({
+            "case_id": c.case_id, "split": c.split,
+            "line_count": c.label.get("line_count"),
+            "lines_transcribed": (c.label.get("line_count") or 0) - len(missing),
+            "audited": f"{(c.label.get('line_count') or 0) - len(missing)}/{c.label.get('line_count')}",
+            "missing": [{"sample_id": s,
+                         "image": (lines.get(s) or {}).get("image"),
+                         "transcription_status": (lines.get(s) or {}).get("transcription_status"),
+                         "line_index": (lines.get(s) or {}).get("index")} for s in missing],
+            "line_inventory_source": c.label.get("line_inventory_source"),
+            "has_ground_truth_score": c.label.get("score") is not None,
+        })
+    out = {"role": args.role, "cases_total": len(m.cases), "cases_incomplete": len(rows),
+           "cases_complete": len(m.cases) - len(rows),
+           "note": ("the grading model reads the TRANSCRIPTION (autograder/escalation.grade_prompt builds a "
+                    "text-only request), so a line without an audited transcription is invisible to it: these "
+                    "cases keep their ground-truth score but are excluded from accuracy metrics"),
+           "cases": rows}
+    if args.json:
+        _emit(out, True)
+        return 0
+    print(f"{out['cases_incomplete']} of {out['cases_total']} {args.role} case(s) have an incomplete transcription")
+    for r in rows:
+        print(f"    {r['case_id']}")
+        for mrow in r["missing"]:
+            print(f"      missing: {mrow['sample_id']}")
+            print(f"      image:   {mrow['image']}")
+            print(f"      status:  {mrow['transcription_status']}")
+        print(f"      line_count: {r['line_count']}")
+        print(f"      audited: {r['audited']}")
+    print(out["note"])
+    return 0
+
+
 def cmd_bench_import_final_labels(args) -> int:
     """FINAL labels from the shared labeling app (labeling_app export) ->
     datasets/<role>/final_labels.json. Only agreement/adjudicated rows."""
@@ -437,6 +483,12 @@ def add_bench_commands(sub) -> None:
     p = bs.add_parser("owner-labels", help="grading roles: how many cases the owner still has to label")
     common(p)
     p.set_defaults(func=cmd_bench_owner_labels)
+
+    p = bs.add_parser("missing-transcriptions",
+                      help="grading roles: cases excluded from accuracy because a recorded line has no audited "
+                           "transcription, with the exact missing line ids")
+    common(p)
+    p.set_defaults(func=cmd_bench_missing_transcriptions)
 
     p = bs.add_parser("import-final-labels", help="import the shared labeling app's FINAL export into a grading dataset")
     common(p)

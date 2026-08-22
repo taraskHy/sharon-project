@@ -362,6 +362,28 @@ unaffected: every cell is explanation-only (`selected=None`) under
 `choice_and_explanation_independent`, so 67/67 remain human-labelable and the
 frozen files/hashes are unchanged.
 
+### GRADE_PRIMARY reads the transcription, not the crops (2026-08-23)
+
+`GradeAdapter.build_request` (`benchmark/roles.py`) → `escalation.grade_prompt`
+produces **exactly one `type: "text"` block**: question pack + rubric + official
+solution + selected option + the frozen transcription. No image block is ever
+attached to a `grade_primary` / `grade_escalate` call anywhere in the repo (the
+crop reaches only `ocr_verify`), and `GRADE_SYSTEM` tells the model to cite spans
+"from the student transcription".
+
+Consequence: a case whose frozen transcription does not cover every recorded
+handwritten line is **invisible in part** to the grading model, so it cannot
+participate in accuracy metrics even though its human ground truth is sound.
+`GradeAdapter.aggregate` excludes those cases and reports
+`labeled_excluded_transcription_incomplete`; `role_dataset_status` reports
+`scorable_for_accuracy` separately from `labeled`; the exact missing line ids come
+from `autograder bench missing-transcriptions --role grade_primary`.
+
+Today: 67 grading cases — 67 with ground truth, 58 scorable for accuracy, 9
+awaiting a human transcription of one restored line each (all nine upstream line
+annotations are `bad_segmentation`, i.e. the line crop itself is mis-segmented, so
+the remedy is a recrop + transcription, not typing over a bad crop).
+
 ### Spend safety — the live-call sequence (Part 7)
 
 ```
