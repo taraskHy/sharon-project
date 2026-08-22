@@ -17,6 +17,7 @@ evaluation/hebrew_bench_v2/grading_cache/
 courses/
 
 models.toml
+grader.toml
 gateway_cache/
 gateway_ledger/
 
@@ -34,3 +35,6 @@ evaluation/hebrew_bench_v2/verifier_bench/synthetic_near_miss_proposal.json
 
 # model-selection campaign state (cache + ledger); runs/ and HELD_OUT log are tracked
 evaluation/model_selection/state/
+
+# local Claude Code tooling config (browser preview launch)
+.claude/

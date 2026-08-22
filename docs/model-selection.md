@@ -38,6 +38,32 @@ silent REVIEW per item.
 | MC_RESOLVE_LOCAL | `mc_resolve` | local Ollama (kept) | B5a (baseline) |
 | RAG embedding | — | local bge-m3 (kept) | not in the race |
 
+## Reference ground truth — the 129 vs 102 accounting
+
+`autograder bench references` prints the explicit breakdown (frozen hashes:
+audit `eace95fc…`, items `25463e91…`, references `4a93e826…`):
+
+```
+129 total
+├── handwritten (manual audit required): 102   (86 handwritten_line + 16 handwritten_cell)
+│   ├── confirmed: 69   provenance class audited_confirmed
+│   ├── corrected: 33   provenance class audited_corrected (audited text used)
+│   └── ambiguous: 0
+└── other categories (text layer, no manual audit): 27
+    ├── printed_rtl 8, formula_printed 7, mixed_he_en 7, option_row_association 5
+    └── provenance class text_layer_mechanical: born-digital PDFs; the reference
+        is the embedded text layer (objective, mechanical provenance recorded per
+        item in references.json) — never model output, never a manual
+        transcription; outside the manual audit scope by rule
+```
+
+Deterministic gate: `benchmark.manifests.validate_reference_provenance` —
+every item participating in strict OCR scoring must carry one of
+`audited_confirmed | audited_corrected | text_layer_mechanical`; the runner
+refuses any other class (unchecked, ambiguous, unknown provenance) and the
+adapter never scores against it. No unaudited historical reference is used
+silently.
+
 ## B1 — OCR benchmark
 
 Frozen protocol preserved: `evaluation/hebrew_bench_v2` (129 items, 102
@@ -224,9 +250,29 @@ Configuration (prepared; no key installed, `/api/v1/key` never called):
   cost before / run cost / cost after, calls + tokens by model and by
   task. Attach it to the run record.
 
-Execution order when the owner installs the key: `scripts/openrouter_smoke.py`
-first (exactly 2 paid calls; validates routing/ledger/budget/secret
-hygiene), then B1 → B2 → B5 → B3 → B4 under the ceiling.
+Execution order when the owner installs the key (2026-08-22 decision —
+**OCR_PRIMARY before OCR_VERIFY**, smoke subsets first):
+
+1. `scripts/openrouter_smoke.py` (exactly 2 paid calls; routing / ledger /
+   budget / secret hygiene)
+2. OCR_PRIMARY smoke — `bench run --role ocr_primary --split dev --subset smoke`
+   (8 pre-registered DEV cases) per candidate
+3. OCR_PRIMARY DEV (60 cases) per surviving candidate
+4. OCR_PRIMARY CALIBRATION finalists (23 cases) → owner reads the report, writes
+   the winner into models.toml by hand
+5. OCR_VERIFY smoke — `--subset smoke` (12 pre-registered DEV cases: REAL
+   supported / omission / substitution / addition / number-sign / subtle +
+   SYNTHETIC digit / omission / deletion / duplication)
+6. OCR_VERIFY DEV (99 REAL + 44 SYNTHETIC, reported separately)
+7. OCR_VERIFY CALIBRATION finalists (67 + 27)
+8. **selected-OCR compatibility test**: take the actual errors produced by the
+   selected OCR_PRIMARY on DEV/CALIBRATION (its transcriptions vs the audited
+   references), build candidate/crop pairs from them, and test whether the
+   selected OCR_VERIFY catches them safely (FAR on those real errors). The
+   frozen REAL + SYNTHETIC verifier benchmark stays as it is; this is an
+   additional, later compatibility check.
+Then B5 (MC / variant / alignment as their datasets become READY), B3, B4
+under the same $10 ceiling. HELD_OUT is touched only by `bench final-eval`.
 
 ## Benchmark harness (2026-08-22, pre-API)
 
@@ -264,15 +310,71 @@ format under `evaluation/model_selection/datasets/<role>/`, writer
 B3 label reality is unchanged: no per-item owner labels exist, so the grade
 adapter reports accuracy metrics as *unavailable* until they do.
 
+### Pre-registered smoke subsets
+
+`evaluation/model_selection/smoke/<role>_smoke.json` — frozen BEFORE any new
+model output by deterministic rules (`benchmark/smoke.py`, rules
+`smoke-rules-v1`: each slot takes the smallest qualifying DEV case id).
+OCR_PRIMARY_SMOKE = 8 cases (ordinary line, difficult handwriting, short
+answer, longer answer, formula/numeric, mixed Hebrew/English, numeric
+handwritten cell, option-row association); OCR_VERIFY_SMOKE = 12 cases
+(3 REAL supported, REAL omission / substitution / unsupported addition /
+number-sign / subtle, SYNTHETIC digit substitution / short-token omission /
+char deletion / token duplication). Each file records the slot and rule per
+case and a `selection_sha256`; `bench run/dry-run --subset smoke` loads it,
+re-verifies the hash, refuses non-DEV splits, and never re-selects. The
+subsets are never optimized after results exist.
+
+### Dataset status per role (2026-08-22, `autograder readiness`)
+
+| role | status | dataset | labels | notes |
+|---|---|---|---|---|
+| OCR_PRIMARY | **READY** | frozen hebrew_bench_v2, 129 items (DEV 60 / CALIB 23 / HELD_OUT 46) | audited refs (102) + text-layer (27), all provenance-valid | smoke 8 |
+| OCR_VERIFY | **READY** | frozen REAL 303 + SYNTHETIC 136 | expected verdict per case | smoke 12; REAL/SYNTHETIC separate |
+| GRADE_PRIMARY | **NEEDS_OWNER_LABELS** | `evaluation/model_selection/datasets/grade_primary` — 67 cases (DEV 32 / CALIB 14 / HELD_OUT 21; writer Split A); 13 incomplete cells excluded | 0 owner labels; `owner_labels.json` via `scripts/grade_label_ui.py` | inputs = NO-RAG packs from the frozen key + audited transcriptions; runnable now for decision/validation metrics only |
+| GRADE_ESCALATE | **PENDING_OTHER_EXPERIMENT** | harvested by `bench build-escalation --from-run <grade_primary run>` | owner labels of the harvested cases | difficulty is never invented |
+| MC_RESOLVE | **READY** (DEV only, n=10) | `datasets/mc_resolve_cloud` — deterministic band crops of the 10 ambiguous prob rows | agent-audited answers (provenance on every label; owner verified 3 totals only) | expand before selecting a cloud resolver |
+| VARIANT_RESOLVE | **READY** (DEV only, n=16) | `datasets/variant_resolve` — marker-region crops (page-1 bottom third): 13 prob suits + 3 Stage-A flowers | 13 agent-audited suits (10 pinned by totals) + 3 operator content-verified flowers | production sends the full page; parity run can render locally |
+| ALIGN_RESOLVE | **NOT_AVAILABLE** | — | operator mapping exists (`sample_data/Exam_solution.alignment.json`) | printed booklet texts need an OCR pass (image scans, no text layer); canonical key artifact has a duplicate-prompt defect (Q3.9) |
+
+Builders: `bench build-grading | build-mc | build-variant | build-escalation | build-align`
+(`benchmark/datasets.py`; local deterministic processing; each refuses to overwrite). Owner
+labels: `python -m streamlit run scripts/grade_label_ui.py` writes
+`owner_labels.json` next to (never inside) the frozen dataset; `bench owner-labels
+--role grade_primary` reports the remaining count; the manifest merges confirmed
+labels and hashes the file into the run identity.
+
+### Spend safety — the live-call sequence (Part 7)
+
+```
+OPENROUTER_API_KEY exists -> GET /api/v1/key (explicit) -> record starting key usage
+  (+ local ledger at that instant) -> compare key delta vs ledger delta (show BOTH)
+  -> budget safe? (local cumulative + predicted < $10) -> call allowed
+```
+`spend.campaign_preflight` runs once per live run before any provider request
+(`runner._live_preflight`; cloud routes only). **The local ledger controls the
+$10 ceiling**; the account-side number is informational, and a disagreement
+(> $0.05 between the two deltas) refuses the run until the owner looks. The
+per-call BudgetManager check still guards every subsequent call (predicted cost
+from the local pricing table; the call that would cross $10 is refused before it
+starts; warning from $8).
+
 ### Split discipline (Part 3)
 
 - DEV may be inspected; CALIBRATION selects; HELD_OUT is reserved.
-- `--split held_out` is refused unless `--confirm-held-out` is passed; every
-  execution (including dry runs) is appended to
-  `evaluation/model_selection/HELD_OUT_EXECUTIONS.jsonl` with role, run id,
-  config hash and the consequence line. Once held-out results are inspected
-  and used to change anything, the split is **demoted to DEV** (record it in
-  docs/generalization.md) and is no longer reported as untouched.
+- HELD_OUT **cannot be dry-run or previewed at all**: `bench dry-run --split
+  held_out`, `bench run --split held_out` and `bench inspect --split held_out
+  --preview` all refuse ("HELD_OUT is reserved for final evaluation and cannot
+  be previewed/dry-run"). The ONLY path that executes it is
+  `bench final-eval --role R --candidate SLUG --confirm-held-out
+  --i-understand-this-spends-money` (live). Every final evaluation is appended
+  permanently to `evaluation/model_selection/HELD_OUT_EXECUTIONS.jsonl` with
+  role, run id, git commit, config hash, model, prompt/schema sha256, adapter
+  version and manifest hashes — written only once the run can actually
+  execute (credential + readiness checks passed). Once held-out results are
+  inspected and used to change anything, the split is **demoted to DEV**
+  (record it in docs/generalization.md) and can never again be treated as
+  unseen. Held-out labels/predictions are never shown by preview tools.
 - OCR_VERIFY: REAL and SYNTHETIC are always reported separately
   (`metrics.REAL`, `metrics.SYNTHETIC` with by-corruption-type and numeric
   FAR); `COMBINED_secondary` exists only as a secondary figure.

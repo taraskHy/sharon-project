@@ -46,7 +46,7 @@ sys.path.insert(0, str(REPO_ROOT))
 from autograder import jobs  # noqa: E402
 from autograder.template import ExamTemplate  # noqa: E402
 
-st.set_page_config(page_title="Exam Autograder", page_icon="📝", layout="wide")
+st.set_page_config(page_title="Exam Autograder", page_icon="📝", layout="wide", initial_sidebar_state="expanded")
 
 
 from autograder.reviewui import package_dirs  # noqa: E402  (configurable discovery roots)
@@ -314,7 +314,7 @@ with st.sidebar:
     else:
         st.caption("No batches yet — create one in Exam setup.")
 
-    with st.expander("Model backend (local)", expanded=False):
+    with st.expander("Advanced: local model backend", expanded=False):
         base_url = st.text_input("Server URL", _b.get("base_url", "http://localhost:11434/v1"))
         model = st.text_input("Model", _b.get("model", "qwen3-vl:8b-instruct"))
         structured_mode = st.selectbox(
@@ -362,7 +362,7 @@ grading_args = {
 # every `autograder grade` subprocess. No key/secrets are involved here.
 # ---------------------------------------------------------------------------
 with st.sidebar:
-    with st.expander("Grading route", expanded=False):
+    with st.expander("Advanced: grading route", expanded=False):
         _models_toml_path = REPO_ROOT / "models.toml"
         if _models_toml_path.exists():
             grading_mode = st.selectbox(
@@ -465,10 +465,14 @@ if screen == SCREEN_DASHBOARD:
             b[1].metric("This batch (ledger)", f"${jl['local_ledger']['cumulative_cost']:.4f}" if jl else "$0.0000",
                         help="Persistent usage ledger of this batch: <job>/exams/gateway_ledger/usage.jsonl")
             cl = sp["campaign"]
-            b[2].metric("Model-selection campaign", f"${cl['local_ledger']['cumulative_cost']:.4f}" if cl else "$0.0000",
-                        help="Campaign ledger (benchmarks). Policy: warning $8 / hard stop $10.")
+            _camp_cost = cl['local_ledger']['cumulative_cost'] if cl else 0.0
+            from autograder.spend import EXPERIMENT_HARD_STOP_USD, EXPERIMENT_WARN_USD
+            # one "$" only: Streamlit renders "$a / $b" as inline math
+            b[2].metric("Model-selection spend", f"${_camp_cost:.2f} of {EXPERIMENT_HARD_STOP_USD:.2f}",
+                        help=f"Campaign ledger (benchmarks): warning at ${EXPERIMENT_WARN_USD:.0f}, hard stop at "
+                             f"${EXPERIMENT_HARD_STOP_USD:.0f}; the call that would cross the ceiling is refused.")
             _bs = (cl or jl or {}).get("budget") or {}
-            b[3].metric("Campaign budget state", _bs.get("state", "OK"),
+            b[3].metric("Budget state", _bs.get("state", "OK"),
                         help=f"warn ${_bs.get('warn_usd', 8.0)} / hard ${_bs.get('hard_usd', 10.0)}")
 
         st.markdown("**Primary actions**")
@@ -634,7 +638,7 @@ elif screen == SCREEN_SETUP:
                 st.error("page numbers must be integers")
 
     # ---- step 4: automatic discovery + manual overrides ---------------------------
-    st.subheader("4 · Automatic discovery (variants, alignment)")
+    st.subheader("4 · Detect structure (automatic)")
     st.caption("When grading starts, the pipeline discovers exam variants, their marker symbols and the "
                "question alignment automatically and records every fact with its source. Unresolved "
                "structural issues become ONE package-level review item — never one per student. "
@@ -673,8 +677,10 @@ elif screen == SCREEN_SETUP:
             if alignment_staged is not None:
                 alignment_staged.replace(key_path.with_name(key_path.stem + ".alignment.json"))
 
-    # ---- step 5: question policies -----------------------------------------------
-    st.subheader("5 · Question grading policies")
+    # ---- step 5: resolve package issues (policies + preflight) ----------------------
+    st.subheader("5 · Resolve package issues")
+    st.caption("Grading policies and the package preflight. Anything blocking here is fixed ONCE for the "
+               "whole exam — never per student.")
     pol_path = key_path.with_name(key_path.stem + ".policies.json") if key_path is not None else None
     if pol_path is not None and pol_path.exists():
         try:
@@ -687,8 +693,7 @@ elif screen == SCREEN_SETUP:
                    "are inferred from the rubric automatically at the first grading run and recorded per "
                    "question. To override, place `<key>.policies.json` next to the key.")
 
-    # ---- step 6: preflight ----------------------------------------------------------
-    st.subheader("6 · Preflight")
+    # ---- step 5b: preflight ---------------------------------------------------------
     if key_path is not None and key_path.suffix == ".json":
         try:
             from autograder.key_parser import load_answer_key
@@ -709,8 +714,8 @@ elif screen == SCREEN_SETUP:
         st.caption("Preflight runs as soon as the answer key is parsed (first grading run for a PDF key) "
                    "and again on the Grading progress screen.")
 
-    # ---- students + create ------------------------------------------------------------
-    st.subheader("Students")
+    # ---- step 6: ready — students + create ---------------------------------------------
+    st.subheader("6 · Ready — add the students' scans")
     exams_upload = st.file_uploader(
         "Student exams — one/many PDFs or images, or ZIP archive(s)",
         type=["pdf", "png", "jpg", "jpeg", "tif", "tiff", "zip"],
@@ -1050,8 +1055,9 @@ elif screen == SCREEN_REVIEW:
                     done = resolved.get(key)
                     tier_name = PRIORITY_TIERS.get(it.priority_tier, "")
                     with st.container(border=True):
-                        st.markdown(f"**{it.reason_code} — {_reason_title(it.reason_code)}** · item `{key}` · "
-                                    f"{it.points_affected:g} pt(s) at stake · priority {it.priority_tier} ({tier_name})"
+                        st.markdown(f"**{it.reason_code} — {_reason_title(it.reason_code)}** · item `{key}`"
+                                    + (f" · {it.points_affected:g} pt(s) at stake" if it.points_affected else "")
+                                    + f" · priority {it.priority_tier} ({tier_name})"
                                     + (f" · ✅ resolved: *{done['decision']}*" if done else ""))
                         if it.explanation:
                             st.code(it.explanation, language=None)
@@ -1071,8 +1077,10 @@ elif screen == SCREEN_REVIEW:
                                 st.caption("transcription (immutable — what the grader read):")
                                 st.code(it.primary_transcription or "(empty)", language=None)
                             if it.kind == "mc":
-                                st.caption(f"deterministic candidates: {it.deterministic_candidate} | "
-                                           f"local read: {it.local_candidate} | cloud read: {it.cloud_candidate}")
+                                _fmt = lambda v: ("not recorded" if v in (None, [], "") else
+                                                  (", ".join(map(str, v)) if isinstance(v, (list, tuple)) else str(v)))
+                                st.caption(f"marks detected: {_fmt(it.deterministic_candidate)} · local model read: "
+                                           f"{_fmt(it.local_candidate)} · cloud model read: {_fmt(it.cloud_candidate)}")
                             if it.kind == "ocr" and it.secondary_transcription is not None:
                                 st.caption(f"second reading: {it.secondary_transcription!r}")
                             if it.kind == "grading":
@@ -1293,7 +1301,11 @@ elif screen == SCREEN_ADVANCED:
     bcols[2].metric("Campaign spent (ledger)", f"${cl['local_ledger']['cumulative_cost']:.4f}" if cl else "$0.0000")
     bcols[3].metric("Campaign state", (cl or {}).get("budget", {}).get("state", "OK"))
     if _roles.get("budget_section"):
-        st.caption(f"models.toml [budget]: {_roles['budget_section']}")
+        _mb = _roles["budget_section"]
+        st.caption(f"models.toml [budget]: campaign hard stop max_cost_total = {_mb.get('max_cost_total')} · "
+                   f"soft_fraction = {_mb.get('soft_fraction')} (warning at "
+                   f"{float(_mb.get('max_cost_total') or 0) * float(_mb.get('soft_fraction') or 0):.2f}) · "
+                   f"enabled = {_mb.get('enabled')}")
     for label, view in (("This batch", sp["job"]), ("Model-selection campaign", sp["campaign"])):
         with st.expander(f"{label} — local ledger" + ("" if view else " (no entries yet)")):
             if not view:

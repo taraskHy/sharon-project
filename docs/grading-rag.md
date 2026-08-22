@@ -89,3 +89,19 @@ anthropic-dev backends as the validated compatibility path. Remaining known
 non-gateway cloud surfaces: `--backend anthropic` (documented dev-comparison
 only) and the frozen `scripts/m2_*` bench harnesses (curated data, not the
 student pipeline).
+
+## Canonical data locations (2026-08-22)
+
+- **Course store:** `<repo>/courses` (anchored to the repository by
+  `courses.courses_root()`; `GRADER_COURSES_DIR` overrides). The CV index
+  (`courses/CV`: 1 source, 430 chunks, bge-m3, built 2026-08-10) was migrated
+  by COPY from the old PyCharm working copy on 2026-08-22 — no rebuild, no
+  embedding call; `courses.index_status("CV")` reports `indexed=True,
+  stale=False`. The active working copy no longer depends on the old copy.
+- **Jobs:** `<repo>/jobs` (anchored; `GRADER_JOBS_DIR` overrides).
+- **Exam packages:** `grader.toml [ui] package_dirs` (local machine config,
+  gitignored; `["packages", "sample_data", "prob_data"]` here) or
+  `GRADER_PACKAGE_DIRS`; the prob package (`prob_data/sol.answer_key.template.json`)
+  is discovered through that line.
+- **Model config:** `models.toml` (local, gitignored, all cloud roles
+  UNSELECTED); campaign state `evaluation/model_selection/state/`.

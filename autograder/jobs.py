@@ -46,7 +46,10 @@ FINAL_STATES = {"done", "failed"}
 
 
 def jobs_root() -> Path:
-    return Path(os.environ.get("GRADER_JOBS_DIR", "jobs"))
+    """GRADER_JOBS_DIR wins; default <repo>/jobs, anchored to the repository
+    (not the process CWD)."""
+    env = os.environ.get("GRADER_JOBS_DIR")
+    return Path(env) if env else Path(__file__).resolve().parents[1] / "jobs"
 
 
 def _now() -> str:

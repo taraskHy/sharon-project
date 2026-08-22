@@ -27,7 +27,7 @@ def test_readiness_report_is_complete_and_makes_no_network_calls(tmp_path, monke
     assert "NOT called" in rep["openrouter"]["key_metadata_endpoint"]
     assert rep["benchmarks"]["ocr_verify"]["status"] == "FROZEN"
     assert rep["benchmarks"]["ocr_primary"]["status"] == "FROZEN"
-    assert rep["benchmarks"]["grade_primary"]["status"] == "NOT_BUILT"
+    assert rep["benchmarks"]["grade_primary"]["status"] in ("FROZEN", "NOT_BUILT")
     roles = rep["model_roles"]["tasks"]
     assert roles["grade_primary"]["status"] == "UNSELECTED"
     assert roles["mc_resolve"]["status"] == "SELECTED_LOCAL"
@@ -39,10 +39,19 @@ def test_readiness_report_is_complete_and_makes_no_network_calls(tmp_path, monke
     assert rep["held_out"]["untouched"] is True and rep["held_out"]["executions"] == 0
     assert rep["gui"]["screens"] == ["Dashboard", "Exam setup", "Grading progress", "Review queue",
                                      "Results / export", "Advanced / diagnostics"]
-    assert any("OpenRouter credential is not configured" in b for b in rep["blockers"])
-    assert any("UNSELECTED" in b for b in rep["blockers"])
+    cats = {c["category"]: c for c in rep["categories"]}
+    assert cats["API KEY"]["status"] == "NOT INSTALLED" and cats["API KEY"]["ok"] is True
+    assert cats["REFERENCE GROUND TRUTH"]["status"] == "OK"
+    assert cats["OCR_PRIMARY DATASET"]["status"] == "READY" and "smoke frozen" in cats["OCR_PRIMARY DATASET"]["detail"]
+    assert cats["OCR_VERIFY DATASET"]["status"] == "READY"
+    assert cats["HELD_OUT PROTECTION"]["ok"] is True
+    assert cats["PRODUCTION VERIFIER"]["status"] == "BENCHMARK READY / PRODUCTION SAFE BUT UNAVAILABLE"
+    # the missing key NEVER appears as a blocker; the example config (with ${ENV} slugs) does
+    assert not any("credential" in b.lower() for b in rep["blockers"])
+    assert any("MODEL CONFIG" in b for b in rep["blockers"])
     assert rep["ready_for_zero_key_dry_run"] is True
     text = format_readiness(rep)
+    assert "PRE-API SETUP COMPLETE:" in text and "READY FOR API KEY:" in text
     assert "OpenRouter        : configured: NO" in text and "network calls     : 0" in text
     json.dumps(rep, default=str)          # serializable
 

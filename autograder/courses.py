@@ -73,8 +73,15 @@ DEFAULT_CHUNK_CONFIG = {
 }
 
 
+_REPO_ROOT = Path(__file__).resolve().parents[1]
+
+
 def courses_root() -> Path:
-    return Path(os.environ.get("GRADER_COURSES_DIR", "courses"))
+    """The course store. GRADER_COURSES_DIR wins; the default is <repo>/courses,
+    anchored to the repository (NOT the process CWD) so the UI, the CLI and the
+    grading subprocess always read the same store."""
+    env = os.environ.get("GRADER_COURSES_DIR")
+    return Path(env) if env else _REPO_ROOT / "courses"
 
 
 def course_dir(course_id: str) -> Path:

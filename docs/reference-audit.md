@@ -121,3 +121,14 @@ reviewed design.
    pool is mostly severe; subtle errors are scarce).
 5. Only then: model benchmarking per docs/model-selection.md (primary
    metric for OCR_VERIFY: false accept rate).
+
+## 129 vs 102 (2026-08-22)
+
+`autograder bench references` prints the explicit accounting: 129 items =
+102 manually audited handwritten items (69 confirmed / 33 corrected / 0
+ambiguous) + 27 born-digital items whose reference is the embedded PDF text
+layer (mechanical provenance; outside the manual audit scope by rule). Strict
+OCR scoring admits only the provenance classes `audited_confirmed`,
+`audited_corrected`, `text_layer_mechanical` (`benchmark.manifests.
+validate_reference_provenance`); anything else is refused, never silently
+replaced by an unaudited historical reference.

@@ -159,3 +159,13 @@ used to claim accuracy. Enforced by the guard test above.
 See docs/model-selection.md §Hygiene for the per-experiment record fields
 (dataset role, config hash, prompt version, model, thresholds,
 previously-inspected flag) and the HELD_OUT-becomes-DEV demotion rule.
+
+## Grading benchmark split (2026-08-22)
+
+The GRADE_PRIMARY dataset (67 audited cells) uses the SAME writer Split A as the
+OCR/verifier benchmarks (DEV e002/e003/e007, CALIBRATION e004, HELD_OUT e005/e006).
+Caveat recorded honestly: the owner READ every cell's transcription during the
+reference audit, so the held-out writers' transcriptions are not unseen by the
+owner — what remains unseen is every model's grading output on them; HELD_OUT is
+executed only by `bench final-eval`. The owner-scored subset the earlier plan
+wanted from the CALIBRATION exams (019…042) is still the cleaner long-term source.

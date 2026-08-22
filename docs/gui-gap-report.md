@@ -204,3 +204,17 @@ each source-verified before the change:
 | grouping / priorities / apply-to-all unwired | CONFIRMED (caption only) | grouped queue with reason titles + priority tiers; apply-to-all buttons wired to `ResolutionStore.apply_to_all(..., scope=apply_scope(group))` for exactly-mechanical groups (variant/layout); records `apply_to_all.jsonl` |
 | spend truth not surfaced from the persistent ledger (settings tab used `REPO_ROOT` ledger, jobs wrote `<job>/exams/gateway_ledger`) | CONFIRMED | `autograder/spend.py` over the batch ledger + the campaign ledger; Dashboard / Progress / Advanced read those files, never in-memory counters; OpenRouter key usage (GET /api/v1/key) shown next to them only on explicit click when a credential exists |
 | generic "AI uncertain" wording | CONFIRMED risk | every review item renders `REASON_CODE — title` from `reviewqueue.REASONS` + `render_explanation`; no generic message |
+
+## Visual pass (2026-08-22)
+
+The six screens were launched locally (`streamlit run autograder/webui.py`,
+demo batch, zero model calls) and reviewed through the in-app browser's
+accessibility tree (pixel screenshots were not available in this session: the
+Browser pane was not displayed and the Chrome extension was not connected).
+Changes made from that review: the Exam-setup wizard now reads 1 Course → 2
+Exam → 3 Key/rubric/solution → 4 Detect structure → 5 Resolve package issues →
+6 Ready; the Dashboard shows model-selection spend as `$x.xx / $10` with the
+$8 warning in the help text; the sidebar's technical expanders are labelled
+"Advanced: …" and the sidebar opens expanded; review items lead with the typed
+reason and the evidence/transcription block. A pixel-level pass (spacing,
+RTL rendering, dark/light) is still owed once a browser surface is available.

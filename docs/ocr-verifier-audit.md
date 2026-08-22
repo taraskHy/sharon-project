@@ -204,3 +204,16 @@ Everything around the missing crop producer is now wired and tested
   scan), trace stage and typed review reason apply unchanged.
 - GUI: the Review queue shows "no image evidence available for this item"
   and the batch-level reason; Advanced shows the provider status.
+
+### Exact status (2026-08-22)
+
+```
+BENCHMARK:   READY   (frozen REAL 303 + SYNTHETIC_NEAR_MISS 136; smoke 12; FAR primary)
+PRODUCTION:  SAFE BUT UNAVAILABLE
+             because calibrated explanation crop geometry does not exist.
+             current safe route: suspicious OCR -> no trusted crop -> REVIEW;
+             no verifier provider call; no invented coordinates; no full pages
+             sent to claim the verifier is wired.
+             ExplanationCropProvider stays the extension point for calibrated
+             template geometry.
+```
