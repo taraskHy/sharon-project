@@ -60,7 +60,8 @@
     <div class="card"><h3>Question</h3><div id="question" class="rtl"></div></div>
     <div class="card"><h3>Official solution / reference answer</h3><div id="solution" class="rtl"></div></div>
     <div class="card"><h3>Rubric / rules</h3><div id="rubric" class="rtl"></div><details class="small"><summary class="muted">general scoring rules</summary><div id="rules" class="rtl small"></div></details></div>
-    <div class="card"><h3>Student answer — image</h3><div id="images"></div><div id="noimg" class="hint" style="display:none">no image for this item</div></div>
+    <div class="card"><h3>Student answer — image</h3><div id="images"></div><div id="noimg" class="hint" style="display:none">no image for this item</div>
+      <div id="source" class="hint" style="margin-top:8px"></div></div>
     <div class="card"><h3>Student answer — transcription (what the grader reads)</h3><div id="transcription" class="rtl transcription"></div></div>
   </div>
   <div>
@@ -121,6 +122,19 @@
     const im = $("images"); im.innerHTML = "";
     (it.images || []).forEach(u => { const img = document.createElement("img"); img.className="crop"; img.src = u; img.alt = "student answer"; im.appendChild(img); });
     $("noimg").style.display = (it.images && it.images.length) ? "none" : "block";
+    const pv = it.provenance || {};
+    const parts = [];
+    if (pv.exam) parts.push("Exam " + esc(pv.exam));
+    if (pv.question_id) parts.push("Question " + esc(pv.question_id));
+    if (pv.part) parts.push("Part " + esc(pv.part));
+    parts.push(pv.page ? ("Page " + esc(pv.page)) : "Page: unavailable");
+    if (pv.case_id) parts.push("Case " + esc(pv.case_id));
+    if (pv.line_count > 1) parts.push(esc(pv.line_count) + " lines");
+    let src = "<strong>Source:</strong> " + parts.join(" · ");
+    if (pv.page_url) src += ` &nbsp;<a href="${pv.page_url}" target="_blank" rel="noopener">[View full source page]</a> <span class="muted">(instructor marks removed; context only — grade the crop)</span>`;
+    else src += " <span class='muted'>· full source page: unavailable</span>";
+    if (pv.unavailable && pv.unavailable.length) src += `<div class="muted small">not recorded: ${esc(pv.unavailable.join("; "))}</div>`;
+    $("source").innerHTML = src;
     $("maxs").textContent = `(max ${fmt(it.max_score)})`;
     const sc = $("scores"); sc.innerHTML = "";
     for (let v = 0; v <= it.max_score + 1e-9; v += 0.5) {

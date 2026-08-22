@@ -25,7 +25,7 @@ by uvicorn — same deployment shape; switching to FastAPI later is mechanical.
 | path | what |
 |---|---|
 | `%LOCALAPPDATA%\autograder\labeling\labels.db` (+ `-wal`, `-shm` while running) | the live database — authoritative while the server runs |
-| `…\labeling\bundle\` | anonymized item bundle (`bundle.json`, `items.json`, `images/`, `private/id_map.json`) |
+| `…\labeling\bundle\` | anonymized item bundle (`bundle.json`, `items.json`, `images/`, `pages/` (red-ink-masked source pages), `private/id_map.json`, `private/provenance.json`) |
 | `…\labeling\exports\final_labels.json` | last export of FINAL labels |
 | `…\labeling\backups\<stamp>\` | snapshots (`labels.db` copy via the SQLite backup API + `final_labels.json` + manifest) |
 
@@ -75,6 +75,39 @@ rubric items (`Q W E R T`), note → **Save & next** (`Enter`) / **Skip** (`S`) 
 **Flag** (`F`). Progress bar shows the grader's own counts and the overall
 coverage. "Review my skipped items" re-serves skipped ones. A grader resuming
 sees only *their own* earlier answer.
+
+## Source provenance (context, not ground truth)
+
+Each item carries explicit provenance taken from the upstream records — never
+reconstructed from the opaque id:
+
+| field | source | shown to graders |
+|---|---|---|
+| exam (e.g. `003`) | writer code of the benchmark case (`e003` → exam 003) | yes |
+| case id (e.g. `e003_q1_r1`) | dataset case id | yes |
+| question / part (row) | dataset case id | yes |
+| page number | e002 cells: `evaluation/hebrew_bench/crops_manifest.json`; e003–e007 lines: `evaluation/htr_pilot_sources.json` (q1 → page 11, q2 → page 12) | yes |
+| line count | dataset `transcription_items` | yes |
+| line bounding box on the page | **not recorded upstream → "unavailable"** | reported as unavailable |
+| source PDF filename (`test/003_70.pdf`) | carries the instructor's **total grade** in its name → **private** (`bundle/private/provenance.json`, admin view only) | no |
+
+The grader page shows `Source: Exam 003 · Question 1 · Part r1 · Page 11 ·
+Case e003_q1_r1` under the crop and a **[View full source page]** link
+(`/api/pages/<item>`). The full page is rendered locally from the PDF with the
+instructor's red ink masked (dilated red-dominance mask → white: per-row
+ticks/crosses, the question total and margin notes disappear); a page is
+served only when ≤ 60 strict-red pixels remain, otherwise "full source page:
+unavailable". The crop stays the primary grading evidence. The page never shows
+expected labels, model output or other graders' scores (it is the student's
+sheet with instructor marks removed).
+
+`tests/test_labeling_provenance.py` proves correspondence: every item's
+provenance equals the dataset case (exam/question/row/line count), the page
+number comes from the named upstream record, the served page bytes equal a
+fresh masked render of that (file, page) with zero strict-red pixels, and the
+crop pixels are found inside the unmasked render of that page by normalized
+cross-correlation (e002 cell 0.95 vs 0.48 on another exam's page; e003 line
+0.56 vs 0.28).
 
 ## Multiple graders, agreement, adjudication, FINAL
 

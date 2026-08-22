@@ -58,12 +58,12 @@ def test_bundle_is_anonymized_and_self_contained(bundle_dir):
     items = json.loads((bundle_dir / "items.json").read_text(encoding="utf-8"))
     assert len(items) == 67
     text = (bundle_dir / "items.json").read_text(encoding="utf-8")
-    for forbidden in ("sharon-project", "C:\\\\", "e002_", "e003_", "hebrew_bench", "crops/", "DEV", "HELD_OUT",
-                      '"split"', '"writer"', "provenance", "label_status"):
+    for forbidden in ("sharon-project", "C:\\\\", "hebrew_bench", "crops/", "DEV", "HELD_OUT", "CALIBRATION",
+                      '"split"', '"writer"', "label_status", "source_file", ".pdf", "transcription_provenance"):
         assert forbidden not in text, forbidden
     for it in items:
         assert set(it) == {"item_id", "question_text", "rubric", "scoring_rules", "official_solution",
-                           "transcription", "max_score", "rubric_items", "images"}
+                           "transcription", "max_score", "rubric_items", "images", "provenance"}
         assert re.fullmatch(r"g[0-9a-f]{10}", it["item_id"])
         assert not (set(it) & set(FORBIDDEN_IN_BUNDLE))
         for rel in it["images"]:
@@ -104,10 +104,10 @@ def test_claim_save_next_skip_flag_rubric_and_resume(app):
     it = r["item"]
     assert it and it["my_label"] is None and it["label_revision"] == 0
     # grader payload never carries evaluation-side fields
-    for k in ("expected", "label", "split", "writer", "case_id", "model", "confidence", "provenance"):
+    for k in ("expected", "label", "split", "writer", "model", "confidence", "source_file", ".pdf"):
         assert k not in json.dumps({kk: v for kk, v in it.items() if kk not in ("my_label", "label_revision")}), k
     assert set(it) == {"item_id", "question_text", "rubric", "scoring_rules", "official_solution", "transcription",
-                       "max_score", "rubric_items", "images", "my_label", "label_revision", "final"}
+                       "max_score", "rubric_items", "images", "provenance", "my_label", "label_revision", "final"}
     assert g.get(it["images"][0]).status_code == 200
     # save with rubric decision
     rid = it["rubric_items"][0]["id"]

@@ -8,6 +8,7 @@
     GET  /api/items/{id}        one item (grader view: own label only)
     POST /api/items/{id}/label  save / skip / flag  (expected_revision -> 409 when stale)
     GET  /api/images/{id}/{n}   answer crop
+    GET  /api/pages/{id}        full source page (red instructor ink masked; only when available)
     GET  /api/my-items
     admin: /api/admin/summary | /items | /items/{id} | /items/{id}/final | /finalize-agreement |
            /reopen | /policy | /export | /backup | /events
@@ -192,6 +193,16 @@ async def api_image(request: Request) -> Response:
     return FileResponse(str(p), media_type="image/png", headers={"Cache-Control": "private, max-age=3600"})
 
 
+async def api_page(request: Request) -> Response:
+    """The full source page for an item (instructor red ink masked at build
+    time; served only when the bundle marked it available)."""
+    item_id = request.path_params["item_id"]
+    p = request.app.state.bundle.page_path(item_id)
+    if p is None:
+        return JSONResponse({"error": "no source page available for this item"}, status_code=404)
+    return FileResponse(str(p), media_type="image/png", headers={"Cache-Control": "private, max-age=3600"})
+
+
 async def api_my_items(request: Request) -> Response:
     g = _need_grader(request)
     if isinstance(g, Response):
@@ -232,6 +243,7 @@ async def api_admin_item(request: Request) -> Response:
     ov = db.overview(item_id)
     ov["case_id"] = bundle.id_map.get(item_id)
     ov["content"] = bundle.grader_payload(item_id)
+    ov["provenance_private"] = bundle.private_provenance.get(item_id)     # admin only (source file etc.)
     return JSONResponse(ov)
 
 
@@ -344,6 +356,7 @@ def create_app(*, data_dir: Path, bundle_dir: Path | None = None, admin_key: str
         Route("/api/items/{item_id}", api_item),
         Route("/api/items/{item_id}/label", api_label, methods=["POST"]),
         Route("/api/images/{item_id}/{n}", api_image),
+        Route("/api/pages/{item_id}", api_page),
         Route("/api/admin/summary", api_admin_summary),
         Route("/api/admin/items", api_admin_items),
         Route("/api/admin/items/{item_id}", api_admin_item),
