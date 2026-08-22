@@ -11,6 +11,9 @@
     backup        [--data-dir DIR] [--copy-to DIR]
     status        [--data-dir DIR]
     evidence-report [--data-dir DIR] [--bundle DIR]   preserved / stale / unknown labels per case (exact)
+    set-provenance --grader G --source S [--asserted-by WHO] [--items CASE...] [--dry-run]
+                                                     record HOW existing scores were derived
+                                                     (label_source/entered_by/source_ref); never edits a score
 
 Data directory (the ONLY place live state lives; keep it OUT of OneDrive):
     %LOCALAPPDATA%\\autograder\\labeling\\   (override: LABELING_DATA_DIR or --data-dir)
@@ -62,6 +65,17 @@ def _print_evidence_report(rep: dict, id_map: dict[str, str], *, file=sys.stderr
     print(f"[evidence] labels stale     : {rep['labels_stale']} (evidence changed after the label; re-review required)", file=file)
     print(f"[evidence] labels unknown   : {rep['labels_unknown_evidence']} (no fingerprint on record)", file=file)
     print(f"[evidence] FINALs stale     : {rep['finals_stale']} / {rep['finals_total']}", file=file)
+    by_src = rep.get("labels_by_source") or {}
+    if by_src:
+        print("[evidence] labels by provenance: "
+              + ", ".join(f"{k}={v}" for k, v in sorted(by_src.items()) if v), file=file)
+    auth_rep = rep.get("authoritative_labels_on_repaired_evidence") or []
+    if auth_rep:
+        print(f"[evidence] authoritative labels on REPAIRED evidence: {len(auth_rep)} "
+              f"(score came from the complete original grading -> still valid, NOT re-review work)", file=file)
+        for r in auth_rep:
+            print(f"[evidence]   VALID (repaired evidence)  case {cid(r['item_id'])}  grader {r['grader']}  "
+                  f"source {r['label_source']}", file=file)
     changed = rep.get("items_evidence_changed") or []
     print(f"[evidence] items whose evidence changed: {len(changed)}"
           + (": " + ", ".join(sorted(cid(r['item_id']) for r in changed)) if changed else ""), file=file)
@@ -107,6 +121,50 @@ def cmd_evidence_report(args) -> int:
     rep["affected_case_ids"] = sorted({r["case_id"] for r in rep.get("items_evidence_changed", []) if r.get("case_id")})
     _print_evidence_report(rep, bundle.id_map)
     print(json.dumps({"data_dir": str(data_dir), "db": str(db.path), **rep}, ensure_ascii=False, indent=1))
+    return 0
+
+
+def cmd_set_provenance(args) -> int:
+    """Record how an existing grader's scores were DERIVED. Never edits a score."""
+    data_dir, bundle, db = _open(args)
+    refs: dict[str, str] = {}
+    if not args.no_source_ref:
+        # source_ref = the authoritative origin of the score: the original graded
+        # exam file (kept private: its name carries the instructor total) + case id
+        for iid, pv in (bundle.private_provenance or {}).items():
+            src = pv.get("source_file")
+            case = pv.get("case_id") or bundle.id_map.get(iid, iid)
+            if src:
+                refs[iid] = f"{src}#{case}"
+    item_ids = None
+    if args.items:
+        by_case = {v: k for k, v in bundle.id_map.items()}
+        item_ids = [by_case.get(x, x) for x in args.items]
+    out = db.set_label_provenance(grader=args.grader, label_source=args.source,
+                                  entered_by=args.entered_by or args.grader,
+                                  asserted_by=args.asserted_by, source_refs=refs,
+                                  item_ids=item_ids, actor=args.asserted_by or "system",
+                                  dry_run=args.dry_run)
+    cid = lambda i: bundle.id_map.get(i, i)  # noqa: E731
+    for row in out["applied"]:
+        row["case_id"] = cid(row["item_id"])
+    for row in out["skipped"]:
+        row["case_id"] = cid(row["item_id"])
+    tag = "DRY RUN — nothing written" if args.dry_run else "applied"
+    print(f"[provenance] {tag}: {out['applied_count']} label(s) of grader {args.grader!r} "
+          f"-> {args.source}", file=sys.stderr)
+    print(f"[provenance] asserted_by={out['asserted_by'] or '(unset)'} "
+          f"entered_by={out['entered_by']} — an ASSERTION recorded as such, not machine-verified",
+          file=sys.stderr)
+    print(f"[provenance] scores modified: {out['scores_modified']} (this command never edits a score)",
+          file=sys.stderr)
+    if out["skipped"]:
+        print(f"[provenance] skipped {out['skipped_count']}:", file=sys.stderr)
+        for r in out["skipped"]:
+            print(f"[provenance]   {r['case_id']}: {r['reason']}", file=sys.stderr)
+    if not args.dry_run:
+        out["evidence_report"] = db.evidence_report()
+    print(json.dumps(out, ensure_ascii=False, indent=1))
     return 0
 
 
@@ -208,6 +266,7 @@ def cmd_status(args) -> int:
 
 
 def main(argv: list[str] | None = None) -> int:
+    from .db import LABEL_SOURCES
     p = argparse.ArgumentParser(prog="labeling_app", description="shared human grading-label tool (no AI)")
     sub = p.add_subparsers(dest="cmd", required=True)
     b = sub.add_parser("build-bundle"); b.add_argument("--dataset", default=str(REPO_ROOT / "evaluation" / "model_selection" / "datasets" / "grade_primary")); b.add_argument("--out", default=None)
@@ -223,6 +282,16 @@ def main(argv: list[str] | None = None) -> int:
     k = sub.add_parser("backup"); k.add_argument("--data-dir", default=None); k.add_argument("--bundle", default=None); k.add_argument("--copy-to", default=None); k.add_argument("--dataset", default=None); k.set_defaults(func=cmd_backup)
     t = sub.add_parser("status"); t.add_argument("--data-dir", default=None); t.add_argument("--bundle", default=None); t.add_argument("--dataset", default=None); t.set_defaults(func=cmd_status)
     v = sub.add_parser("evidence-report"); v.add_argument("--data-dir", default=None); v.add_argument("--bundle", default=None); v.add_argument("--dataset", default=None); v.set_defaults(func=cmd_evidence_report)
+    g = sub.add_parser("set-provenance", help="record HOW an existing grader's scores were derived (never edits a score)")
+    g.add_argument("--grader", required=True)
+    g.add_argument("--source", required=True, choices=list(LABEL_SOURCES))
+    g.add_argument("--entered-by", default=None, help="who keyed the score in (default: the grader)")
+    g.add_argument("--asserted-by", default="", help="who ASSERTS this provenance (e.g. owner) — stored, not verified")
+    g.add_argument("--items", nargs="*", default=None, help="case ids to limit to (default: all of the grader's labels)")
+    g.add_argument("--no-source-ref", action="store_true", help="do not record the private source file reference")
+    g.add_argument("--dry-run", action="store_true")
+    g.add_argument("--data-dir", default=None); g.add_argument("--bundle", default=None); g.add_argument("--dataset", default=None)
+    g.set_defaults(func=cmd_set_provenance)
     args = p.parse_args(argv)
     return args.func(args)
 

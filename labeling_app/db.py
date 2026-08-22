@@ -50,9 +50,29 @@ from . import SCHEMA_VERSION
 
 LABEL_STATUSES = ("saved", "skipped", "flagged")
 FINAL_SOURCES = ("agreement", "adjudicated")
+#: PROVENANCE of a label's score — how the number was DERIVED. Deliberately
+#: independent of ``evidence_sha256``, which records WHICH evidence version was
+#: on screen. The two answer different questions and must not be conflated:
+#:  * human_independent_grading — the grader judged the student's answer from the
+#:    evidence the app displayed. A later evidence correction can invalidate it
+#:    (the grader judged something incomplete) -> STALE, re-review required.
+#:  * original_instructor_grade — the score was COPIED from the authoritative
+#:    original instructor-graded exam, for the whole grading unit. It never
+#:    depended on what the app displayed, so repairing the app-visible evidence
+#:    does NOT invalidate it.
+#:  * adjudicated — an adjudicator's resolution of conflicting labels.
+LABEL_SOURCES = ("human_independent_grading", "original_instructor_grade", "adjudicated")
+DEFAULT_LABEL_SOURCE = "human_independent_grading"
+#: sources whose score comes from OUTSIDE the app's evidence -> never evidence-stale,
+#: and never subject to ordinary second-grader agreement (they are not a judgment
+#: of the answer, they are a transcription of an authoritative existing grade).
+AUTHORITATIVE_LABEL_SOURCES = ("original_instructor_grade",)
 CLAIM_TTL_S = 30 * 60
 #: item state when a saved/flagged label (or the FINAL) predates an evidence change
 STATE_EVIDENCE_REVIEW = "NEEDS_REVIEW_AFTER_EVIDENCE_CHANGE"
+#: item state when ground truth is an authoritative original-instructor grade:
+#: complete, and NOT awaiting a second independent grader (see LABEL_SOURCES)
+STATE_AUTHORITATIVE = "AUTHORITATIVE_GROUND_TRUTH"
 
 
 class StaleWrite(RuntimeError):
@@ -71,10 +91,23 @@ def _now() -> str:
     return time.strftime("%Y-%m-%d %H:%M:%S")
 
 
-def _is_stale(label_fp: str | None, current_fp: str | None) -> bool:
+def _is_stale(label_fp: str | None, current_fp: str | None, label_source: str | None = None) -> bool:
     """A label is stale only when BOTH fingerprints are known and differ; an
-    unknown fingerprint is reported as unknown, never assumed stale or fresh."""
+    unknown fingerprint is reported as unknown, never assumed stale or fresh.
+
+    PROVENANCE-AWARE: a label whose score was copied from the authoritative
+    original instructor grading (``AUTHORITATIVE_LABEL_SOURCES``) did not come
+    from the app's evidence at all, so repairing that evidence cannot invalidate
+    it — it is never stale. Independent human grading still goes stale, because
+    that judgment WAS formed from the evidence that changed."""
+    if label_source in AUTHORITATIVE_LABEL_SOURCES:
+        return False
     return bool(label_fp) and bool(current_fp) and label_fp != current_fp
+
+
+def _sql_tuple(values) -> str:
+    """SQL literal tuple for a STATIC, code-controlled set (never user input)."""
+    return "(" + ", ".join("'" + str(v).replace("'", "''") + "'" for v in values) + ")"
 
 
 DDL = [
@@ -112,6 +145,11 @@ DDL = [
         created_at TEXT NOT NULL,
         updated_at TEXT NOT NULL,
         evidence_sha256 TEXT,
+        label_source TEXT NOT NULL DEFAULT 'human_independent_grading',
+        entered_by TEXT NOT NULL DEFAULT '',
+        source_ref TEXT NOT NULL DEFAULT '',
+        provenance_asserted_by TEXT NOT NULL DEFAULT '',
+        provenance_asserted_at TEXT,
         PRIMARY KEY (item_id, grader))""",
     """CREATE TABLE IF NOT EXISTS final_labels (
         item_id TEXT PRIMARY KEY,
@@ -124,7 +162,8 @@ DDL = [
         from_revisions TEXT NOT NULL DEFAULT '{}',
         finalized_at TEXT NOT NULL,
         schema_version INTEGER NOT NULL,
-        evidence_sha256 TEXT)""",
+        evidence_sha256 TEXT,
+        ground_truth_source TEXT NOT NULL DEFAULT 'human_independent_grading')""",
     """CREATE TABLE IF NOT EXISTS events (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         ts TEXT NOT NULL,
@@ -142,8 +181,14 @@ DDL = [
 _MIGRATIONS = {
     "items": (("eligible", "INTEGER NOT NULL DEFAULT 1"), ("evidence_sha256", "TEXT"),
               ("evidence_previous_sha256", "TEXT"), ("evidence_changed_at", "TEXT")),
-    "labels": (("evidence_sha256", "TEXT"),),
-    "final_labels": (("evidence_sha256", "TEXT"),),
+    "labels": (("evidence_sha256", "TEXT"),
+               ("label_source", "TEXT NOT NULL DEFAULT 'human_independent_grading'"),
+               ("entered_by", "TEXT NOT NULL DEFAULT ''"),
+               ("source_ref", "TEXT NOT NULL DEFAULT ''"),
+               ("provenance_asserted_by", "TEXT NOT NULL DEFAULT ''"),
+               ("provenance_asserted_at", "TEXT")),
+    "final_labels": (("evidence_sha256", "TEXT"),
+                     ("ground_truth_source", "TEXT NOT NULL DEFAULT 'human_independent_grading'")),
 }
 
 
@@ -307,27 +352,43 @@ class LabelDB:
         with self._conn() as c:
             labels = c.execute(
                 "SELECT l.item_id, l.grader, l.status, l.revision, l.updated_at, l.evidence_sha256 AS fp, "
-                "i.evidence_sha256 AS cur, i.evidence_changed_at FROM labels l JOIN items i ON i.item_id=l.item_id "
+                "l.label_source AS src, l.entered_by, l.source_ref, l.provenance_asserted_by, "
+                "i.evidence_sha256 AS cur, i.evidence_changed_at, i.evidence_previous_sha256 "
+                "FROM labels l JOIN items i ON i.item_id=l.item_id "
                 "ORDER BY l.item_id, l.grader").fetchall()
             finals = c.execute(
-                "SELECT f.item_id, f.source, f.finalized_at, f.evidence_sha256 AS fp, i.evidence_sha256 AS cur "
+                "SELECT f.item_id, f.source, f.ground_truth_source AS gts, f.finalized_at, "
+                "f.evidence_sha256 AS fp, i.evidence_sha256 AS cur "
                 "FROM final_labels f JOIN items i ON i.item_id=f.item_id ORDER BY f.item_id").fetchall()
             changed = [dict(r) for r in c.execute(
                 "SELECT item_id, evidence_previous_sha256, evidence_sha256, evidence_changed_at FROM items "
                 "WHERE evidence_changed_at IS NOT NULL ORDER BY item_id")]
-        stale = [r for r in labels if _is_stale(r["fp"], r["cur"])]
+        stale = [r for r in labels if _is_stale(r["fp"], r["cur"], r["src"])]
         unknown = [r for r in labels if r["fp"] is None]
-        stale_f = [r for r in finals if _is_stale(r["fp"], r["cur"])]
+        stale_f = [r for r in finals if _is_stale(r["fp"], r["cur"], r["gts"])]
+        authoritative = [r for r in labels
+                         if (r["src"] or DEFAULT_LABEL_SOURCE) in AUTHORITATIVE_LABEL_SOURCES]
+        # Authoritative labels on an item whose evidence WAS repaired: the score
+        # stands (it came from the complete original grading), but the repair is
+        # still recorded. Two separate facts, reported separately, never merged.
+        auth_repaired = [r for r in authoritative
+                         if r["evidence_changed_at"] and _is_stale(r["fp"], r["cur"])]
 
         def _lab(r):
             return {"item_id": r["item_id"], "grader": r["grader"], "status": r["status"], "revision": r["revision"],
-                    "updated_at": r["updated_at"], "evidence_changed_at": r["evidence_changed_at"]}
+                    "updated_at": r["updated_at"], "evidence_changed_at": r["evidence_changed_at"],
+                    "label_source": r["src"] or DEFAULT_LABEL_SOURCE}
         return {
             "labels_total": len(labels),
             "labels_preserved": len(labels),                   # nothing is ever deleted
             "labels_fresh": len(labels) - len(stale) - len(unknown),
             "labels_stale": len(stale),
             "labels_unknown_evidence": len(unknown),
+            "labels_by_source": {k: sum(1 for r in labels if (r["src"] or DEFAULT_LABEL_SOURCE) == k)
+                                 for k in LABEL_SOURCES},
+            "labels_authoritative": len(authoritative),
+            # authoritative labels whose evidence was repaired: still valid, NOT re-review work
+            "authoritative_labels_on_repaired_evidence": [_lab(r) for r in auth_repaired],
             "stale_labels": [_lab(r) for r in stale],
             "unknown_evidence_labels": [_lab(r) for r in unknown],
             "finals_total": len(finals),
@@ -392,22 +453,33 @@ class LabelDB:
             rows = c.execute("""
                 SELECT i.item_id, i.wanted_labels, i.eligible, i.evidence_sha256 AS cur_fp,
                        (SELECT COUNT(*) FROM labels l WHERE l.item_id=i.item_id AND l.status='saved'
-                          AND (l.evidence_sha256 IS NULL OR i.evidence_sha256 IS NULL
+                          AND (l.label_source IN {auth}
+                               OR l.evidence_sha256 IS NULL OR i.evidence_sha256 IS NULL
                                OR l.evidence_sha256 = i.evidence_sha256)) AS n_saved,
+                       (SELECT COUNT(*) FROM labels l WHERE l.item_id=i.item_id AND l.status='saved'
+                          AND l.label_source IN {auth}) AS n_authoritative,
                        (SELECT COUNT(*) FROM labels l WHERE l.item_id=i.item_id AND l.grader=? ) AS mine,
                        (SELECT status FROM labels l WHERE l.item_id=i.item_id AND l.grader=?) AS my_status,
                        (SELECT evidence_sha256 FROM labels l WHERE l.item_id=i.item_id AND l.grader=?) AS my_fp,
+                       (SELECT label_source FROM labels l WHERE l.item_id=i.item_id AND l.grader=?) AS my_src,
                        (SELECT COUNT(*) FROM claims k WHERE k.item_id=i.item_id AND k.grader<>?) AS claimed_by_others,
                        (SELECT COUNT(*) FROM final_labels f WHERE f.item_id=i.item_id) AS is_final
-                FROM items i ORDER BY i.item_id""", (grader, grader, grader, grader)).fetchall()
+                FROM items i ORDER BY i.item_id""".format(auth=_sql_tuple(AUTHORITATIVE_LABEL_SOURCES)),
+                (grader, grader, grader, grader, grader)).fetchall()
 
             def _my_stale(r) -> bool:
-                return bool(r["mine"]) and _is_stale(r["my_fp"], r["cur_fp"])
+                return bool(r["mine"]) and _is_stale(r["my_fp"], r["cur_fp"], r["my_src"])
 
             def _eligible(r) -> bool:
                 if not r["eligible"]:            # policy decides this item's score; no human label wanted
                     return False
                 if r["is_final"]:
+                    return False
+                # Ground truth here is an authoritative original-instructor grade.
+                # An independent grading of the answer is not comparable to it, so a
+                # second label is never requested to satisfy wanted_labels, and the
+                # item is never handed back because its evidence was repaired.
+                if r["n_authoritative"]:
                     return False
                 if _my_stale(r):                 # my own label predates an evidence change: re-review it
                     return True
@@ -442,12 +514,18 @@ class LabelDB:
     def _label_dict(r: sqlite3.Row, current_fp: str | None = None) -> dict:
         d = dict(r)
         d["rubric"] = json.loads(d.get("rubric") or "[]")
-        d["evidence_stale"] = _is_stale(d.get("evidence_sha256"), current_fp)
+        d["label_source"] = d.get("label_source") or DEFAULT_LABEL_SOURCE
+        d["authoritative"] = d["label_source"] in AUTHORITATIVE_LABEL_SOURCES
+        # an authoritative (instructor-copied) score never goes stale on an
+        # evidence repair; an independent judgment still does
+        d["evidence_stale"] = _is_stale(d.get("evidence_sha256"), current_fp, d["label_source"])
         return d
 
     def save_label(self, item_id: str, grader: str, *, score: float | None, rubric: list[str] | None,
                    note: str = "", status: str = "saved", flag_reason: str = "",
-                   expected_revision: int = 0, client_evidence_sha256: str | None = None) -> dict:
+                   expected_revision: int = 0, client_evidence_sha256: str | None = None,
+                   label_source: str = DEFAULT_LABEL_SOURCE, entered_by: str = "",
+                   source_ref: str = "") -> dict:
         """Create/update THIS grader's label for the item. ``expected_revision``
         is the revision the client loaded (0 = no label yet). Stale → StaleWrite.
         ``client_evidence_sha256`` (what the client's page showed) must equal
@@ -455,6 +533,8 @@ class LabelDB:
         otherwise. The label records the CURRENT fingerprint (server truth)."""
         if status not in LABEL_STATUSES:
             raise LabelError(f"unknown status {status!r}")
+        if label_source not in LABEL_SOURCES:
+            raise LabelError(f"unknown label_source {label_source!r}")
         self.touch_grader(grader)
         with self._conn(write=True) as c:
             it = c.execute("SELECT max_score, rubric_ids, revision, eligible, evidence_sha256 FROM items WHERE item_id=?",
@@ -493,14 +573,15 @@ class LabelDB:
             ts = _now()
             if cur:
                 c.execute("UPDATE labels SET score=?, rubric=?, note=?, status=?, flag_reason=?, revision=?, updated_at=?, "
-                          "evidence_sha256=? WHERE item_id=? AND grader=?",
+                          "evidence_sha256=?, label_source=?, entered_by=?, source_ref=? WHERE item_id=? AND grader=?",
                           (score, json.dumps(rubric_clean), note or "", status, flag_reason or "", new_rev, ts,
-                           current_fp, item_id, grader))
+                           current_fp, label_source, entered_by or "", source_ref or "", item_id, grader))
             else:
                 c.execute("INSERT INTO labels(item_id, grader, score, rubric, note, status, flag_reason, revision, "
-                          "created_at, updated_at, evidence_sha256) VALUES (?,?,?,?,?,?,?,?,?,?,?)",
+                          "created_at, updated_at, evidence_sha256, label_source, entered_by, source_ref) "
+                          "VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
                           (item_id, grader, score, json.dumps(rubric_clean), note or "", status, flag_reason or "",
-                           new_rev, ts, ts, current_fp))
+                           new_rev, ts, ts, current_fp, label_source, entered_by or "", source_ref or ""))
             c.execute("UPDATE items SET revision=revision+1 WHERE item_id=?", (item_id,))
             c.execute("DELETE FROM claims WHERE item_id=? AND grader=?", (item_id, grader))
             self._event(c, grader, f"label_{status}", item_id, new_rev,
@@ -521,11 +602,12 @@ class LabelDB:
         evidence changed after the grader's label (need re-review)."""
         with self._conn() as c:
             out: dict[str, list[str]] = {"saved": [], "skipped": [], "flagged": [], "stale": []}
-            for r in c.execute("SELECT l.item_id, l.status, l.evidence_sha256 AS fp, i.evidence_sha256 AS cur "
+            for r in c.execute("SELECT l.item_id, l.status, l.evidence_sha256 AS fp, i.evidence_sha256 AS cur, "
+                               "l.label_source AS src "
                                "FROM labels l JOIN items i ON i.item_id=l.item_id WHERE l.grader=? ORDER BY l.item_id",
                                (grader,)):
                 out[r["status"]].append(r["item_id"])
-                if _is_stale(r["fp"], r["cur"]):
+                if _is_stale(r["fp"], r["cur"], r["src"]):
                     out["stale"].append(r["item_id"])
             return out
 
@@ -550,7 +632,12 @@ class LabelDB:
         stale = [l for l in labels if l["evidence_stale"] and l["status"] in ("saved", "flagged")]
         saved = [l for l in labels if l["status"] == "saved" and not l["evidence_stale"]]
         flagged = [l for l in labels if l["status"] == "flagged" and not l["evidence_stale"]]
-        agree = self._agreement(saved)
+        authoritative = [l for l in saved if l["authoritative"]]
+        independent = [l for l in saved if not l["authoritative"]]
+        # Ordinary inter-grader agreement compares INDEPENDENT judgments of the
+        # student's answer. A score copied from the original instructor grading is
+        # not such a judgment, so it is never folded into an agreement calculation.
+        agree = self._agreement(independent)
         eligible = bool(it["eligible"]) if "eligible" in it.keys() else True
         final_stale = bool(final) and _is_stale(final["evidence_sha256"], cur_fp)
         if not eligible:
@@ -562,9 +649,13 @@ class LabelDB:
             state = "FINAL"
         elif stale:
             state = STATE_EVIDENCE_REVIEW          # some grader must re-review the corrected evidence
-        elif (len(saved) >= 2 and agree is False) or flagged:
+        elif (len(independent) >= 2 and agree is False) or flagged:
             state = "NEEDS_ADJUDICATION"
-        elif len(saved) >= 2 and agree:
+        elif authoritative:
+            # ground truth copied from the authoritative original instructor grading:
+            # complete, not awaiting a second independent grader
+            state = STATE_AUTHORITATIVE
+        elif len(independent) >= 2 and agree:
             state = "AGREEMENT"
         elif saved:
             state = "LABELED"
@@ -584,8 +675,15 @@ class LabelDB:
                 "obsolete_labels": (len(labels) if not eligible else 0), "n_saved": len(saved),
                 "n_skipped": sum(1 for l in labels if l["status"] == "skipped"), "n_flagged": len(flagged),
                 "n_stale": len(stale), "stale_graders": sorted(l["grader"] for l in stale),
+                "n_authoritative": len(authoritative), "n_independent": len(independent),
+                "authoritative_graders": sorted(l["grader"] for l in authoritative),
+                "ground_truth_source": (authoritative[0]["label_source"] if authoritative
+                                        else DEFAULT_LABEL_SOURCE),
                 "evidence_sha256": cur_fp, "evidence_previous_sha256": it["evidence_previous_sha256"],
                 "evidence_changed_at": it["evidence_changed_at"],
+                # the evidence for this item was repaired at some point — an audit
+                # fact kept independently of whether any label became stale
+                "evidence_repaired": bool(it["evidence_changed_at"]),
                 "agreement": agree, "claims": claims, "labels": labels, "final": fd}
 
     def all_overviews(self) -> list[dict]:
@@ -625,6 +723,14 @@ class LabelDB:
             "stale_labels": sum(o["n_stale"] for o in ovs),
             "stale_finals": sum(1 for o in ovs if o["final"] and o["final"].get("evidence_stale")),
             "needs_evidence_review": by_state.get(STATE_EVIDENCE_REVIEW, 0),
+            "authoritative_ground_truth": by_state.get(STATE_AUTHORITATIVE, 0),
+            "authoritative_labels": sum(o["n_authoritative"] for o in eligible_ovs),
+            # items still genuinely awaiting another INDEPENDENT grader (authoritative
+            # ground truth is never counted as awaiting a second grading)
+            "awaiting_second_label": sum(1 for o in eligible_ovs if not o["final"]
+                                         and not o["n_authoritative"]
+                                         and o["n_saved"] < o["wanted_labels"]),
+            "items_evidence_repaired": sum(1 for o in ovs if o["evidence_repaired"]),
             "items_evidence_changed": sum(1 for o in ovs if o["evidence_changed_at"]),
             "by_state": by_state, "per_grader": per_grader,
             "double_label_mode": (mode["value"] if mode else "none"),
@@ -639,14 +745,89 @@ class LabelDB:
         mine = self.my_items(grader)
         mine_set = set(mine["saved"] + mine["skipped"] + mine["flagged"])
         stale_mine = set(mine["stale"])
-        remaining = sum(1 for o in ovs if not o["final"]
+        # An item whose ground truth is an authoritative original-instructor grade is
+        # DONE: it never wants a second independent grading, and an evidence repair
+        # never turns it back into work for anyone.
+        remaining = sum(1 for o in ovs if not o["final"] and not o["n_authoritative"]
                         and ((o["item_id"] in stale_mine)
                              or (o["n_saved"] < o["wanted_labels"] and o["item_id"] not in mine_set)))
         return {"total_items": len(ovs), "labels_completed": sum(o["n_saved"] for o in ovs),
                 "items_with_any_label": sum(1 for o in ovs if o["n_saved"]),
                 "my_saved": len(mine["saved"]), "my_skipped": len(mine["skipped"]), "my_flagged": len(mine["flagged"]),
                 "my_stale": len(stale_mine),
+                "authoritative_items": sum(1 for o in ovs if o["n_authoritative"]),
                 "remaining_for_me": remaining}
+
+    def set_label_provenance(self, *, grader: str, label_source: str, entered_by: str = "",
+                             asserted_by: str = "", source_refs: dict[str, str] | None = None,
+                             item_ids: list[str] | None = None, actor: str = "system",
+                             dry_run: bool = False) -> dict[str, Any]:
+        """Record the PROVENANCE of a grader's existing labels — how their scores
+        were derived — WITHOUT touching the scores themselves.
+
+        This never changes ``score``, ``rubric``, ``status``, ``revision`` or
+        ``evidence_sha256``: it only records what the label already was. Staleness
+        is then re-derived from provenance by the ordinary rules — no flag is ever
+        edited by hand.
+
+        ``asserted_by`` records WHO asserted the provenance (e.g. ``owner``). The
+        software does not independently verify that a score matches the original
+        instructor's grade; the assertion and its author are stored so the claim is
+        never mistaken for a machine-verified fact.
+
+        Guards — a label is SKIPPED (never silently rewritten) unless it exists,
+        its status is ``saved`` and it carries a score, and its item is eligible."""
+        if label_source not in LABEL_SOURCES:
+            raise LabelError(f"unknown label_source {label_source!r}")
+        refs = dict(source_refs or {})
+        ts = _now()
+        applied: list[dict] = []
+        skipped: list[dict] = []
+        with self._conn(write=True) as c:
+            rows = c.execute(
+                "SELECT l.item_id, l.grader, l.status, l.score, l.label_source, l.evidence_sha256, "
+                "i.eligible FROM labels l JOIN items i ON i.item_id=l.item_id "
+                "WHERE l.grader=? ORDER BY l.item_id", (grader,)).fetchall()
+            wanted = set(item_ids) if item_ids is not None else None
+            for r in rows:
+                iid = r["item_id"]
+                if wanted is not None and iid not in wanted:
+                    continue
+                if r["status"] != "saved":
+                    skipped.append({"item_id": iid, "reason": f"status is {r['status']!r}, not 'saved'"})
+                    continue
+                if r["score"] is None:
+                    skipped.append({"item_id": iid, "reason": "label carries no score"})
+                    continue
+                if not int(r["eligible"]):
+                    skipped.append({"item_id": iid, "reason": "item is not eligible for a human label"})
+                    continue
+                previous = r["label_source"] or DEFAULT_LABEL_SOURCE
+                ref = refs.get(iid, "")
+                if not dry_run:
+                    c.execute("UPDATE labels SET label_source=?, entered_by=?, source_ref=?, "
+                              "provenance_asserted_by=?, provenance_asserted_at=? "
+                              "WHERE item_id=? AND grader=?",
+                              (label_source, entered_by or grader, ref, asserted_by or "", ts, iid, grader))
+                    self._event(c, actor, "label_provenance_set", iid, None,
+                                {"grader": grader, "previous_label_source": previous,
+                                 "label_source": label_source, "entered_by": entered_by or grader,
+                                 "source_ref": ref, "asserted_by": asserted_by or "",
+                                 "score_unchanged": r["score"],
+                                 "evidence_sha256": r["evidence_sha256"],
+                                 "note": "provenance only — score, rubric, status, revision and "
+                                         "evidence fingerprint are untouched; asserted, not machine-verified"})
+                applied.append({"item_id": iid, "previous_label_source": previous,
+                                "label_source": label_source, "source_ref": ref})
+            if applied and not dry_run:
+                self._event(c, actor, "label_provenance_backfill", None, None,
+                            {"grader": grader, "label_source": label_source, "entered_by": entered_by or grader,
+                             "asserted_by": asserted_by or "", "labels": len(applied),
+                             "skipped": len(skipped), "scores_modified": 0})
+        return {"grader": grader, "label_source": label_source, "entered_by": entered_by or grader,
+                "asserted_by": asserted_by or "", "dry_run": bool(dry_run),
+                "applied": applied, "applied_count": len(applied),
+                "skipped": skipped, "skipped_count": len(skipped), "scores_modified": 0}
 
     # ---------------------------------------------------------------- final --
     def set_final(self, item_id: str, *, score: float, rubric: list[str] | None, note: str, source: str,
@@ -681,11 +862,18 @@ class LabelDB:
             contributing = sorted(l["grader"] for l in fresh)
             revs = {l["grader"]: l["revision"] for l in fresh}
             ts = _now()
+            # provenance of the SCORE this FINAL rests on (distinct from `source`,
+            # which records how the FINAL was reached: agreement | adjudicated)
+            gts = c.execute("SELECT label_source FROM labels WHERE item_id=? AND status='saved' "
+                            "AND label_source IN " + _sql_tuple(AUTHORITATIVE_LABEL_SOURCES) +
+                            " ORDER BY grader LIMIT 1", (item_id,)).fetchone()
+            ground_truth_source = gts["label_source"] if gts else DEFAULT_LABEL_SOURCE
             c.execute("INSERT OR REPLACE INTO final_labels(item_id, score, rubric, note, source, adjudicator, "
-                      "contributing_graders, from_revisions, finalized_at, schema_version, evidence_sha256) "
-                      "VALUES (?,?,?,?,?,?,?,?,?,?,?)",
+                      "contributing_graders, from_revisions, finalized_at, schema_version, evidence_sha256, "
+                      "ground_truth_source) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)",
                       (item_id, score, json.dumps(rubric_clean), note or "", source, adjudicator or "",
-                       json.dumps(contributing), json.dumps(revs, sort_keys=True), ts, SCHEMA_VERSION, cur_fp))
+                       json.dumps(contributing), json.dumps(revs, sort_keys=True), ts, SCHEMA_VERSION, cur_fp,
+                       ground_truth_source))
             c.execute("UPDATE items SET revision=revision+1 WHERE item_id=?", (item_id,))
             c.execute("DELETE FROM claims WHERE item_id=?", (item_id,))
             self._event(c, adjudicator or "admin", f"final_{source}", item_id, int(it["revision"]) + 1,
@@ -719,7 +907,10 @@ class LabelDB:
                 d["rubric"] = json.loads(d["rubric"] or "[]")
                 d["contributing_graders"] = json.loads(d["contributing_graders"] or "[]")
                 d["from_revisions"] = json.loads(d["from_revisions"] or "{}")
-                d["evidence_stale"] = _is_stale(d.get("evidence_sha256"), d.pop("current_evidence_sha256", None))
+                d["ground_truth_source"] = d.get("ground_truth_source") or DEFAULT_LABEL_SOURCE
+                d["authoritative"] = d["ground_truth_source"] in AUTHORITATIVE_LABEL_SOURCES
+                d["evidence_stale"] = _is_stale(d.get("evidence_sha256"), d.pop("current_evidence_sha256", None),
+                                                d["ground_truth_source"])
                 rows.append(d)
             return rows
 
@@ -746,4 +937,5 @@ class LabelDB:
 
 
 __all__ = ["LabelDB", "StaleWrite", "StaleEvidence", "LabelError", "LABEL_STATUSES", "FINAL_SOURCES", "CLAIM_TTL_S",
-           "STATE_EVIDENCE_REVIEW"]
+           "STATE_EVIDENCE_REVIEW", "STATE_AUTHORITATIVE", "LABEL_SOURCES", "DEFAULT_LABEL_SOURCE",
+           "AUTHORITATIVE_LABEL_SOURCES"]

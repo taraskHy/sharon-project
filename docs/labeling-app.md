@@ -218,6 +218,63 @@ first — which `--replace` guarantees is the bundle they were made against.
 Never delete the bundle directory by hand before the first registration: the
 labels' provenance would become unknown (reported, not guessed).
 
+## Label provenance: how a score was DERIVED (schema 3)
+
+`evidence_sha256` records **which** evidence a label was shown. `label_source`
+records **how** the score was produced. They are different questions and the app
+keeps them apart:
+
+| `label_source` | meaning | evidence repair makes it stale? |
+| --- | --- | --- |
+| `human_independent_grading` (default) | the grader judged the answer **from the evidence the app displayed** | **yes** — the judgment was formed from what changed |
+| `original_instructor_grade` | the score was **copied from the authoritative original instructor-graded exam**, for the whole grading unit | **no** — it never depended on the app's evidence |
+| `adjudicated` | an adjudicator's resolution of conflicting labels | yes |
+
+An `original_instructor_grade` label is not a judgment of the student's answer,
+it is a transcription of a grade that already exists. Two consequences:
+
+* **Repairing the model-visible evidence never invalidates it.** The instructor
+  graded the physical answer, including any line the bundle was missing. The
+  repair is still recorded — `items.evidence_previous_sha256`,
+  `evidence_changed_at`, the `evidence_changed` event and the report's
+  `authoritative_labels_on_repaired_evidence` — because the benchmark needs
+  `evidence_repaired` for reproducibility. The score stands; the repair is history.
+* **It never asks for a second independent grader.** Independently grading an
+  answer is not comparable to copying the instructor's grade, so such an item is
+  never served to satisfy `wanted_labels >= 2` and never enters an ordinary
+  inter-grader agreement calculation. Its state is `AUTHORITATIVE_GROUND_TRUTH`.
+  Human verification of these scores, if wanted, is a *different* task — "does
+  the recorded score match the original instructor score?" — and is not built.
+
+Provenance is **asserted, never proved**. The software cannot check a score
+against red ink on paper, so `provenance_asserted_by` records *who* claimed it
+(e.g. `owner`) alongside `entered_by` and `source_ref`. Recording the assertion
+is not the same as verifying it, and the report never says otherwise.
+
+    python -m labeling_app set-provenance --grader Erik \
+        --source original_instructor_grade --entered-by Erik --asserted-by owner [--dry-run]
+
+The command records provenance **only**: score, rubric, status, revision and
+evidence fingerprint are untouched (`scores_modified` is always 0), every change
+is an audited `label_provenance_set` event, and a label that is not a plain
+`saved` scored label is skipped rather than rewritten. Staleness is then
+re-derived by the ordinary rules — no flag is ever edited by hand.
+
+`source_ref` (e.g. `test/003_70.pdf#e003_q1_r5`) names the original graded PDF,
+whose **filename carries the instructor's total grade**. It is admin/export-only
+and is stripped from every grader payload, like the rest of
+`bundle/private/provenance.json`.
+
+### Ground truth vs evidence version in the export
+
+`final_labels.json` reports the two facts separately, and the benchmark importer
+carries both through:
+
+    ground_truth_score  = 4.0
+    ground_truth_source = original_instructor_grade
+    evidence_sha256     = <fingerprint the FINAL was made against>
+    evidence_repaired   = true
+
 ## Multiple graders, agreement, adjudication, FINAL
 
 - `labels` is keyed by `(item_id, grader)` — independent rows; nobody can

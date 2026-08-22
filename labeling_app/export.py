@@ -29,10 +29,15 @@ def export_final(db: LabelDB, bundle: Bundle, *, now: str | None = None) -> dict
         oid = f["item_id"]
         labels = [{"grader": l["grader"], "score": l["score"], "rubric_decisions": sorted(l["rubric"]),
                    "note": l["note"], "status": l["status"], "revision": l["revision"], "updated_at": l["updated_at"],
-                   "evidence_sha256": l.get("evidence_sha256"), "evidence_stale": bool(l.get("evidence_stale"))}
+                   "evidence_sha256": l.get("evidence_sha256"), "evidence_stale": bool(l.get("evidence_stale")),
+                   # HOW this score was derived — independent of which evidence version was shown
+                   "label_source": l.get("label_source"), "entered_by": l.get("entered_by") or None,
+                   "source_ref": l.get("source_ref") or None,
+                   "provenance_asserted_by": l.get("provenance_asserted_by") or None}
                   for l in db.labels_for_item(oid)]
         labels.sort(key=lambda l: l["grader"])
         elig = bundle.eligibility.get(oid, {})
+        ov = db.overview(oid)
         items.append({
             "item_id": bundle.id_map.get(oid, oid),       # dataset case id when the private map is present
             "display_id": oid,
@@ -44,6 +49,13 @@ def export_final(db: LabelDB, bundle: Bundle, *, now: str | None = None) -> dict
             # the served evidence changed since (not ground truth until re-reviewed)
             "evidence_sha256": f.get("evidence_sha256"),
             "evidence_stale": bool(f.get("evidence_stale")),
+            # ground truth: the score and, SEPARATELY, how it was derived
+            "ground_truth_score": f["score"],
+            "ground_truth_source": f.get("ground_truth_source"),
+            # evidence version this FINAL was made against, and whether the item's
+            # model-visible evidence was ever repaired (a different question)
+            "evidence_repaired": bool(ov.get("evidence_repaired")),
+            "evidence_previous_sha256": ov.get("evidence_previous_sha256"),
             "final_score": f["score"],
             "rubric_decisions": sorted(f["rubric"]),
             "note": f["note"],
@@ -65,6 +77,9 @@ def export_final(db: LabelDB, bundle: Bundle, *, now: str | None = None) -> dict
         "final_count": len(items),
         "obsolete_ineligible_count": sum(1 for i in items if not i["eligible_for_human_label"]),
         "stale_evidence_final_count": sum(1 for i in items if i["evidence_stale"]),
+        "evidence_repaired_count": sum(1 for i in items if i["evidence_repaired"]),
+        "ground_truth_sources": {k: sum(1 for i in items if i["ground_truth_source"] == k)
+                                 for k in sorted({i["ground_truth_source"] for i in items})},
         "evidence_fingerprint": bundle.meta.get("evidence_fingerprint"),
         "eligibility": bundle.meta.get("eligibility"),
         "exported_at": now or time.strftime("%Y-%m-%d %H:%M:%S"),

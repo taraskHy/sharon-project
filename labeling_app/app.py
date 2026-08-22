@@ -129,6 +129,11 @@ async def api_me(request: Request) -> Response:
                          "bundle": {"items": request.app.state.bundle.meta.get("items")}})
 
 
+#: label columns a GRADER must never receive. ``source_ref`` names the original
+#: graded exam file and its filename carries the instructor's total grade.
+GRADER_HIDDEN_LABEL_FIELDS = ("source_ref", "provenance_asserted_by", "provenance_asserted_at")
+
+
 # ------------------------------------------------------------------ items --
 
 def _item_view(request: Request, item_id: str, grader: str) -> dict | None:
@@ -138,8 +143,17 @@ def _item_view(request: Request, item_id: str, grader: str) -> dict | None:
     if payload is None:
         return None
     mine = db.get_label(item_id, grader)
+    # NEVER serve the provenance source reference to a grader: it names the
+    # original graded PDF, whose filename carries the instructor's TOTAL grade
+    # (an expected-label leak). It stays admin/export-only, like the rest of
+    # bundle/private/provenance.json.
+    if mine is not None:
+        mine = {k: v for k, v in mine.items() if k not in GRADER_HIDDEN_LABEL_FIELDS}
     payload["my_label"] = mine
+    # provenance-aware: an authoritative (instructor-copied) score is never
+    # "stale evidence" work, so the re-check banner is never raised for it
     payload["my_evidence_stale"] = bool(mine and mine.get("evidence_stale"))
+    payload["my_label_authoritative"] = bool(mine and mine.get("authoritative"))
     payload["label_revision"] = mine["revision"] if mine else 0
     ov = db.overview(item_id)
     payload["final"] = bool(ov["final"])

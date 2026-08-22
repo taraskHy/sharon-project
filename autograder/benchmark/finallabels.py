@@ -18,7 +18,9 @@ from pathlib import Path
 from typing import Any
 
 FINAL_LABELS_FILENAME = "final_labels.json"
-SUPPORTED_EXPORT_SCHEMA = (1, 2)
+#: schema 3 adds ground-truth PROVENANCE (ground_truth_source) alongside the
+#: evidence version; schema 1/2 exports stay importable (source treated as unknown)
+SUPPORTED_EXPORT_SCHEMA = (1, 2, 3)
 
 
 def import_final_labels(export_path: Path, dataset_dir: Path, *, now: str | None = None) -> dict[str, Any]:
@@ -66,10 +68,15 @@ def import_final_labels(export_path: Path, dataset_dir: Path, *, now: str | None
                                            "deterministic_policy_score": elig.deterministic_score,
                                            "ignored_human_final_label": float(row["final_score"])}
                 continue
-        labels[cid] = {"score": float(row["final_score"]), "rubric_decisions": sorted(row.get("rubric_decisions") or []),
+        labels[cid] = {"score": float(row["final_score"]),
+                       "rubric_decisions": sorted(row.get("rubric_decisions") or []),
                        "note": row.get("note") or "", "source": row["source"],
                        "contributing_graders": sorted(row.get("contributing_graders") or []),
-                       "adjudicator": row.get("adjudicator"), "finalized_at": row.get("finalized_at")}
+                       "adjudicator": row.get("adjudicator"), "finalized_at": row.get("finalized_at"),
+                       # ground-truth PROVENANCE and evidence VERSION are separate facts
+                       "ground_truth_source": row.get("ground_truth_source"),
+                       "evidence_sha256": row.get("evidence_sha256"),
+                       "evidence_repaired": bool(row.get("evidence_repaired"))}
     out = {"schema_version": 1, "imported_at": now or time.strftime("%Y-%m-%d %H:%M:%S"),
            "source_export": {"path": str(export_path), "content_sha256": data.get("content_sha256"),
                              "exported_at": data.get("exported_at"), "final_count": data.get("final_count"),
@@ -104,6 +111,13 @@ def merge_final_labels(labels_by_id: dict[str, dict], dataset_dir: Path) -> tupl
         lab["owner_note"] = f.get("note") or None
         lab["label_source"] = f"final:{f.get('source')}"
         lab["contributing_graders"] = f.get("contributing_graders")
+        # The benchmark keeps these as SEPARATE facts: what the ground-truth score
+        # is and how it was derived, versus which evidence version the model sees
+        # and whether that evidence was ever repaired.
+        lab["ground_truth_score"] = f.get("score")
+        lab["ground_truth_source"] = f.get("ground_truth_source")
+        lab["evidence_sha256"] = f.get("evidence_sha256")
+        lab["evidence_repaired"] = bool(f.get("evidence_repaired"))
         n += 1
     return n, hashlib.sha256(p.read_bytes()).hexdigest()
 

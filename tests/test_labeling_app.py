@@ -107,10 +107,12 @@ def test_claim_save_next_skip_flag_rubric_and_resume(app):
     assert it and it["my_label"] is None and it["label_revision"] == 0
     # grader payload never carries evaluation-side fields
     for k in ("expected", "label", "split", "writer", "model", "confidence", "source_file", ".pdf"):
-        assert k not in json.dumps({kk: v for kk, v in it.items() if kk not in ("my_label", "label_revision")}), k
+        assert k not in json.dumps({kk: v for kk, v in it.items()
+                                    if kk not in ("my_label", "label_revision", "my_label_authoritative")}), k
     assert set(it) == {"item_id", "question_text", "rubric", "scoring_rules", "official_solution", "transcription",
                        "max_score", "rubric_items", "images", "evidence_sha256", "provenance", "my_label",
-                       "my_evidence_stale", "label_revision", "final", "evidence_changed_at"}
+                       "my_evidence_stale", "my_label_authoritative", "label_revision", "final",
+                       "evidence_changed_at"}
     assert g.get(it["images"][0]).status_code == 200
     # save with rubric decision
     rid = it["rubric_items"][0]["id"]
@@ -231,7 +233,7 @@ def test_export_is_deterministic_and_final_only(app, bundle_dir):
     e1 = admin.get("/api/admin/export").json()
     e2 = export_final(app.state.db, app.state.bundle, now="2026-08-22 13:00:00")
     assert e1["items"] == e2["items"] and e1["content_sha256"] == e2["content_sha256"]
-    assert e1["final_count"] == 1 and e1["schema_version"] == 2 and e1["kind"] == "grade_primary_final_labels"
+    assert e1["final_count"] == 1 and e1["schema_version"] == 3 and e1["kind"] == "grade_primary_final_labels"
     assert e1["stale_evidence_final_count"] == 0 and all(r["evidence_stale"] is False and r["evidence_sha256"] for r in e1["items"])
     row = e1["items"][0]
     assert row["display_id"] == i1 and re.fullmatch(r"e\d{3}_q\d+_r\d+", row["item_id"])   # dataset case id via private map
