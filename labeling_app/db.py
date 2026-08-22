@@ -59,7 +59,8 @@ DDL = [
         rubric_ids TEXT NOT NULL DEFAULT '[]',
         wanted_labels INTEGER NOT NULL DEFAULT 1,
         revision INTEGER NOT NULL DEFAULT 0,
-        created_at TEXT NOT NULL)""",
+        created_at TEXT NOT NULL,
+        eligible INTEGER NOT NULL DEFAULT 1)""",
     """CREATE TABLE IF NOT EXISTS graders (
         name TEXT PRIMARY KEY,
         created_at TEXT NOT NULL,
@@ -116,6 +117,11 @@ class LabelDB:
             c.execute("PRAGMA journal_mode=WAL")
             for ddl in DDL:
                 c.execute(ddl)
+            # Backward-safe migration for databases created before the
+            # eligibility column existed (e.g. the strong PC's labels.db).
+            cols = {r["name"] for r in c.execute("PRAGMA table_info(items)")}
+            if "eligible" not in cols:
+                c.execute("ALTER TABLE items ADD COLUMN eligible INTEGER NOT NULL DEFAULT 1")
             c.execute("INSERT OR IGNORE INTO meta(key, value) VALUES ('schema_version', ?)", (str(SCHEMA_VERSION),))
 
     # ---------------------------------------------------------------- conn --
@@ -161,6 +167,43 @@ class LabelDB:
                      json.dumps([r["id"] for r in it.get("rubric_items", [])]), 1, _now()))
                 added += cur.rowcount
         return added
+
+    def sync_eligibility(self, bundle_item_ids: list[str], ineligible_item_ids: list[str], *,
+                         eligibility_known: bool) -> dict:
+        """Reconcile ``items.eligible`` with the served bundle. Diff-aware and
+        fail-safe:
+
+        * items no longer in the bundle are RETIRED (eligible=0) — they are not
+          part of the current human workload (labels/finals are kept and
+          surface as obsolete, never deleted);
+        * bundle items get their flag only when eligibility is actually KNOWN
+          (explicit bundle flags, or a dataset recompute that really ran).
+          Unknown eligibility never flips anything — in particular it can
+          never silently erase an earlier ineligible mark.
+
+        Events record only real transitions (no writes, no events when nothing
+        changes)."""
+        bundle = set(bundle_item_ids or [])
+        bad = set(ineligible_item_ids or [])
+        changes: dict[str, list[str]] = {"retired": [], "marked_ineligible": [], "restored": []}
+        with self._conn(write=True) as c:
+            for r in c.execute("SELECT item_id, eligible FROM items").fetchall():
+                iid, cur = r["item_id"], int(r["eligible"])
+                if iid not in bundle:
+                    want, kind = 0, "retired"
+                elif not eligibility_known:
+                    continue
+                elif iid in bad:
+                    want, kind = 0, "marked_ineligible"
+                else:
+                    want, kind = 1, "restored"
+                if want != cur:
+                    c.execute("UPDATE items SET eligible=? WHERE item_id=?", (want, iid))
+                    changes[kind].append(iid)
+            if any(changes.values()):
+                self._event(c, "system", "sync_eligibility", None, None,
+                            {k: sorted(v) for k, v in changes.items() if v})
+        return changes
 
     def item_ids(self) -> list[str]:
         with self._conn() as c:
@@ -213,7 +256,7 @@ class LabelDB:
         with self._conn(write=True) as c:
             self._expire_claims(c)
             rows = c.execute("""
-                SELECT i.item_id, i.wanted_labels,
+                SELECT i.item_id, i.wanted_labels, i.eligible,
                        (SELECT COUNT(*) FROM labels l WHERE l.item_id=i.item_id AND l.status='saved') AS n_saved,
                        (SELECT COUNT(*) FROM labels l WHERE l.item_id=i.item_id AND l.grader=? ) AS mine,
                        (SELECT status FROM labels l WHERE l.item_id=i.item_id AND l.grader=?) AS my_status,
@@ -221,6 +264,8 @@ class LabelDB:
                        (SELECT COUNT(*) FROM final_labels f WHERE f.item_id=i.item_id) AS is_final
                 FROM items i ORDER BY i.item_id""", (grader, grader, grader)).fetchall()
             def _eligible(r) -> bool:
+                if not r["eligible"]:            # policy decides this item's score; no human label wanted
+                    return False
                 if r["is_final"]:
                     return False
                 if r["mine"] and not (include_skipped and r["my_status"] == "skipped"):
@@ -262,9 +307,12 @@ class LabelDB:
             raise LabelError(f"unknown status {status!r}")
         self.touch_grader(grader)
         with self._conn(write=True) as c:
-            it = c.execute("SELECT max_score, rubric_ids, revision FROM items WHERE item_id=?", (item_id,)).fetchone()
+            it = c.execute("SELECT max_score, rubric_ids, revision, eligible FROM items WHERE item_id=?", (item_id,)).fetchone()
             if it is None:
                 raise LabelError(f"unknown item {item_id!r}")
+            if not int(it["eligible"]):
+                raise LabelError("this item is not eligible for human explanation labeling — the grading "
+                                 "policy already decides its score deterministically")
             if c.execute("SELECT 1 FROM final_labels WHERE item_id=?", (item_id,)).fetchone():
                 raise LabelError("this item already has a FINAL label; ask the admin to reopen it")
             allowed = set(json.loads(it["rubric_ids"] or "[]"))
@@ -337,7 +385,11 @@ class LabelDB:
         saved = [l for l in labels if l["status"] == "saved"]
         flagged = [l for l in labels if l["status"] == "flagged"]
         agree = self._agreement(saved)
-        if final:
+        eligible = bool(it["eligible"]) if "eligible" in it.keys() else True
+        if not eligible:
+            # deterministic policy score is authoritative; any history below is obsolete
+            state = "INELIGIBLE"
+        elif final:
             state = "FINAL"
         elif (len(saved) >= 2 and agree is False) or flagged:
             state = "NEEDS_ADJUDICATION"
@@ -354,8 +406,10 @@ class LabelDB:
             fd["rubric"] = json.loads(fd.get("rubric") or "[]")
             fd["contributing_graders"] = json.loads(fd.get("contributing_graders") or "[]")
             fd["from_revisions"] = json.loads(fd.get("from_revisions") or "{}")
+            fd["obsolete_ineligible"] = not eligible
         return {"item_id": item_id, "revision": it["revision"], "max_score": it["max_score"],
-                "wanted_labels": it["wanted_labels"], "state": state, "n_saved": len(saved),
+                "wanted_labels": it["wanted_labels"], "state": state, "eligible": eligible,
+                "obsolete_labels": (len(labels) if not eligible else 0), "n_saved": len(saved),
                 "n_skipped": sum(1 for l in labels if l["status"] == "skipped"), "n_flagged": len(flagged),
                 "agreement": agree, "claims": claims, "labels": labels, "final": fd}
 
@@ -372,16 +426,21 @@ class LabelDB:
             for r in c.execute("SELECT grader, status, COUNT(*) AS n FROM labels GROUP BY grader, status"):
                 per_grader.setdefault(r["grader"], {"saved": 0, "skipped": 0, "flagged": 0})[r["status"]] = r["n"]
             mode = c.execute("SELECT value FROM meta WHERE key='double_label_mode'").fetchone()
+        eligible_ovs = [o for o in ovs if o["eligible"]]
         return {
             "total_items": len(ovs),
+            "eligible_items": len(eligible_ovs),
+            "ineligible_items": len(ovs) - len(eligible_ovs),
+            "obsolete_ineligible_labels": sum(o["obsolete_labels"] for o in ovs),
+            "obsolete_ineligible_finals": sum(1 for o in ovs if not o["eligible"] and o["final"]),
             "unlabeled": by_state.get("UNLABELED", 0) + by_state.get("ASSIGNED", 0),
             "assigned": by_state.get("ASSIGNED", 0),
-            "labels_completed": sum(o["n_saved"] for o in ovs),
-            "singly_labeled": sum(1 for o in ovs if o["n_saved"] == 1),
-            "double_labeled": sum(1 for o in ovs if o["n_saved"] >= 2),
-            "agreements": sum(1 for o in ovs if o["agreement"] is True),
-            "disagreements": sum(1 for o in ovs if o["agreement"] is False),
-            "flagged": sum(1 for o in ovs if o["n_flagged"]),
+            "labels_completed": sum(o["n_saved"] for o in eligible_ovs),
+            "singly_labeled": sum(1 for o in eligible_ovs if o["n_saved"] == 1),
+            "double_labeled": sum(1 for o in eligible_ovs if o["n_saved"] >= 2),
+            "agreements": sum(1 for o in eligible_ovs if o["agreement"] is True),
+            "disagreements": sum(1 for o in eligible_ovs if o["agreement"] is False),
+            "flagged": sum(1 for o in eligible_ovs if o["n_flagged"]),
             "needs_adjudication": by_state.get("NEEDS_ADJUDICATION", 0),
             "final": by_state.get("FINAL", 0),
             "by_state": by_state, "per_grader": per_grader,
@@ -390,7 +449,10 @@ class LabelDB:
         }
 
     def progress(self, grader: str) -> dict[str, Any]:
-        ovs = self.all_overviews()
+        # Only genuinely human-labelable items count toward the workload:
+        # a deterministic-zero item needs zero human labels and is never
+        # "unfinished".
+        ovs = [o for o in self.all_overviews() if o["eligible"]]
         mine = self.my_items(grader)
         remaining = sum(1 for o in ovs if o["state"] != "FINAL" and o["n_saved"] < o["wanted_labels"]
                         and o["item_id"] not in set(mine["saved"] + mine["skipped"] + mine["flagged"]))
@@ -405,9 +467,12 @@ class LabelDB:
         if source not in FINAL_SOURCES:
             raise LabelError(f"unknown final source {source!r}")
         with self._conn(write=True) as c:
-            it = c.execute("SELECT max_score, rubric_ids, revision FROM items WHERE item_id=?", (item_id,)).fetchone()
+            it = c.execute("SELECT max_score, rubric_ids, revision, eligible FROM items WHERE item_id=?", (item_id,)).fetchone()
             if it is None:
                 raise LabelError(f"unknown item {item_id!r}")
+            if not int(it["eligible"]):
+                raise LabelError("this item is not eligible for a human FINAL label — the deterministic "
+                                 "policy score is authoritative")
             if int(it["revision"]) != int(expected_item_revision):
                 raise StaleWrite(f"item revision is {it['revision']}, you loaded {expected_item_revision}; reload")
             score = float(score)

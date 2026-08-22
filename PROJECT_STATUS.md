@@ -176,3 +176,31 @@ Cleanup removed 43 dead campaign/arm scripts + 4 test files from HEAD
 (all recoverable from git history), dead local venvs/caches (~10 GB)
 and the wrong-variant Ollama model. Product surface verified after
 cleanup: full offline test suite green; MC autograder + UI untouched.
+
+## Grading-label eligibility gate (2026-08-22, laptop)
+
+The human ground-truth explanation grader now grades ONLY explanations the
+exam's grading policy actually requires. New single source of truth
+`autograder/eligibility.py` (`ExplanationLabelEligibility`) wraps the
+production gate `policies.decide_before_ocr` — no duplicated policy logic.
+Derived from real case facts (selected option, `correct_by_version`, exam
+version, policy, wrong-answer rule); never from filenames, historical totals
+or instructor marks. Wrong resolved MC under `wrong_choice_zero` /
+`explanation_required_if_correct` (zero/selection rule) -> deterministic 0,
+excluded from the labeling bundle (private/excluded.json + counts), rejected
+server-side on submission (stale bundles recompute from the dataset), refused
+by `bench import-final-labels` (`ignored_ineligible`); rescue / independent /
+process-rule / unresolved / absent MC stay human-labelable — an ambiguous MC
+never yields a deterministic zero. Existing labels on newly ineligible items
+are surfaced as obsolete, never deleted. labels.db gains a backward-safe
+`items.eligible` column (auto-migration on open).
+
+Verified on the frozen grade_primary (source-verified, not assumed): 67
+source cases, 67 human-labelable, 0 deterministic-zero, 0 unresolved-MC —
+every cell is explanation-only (`selected=None`, `version=None`) under
+`choice_and_explanation_independent`, so the live workload is unchanged and
+the frozen dataset files/hashes are untouched. Also fixed the CRLF checkout
+gap: `.gitattributes` now covers `evaluation/model_selection/datasets/**
+-text` (same fix as e762c04 for hebrew_bench_v2); the 6 environmental test
+failures from CRLF-mangled JSONL are gone. Offline suite: 694 passed,
+2 skipped (machine-local models.toml). Zero model/API calls in this mission.

@@ -175,6 +175,28 @@ def audited_cells(bench_root: Path = DEFAULT_BENCH_ROOT) -> dict[str, dict]:
 # 4A GRADE_PRIMARY
 # ----------------------------------------------------------------------------
 
+def route_case_by_eligibility(inp: dict, lab: dict):
+    """Route one would-be grading case through the eligibility gate
+    (autograder.eligibility — the single source of truth). Returns
+    ``(eligibility, early_exit_record_or_None)``: a policy-decided case yields
+    a provenance record for policy_early_exit.jsonl instead of a benchmark
+    case; every case lands in exactly one of the two outcomes."""
+    from ..eligibility import eligibility_for_case
+    elig = eligibility_for_case(inp, lab)
+    if elig.eligible_for_human_label:
+        return elig, None
+    return elig, {"case_id": inp["case_id"], "final_score": elig.deterministic_score,
+                  "source": ("deterministic_mc_wrong" if elig.reason == "wrong_mc_deterministic_zero"
+                             else "policy_no_explanation_component"),
+                  "policy": elig.policy, "mc_correct": elig.mc_state == "correct",
+                  "mc_state": elig.mc_state, "reason": elig.reason,
+                  "selected_option": elig.selected_option,
+                  "accepted_options": list(elig.accepted_options),
+                  "split": lab["split"], "writer": lab["writer"],
+                  "question_id": lab["question_id"], "sub_item_id": lab["sub_item_id"],
+                  "max_score": lab["max_score"]}
+
+
 def build_grading_dataset(out_dir: Path, *, key_json: Path | None = None,
                           bench_root: Path = DEFAULT_BENCH_ROOT,
                           grading_policy: str = "choice_and_explanation_independent",
@@ -182,8 +204,17 @@ def build_grading_dataset(out_dir: Path, *, key_json: Path | None = None,
     """Inputs only (owner labels come later via OwnerLabelStore). Each case:
     the sub-item's grading pack (question text, rubric, official solution,
     max points, policy; NO RAG), selected=None (explanation-only cells),
-    the FROZEN audited transcription; version=None."""
+    the FROZEN audited transcription; version=None.
+
+    Eligibility gate (autograder.eligibility — the single source of truth):
+    a case whose score the grading policy already decides deterministically
+    (confidently wrong MC under wrong_choice_zero, or under
+    explanation_required_if_correct with a zero/selection wrong-answer rule)
+    is NOT a model-accuracy case. It is routed to policy_early_exit.jsonl
+    beside the dataset and never enters cases_inputs.jsonl. Unresolved or
+    absent MC never triggers the gate."""
     from dataclasses import asdict
+    from ..eligibility import eligibility_counts
     from ..gradingpack import build_pack
     key_path = Path(key_json) if key_json else default_grading_key_path()
     if key_path is None or not key_path.exists():
@@ -192,7 +223,7 @@ def build_grading_dataset(out_dir: Path, *, key_json: Path | None = None,
     key, _ = _load_key(key_path)
     qs = {q.id: q for q in key.questions}
     cells = audited_cells(bench_root)
-    inputs, labels, excluded = [], [], []
+    inputs, labels, excluded, early_exit, eligibilities = [], [], [], [], []
     for cid in sorted(cells):
         c = cells[cid]
         if not c["complete"]:
@@ -221,16 +252,26 @@ def build_grading_dataset(out_dir: Path, *, key_json: Path | None = None,
             "rubric_items": [asdict(ri) for ri in pack.rubric_items],
             "evidence_policy": pack.evidence_policy, "score_granularity": pack.score_granularity,
         }
-        inputs.append({"case_id": cid, "pack": visible_pack, "selected": None,
-                       "transcription": c["transcription"], "version": None})
-        labels.append({"case_id": cid, "split": WRITER_SPLIT_A.get(c["writer"], "DEV"),
-                       "writer": c["writer"], "question_id": c["question_id"], "sub_item_id": c["sub_item_id"],
-                       "score": None, "rubric_met": None,
-                       "label_status": "NEEDS_OWNER_LABEL",
-                       "transcription_source": "audited human reference (reference_for_scoring mode=final)",
-                       "transcription_items": c["items"], "transcription_provenance": c["provenance_classes"],
-                       "evidence_images": [f"hebrew_bench_v2/{p}" for p in c["images"]],
-                       "max_score": pack.max_score})
+        if pack.wrong_answer_rule is not None:      # emitted only when known: keeps old rebuilds byte-identical
+            visible_pack["wrong_answer_rule"] = pack.wrong_answer_rule
+        inp = {"case_id": cid, "pack": visible_pack, "selected": None,
+               "transcription": c["transcription"], "version": None}
+        lab = {"case_id": cid, "split": WRITER_SPLIT_A.get(c["writer"], "DEV"),
+               "writer": c["writer"], "question_id": c["question_id"], "sub_item_id": c["sub_item_id"],
+               "score": None, "rubric_met": None,
+               "label_status": "NEEDS_OWNER_LABEL",
+               "transcription_source": "audited human reference (reference_for_scoring mode=final)",
+               "transcription_items": c["items"], "transcription_provenance": c["provenance_classes"],
+               "evidence_images": [f"hebrew_bench_v2/{p}" for p in c["images"]],
+               "max_score": pack.max_score}
+        elig, exit_record = route_case_by_eligibility(inp, lab)
+        eligibilities.append(elig)
+        if exit_record is not None:
+            early_exit.append(exit_record)
+            continue
+        lab["eligibility"] = elig.to_dict()
+        inputs.append(inp)
+        labels.append(lab)
     split_assignment = {s: sorted({l["writer"] for l in labels if l["split"] == s}) for s in SPLITS}
     man = write_declared_dataset(
         Path(out_dir), name="grade_primary — frozen audited cell transcriptions + NO-RAG grading packs",
@@ -249,9 +290,16 @@ def build_grading_dataset(out_dir: Path, *, key_json: Path | None = None,
                                   "G/F/F repair from versions-override.json"),
                "grading_policy": grading_policy,
                "pack_builder": "gradingpack.build_pack narrowed per sub-item; no course/retrieval",
-               "excluded_cells": excluded, "cells_total": len(cells), "cases": len(inputs)},
+               "excluded_cells": excluded, "cells_total": len(cells), "cases": len(inputs),
+               "eligibility": eligibility_counts(eligibilities),
+               "policy_early_exit_cases": len(early_exit)},
         now=now)
+    if early_exit:
+        with (Path(out_dir) / "policy_early_exit.jsonl").open("w", encoding="utf-8", newline="\n") as f:
+            for r in early_exit:
+                f.write(json.dumps(r, ensure_ascii=False) + "\n")
     man["excluded_cells"] = excluded
+    man["policy_early_exit"] = early_exit
     return man
 
 

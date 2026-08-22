@@ -26,9 +26,14 @@ def export_final(db: LabelDB, bundle: Bundle, *, now: str | None = None) -> dict
                    "note": l["note"], "status": l["status"], "revision": l["revision"], "updated_at": l["updated_at"]}
                   for l in db.labels_for_item(oid)]
         labels.sort(key=lambda l: l["grader"])
+        elig = bundle.eligibility.get(oid, {})
         items.append({
             "item_id": bundle.id_map.get(oid, oid),       # dataset case id when the private map is present
             "display_id": oid,
+            "label_kind": "human_final_label",             # never a deterministic_policy_score
+            # False marks an OBSOLETE final (item became policy-decided after the
+            # label was written); the importer refuses to promote it to truth.
+            "eligible_for_human_label": elig.get("eligible_for_human_label", True) is not False,
             "final_score": f["score"],
             "rubric_decisions": sorted(f["rubric"]),
             "note": f["note"],
@@ -48,6 +53,8 @@ def export_final(db: LabelDB, bundle: Bundle, *, now: str | None = None) -> dict
         "dataset_inputs_sha256": (bundle.meta.get("source") or {}).get("dataset_inputs_sha256"),
         "content_sha256": hashlib.sha256(body.encode("utf-8")).hexdigest(),
         "final_count": len(items),
+        "obsolete_ineligible_count": sum(1 for i in items if not i["eligible_for_human_label"]),
+        "eligibility": bundle.meta.get("eligibility"),
         "exported_at": now or time.strftime("%Y-%m-%d %H:%M:%S"),
         "items": items,
     }

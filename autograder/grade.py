@@ -27,18 +27,10 @@ from .schema import (
     SubItemResult,
 )
 
-# Hebrew option letters -> Latin canonical form.
-_HEBREW_LETTERS = {
-    "א": "A",
-    "ב": "B",
-    "ג": "C",
-    "ד": "D",
-    "ה": "E",
-    "ו": "F",
-    "ז": "G",
-    "ח": "H",
-    "ט": "I",
-}
+# Hebrew option letters -> Latin canonical form: moved to policies.py (the
+# deterministic, no-model module) so autograder.eligibility and the labeling
+# app never import the grading pipeline; re-exported here for existing callers.
+from .policies import _HEBREW_LETTERS, normalize_answer  # noqa: F401  (re-export)
 
 _VERDICT_FACTOR_KEYS = ("valid", "partially_valid")
 
@@ -46,17 +38,6 @@ _VERDICT_FACTOR_KEYS = ("valid", "partially_valid")
 class PipelineStateError(RuntimeError):
     """The answer key and the extraction disagree about the exam's structure
     (typically a stale --resume intermediate)."""
-
-
-def normalize_answer(answer: str | None) -> str | None:
-    if answer is None:
-        return None
-    s = answer.strip().strip(".)('\"").strip()
-    if not s:
-        return None
-    if s in _HEBREW_LETTERS:
-        return _HEBREW_LETTERS[s]
-    return s.upper()
 
 
 def _accepted(sub_key, version: str) -> list[str]:

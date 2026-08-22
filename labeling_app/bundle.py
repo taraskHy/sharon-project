@@ -186,6 +186,7 @@ def build_bundle(dataset_dir: Path, out_dir: Path, *, evaluation_root: Path, rep
     """Build the anonymized bundle from a frozen grade_primary dataset directory.
     ``evaluation_root`` resolves `evidence_images`; ``repo_root`` (default:
     evaluation_root's parent) resolves the upstream provenance records and PDFs."""
+    from autograder.eligibility import eligibility_counts, split_cases
     dataset_dir, out_dir = Path(dataset_dir), Path(out_dir)
     repo_root = Path(repo_root) if repo_root else Path(evaluation_root).parent
     man = json.loads((dataset_dir / "manifest.json").read_text(encoding="utf-8"))
@@ -194,13 +195,21 @@ def build_bundle(dataset_dir: Path, out_dir: Path, *, evaluation_root: Path, rep
     salt = salt or man.get("inputs_sha256", "bundle")
     if (out_dir / "items.json").exists():
         raise FileExistsError(f"{out_dir} already holds a bundle; remove it or choose another directory")
+    # Eligibility gate (autograder.eligibility, wrapping the production policy
+    # machinery): only cases whose explanation genuinely requires a HUMAN score
+    # become labeling items. Policy-decided cases (confidently wrong MC under a
+    # zero rule, or choice_only) go to private/excluded.json — they are
+    # policy/early-exit provenance, never human workload.
+    labelable, policy_decided = split_cases(inputs, labels)
+    eligibility_by_case = {row["case_id"]: e for row, e in labelable + policy_decided}
+    counts = eligibility_counts([e for _, e in labelable + policy_decided])
     (out_dir / "images").mkdir(parents=True, exist_ok=True)
     (out_dir / "pages").mkdir(parents=True, exist_ok=True)
     (out_dir / "private").mkdir(parents=True, exist_ok=True)
     sources = load_provenance_sources(repo_root)
     items, id_map, private_prov = [], {}, {}
     page_cache: dict[tuple[str, int], dict] = {}          # (source_file, page) -> {rel, report}
-    for row in sorted(inputs, key=lambda r: r["case_id"]):
+    for row in sorted((r for r, _ in labelable), key=lambda r: r["case_id"]):
         cid = row["case_id"]
         oid = opaque_id(cid, salt)
         pack = row["pack"]
@@ -248,6 +257,8 @@ def build_bundle(dataset_dir: Path, out_dir: Path, *, evaluation_root: Path, rep
             "rubric_items": [{"id": ri.get("id"), "text": ri.get("text", "")} for ri in (pack.get("rubric_items") or [])],
             "images": imgs,
             "provenance": visible,
+            "eligible_for_human_label": True,
+            "eligibility_reason": eligibility_by_case[cid].reason,
         })
         id_map[oid] = cid
         private_prov[oid] = {**prov, "crop_files": crop_files, "page_image": page_rel, "page_report": page_report}
@@ -262,12 +273,17 @@ def build_bundle(dataset_dir: Path, out_dir: Path, *, evaluation_root: Path, rep
                                                      encoding="utf-8", newline="\n")
     (out_dir / "private" / "provenance.json").write_text(json.dumps(private_prov, ensure_ascii=False, indent=1, sort_keys=True),
                                                          encoding="utf-8", newline="\n")
+    excluded_records = [{"case_id": row["case_id"], **e.to_dict()} for row, e in
+                        sorted(policy_decided, key=lambda t: t[0]["case_id"])]
+    (out_dir / "private" / "excluded.json").write_text(
+        json.dumps(excluded_records, ensure_ascii=False, indent=1, sort_keys=True), encoding="utf-8", newline="\n")
     pages = sorted({i["provenance"]["page_image"] for i in items if i["provenance"].get("page_image")})
     meta = {
         "schema_version": SCHEMA_VERSION, "built_at": now or time.strftime("%Y-%m-%d %H:%M:%S"),
         "items": len(items), "images": sum(len(i["images"]) for i in items), "pages": len(pages),
         "items_with_page": sum(1 for i in items if i["provenance"].get("page_available")),
         "items_sha256": _sha_file(out_dir / "items.json"),
+        "eligibility": counts,
         "source": {"dataset_dir_name": dataset_dir.name, "dataset_inputs_sha256": man.get("inputs_sha256"),
                    "dataset_labels_sha256": man.get("labels_sha256"), "dataset_manifest_sha256": _sha_file(dataset_dir / "manifest.json"),
                    "provenance_records": ["evaluation/hebrew_bench/crops_manifest.json", "evaluation/htr_pilot_sources.json"]},
@@ -297,6 +313,71 @@ class Bundle:
         self.id_map: dict[str, str] = json.loads(p.read_text(encoding="utf-8")) if p.exists() else {}
         pp = self.root / "private" / "provenance.json"
         self.private_provenance: dict[str, dict] = json.loads(pp.read_text(encoding="utf-8")) if pp.exists() else {}
+        # Per-item human-label eligibility. New bundles carry it explicitly;
+        # a pre-eligibility bundle has no flag (None = unknown until
+        # apply_dataset_eligibility recomputes from the dataset).
+        self.eligibility: dict[str, dict] = {
+            i["item_id"]: {"eligible_for_human_label": (bool(i["eligible_for_human_label"])
+                                                        if "eligible_for_human_label" in i else None),
+                           "reason": i.get("eligibility_reason")}
+            for i in self.items}
+
+    def apply_dataset_eligibility(self, dataset_dir: Path | str) -> dict:
+        """Recompute eligibility for every bundle item straight from the
+        dataset (the single source of truth) — this is how a STALE bundle,
+        built before eligibility filtering existed, still fails safely.
+
+        Refuses (``applied: False`` + reason) instead of guessing when the
+        dataset files or the bundle's private id map are missing, or when the
+        dataset is not the one this bundle was built from
+        (``inputs_sha256`` mismatch). Callers must treat a refusal loudly —
+        never as "everything is eligible"."""
+        ds = Path(dataset_dir)
+        inputs_p, labels_p = ds / "cases_inputs.jsonl", ds / "cases_labels.jsonl"
+        if not inputs_p.exists() or not labels_p.exists():
+            return {"applied": False, "reason": f"dataset files missing under {ds}"}
+        if not self.id_map:
+            return {"applied": False,
+                    "reason": "bundle has no private/id_map.json; items cannot be joined to dataset cases"}
+        man_p = ds / "manifest.json"
+        ds_sha = None
+        if man_p.exists():
+            ds_sha = json.loads(man_p.read_text(encoding="utf-8")).get("inputs_sha256")
+        bundle_sha = (self.meta.get("source") or {}).get("dataset_inputs_sha256")
+        if ds_sha and bundle_sha and ds_sha != bundle_sha:
+            return {"applied": False,
+                    "reason": (f"dataset inputs_sha256 {ds_sha[:12]}… does not match the bundle's source "
+                               f"dataset {str(bundle_sha)[:12]}… — wrong dataset for this bundle")}
+        from autograder.eligibility import eligibility_for_case
+        inputs = {r["case_id"]: r for r in (json.loads(l) for l in
+                  inputs_p.read_text(encoding="utf-8").splitlines() if l.strip())}
+        labels = {r["case_id"]: r for r in (json.loads(l) for l in
+                  labels_p.read_text(encoding="utf-8").splitlines() if l.strip())}
+        unmatched = []
+        for oid, cid in self.id_map.items():
+            if oid not in self.by_id:
+                continue
+            if cid not in inputs:
+                unmatched.append(oid)                     # stays unknown -> never silently eligible
+                continue
+            e = eligibility_for_case(inputs[cid], labels.get(cid))
+            self.eligibility[oid] = {"eligible_for_human_label": e.eligible_for_human_label,
+                                     "reason": e.reason,
+                                     "deterministic_score": e.deterministic_score}
+        return {"applied": True, "reason": "", "ineligible": self.ineligible_item_ids(),
+                "unmatched_items": sorted(unmatched)}
+
+    def eligibility_known(self) -> bool:
+        """True when EVERY item's eligibility is explicit (bundle flags or a
+        dataset recompute). Only then may the DB flip flags on bundle items."""
+        return all(e.get("eligible_for_human_label") is not None for e in self.eligibility.values())
+
+    def ineligible_item_ids(self) -> list[str]:
+        """Items explicitly marked NOT human-labelable (unknown counts as
+        eligible only because a pre-eligibility bundle carries no flag; the
+        dataset recompute in apply_dataset_eligibility settles those)."""
+        return sorted(i for i, e in self.eligibility.items()
+                      if e.get("eligible_for_human_label") is False)
 
     def item(self, item_id: str) -> dict | None:
         return self.by_id.get(item_id)

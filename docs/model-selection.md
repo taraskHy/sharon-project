@@ -344,6 +344,21 @@ labels: `python -m streamlit run scripts/grade_label_ui.py` writes
 --role grade_primary` reports the remaining count; the manifest merges confirmed
 labels and hashes the file into the run identity.
 
+Grading-label eligibility (`autograder/eligibility.py`, wraps
+`policies.decide_before_ocr`): GRADE_PRIMARY measures model accuracy only on
+cases whose explanation genuinely requires scoring. A case with a confidently
+wrong MC under `wrong_choice_zero` (or `explanation_required_if_correct` with
+a zero/selection wrong-answer rule) has a deterministic score of 0 — future
+`bench build-grading` runs route such cases to `policy_early_exit.jsonl`
+beside the dataset (policy/early-exit validation provenance, never accuracy
+cases), the labeling bundle excludes them from the human queue, and
+`bench import-final-labels` refuses to promote a human label for them
+(`ignored_ineligible` in `final_labels.json`). Ambiguous/unresolved or absent
+MC never produces a deterministic zero. The frozen 67-case grade_primary is
+unaffected: every cell is explanation-only (`selected=None`) under
+`choice_and_explanation_independent`, so 67/67 remain human-labelable and the
+frozen files/hashes are unchanged.
+
 ### Spend safety — the live-call sequence (Part 7)
 
 ```

@@ -94,6 +94,10 @@ class QuestionGradingPack:
     rubric_items: list[RubricItemSpec] = field(default_factory=list)
     evidence_policy: str = "required"     # required | optional | disabled (see evidence.py)
     score_granularity: float | None = None   # e.g. 0.5 -> only half-point scores are valid
+    #: wrong-answer rule for explanation_required_if_correct ("zero" |
+    #: "selection" | "process"); None -> the production default ("zero").
+    #: Carried into dataset packs so label eligibility can honor "process".
+    wrong_answer_rule: str | None = None
     rag_evidence: list[RagEvidence] = field(default_factory=list)
     #: Chunks retrieved ONCE at pack preparation for the lazy policies
     #: (RAG_ON_UNCERTAIN / RAG_ON_ESCALATION). They are NOT part of the grader

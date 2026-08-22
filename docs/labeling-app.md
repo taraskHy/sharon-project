@@ -67,6 +67,44 @@ directly; quick tunnels are unauthenticated by design — the URL is the
 credential (privacy was declared a non-priority; set `--admin-key` so only
 you reach the admin page).
 
+## Which cases reach the graders (eligibility)
+
+Humans grade an explanation ONLY when the exam's grading policy actually
+requires the explanation to be scored. The single source of truth is
+`autograder.eligibility` (a thin wrapper over the production policy gate
+`policies.decide_before_ocr`; the labeling app never re-implements policy
+semantics). Facts come from the dataset case records — the student's selected
+MC option, the key's `correct_by_version`, the exam version, the canonical
+grading policy and its wrong-answer rule — never from filenames, historical
+totals or instructor red marks.
+
+* Confidently wrong MC under `wrong_choice_zero`, or under
+  `explanation_required_if_correct` with a zero/selection wrong-answer rule
+  → **deterministic score 0**: the case is excluded from the bundle at build
+  time (recorded in `bundle/private/excluded.json` and in the bundle's
+  `eligibility` counts) and the server refuses label submissions for it.
+* `explanation_can_rescue_wrong_choice`, `choice_and_explanation_independent`,
+  wrong-answer rule `process`, unresolved/ambiguous MC, or no MC observation
+  at all (the current explanation-only grade_primary cells) → **human label**.
+  An ambiguous or absent MC never yields a deterministic zero.
+* `choice_only` → no explanation component exists; never in the queue.
+
+Enforcement is layered: `build-bundle` excludes ineligible cases from the
+human workload; `serve`/`export`/`status` recompute eligibility from the
+dataset (`--dataset`, default: the repo grade_primary) so even a STALE bundle
+fails safely — `claim_next` skips such items, label submission and admin
+FINAL return HTTP 400, and workload/progress counts include only genuinely
+human-labelable items. Existing labels on a case that later becomes
+ineligible are never deleted: they surface as `INELIGIBLE` /
+"obsolete" in the admin summary, the export marks the item
+`eligible_for_human_label: false`, and `bench import-final-labels` refuses to
+promote it to ground truth (recorded under `ignored_ineligible` in
+`final_labels.json`). The deterministic policy result stays authoritative;
+GRADE_PRIMARY model accuracy is measured only on human-labelable cases.
+Today's frozen grade_primary: 67 source cases, 67 human-labelable, 0
+deterministic-zero (all cells are explanation-only under the independent
+policy).
+
 ## Grader workflow
 
 Name → item (question, rubric, official solution, answer image, frozen

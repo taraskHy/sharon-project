@@ -63,7 +63,9 @@ def test_bundle_is_anonymized_and_self_contained(bundle_dir):
         assert forbidden not in text, forbidden
     for it in items:
         assert set(it) == {"item_id", "question_text", "rubric", "scoring_rules", "official_solution",
-                           "transcription", "max_score", "rubric_items", "images", "provenance"}
+                           "transcription", "max_score", "rubric_items", "images", "provenance",
+                           "eligible_for_human_label", "eligibility_reason"}
+        assert it["eligible_for_human_label"] is True
         assert re.fullmatch(r"g[0-9a-f]{10}", it["item_id"])
         assert not (set(it) & set(FORBIDDEN_IN_BUNDLE))
         for rel in it["images"]:
@@ -286,8 +288,20 @@ def test_labeling_app_has_no_ai_or_pipeline_dependency():
     src = ""
     for p in sorted((REPO / "labeling_app").rglob("*.py")):
         src += p.read_text(encoding="utf-8")
-    for forbidden in ("openrouter", "anthropic", "gemini", "openai", "ollama", "claude", "from autograder", "import autograder"):
+    for forbidden in ("openrouter", "anthropic", "gemini", "openai", "ollama", "claude"):
         assert forbidden not in src.lower(), forbidden
+    # The ONLY autograder import allowed is the deterministic eligibility gate
+    # (policy machinery, no model/pipeline code) — never anything else.
+    for m in re.finditer(r"(?:from|import)\s+autograder[\w.]*", src):
+        assert m.group(0).startswith("from autograder.eligibility"), m.group(0)
+    # ... and that module must not drag the pipeline in behind our back
+    import subprocess
+    import sys
+    probe = ("import sys, autograder.eligibility; "
+             "bad = [m for m in sys.modules if m.startswith('autograder.') and m not in "
+             "('autograder', 'autograder.eligibility', 'autograder.policies')]; "
+             "assert not bad, bad")
+    assert subprocess.run([sys.executable, "-c", probe], cwd=str(REPO)).returncode == 0
     for p in sorted((REPO / "labeling_app" / "web").glob("*.html")):
         t = p.read_text(encoding="utf-8").lower()
         for forbidden in ("openrouter", "model output", "predicted", "confidence"):

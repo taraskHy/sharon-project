@@ -20,6 +20,33 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 from typing import Literal
 
+# Hebrew option letters -> Latin canonical form. Lives HERE (the deterministic,
+# no-model module) so policy consumers like autograder.eligibility and the
+# labeling app never have to import the grading pipeline; grade.py re-exports.
+_HEBREW_LETTERS = {
+    "א": "A",
+    "ב": "B",
+    "ג": "C",
+    "ד": "D",
+    "ה": "E",
+    "ו": "F",
+    "ז": "G",
+    "ח": "H",
+    "ט": "I",
+}
+
+
+def normalize_answer(answer: str | None) -> str | None:
+    if answer is None:
+        return None
+    s = answer.strip().strip(".)('\"").strip()
+    if not s:
+        return None
+    if s in _HEBREW_LETTERS:
+        return _HEBREW_LETTERS[s]
+    return s.upper()
+
+
 POLICIES = (
     "choice_only",
     "wrong_choice_zero",

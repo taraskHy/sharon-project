@@ -215,7 +215,12 @@ async def api_my_items(request: Request) -> Response:
 async def api_admin_summary(request: Request) -> Response:
     if (err := _need_admin(request)):
         return err
-    return JSONResponse(request.app.state.db.summary())
+    bundle: Bundle = request.app.state.bundle
+    summary = request.app.state.db.summary()
+    # dataset-level eligibility accounting (source cases vs human workload)
+    summary["eligibility"] = bundle.meta.get("eligibility")
+    summary["ineligible_item_ids"] = bundle.ineligible_item_ids()
+    return JSONResponse(summary)
 
 
 async def api_admin_items(request: Request) -> Response:
@@ -226,7 +231,7 @@ async def api_admin_items(request: Request) -> Response:
     if state:
         ovs = [o for o in ovs if o["state"] == state]
     compact = [{k: o[k] for k in ("item_id", "state", "revision", "wanted_labels", "n_saved", "n_skipped",
-                                  "n_flagged", "agreement")}
+                                  "n_flagged", "agreement", "eligible")}
                | {"graders": [l["grader"] for l in o["labels"]],
                   "case_id": request.app.state.bundle.id_map.get(o["item_id"])} for o in ovs]
     return JSONResponse({"items": compact})
@@ -251,6 +256,8 @@ async def api_admin_final(request: Request) -> Response:
     if (err := _need_admin(request)):
         return err
     item_id = request.path_params["item_id"]
+    if request.app.state.bundle.item(item_id) is None:
+        return JSONResponse({"error": "unknown item (not in the served bundle)"}, status_code=404)
     body = await _json(request)
     db: LabelDB = request.app.state.db
     try:
@@ -269,6 +276,8 @@ async def api_admin_finalize_agreement(request: Request) -> Response:
     if (err := _need_admin(request)):
         return err
     item_id = request.path_params["item_id"]
+    if request.app.state.bundle.item(item_id) is None:
+        return JSONResponse({"error": "unknown item (not in the served bundle)"}, status_code=404)
     body = await _json(request)
     db: LabelDB = request.app.state.db
     try:
@@ -338,12 +347,21 @@ async def api_health(request: Request) -> Response:
 # --------------------------------------------------------------- factory --
 
 def create_app(*, data_dir: Path, bundle_dir: Path | None = None, admin_key: str | None = None,
-               backup_copy_to: Path | None = None) -> Starlette:
+               backup_copy_to: Path | None = None, dataset_dir: Path | None = None) -> Starlette:
     data_dir = Path(data_dir)
     data_dir.mkdir(parents=True, exist_ok=True)
     bundle = Bundle(bundle_dir or (data_dir / "bundle"))
+    recompute = {"applied": False, "reason": "no dataset directory provided"}
+    if dataset_dir is not None:
+        # Recompute eligibility from the dataset (single source of truth) so a
+        # STALE bundle built before eligibility filtering still fails safely.
+        recompute = bundle.apply_dataset_eligibility(dataset_dir)
     db = LabelDB(data_dir / "labels.db")
     db.load_items(bundle.items)
+    # Fail-safe reconciliation: unknown eligibility never flips a flag, and
+    # items no longer in the served bundle are retired from the workload.
+    db.sync_eligibility([i["item_id"] for i in bundle.items], bundle.ineligible_item_ids(),
+                        eligibility_known=bundle.eligibility_known())
     routes = [
         Route("/", page_grader),
         Route("/admin", page_admin),
@@ -371,6 +389,7 @@ def create_app(*, data_dir: Path, bundle_dir: Path | None = None, admin_key: str
     app = Starlette(routes=routes)
     app.state.db = db
     app.state.bundle = bundle
+    app.state.eligibility_recompute = recompute
     app.state.data_dir = data_dir
     app.state.admin_key = admin_key or os.environ.get("LABELING_ADMIN_KEY") or None
     app.state.backup_copy_to = str(backup_copy_to) if backup_copy_to else os.environ.get("LABELING_BACKUP_COPY_TO")

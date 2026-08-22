@@ -75,7 +75,11 @@
   let selected = null, items = [];
   async function loadSummary(){
     const {data:s} = await api("GET", "/api/admin/summary");
-    const cards = [["total items", s.total_items],["unlabeled", s.unlabeled],["labels completed", s.labels_completed],["singly labeled", s.singly_labeled],["double labeled", s.double_labeled],["agreements", s.agreements],["disagreements", s.disagreements],["flagged", s.flagged],["needs adjudication", s.needs_adjudication],["final", s.final]];
+    const el = s.eligibility || {};
+    const cards = [["source cases", el.source_cases ?? s.total_items],["human-labelable", el.human_labelable ?? s.eligible_items ?? s.total_items],["deterministic zero", el.deterministic_zero ?? 0],["MC unresolved", el.mc_unresolved ?? 0],["choice-only excluded", el.excluded_choice_only ?? 0],["unlabeled", s.unlabeled],["labels completed", s.labels_completed],["singly labeled", s.singly_labeled],["double labeled", s.double_labeled],["agreements", s.agreements],["disagreements", s.disagreements],["flagged", s.flagged],["needs adjudication", s.needs_adjudication],["final", s.final]];
+    if (s.ineligible_items) cards.push(["ineligible in DB", s.ineligible_items]);
+    if (s.obsolete_ineligible_labels) cards.push(["obsolete labels (ineligible)", s.obsolete_ineligible_labels]);
+    if (s.obsolete_ineligible_finals) cards.push(["obsolete FINALs (ineligible)", s.obsolete_ineligible_finals]);
     $("cards").innerHTML = cards.map(([k,v]) => `<div class="card"><div class="k">${esc(k)}</div><div class="v">${esc(v)}</div></div>`).join("");
     $("perGrader").innerHTML = "<table><tr><th>grader</th><th>saved</th><th>skipped</th><th>flagged</th></tr>" + Object.entries(s.per_grader || {}).map(([g,c]) => `<tr><td>${esc(g)}</td><td>${c.saved||0}</td><td>${c.skipped||0}</td><td>${c.flagged||0}</td></tr>`).join("") + "</table>";
     $("policyNow").textContent = "current: " + (s.double_label_mode || "none"); $("policyMode").value = s.double_label_mode || "none";
