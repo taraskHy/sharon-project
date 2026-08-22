@@ -46,7 +46,9 @@ Before any cloud credential exists, `python -m autograder readiness` prints
 the zero-key dry run (course store, packages, frozen benchmarks, model roles,
 budget, verifier crops, GUI, held-out status) with zero network calls; the
 model-selection harness is `python -m autograder bench ...`
-([docs/model-selection.md](docs/model-selection.md)); owner grading labels: `python -m streamlit run scripts/grade_label_ui.py`.
+([docs/model-selection.md](docs/model-selection.md)); owner grading labels: `python -m streamlit run scripts/grade_label_ui.py`; shared
+(friends, browser-only) grading labels: `python -m labeling_app serve` + Cloudflare
+Tunnel — see [docs/labeling-app.md](docs/labeling-app.md).
 
 ## Quick start (fresh machine)
 

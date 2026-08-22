@@ -1,0 +1,217 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Grading — ground truth</title>
+<style>
+  :root { --bg:#fff; --fg:#1a1a1a; --muted:#666; --card:#f6f7f9; --line:#d9dde3; --accent:#2b6cb0; --ok:#2f855a; --warn:#b7791f; --bad:#c53030; }
+  @media (prefers-color-scheme: dark) { :root { --bg:#111417; --fg:#e8e8e8; --muted:#a0a6ad; --card:#1b2026; --line:#2e3640; --accent:#63b3ed; --ok:#68d391; --warn:#f6ad55; --bad:#fc8181; } }
+  body { margin:0; font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Noto Sans Hebrew", sans-serif; background:var(--bg); color:var(--fg); }
+  header { display:flex; align-items:center; gap:16px; padding:10px 18px; border-bottom:1px solid var(--line); position:sticky; top:0; background:var(--bg); z-index:2; }
+  header .title { font-weight:600; }
+  header .progress { flex:1; }
+  .bar { height:8px; background:var(--card); border:1px solid var(--line); border-radius:6px; overflow:hidden; }
+  .bar > div { height:100%; background:var(--accent); width:0; transition:width .3s; }
+  main { max-width:1200px; margin:0 auto; padding:16px; display:grid; grid-template-columns: 3fr 2fr; gap:16px; }
+  @media (max-width: 900px) { main { grid-template-columns: 1fr; } }
+  .card { background:var(--card); border:1px solid var(--line); border-radius:10px; padding:14px 16px; margin-bottom:14px; }
+  .card h3 { margin:0 0 8px 0; font-size:0.95em; color:var(--muted); font-weight:600; letter-spacing:.02em; text-transform:uppercase; }
+  .rtl { direction:rtl; text-align:right; font-size:1.15em; line-height:1.7; white-space:pre-wrap; }
+  .transcription { font-size:1.35em; line-height:1.8; border:1px solid var(--line); border-radius:8px; padding:10px 12px; background:var(--bg); }
+  img.crop { max-width:100%; border:1px solid var(--line); border-radius:6px; background:#fff; margin-bottom:8px; }
+  .scores { display:flex; flex-wrap:wrap; gap:8px; }
+  .scores button { min-width:56px; padding:10px 8px; border:1px solid var(--line); border-radius:8px; background:var(--bg); color:var(--fg); font-size:1.05em; cursor:pointer; }
+  .scores button.sel { background:var(--accent); color:#fff; border-color:var(--accent); }
+  .rubric label { display:block; padding:6px 0; }
+  textarea { width:100%; min-height:64px; border:1px solid var(--line); border-radius:8px; background:var(--bg); color:var(--fg); padding:8px; font: inherit; }
+  .actions { display:flex; gap:10px; flex-wrap:wrap; }
+  .actions button { padding:12px 18px; border-radius:10px; border:1px solid var(--line); background:var(--bg); color:var(--fg); cursor:pointer; font-size:1em; }
+  .actions .primary { background:var(--ok); color:#fff; border-color:var(--ok); font-weight:600; }
+  .actions .flag { border-color:var(--warn); color:var(--warn); }
+  .hint { color:var(--muted); font-size:.9em; }
+  kbd { border:1px solid var(--line); border-bottom-width:2px; border-radius:4px; padding:0 5px; font-size:.85em; background:var(--bg); }
+  #toast { position:fixed; bottom:18px; left:50%; transform:translateX(-50%); background:var(--fg); color:var(--bg); padding:10px 16px; border-radius:8px; opacity:0; transition:opacity .2s; pointer-events:none; }
+  #toast.show { opacity:1; }
+  #name { max-width:520px; margin:60px auto; }
+  input[type=text] { font-size:1.1em; padding:10px; width:100%; border:1px solid var(--line); border-radius:8px; background:var(--bg); color:var(--fg); }
+  .done { text-align:center; padding:60px 20px; }
+  .muted { color:var(--muted); }
+  .small { font-size:.9em; }
+</style>
+</head>
+<body>
+<header>
+  <div class="title">✍ Grading — ground truth</div>
+  <div class="progress"><div class="bar"><div id="bar"></div></div><div id="ptext" class="hint"></div></div>
+  <div id="who" class="hint"></div>
+</header>
+
+<section id="name" class="card" style="display:none">
+  <h3>Who is grading?</h3>
+  <p>Enter your first name (it is stored with every grade you give). Nothing else is collected.</p>
+  <input type="text" id="nameInput" placeholder="Your name" maxlength="64" autofocus>
+  <p><button id="nameGo" class="primary" style="padding:10px 18px;border-radius:8px;border:0;background:var(--ok);color:#fff;cursor:pointer">Start grading</button></p>
+</section>
+
+<main id="work" style="display:none">
+  <div>
+    <div class="card"><h3>Question</h3><div id="question" class="rtl"></div></div>
+    <div class="card"><h3>Official solution / reference answer</h3><div id="solution" class="rtl"></div></div>
+    <div class="card"><h3>Rubric / rules</h3><div id="rubric" class="rtl"></div><details class="small"><summary class="muted">general scoring rules</summary><div id="rules" class="rtl small"></div></details></div>
+    <div class="card"><h3>Student answer — image</h3><div id="images"></div><div id="noimg" class="hint" style="display:none">no image for this item</div></div>
+    <div class="card"><h3>Student answer — transcription (what the grader reads)</h3><div id="transcription" class="rtl transcription"></div></div>
+  </div>
+  <div>
+    <div class="card">
+      <h3>Score <span id="maxs" class="muted"></span></h3>
+      <div id="scores" class="scores"></div>
+      <p class="hint">keys: digits set the score · <kbd>.</kbd> adds ½ · <kbd>-</kbd>/<kbd>+</kbd> ±½</p>
+    </div>
+    <div class="card" id="rubricCard" style="display:none"><h3>Rubric items met</h3><div id="rubricItems" class="rubric"></div><p class="hint">keys <kbd>Q</kbd> <kbd>W</kbd> <kbd>E</kbd> <kbd>R</kbd> <kbd>T</kbd> toggle items</p></div>
+    <div class="card"><h3>Note (optional)</h3><textarea id="note" placeholder="anything the adjudicator should know"></textarea></div>
+    <div class="card">
+      <div class="actions">
+        <button id="save" class="primary">Save &amp; next <kbd style="background:transparent;border-color:#fff8">Enter</kbd></button>
+        <button id="skip">Skip <kbd>S</kbd></button>
+        <button id="flagBtn" class="flag">Flag for review <kbd>F</kbd></button>
+      </div>
+      <p class="hint" id="itemInfo"></p>
+      <p class="hint"><a href="#" id="reviewSkipped">review my skipped items</a> · <a href="#" id="changeName">change name</a></p>
+    </div>
+  </div>
+</main>
+
+<section id="done" class="done" style="display:none">
+  <h2>Nothing left for you — thank you!</h2>
+  <p class="muted">Every item has the labels it needs from you. You can <a href="#" id="reviewSkipped2">review your skipped items</a> or close the page.</p>
+</section>
+
+<div id="toast"></div>
+
+<script>
+(function(){
+  const $ = (id) => document.getElementById(id);
+  let item = null, score = null, rubric = new Set(), busy = false;
+  const toast = (m, ms=1800) => { const t=$("toast"); t.textContent=m; t.classList.add("show"); setTimeout(()=>t.classList.remove("show"), ms); };
+  const api = async (method, url, body) => {
+    const r = await fetch(url, {method, headers: body ? {"Content-Type":"application/json"} : {}, body: body ? JSON.stringify(body) : undefined, credentials:"same-origin"});
+    let data = {}; try { data = await r.json(); } catch(e) {}
+    return {status: r.status, data};
+  };
+  const esc = (s) => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+  const fmt = (n) => (Number.isInteger(n) ? String(n) : String(n));
+
+  function setProgress(p, who){
+    if (!p) return;
+    const total = p.total_items || 0, done = p.labels_completed || 0;
+    $("bar").style.width = total ? Math.min(100, 100*done/Math.max(total,1)) + "%" : "0%";
+    $("ptext").textContent = `you: ${p.my_saved} graded · ${p.my_skipped} skipped · ${p.remaining_for_me} left for you  —  overall ${p.items_with_any_label}/${total} items have a grade`;
+    if (who) $("who").textContent = "grader: " + who;
+  }
+
+  function render(it){
+    item = it; score = null; rubric = new Set();
+    $("question").textContent = it.question_text || "";
+    $("solution").textContent = it.official_solution || "(none)";
+    $("rubric").innerHTML = (it.rubric || []).map(l => "• " + esc(l)).join("<br>") || "<span class='muted'>(no explicit rubric lines)</span>";
+    $("rules").innerHTML = (it.scoring_rules || []).map(l => "• " + esc(l)).join("<br>");
+    $("transcription").textContent = it.transcription || "(empty)";
+    const im = $("images"); im.innerHTML = "";
+    (it.images || []).forEach(u => { const img = document.createElement("img"); img.className="crop"; img.src = u; img.alt = "student answer"; im.appendChild(img); });
+    $("noimg").style.display = (it.images && it.images.length) ? "none" : "block";
+    $("maxs").textContent = `(max ${fmt(it.max_score)})`;
+    const sc = $("scores"); sc.innerHTML = "";
+    for (let v = 0; v <= it.max_score + 1e-9; v += 0.5) {
+      const b = document.createElement("button"); b.textContent = fmt(v); b.dataset.v = v;
+      b.onclick = () => setScore(v); sc.appendChild(b);
+    }
+    const rc = $("rubricCard"), ri = $("rubricItems"); ri.innerHTML = "";
+    if (it.rubric_items && it.rubric_items.length) {
+      rc.style.display = "block";
+      it.rubric_items.forEach((r, i) => {
+        const lab = document.createElement("label");
+        const cb = document.createElement("input"); cb.type = "checkbox"; cb.dataset.id = r.id;
+        cb.onchange = () => { cb.checked ? rubric.add(r.id) : rubric.delete(r.id); };
+        lab.appendChild(cb); lab.appendChild(document.createTextNode(" " + (r.id || "") + " — "));
+        const span = document.createElement("span"); span.className = "rtl"; span.style.display="inline"; span.textContent = r.text || ""; lab.appendChild(span);
+        ri.appendChild(lab);
+      });
+    } else rc.style.display = "none";
+    $("note").value = "";
+    if (it.my_label) {                         // resuming my own earlier answer (never someone else's)
+      if (it.my_label.score !== null && it.my_label.score !== undefined) setScore(it.my_label.score);
+      (it.my_label.rubric || []).forEach(id => { rubric.add(id); const cb = ri.querySelector(`input[data-id="${CSS.escape(id)}"]`); if (cb) cb.checked = true; });
+      $("note").value = it.my_label.note || "";
+    }
+    $("itemInfo").textContent = `item ${it.item_id}` + (it.my_label ? ` · you already ${it.my_label.status} this item (revision ${it.my_label.revision})` : "");
+    $("work").style.display = "grid"; $("done").style.display = "none"; $("name").style.display = "none";
+    window.scrollTo(0,0);
+  }
+  function setScore(v){
+    score = v;
+    document.querySelectorAll("#scores button").forEach(b => b.classList.toggle("sel", Math.abs(parseFloat(b.dataset.v) - v) < 1e-9));
+  }
+  async function loadNext(includeSkipped){
+    const {status, data} = await api("POST", "/api/next", {include_skipped: !!includeSkipped});
+    if (status === 401) { showName(); return; }
+    setProgress(data.progress);
+    if (!data.item) { $("work").style.display = "none"; $("done").style.display = "block"; return; }
+    render(data.item);
+  }
+  async function submit(status){
+    if (busy || !item) return;
+    if (status === "saved" && score === null) { toast("choose a score first"); return; }
+    let flag_reason = "";
+    if (status === "flagged") { flag_reason = prompt("Why does this item need review? (optional)") || ""; }
+    busy = true;
+    const body = {score: score, rubric: Array.from(rubric), note: $("note").value, status, flag_reason, expected_revision: item.label_revision || 0};
+    const {status: st, data} = await api("POST", `/api/items/${encodeURIComponent(item.item_id)}/label`, body);
+    busy = false;
+    if (st === 409) { toast("this item changed elsewhere — reloaded", 3000); const r = await api("GET", `/api/items/${encodeURIComponent(item.item_id)}`); if (r.data.item) render(r.data.item); return; }
+    if (st === 401) { showName(); return; }
+    if (st !== 200) { toast(data.error || "could not save"); return; }
+    toast(status === "saved" ? "saved ✓" : (status === "skipped" ? "skipped" : "flagged for review"));
+    setProgress(data.progress);
+    await loadNext(false);
+  }
+  function showName(){ $("work").style.display="none"; $("done").style.display="none"; $("name").style.display="block"; $("nameInput").focus(); }
+  async function start(){
+    const {data} = await api("GET", "/api/me");
+    if (!data.grader) { showName(); return; }
+    setProgress(data.progress, data.grader);
+    await loadNext(false);
+  }
+  $("nameGo").onclick = async () => {
+    const name = $("nameInput").value.trim(); if (!name) { toast("please enter a name"); return; }
+    const {status, data} = await api("POST", "/api/session", {name});
+    if (status !== 200) { toast(data.error || "invalid name"); return; }
+    $("who").textContent = "grader: " + name; await loadNext(false);
+  };
+  $("nameInput").addEventListener("keydown", e => { if (e.key === "Enter") $("nameGo").click(); });
+  $("save").onclick = () => submit("saved");
+  $("skip").onclick = () => submit("skipped");
+  $("flagBtn").onclick = () => submit("flagged");
+  $("reviewSkipped").onclick = (e) => { e.preventDefault(); loadNext(true); };
+  $("reviewSkipped2").onclick = (e) => { e.preventDefault(); loadNext(true); };
+  $("changeName").onclick = async (e) => { e.preventDefault(); await api("POST", "/api/logout"); showName(); };
+  document.addEventListener("keydown", (e) => {
+    if (!item || $("work").style.display === "none") return;
+    const tag = (document.activeElement && document.activeElement.tagName) || "";
+    if (tag === "TEXTAREA" || tag === "INPUT") { if (e.key === "Escape") document.activeElement.blur(); return; }
+    if (e.key === "Enter") { e.preventDefault(); submit("saved"); return; }
+    if (e.key === "s" || e.key === "S") { submit("skipped"); return; }
+    if (e.key === "f" || e.key === "F") { submit("flagged"); return; }
+    if (/^[0-9]$/.test(e.key)) { const v = Math.min(parseInt(e.key, 10), item.max_score); setScore(v); return; }
+    if (e.key === ".") { if (score !== null && score + 0.5 <= item.max_score + 1e-9) setScore(score + 0.5); return; }
+    if (e.key === "+" || e.key === "=") { if (score !== null && score + 0.5 <= item.max_score + 1e-9) setScore(score + 0.5); return; }
+    if (e.key === "-") { if (score !== null && score - 0.5 >= 0) setScore(score - 0.5); return; }
+    const keys = ["q","w","e","r","t"]; const ki = keys.indexOf(e.key.toLowerCase());
+    if (ki >= 0 && item.rubric_items && item.rubric_items[ki]) { const cb = document.querySelector(`#rubricItems input[data-id="${CSS.escape(item.rubric_items[ki].id)}"]`); if (cb) { cb.checked = !cb.checked; cb.onchange(); } }
+  });
+  start();
+})();
+</script>
+</body>
+</html>

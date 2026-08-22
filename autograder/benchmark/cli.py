@@ -247,6 +247,23 @@ def cmd_bench_build(args) -> int:
     return 0
 
 
+def cmd_bench_import_final_labels(args) -> int:
+    """FINAL labels from the shared labeling app (labeling_app export) ->
+    datasets/<role>/final_labels.json. Only agreement/adjudicated rows."""
+    from .finallabels import import_final_labels
+    d = Path(args.datasets_root) / args.role
+    if not (d / "manifest.json").exists():
+        _log(f"REFUSED: no frozen dataset at {d}")
+        return 3
+    try:
+        res = import_final_labels(Path(args.export), d)
+    except (ValueError, FileNotFoundError) as e:
+        _log(f"REFUSED: {e}")
+        return 3
+    _emit(res, True)
+    return 0
+
+
 def cmd_bench_owner_labels(args) -> int:
     from .ownerlabels import OwnerLabelStore
     d = Path(args.datasets_root) / args.role
@@ -398,6 +415,11 @@ def add_bench_commands(sub) -> None:
     p = bs.add_parser("owner-labels", help="grading roles: how many cases the owner still has to label")
     common(p)
     p.set_defaults(func=cmd_bench_owner_labels)
+
+    p = bs.add_parser("import-final-labels", help="import the shared labeling app's FINAL export into a grading dataset")
+    common(p)
+    p.add_argument("--export", required=True, help="final_labels.json exported by `python -m labeling_app export`")
+    p.set_defaults(func=cmd_bench_import_final_labels)
 
     p = bs.add_parser("report", help="one run or all runs of a role"); common(p, needs_role=False)
     p.add_argument("--role", default=None, choices=ROLES)

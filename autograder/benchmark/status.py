@@ -66,8 +66,9 @@ def role_dataset_status(role: str, manifest: BenchmarkManifest | None = None, *,
         if labeled == 0:
             out.update({"status": "NEEDS_OWNER_LABELS",
                         "detail": f"{len(m.cases)} grading cases built; 0 owner-labeled",
-                        "owner_action": f"label {pending} grading case(s) in the owner-labeling tool "
-                                        f"(python -m streamlit run scripts/grade_label_ui.py)"})
+                        "owner_action": f"label {pending} grading case(s): shared tool `python -m labeling_app serve` "
+                                        f"(friends via Cloudflare Tunnel; then `bench import-final-labels`) or the local "
+                                        f"owner tool `python -m streamlit run scripts/grade_label_ui.py`"})
         elif pending:
             out.update({"status": "PARTIALLY_READY",
                         "detail": f"{labeled}/{len(m.cases)} owner-labeled; unlabeled cases are run but "

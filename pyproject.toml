@@ -23,8 +23,11 @@ anthropic = ["anthropic>=0.92.0"]
 [project.scripts]
 autograder = "autograder.cli:main"
 
+[tool.setuptools.package-data]
+labeling_app = ["web/*.html"]
+
 [tool.setuptools.packages.find]
-include = ["autograder*"]
+include = ["autograder*", "labeling_app*"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

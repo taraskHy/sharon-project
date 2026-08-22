@@ -430,14 +430,22 @@ def load_declared(role: str, datasets_root: Path = DEFAULT_DATASETS_ROOT) -> Ben
         raise BenchmarkIntegrityError(f"{role}: inputs/labels case-id sets differ")
     hashes = {"inputs_sha256": h_in, "labels_sha256": h_lab, "manifest_sha256": sha256_file(man_path)}
     owner_merged = 0
+    final_merged = 0
     if role in ("grade_primary", "grade_escalate"):
-        # human labels live in a SEPARATE incremental file; only confirmed
-        # entries become scoring labels; its hash joins the run identity
+        # Human labels live in SEPARATE files, never inside the frozen dataset:
+        #   final_labels.json  — FINAL ground truth imported from the shared
+        #                        labeling app (agreement / adjudicated only)
+        #   owner_labels.json  — the local single-owner tool (confirmed only)
+        # FINAL wins where both exist; both hashes join the run identity.
+        from .finallabels import merge_final_labels
         from .ownerlabels import OwnerLabelStore, merge_owner_labels
         store = OwnerLabelStore(d)
         if store.path.exists():
             owner_merged = merge_owner_labels(labels, store)
             hashes["owner_labels_sha256"] = store.sha256()
+        final_merged, final_sha = merge_final_labels(labels, d)
+        if final_sha:
+            hashes["final_labels_sha256"] = final_sha
     cases = []
     for cid, inp in inputs.items():
         lab = labels[cid]
@@ -449,6 +457,7 @@ def load_declared(role: str, datasets_root: Path = DEFAULT_DATASETS_ROOT) -> Ben
     comps = sorted({c.component for c in cases})
     extra = dict(man.get("extra", {}))
     extra["owner_labels_merged"] = owner_merged
+    extra["final_labels_merged"] = final_merged
     return BenchmarkManifest(
         role=role, name=man.get("name", f"{role} benchmark"), status=man.get("status", STATUS_FROZEN),
         root=d, hashes=hashes,

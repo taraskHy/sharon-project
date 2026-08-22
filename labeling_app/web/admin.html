@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Grading labels — admin</title>
+<style>
+  :root { --bg:#fff; --fg:#1a1a1a; --muted:#666; --card:#f6f7f9; --line:#d9dde3; --accent:#2b6cb0; --ok:#2f855a; --warn:#b7791f; --bad:#c53030; }
+  @media (prefers-color-scheme: dark) { :root { --bg:#111417; --fg:#e8e8e8; --muted:#a0a6ad; --card:#1b2026; --line:#2e3640; --accent:#63b3ed; --ok:#68d391; --warn:#f6ad55; --bad:#fc8181; } }
+  body { margin:0; font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Noto Sans Hebrew", sans-serif; background:var(--bg); color:var(--fg); }
+  header { padding:10px 18px; border-bottom:1px solid var(--line); display:flex; gap:14px; align-items:center; }
+  main { max-width:1300px; margin:0 auto; padding:16px; }
+  .cards { display:grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap:10px; margin-bottom:14px; }
+  .card { background:var(--card); border:1px solid var(--line); border-radius:10px; padding:10px 12px; }
+  .card .k { color:var(--muted); font-size:.8em; text-transform:uppercase; letter-spacing:.03em; }
+  .card .v { font-size:1.5em; font-weight:600; }
+  table { width:100%; border-collapse:collapse; font-size:.95em; }
+  th, td { text-align:left; padding:6px 8px; border-bottom:1px solid var(--line); }
+  tr.sel { background:var(--card); }
+  tr.clickable { cursor:pointer; }
+  .state-FINAL { color:var(--ok); font-weight:600; } .state-NEEDS_ADJUDICATION { color:var(--bad); font-weight:600; } .state-AGREEMENT { color:var(--accent); }
+  .grid { display:grid; grid-template-columns: 1fr 1fr; gap:16px; }
+  @media (max-width: 1000px) { .grid { grid-template-columns: 1fr; } }
+  .rtl { direction:rtl; text-align:right; white-space:pre-wrap; line-height:1.6; }
+  .box { background:var(--card); border:1px solid var(--line); border-radius:10px; padding:12px 14px; margin-bottom:12px; }
+  img.crop { max-width:100%; border:1px solid var(--line); border-radius:6px; background:#fff; margin-bottom:6px; }
+  button { padding:8px 12px; border-radius:8px; border:1px solid var(--line); background:var(--bg); color:var(--fg); cursor:pointer; }
+  button.primary { background:var(--ok); color:#fff; border-color:var(--ok); }
+  button.danger { border-color:var(--bad); color:var(--bad); }
+  input, select, textarea { font: inherit; padding:6px; border:1px solid var(--line); border-radius:6px; background:var(--bg); color:var(--fg); }
+  .muted { color:var(--muted); }
+  .label { border:1px dashed var(--line); border-radius:8px; padding:8px 10px; margin:6px 0; }
+  #toast { position:fixed; bottom:18px; left:50%; transform:translateX(-50%); background:var(--fg); color:var(--bg); padding:10px 16px; border-radius:8px; opacity:0; transition:opacity .2s; }
+  #toast.show { opacity:1; }
+</style>
+</head>
+<body>
+<header>
+  <strong>🛠 Grading labels — admin</strong>
+  <span class="muted">human ground truth for the grading benchmark · no model is involved</span>
+  <span style="flex:1"></span>
+  <button id="exportBtn">⬇ Export final_labels.json</button>
+  <button id="backupBtn">💾 Backup now</button>
+  <button id="refresh">↻</button>
+</header>
+<main>
+  <div class="cards" id="cards"></div>
+  <div class="box">
+    <strong>Double-labeling policy:</strong>
+    <select id="policyMode"><option value="none">none (one label per item)</option><option value="all">all items get two labels</option><option value="selected">selected items (ids below)</option></select>
+    <input id="policyItems" placeholder="item ids, comma-separated (for 'selected')" style="width:380px">
+    <button id="policyApply">Apply</button>
+    <span class="muted" id="policyNow"></span>
+  </div>
+  <div class="grid">
+    <div>
+      <div class="box">
+        <label>Show: <select id="filter"><option value="">all</option><option>NEEDS_ADJUDICATION</option><option>AGREEMENT</option><option>LABELED</option><option>UNLABELED</option><option>ASSIGNED</option><option>FINAL</option></select></label>
+        <span class="muted" id="count"></span>
+        <table id="items"><thead><tr><th>item</th><th>case</th><th>state</th><th>labels</th><th>graders</th></tr></thead><tbody></tbody></table>
+      </div>
+      <div class="box"><details><summary>Progress by grader</summary><div id="perGrader"></div></details></div>
+    </div>
+    <div id="detail"><div class="box muted">select an item</div></div>
+  </div>
+</main>
+<div id="toast"></div>
+<script>
+(function(){
+  const $ = (id) => document.getElementById(id);
+  const toast = (m, ms=2200) => { const t=$("toast"); t.textContent=m; t.classList.add("show"); setTimeout(()=>t.classList.remove("show"), ms); };
+  const esc = (s) => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+  const api = async (method, url, body) => { const r = await fetch(url, {method, headers: body ? {"Content-Type":"application/json"} : {}, body: body ? JSON.stringify(body) : undefined, credentials:"same-origin"}); let d={}; try{d=await r.json();}catch(e){} return {status:r.status, data:d}; };
+  let selected = null, items = [];
+  async function loadSummary(){
+    const {data:s} = await api("GET", "/api/admin/summary");
+    const cards = [["total items", s.total_items],["unlabeled", s.unlabeled],["labels completed", s.labels_completed],["singly labeled", s.singly_labeled],["double labeled", s.double_labeled],["agreements", s.agreements],["disagreements", s.disagreements],["flagged", s.flagged],["needs adjudication", s.needs_adjudication],["final", s.final]];
+    $("cards").innerHTML = cards.map(([k,v]) => `<div class="card"><div class="k">${esc(k)}</div><div class="v">${esc(v)}</div></div>`).join("");
+    $("perGrader").innerHTML = "<table><tr><th>grader</th><th>saved</th><th>skipped</th><th>flagged</th></tr>" + Object.entries(s.per_grader || {}).map(([g,c]) => `<tr><td>${esc(g)}</td><td>${c.saved||0}</td><td>${c.skipped||0}</td><td>${c.flagged||0}</td></tr>`).join("") + "</table>";
+    $("policyNow").textContent = "current: " + (s.double_label_mode || "none"); $("policyMode").value = s.double_label_mode || "none";
+  }
+  async function loadItems(){
+    const f = $("filter").value; const {data} = await api("GET", "/api/admin/items" + (f ? "?state=" + encodeURIComponent(f) : ""));
+    items = data.items || []; $("count").textContent = items.length + " item(s)";
+    $("items").querySelector("tbody").innerHTML = items.map(i => `<tr class="clickable ${selected===i.item_id?'sel':''}" data-id="${esc(i.item_id)}"><td>${esc(i.item_id)}</td><td class="muted">${esc(i.case_id||"")}</td><td class="state-${esc(i.state)}">${esc(i.state)}${i.wanted_labels>1?" (2×)":""}</td><td>${i.n_saved}${i.n_flagged?" ⚑":""}${i.agreement===false?" ≠":(i.agreement===true?" =":"")}</td><td class="muted">${esc((i.graders||[]).join(", "))}</td></tr>`).join("");
+    $("items").querySelectorAll("tr.clickable").forEach(tr => tr.onclick = () => openItem(tr.dataset.id));
+  }
+  async function openItem(id){
+    selected = id; const {data:o} = await api("GET", `/api/admin/items/${encodeURIComponent(id)}`);
+    const c = o.content || {};
+    const labels = (o.labels||[]).map(l => `<div class="label"><strong>${esc(l.grader)}</strong> — ${l.status}${l.status==='saved'?` · score <strong>${l.score}</strong> · rubric [${esc((l.rubric||[]).join(", "))}]`:''}${l.flag_reason?` · flag: ${esc(l.flag_reason)}`:''}${l.note?`<div class="muted rtl">${esc(l.note)}</div>`:''}<div class="muted" style="font-size:.8em">rev ${l.revision} · ${esc(l.updated_at)}</div></div>`).join("") || "<div class='muted'>no labels yet</div>";
+    const fin = o.final ? `<div class="label" style="border-style:solid;border-color:var(--ok)"><strong>FINAL</strong> score <strong>${o.final.score}</strong> · rubric [${esc((o.final.rubric||[]).join(", "))}] · source ${esc(o.final.source)}${o.final.adjudicator?` by ${esc(o.final.adjudicator)}`:''} · graders ${esc((o.final.contributing_graders||[]).join(", "))} · ${esc(o.final.finalized_at)}${o.final.note?`<div class="rtl muted">${esc(o.final.note)}</div>`:''}<div style="margin-top:6px"><button class="danger" id="reopen">reopen (remove FINAL)</button></div></div>` : "";
+    const rubricChecks = (c.rubric_items||[]).map(r => `<label style="display:block"><input type="checkbox" class="finRubric" data-id="${esc(r.id)}"> ${esc(r.id)} — <span class="rtl" style="display:inline">${esc(r.text)}</span></label>`).join("");
+    $("detail").innerHTML = `
+      <div class="box"><strong>${esc(o.item_id)}</strong> <span class="muted">(${esc(o.case_id||"")}) · state <span class="state-${esc(o.state)}">${esc(o.state)}</span> · item revision ${o.revision} · wanted labels ${o.wanted_labels}</span></div>
+      <div class="box"><div class="muted">Question</div><div class="rtl">${esc(c.question_text)}</div></div>
+      <div class="box"><div class="muted">Student response</div>${(c.images||[]).map(u=>`<img class="crop" src="${u}">`).join("")}<div class="rtl" style="font-size:1.15em">${esc(c.transcription)}</div></div>
+      <div class="box"><div class="muted">Rubric / official solution</div><div class="rtl">${(c.rubric||[]).map(l=>"• "+esc(l)).join("<br>")}</div><div class="rtl muted">${esc(c.official_solution)}</div></div>
+      <div class="box"><div class="muted">Grader labels (independent)</div>${labels}</div>
+      <div class="box">${fin}
+        ${o.state==="AGREEMENT" ? `<button class="primary" id="finAgree">Finalize agreement as FINAL</button> ` : ""}
+        <details ${o.state==="NEEDS_ADJUDICATION"?"open":""}><summary>Adjudicate / set FINAL by hand</summary>
+          <div style="margin-top:8px">score <input id="finScore" type="number" min="0" max="${c.max_score}" step="0.5" style="width:90px"> of ${c.max_score}</div>
+          <div style="margin-top:6px">${rubricChecks}</div>
+          <div style="margin-top:6px"><textarea id="finNote" placeholder="adjudication note (optional)" style="width:100%;min-height:50px"></textarea></div>
+          <div style="margin-top:6px">adjudicator <input id="finWho" value="admin" style="width:120px"> <button class="primary" id="finSet">Set FINAL</button></div>
+        </details>
+      </div>`;
+    const agree = $("finAgree"); if (agree) agree.onclick = async () => { const r = await api("POST", `/api/admin/items/${encodeURIComponent(id)}/finalize-agreement`, {expected_item_revision: o.revision}); toast(r.status===200?"finalized":(r.data.error||"failed")); refresh(); openItem(id); };
+    const set = $("finSet"); if (set) set.onclick = async () => {
+      const rub = Array.from(document.querySelectorAll(".finRubric:checked")).map(x=>x.dataset.id);
+      const r = await api("POST", `/api/admin/items/${encodeURIComponent(id)}/final`, {score: parseFloat($("finScore").value), rubric: rub, note: $("finNote").value, adjudicator: $("finWho").value, expected_item_revision: o.revision});
+      toast(r.status===200?"FINAL set":(r.status===409?"item changed — reloaded, try again":(r.data.error||"failed"))); refresh(); openItem(id); };
+    const ro = $("reopen"); if (ro) ro.onclick = async () => { if (!confirm("Remove the FINAL label for this item?")) return; await api("POST", `/api/admin/items/${encodeURIComponent(id)}/reopen`, {}); refresh(); openItem(id); };
+    loadItems();
+  }
+  async function refresh(){ await loadSummary(); await loadItems(); }
+  $("filter").onchange = loadItems; $("refresh").onclick = refresh;
+  $("policyApply").onclick = async () => { const mode = $("policyMode").value; const ids = $("policyItems").value.split(",").map(s=>s.trim()).filter(Boolean); const r = await api("POST", "/api/admin/policy", {mode, items: ids}); toast(r.status===200?`policy applied (${r.data.updated} item rows)`:(r.data.error||"failed")); refresh(); };
+  $("exportBtn").onclick = async () => { const r = await fetch("/api/admin/export", {credentials:"same-origin"}); const d = await r.json(); const blob = new Blob([JSON.stringify(d, null, 1)], {type:"application/json"}); const a = document.createElement("a"); a.href = URL.createObjectURL(blob); a.download = "final_labels.json"; a.click(); toast(`exported ${d.final_count} FINAL label(s) (also written on the server: ${r.headers.get("X-Export-Path")||"exports/"})`, 4000); };
+  $("backupBtn").onclick = async () => { const r = await api("POST", "/api/admin/backup", {}); toast(r.status===200?("backup: " + r.data.backup_dir):(r.data.error||"backup failed"), 5000); };
+  refresh();
+})();
+</script>
+</body>
+</html>
