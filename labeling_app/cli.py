@@ -247,10 +247,22 @@ def cmd_export(args) -> int:
 
 
 def cmd_backup(args) -> int:
+    """Snapshot labels.db FIRST (read-only online backup; works while the server
+    runs) and export FINAL labels only if the bundle loads. A missing or corrupt
+    bundle never prevents the database backup."""
     from .backup import make_backup
-    data_dir, bundle, db = _open(args)
-    out = make_backup(db, bundle, data_dir, copy_to=Path(args.copy_to) if args.copy_to else None)
+    data_dir = Path(args.data_dir) if args.data_dir else default_data_dir()
+    db_path = data_dir / "labels.db"
+    if not db_path.exists():
+        print(f"no database at {db_path} — nothing to back up", file=sys.stderr)
+        return 2
+    bundle_dir = Path(args.bundle) if getattr(args, "bundle", None) else data_dir / "bundle"
+    out = make_backup(db_path, None, data_dir, bundle_dir=bundle_dir,
+                      copy_to=Path(args.copy_to) if args.copy_to else None)
     print(json.dumps(out, ensure_ascii=False, indent=1))
+    if out["export"].get("status") != "written":
+        print(f"[labeling] note: final_labels.json export skipped — {out['export'].get('reason')}; "
+              "the database snapshot succeeded", file=sys.stderr)
     return 0
 
 

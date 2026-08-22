@@ -207,7 +207,11 @@ class LabelDB:
                 for name, decl in cols:
                     if name not in have:
                         c.execute(f"ALTER TABLE {table} ADD COLUMN {name} {decl}")
-            c.execute("INSERT OR REPLACE INTO meta(key, value) VALUES ('schema_version', ?)", (str(SCHEMA_VERSION),))
+            # write the schema stamp only when it actually changes: opening an
+            # up-to-date database (status, backup, export) must not touch the WAL
+            cur = c.execute("SELECT value FROM meta WHERE key='schema_version'").fetchone()
+            if cur is None or str(cur[0]) != str(SCHEMA_VERSION):
+                c.execute("INSERT OR REPLACE INTO meta(key, value) VALUES ('schema_version', ?)", (str(SCHEMA_VERSION),))
 
     # ---------------------------------------------------------------- conn --
     @contextmanager

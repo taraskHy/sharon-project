@@ -56,6 +56,18 @@ with `backup --copy-to <OneDrive folder>` instead.
 .\.venv\Scripts\python.exe -m autograder bench import-final-labels --role grade_primary --export "%LOCALAPPDATA%\autograder\labeling\exports\final_labels.json"
 ```
 
+## Backup robustness (2026-08-23)
+
+`python -m labeling_app backup` snapshots **labels.db first**, through a
+read-only SQLite connection and the online-backup API (works while the server
+runs, WAL included, never writes to the live file), and only then tries to
+export `final_labels.json`. A **missing, moved or corrupt bundle can never block
+the database backup**: the export is skipped and the reason is recorded in
+`backup_manifest.json` (`export.status = "skipped"`), together with
+self-describing `db_counts` (items / labels / final_labels / graders /
+schema_version) so a snapshot is meaningful on its own. Regression test:
+`tests/test_labeling_backup_robustness.py`.
+
 ## Cloudflare Tunnel (not started yet — do this only when you want a session)
 
 1. `winget install Cloudflare.cloudflared` (once).
