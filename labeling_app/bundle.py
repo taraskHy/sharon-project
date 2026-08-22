@@ -4,7 +4,9 @@
     <bundle>/items.json             [{item_id (opaque), question_text, rubric, scoring_rules,
                                      official_solution, transcription, max_score,
                                      rubric_items [{id,text}], images [rel paths],
+                                     evidence_sha256 (fingerprint of EXACTLY the crops shown, in order),
                                      provenance {exam, case_id, question_id, part, row, line_count,
+                                                 lines_transcribed, transcription_complete,
                                                  page, page_available, page_image (rel path|null),
                                                  unavailable [..]}}]
     <bundle>/images/<item_id>_<n>.png   the answer crops (primary grading evidence)
@@ -27,6 +29,17 @@ the red ink is masked with a dilated red-dominance mask; a page is served ONLY
 when the residual strict-red pixel count is below RESIDUAL_RED_MAX, otherwise
 ``page_available`` is false ("unavailable", never guessed).
 Per-line bounding boxes are not recorded upstream -> reported unavailable.
+
+Evidence fingerprint: ``evidence_sha256`` = sha256 over the JSON list of the
+sha256 of each answer crop, in display order — a deterministic identity of
+exactly what a grader saw. The server stores it with every label; a later
+bundle whose fingerprint differs makes those labels visibly STALE (the grader
+must re-review the corrected evidence) instead of silently reusing them.
+
+Rebuilding IN PLACE (``replace=True``) keeps the opaque item ids stable by
+inheriting the previous bundle's id salt, moves the previous bundle to
+``<bundle>.previous-<stamp>`` (never deletes what graders saw) and records the
+replacement in bundle.json.
 """
 from __future__ import annotations
 
@@ -43,10 +56,12 @@ from . import SCHEMA_VERSION
 #: keys of the dataset's evaluation-side label rows that must NEVER reach the bundle
 FORBIDDEN_IN_BUNDLE = ("split", "writer", "label_status", "transcription_items", "transcription_provenance",
                        "transcription_source", "evidence_images", "score", "rubric_met", "owner_note",
-                       "owner_status", "question_id", "sub_item_id")
+                       "owner_status", "question_id", "sub_item_id", "evidence_lines", "evidence_kind",
+                       "line_inventory_source", "lines_without_audited_transcription", "line_count",
+                       "transcription_complete")
 #: provenance fields a grader may see (everything else stays in private/provenance.json)
-GRADER_PROVENANCE_FIELDS = ("exam", "case_id", "question_id", "part", "row", "line_count", "page",
-                            "page_available", "unavailable")
+GRADER_PROVENANCE_FIELDS = ("exam", "case_id", "question_id", "part", "row", "line_count", "lines_transcribed",
+                            "transcription_complete", "page", "page_available", "unavailable")
 
 PAGE_MAX_EDGE = 1400
 #: strict red-ink rule (scripts/m2_bench_build.has_red_ink): after masking, a page with
@@ -58,12 +73,28 @@ _CELL_RE = re.compile(r"^(e\d{3})_q(\d+)_r(\d+)$")
 _LINE_ITEM_RE = re.compile(r"^hl_(e\d{3})_q(\d+)_r(\d+)__l(\d+)$")
 
 
+class BundleIntegrityError(RuntimeError):
+    """The crops on disk do not match the fingerprints the bundle declares."""
+
+
 def opaque_id(case_id: str, salt: str) -> str:
     return "g" + hashlib.sha256(f"{salt}:{case_id}".encode("utf-8")).hexdigest()[:10]
 
 
 def _sha_file(p: Path) -> str:
     return hashlib.sha256(p.read_bytes()).hexdigest()
+
+
+def crop_sha256s(paths) -> list[str]:
+    return [_sha_file(Path(p)) for p in paths]
+
+
+def evidence_fingerprint(paths) -> str:
+    """Deterministic identity of EXACTLY the answer crops a grader sees, in
+    display order: sha256 over the JSON list of each crop's sha256. Two
+    bundles that show the same pixels in the same order share it; one added,
+    removed, reordered or re-rendered crop changes it."""
+    return hashlib.sha256(json.dumps(crop_sha256s(paths)).encode("utf-8")).hexdigest()
 
 
 # ------------------------------------------------------------- provenance --
@@ -84,6 +115,11 @@ def case_provenance(case_id: str, label_row: dict, sources: dict[str, Any]) -> d
         raise ValueError(f"unexpected case id {case_id!r}")
     writer, q, r = m.group(1), m.group(2), m.group(3)
     items = list(label_row.get("transcription_items") or [])
+    # line_count is the dataset's AUTHORITATIVE recorded line count (upstream
+    # line inventory); older label rows without it fall back to the audited
+    # items. lines_transcribed = lines covered by the frozen transcription.
+    recorded = label_row.get("line_count")
+    line_count = int(recorded) if recorded is not None else len(items)
     prov: dict[str, Any] = {
         "exam": writer[1:],                       # e003 -> "003" (anonymized exam number)
         "writer": writer,
@@ -91,7 +127,12 @@ def case_provenance(case_id: str, label_row: dict, sources: dict[str, Any]) -> d
         "question_id": q,
         "part": f"r{r}",
         "row": int(r),
-        "line_count": len(items),
+        "line_count": line_count,
+        "lines_transcribed": len(items),
+        "transcription_complete": bool(label_row.get("transcription_complete", True)),
+        "evidence_kind": label_row.get("evidence_kind"),
+        "line_inventory_source": label_row.get("line_inventory_source"),
+        "evidence_lines": [dict(e) for e in (label_row.get("evidence_lines") or [])],   # private (per-line provenance)
         "source_items": items,                    # hebrew_bench_v2 item ids (crop provenance)
         "page": None, "page_source": None, "source_file": None, "unavailable": [],
     }
@@ -180,21 +221,57 @@ def render_masked_page(pdf: Path, page_no: int, *, max_edge: int = PAGE_MAX_EDGE
 
 # ------------------------------------------------------------------ build --
 
+def previous_bundle_info(out_dir: Path) -> dict[str, Any] | None:
+    """What an existing bundle directory recorded (None when there is none)."""
+    out_dir = Path(out_dir)
+    if not (out_dir / "items.json").exists():
+        return None
+    meta = json.loads((out_dir / "bundle.json").read_text(encoding="utf-8")) if (out_dir / "bundle.json").exists() else {}
+    idp = out_dir / "private" / "id_map.json"
+    id_map = json.loads(idp.read_text(encoding="utf-8")) if idp.exists() else {}
+    # pre-salt bundles derived their ids from the dataset's inputs_sha256
+    salt = meta.get("id_salt") or (meta.get("source") or {}).get("dataset_inputs_sha256")
+    return {"dir": out_dir, "meta": meta, "id_map": id_map, "salt": salt}
+
+
 def build_bundle(dataset_dir: Path, out_dir: Path, *, evaluation_root: Path, repo_root: Path | None = None,
                  salt: str | None = None, render_pages: bool = True, page_max_edge: int = PAGE_MAX_EDGE,
-                 now: str | None = None) -> dict[str, Any]:
+                 now: str | None = None, replace: bool = False) -> dict[str, Any]:
     """Build the anonymized bundle from a frozen grade_primary dataset directory.
     ``evaluation_root`` resolves `evidence_images`; ``repo_root`` (default:
-    evaluation_root's parent) resolves the upstream provenance records and PDFs."""
+    evaluation_root's parent) resolves the upstream provenance records and PDFs.
+
+    ``replace=True`` rebuilds IN PLACE over an existing bundle: the previous
+    bundle's id salt is inherited (opaque item ids — and therefore every
+    existing label's join — stay stable), the previous directory is moved to
+    ``<out_dir>.previous-<stamp>`` (what graders saw is never deleted) and the
+    replacement is recorded in bundle.json. Without ``replace`` an existing
+    bundle is refused, as before."""
     from autograder.eligibility import eligibility_counts, split_cases
     dataset_dir, out_dir = Path(dataset_dir), Path(out_dir)
     repo_root = Path(repo_root) if repo_root else Path(evaluation_root).parent
     man = json.loads((dataset_dir / "manifest.json").read_text(encoding="utf-8"))
     inputs = [json.loads(l) for l in (dataset_dir / "cases_inputs.jsonl").read_text(encoding="utf-8").splitlines() if l.strip()]
     labels = {r["case_id"]: r for r in (json.loads(l) for l in (dataset_dir / "cases_labels.jsonl").read_text(encoding="utf-8").splitlines() if l.strip())}
-    salt = salt or man.get("inputs_sha256", "bundle")
-    if (out_dir / "items.json").exists():
-        raise FileExistsError(f"{out_dir} already holds a bundle; remove it or choose another directory")
+    previous = previous_bundle_info(out_dir)
+    if previous is not None and not replace:
+        raise FileExistsError(f"{out_dir} already holds a bundle; pass replace=True (CLI: --replace) to rebuild "
+                              "in place with stable item ids, or choose another directory")
+    salt = salt or (previous or {}).get("salt") or man.get("inputs_sha256", "bundle")
+    replaced: dict[str, Any] | None = None
+    if previous is not None:
+        stamp = (now or time.strftime("%Y-%m-%d %H:%M:%S")).replace(":", "").replace(" ", "-")
+        prev_dir = out_dir.with_name(f"{out_dir.name}.previous-{stamp}")
+        if prev_dir.exists():
+            raise FileExistsError(f"{prev_dir} already exists")
+        try:
+            shutil.move(str(out_dir), str(prev_dir))
+        except OSError as e:                      # e.g. the server still has the bundle open
+            raise RuntimeError(f"cannot move the previous bundle aside ({e}); stop the labeling server first") from e
+        replaced = {"previous_dir": str(prev_dir), "previous_items_sha256": previous["meta"].get("items_sha256"),
+                    "previous_built_at": previous["meta"].get("built_at"),
+                    "previous_dataset_labels_sha256": (previous["meta"].get("source") or {}).get("dataset_labels_sha256"),
+                    "id_salt_inherited": previous.get("salt") is not None}
     # Eligibility gate (autograder.eligibility, wrapping the production policy
     # machinery): only cases whose explanation genuinely requires a HUMAN score
     # become labeling items. Policy-decided cases (confidently wrong MC under a
@@ -218,11 +295,17 @@ def build_bundle(dataset_dir: Path, out_dir: Path, *, evaluation_root: Path, rep
         for n, rel in enumerate(lab.get("evidence_images") or [], start=1):
             src = Path(evaluation_root) / rel
             if not src.exists():
-                continue
+                raise FileNotFoundError(f"{cid}: evidence image {rel} is missing under {evaluation_root}; "
+                                        "refusing to build a bundle that silently drops a recorded crop")
             dst_rel = f"images/{oid}_{n}.png"
             shutil.copyfile(src, out_dir / dst_rel)
             imgs.append(dst_rel)
             crop_files.append(rel)
+        if previous is not None and cid in set(previous["id_map"].values()):
+            prev_oid = next(k for k, v in previous["id_map"].items() if v == cid)
+            if prev_oid != oid:
+                raise RuntimeError(f"{cid}: opaque id would change ({prev_oid} -> {oid}); labels would be orphaned")
+        fingerprint = evidence_fingerprint([out_dir / rel for rel in imgs])
         prov = case_provenance(cid, lab, sources)
         page_rel, page_report = None, None
         if render_pages and prov["page"] and prov["source_file"]:
@@ -256,12 +339,14 @@ def build_bundle(dataset_dir: Path, out_dir: Path, *, evaluation_root: Path, rep
             "max_score": float(pack.get("max_score") or lab.get("max_score") or 0),
             "rubric_items": [{"id": ri.get("id"), "text": ri.get("text", "")} for ri in (pack.get("rubric_items") or [])],
             "images": imgs,
+            "evidence_sha256": fingerprint,
             "provenance": visible,
             "eligible_for_human_label": True,
             "eligibility_reason": eligibility_by_case[cid].reason,
         })
         id_map[oid] = cid
-        private_prov[oid] = {**prov, "crop_files": crop_files, "page_image": page_rel, "page_report": page_report}
+        private_prov[oid] = {**prov, "crop_files": crop_files, "crop_sha256": crop_sha256s(out_dir / r for r in imgs),
+                             "evidence_sha256": fingerprint, "page_image": page_rel, "page_report": page_report}
     for it in items:
         leak = set(it) & set(FORBIDDEN_IN_BUNDLE)
         if leak:
@@ -283,6 +368,9 @@ def build_bundle(dataset_dir: Path, out_dir: Path, *, evaluation_root: Path, rep
         "items": len(items), "images": sum(len(i["images"]) for i in items), "pages": len(pages),
         "items_with_page": sum(1 for i in items if i["provenance"].get("page_available")),
         "items_sha256": _sha_file(out_dir / "items.json"),
+        "id_salt": salt,
+        "evidence_fingerprint": "sha256 over the JSON list of per-crop sha256, in display order (items[].evidence_sha256)",
+        "replaced": replaced,
         "eligibility": counts,
         "source": {"dataset_dir_name": dataset_dir.name, "dataset_inputs_sha256": man.get("inputs_sha256"),
                    "dataset_labels_sha256": man.get("labels_sha256"), "dataset_manifest_sha256": _sha_file(dataset_dir / "manifest.json"),
@@ -321,6 +409,32 @@ class Bundle:
                                                         if "eligible_for_human_label" in i else None),
                            "reason": i.get("eligibility_reason")}
             for i in self.items}
+        # Evidence fingerprints: declared by new bundles; computed from the crops
+        # on disk for pre-fingerprint bundles (so the server can register what a
+        # legacy bundle actually showed before it is replaced).
+        self.declared_fingerprints: dict[str, str | None] = {i["item_id"]: i.get("evidence_sha256") for i in self.items}
+        self.fingerprints: dict[str, str] = {
+            i["item_id"]: (i.get("evidence_sha256")
+                           or evidence_fingerprint([self.root / rel for rel in i.get("images") or []]))
+            for i in self.items}
+
+    def verify_evidence(self) -> dict[str, Any]:
+        """Recompute every item's fingerprint from the crops on disk and compare
+        with the declared one; raises BundleIntegrityError on any mismatch
+        (a bundle whose crops drifted from what it declares is never served)."""
+        mismatched = []
+        for i in self.items:
+            declared = i.get("evidence_sha256")
+            if not declared:
+                continue
+            actual = evidence_fingerprint([self.root / rel for rel in i.get("images") or []])
+            if actual != declared:
+                mismatched.append(i["item_id"])
+        if mismatched:
+            raise BundleIntegrityError(f"{len(mismatched)} item(s) whose crops do not match their declared "
+                                       f"evidence fingerprint: {mismatched[:10]}")
+        return {"verified": sum(1 for i in self.items if i.get("evidence_sha256")),
+                "undeclared": sum(1 for i in self.items if not i.get("evidence_sha256"))}
 
     def apply_dataset_eligibility(self, dataset_dir: Path | str) -> dict:
         """Recompute eligibility for every bundle item straight from the
@@ -413,9 +527,11 @@ class Bundle:
                 "transcription": it["transcription"], "max_score": it["max_score"],
                 "rubric_items": it["rubric_items"],
                 "images": [f"/api/images/{it['item_id']}/{n}" for n in range(1, len(it["images"]) + 1)],
+                "evidence_sha256": self.fingerprints.get(it["item_id"]),
                 "provenance": prov}
 
 
-__all__ = ["build_bundle", "Bundle", "opaque_id", "FORBIDDEN_IN_BUNDLE", "GRADER_PROVENANCE_FIELDS",
+__all__ = ["build_bundle", "Bundle", "BundleIntegrityError", "opaque_id", "evidence_fingerprint", "crop_sha256s",
+           "previous_bundle_info", "FORBIDDEN_IN_BUNDLE", "GRADER_PROVENANCE_FIELDS",
            "case_provenance", "load_provenance_sources", "render_masked_page", "strong_red_mask",
            "strict_red_count", "RESIDUAL_RED_MAX", "PAGE_MAX_EDGE"]

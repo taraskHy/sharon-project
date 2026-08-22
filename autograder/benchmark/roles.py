@@ -343,7 +343,11 @@ class GradeAdapter:
     def score(self, case: BenchCase, output: dict | None, error: str | None) -> dict:
         from ..escalation import GradeResult, validate_grade
         row = {"case_id": case.case_id, "split": case.split, "component": case.component,
-               "schema_failure": output is None, "decision": None, "score": None}
+               "schema_failure": output is None, "decision": None, "score": None,
+               # False when the model-visible transcription does not cover every
+               # recorded line of the answer (evidence inventory): the human label
+               # judged the whole answer, so such a case is NOT an accuracy case.
+               "transcription_complete": case.label.get("transcription_complete", True) is not False}
         lab = case.label
         if output is None:
             row["decision"] = "REVIEW"
@@ -374,11 +378,14 @@ class GradeAdapter:
 
     def aggregate(self, scored: list[dict], raw_rows: list[dict]) -> dict:
         n = len(scored)
-        labeled = [r for r in scored if "label_score" in r]
-        rub = [r for r in scored if "rubric_decisions_total" in r]
+        labeled_all = [r for r in scored if "label_score" in r]
+        # accuracy only where the model saw the WHOLE answer the human graded
+        labeled = [r for r in labeled_all if r.get("transcription_complete", True)]
+        rub = [r for r in labeled if "rubric_decisions_total" in r]
         out = {
             "cases": n,
             "labels_available": bool(labeled),
+            "labeled_excluded_transcription_incomplete": len(labeled_all) - len(labeled),
             "auto_rate_pct": _pct(sum(1 for r in scored if r["decision"] == "AUTO"), n),
             "review_rate_pct": _pct(sum(1 for r in scored if r["decision"] == "REVIEW"), n),
             "schema_failures": sum(1 for r in scored if r["schema_failure"]),

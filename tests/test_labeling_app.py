@@ -63,7 +63,7 @@ def test_bundle_is_anonymized_and_self_contained(bundle_dir):
         assert forbidden not in text, forbidden
     for it in items:
         assert set(it) == {"item_id", "question_text", "rubric", "scoring_rules", "official_solution",
-                           "transcription", "max_score", "rubric_items", "images", "provenance",
+                           "transcription", "max_score", "rubric_items", "images", "evidence_sha256", "provenance",
                            "eligible_for_human_label", "eligibility_reason"}
         assert it["eligible_for_human_label"] is True
         assert re.fullmatch(r"g[0-9a-f]{10}", it["item_id"])
@@ -74,7 +74,7 @@ def test_bundle_is_anonymized_and_self_contained(bundle_dir):
     assert len(id_map) == 67 and set(id_map.values()) == {l["case_id"] for l in
                                                          (json.loads(x) for x in (DATASET / "cases_labels.jsonl").read_text(encoding="utf-8").splitlines())}
     meta = json.loads((bundle_dir / "bundle.json").read_text(encoding="utf-8"))
-    assert meta["items"] == 67 and meta["images"] == 82 and meta["source"]["dataset_inputs_sha256"]
+    assert meta["items"] == 67 and meta["images"] == 91 and meta["source"]["dataset_inputs_sha256"]
     with pytest.raises(FileExistsError):
         build_bundle(DATASET, bundle_dir, evaluation_root=REPO / "evaluation")
 
@@ -109,7 +109,8 @@ def test_claim_save_next_skip_flag_rubric_and_resume(app):
     for k in ("expected", "label", "split", "writer", "model", "confidence", "source_file", ".pdf"):
         assert k not in json.dumps({kk: v for kk, v in it.items() if kk not in ("my_label", "label_revision")}), k
     assert set(it) == {"item_id", "question_text", "rubric", "scoring_rules", "official_solution", "transcription",
-                       "max_score", "rubric_items", "images", "provenance", "my_label", "label_revision", "final"}
+                       "max_score", "rubric_items", "images", "evidence_sha256", "provenance", "my_label",
+                       "my_evidence_stale", "label_revision", "final", "evidence_changed_at"}
     assert g.get(it["images"][0]).status_code == 200
     # save with rubric decision
     rid = it["rubric_items"][0]["id"]
@@ -129,7 +130,7 @@ def test_claim_save_next_skip_flag_rubric_and_resume(app):
     assert g.post(f"/api/items/{third['item_id']}/label",
                   json={"status": "flagged", "flag_reason": "unreadable", "expected_revision": 0}).status_code == 200
     mine = g.get("/api/my-items").json()
-    assert mine == {"saved": [it["item_id"]], "skipped": [nxt["item_id"]], "flagged": [third["item_id"]]}
+    assert mine == {"saved": [it["item_id"]], "skipped": [nxt["item_id"]], "flagged": [third["item_id"]], "stale": []}
     # resume: a fresh browser with the same cookie sees ITS OWN earlier label on that item
     g2 = TestClient(app); g2.cookies.set(COOKIE, g.cookies.get(COOKIE))
     again = g2.get(f"/api/items/{it['item_id']}").json()["item"]
@@ -230,7 +231,8 @@ def test_export_is_deterministic_and_final_only(app, bundle_dir):
     e1 = admin.get("/api/admin/export").json()
     e2 = export_final(app.state.db, app.state.bundle, now="2026-08-22 13:00:00")
     assert e1["items"] == e2["items"] and e1["content_sha256"] == e2["content_sha256"]
-    assert e1["final_count"] == 1 and e1["schema_version"] == 1 and e1["kind"] == "grade_primary_final_labels"
+    assert e1["final_count"] == 1 and e1["schema_version"] == 2 and e1["kind"] == "grade_primary_final_labels"
+    assert e1["stale_evidence_final_count"] == 0 and all(r["evidence_stale"] is False and r["evidence_sha256"] for r in e1["items"])
     row = e1["items"][0]
     assert row["display_id"] == i1 and re.fullmatch(r"e\d{3}_q\d+_r\d+", row["item_id"])   # dataset case id via private map
     assert row["final_score"] == 3.0 and row["source"] == "agreement" and row["contributing_graders"] == ["A", "B"]

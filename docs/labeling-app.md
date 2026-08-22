@@ -36,8 +36,12 @@ with `backup --copy-to <OneDrive folder>` instead.
 ## Commands
 
 ```powershell
-# once: build the anonymized bundle from the frozen grade_primary dataset (67 cases, 82 images)
+# once: build the anonymized bundle from the frozen grade_primary dataset (67 cases, 91 images)
 .\.venv\Scripts\python.exe -m labeling_app build-bundle
+# rebuild IN PLACE after the dataset changed (old bundle kept aside, item ids stable,
+# labels preserved; labels whose evidence changed are reported as STALE — see below)
+.\.venv\Scripts\python.exe -m labeling_app build-bundle --replace
+.\.venv\Scripts\python.exe -m labeling_app evidence-report
 
 # run locally (grader page http://127.0.0.1:8787/ , admin page http://127.0.0.1:8787/admin)
 .\.venv\Scripts\python.exe -m labeling_app serve --port 8787
@@ -103,7 +107,9 @@ promote it to ground truth (recorded under `ignored_ineligible` in
 GRADE_PRIMARY model accuracy is measured only on human-labelable cases.
 Today's frozen grade_primary: 67 source cases, 67 human-labelable, 0
 deterministic-zero (all cells are explanation-only under the independent
-policy).
+policy); 91 answer crops (one per recorded handwritten line; 9 cases carry a
+line without an audited transcription and are flagged
+`transcription_complete: false`).
 
 ## Grader workflow
 
@@ -125,7 +131,7 @@ reconstructed from the opaque id:
 | case id (e.g. `e003_q1_r1`) | dataset case id | yes |
 | question / part (row) | dataset case id | yes |
 | page number | e002 cells: `evaluation/hebrew_bench/crops_manifest.json`; e003–e007 lines: `evaluation/htr_pilot_sources.json` (q1 → page 11, q2 → page 12) | yes |
-| line count | dataset `transcription_items` | yes |
+| line count | dataset `line_count` = the AUTHORITATIVE upstream line inventory (`evaluation/htr_pilot/splits/*.json`, `n_lines` per cell; one crop per recorded line, in line order; exam-002 cells = one cell crop). `lines_transcribed` = lines the frozen transcription covers; when smaller the grader sees "transcription covers k of N lines — grade from the image(s)" | yes |
 | line bounding box on the page | **not recorded upstream → "unavailable"** | reported as unavailable |
 | source PDF filename (`test/003_70.pdf`) | carries the instructor's **total grade** in its name → **private** (`bundle/private/provenance.json`, admin view only) | no |
 
@@ -146,6 +152,71 @@ fresh masked render of that (file, page) with zero strict-red pixels, and the
 crop pixels are found inside the unmasked render of that page by normalized
 cross-correlation (e002 cell 0.95 vs 0.48 on another exam's page; e003 line
 0.56 vs 0.28).
+
+### Every handwritten line is evidence (2026-08-22 fix)
+
+The answer crops come from the dataset's `evidence_images`, which the
+grade_primary builder now derives from the **authoritative upstream line
+inventory** (`evaluation/htr_pilot/splits/*.json`: one record per handwritten
+line, `n_lines` per cell) — one image per recorded line, in line order. A line
+with an audited OCR transcription is its frozen bench crop (verified
+byte-identical to the upstream line image); a line without one is the upstream
+line image itself, and the case is marked `transcription_complete: false`
+(the model-visible transcription covers only the audited lines). Before this
+fix the builder took the line list from the frozen OCR benchmark, which only
+admits verified lines, so a trailing line annotated `bad_segmentation`
+silently disappeared: `e004_q2_r3` (and 8 more cases: e003_q1_r5, e003_q2_r2,
+e003_q2_r3, e003_q2_r4, e003_q2_r7, e004_q2_r5, e006_q2_r6, e007_q1_r1) showed
+only the first row. The dataset was re-frozen in place
+(`autograder bench repair-grading-evidence`: inputs byte-identical, labels
+file + manifest revision updated), the bundle rebuilt with `--replace`.
+`tests/test_labeling_evidence.py` proves, for `e004_q2_r3`, upstream
+2 lines → dataset 2 crops → bundle 2 crops → API 2 crops (same bytes, same
+order) → grader page renders every image in order; and, for every case,
+rendered crops == authoritative evidence images.
+
+## Evidence fingerprints, rebuilds and stale labels
+
+Every bundle item carries `evidence_sha256` — sha256 over the JSON list of the
+sha256 of each answer crop, **in display order**: the identity of exactly what
+a grader saw. The server verifies the crops on disk against it at startup
+(a drifted bundle is never served), registers it per item
+(`LabelDB.sync_evidence`), stores it with every label and FINAL, and refuses a
+save whose page showed different evidence (HTTP 409 `stale_evidence`).
+
+When a rebuilt bundle changes an item's evidence (more/fewer/other crops), the
+item's fingerprint moves and every label/FINAL written against the old one
+becomes **stale** — derived by comparison, never rewritten or deleted:
+
+* state `NEEDS_REVIEW_AFTER_EVIDENCE_CHANGE`; the grader's own stale item is
+  re-served first (`/api/next`, with a banner "the evidence was corrected —
+  re-check and save again"); `progress.my_stale`, `my-items.stale`;
+* stale labels never count as fresh labels, agreement is computed over fresh
+  labels only, `finalize-agreement` refuses while a contributing label is
+  stale, a stale FINAL blocks grading until the admin reopens it;
+* export marks `evidence_stale` per label/FINAL (`stale_evidence_final_count`);
+  `bench import-final-labels` refuses stale FINALs (`ignored_stale_evidence`);
+* labels on items whose evidence did not change are untouched — nobody redoes
+  unaffected work;
+* the audit trail records `evidence_registered` / `evidence_changed` events.
+
+Rebuild procedure (the only supported way to replace a bundle in place):
+
+```powershell
+# stop the server, pull the corrected dataset, then
+.\.venv\Scripts\python.exe -m labeling_app build-bundle --replace
+#   1) registers the OLD bundle's fingerprints on the labels that exist (what they were made against)
+#   2) moves the old bundle to bundle.previous-<stamp>/ (never deleted), inherits its id salt
+#   3) builds the new bundle (same opaque ids), registers it, prints the stale/preserved report
+.\.venv\Scripts\python.exe -m labeling_app evidence-report     # any time: preserved / stale / unknown, per case
+.\.venv\Scripts\python.exe -m labeling_app serve --port 8787
+```
+
+A pre-fingerprint `labels.db` is migrated in place (columns added, rows kept);
+its labels are backfilled with the fingerprints of the bundle registered
+first — which `--replace` guarantees is the bundle they were made against.
+Never delete the bundle directory by hand before the first registration: the
+labels' provenance would become unknown (reported, not guessed).
 
 ## Multiple graders, agreement, adjudication, FINAL
 

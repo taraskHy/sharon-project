@@ -50,7 +50,11 @@ def test_provenance_is_explicit_and_matches_the_dataset_case(bundle_dir):
         assert pv["case_id"] == cid
         assert pv["exam"] == lab["writer"][1:] and pv["question_id"] == lab["question_id"]
         assert pv["part"] == f"r{lab['sub_item_id']}" and pv["row"] == int(lab["sub_item_id"])
-        assert pv["line_count"] == len(lab["transcription_items"])
+        # line count = the dataset's authoritative recorded line count (one crop per line);
+        # lines_transcribed = lines the frozen transcription covers
+        assert pv["line_count"] == lab["line_count"] == len(lab["evidence_images"])
+        assert pv["lines_transcribed"] == len(lab["transcription_items"]) <= pv["line_count"]
+        assert pv["transcription_complete"] == lab["transcription_complete"]
         # page number comes from an upstream RECORD, never from the id
         priv = b.private_provenance[it["item_id"]]
         assert priv["page_source"] in ("evaluation/hebrew_bench/crops_manifest.json", "evaluation/htr_pilot_sources.json")

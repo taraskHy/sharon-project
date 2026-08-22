@@ -18,7 +18,7 @@ from pathlib import Path
 from typing import Any
 
 FINAL_LABELS_FILENAME = "final_labels.json"
-SUPPORTED_EXPORT_SCHEMA = (1,)
+SUPPORTED_EXPORT_SCHEMA = (1, 2)
 
 
 def import_final_labels(export_path: Path, dataset_dir: Path, *, now: str | None = None) -> dict[str, Any]:
@@ -35,12 +35,20 @@ def import_final_labels(export_path: Path, dataset_dir: Path, *, now: str | None
     labels: dict[str, dict] = {}
     unknown: list[str] = []
     ignored_ineligible: dict[str, dict] = {}
+    ignored_stale_evidence: dict[str, dict] = {}
     for row in data.get("items", []):
         cid = row["item_id"]
         if cid not in known:
             unknown.append(cid)
             continue
         if row.get("source") not in ("agreement", "adjudicated"):
+            continue
+        if row.get("evidence_stale") is True:
+            # the FINAL was made against evidence the labeling bundle has since
+            # corrected; it is provenance, never ground truth, until re-reviewed
+            ignored_stale_evidence[cid] = {"reason": "evidence_changed_after_final",
+                                           "evidence_sha256": row.get("evidence_sha256"),
+                                           "ignored_human_final_label": float(row["final_score"])}
             continue
         if row.get("eligible_for_human_label") is False:      # export already marked it obsolete
             ignored_ineligible[cid] = {"reason": "export_marked_ineligible", "policy": None,
@@ -70,10 +78,13 @@ def import_final_labels(export_path: Path, dataset_dir: Path, *, now: str | None
            "labels": dict(sorted(labels.items()))}
     if ignored_ineligible:
         out["ignored_ineligible"] = dict(sorted(ignored_ineligible.items()))
+    if ignored_stale_evidence:
+        out["ignored_stale_evidence"] = dict(sorted(ignored_stale_evidence.items()))
     (dataset_dir / FINAL_LABELS_FILENAME).write_text(json.dumps(out, ensure_ascii=False, indent=1, sort_keys=True),
                                                      encoding="utf-8", newline="\n")
     return {"imported": len(labels), "unknown_case_ids": unknown,
-            "ignored_ineligible": sorted(ignored_ineligible), "path": str(dataset_dir / FINAL_LABELS_FILENAME)}
+            "ignored_ineligible": sorted(ignored_ineligible), "ignored_stale_evidence": sorted(ignored_stale_evidence),
+            "path": str(dataset_dir / FINAL_LABELS_FILENAME)}
 
 
 def merge_final_labels(labels_by_id: dict[str, dict], dataset_dir: Path) -> tuple[int, str | None]:

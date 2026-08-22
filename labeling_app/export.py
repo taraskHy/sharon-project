@@ -4,6 +4,11 @@ Only rows of the ``final_labels`` table are exported — individual grader
 labels are attached as provenance, never promoted. The item ordering and
 every list/dict are sorted, so two exports of the same state are byte-equal
 except for ``exported_at`` (which sits outside ``content_sha256``).
+
+Evidence: every exported FINAL and label carries the ``evidence_sha256`` it
+was made against and ``evidence_stale`` (true when the served evidence has
+changed since). A stale FINAL is exported for provenance but flagged — the
+benchmark importer refuses to promote it to ground truth.
 """
 from __future__ import annotations
 
@@ -23,7 +28,8 @@ def export_final(db: LabelDB, bundle: Bundle, *, now: str | None = None) -> dict
     for f in db.final_rows():
         oid = f["item_id"]
         labels = [{"grader": l["grader"], "score": l["score"], "rubric_decisions": sorted(l["rubric"]),
-                   "note": l["note"], "status": l["status"], "revision": l["revision"], "updated_at": l["updated_at"]}
+                   "note": l["note"], "status": l["status"], "revision": l["revision"], "updated_at": l["updated_at"],
+                   "evidence_sha256": l.get("evidence_sha256"), "evidence_stale": bool(l.get("evidence_stale"))}
                   for l in db.labels_for_item(oid)]
         labels.sort(key=lambda l: l["grader"])
         elig = bundle.eligibility.get(oid, {})
@@ -34,6 +40,10 @@ def export_final(db: LabelDB, bundle: Bundle, *, now: str | None = None) -> dict
             # False marks an OBSOLETE final (item became policy-decided after the
             # label was written); the importer refuses to promote it to truth.
             "eligible_for_human_label": elig.get("eligible_for_human_label", True) is not False,
+            # the fingerprint of the crops this FINAL was made against; stale =
+            # the served evidence changed since (not ground truth until re-reviewed)
+            "evidence_sha256": f.get("evidence_sha256"),
+            "evidence_stale": bool(f.get("evidence_stale")),
             "final_score": f["score"],
             "rubric_decisions": sorted(f["rubric"]),
             "note": f["note"],
@@ -54,6 +64,8 @@ def export_final(db: LabelDB, bundle: Bundle, *, now: str | None = None) -> dict
         "content_sha256": hashlib.sha256(body.encode("utf-8")).hexdigest(),
         "final_count": len(items),
         "obsolete_ineligible_count": sum(1 for i in items if not i["eligible_for_human_label"]),
+        "stale_evidence_final_count": sum(1 for i in items if i["evidence_stale"]),
+        "evidence_fingerprint": bundle.meta.get("evidence_fingerprint"),
         "eligibility": bundle.meta.get("eligibility"),
         "exported_at": now or time.strftime("%Y-%m-%d %H:%M:%S"),
         "items": items,

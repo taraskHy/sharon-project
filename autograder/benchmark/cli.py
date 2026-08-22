@@ -247,6 +247,21 @@ def cmd_bench_build(args) -> int:
     return 0
 
 
+def cmd_bench_repair_grading_evidence(args) -> int:
+    """Re-freeze ONLY the label-side evidence inventory of the frozen
+    grade_primary dataset from the upstream line records (one image per
+    recorded line). Inputs stay byte-identical; the revision is recorded."""
+    from . import datasets as ds
+    d = Path(args.datasets_root) / "grade_primary"
+    try:
+        res = ds.repair_grading_evidence(d, bench_root=Path(args.bench_root), dry_run=bool(args.dry_run))
+    except ds.DatasetBuildError as e:
+        _log(f"REFUSED: {e}")
+        return 3
+    _emit(res, True)
+    return 0
+
+
 def cmd_bench_import_final_labels(args) -> int:
     """FINAL labels from the shared labeling app (labeling_app export) ->
     datasets/<role>/final_labels.json. Only agreement/adjudicated rows."""
@@ -411,6 +426,13 @@ def add_bench_commands(sub) -> None:
         p.add_argument("--key-json", default=None, help="build-grading: frozen answer-key JSON (default: auto-detect)")
         p.add_argument("--from-run", default=None, help="build-escalation: grade_primary run directory")
         p.set_defaults(func=cmd_bench_build, build_command=name)
+
+    p = bs.add_parser("repair-grading-evidence",
+                      help="grade_primary: re-freeze the label-side evidence inventory from the upstream line "
+                           "records (inputs untouched; revision recorded)")
+    common(p, needs_role=False)
+    p.add_argument("--dry-run", action="store_true", help="report what would change without writing")
+    p.set_defaults(func=cmd_bench_repair_grading_evidence)
 
     p = bs.add_parser("owner-labels", help="grading roles: how many cases the owner still has to label")
     common(p)

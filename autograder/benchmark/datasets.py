@@ -23,7 +23,18 @@ Builders (NO model calls; local deterministic processing only):
     build_variant_dataset   marker-region crops (bottom third of page 1) of prob
                             scans + operator-verified Stage-A covers; labels = variant id
     build_escalation_dataset harvest genuinely unclean cases from a grade_primary run
+    repair_grading_evidence re-freeze ONLY the label-side evidence inventory of an
+                            existing grade_primary dataset from the upstream line
+                            records (inputs byte-identical; revision recorded)
 No builder fabricates labels; provenance strings travel with every label.
+
+Evidence inventory (grade_primary): the answer crops a HUMAN grades are taken
+from the AUTHORITATIVE upstream line inventory (evaluation/htr_pilot/splits/*.json:
+one record per handwritten line, ``n_lines`` per cell), never from the subset of
+lines that happen to carry an audited OCR transcription — one image per recorded
+line, in line order. A line without an audited transcription is still evidence;
+the case is then marked ``transcription_complete: false`` (the model-visible
+transcription covers only the audited lines) and is NOT an accuracy case.
 """
 from __future__ import annotations
 
@@ -132,18 +143,158 @@ def default_grading_key_path() -> Path | None:
 
 _LINE_RE = re.compile(r"^hl_(e\d{3})_q(\d+)_r(\d+)__l(\d+)$")
 _CELL_RE = re.compile(r"^hc_(e\d{3})_q(\d+)_r(\d+)$")
+_SAMPLE_RE = re.compile(r"^(e\d{3})_q(\d+)_r(\d+)__l(\d+)$")
+
+#: the HTR pilot package — the AUTHORITATIVE per-cell line inventory of the
+#: handwritten answers (one record per line crop, ``n_lines`` per cell)
+DEFAULT_HTR_ROOT = REPO_ROOT / "evaluation" / "htr_pilot"
+HTR_SPLIT_FILES = ("train", "val", "internal_test")
+#: exam-002 cells are whole-cell crops (one image per cell) recorded here
+CELL_CROP_MANIFEST = "evaluation/hebrew_bench/crops_manifest.json"
+#: the evaluation-side evidence block of a grading label row (written as ONE
+#: contiguous group, in this order, by the builder and by the repair)
+EVIDENCE_LABEL_FIELDS = ("evidence_images", "evidence_kind", "line_count", "line_inventory_source",
+                         "evidence_lines", "transcription_complete", "lines_without_audited_transcription")
 
 
-def audited_cells(bench_root: Path = DEFAULT_BENCH_ROOT) -> dict[str, dict]:
+def _annotation_record(htr_root: Path, split: str, sample_id: str) -> dict | None:
+    p = Path(htr_root) / "annotations" / split / f"{sample_id}.json"
+    if not p.exists():
+        return None
+    try:
+        rec = json.loads(p.read_text(encoding="utf-8"))
+    except json.JSONDecodeError:
+        return None
+    return rec if isinstance(rec, dict) else None
+
+
+def load_line_inventory(htr_root: Path = DEFAULT_HTR_ROOT) -> dict[str, dict]:
+    """The authoritative per-cell line inventory: ``<htr_root>/splits/*.json``
+    (the HTR pilot package's declared sample manifests — writer, question, row,
+    line_index, n_lines, line-crop image per record). The per-line annotation
+    status is joined from ``annotations/<split>/<sample_id>.json`` as
+    information only (an unannotated or badly segmented line is STILL a line).
+
+    Returns ``{cell_id: {"n_lines", "source", "lines": [{line_index, sample_id,
+    image (evaluation-relative), annotation_status, human_verified, split}, ...]}}``
+    with lines sorted by line_index and verified to be exactly 1..n_lines.
+    Raises DatasetBuildError when the package is missing or inconsistent —
+    never guesses a line count."""
+    htr_root = Path(htr_root)
+    splits_dir = htr_root / "splits"
+    if not splits_dir.is_dir():
+        raise DatasetBuildError(f"upstream line inventory missing: {splits_dir} (HTR pilot package)")
+    pkg = htr_root.name                                   # image paths are package-relative
+    cells: dict[str, dict] = {}
+    for split in HTR_SPLIT_FILES:
+        sp = splits_dir / f"{split}.json"
+        if not sp.exists():
+            continue
+        source = f"evaluation/{pkg}/splits/{split}.json"
+        for rec in json.loads(sp.read_text(encoding="utf-8")):
+            sid = rec["sample_id"]
+            m = _SAMPLE_RE.match(sid)
+            if not m:
+                raise DatasetBuildError(f"{source}: unexpected sample id {sid!r}")
+            w, q, r, li = m.group(1), m.group(2), m.group(3), int(m.group(4))
+            if (rec.get("writer"), int(rec.get("question")), int(rec.get("row")),
+                    int(rec.get("line_index"))) != (w, int(q), int(r), li):
+                raise DatasetBuildError(f"{source}: record fields disagree with sample id {sid!r}")
+            cid = f"{w}_q{q}_r{r}"
+            c = cells.setdefault(cid, {"cell_id": cid, "n_lines": int(rec["n_lines"]), "source": source,
+                                       "lines": []})
+            if c["n_lines"] != int(rec["n_lines"]) or c["source"] != source:
+                raise DatasetBuildError(f"{cid}: inconsistent n_lines/split across its upstream line records")
+            ann = _annotation_record(htr_root, rec.get("split") or split, sid)
+            c["lines"].append({"line_index": li, "sample_id": sid,
+                               "image": f"{pkg}/{rec['images']['line']}",
+                               "annotation_status": (ann or {}).get("status"),
+                               "human_verified": bool((ann or {}).get("human_verified")),
+                               "split": rec.get("split") or split})
+    for cid, c in cells.items():
+        c["lines"].sort(key=lambda l: l["line_index"])
+        idx = [l["line_index"] for l in c["lines"]]
+        if idx != list(range(1, c["n_lines"] + 1)):
+            raise DatasetBuildError(f"{cid}: upstream line records {idx} are not exactly 1..{c['n_lines']}")
+    return cells
+
+
+def _cell_evidence(cid: str, parts: list[tuple], inventory: dict[str, dict], *, bench_root: Path,
+                   evaluation_root: Path) -> dict[str, Any]:
+    """The evidence block of one cell: one image per recorded line, in line
+    order. A line WITH an audited transcription is represented by its bench
+    crop (verified byte-identical to the upstream line image); a line WITHOUT
+    one by the upstream line image itself. Nothing is inferred from file
+    names: the inventory record is the only source of the line list."""
+    bench_rel = Path(bench_root).name                      # "hebrew_bench_v2"
+    if [n for n, *_ in parts] == [0]:                      # exam-002 whole-cell crop
+        _, _, iid, image, pclass = parts[0]
+        rel = f"{bench_rel}/{image}"
+        return {"evidence_kind": "cell_crop", "line_count": 1, "line_inventory_source": CELL_CROP_MANIFEST,
+                "evidence": [{"index": 1, "sample_id": None, "bench_item": iid, "image": rel,
+                              "transcription_status": pclass}],
+                "evidence_images": [rel], "transcription_complete": True,
+                "lines_without_audited_transcription": []}
+    inv = inventory.get(cid)
+    if inv is None:
+        raise DatasetBuildError(f"{cid}: no upstream line record (htr_pilot splits) for this cell — "
+                                "the line count cannot be determined honestly")
+    audited = {n: (iid, image, pclass) for n, _, iid, image, pclass in parts}
+    extra = sorted(set(audited) - {l["line_index"] for l in inv["lines"]})
+    if extra:
+        raise DatasetBuildError(f"{cid}: audited line(s) {extra} are not in the upstream inventory "
+                                f"(n_lines {inv['n_lines']})")
+    evidence, missing = [], []
+    for line in inv["lines"]:
+        n = line["line_index"]
+        up = Path(evaluation_root) / line["image"]
+        if not up.exists():
+            raise DatasetBuildError(f"{cid}: upstream line image missing: {line['image']}")
+        if n in audited:
+            iid, image, pclass = audited[n]
+            bench_png = Path(bench_root) / image
+            if _sha(bench_png) != _sha(up):
+                raise DatasetBuildError(f"{iid}: bench crop {image} differs from the upstream line image "
+                                        f"{line['image']}; evidence provenance is ambiguous — refusing")
+            evidence.append({"index": n, "sample_id": line["sample_id"], "bench_item": iid,
+                             "image": f"{bench_rel}/{image}", "transcription_status": pclass})
+        else:
+            status = line["annotation_status"] or "unannotated"
+            evidence.append({"index": n, "sample_id": line["sample_id"], "bench_item": None,
+                             "image": line["image"], "transcription_status": f"no_audited_transcription:{status}"})
+            missing.append(line["sample_id"])
+    return {"evidence_kind": "line_crops", "line_count": int(inv["n_lines"]),
+            "line_inventory_source": inv["source"], "evidence": evidence,
+            "evidence_images": [e["image"] for e in evidence],
+            "transcription_complete": not missing, "lines_without_audited_transcription": missing}
+
+
+def evidence_label_fields(cell: dict) -> dict[str, Any]:
+    """The evaluation-side evidence block of a label row (EVIDENCE_LABEL_FIELDS order)."""
+    return {"evidence_images": list(cell["evidence_images"]), "evidence_kind": cell["evidence_kind"],
+            "line_count": int(cell["line_count"]), "line_inventory_source": cell["line_inventory_source"],
+            "evidence_lines": [dict(e) for e in cell["evidence"]],
+            "transcription_complete": bool(cell["transcription_complete"]),
+            "lines_without_audited_transcription": list(cell["lines_without_audited_transcription"])}
+
+
+def audited_cells(bench_root: Path = DEFAULT_BENCH_ROOT, *, htr_root: Path = DEFAULT_HTR_ROOT,
+                  evaluation_root: Path | None = None) -> dict[str, dict]:
     """Group the owner-tier hebrew_bench_v2 items into student-answer cells
     keyed `e00X_qY_rZ`, with the audited (final) transcription assembled from
-    the cell item or the ordered line items. Cells whose line set is not
-    contiguous from l1 are marked incomplete."""
+    the cell item or the ordered line items, and the cell's EVIDENCE taken
+    from the authoritative upstream line inventory (``load_line_inventory``):
+    one image per recorded line, in line order. Cells whose audited line set
+    is not contiguous from l1 are marked incomplete (the membership rule);
+    ``transcription_complete`` tells whether EVERY recorded line is audited."""
     from .manifests import _load_refaudit, reference_provenance
     ra = _load_refaudit()
+    bench_root = Path(bench_root)
+    evaluation_root = Path(evaluation_root) if evaluation_root else bench_root.parent
     store = ra.AuditStore(bench_root)
     items = json.loads((bench_root / "items.json").read_text(encoding="utf-8"))["items"]
     refs_raw = json.loads((bench_root / "references.json").read_text(encoding="utf-8"))
+    inventory = load_line_inventory(htr_root)
     cells: dict[str, dict] = {}
     for it in items:
         iid = it["id"]
@@ -155,20 +306,39 @@ def audited_cells(bench_root: Path = DEFAULT_BENCH_ROOT) -> dict[str, dict]:
         ref = ra.reference_for_scoring(store, iid, "final")
         prov = reference_provenance(ra, store, it, refs_raw.get(iid) or {}, ref)
         c = cells.setdefault(cid, {"cell_id": cid, "writer": w, "question_id": q, "sub_item_id": r,
-                                   "parts": [], "images": [], "provenance_classes": set()})
-        c["parts"].append((int(m_line.group(4)) if m_line else 0, ref.reference or "", iid))
-        c["images"].append(it["image"])
+                                   "parts": [], "provenance_classes": set()})
+        c["parts"].append((int(m_line.group(4)) if m_line else 0, ref.reference or "", iid, it["image"],
+                           prov["provenance_class"]))
         c["provenance_classes"].add(prov["provenance_class"])
-    for c in cells.values():
+    for cid, c in cells.items():
         parts = sorted(c["parts"])
-        idx = [n for n, _, _ in parts]
-        c["items"] = [i for _, _, i in parts]
+        idx = [n for n, *_ in parts]
+        c["items"] = [i for _, _, i, _, _ in parts]
+        c["bench_images"] = [img for _, _, _, img, _ in parts]
         c["complete"] = (idx == [0]) or (idx == list(range(1, len(idx) + 1)))
-        c["transcription"] = "\n".join(t for _, t, _ in parts)
+        c["transcription"] = "\n".join(t for _, t, _, _, _ in parts)
         c["provenance_classes"] = sorted(c["provenance_classes"])
         c["provenance_valid"] = all(pc in ("audited_confirmed", "audited_corrected") for pc in c["provenance_classes"])
+        c.update(_cell_evidence(cid, parts, inventory, bench_root=bench_root, evaluation_root=evaluation_root))
         del c["parts"]
     return cells
+
+
+def evidence_inventory_summary(label_rows: list[dict]) -> dict[str, Any]:
+    """Manifest accounting for the evidence block across a dataset."""
+    rows = list(label_rows)
+    incomplete = sorted(r["case_id"] for r in rows if r.get("transcription_complete") is False)
+    by_kind: dict[str, int] = {}
+    for r in rows:
+        by_kind[r.get("evidence_kind", "?")] = by_kind.get(r.get("evidence_kind", "?"), 0) + 1
+    return {"source": "evaluation/htr_pilot/splits/*.json (line cells: one image per recorded line, in line order); "
+                      + CELL_CROP_MANIFEST + " (exam-002 whole-cell crops)",
+            "cases": len(rows), "evidence_images": sum(len(r.get("evidence_images") or []) for r in rows),
+            "by_kind": dict(sorted(by_kind.items())),
+            "transcription_incomplete_cases": incomplete,
+            "policy": ("every recorded line is evidence for the HUMAN label; a case whose model-visible "
+                       "transcription does not cover every recorded line is transcription_complete=false and "
+                       "is excluded from model ACCURACY metrics (decision metrics still apply)")}
 
 
 # ----------------------------------------------------------------------------
@@ -198,7 +368,7 @@ def route_case_by_eligibility(inp: dict, lab: dict):
 
 
 def build_grading_dataset(out_dir: Path, *, key_json: Path | None = None,
-                          bench_root: Path = DEFAULT_BENCH_ROOT,
+                          bench_root: Path = DEFAULT_BENCH_ROOT, htr_root: Path = DEFAULT_HTR_ROOT,
                           grading_policy: str = "choice_and_explanation_independent",
                           now: str | None = None) -> dict[str, Any]:
     """Inputs only (owner labels come later via OwnerLabelStore). Each case:
@@ -222,12 +392,13 @@ def build_grading_dataset(out_dir: Path, *, key_json: Path | None = None,
                                 "0758cd7f key-cache entry); pass --key-json")
     key, _ = _load_key(key_path)
     qs = {q.id: q for q in key.questions}
-    cells = audited_cells(bench_root)
+    cells = audited_cells(bench_root, htr_root=htr_root)
     inputs, labels, excluded, early_exit, eligibilities = [], [], [], [], []
     for cid in sorted(cells):
         c = cells[cid]
         if not c["complete"]:
-            excluded.append({"cell": cid, "why": f"incomplete line set {c['items']}"})
+            excluded.append({"cell": cid, "why": f"incomplete line set {c['items']}",
+                             "line_count": c["line_count"]})
             continue
         if not c["provenance_valid"]:
             excluded.append({"cell": cid, "why": f"reference provenance {c['provenance_classes']}"})
@@ -262,7 +433,7 @@ def build_grading_dataset(out_dir: Path, *, key_json: Path | None = None,
                "label_status": "NEEDS_OWNER_LABEL",
                "transcription_source": "audited human reference (reference_for_scoring mode=final)",
                "transcription_items": c["items"], "transcription_provenance": c["provenance_classes"],
-               "evidence_images": [f"hebrew_bench_v2/{p}" for p in c["images"]],
+               **evidence_label_fields(c),
                "max_score": pack.max_score}
         elig, exit_record = route_case_by_eligibility(inp, lab)
         eligibilities.append(elig)
@@ -292,7 +463,8 @@ def build_grading_dataset(out_dir: Path, *, key_json: Path | None = None,
                "pack_builder": "gradingpack.build_pack narrowed per sub-item; no course/retrieval",
                "excluded_cells": excluded, "cells_total": len(cells), "cases": len(inputs),
                "eligibility": eligibility_counts(eligibilities),
-               "policy_early_exit_cases": len(early_exit)},
+               "policy_early_exit_cases": len(early_exit),
+               "evidence_inventory": evidence_inventory_summary(labels)},
         now=now)
     if early_exit:
         with (Path(out_dir) / "policy_early_exit.jsonl").open("w", encoding="utf-8", newline="\n") as f:
@@ -301,6 +473,108 @@ def build_grading_dataset(out_dir: Path, *, key_json: Path | None = None,
     man["excluded_cells"] = excluded
     man["policy_early_exit"] = early_exit
     return man
+
+
+def _with_evidence_block(row: dict, block: dict) -> dict:
+    """Replace the row's evidence block in place (same position as the
+    builder writes it); rows without any evidence key get it before max_score."""
+    out: dict = {}
+    inserted = False
+    for k, v in row.items():
+        if k in EVIDENCE_LABEL_FIELDS:
+            if not inserted:
+                out.update(block)
+                inserted = True
+            continue
+        if k == "max_score" and not inserted:
+            out.update(block)
+            inserted = True
+        out[k] = v
+    if not inserted:
+        out.update(block)
+    return out
+
+
+def repair_grading_evidence(dataset_dir: Path, *, bench_root: Path = DEFAULT_BENCH_ROOT,
+                            htr_root: Path = DEFAULT_HTR_ROOT, evaluation_root: Path | None = None,
+                            now: str | None = None, dry_run: bool = False) -> dict[str, Any]:
+    """Re-freeze ONLY the evidence block of an existing grade_primary dataset's
+    label rows from the authoritative upstream line inventory. The
+    model-visible ``cases_inputs.jsonl`` is never touched (its sha256 must still
+    match the manifest before AND after), case membership is never changed,
+    and the frozen transcription items/provenance must agree with the OCR
+    benchmark — any disagreement refuses instead of guessing. The manifest
+    records the revision (previous/new labels sha256, cases whose evidence
+    changed); ``CHECKSUMS.sha256`` is rewritten. ``dry_run`` computes the same
+    summary without writing."""
+    d = Path(dataset_dir)
+    man_p, inputs_p, labels_p = d / "manifest.json", d / "cases_inputs.jsonl", d / "cases_labels.jsonl"
+    if not man_p.exists():
+        raise DatasetBuildError(f"{d} holds no frozen dataset")
+    man = json.loads(man_p.read_text(encoding="utf-8"))
+    if _sha(inputs_p) != man.get("inputs_sha256"):
+        raise DatasetBuildError("cases_inputs.jsonl does not match the manifest hash; refusing to touch a drifted dataset")
+    old_labels_sha = _sha(labels_p)
+    if old_labels_sha != man.get("labels_sha256"):
+        raise DatasetBuildError("cases_labels.jsonl does not match the manifest hash; refusing to touch a drifted dataset")
+    inputs = {r["case_id"]: r for r in (json.loads(l) for l in inputs_p.read_text(encoding="utf-8").splitlines() if l.strip())}
+    rows = [json.loads(l) for l in labels_p.read_text(encoding="utf-8").splitlines() if l.strip()]
+    cells = audited_cells(bench_root, htr_root=htr_root, evaluation_root=evaluation_root)
+    new_rows, updated, changed = [], [], []
+    for row in rows:
+        cid = row["case_id"]
+        c = cells.get(cid)
+        if c is None:
+            raise DatasetBuildError(f"{cid}: no longer derivable from the frozen OCR benchmark; refusing")
+        if not c["complete"] or not c["provenance_valid"]:
+            raise DatasetBuildError(f"{cid}: case membership would change (complete={c['complete']}, "
+                                    f"provenance_valid={c['provenance_valid']}); refusing")
+        if list(row.get("transcription_items") or []) != c["items"] \
+                or sorted(row.get("transcription_provenance") or []) != c["provenance_classes"]:
+            raise DatasetBuildError(f"{cid}: frozen transcription items/provenance disagree with the OCR benchmark; refusing")
+        if inputs.get(cid, {}).get("transcription") != c["transcription"]:
+            raise DatasetBuildError(f"{cid}: frozen model-visible transcription disagrees with the OCR benchmark; refusing")
+        new = _with_evidence_block(row, evidence_label_fields(c))
+        if new != row:
+            updated.append(cid)
+            before = list(row.get("evidence_images") or [])
+            if before != new["evidence_images"]:
+                changed.append({"case_id": cid, "evidence_images_before": before,
+                                "evidence_images_after": list(new["evidence_images"]),
+                                "line_count": new["line_count"],
+                                "transcription_complete": new["transcription_complete"],
+                                "lines_without_audited_transcription": list(new["lines_without_audited_transcription"])})
+        new_rows.append(new)
+    body = "".join(json.dumps(r, ensure_ascii=False) + "\n" for r in new_rows)
+    new_labels_sha = hashlib.sha256(body.encode("utf-8")).hexdigest()
+    summary = {"dataset": str(d), "cases": len(new_rows), "inputs_sha256": man["inputs_sha256"],
+               "inputs_changed": False, "previous_labels_sha256": old_labels_sha, "labels_sha256": new_labels_sha,
+               "rows_updated": updated, "cases_evidence_changed": changed,
+               "evidence_inventory": evidence_inventory_summary(new_rows), "dry_run": dry_run,
+               "written": False}
+    if dry_run or new_labels_sha == old_labels_sha:
+        return summary
+    with labels_p.open("w", encoding="utf-8", newline="\n") as f:
+        f.write(body)
+    if _sha(labels_p) != new_labels_sha or _sha(inputs_p) != man["inputs_sha256"]:
+        raise DatasetBuildError("post-write verification failed")
+    man["labels_sha256"] = new_labels_sha
+    man.setdefault("revisions", []).append({
+        "at": now or time.strftime("%Y-%m-%d %H:%M:%S"), "kind": "evidence_inventory_repair",
+        "why": ("evidence images are taken from the authoritative upstream line inventory (one image per "
+                "recorded line, in line order); the original build took them from the OCR-benchmark subset, "
+                "which silently dropped lines without an audited transcription"),
+        "inputs_sha256": man["inputs_sha256"], "inputs_changed": False,
+        "previous_labels_sha256": old_labels_sha, "labels_sha256": new_labels_sha,
+        "rows_updated": len(updated), "cases_evidence_changed": [c["case_id"] for c in changed],
+        "line_inventory_source": "evaluation/htr_pilot/splits/*.json"})
+    man.setdefault("extra", {})["evidence_inventory"] = summary["evidence_inventory"]
+    man_p.write_text(json.dumps(man, ensure_ascii=False, indent=1), encoding="utf-8", newline="\n")
+    (d / "CHECKSUMS.sha256").write_text(
+        f"{man['inputs_sha256']}  cases_inputs.jsonl\n{man['labels_sha256']}  cases_labels.jsonl\n",
+        encoding="utf-8", newline="\n")
+    summary["written"] = True
+    return summary
 
 
 # ----------------------------------------------------------------------------
@@ -488,6 +762,8 @@ def build_variant_dataset(out_dir: Path, *, prob_root: Path = REPO_ROOT / "prob_
 
 
 __all__ = ["write_declared_dataset", "DatasetExists", "DatasetBuildError", "WRITER_SPLIT_A",
-           "audited_cells", "default_grading_key_path", "build_grading_dataset", "build_escalation_dataset",
+           "audited_cells", "load_line_inventory", "evidence_label_fields", "evidence_inventory_summary",
+           "repair_grading_evidence", "EVIDENCE_LABEL_FIELDS", "DEFAULT_HTR_ROOT", "CELL_CROP_MANIFEST",
+           "default_grading_key_path", "build_grading_dataset", "build_escalation_dataset",
            "build_mc_dataset", "build_variant_dataset", "render_marker_region", "MARKER_REGION",
            "AUDIT_PROVENANCE", "STAGE_A_COVERS"]

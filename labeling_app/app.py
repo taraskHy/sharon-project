@@ -11,7 +11,14 @@
     GET  /api/pages/{id}        full source page (red instructor ink masked; only when available)
     GET  /api/my-items
     admin: /api/admin/summary | /items | /items/{id} | /items/{id}/final | /finalize-agreement |
-           /reopen | /policy | /export | /backup | /events
+           /reopen | /policy | /export | /backup | /events | /evidence (stale-evidence report)
+
+Evidence fingerprints: every item payload carries ``evidence_sha256`` (exactly
+the crops served, in order); a label save records the current fingerprint and
+is refused (409, stale_evidence) when the client's page showed different
+evidence. At startup the served bundle is verified against its declared
+fingerprints and registered (``LabelDB.sync_evidence``): labels made against
+evidence that has since changed are reported and re-served as stale.
 
 The grader view NEVER contains: other graders' labels, expected labels,
 model outputs, OCR confidence, splits, writers, repository paths.
@@ -32,7 +39,7 @@ from starlette.routing import Route
 
 from .backup import make_backup
 from .bundle import Bundle
-from .db import LabelDB, LabelError, StaleWrite
+from .db import LabelDB, LabelError, StaleEvidence, StaleWrite
 from .export import export_final, write_export
 
 WEB = Path(__file__).resolve().parent / "web"
@@ -132,8 +139,11 @@ def _item_view(request: Request, item_id: str, grader: str) -> dict | None:
         return None
     mine = db.get_label(item_id, grader)
     payload["my_label"] = mine
+    payload["my_evidence_stale"] = bool(mine and mine.get("evidence_stale"))
     payload["label_revision"] = mine["revision"] if mine else 0
-    payload["final"] = bool(db.overview(item_id)["final"])
+    ov = db.overview(item_id)
+    payload["final"] = bool(ov["final"])
+    payload["evidence_changed_at"] = ov.get("evidence_changed_at")
     return payload
 
 
@@ -173,7 +183,10 @@ async def api_label(request: Request) -> Response:
         label = db.save_label(item_id, g, score=body.get("score"), rubric=body.get("rubric") or [],
                               note=str(body.get("note") or ""), status=str(body.get("status") or "saved"),
                               flag_reason=str(body.get("flag_reason") or ""),
-                              expected_revision=int(body.get("expected_revision") or 0))
+                              expected_revision=int(body.get("expected_revision") or 0),
+                              client_evidence_sha256=(str(body["evidence_sha256"]) if body.get("evidence_sha256") else None))
+    except StaleEvidence as e:
+        return JSONResponse({"error": str(e), "stale": True, "stale_evidence": True}, status_code=409)
     except StaleWrite as e:
         return JSONResponse({"error": str(e), "stale": True}, status_code=409)
     except LabelError as e:
@@ -212,6 +225,19 @@ async def api_my_items(request: Request) -> Response:
 
 # ------------------------------------------------------------------ admin --
 
+def _evidence_report_with_cases(request: Request) -> dict:
+    """The DB's exact stale/preserved accounting, joined with dataset case ids
+    (admin only — case ids never reach graders)."""
+    bundle: Bundle = request.app.state.bundle
+    rep = request.app.state.db.evidence_report()
+    for key in ("stale_labels", "unknown_evidence_labels", "stale_finals", "items_evidence_changed"):
+        for row in rep.get(key, []):
+            row["case_id"] = bundle.id_map.get(row["item_id"])
+    rep["affected_case_ids"] = sorted({r["case_id"] for r in rep.get("items_evidence_changed", []) if r.get("case_id")})
+    rep["startup_sync"] = request.app.state.evidence_sync
+    return rep
+
+
 async def api_admin_summary(request: Request) -> Response:
     if (err := _need_admin(request)):
         return err
@@ -220,7 +246,14 @@ async def api_admin_summary(request: Request) -> Response:
     # dataset-level eligibility accounting (source cases vs human workload)
     summary["eligibility"] = bundle.meta.get("eligibility")
     summary["ineligible_item_ids"] = bundle.ineligible_item_ids()
+    summary["evidence"] = _evidence_report_with_cases(request)
     return JSONResponse(summary)
+
+
+async def api_admin_evidence(request: Request) -> Response:
+    if (err := _need_admin(request)):
+        return err
+    return JSONResponse(_evidence_report_with_cases(request))
 
 
 async def api_admin_items(request: Request) -> Response:
@@ -231,7 +264,7 @@ async def api_admin_items(request: Request) -> Response:
     if state:
         ovs = [o for o in ovs if o["state"] == state]
     compact = [{k: o[k] for k in ("item_id", "state", "revision", "wanted_labels", "n_saved", "n_skipped",
-                                  "n_flagged", "agreement", "eligible")}
+                                  "n_flagged", "n_stale", "evidence_changed_at", "agreement", "eligible")}
                | {"graders": [l["grader"] for l in o["labels"]],
                   "case_id": request.app.state.bundle.id_map.get(o["item_id"])} for o in ovs]
     return JSONResponse({"items": compact})
@@ -356,12 +389,18 @@ def create_app(*, data_dir: Path, bundle_dir: Path | None = None, admin_key: str
         # Recompute eligibility from the dataset (single source of truth) so a
         # STALE bundle built before eligibility filtering still fails safely.
         recompute = bundle.apply_dataset_eligibility(dataset_dir)
+    # The crops on disk must be exactly what the bundle declares (a drifted
+    # bundle is never served — graders would label evidence nobody can audit).
+    bundle.verify_evidence()
     db = LabelDB(data_dir / "labels.db")
     db.load_items(bundle.items)
     # Fail-safe reconciliation: unknown eligibility never flips a flag, and
     # items no longer in the served bundle are retired from the workload.
     db.sync_eligibility([i["item_id"] for i in bundle.items], bundle.ineligible_item_ids(),
                         eligibility_known=bundle.eligibility_known())
+    # Register the served evidence; labels made against superseded evidence
+    # become visibly stale (re-review), untouched items keep their labels.
+    evidence_sync = db.sync_evidence(bundle.fingerprints)
     routes = [
         Route("/", page_grader),
         Route("/admin", page_admin),
@@ -385,11 +424,13 @@ def create_app(*, data_dir: Path, bundle_dir: Path | None = None, admin_key: str
         Route("/api/admin/export", api_admin_export),
         Route("/api/admin/backup", api_admin_backup, methods=["POST"]),
         Route("/api/admin/events", api_admin_events),
+        Route("/api/admin/evidence", api_admin_evidence),
     ]
     app = Starlette(routes=routes)
     app.state.db = db
     app.state.bundle = bundle
     app.state.eligibility_recompute = recompute
+    app.state.evidence_sync = evidence_sync
     app.state.data_dir = data_dir
     app.state.admin_key = admin_key or os.environ.get("LABELING_ADMIN_KEY") or None
     app.state.backup_copy_to = str(backup_copy_to) if backup_copy_to else os.environ.get("LABELING_BACKUP_COPY_TO")

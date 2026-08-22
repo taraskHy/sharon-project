@@ -331,14 +331,17 @@ subsets are never optimized after results exist.
 |---|---|---|---|---|
 | OCR_PRIMARY | **READY** | frozen hebrew_bench_v2, 129 items (DEV 60 / CALIB 23 / HELD_OUT 46) | audited refs (102) + text-layer (27), all provenance-valid | smoke 8 |
 | OCR_VERIFY | **READY** | frozen REAL 303 + SYNTHETIC 136 | expected verdict per case | smoke 12; REAL/SYNTHETIC separate |
-| GRADE_PRIMARY | **NEEDS_OWNER_LABELS** | `evaluation/model_selection/datasets/grade_primary` — 67 cases (DEV 32 / CALIB 14 / HELD_OUT 21; writer Split A); 13 incomplete cells excluded | 0 owner labels; `owner_labels.json` via `scripts/grade_label_ui.py` | inputs = NO-RAG packs from the frozen key + audited transcriptions; runnable now for decision/validation metrics only |
+| GRADE_PRIMARY | **NEEDS_OWNER_LABELS** | `evaluation/model_selection/datasets/grade_primary` — 67 cases (DEV 32 / CALIB 14 / HELD_OUT 21; writer Split A); 13 incomplete cells excluded; evidence = one crop per recorded handwritten line from the upstream htr_pilot inventory (91 crops; re-frozen 2026-08-22, inputs unchanged — `manifest.revisions`) | 0 owner labels; `owner_labels.json` via `scripts/grade_label_ui.py` | inputs = NO-RAG packs from the frozen key + audited transcriptions; runnable now for decision/validation metrics only; 9 cases are `transcription_complete: false` (a line without an audited transcription) and are excluded from accuracy metrics (`labeled_excluded_transcription_incomplete`) |
 | GRADE_ESCALATE | **PENDING_OTHER_EXPERIMENT** | harvested by `bench build-escalation --from-run <grade_primary run>` | owner labels of the harvested cases | difficulty is never invented |
 | MC_RESOLVE | **READY** (DEV only, n=10) | `datasets/mc_resolve_cloud` — deterministic band crops of the 10 ambiguous prob rows | agent-audited answers (provenance on every label; owner verified 3 totals only) | expand before selecting a cloud resolver |
 | VARIANT_RESOLVE | **READY** (DEV only, n=16) | `datasets/variant_resolve` — marker-region crops (page-1 bottom third): 13 prob suits + 3 Stage-A flowers | 13 agent-audited suits (10 pinned by totals) + 3 operator content-verified flowers | production sends the full page; parity run can render locally |
 | ALIGN_RESOLVE | **NOT_AVAILABLE** | — | operator mapping exists (`sample_data/Exam_solution.alignment.json`) | printed booklet texts need an OCR pass (image scans, no text layer); canonical key artifact has a duplicate-prompt defect (Q3.9) |
 
 Builders: `bench build-grading | build-mc | build-variant | build-escalation | build-align`
-(`benchmark/datasets.py`; local deterministic processing; each refuses to overwrite). Owner
+(`benchmark/datasets.py`; local deterministic processing; each refuses to overwrite);
+`bench repair-grading-evidence [--dry-run]` re-freezes ONLY the label-side evidence
+inventory of grade_primary from the upstream line records (inputs byte-identical,
+membership unchanged, revision recorded in the manifest). Owner
 labels: `python -m streamlit run scripts/grade_label_ui.py` writes
 `owner_labels.json` next to (never inside) the frozen dataset; `bench owner-labels
 --role grade_primary` reports the remaining count; the manifest merges confirmed

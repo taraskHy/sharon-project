@@ -1,10 +1,16 @@
 """`python -m labeling_app ...`
 
-    build-bundle  [--dataset DIR] [--out DIR]      anonymized frozen bundle (offline, uses the repo dataset)
+    build-bundle  [--dataset DIR] [--out DIR] [--replace]
+                  anonymized frozen bundle (offline, uses the repo dataset). --replace rebuilds IN PLACE:
+                  the old bundle's evidence fingerprints are registered in labels.db first (so every
+                  existing label records what it was actually made against), the old bundle is moved
+                  to bundle.previous-<stamp>/ (never deleted), opaque item ids stay stable, and the
+                  labels whose evidence changed are reported as STALE (re-review), nothing else is touched.
     serve         [--host 127.0.0.1] [--port 8787] [--data-dir DIR] [--bundle DIR] [--admin-key KEY]
     export        [--data-dir DIR] [--out FILE]    final_labels.json (FINAL labels only)
     backup        [--data-dir DIR] [--copy-to DIR]
     status        [--data-dir DIR]
+    evidence-report [--data-dir DIR] [--bundle DIR]   preserved / stale / unknown labels per case (exact)
 
 Data directory (the ONLY place live state lives; keep it OUT of OneDrive):
     %LOCALAPPDATA%\\autograder\\labeling\\   (override: LABELING_DATA_DIR or --data-dir)
@@ -32,11 +38,75 @@ def default_data_dir() -> Path:
     return Path(base) / "autograder" / "labeling"
 
 
+def _register_bundle_evidence(bundle_dir: Path, data_dir: Path) -> dict | None:
+    """Register a bundle's evidence fingerprints in labels.db (what the labels
+    on record were made against). Returns the sync summary, or None when
+    there is no database yet (nothing to preserve)."""
+    from .app import Bundle, LabelDB
+    if not (data_dir / "labels.db").exists():
+        return None
+    b = Bundle(bundle_dir)
+    db = LabelDB(data_dir / "labels.db")
+    try:
+        db.load_items(b.items)
+        return db.sync_evidence(b.fingerprints)
+    finally:
+        db.close()
+
+
+def _print_evidence_report(rep: dict, id_map: dict[str, str], *, file=sys.stderr) -> None:
+    """Human-readable stale/preserved accounting, joined with dataset case ids."""
+    cid = lambda i: id_map.get(i, i)  # noqa: E731
+    print(f"[evidence] labels preserved : {rep['labels_preserved']} (nothing deleted)", file=file)
+    print(f"[evidence] labels fresh     : {rep['labels_fresh']}", file=file)
+    print(f"[evidence] labels stale     : {rep['labels_stale']} (evidence changed after the label; re-review required)", file=file)
+    print(f"[evidence] labels unknown   : {rep['labels_unknown_evidence']} (no fingerprint on record)", file=file)
+    print(f"[evidence] FINALs stale     : {rep['finals_stale']} / {rep['finals_total']}", file=file)
+    changed = rep.get("items_evidence_changed") or []
+    print(f"[evidence] items whose evidence changed: {len(changed)}"
+          + (": " + ", ".join(sorted(cid(r['item_id']) for r in changed)) if changed else ""), file=file)
+    for r in rep.get("stale_labels") or []:
+        print(f"[evidence]   STALE label  case {cid(r['item_id'])}  grader {r['grader']}  status {r['status']}  "
+              f"rev {r['revision']}  (evidence changed {r.get('evidence_changed_at')})", file=file)
+    for r in rep.get("stale_finals") or []:
+        print(f"[evidence]   STALE FINAL  case {cid(r['item_id'])}  source {r['source']}  finalized {r['finalized_at']}", file=file)
+
+
 def cmd_build_bundle(args) -> int:
-    from .bundle import build_bundle
+    from .bundle import Bundle, build_bundle, previous_bundle_info
     out = Path(args.out) if args.out else default_data_dir() / "bundle"
-    meta = build_bundle(Path(args.dataset), out, evaluation_root=REPO_ROOT / "evaluation")
-    print(json.dumps({"bundle": str(out), **meta}, ensure_ascii=False, indent=1))
+    data_dir = Path(args.data_dir) if args.data_dir else default_data_dir()
+    previous = previous_bundle_info(out)
+    if previous is not None and not args.replace:
+        print(f"{out} already holds a bundle; re-run with --replace to rebuild in place (old bundle kept aside, "
+              "item ids stable, labels preserved) or pass --out for a fresh directory", file=sys.stderr)
+        return 2
+    before = None
+    if previous is not None:
+        # 1) register what the EXISTING labels were made against (the old bundle)
+        before = _register_bundle_evidence(out, data_dir)
+    meta = build_bundle(Path(args.dataset), out, evaluation_root=REPO_ROOT / "evaluation", replace=bool(args.replace))
+    report = {"bundle": str(out), **meta}
+    if previous is not None:
+        # 2) register the NEW bundle: labels whose evidence changed become stale (nothing else moves)
+        after = _register_bundle_evidence(out, data_dir)
+        if after is not None:
+            report["evidence_sync"] = {"registered_old_bundle": (before or {}).get("registered"),
+                                       "changed_items": after["changed"], "report": after["report"]}
+            _print_evidence_report(after["report"], Bundle(out).id_map)
+    print(json.dumps(report, ensure_ascii=False, indent=1))
+    return 0
+
+
+def cmd_evidence_report(args) -> int:
+    data_dir, bundle, db = _open(args)
+    rep = db.evidence_report()
+    for key in ("stale_labels", "unknown_evidence_labels", "stale_finals", "items_evidence_changed"):
+        for row in rep.get(key, []):
+            row["case_id"] = bundle.id_map.get(row["item_id"])
+    rep["affected_case_ids"] = sorted({r["case_id"] for r in rep.get("items_evidence_changed", []) if r.get("case_id")})
+    _print_evidence_report(rep, bundle.id_map)
+    print(json.dumps({"data_dir": str(data_dir), "db": str(db.path), **rep}, ensure_ascii=False, indent=1))
     return 0
 
 
@@ -71,6 +141,11 @@ def cmd_serve(args) -> int:
               + (f"; recompute skipped: {rec['reason']}" if not rec["applied"] else "")
               + ") — policy-decided items cannot be blocked; pass --dataset", file=sys.stderr)
     ineligible = app.state.bundle.ineligible_item_ids()
+    sync = app.state.evidence_sync
+    if sync.get("changed"):
+        print(f"[labeling] evidence : {len(sync['changed'])} item(s) changed evidence since the labels on record — "
+              "their labels are STALE and will be re-served to their graders", file=sys.stderr)
+    _print_evidence_report(sync["report"], app.state.bundle.id_map)
     print(f"[labeling] data dir : {data_dir}", file=sys.stderr)
     print(f"[labeling] bundle   : {bundle} ({len(app.state.bundle.items)} items"
           + (f", {len(ineligible)} ineligible/policy-decided" if ineligible else "") + ")", file=sys.stderr)
@@ -87,6 +162,7 @@ def _open(args):
     from .app import Bundle, LabelDB
     data_dir = Path(args.data_dir) if args.data_dir else default_data_dir()
     bundle = Bundle(Path(args.bundle) if getattr(args, "bundle", None) else data_dir / "bundle")
+    bundle.verify_evidence()
     ds = _dataset_dir(args)
     rec = {"applied": False, "reason": "no dataset directory found"}
     if ds is not None:
@@ -99,6 +175,7 @@ def _open(args):
     # never erase the running server's enforcement)
     db.sync_eligibility([i["item_id"] for i in bundle.items], bundle.ineligible_item_ids(),
                         eligibility_known=bundle.eligibility_known())
+    db.sync_evidence(bundle.fingerprints)
     return data_dir, bundle, db
 
 
@@ -121,15 +198,22 @@ def cmd_backup(args) -> int:
 
 def cmd_status(args) -> int:
     data_dir, bundle, db = _open(args)
+    rep = db.evidence_report()
+    for key in ("stale_labels", "unknown_evidence_labels", "stale_finals", "items_evidence_changed"):
+        for row in rep.get(key, []):
+            row["case_id"] = bundle.id_map.get(row["item_id"])
     print(json.dumps({"data_dir": str(data_dir), "db": str(db.path), "bundle_items": len(bundle.items),
-                      "summary": db.summary()}, ensure_ascii=False, indent=1))
+                      "summary": db.summary(), "evidence": rep}, ensure_ascii=False, indent=1))
     return 0
 
 
 def main(argv: list[str] | None = None) -> int:
     p = argparse.ArgumentParser(prog="labeling_app", description="shared human grading-label tool (no AI)")
     sub = p.add_subparsers(dest="cmd", required=True)
-    b = sub.add_parser("build-bundle"); b.add_argument("--dataset", default=str(REPO_ROOT / "evaluation" / "model_selection" / "datasets" / "grade_primary")); b.add_argument("--out", default=None); b.set_defaults(func=cmd_build_bundle)
+    b = sub.add_parser("build-bundle"); b.add_argument("--dataset", default=str(REPO_ROOT / "evaluation" / "model_selection" / "datasets" / "grade_primary")); b.add_argument("--out", default=None)
+    b.add_argument("--data-dir", default=None, help="labels.db location (default data dir); used by --replace to register fingerprints")
+    b.add_argument("--replace", action="store_true", help="rebuild in place: old bundle kept aside, item ids stable, stale labels reported")
+    b.set_defaults(func=cmd_build_bundle)
     s = sub.add_parser("serve"); s.add_argument("--host", default="127.0.0.1"); s.add_argument("--port", type=int, default=8787)
     s.add_argument("--data-dir", default=None); s.add_argument("--bundle", default=None); s.add_argument("--admin-key", default=os.environ.get("LABELING_ADMIN_KEY"))
     s.add_argument("--backup-copy-to", default=None); s.add_argument("--dataset", default=None,
@@ -138,6 +222,7 @@ def main(argv: list[str] | None = None) -> int:
     e = sub.add_parser("export"); e.add_argument("--data-dir", default=None); e.add_argument("--bundle", default=None); e.add_argument("--out", default=None); e.add_argument("--dataset", default=None); e.set_defaults(func=cmd_export)
     k = sub.add_parser("backup"); k.add_argument("--data-dir", default=None); k.add_argument("--bundle", default=None); k.add_argument("--copy-to", default=None); k.add_argument("--dataset", default=None); k.set_defaults(func=cmd_backup)
     t = sub.add_parser("status"); t.add_argument("--data-dir", default=None); t.add_argument("--bundle", default=None); t.add_argument("--dataset", default=None); t.set_defaults(func=cmd_status)
+    v = sub.add_parser("evidence-report"); v.add_argument("--data-dir", default=None); v.add_argument("--bundle", default=None); v.add_argument("--dataset", default=None); v.set_defaults(func=cmd_evidence_report)
     args = p.parse_args(argv)
     return args.func(args)
 

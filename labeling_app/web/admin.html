@@ -20,6 +20,8 @@
   tr.sel { background:var(--card); }
   tr.clickable { cursor:pointer; }
   .state-FINAL { color:var(--ok); font-weight:600; } .state-NEEDS_ADJUDICATION { color:var(--bad); font-weight:600; } .state-AGREEMENT { color:var(--accent); }
+  .state-NEEDS_REVIEW_AFTER_EVIDENCE_CHANGE { color:var(--warn); font-weight:600; }
+  .stale { color:var(--warn); }
   .grid { display:grid; grid-template-columns: 1fr 1fr; gap:16px; }
   @media (max-width: 1000px) { .grid { grid-template-columns: 1fr; } }
   .rtl { direction:rtl; text-align:right; white-space:pre-wrap; line-height:1.6; }
@@ -56,7 +58,7 @@
   <div class="grid">
     <div>
       <div class="box">
-        <label>Show: <select id="filter"><option value="">all</option><option>NEEDS_ADJUDICATION</option><option>AGREEMENT</option><option>LABELED</option><option>UNLABELED</option><option>ASSIGNED</option><option>FINAL</option></select></label>
+        <label>Show: <select id="filter"><option value="">all</option><option>NEEDS_REVIEW_AFTER_EVIDENCE_CHANGE</option><option>NEEDS_ADJUDICATION</option><option>AGREEMENT</option><option>LABELED</option><option>UNLABELED</option><option>ASSIGNED</option><option>FINAL</option></select></label>
         <span class="muted" id="count"></span>
         <table id="items"><thead><tr><th>item</th><th>case</th><th>state</th><th>labels</th><th>graders</th></tr></thead><tbody></tbody></table>
       </div>
@@ -77,30 +79,31 @@
     const {data:s} = await api("GET", "/api/admin/summary");
     const el = s.eligibility || {};
     const cards = [["source cases", el.source_cases ?? s.total_items],["human-labelable", el.human_labelable ?? s.eligible_items ?? s.total_items],["deterministic zero", el.deterministic_zero ?? 0],["MC unresolved", el.mc_unresolved ?? 0],["choice-only excluded", el.excluded_choice_only ?? 0],["unlabeled", s.unlabeled],["labels completed", s.labels_completed],["singly labeled", s.singly_labeled],["double labeled", s.double_labeled],["agreements", s.agreements],["disagreements", s.disagreements],["flagged", s.flagged],["needs adjudication", s.needs_adjudication],["final", s.final]];
+    cards.push(["stale labels (evidence changed)", s.stale_labels ?? 0], ["stale FINALs", s.stale_finals ?? 0], ["needs evidence re-review", s.needs_evidence_review ?? 0]);
     if (s.ineligible_items) cards.push(["ineligible in DB", s.ineligible_items]);
     if (s.obsolete_ineligible_labels) cards.push(["obsolete labels (ineligible)", s.obsolete_ineligible_labels]);
     if (s.obsolete_ineligible_finals) cards.push(["obsolete FINALs (ineligible)", s.obsolete_ineligible_finals]);
     $("cards").innerHTML = cards.map(([k,v]) => `<div class="card"><div class="k">${esc(k)}</div><div class="v">${esc(v)}</div></div>`).join("");
-    $("perGrader").innerHTML = "<table><tr><th>grader</th><th>saved</th><th>skipped</th><th>flagged</th></tr>" + Object.entries(s.per_grader || {}).map(([g,c]) => `<tr><td>${esc(g)}</td><td>${c.saved||0}</td><td>${c.skipped||0}</td><td>${c.flagged||0}</td></tr>`).join("") + "</table>";
+    $("perGrader").innerHTML = "<table><tr><th>grader</th><th>saved</th><th>skipped</th><th>flagged</th><th>stale (re-review)</th></tr>" + Object.entries(s.per_grader || {}).map(([g,c]) => `<tr><td>${esc(g)}</td><td>${c.saved||0}</td><td>${c.skipped||0}</td><td>${c.flagged||0}</td><td class="${c.stale?'stale':''}">${c.stale||0}</td></tr>`).join("") + "</table>";
     $("policyNow").textContent = "current: " + (s.double_label_mode || "none"); $("policyMode").value = s.double_label_mode || "none";
   }
   async function loadItems(){
     const f = $("filter").value; const {data} = await api("GET", "/api/admin/items" + (f ? "?state=" + encodeURIComponent(f) : ""));
     items = data.items || []; $("count").textContent = items.length + " item(s)";
-    $("items").querySelector("tbody").innerHTML = items.map(i => `<tr class="clickable ${selected===i.item_id?'sel':''}" data-id="${esc(i.item_id)}"><td>${esc(i.item_id)}</td><td class="muted">${esc(i.case_id||"")}</td><td class="state-${esc(i.state)}">${esc(i.state)}${i.wanted_labels>1?" (2×)":""}</td><td>${i.n_saved}${i.n_flagged?" ⚑":""}${i.agreement===false?" ≠":(i.agreement===true?" =":"")}</td><td class="muted">${esc((i.graders||[]).join(", "))}</td></tr>`).join("");
+    $("items").querySelector("tbody").innerHTML = items.map(i => `<tr class="clickable ${selected===i.item_id?'sel':''}" data-id="${esc(i.item_id)}"><td>${esc(i.item_id)}</td><td class="muted">${esc(i.case_id||"")}</td><td class="state-${esc(i.state)}">${esc(i.state)}${i.wanted_labels>1?" (2×)":""}</td><td>${i.n_saved}${i.n_flagged?" ⚑":""}${i.agreement===false?" ≠":(i.agreement===true?" =":"")}${i.n_stale?` <span class="stale">⚠${i.n_stale} stale</span>`:""}</td><td class="muted">${esc((i.graders||[]).join(", "))}</td></tr>`).join("");
     $("items").querySelectorAll("tr.clickable").forEach(tr => tr.onclick = () => openItem(tr.dataset.id));
   }
   async function openItem(id){
     selected = id; const {data:o} = await api("GET", `/api/admin/items/${encodeURIComponent(id)}`);
     const c = o.content || {};
-    const labels = (o.labels||[]).map(l => `<div class="label"><strong>${esc(l.grader)}</strong> — ${l.status}${l.status==='saved'?` · score <strong>${l.score}</strong> · rubric [${esc((l.rubric||[]).join(", "))}]`:''}${l.flag_reason?` · flag: ${esc(l.flag_reason)}`:''}${l.note?`<div class="muted rtl">${esc(l.note)}</div>`:''}<div class="muted" style="font-size:.8em">rev ${l.revision} · ${esc(l.updated_at)}</div></div>`).join("") || "<div class='muted'>no labels yet</div>";
-    const fin = o.final ? `<div class="label" style="border-style:solid;border-color:var(--ok)"><strong>FINAL</strong> score <strong>${o.final.score}</strong> · rubric [${esc((o.final.rubric||[]).join(", "))}] · source ${esc(o.final.source)}${o.final.adjudicator?` by ${esc(o.final.adjudicator)}`:''} · graders ${esc((o.final.contributing_graders||[]).join(", "))} · ${esc(o.final.finalized_at)}${o.final.note?`<div class="rtl muted">${esc(o.final.note)}</div>`:''}<div style="margin-top:6px"><button class="danger" id="reopen">reopen (remove FINAL)</button></div></div>` : "";
+    const labels = (o.labels||[]).map(l => `<div class="label"><strong>${esc(l.grader)}</strong> — ${l.status}${l.status==='saved'?` · score <strong>${l.score}</strong> · rubric [${esc((l.rubric||[]).join(", "))}]`:''}${l.flag_reason?` · flag: ${esc(l.flag_reason)}`:''}${l.evidence_stale?` · <span class="stale">⚠ STALE — the evidence was corrected after this label; grader must re-review</span>`:''}${l.note?`<div class="muted rtl">${esc(l.note)}</div>`:''}<div class="muted" style="font-size:.8em">rev ${l.revision} · ${esc(l.updated_at)}${l.evidence_sha256?` · evidence ${esc(String(l.evidence_sha256).slice(0,12))}…`:''}</div></div>`).join("") || "<div class='muted'>no labels yet</div>";
+    const fin = o.final ? `<div class="label" style="border-style:solid;border-color:${o.final.evidence_stale?'var(--warn)':'var(--ok)'}"><strong>FINAL</strong> score <strong>${o.final.score}</strong> · rubric [${esc((o.final.rubric||[]).join(", "))}] · source ${esc(o.final.source)}${o.final.adjudicator?` by ${esc(o.final.adjudicator)}`:''} · graders ${esc((o.final.contributing_graders||[]).join(", "))} · ${esc(o.final.finalized_at)}${o.final.evidence_stale?` · <span class="stale">⚠ STALE — evidence changed after this FINAL; not ground truth until re-reviewed (reopen, re-review, finalize again)</span>`:''}${o.final.note?`<div class="rtl muted">${esc(o.final.note)}</div>`:''}<div style="margin-top:6px"><button class="danger" id="reopen">reopen (remove FINAL)</button></div></div>` : "";
     const rubricChecks = (c.rubric_items||[]).map(r => `<label style="display:block"><input type="checkbox" class="finRubric" data-id="${esc(r.id)}"> ${esc(r.id)} — <span class="rtl" style="display:inline">${esc(r.text)}</span></label>`).join("");
     $("detail").innerHTML = `
-      <div class="box"><strong>${esc(o.item_id)}</strong> <span class="muted">(${esc(o.case_id||"")}) · state <span class="state-${esc(o.state)}">${esc(o.state)}</span> · item revision ${o.revision} · wanted labels ${o.wanted_labels}</span></div>
+      <div class="box"><strong>${esc(o.item_id)}</strong> <span class="muted">(${esc(o.case_id||"")}) · state <span class="state-${esc(o.state)}">${esc(o.state)}</span> · item revision ${o.revision} · wanted labels ${o.wanted_labels}${o.evidence_changed_at?` · <span class="stale">evidence changed ${esc(o.evidence_changed_at)}</span>`:""}</span></div>
       <div class="box"><div class="muted">Source provenance</div>${(() => { const pv = c.provenance || {}, pp = o.provenance_private || {}; return `Exam ${esc(pv.exam||"?")} · Question ${esc(pv.question_id||"?")} · Part ${esc(pv.part||"?")} · Page ${esc(pv.page||"unavailable")} · Case ${esc(pv.case_id||"?")}${pv.page_url?` · <a href="${pv.page_url}" target="_blank" rel="noopener">[View full source page]</a>`:" · page: unavailable"}<div class="muted" style="font-size:.85em">source file (private): ${esc(pp.source_file||"unavailable")} · crops: ${esc((pp.crop_files||[]).join(", "))}${pp.page_report?` · mask residual red: ${esc(pp.page_report.strict_red_after)}`:""}</div>`; })()}</div>
       <div class="box"><div class="muted">Question</div><div class="rtl">${esc(c.question_text)}</div></div>
-      <div class="box"><div class="muted">Student response</div>${(c.images||[]).map(u=>`<img class="crop" src="${u}">`).join("")}<div class="rtl" style="font-size:1.15em">${esc(c.transcription)}</div></div>
+      <div class="box"><div class="muted">Student response${(c.images||[]).length>1?` (${(c.images||[]).length} images, in recorded order)`:""}</div>${(c.images||[]).map((u,i)=>`<img class="crop" src="${u}" alt="image ${i+1} of ${(c.images||[]).length}">`).join("")}<div class="rtl" style="font-size:1.15em">${esc(c.transcription)}</div>${(c.provenance||{}).transcription_complete===false?`<div class="muted">transcription covers ${esc((c.provenance||{}).lines_transcribed)} of ${esc((c.provenance||{}).line_count)} lines</div>`:""}</div>
       <div class="box"><div class="muted">Rubric / official solution</div><div class="rtl">${(c.rubric||[]).map(l=>"• "+esc(l)).join("<br>")}</div><div class="rtl muted">${esc(c.official_solution)}</div></div>
       <div class="box"><div class="muted">Grader labels (independent)</div>${labels}</div>
       <div class="box">${fin}

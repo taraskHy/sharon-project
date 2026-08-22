@@ -39,6 +39,8 @@
   .done { text-align:center; padding:60px 20px; }
   .muted { color:var(--muted); }
   .small { font-size:.9em; }
+  .stale { border-color:var(--warn); background:color-mix(in srgb, var(--warn) 12%, var(--card)); }
+  .linecap { color:var(--muted); font-size:.8em; margin:0 0 2px 0; }
 </style>
 </head>
 <body>
@@ -57,12 +59,13 @@
 
 <main id="work" style="display:none">
   <div>
+    <div id="stale" class="card stale" style="display:none"></div>
     <div class="card"><h3>Question</h3><div id="question" class="rtl"></div></div>
     <div class="card"><h3>Official solution / reference answer</h3><div id="solution" class="rtl"></div></div>
     <div class="card"><h3>Rubric / rules</h3><div id="rubric" class="rtl"></div><details class="small"><summary class="muted">general scoring rules</summary><div id="rules" class="rtl small"></div></details></div>
     <div class="card"><h3>Student answer — image</h3><div id="images"></div><div id="noimg" class="hint" style="display:none">no image for this item</div>
       <div id="source" class="hint" style="margin-top:8px"></div></div>
-    <div class="card"><h3>Student answer — transcription (what the grader reads)</h3><div id="transcription" class="rtl transcription"></div></div>
+    <div class="card"><h3>Student answer — transcription (what the grader reads)</h3><div id="transcription" class="rtl transcription"></div><div id="trnote" class="hint"></div></div>
   </div>
   <div>
     <div class="card">
@@ -108,7 +111,7 @@
     if (!p) return;
     const total = p.total_items || 0, done = p.labels_completed || 0;
     $("bar").style.width = total ? Math.min(100, 100*done/Math.max(total,1)) + "%" : "0%";
-    $("ptext").textContent = `you: ${p.my_saved} graded · ${p.my_skipped} skipped · ${p.remaining_for_me} left for you  —  overall ${p.items_with_any_label}/${total} items have a grade`;
+    $("ptext").textContent = `you: ${p.my_saved} graded · ${p.my_skipped} skipped` + (p.my_stale ? ` · ${p.my_stale} to re-check (evidence corrected)` : "") + ` · ${p.remaining_for_me} left for you  —  overall ${p.items_with_any_label}/${total} items have a grade`;
     if (who) $("who").textContent = "grader: " + who;
   }
 
@@ -120,9 +123,22 @@
     $("rules").innerHTML = (it.scoring_rules || []).map(l => "• " + esc(l)).join("<br>");
     $("transcription").textContent = it.transcription || "(empty)";
     const im = $("images"); im.innerHTML = "";
-    (it.images || []).forEach(u => { const img = document.createElement("img"); img.className="crop"; img.src = u; img.alt = "student answer"; im.appendChild(img); });
-    $("noimg").style.display = (it.images && it.images.length) ? "none" : "block";
+    // every evidence image, in the dataset's recorded order (image n of N) — never only the first
+    const urls = it.images || [];
+    urls.forEach((u, i) => {
+      const cap = document.createElement("div"); cap.className = "linecap"; cap.textContent = urls.length > 1 ? `image ${i+1} of ${urls.length}` : ""; if (urls.length > 1) im.appendChild(cap);
+      const img = document.createElement("img"); img.className="crop"; img.src = u; img.dataset.index = String(i+1); img.alt = `student answer — image ${i+1} of ${urls.length}`; im.appendChild(img);
+    });
+    $("noimg").style.display = urls.length ? "none" : "block";
     const pv = it.provenance || {};
+    $("trnote").textContent = (pv.transcription_complete === false)
+      ? `note: the transcription covers ${pv.lines_transcribed} of ${pv.line_count} handwritten lines — grade from the image(s) above`
+      : "";
+    const st = $("stale");
+    if (it.my_evidence_stale) {
+      st.style.display = "block";
+      st.innerHTML = `<strong>⚠ The evidence for this answer was corrected after you graded it</strong> — it now shows ${urls.length} image(s). Please re-check the complete answer and save your grade again (your earlier grade is kept in the history).`;
+    } else { st.style.display = "none"; st.innerHTML = ""; }
     const parts = [];
     if (pv.exam) parts.push("Exam " + esc(pv.exam));
     if (pv.question_id) parts.push("Question " + esc(pv.question_id));
@@ -159,7 +175,7 @@
       (it.my_label.rubric || []).forEach(id => { rubric.add(id); const cb = ri.querySelector(`input[data-id="${CSS.escape(id)}"]`); if (cb) cb.checked = true; });
       $("note").value = it.my_label.note || "";
     }
-    $("itemInfo").textContent = `item ${it.item_id}` + (it.my_label ? ` · you already ${it.my_label.status} this item (revision ${it.my_label.revision})` : "");
+    $("itemInfo").textContent = `item ${it.item_id}` + (it.my_label ? ` · you already ${it.my_label.status} this item (revision ${it.my_label.revision})` : "") + (it.my_evidence_stale ? " · evidence changed since — re-check" : "");
     $("work").style.display = "grid"; $("done").style.display = "none"; $("name").style.display = "none";
     window.scrollTo(0,0);
   }
@@ -180,10 +196,10 @@
     let flag_reason = "";
     if (status === "flagged") { flag_reason = prompt("Why does this item need review? (optional)") || ""; }
     busy = true;
-    const body = {score: score, rubric: Array.from(rubric), note: $("note").value, status, flag_reason, expected_revision: item.label_revision || 0};
+    const body = {score: score, rubric: Array.from(rubric), note: $("note").value, status, flag_reason, expected_revision: item.label_revision || 0, evidence_sha256: item.evidence_sha256 || null};
     const {status: st, data} = await api("POST", `/api/items/${encodeURIComponent(item.item_id)}/label`, body);
     busy = false;
-    if (st === 409) { toast("this item changed elsewhere — reloaded", 3000); const r = await api("GET", `/api/items/${encodeURIComponent(item.item_id)}`); if (r.data.item) render(r.data.item); return; }
+    if (st === 409) { toast(data.stale_evidence ? "the evidence for this item changed — reloaded, please re-check" : "this item changed elsewhere — reloaded", 3500); const r = await api("GET", `/api/items/${encodeURIComponent(item.item_id)}`); if (r.data.item) render(r.data.item); return; }
     if (st === 401) { showName(); return; }
     if (st !== 200) { toast(data.error || "could not save"); return; }
     toast(status === "saved" ? "saved ✓" : (status === "skipped" ? "skipped" : "flagged for review"));

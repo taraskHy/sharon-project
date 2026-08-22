@@ -13,6 +13,12 @@ see tests/test_labeling_app.py).
 
 Modules: db (SQLite schema + optimistic concurrency), bundle (anonymized
 item bundle), app (Starlette ASGI app + pages), export, backup, cli.
+
+Schema 2 (2026-08-22): evidence fingerprints — every bundle item carries
+``evidence_sha256`` (exactly the crops shown, in order); every label/FINAL
+stores the fingerprint it was made against; a rebuilt bundle that changes an
+item's evidence makes those labels visibly STALE (re-review required) instead
+of silently reusing them. Labels on unchanged items are untouched.
 """
-SCHEMA_VERSION = 1
+SCHEMA_VERSION = 2
 __all__ = ["SCHEMA_VERSION"]

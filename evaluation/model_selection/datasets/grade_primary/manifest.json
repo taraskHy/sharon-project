@@ -4,7 +4,7 @@
  "frozen_at": "2026-08-22 05:28:41",
  "cases": 67,
  "inputs_sha256": "7b6e0f1cde043590cf8b20f9f8aff1baad730126a43aac454fe2a64c8d7bb114",
- "labels_sha256": "b49fc862b13362e945822a2569fa746a0cf263174c3d0c5051b96552ba6fd4af",
+ "labels_sha256": "567bfe7579d356647fde5439e935b74b321fa639012b28d54cd98e31304bb1d5",
  "split_assignment": {
   "DEV": [
    "e002",
@@ -86,6 +86,51 @@
    }
   ],
   "cells_total": 80,
-  "cases": 67
- }
+  "cases": 67,
+  "evidence_inventory": {
+   "source": "evaluation/htr_pilot/splits/*.json (line cells: one image per recorded line, in line order); evaluation/hebrew_bench/crops_manifest.json (exam-002 whole-cell crops)",
+   "cases": 67,
+   "evidence_images": 91,
+   "by_kind": {
+    "cell_crop": 16,
+    "line_crops": 51
+   },
+   "transcription_incomplete_cases": [
+    "e003_q1_r5",
+    "e003_q2_r2",
+    "e003_q2_r3",
+    "e003_q2_r4",
+    "e003_q2_r7",
+    "e004_q2_r3",
+    "e004_q2_r5",
+    "e006_q2_r6",
+    "e007_q1_r1"
+   ],
+   "policy": "every recorded line is evidence for the HUMAN label; a case whose model-visible transcription does not cover every recorded line is transcription_complete=false and is excluded from model ACCURACY metrics (decision metrics still apply)"
+  }
+ },
+ "revisions": [
+  {
+   "at": "2026-08-22 20:15:00",
+   "kind": "evidence_inventory_repair",
+   "why": "evidence images are taken from the authoritative upstream line inventory (one image per recorded line, in line order); the original build took them from the OCR-benchmark subset, which silently dropped lines without an audited transcription",
+   "inputs_sha256": "7b6e0f1cde043590cf8b20f9f8aff1baad730126a43aac454fe2a64c8d7bb114",
+   "inputs_changed": false,
+   "previous_labels_sha256": "b49fc862b13362e945822a2569fa746a0cf263174c3d0c5051b96552ba6fd4af",
+   "labels_sha256": "567bfe7579d356647fde5439e935b74b321fa639012b28d54cd98e31304bb1d5",
+   "rows_updated": 67,
+   "cases_evidence_changed": [
+    "e003_q1_r5",
+    "e003_q2_r2",
+    "e003_q2_r3",
+    "e003_q2_r4",
+    "e003_q2_r7",
+    "e004_q2_r3",
+    "e004_q2_r5",
+    "e006_q2_r6",
+    "e007_q1_r1"
+   ],
+   "line_inventory_source": "evaluation/htr_pilot/splits/*.json"
+  }
+ ]
 }
