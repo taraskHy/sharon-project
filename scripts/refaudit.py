@@ -4,6 +4,12 @@ Benchmark/developer tooling — NOT production grading, and NOT a model tool:
 nothing in this module (or the UI on top of it) ever invokes a model,
 backend, or network. The human auditor is the only source of judgments.
 
+Scope: only items whose ground truth was MANUALLY transcribed by a human
+(benchmark tier "owner") are auditable -- 102 of the 129 items. The 27
+born-digital text-layer items (printed RTL, printed mixed/formula blocks,
+option rows) keep their original references and are never shown for
+audit. See ``is_manual_reference``.
+
 Guarantees:
 
 - ``references.json`` / ``items.json`` / ``outputs/`` are READ-ONLY here.
@@ -117,6 +123,42 @@ def _sha256_json(obj) -> str:
                                     separators=(",", ":")).encode("utf-8"))
 
 
+# ------------------------------------------------------------ eligibility ----
+# The benchmark builder (scripts/m2_bench_build.py) assigns every reference
+# to exactly one PROVENANCE tier: "owner" = a human transcription (HTR-pilot
+# owner annotations of handwritten lines; the owner-verified exam-002 cells)
+# or "text-layer" = the born-digital PDF's embedded text (printed RTL, mixed
+# He/En, printed formulas, option rows whose pairs come from word geometry).
+# Manual auditing only makes sense for the former. The rule is provenance,
+# never category: a handwritten owner-transcribed mixed/formula line is in
+# scope; a printed text-layer line of any category is not.
+MANUAL_REFERENCE_TIERS = ("owner",)
+_MECHANICAL_PROVENANCE = re.compile(
+    r"text layer|born-digital|embedded|word geometry|pairs from", re.I)
+ELIGIBILITY_RULE = (
+    "eligible iff item.tier is a human-transcription tier "
+    f"{MANUAL_REFERENCE_TIERS} AND the reference provenance is not a "
+    "mechanical/text-layer derivation; category is never the criterion")
+
+
+def is_manual_reference(item: dict, reference: dict | None) -> bool:
+    """True when the item's ground truth was MANUALLY transcribed by a human
+    (and therefore can be wrong in ways only a human can audit)."""
+    if item.get("tier") not in MANUAL_REFERENCE_TIERS:
+        return False
+    provenance = (reference or {}).get("provenance", "") or ""
+    return not _MECHANICAL_PROVENANCE.search(provenance)
+
+
+def eligibility_reason(item: dict, reference: dict | None) -> str:
+    if is_manual_reference(item, reference):
+        return f"eligible: human-transcribed reference (tier={item.get('tier')!r})"
+    if item.get("tier") not in MANUAL_REFERENCE_TIERS:
+        return (f"excluded: reference tier {item.get('tier')!r} is not a manual "
+                "transcription (born-digital/text-layer ground truth)")
+    return "excluded: mechanically derived reference provenance"
+
+
 # ---------------------------------------------------------------- metrics ----
 
 def _load_metric_fns():
@@ -141,6 +183,14 @@ class AuditStore:
         self.items: list[dict] = list(items_doc["items"])
         self.references: dict[str, dict] = {
             k: v for k, v in refs_doc.items() if not k.startswith("_")}
+        # Audit SCOPE: only human-transcribed references are auditable. The
+        # benchmark itself (all items, all categories) is never changed.
+        self.eligible_ids: list[str] = [
+            it["id"] for it in self.items
+            if is_manual_reference(it, self.references.get(it["id"]))]
+        eligible = set(self.eligible_ids)
+        self.excluded_ids: list[str] = [
+            it["id"] for it in self.items if it["id"] not in eligible]
         self.audit_path = self.bench_dir / AUDIT_FILENAME
         self.manifest_path = self.bench_dir / MANIFEST_FILENAME
         self._lock = threading.Lock()
@@ -157,7 +207,14 @@ class AuditStore:
     # -- reads --------------------------------------------------------------
     @property
     def item_ids(self) -> list[str]:
+        """ALL benchmark item ids (the frozen 129), in benchmark order."""
         return [it["id"] for it in self.items]
+
+    def is_eligible(self, item_id: str) -> bool:
+        return item_id in set(self.eligible_ids)
+
+    def eligibility(self, item_id: str) -> str:
+        return eligibility_reason(self.item(item_id), self.references.get(item_id))
 
     def item(self, item_id: str) -> dict:
         for it in self.items:
@@ -189,6 +246,11 @@ class AuditStore:
                note: str = "") -> dict:
         if status not in ("confirmed", "corrected", "ambiguous"):
             raise RefAuditError(f"record() takes confirmed|corrected|ambiguous, got {status!r}")
+        if not self.is_eligible(item_id):
+            raise RefAuditError(
+                f"item {item_id!r} is not in the manual audit scope "
+                f"({self.eligibility(item_id)}); its original benchmark "
+                "reference stays authoritative")
         original = self.original_reference(item_id)
         if status == "confirmed":
             audited = original                    # by contract, always the original
@@ -239,19 +301,28 @@ class AuditStore:
 
     # -- aggregates ----------------------------------------------------------
     def summary(self) -> dict:
+        """Progress over the ELIGIBLE manual-reference items only. The
+        benchmark total and the out-of-scope count are reported alongside so
+        the denominator is never mistaken for the 129-item benchmark."""
         counts = {"confirmed": 0, "corrected": 0, "ambiguous": 0}
-        for item_id in self.item_ids:
+        for item_id in self.eligible_ids:
             status = self.status(item_id)
             if status in counts:
                 counts[status] += 1
-        total = len(self.item_ids)
+        total = len(self.eligible_ids)
         checked = sum(counts.values())
+        eligible = set(self.eligible_ids)
+        stray = sum(1 for k in self._doc.get("entries", {}) if k not in eligible)
         return {"total": total, "checked": checked, **counts,
-                "unchecked": total - checked, "remaining": total - checked}
+                "unchecked": total - checked, "remaining": total - checked,
+                "benchmark_total": len(self.item_ids),
+                "excluded_not_in_scope": len(self.excluded_ids),
+                "out_of_scope_entries_ignored": stray}
 
     def entries_canonical(self) -> dict:
-        """All 129 entries (defaults included) keyed by id — the hash basis."""
-        return {item_id: self.entry(item_id) for item_id in self.item_ids}
+        """Every ELIGIBLE entry (defaults included) keyed by id — the hash
+        basis for the frozen manifest. Out-of-scope items never enter it."""
+        return {item_id: self.entry(item_id) for item_id in self.eligible_ids}
 
 
 # ---------------------------------------------------- scoring resolution ----
@@ -275,6 +346,14 @@ def reference_for_scoring(store: AuditStore, item_id: str,
     """
     if mode not in ("final", "preview"):
         raise RefAuditError(f"unknown mode {mode!r}")
+    if not store.is_eligible(item_id):
+        # Never meant to be manually audited (born-digital / text-layer
+        # ground truth): the original benchmark reference is authoritative
+        # in BOTH modes; final mode must not refuse it.
+        return ScoringReference(item_id, "not_in_audit_scope",
+                                store.original_reference(item_id),
+                                use_for_strict_cer=True,
+                                source="original_benchmark_reference")
     entry = store.entry(item_id)
     status = entry["status"]
     if status in ("confirmed", "corrected"):
@@ -301,14 +380,21 @@ def freeze_manifest(store: AuditStore) -> dict:
     summary = store.summary()
     if summary["unchecked"] > 0:
         raise FreezeError(
-            f"cannot freeze: {summary['unchecked']} of {summary['total']} items "
-            "are still unchecked")
+            f"cannot freeze: {summary['unchecked']} of {summary['total']} "
+            "eligible manual-reference items are still unchecked")
     entries = store.entries_canonical()
     manifest = {
-        "_policy": ("Frozen manifest of the human reference audit. The hash "
-                    "binds the audit content; original references remain in "
-                    "references.json untouched."),
+        "_policy": ("Frozen manifest of the human reference audit over the "
+                    "ELIGIBLE manual-reference items. The hash binds the audit "
+                    "content; original references remain in references.json "
+                    "untouched; out-of-scope (text-layer) items keep their "
+                    "original references."),
         "frozen_at": _now(),
+        "eligibility_rule": ELIGIBILITY_RULE,
+        "eligible_items": len(store.eligible_ids),
+        "excluded_items": len(store.excluded_ids),
+        "excluded_item_ids": list(store.excluded_ids),
+        "benchmark_total": len(store.item_ids),
         "summary": summary,
         "audit_sha256": _sha256_json(entries),
         "items_sha256": _sha256_bytes((store.bench_dir / "items.json").read_bytes()),
@@ -373,10 +459,15 @@ def preview_metrics(store: AuditStore, configs: list[str] | None = None) -> dict
     per_config = []
     for config in (configs or _iter_output_configs(store)):
         compared, ambiguous_ids, unchecked_with_output = [], [], 0
-        association_excluded = hard_excluded = 0
+        association_excluded = hard_excluded = out_of_scope = 0
         for item_id in store.item_ids:
             output = _load_output(store, config, item_id)
             if output is None or not isinstance(output.get("transcription"), str):
+                continue
+            if not store.is_eligible(item_id):
+                # text-layer / mechanical reference: never audited, its
+                # original reference stays in force -> nothing can change.
+                out_of_scope += 1
                 continue
             item = store.item(item_id)
             # Mirror the canonical evaluator (scripts/m2_bench_eval.py):
@@ -418,6 +509,7 @@ def preview_metrics(store: AuditStore, configs: list[str] | None = None) -> dict
             "unchecked_not_compared": unchecked_with_output,
             "association_excluded_from_cer": association_excluded,
             "hard_excluded_from_cer": hard_excluded,
+            "out_of_scope_unchanged": out_of_scope,
             "items": compared,
         })
     return {
@@ -428,6 +520,9 @@ def preview_metrics(store: AuditStore, configs: list[str] | None = None) -> dict
         "audit_summary": store.summary(),
         "reference_corrections_total": len(corrected_ids),
         "corrected_item_ids": corrected_ids,
+        "eligibility_rule": ELIGIBILITY_RULE,
+        "eligible_items": len(store.eligible_ids),
+        "out_of_scope_items": len(store.excluded_ids),
         "historical_results_untouched": True,
         "configs": per_config,
     }
@@ -474,7 +569,7 @@ def verifier_prep(store: AuditStore, emit: bool = False) -> dict:
     kind_counts: dict[str, int] = {}
     association_excluded = 0
     for config in _iter_output_configs(store):
-        for item_id in store.item_ids:
+        for item_id in store.eligible_ids:   # handwriting subset ONLY
             if store.status(item_id) not in ("confirmed", "corrected"):
                 continue
             output = _load_output(store, config, item_id)
@@ -515,6 +610,8 @@ def verifier_prep(store: AuditStore, emit: bool = False) -> dict:
                 kind_counts[kind] = kind_counts.get(kind, 0) + 1
     report = {"cases": len(inputs), **counts, "error_kind_counts": kind_counts,
               "association_excluded": association_excluded,
+              "out_of_scope_items_excluded": len(store.excluded_ids),
+              "eligibility_rule": ELIGIBILITY_RULE,
               "note_hard_items": ("hard items are kept: after the human audit "
                                   "their references are verified ground truth"),
               "audit_summary": store.summary(), "emitted": False}

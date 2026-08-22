@@ -1,8 +1,31 @@
 # Manual reference audit — hebrew_bench_v2 (2026-08-21)
 
-Before any model benchmark or API-key installation, the 129 frozen
-handwriting references are validated by the **human auditor** (the owner).
-This page documents the tooling; it makes zero model calls by construction.
+Before any model benchmark or API-key installation, the manually
+transcribed handwriting references of the frozen benchmark are validated
+by the **human auditor** (the owner). This page documents the tooling; it
+makes zero model calls by construction.
+
+## Scope — which references are audited
+
+The benchmark builder (`scripts/m2_bench_build.py`) assigns every reference
+a **provenance tier**: `owner` = a human transcription (HTR-pilot owner
+annotations of handwritten lines; the owner-verified exam-002 cells) or
+`text-layer` = the born-digital PDF's embedded text (printed RTL blocks,
+printed mixed He/En, printed formulas, option rows paired from word
+geometry). Only the former can be wrong in ways a human audit can fix.
+
+**Rule** (`refaudit.is_manual_reference`): eligible iff the item's tier is a
+human-transcription tier AND its reference provenance is not a
+mechanical/text-layer derivation. Category is never the criterion — a
+handwritten owner-transcribed mixed/formula line would be in scope; a
+printed text-layer item of any category is not.
+
+Result on the frozen benchmark: **102 eligible manual-reference items**
+(86 `handwritten_line` + 16 `handwritten_cell`, writers e002–e007) and 27
+out-of-scope text-layer items that keep their original references
+unchanged. All denominators (progress, navigation, freeze, manifest,
+preview, verifier prep) use the 102; the 129-item benchmark itself is
+never altered.
 
 ## Launch
 

@@ -225,9 +225,12 @@ def test_summary_counts(bench):
     store = _store(bench)
     store.record("it1", "confirmed")
     store.record("it2", "ambiguous")
-    assert store.summary() == {"total": 3, "checked": 2, "confirmed": 1,
-                               "corrected": 0, "ambiguous": 1,
-                               "unchecked": 1, "remaining": 1}
+    s = store.summary()
+    assert {k: s[k] for k in ("total", "checked", "confirmed", "corrected",
+                               "ambiguous", "unchecked", "remaining")} == {
+        "total": 3, "checked": 2, "confirmed": 1, "corrected": 0,
+        "ambiguous": 1, "unchecked": 1, "remaining": 1}
+    assert s["benchmark_total"] == 3 and s["excluded_not_in_scope"] == 0
 
 
 def test_freeze_refused_with_unchecked_items(bench):

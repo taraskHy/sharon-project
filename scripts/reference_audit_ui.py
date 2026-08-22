@@ -49,7 +49,10 @@ textarea { direction: rtl !important; text-align: right !important;
 # edits, restarts, and multiple sessions all see current state. record()
 # additionally merges into the latest on-disk state under a lock.
 store = refaudit.AuditStore(refaudit.bench_dir_from_env())
-ids = store.item_ids
+# Audit SCOPE: only the human-transcribed (tier "owner") references are shown.
+# Printed/text-layer benchmark items keep their original references and are
+# never part of this denominator.
+ids = store.eligible_ids
 STATUS_ICON = {"unchecked": "⬜", "confirmed": "✅", "corrected": "✏️",
                "ambiguous": "❓"}
 
@@ -69,7 +72,12 @@ with st.sidebar:
     st.title("Reference audit")
     summary = store.summary()
     st.progress(summary["checked"] / summary["total"] if summary["total"] else 0.0,
-                text=f"{summary['checked']} / {summary['total']} checked")
+                text=f"{summary['checked']} / {summary['total']} eligible references checked")
+    st.caption(
+        f"Scope: {summary['total']} eligible manual-reference items "
+        f"(human-transcribed handwriting). {summary['excluded_not_in_scope']} of the "
+        f"{summary['benchmark_total']} benchmark items are printed/text-layer and "
+        "out of scope — they keep their original references.")
     c1, c2 = st.columns(2)
     c1.metric("Confirmed", summary["confirmed"])
     c2.metric("Corrected", summary["corrected"])
@@ -137,8 +145,9 @@ if nav_next.button("Next →", key="next", disabled=pos == len(ids) - 1,
     st.rerun()
 head.subheader(f"{STATUS_ICON[entry['status']]} {item_id}")
 head.caption(
-    f"item {pos + 1} of {len(ids)}  ·  category **{item['category']}**  ·  "
-    f"tier {item.get('tier', '?')}  ·  writer {item.get('writer', '?')}"
+    f"item {pos + 1} of {len(ids)} eligible handwriting references  ·  "
+    f"category **{item['category']}**  ·  tier {item.get('tier', '?')}  ·  "
+    f"writer {item.get('writer', '?')}"
     + ("  ·  **hard**" if item.get("hard") else ""))
 
 img_col, txt_col = st.columns([1, 1], gap="large")
