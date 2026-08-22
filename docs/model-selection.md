@@ -111,9 +111,13 @@ other numbers.
   generic OCR-fidelity corruptions of the frozen audited references (digit
   substitution, operator substitution/removal, decimal-point corruption,
   super/subscript loss, one-character deletion, short-token omission, short
-  token duplication), ≤2 per image, rules fixed before any model output
-  (`RULES_VERSION`), each case inheriting its image's split from the frozen
-  REAL manifest. Never "corrected answers". Reported SEPARATELY from REAL:
+  token duplication), rules fixed before any model output
+  (`RULES_VERSION`); selection policy v2: exactly one TEXT case per image
+  chosen by a deterministic hash rotation over the three text rules (so
+  universally-applicable char deletion cannot dominate) plus at most one
+  NUMERIC case where the reference contains numeric/math material — max 2
+  per image; each case inherits its image's split from the frozen REAL
+  manifest. Never "corrected answers". Reported SEPARATELY from REAL:
   REAL → FAR, FRR, SUPPORTED precision, REVIEW rate; SYNTHETIC → FAR
   overall, FAR by corruption type, FAR on the numeric group; COMBINED only
   secondarily, never hiding either source.

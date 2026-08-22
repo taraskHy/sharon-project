@@ -85,6 +85,48 @@ def test_build_respects_split_inheritance_and_per_image_cap(frozen):
         assert "synthetic" not in raw and "reference" not in raw
 
 
+def test_selection_policy_v2_one_rotated_text_slot_plus_optional_numeric(frozen):
+    """Policy v2: exactly one hash-rotated TEXT case per image (falling
+    through to the next applicable text rule), at most one NUMERIC case only
+    where numeric material exists, never more than 2 per image."""
+    store = refaudit.AuditStore(frozen)
+    synth = vsyn.build_synthetic(store, vsyn.load_selected_with_candidates(store))
+    r = synth["report"]
+    assert r["selection_policy_version"].startswith("selection-policy-v2")
+    per_item = {}
+    for l in synth["labels"]:
+        per_item.setdefault(l["item_id"], []).append(l)
+    for item_id, rows in per_item.items():
+        groups = [l["corruption_group"] for l in rows]
+        assert groups.count("text") == 1, (item_id, groups)      # exactly one text
+        assert groups.count("numeric") <= 1, (item_id, groups)   # at most one numeric
+        assert len(rows) <= vsyn.MAX_PER_IMAGE
+    # rotation is deterministic and follows the documented hash order
+    for item_id, rows in per_item.items():
+        text_rule = next(l["corruption_type"] for l in rows if l["corruption_group"] == "text")
+        order = vsyn.rotated_rules(vsyn.TEXT_RULES, item_id, "text")
+        ref = store.entry(item_id)["audited_reference"]
+        applicable = [ru for ru in order if vsyn.apply_rule(ru, ref, item_id) is not None]
+        assert text_rule == applicable[0], (item_id, order, text_rule)
+    # numeric material without a case is impossible here (no dedup collisions)
+    assert r["images_with_numeric_material_but_no_numeric_case"] == []
+    assert r["images_with_no_text_corruption"] == []
+    assert r["text_cases"] + r["numeric_cases"] == r["synthetic_cases_total"]
+    # diversity across images: the text slot is not all char_deletion
+    text_types = {l["corruption_type"] for l in synth["labels"] if l["corruption_group"] == "text"}
+    assert len(text_types) >= 2, text_types
+
+
+def test_proposal_records_what_it_supersedes(frozen):
+    store = refaudit.AuditStore(frozen)
+    synth = vsyn.build_synthetic(store, vsyn.load_selected_with_candidates(store))
+    vsyn.write_proposal(store, synth)                 # first proposal
+    out = vsyn.write_proposal(store, synth)           # second: supersedes the first
+    doc = json.loads(out.read_text(encoding="utf-8"))
+    assert doc["supersedes"]["synthetic_cases_total"] == synth["report"]["synthetic_cases_total"]
+    assert doc["supersedes"]["selection_policy_version"].startswith("selection-policy-v2")
+
+
 def test_dedup_against_real_negatives_and_no_effect_removal(frozen):
     store = refaudit.AuditStore(frozen)
     selected = vsyn.load_selected_with_candidates(store)

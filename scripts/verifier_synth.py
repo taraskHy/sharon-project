@@ -61,6 +61,15 @@ refaudit = _load("refaudit")
 vsel = _load("verifier_select")
 
 RULES_VERSION = "synthetic-near-miss-rules-v1 (2026-08-22, fixed before any model output)"
+# Selection policy (how many / which of the applicable corruptions per image)
+# is versioned separately from the corruption RULES, which are unchanged:
+#   v2 — TEXT slot: exactly one text rule, chosen by a deterministic hash
+#        rotation over TEXT_RULES (start = sha256(item_id + RULES_VERSION +
+#        "text") mod 3), falling through to the next applicable rule so
+#        universally-applicable char_deletion cannot dominate;
+#        NUMERIC slot: at most one numeric/math rule, same rotation, only
+#        where the reference actually contains such material; max 2/image.
+SELECTION_POLICY_VERSION = "selection-policy-v2 (hash-rotated text slot + optional numeric slot)"
 SYNTH_DIRNAME = "synthetic"
 PROPOSAL_FILENAME = "synthetic_near_miss_proposal.json"
 MAX_PER_IMAGE = 2
@@ -94,6 +103,14 @@ def _pick(item_id: str, rule: str, n: int) -> int:
 
 def _squeeze(s: str) -> str:
     return re.sub(r"[ \t]{2,}", " ", s).strip()
+
+
+def rotated_rules(rules: tuple, item_id: str, slot: str) -> tuple:
+    """Deterministic per-image preference order: the hash of
+    (item_id, RULES_VERSION, slot) picks the starting rule; the rest follow
+    in fixed order so a non-applicable preferred rule falls through."""
+    start = int(_sha(f"{item_id}::{RULES_VERSION}::{slot}".encode()), 16) % len(rules)
+    return rules[start:] + rules[:start]
 
 
 # ------------------------------------------------------------------ rules ----
@@ -196,6 +213,8 @@ def build_synthetic(store, selected: dict | None = None) -> dict:
     inputs, labels = [], []
     removals = collections.Counter()
     no_safe: list[dict] = []
+    no_text: list[str] = []
+    numeric_missing: list[str] = []
     per_rule_applicable = collections.Counter()
     for item_id in store.eligible_ids:
         entry = store.entry(item_id)
@@ -207,13 +226,17 @@ def build_synthetic(store, selected: dict | None = None) -> dict:
             raise SynthError(f"{item_id} has no split in the frozen selected manifest")
         reference = entry["audited_reference"]
         ref_key = key(reference)
-        generated: list[tuple[str, str]] = []       # (rule, candidate)
-        seen_keys = set()
+        # 1. generate every applicable corruption; keep only candidates that
+        #    truly diverge from the reference and from the real negatives
+        valid: dict[str, str] = {}                  # rule -> candidate
+        numeric_material = False
         for rule in ALL_RULES:
             cand = apply_rule(rule, reference, item_id)
             if cand is None or not cand.strip():
                 continue
             per_rule_applicable[rule] += 1
+            if rule in NUMERIC_RULES:
+                numeric_material = True
             k = key(cand)
             if k == ref_key:
                 removals["no_effect_after_normalization"] += 1
@@ -221,15 +244,29 @@ def build_synthetic(store, selected: dict | None = None) -> dict:
             if k in real_neg_keys.get(item_id, set()):
                 removals["duplicate_of_real_negative"] += 1
                 continue
-            if k in seen_keys:
-                removals["duplicate_synthetic_same_image"] += 1
-                continue
-            seen_keys.add(k)
-            generated.append((rule, cand))
-        # selection: first numeric rule, then first text rule; else two text rules
-        numeric = [g for g in generated if g[0] in NUMERIC_RULES]
-        textual = [g for g in generated if g[0] in TEXT_RULES]
-        picks = (numeric[:1] + textual[:1]) if numeric else textual[:2]
+            valid[rule] = cand
+        # 2. selection policy v2: one hash-rotated TEXT slot (+ one optional
+        #    hash-rotated NUMERIC slot); a pick never duplicates another pick
+        picks: list[tuple[str, str]] = []
+        picked_keys: set = set()
+
+        def _fill(slot_rules: tuple, slot: str) -> bool:
+            for rule in rotated_rules(slot_rules, item_id, slot):
+                cand = valid.get(rule)
+                if cand is None:
+                    continue
+                if key(cand) in picked_keys:
+                    removals["duplicate_synthetic_same_image"] += 1
+                    continue
+                picks.append((rule, cand))
+                picked_keys.add(key(cand))
+                return True
+            return False
+
+        if not _fill(TEXT_RULES, "text"):
+            no_text.append(item_id)
+        if not _fill(NUMERIC_RULES, "numeric") and numeric_material:
+            numeric_missing.append(item_id)
         picks = picks[:MAX_PER_IMAGE]
         if not picks:
             no_safe.append({"item_id": item_id, "reference_tokens": len(reference.split()),
@@ -251,7 +288,8 @@ def build_synthetic(store, selected: dict | None = None) -> dict:
     inputs.sort(key=lambda r: r["case_id"])
     by_id = {l["case_id"]: l for l in labels}
     labels = [by_id[r["case_id"]] for r in inputs]
-    report = _report(store, labels, removals, no_safe, per_rule_applicable, selected)
+    report = _report(store, labels, removals, no_safe, per_rule_applicable, selected,
+                     no_text=no_text, numeric_missing=numeric_missing)
     return {"inputs": inputs, "labels": labels, "report": report}
 
 
@@ -262,7 +300,8 @@ def _candidate_of(label: dict) -> str:
     return label.get("_candidate", "")
 
 
-def _report(store, labels, removals, no_safe, applicable, selected) -> dict:
+def _report(store, labels, removals, no_safe, applicable, selected,
+            no_text=None, numeric_missing=None) -> dict:
     by_split = {}
     for s in ("DEV", "CALIBRATION", "HELD_OUT"):
         rows = [l for l in labels if l["split"] == s]
@@ -276,10 +315,15 @@ def _report(store, labels, removals, no_safe, applicable, selected) -> dict:
     per_image = collections.Counter(collections.Counter(l["item_id"] for l in labels).values())
     return {
         "rules_version": RULES_VERSION,
+        "selection_policy_version": SELECTION_POLICY_VERSION,
         "rules": list(ALL_RULES),
         "synthetic_cases_total": len(labels),
+        "text_cases": sum(1 for l in labels if l["corruption_group"] == "text"),
+        "numeric_cases": sum(1 for l in labels if l["corruption_group"] == "numeric"),
         "cases_by_corruption_type": dict(collections.Counter(l["corruption_type"] for l in labels)),
         "cases_by_group": dict(collections.Counter(l["corruption_group"] for l in labels)),
+        "images_with_no_text_corruption": list(no_text or []),
+        "images_with_numeric_material_but_no_numeric_case": list(numeric_missing or []),
         "rule_applicability_counts": dict(applicable),
         "images_covered": len({l["item_id"] for l in labels}),
         "eligible_images": len(store.eligible_ids),
@@ -302,9 +346,21 @@ def _report(store, labels, removals, no_safe, applicable, selected) -> dict:
 
 def write_proposal(store, synth: dict) -> Path:
     out = store.bench_dir / vsel.RAW_DIRNAME / PROPOSAL_FILENAME
+    supersedes = None
+    if out.exists():                      # keep the audit trail of what this replaces
+        try:
+            prev = json.loads(out.read_text(encoding="utf-8"))
+            supersedes = {"generated_at": prev.get("generated_at"),
+                          "selection_policy_version": prev.get("selection_policy_version",
+                                                               "selection-policy-v1"),
+                          "synthetic_cases_total": prev.get("synthetic_cases_total"),
+                          "cases_by_corruption_type": prev.get("cases_by_corruption_type")}
+        except (OSError, ValueError):
+            supersedes = None
     refaudit._atomic_write_json(out, {
         "_policy": "PROPOSAL ONLY — synthetic near-miss layer is NOT frozen.",
-        "generated_at": refaudit._now(), **synth["report"]})
+        "generated_at": refaudit._now(), **synth["report"],
+        "supersedes": supersedes})
     return out
 
 
@@ -350,7 +406,12 @@ def freeze_synthetic(store, synth: dict) -> dict:
 
 def _print(r: dict) -> None:
     print(f"rules: {r['rules_version']}")
-    print(f"synthetic cases: {r['synthetic_cases_total']}  by type: {r['cases_by_corruption_type']}")
+    print(f"selection policy: {r['selection_policy_version']}")
+    print(f"synthetic cases: {r['synthetic_cases_total']}  (text {r['text_cases']}, "
+          f"numeric {r['numeric_cases']})  by type: {r['cases_by_corruption_type']}")
+    print(f"images with no text corruption: {r['images_with_no_text_corruption']}")
+    print(f"images with numeric material but no numeric case: "
+          f"{r['images_with_numeric_material_but_no_numeric_case']}")
     print(f"by group: {r['cases_by_group']}   applicable counts: {r['rule_applicability_counts']}")
     print(f"images covered: {r['images_covered']}/{r['eligible_images']}   writers: {r['writers_covered']}")
     print(f"cases per image: {r['cases_per_image_distribution']}")
