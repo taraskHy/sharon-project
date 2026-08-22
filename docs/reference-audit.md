@@ -108,8 +108,16 @@ reviewed design.
 
 ## After the audit completes
 
-1. `refaudit.py freeze` → manifest with content hash.
-2. `refaudit.py preview` → attach to the audit record.
-3. `refaudit.py verifier-prep --emit` → B2 case set (then, separately,
-   design synthetic corruptions against the frozen references).
-4. Only then: model benchmarking per docs/model-selection.md.
+1. `refaudit.py freeze` → manifest with content hash. *(done 2026-08-22)*
+2. `refaudit.py preview` → attach to the audit record. *(done)*
+3. `refaudit.py verifier-prep --emit` → the RAW B2 pool
+   (`verifier_bench/`, 690 cases, kept byte-identical). *(done)*
+4. `scripts/verifier_select.py propose` → composition report +
+   `verifier_bench/selection_proposal.json` (positives + deduplicated,
+   coverage-selected negatives, writer-level split proposals A/B); owner
+   reviews the split; then `verifier_select.py --split <A|B> freeze` →
+   `verifier_bench/selected/`. Then, separately, design synthetic
+   near-miss corruptions against the frozen references (the real error
+   pool is mostly severe; subtle errors are scarce).
+5. Only then: model benchmarking per docs/model-selection.md (primary
+   metric for OCR_VERIFY: false accept rate).

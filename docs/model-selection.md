@@ -80,6 +80,35 @@ false-reject rate, schema failures, latency, cost. A model that
 false-accepts corrupted transcriptions is disqualified regardless of its
 other numbers.
 
+**Dataset layers (after the manual audit froze, 2026-08-22):**
+
+- *Raw pool* — `verifier_bench/` flat emission (690 cases = every
+  persisted historical OCR output for the 102 audited items; 9
+  supported / 681 review). Kept byte-identical; NOT a selection benchmark
+  (98.7% negative, heavily correlated outputs per image).
+- *Selected benchmark* — built by `scripts/verifier_select.py propose`
+  and, after owner approval of the split, `freeze` →
+  `verifier_bench/selected/`. Composition: exactly one POSITIVE per
+  audited item (crop + audited reference as the candidate, expected
+  SUPPORTED; model-visible row indistinguishable from a negative) and real
+  historical error NEGATIVES deduplicated per image (canonical-normalized
+  text + digit/sign signature), at most 2 per image chosen for coverage
+  (subtle low-distance error first — the dangerous false-accept class —
+  then the candidate adding the most new error kinds; documented
+  exception: a 3rd when it is the image's only number/sign error).
+  Multi-label error kinds preserved. Writer-level DEV / CALIBRATION /
+  HELD_OUT split; every case of one image lives in one split (zero image
+  overlap by construction).
+
+**Model-selection objective for OCR_VERIFY — safety first.** Primary
+metric: **FALSE ACCEPT RATE** = incorrect transcription classified
+SUPPORTED (on negatives). Also reported: false reject rate (correct
+transcription sent to REVIEW), SUPPORTED precision, REVIEW rate, schema
+failure rate, cost, latency. Models are NOT chosen on overall accuracy:
+with a balanced set a high accuracy can hide a fatal false-accept rate on
+subtle number/sign errors. Selection order: lowest FAR within budget, then
+REVIEW rate (review cost), then schema failures/latency/cost.
+
 ## B3 — grade-primary benchmark
 
 Frozen OCR transcriptions only — **zero OCR calls**. Constant across
