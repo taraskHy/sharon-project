@@ -145,7 +145,15 @@ def escalate_ocr(*, transcription: str, crop_png_b64: str | None, gateway=None,
     if not susp.suspicious:
         return OCRDecision("auto", transcription, susp, reason="no suspicion signal",
                            status="OCR_OK", signals=_ocr_signals(transcription, susp, None, quality_status))
-    if gateway is None or crop_png_b64 is None:
+    if crop_png_b64 is None:
+        # Fail-closed: without an evidence crop the verifier must NOT be
+        # called over an arbitrary region (evidencecrops.py). The reading
+        # stays unverified -> REVIEW, never AUTO.
+        return OCRDecision("review", transcription, susp,
+                           reason="suspicious; no evidence crop available (crop producer unavailable)",
+                           status=OCR_UNRESOLVED_,
+                           signals=_ocr_signals(transcription, susp, None, quality_status))
+    if gateway is None:
         return OCRDecision("review", transcription, susp, reason="suspicious; no verifier available",
                            status=OCR_UNRESOLVED_,
                            signals=_ocr_signals(transcription, susp, None, quality_status))

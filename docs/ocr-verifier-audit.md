@@ -179,3 +179,28 @@ differ are listed with their letter.
 4. **Grade-stage trace metadata:** apply the F7 pattern to grade_primary/grading_rag/
    grade_escalate and replace the hardcoded `cloud=True` on grade-stage traces with
    `is_cloud_route` (`reliability.py:444-452`).
+
+## Production wiring status (2026-08-22, pre-API)
+
+Everything around the missing crop producer is now wired and tested
+(`autograder/evidencecrops.py`, `tests/test_evidence_crops.py`):
+
+- **Explicit interface** `ExplanationCropProvider.crop(question_id,
+  sub_item_id) -> CropResult(status AVAILABLE|UNAVAILABLE, png_b64, reason,
+  source, geometry)`; `collect_crops(provider, key)` feeds
+  `run_reliability_judging(crops=...)` and records an availability report
+  on the run (`ReliabilityRun.evidence_crops`, persisted into
+  `result.backend_info["evidence_crops"]`, logged once per exam).
+- **Production provider = `UnavailableCropProvider`** — deliberately.
+  There is still no calibrated per-question explanation-region geometry
+  (`PageRegion` descriptive only; `tablecrop` covers MC rows). Coordinates
+  are NOT invented and the full page is NEVER sent as "the crop".
+- **Fallback (documented contract):** a suspicious reading with no crop is
+  `REVIEW` with reason "suspicious; no evidence crop available (crop
+  producer unavailable)" — no verifier call, never AUTO; unsuspicious
+  readings proceed to grading unchanged. When a crop IS supplied
+  (`StaticCropProvider`, a future calibrated producer) the existing
+  deterministic triage, gateway routing (cache, budget, ledger, privacy
+  scan), trace stage and typed review reason apply unchanged.
+- GUI: the Review queue shows "no image evidence available for this item"
+  and the batch-level reason; Advanced shows the provider status.

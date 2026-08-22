@@ -1,0 +1,1155 @@
+{
+ "run_id": "dev__all__openai-gpt-5.6-luna__875897028d",
+ "mode": "dry_run",
+ "cases": 143,
+ "skipped_resume": 0,
+ "predicted_cost_total": null,
+ "pricing_table_available": false,
+ "rows": [
+  {
+   "case_id": "00feaf8e02db",
+   "split": "DEV",
+   "component": "REAL",
+   "predicted_cost": 0.0,
+   "text_chars": 697,
+   "images": 1
+  },
+  {
+   "case_id": "0133ab372ac6",
+   "split": "DEV",
+   "component": "REAL",
+   "predicted_cost": 0.0,
+   "text_chars": 1468,
+   "images": 1
+  },
+  {
+   "case_id": "0289fef8d421",
+   "split": "DEV",
+   "component": "REAL",
+   "predicted_cost": 0.0,
+   "text_chars": 645,
+   "images": 1
+  },
+  {
+   "case_id": "04852e3b079c",
+   "split": "DEV",
+   "component": "REAL",
+   "predicted_cost": 0.0,
+   "text_chars": 657,
+   "images": 1
+  },
+  {
+   "case_id": "04b029980631",
+   "split": "DEV",
+   "component": "REAL",
+   "predicted_cost": 0.0,
+   "text_chars": 667,
+   "images": 1
+  },
+  {
+   "case_id": "07cb37b974d9",
+   "split": "DEV",
+   "component": "REAL",
+   "predicted_cost": 0.0,
+   "text_chars": 653,
+   "images": 1
+  },
+  {
+   "case_id": "09dbed54cf80",
+   "split": "DEV",
+   "component": "REAL",
+   "predicted_cost": 0.0,
+   "text_chars": 653,
+   "images": 1
+  },
+  {
+   "case_id": "0c939756878c",
+   "split": "DEV",
+   "component": "REAL",
+   "predicted_cost": 0.0,
+   "text_chars": 663,
+   "images": 1
+  },
+  {
+   "case_id": "0c99d9cc57c5",
+   "split": "DEV",
+   "component": "REAL",
+   "predicted_cost": 0.0,
+   "text_chars": 673,
+   "images": 1
+  },
+  {
+   "case_id": "0ed2d462d4dd",
+   "split": "DEV",
+   "component": "REAL",
+   "predicted_cost": 0.0,
+   "text_chars": 684,
+   "images": 1
+  },
+  {
+   "case_id": "10d63cdb8b52",
+   "split": "DEV",
+   "component": "REAL",
+   "predicted_cost": 0.0,
+   "text_chars": 633,
+   "images": 1
+  },
+  {
+   "case_id": "1252adedcdb7",
+   "split": "DEV",
+   "component": "REAL",
+   "predicted_cost": 0.0,
+   "text_chars": 687,
+   "images": 1
+  },
+  {
+   "case_id": "13f3b2965308",
+   "split": "DEV",
+   "component": "REAL",
+   "predicted_cost": 0.0,
+   "text_chars": 666,
+   "images": 1
+  },
+  {
+   "case_id": "19ed6cda9975",
+   "split": "DEV",
+   "component": "REAL",
+   "predicted_cost": 0.0,
+   "text_chars": 676,
+   "images": 1
+  },
+  {
+   "case_id": "1a73fdf23b0a",
+   "split": "DEV",
+   "component": "REAL",
+   "predicted_cost": 0.0,
+   "text_chars": 668,
+   "images": 1
+  },
+  {
+   "case_id": "1b10f4e4e419",
+   "split": "DEV",
+   "component": "REAL",
+   "predicted_cost": 0.0,
+   "text_chars": 710,
+   "images": 1
+  },
+  {
+   "case_id": "20b4111722ec",
+   "split": "DEV",
+   "component": "REAL",
+   "predicted_cost": 0.0,
+   "text_chars": 661,
+   "images": 1
+  },
+  {
+   "case_id": "22c929892737",
+   "split": "DEV",
+   "component": "REAL",
+   "predicted_cost": 0.0,
+   "text_chars": 650,
+   "images": 1
+  },
+  {
+   "case_id": "25635afe5052",
+   "split": "DEV",
+   "component": "REAL",
+   "predicted_cost": 0.0,
+   "text_chars": 705,
+   "images": 1
+  },
+  {
+   "case_id": "26ba66058bca",
+   "split": "DEV",
+   "component": "REAL",
+   "predicted_cost": 0.0,
+   "text_chars": 693,
+   "images": 1
+  },
+  {
+   "case_id": "289938912c5e",
+   "split": "DEV",
+   "component": "REAL",
+   "predicted_cost": 0.0,
+   "text_chars": 634,
+   "images": 1
+  },
+  {
+   "case_id": "2900bc613a79",
+   "split": "DEV",
+   "component": "REAL",
+   "predicted_cost": 0.0,
+   "text_chars": 687,
+   "images": 1
+  },
+  {
+   "case_id": "2fe3ef31b5b6",
+   "split": "DEV",
+   "component": "REAL",
+   "predicted_cost": 0.0,
+   "text_chars": 665,
+   "images": 1
+  },
+  {
+   "case_id": "352de95902f4",
+   "split": "DEV",
+   "component": "REAL",
+   "predicted_cost": 0.0,
+   "text_chars": 684,
+   "images": 1
+  },
+  {
+   "case_id": "38f94600fa2b",
+   "split": "DEV",
+   "component": "REAL",
+   "predicted_cost": 0.0,
+   "text_chars": 662,
+   "images": 1
+  },
+  {
+   "case_id": "3e5bf3c3d6ba",
+   "split": "DEV",
+   "component": "REAL",
+   "predicted_cost": 0.0,
+   "text_chars": 672,
+   "images": 1
+  },
+  {
+   "case_id": "43cad568001c",
+   "split": "DEV",
+   "component": "REAL",
+   "predicted_cost": 0.0,
+   "text_chars": 711,
+   "images": 1
+  },
+  {
+   "case_id": "43ce3a56c263",
+   "split": "DEV",
+   "component": "REAL",
+   "predicted_cost": 0.0,
+   "text_chars": 686,
+   "images": 1
+  },
+  {
+   "case_id": "47492d20d9a0",
+   "split": "DEV",
+   "component": "REAL",
+   "predicted_cost": 0.0,
+   "text_chars": 657,
+   "images": 1
+  },
+  {
+   "case_id": "4e14452b054b",
+   "split": "DEV",
+   "component": "REAL",
+   "predicted_cost": 0.0,
+   "text_chars": 641,
+   "images": 1
+  },
+  {
+   "case_id": "4ffdaf647034",
+   "split": "DEV",
+   "component": "REAL",
+   "predicted_cost": 0.0,
+   "text_chars": 666,
+   "images": 1
+  },
+  {
+   "case_id": "52c6129f80ce",
+   "split": "DEV",
+   "component": "REAL",
+   "predicted_cost": 0.0,
+   "text_chars": 660,
+   "images": 1
+  },
+  {
+   "case_id": "5e9e44715ae5",
+   "split": "DEV",
+   "component": "REAL",
+   "predicted_cost": 0.0,
+   "text_chars": 676,
+   "images": 1
+  },
+  {
+   "case_id": "5ee91024af5a",
+   "split": "DEV",
+   "component": "REAL",
+   "predicted_cost": 0.0,
+   "text_chars": 667,
+   "images": 1
+  },
+  {
+   "case_id": "615b1185434e",
+   "split": "DEV",
+   "component": "REAL",
+   "predicted_cost": 0.0,
+   "text_chars": 695,
+   "images": 1
+  },
+  {
+   "case_id": "624c056f11ed",
+   "split": "DEV",
+   "component": "REAL",
+   "predicted_cost": 0.0,
+   "text_chars": 675,
+   "images": 1
+  },
+  {
+   "case_id": "62a4171dcad7",
+   "split": "DEV",
+   "component": "REAL",
+   "predicted_cost": 0.0,
+   "text_chars": 646,
+   "images": 1
+  },
+  {
+   "case_id": "63a0c99913d9",
+   "split": "DEV",
+   "component": "REAL",
+   "predicted_cost": 0.0,
+   "text_chars": 683,
+   "images": 1
+  },
+  {
+   "case_id": "64b94fb9cfbe",
+   "split": "DEV",
+   "component": "REAL",
+   "predicted_cost": 0.0,
+   "text_chars": 685,
+   "images": 1
+  },
+  {
+   "case_id": "64e496467215",
+   "split": "DEV",
+   "component": "REAL",
+   "predicted_cost": 0.0,
+   "text_chars": 655,
+   "images": 1
+  },
+  {
+   "case_id": "67d540cf3c6a",
+   "split": "DEV",
+   "component": "REAL",
+   "predicted_cost": 0.0,
+   "text_chars": 644,
+   "images": 1
+  },
+  {
+   "case_id": "68e0e985a6d8",
+   "split": "DEV",
+   "component": "REAL",
+   "predicted_cost": 0.0,
+   "text_chars": 663,
+   "images": 1
+  },
+  {
+   "case_id": "6c991a65bcc9",
+   "split": "DEV",
+   "component": "REAL",
+   "predicted_cost": 0.0,
+   "text_chars": 658,
+   "images": 1
+  },
+  {
+   "case_id": "70ce09278324",
+   "split": "DEV",
+   "component": "REAL",
+   "predicted_cost": 0.0,
+   "text_chars": 654,
+   "images": 1
+  },
+  {
+   "case_id": "7332a6522585",
+   "split": "DEV",
+   "component": "REAL",
+   "predicted_cost": 0.0,
+   "text_chars": 654,
+   "images": 1
+  },
+  {
+   "case_id": "77e4c7b41cc6",
+   "split": "DEV",
+   "component": "REAL",
+   "predicted_cost": 0.0,
+   "text_chars": 666,
+   "images": 1
+  },
+  {
+   "case_id": "78f62a2da322",
+   "split": "DEV",
+   "component": "REAL",
+   "predicted_cost": 0.0,
+   "text_chars": 693,
+   "images": 1
+  },
+  {
+   "case_id": "7951ba923b0a",
+   "split": "DEV",
+   "component": "REAL",
+   "predicted_cost": 0.0,
+   "text_chars": 709,
+   "images": 1
+  },
+  {
+   "case_id": "7ae88f065278",
+   "split": "DEV",
+   "component": "REAL",
+   "predicted_cost": 0.0,
+   "text_chars": 669,
+   "images": 1
+  },
+  {
+   "case_id": "7b141f12e01a",
+   "split": "DEV",
+   "component": "REAL",
+   "predicted_cost": 0.0,
+   "text_chars": 661,
+   "images": 1
+  },
+  {
+   "case_id": "7b7dfcc40562",
+   "split": "DEV",
+   "component": "REAL",
+   "predicted_cost": 0.0,
+   "text_chars": 643,
+   "images": 1
+  },
+  {
+   "case_id": "7c8bae8dccb8",
+   "split": "DEV",
+   "component": "REAL",
+   "predicted_cost": 0.0,
+   "text_chars": 672,
+   "images": 1
+  },
+  {
+   "case_id": "7e609b8afda1",
+   "split": "DEV",
+   "component": "REAL",
+   "predicted_cost": 0.0,
+   "text_chars": 657,
+   "images": 1
+  },
+  {
+   "case_id": "85093427787e",
+   "split": "DEV",
+   "component": "REAL",
+   "predicted_cost": 0.0,
+   "text_chars": 667,
+   "images": 1
+  },
+  {
+   "case_id": "8a7a484bf1ba",
+   "split": "DEV",
+   "component": "REAL",
+   "predicted_cost": 0.0,
+   "text_chars": 688,
+   "images": 1
+  },
+  {
+   "case_id": "900ce8b7daa0",
+   "split": "DEV",
+   "component": "REAL",
+   "predicted_cost": 0.0,
+   "text_chars": 731,
+   "images": 1
+  },
+  {
+   "case_id": "93c417ad0715",
+   "split": "DEV",
+   "component": "REAL",
+   "predicted_cost": 0.0,
+   "text_chars": 682,
+   "images": 1
+  },
+  {
+   "case_id": "94c15878b9e6",
+   "split": "DEV",
+   "component": "REAL",
+   "predicted_cost": 0.0,
+   "text_chars": 630,
+   "images": 1
+  },
+  {
+   "case_id": "967d8100e281",
+   "split": "DEV",
+   "component": "REAL",
+   "predicted_cost": 0.0,
+   "text_chars": 677,
+   "images": 1
+  },
+  {
+   "case_id": "9bdb47bcb11b",
+   "split": "DEV",
+   "component": "REAL",
+   "predicted_cost": 0.0,
+   "text_chars": 639,
+   "images": 1
+  },
+  {
+   "case_id": "a035f9c6d882",
+   "split": "DEV",
+   "component": "REAL",
+   "predicted_cost": 0.0,
+   "text_chars": 660,
+   "images": 1
+  },
+  {
+   "case_id": "a375e7d2b175",
+   "split": "DEV",
+   "component": "REAL",
+   "predicted_cost": 0.0,
+   "text_chars": 1123,
+   "images": 1
+  },
+  {
+   "case_id": "a4f336c82e05",
+   "split": "DEV",
+   "component": "REAL",
+   "predicted_cost": 0.0,
+   "text_chars": 681,
+   "images": 1
+  },
+  {
+   "case_id": "a5c071067382",
+   "split": "DEV",
+   "component": "REAL",
+   "predicted_cost": 0.0,
+   "text_chars": 679,
+   "images": 1
+  },
+  {
+   "case_id": "a7d51ce88d44",
+   "split": "DEV",
+   "component": "REAL",
+   "predicted_cost": 0.0,
+   "text_chars": 707,
+   "images": 1
+  },
+  {
+   "case_id": "ab015ca2abe5",
+   "split": "DEV",
+   "component": "REAL",
+   "predicted_cost": 0.0,
+   "text_chars": 688,
+   "images": 1
+  },
+  {
+   "case_id": "ac1ddf8275ae",
+   "split": "DEV",
+   "component": "REAL",
+   "predicted_cost": 0.0,
+   "text_chars": 649,
+   "images": 1
+  },
+  {
+   "case_id": "aeaa3bbd0074",
+   "split": "DEV",
+   "component": "REAL",
+   "predicted_cost": 0.0,
+   "text_chars": 644,
+   "images": 1
+  },
+  {
+   "case_id": "b5ca12b73050",
+   "split": "DEV",
+   "component": "REAL",
+   "predicted_cost": 0.0,
+   "text_chars": 684,
+   "images": 1
+  },
+  {
+   "case_id": "bafd5a0d6488",
+   "split": "DEV",
+   "component": "REAL",
+   "predicted_cost": 0.0,
+   "text_chars": 665,
+   "images": 1
+  },
+  {
+   "case_id": "bcc3cac8b3b6",
+   "split": "DEV",
+   "component": "REAL",
+   "predicted_cost": 0.0,
+   "text_chars": 701,
+   "images": 1
+  },
+  {
+   "case_id": "bf1ba23d67f4",
+   "split": "DEV",
+   "component": "REAL",
+   "predicted_cost": 0.0,
+   "text_chars": 707,
+   "images": 1
+  },
+  {
+   "case_id": "c19cd44418c0",
+   "split": "DEV",
+   "component": "REAL",
+   "predicted_cost": 0.0,
+   "text_chars": 647,
+   "images": 1
+  },
+  {
+   "case_id": "c202a4e61635",
+   "split": "DEV",
+   "component": "REAL",
+   "predicted_cost": 0.0,
+   "text_chars": 688,
+   "images": 1
+  },
+  {
+   "case_id": "c29a9989d64c",
+   "split": "DEV",
+   "component": "REAL",
+   "predicted_cost": 0.0,
+   "text_chars": 692,
+   "images": 1
+  },
+  {
+   "case_id": "c5062648c0a1",
+   "split": "DEV",
+   "component": "REAL",
+   "predicted_cost": 0.0,
+   "text_chars": 643,
+   "images": 1
+  },
+  {
+   "case_id": "c7e14feb5867",
+   "split": "DEV",
+   "component": "REAL",
+   "predicted_cost": 0.0,
+   "text_chars": 770,
+   "images": 1
+  },
+  {
+   "case_id": "c9619175cfdd",
+   "split": "DEV",
+   "component": "REAL",
+   "predicted_cost": 0.0,
+   "text_chars": 664,
+   "images": 1
+  },
+  {
+   "case_id": "cbab70b8dc3c",
+   "split": "DEV",
+   "component": "REAL",
+   "predicted_cost": 0.0,
+   "text_chars": 644,
+   "images": 1
+  },
+  {
+   "case_id": "cc2c86e711a7",
+   "split": "DEV",
+   "component": "REAL",
+   "predicted_cost": 0.0,
+   "text_chars": 650,
+   "images": 1
+  },
+  {
+   "case_id": "cc3842671195",
+   "split": "DEV",
+   "component": "REAL",
+   "predicted_cost": 0.0,
+   "text_chars": 677,
+   "images": 1
+  },
+  {
+   "case_id": "cddc441a1bd2",
+   "split": "DEV",
+   "component": "REAL",
+   "predicted_cost": 0.0,
+   "text_chars": 663,
+   "images": 1
+  },
+  {
+   "case_id": "cf28bb85f33d",
+   "split": "DEV",
+   "component": "REAL",
+   "predicted_cost": 0.0,
+   "text_chars": 643,
+   "images": 1
+  },
+  {
+   "case_id": "d49a1c022e27",
+   "split": "DEV",
+   "component": "REAL",
+   "predicted_cost": 0.0,
+   "text_chars": 667,
+   "images": 1
+  },
+  {
+   "case_id": "da5f3b19b2b5",
+   "split": "DEV",
+   "component": "REAL",
+   "predicted_cost": 0.0,
+   "text_chars": 652,
+   "images": 1
+  },
+  {
+   "case_id": "df8e3226edb9",
+   "split": "DEV",
+   "component": "REAL",
+   "predicted_cost": 0.0,
+   "text_chars": 651,
+   "images": 1
+  },
+  {
+   "case_id": "e0dcfd9d56f9",
+   "split": "DEV",
+   "component": "REAL",
+   "predicted_cost": 0.0,
+   "text_chars": 668,
+   "images": 1
+  },
+  {
+   "case_id": "e10ac11d3d89",
+   "split": "DEV",
+   "component": "REAL",
+   "predicted_cost": 0.0,
+   "text_chars": 673,
+   "images": 1
+  },
+  {
+   "case_id": "e1309c7ac517",
+   "split": "DEV",
+   "component": "REAL",
+   "predicted_cost": 0.0,
+   "text_chars": 686,
+   "images": 1
+  },
+  {
+   "case_id": "e271ad04f0ab",
+   "split": "DEV",
+   "component": "REAL",
+   "predicted_cost": 0.0,
+   "text_chars": 634,
+   "images": 1
+  },
+  {
+   "case_id": "e75d8e9494dc",
+   "split": "DEV",
+   "component": "REAL",
+   "predicted_cost": 0.0,
+   "text_chars": 650,
+   "images": 1
+  },
+  {
+   "case_id": "e96cd71d0ed6",
+   "split": "DEV",
+   "component": "REAL",
+   "predicted_cost": 0.0,
+   "text_chars": 644,
+   "images": 1
+  },
+  {
+   "case_id": "eaaeaf0e71d2",
+   "split": "DEV",
+   "component": "REAL",
+   "predicted_cost": 0.0,
+   "text_chars": 696,
+   "images": 1
+  },
+  {
+   "case_id": "eabbe001e547",
+   "split": "DEV",
+   "component": "REAL",
+   "predicted_cost": 0.0,
+   "text_chars": 647,
+   "images": 1
+  },
+  {
+   "case_id": "ecb7b34e8ad8",
+   "split": "DEV",
+   "component": "REAL",
+   "predicted_cost": 0.0,
+   "text_chars": 665,
+   "images": 1
+  },
+  {
+   "case_id": "f02430ebc05b",
+   "split": "DEV",
+   "component": "REAL",
+   "predicted_cost": 0.0,
+   "text_chars": 651,
+   "images": 1
+  },
+  {
+   "case_id": "f2efa20d94a0",
+   "split": "DEV",
+   "component": "REAL",
+   "predicted_cost": 0.0,
+   "text_chars": 693,
+   "images": 1
+  },
+  {
+   "case_id": "f4c1c442172c",
+   "split": "DEV",
+   "component": "REAL",
+   "predicted_cost": 0.0,
+   "text_chars": 784,
+   "images": 1
+  },
+  {
+   "case_id": "f5a2f2032cc8",
+   "split": "DEV",
+   "component": "REAL",
+   "predicted_cost": 0.0,
+   "text_chars": 672,
+   "images": 1
+  },
+  {
+   "case_id": "0135da37774d",
+   "split": "DEV",
+   "component": "SYNTHETIC",
+   "predicted_cost": 0.0,
+   "text_chars": 704,
+   "images": 1
+  },
+  {
+   "case_id": "17f5d940e0be",
+   "split": "DEV",
+   "component": "SYNTHETIC",
+   "predicted_cost": 0.0,
+   "text_chars": 657,
+   "images": 1
+  },
+  {
+   "case_id": "1933a4b8e742",
+   "split": "DEV",
+   "component": "SYNTHETIC",
+   "predicted_cost": 0.0,
+   "text_chars": 642,
+   "images": 1
+  },
+  {
+   "case_id": "1e4c8270489b",
+   "split": "DEV",
+   "component": "SYNTHETIC",
+   "predicted_cost": 0.0,
+   "text_chars": 707,
+   "images": 1
+  },
+  {
+   "case_id": "2329007554b8",
+   "split": "DEV",
+   "component": "SYNTHETIC",
+   "predicted_cost": 0.0,
+   "text_chars": 686,
+   "images": 1
+  },
+  {
+   "case_id": "2b99901f615f",
+   "split": "DEV",
+   "component": "SYNTHETIC",
+   "predicted_cost": 0.0,
+   "text_chars": 643,
+   "images": 1
+  },
+  {
+   "case_id": "2fe4245e6496",
+   "split": "DEV",
+   "component": "SYNTHETIC",
+   "predicted_cost": 0.0,
+   "text_chars": 677,
+   "images": 1
+  },
+  {
+   "case_id": "3d48de3ef33a",
+   "split": "DEV",
+   "component": "SYNTHETIC",
+   "predicted_cost": 0.0,
+   "text_chars": 685,
+   "images": 1
+  },
+  {
+   "case_id": "4445ebfa10a6",
+   "split": "DEV",
+   "component": "SYNTHETIC",
+   "predicted_cost": 0.0,
+   "text_chars": 639,
+   "images": 1
+  },
+  {
+   "case_id": "47d1f753869e",
+   "split": "DEV",
+   "component": "SYNTHETIC",
+   "predicted_cost": 0.0,
+   "text_chars": 684,
+   "images": 1
+  },
+  {
+   "case_id": "539fa90e3a83",
+   "split": "DEV",
+   "component": "SYNTHETIC",
+   "predicted_cost": 0.0,
+   "text_chars": 679,
+   "images": 1
+  },
+  {
+   "case_id": "5639b39e2f0d",
+   "split": "DEV",
+   "component": "SYNTHETIC",
+   "predicted_cost": 0.0,
+   "text_chars": 667,
+   "images": 1
+  },
+  {
+   "case_id": "573cf75aab28",
+   "split": "DEV",
+   "component": "SYNTHETIC",
+   "predicted_cost": 0.0,
+   "text_chars": 679,
+   "images": 1
+  },
+  {
+   "case_id": "58334b295865",
+   "split": "DEV",
+   "component": "SYNTHETIC",
+   "predicted_cost": 0.0,
+   "text_chars": 727,
+   "images": 1
+  },
+  {
+   "case_id": "5da0f2768fa7",
+   "split": "DEV",
+   "component": "SYNTHETIC",
+   "predicted_cost": 0.0,
+   "text_chars": 731,
+   "images": 1
+  },
+  {
+   "case_id": "63ad919f3935",
+   "split": "DEV",
+   "component": "SYNTHETIC",
+   "predicted_cost": 0.0,
+   "text_chars": 672,
+   "images": 1
+  },
+  {
+   "case_id": "65c0f0fc5fb2",
+   "split": "DEV",
+   "component": "SYNTHETIC",
+   "predicted_cost": 0.0,
+   "text_chars": 663,
+   "images": 1
+  },
+  {
+   "case_id": "678a27dc8fae",
+   "split": "DEV",
+   "component": "SYNTHETIC",
+   "predicted_cost": 0.0,
+   "text_chars": 684,
+   "images": 1
+  },
+  {
+   "case_id": "6916398957e1",
+   "split": "DEV",
+   "component": "SYNTHETIC",
+   "predicted_cost": 0.0,
+   "text_chars": 633,
+   "images": 1
+  },
+  {
+   "case_id": "6f68b42db4e7",
+   "split": "DEV",
+   "component": "SYNTHETIC",
+   "predicted_cost": 0.0,
+   "text_chars": 681,
+   "images": 1
+  },
+  {
+   "case_id": "718134738de9",
+   "split": "DEV",
+   "component": "SYNTHETIC",
+   "predicted_cost": 0.0,
+   "text_chars": 691,
+   "images": 1
+  },
+  {
+   "case_id": "719036455b77",
+   "split": "DEV",
+   "component": "SYNTHETIC",
+   "predicted_cost": 0.0,
+   "text_chars": 688,
+   "images": 1
+  },
+  {
+   "case_id": "71c6cf0f100b",
+   "split": "DEV",
+   "component": "SYNTHETIC",
+   "predicted_cost": 0.0,
+   "text_chars": 661,
+   "images": 1
+  },
+  {
+   "case_id": "7d193ec40242",
+   "split": "DEV",
+   "component": "SYNTHETIC",
+   "predicted_cost": 0.0,
+   "text_chars": 667,
+   "images": 1
+  },
+  {
+   "case_id": "8130778c54b9",
+   "split": "DEV",
+   "component": "SYNTHETIC",
+   "predicted_cost": 0.0,
+   "text_chars": 660,
+   "images": 1
+  },
+  {
+   "case_id": "852c67fc3fa0",
+   "split": "DEV",
+   "component": "SYNTHETIC",
+   "predicted_cost": 0.0,
+   "text_chars": 684,
+   "images": 1
+  },
+  {
+   "case_id": "8928c38c466b",
+   "split": "DEV",
+   "component": "SYNTHETIC",
+   "predicted_cost": 0.0,
+   "text_chars": 696,
+   "images": 1
+  },
+  {
+   "case_id": "8b647a141d89",
+   "split": "DEV",
+   "component": "SYNTHETIC",
+   "predicted_cost": 0.0,
+   "text_chars": 707,
+   "images": 1
+  },
+  {
+   "case_id": "903f89de1973",
+   "split": "DEV",
+   "component": "SYNTHETIC",
+   "predicted_cost": 0.0,
+   "text_chars": 691,
+   "images": 1
+  },
+  {
+   "case_id": "94756492045c",
+   "split": "DEV",
+   "component": "SYNTHETIC",
+   "predicted_cost": 0.0,
+   "text_chars": 661,
+   "images": 1
+  },
+  {
+   "case_id": "9e9492c7bfc6",
+   "split": "DEV",
+   "component": "SYNTHETIC",
+   "predicted_cost": 0.0,
+   "text_chars": 661,
+   "images": 1
+  },
+  {
+   "case_id": "a1a0a1cbbd07",
+   "split": "DEV",
+   "component": "SYNTHETIC",
+   "predicted_cost": 0.0,
+   "text_chars": 647,
+   "images": 1
+  },
+  {
+   "case_id": "ac669e24c42a",
+   "split": "DEV",
+   "component": "SYNTHETIC",
+   "predicted_cost": 0.0,
+   "text_chars": 680,
+   "images": 1
+  },
+  {
+   "case_id": "affb2b32879f",
+   "split": "DEV",
+   "component": "SYNTHETIC",
+   "predicted_cost": 0.0,
+   "text_chars": 701,
+   "images": 1
+  },
+  {
+   "case_id": "b286bfd16c7d",
+   "split": "DEV",
+   "component": "SYNTHETIC",
+   "predicted_cost": 0.0,
+   "text_chars": 669,
+   "images": 1
+  },
+  {
+   "case_id": "b2e03279b86a",
+   "split": "DEV",
+   "component": "SYNTHETIC",
+   "predicted_cost": 0.0,
+   "text_chars": 659,
+   "images": 1
+  },
+  {
+   "case_id": "bd52002155c4",
+   "split": "DEV",
+   "component": "SYNTHETIC",
+   "predicted_cost": 0.0,
+   "text_chars": 706,
+   "images": 1
+  },
+  {
+   "case_id": "c021a7910178",
+   "split": "DEV",
+   "component": "SYNTHETIC",
+   "predicted_cost": 0.0,
+   "text_chars": 705,
+   "images": 1
+  },
+  {
+   "case_id": "d67fdaa9e3c7",
+   "split": "DEV",
+   "component": "SYNTHETIC",
+   "predicted_cost": 0.0,
+   "text_chars": 688,
+   "images": 1
+  },
+  {
+   "case_id": "e00eddfa431f",
+   "split": "DEV",
+   "component": "SYNTHETIC",
+   "predicted_cost": 0.0,
+   "text_chars": 684,
+   "images": 1
+  },
+  {
+   "case_id": "e3297aa3e1fb",
+   "split": "DEV",
+   "component": "SYNTHETIC",
+   "predicted_cost": 0.0,
+   "text_chars": 702,
+   "images": 1
+  },
+  {
+   "case_id": "f4b15eeb3e13",
+   "split": "DEV",
+   "component": "SYNTHETIC",
+   "predicted_cost": 0.0,
+   "text_chars": 680,
+   "images": 1
+  },
+  {
+   "case_id": "fb2bcde69e9a",
+   "split": "DEV",
+   "component": "SYNTHETIC",
+   "predicted_cost": 0.0,
+   "text_chars": 687,
+   "images": 1
+  },
+  {
+   "case_id": "fcea0cf8cdb2",
+   "split": "DEV",
+   "component": "SYNTHETIC",
+   "predicted_cost": 0.0,
+   "text_chars": 647,
+   "images": 1
+  }
+ ],
+ "leakage_check": "passed"
+}

@@ -1,0 +1,129 @@
+{
+ "run_id": "dev__all__google-gemini-3.7-flash__580cbadfbc",
+ "config_hash": "580cbadfbc0aaec23555305cd750228a4dbc6b08b57427ecdd4f0db750a7b02a",
+ "created_at": "2026-08-22 04:54:39",
+ "git_commit": "e762c0471ee315d90c08528d5d4e5ec2d353172e",
+ "spec": {
+  "role": "ocr_primary",
+  "split": "dev",
+  "candidate": "google/gemini-3.7-flash",
+  "component": null,
+  "backend": "openrouter",
+  "base_url": null,
+  "models_config": null,
+  "registry_path": "C:\\Users\\ethan\\OneDrive\\Desktop\\etgar\\cp_course\\sharon-project\\evaluation\\model_selection\\candidates.toml",
+  "bench_root": "C:\\Users\\ethan\\OneDrive\\Desktop\\etgar\\cp_course\\sharon-project\\evaluation\\hebrew_bench_v2",
+  "datasets_root": "C:\\Users\\ethan\\OneDrive\\Desktop\\etgar\\cp_course\\sharon-project\\evaluation\\model_selection\\datasets",
+  "state_root": "C:\\Users\\ethan\\OneDrive\\Desktop\\etgar\\cp_course\\sharon-project\\evaluation\\model_selection\\state",
+  "runs_root": "C:\\Users\\ethan\\OneDrive\\Desktop\\etgar\\cp_course\\sharon-project\\evaluation\\model_selection\\runs",
+  "held_out_log": "C:\\Users\\ethan\\OneDrive\\Desktop\\etgar\\cp_course\\sharon-project\\evaluation\\model_selection\\HELD_OUT_EXECUTIONS.jsonl",
+  "limit": null,
+  "dry_run": true,
+  "confirm_held_out": false,
+  "retry_failed": false,
+  "allow_unlisted": false,
+  "note": "pre-API dry run: DEV, zero calls",
+  "max_tokens": null,
+  "reasoning": null,
+  "provider": null,
+  "warn_usd": null,
+  "hard_usd": null,
+  "validation_retries": 0
+ },
+ "config": {
+  "role": "ocr_primary",
+  "task": "ocr_primary",
+  "split": "DEV",
+  "component": null,
+  "candidate": "google/gemini-3.7-flash",
+  "backend": "openrouter",
+  "base_url": null,
+  "route": {
+   "task": "ocr_primary",
+   "backend": "openrouter",
+   "model": "google/gemini-3.7-flash",
+   "structured_mode": "json_schema",
+   "max_tokens": 600,
+   "temperature": 0.0,
+   "reasoning": null,
+   "extra_generation": {},
+   "prompt_version": "m2-strict-v1"
+  },
+  "adapter_version": "ocr-primary-bench-v1",
+  "validation_retries": 0,
+  "prompt_version": "m2-strict-v1",
+  "prompt_sha256": "8c6981a00d467dbbb92c2495a52e1e050dab68de43a43ce977323bc0c2718172",
+  "schema_name": "BenchTranscription",
+  "schema_sha256": "003ee19969c8c443d62d75a0b2ff8eaeaa052fb3b40f3c609c3c8feb178d3679",
+  "manifest_hashes": {
+   "items_sha256": "25463e91b95db8eecfc306644dd0839f65e42910d4161f6991383b6f4a524a8b",
+   "references_sha256": "4a93e826e6e94777d445e64ae2c3f5ed10def46aa021ff763a45a9807fb913b5",
+   "audit_sha256": "eace95fc6dc684c88f1fea2142414a68ad8f421257ac012faf6bcfc9ae07f50c",
+   "audit_manifest_sha256": "65ac16385979480945938f45f0d3e5e3255afa7bcb41c4ea7afe2ff2ebcc405f"
+  },
+  "case_ids_sha256": "1210a29239815c69575a6877de3d488781f822adf8c64fa0759692640124277b"
+ },
+ "manifest": {
+  "role": "ocr_primary",
+  "name": "hebrew_bench_v2 OCR benchmark (audited references)",
+  "status": "FROZEN",
+  "root": "C:\\Users\\ethan\\OneDrive\\Desktop\\etgar\\cp_course\\sharon-project\\evaluation\\hebrew_bench_v2",
+  "cases": 129,
+  "components": [
+   "ALL"
+  ],
+  "counts": {
+   "DEV": {
+    "ALL": 60
+   },
+   "CALIBRATION": {
+    "ALL": 23
+   },
+   "HELD_OUT": {
+    "ALL": 46
+   }
+  },
+  "hashes": {
+   "items_sha256": "25463e91b95db8eecfc306644dd0839f65e42910d4161f6991383b6f4a524a8b",
+   "references_sha256": "4a93e826e6e94777d445e64ae2c3f5ed10def46aa021ff763a45a9807fb913b5",
+   "audit_sha256": "eace95fc6dc684c88f1fea2142414a68ad8f421257ac012faf6bcfc9ae07f50c",
+   "audit_manifest_sha256": "65ac16385979480945938f45f0d3e5e3255afa7bcb41c4ea7afe2ff2ebcc405f"
+  },
+  "split_assignment": {
+   "DEV": [
+    "e002",
+    "e003",
+    "e007"
+   ],
+   "CALIBRATION": [
+    "e004"
+   ],
+   "HELD_OUT": [
+    "e005",
+    "e006"
+   ]
+  },
+  "notes": [
+   "eligibility: eligible iff item.tier is a human-transcription tier ('owner',) AND the reference provenance is not a mechanical/text-layer derivation; category is never the criterion",
+   "audit summary: {'total': 102, 'checked': 102, 'confirmed': 69, 'corrected': 33, 'ambiguous': 0, 'unchecked': 0, 'remaining': 0, 'benchmark_total': 129, 'excluded_not_in_scope': 27, 'out_of_scope_entries_ignored': 0}",
+   "references come from reference_for_scoring(mode='final') — audited text where corrected, original where confirmed/out-of-scope; never the unaudited text as final truth",
+   "historical outputs stay readable via `bench report --role ocr_primary --historical`"
+  ]
+ },
+ "cases_selected": 60,
+ "history": [
+  {
+   "ts": "2026-08-22 04:54:39",
+   "mode": "dry_run",
+   "note": "pre-API dry run: DEV, zero calls",
+   "retry_failed": false
+  }
+ ],
+ "updated_at": "2026-08-22 04:54:39",
+ "cases_done": 60,
+ "cases_failed": 0,
+ "cases_skipped_resume": 0,
+ "stopped_reason": null,
+ "last_mode": "dry_run",
+ "warnings": []
+}

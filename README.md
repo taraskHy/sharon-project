@@ -42,6 +42,12 @@ per-exam JSON/Markdown plus combined CSV/JSON/ZIP reports. Grading runs in
 a detached process, so closing the browser or the app never loses work —
 see [docs/ui.md](docs/ui.md).
 
+Before any cloud credential exists, `python -m autograder readiness` prints
+the zero-key dry run (course store, packages, frozen benchmarks, model roles,
+budget, verifier crops, GUI, held-out status) with zero network calls; the
+model-selection harness is `python -m autograder bench ...`
+([docs/model-selection.md](docs/model-selection.md)).
+
 ## Quick start (fresh machine)
 
 ```powershell

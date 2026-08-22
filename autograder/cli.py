@@ -943,13 +943,27 @@ def run_grade_pipeline(
                         meta={"exam_id": _exam_id, "question_id": q.id, "stage": "ocr",
                               "item_id": _anon_id("job", _exam_id, q.id, se.sub_item_id)})
 
+            # Explanation evidence crops for the OCR verifier: the production
+            # provider is explicitly UNAVAILABLE (no calibrated explanation
+            # geometry; never a full page). The route then runs fail-closed:
+            # suspicious readings -> REVIEW, no verifier call. See
+            # autograder/evidencecrops.py for the contract and fallback.
+            from .evidencecrops import collect_crops, production_crop_provider
+
+            _crops, _crop_report = collect_crops(production_crop_provider(), key)
+            _log(f"explanation evidence crops: {_crop_report.get('status')} "
+                 f"({_crop_report.get('items_with_crop', 0)} with crop, "
+                 f"{_crop_report.get('items_without_crop', 0)} without) — "
+                 f"{_crop_report.get('reason') or _crop_report.get('fallback') or ''}")
+
             rel_run = run_reliability_judging(
                 key=key, extraction=extraction, version=version_decision.version,
                 config=_rel_cfg, gateway=_rt.gateway, packs=_packs, policies=_pols,
                 exam_id=_exam_id, trace_store=DecisionTraceStore(out / "decisions.jsonl"),
-                rag_attach=activate_rag, ocr_fn=_ocr_fn,
+                crops=_crops, rag_attach=activate_rag, ocr_fn=_ocr_fn,
                 variant_source=(variant_record or {}).get("mapping_source"),
                 alignment_source=alignment_note, progress=_log)
+            rel_run.evidence_crops = _crop_report
         except Exception as e:  # noqa: BLE001
             if _mode == "reliability":
                 raise
@@ -975,6 +989,10 @@ def run_grade_pipeline(
         model=backend.identity,
     )
     result.backend_info = {**backend.describe(), "answer_key_source": key_source}
+    if rel_run is not None and getattr(rel_run, "evidence_crops", None):
+        # Recorded with the result so the review screen can state, per exam,
+        # whether the verifier could have seen evidence at all.
+        result.backend_info["evidence_crops"] = dict(rel_run.evidence_crops)
     if variant_record is not None:
         result.variant_detection = {
             **variant_record,
@@ -1216,13 +1234,20 @@ def build_parser() -> argparse.ArgumentParser:
     ui.add_argument("--port", type=int, default=8501)
     ui.set_defaults(func=cmd_ui)
 
+    from .benchmark.cli import add_bench_commands  # late import: keeps CLI startup light
     from .evalcli import add_eval_commands  # late import: keeps CLI startup light
+    from .readiness import add_readiness_command
+
+    add_bench_commands(sub)
+    add_readiness_command(sub)
 
     add_eval_commands(sub, common)
     return p
 
 
 def main(argv: list[str] | None = None) -> int:
+    from .cloudcheck import CloudNotReady, explain_cloud_error
+
     # Hebrew in log lines (question titles, review reasons) would crash
     # print() on a cp1252 Windows console.
     for stream in (sys.stdout, sys.stderr):
@@ -1231,14 +1256,25 @@ def main(argv: list[str] | None = None) -> int:
     args = build_parser().parse_args(argv)
     try:
         return args.func(args)
-    except BackendError as e:
+    except CloudNotReady as e:
         _log(f"ERROR: {e}")
+        return 2
+    except BackendError as e:
+        _friendly = explain_cloud_error(e)
+        _log(f"ERROR: {_friendly}" if _friendly else f"ERROR: {e}")
         return 2
     except PipelineStateError as e:
         _log(f"ERROR: {e}")
         return 2
     except ValueError as e:
-        _log(f"ERROR: {e}")
+        # Setup states (UNSELECTED role, missing credential) get their one-
+        # sentence explanation first; the technical detail follows.
+        _friendly = explain_cloud_error(e)
+        if _friendly is not None:
+            _log(f"ERROR: {_friendly}")
+            _log(f"  detail: {e}")
+        else:
+            _log(f"ERROR: {e}")
         return 2
     except FileNotFoundError as e:
         _log(f"ERROR: {e}")

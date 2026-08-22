@@ -214,9 +214,12 @@ Configuration (prepared; no key installed, `/api/v1/key` never called):
   a `[pricing."vendor/slug"]` entry (estimator-only, local, never fetched)
   before its first run.
 - Ledgers kept: (1) the local usage ledger (per-call tokens, provider,
-  request id, reported cost); (2) once a key is installed, OpenRouter's
-  own key-usage metadata (GET /key) is read at campaign start/end for
-  reconciliation — supported later, deliberately not called now.
+  request id, reported cost; `autograder.spend.ledger_summary` gives
+  per-task / per-model / cumulative); (2) once a key is installed, OpenRouter's
+  own key-usage metadata (GET /api/v1/key) can be fetched on demand
+  (`OpenRouterBackend.key_metadata()` / `fetch_key_metadata`, secret-free
+  parse) and is shown NEXT TO the local ledger in the GUI's Advanced screen —
+  supported now, deliberately never called automatically and not called yet.
 - Every run must produce `usage.run_cost_report(ledger, baseline_rows)`:
   cost before / run cost / cost after, calls + tokens by model and by
   task. Attach it to the run record.
@@ -224,6 +227,66 @@ Configuration (prepared; no key installed, `/api/v1/key` never called):
 Execution order when the owner installs the key: `scripts/openrouter_smoke.py`
 first (exactly 2 paid calls; validates routing/ledger/budget/secret
 hygiene), then B1 → B2 → B5 → B3 → B4 under the ceiling.
+
+## Benchmark harness (2026-08-22, pre-API)
+
+One provider-independent runner for every cloud role lives in
+`autograder/benchmark/` and is driven by `autograder bench ...`:
+
+| command | what it does |
+|---|---|
+| `bench list` | roles, frozen-dataset status (hash-verified), split counts, candidates, held-out log |
+| `bench inspect --role R [--preview]` | manifest summary; DEV request preview (CALIBRATION/HELD_OUT previews refused) |
+| `bench dry-run --role R --split S --candidate SLUG` | builds every request, runs the leakage guard, predicts cost from the local `[pricing]` table, writes `plan.json` — **zero provider calls** |
+| `bench run ... --i-understand-this-spends-money` | live run through ModelGateway (cache, ledger, privacy scan, $8/$10 budget) |
+| `bench report --run-dir DIR` / `--role R --split S` / `--historical` | one run / all runs / historical OCR outputs re-scored on the audited references |
+| `bench compare --role R --split S` | candidates side by side — **no winner is selected** |
+| `bench held-out-log` | the permanent record of HELD_OUT executions |
+
+Architecture: `manifests.py` (frozen manifests: hash verification, split /
+component selection; REAL and SYNTHETIC are separate components) ->
+`registry.py` (candidates.toml as data) -> `roles.py` (per-role adapter =
+production prompt + schema + scoring; `model_visible_fields` whitelist) ->
+`runner.py` (resume, raw `outputs.jsonl`, `run.json` with candidate / route
+fingerprint / prompt sha256 / schema sha256 / adapter version / manifest
+hashes / git commit, `metrics.json`, `usage.json` via `run_cost_report`) ->
+`report.py`. Benchmark routes set `validation_retries=0`: a malformed
+answer is a schema failure, never silently repaired. The run directory is
+keyed by the configuration hash, so a changed config is a different run.
+
+Dataset status: `ocr_verify` FROZEN (REAL 303 + SYNTHETIC 136),
+`ocr_primary` FROZEN (129 items; references via
+`reference_for_scoring(mode="final")`; writer split = Split A, text-layer
+items DEV), `grade_primary` / `grade_escalate` / `mc_resolve_cloud` /
+`variant_resolve` / `align_resolve` DECLARED, NOT BUILT (generic frozen
+format under `evaluation/model_selection/datasets/<role>/`, writer
+`benchmark/datasets.py::write_declared_dataset`; no dataset is fabricated).
+B3 label reality is unchanged: no per-item owner labels exist, so the grade
+adapter reports accuracy metrics as *unavailable* until they do.
+
+### Split discipline (Part 3)
+
+- DEV may be inspected; CALIBRATION selects; HELD_OUT is reserved.
+- `--split held_out` is refused unless `--confirm-held-out` is passed; every
+  execution (including dry runs) is appended to
+  `evaluation/model_selection/HELD_OUT_EXECUTIONS.jsonl` with role, run id,
+  config hash and the consequence line. Once held-out results are inspected
+  and used to change anything, the split is **demoted to DEV** (record it in
+  docs/generalization.md) and is no longer reported as untouched.
+- OCR_VERIFY: REAL and SYNTHETIC are always reported separately
+  (`metrics.REAL`, `metrics.SYNTHETIC` with by-corruption-type and numeric
+  FAR); `COMBINED_secondary` exists only as a secondary figure.
+
+### Verifier contract (Part 4)
+
+The verifier request is exactly production's (`OCR_VERIFY_SYSTEM`, one
+image block, "Proposed transcription: ..."): crop + candidate, nothing else.
+`runner.leakage_check` refuses any request that carries a label value, a
+label field name or a split name, and any input outside the adapter's
+whitelist; the acceptance gate scored is production's AUTO gate
+(supported AND high/medium AND no reported omissions/substitutions/additions).
+Primary metric: FALSE ACCEPT RATE; also FRR, SUPPORTED precision, REVIEW
+rate, schema-failure rate, latency, tokens, reported cost.
 
 ## Hygiene (0.7)
 
@@ -252,5 +315,6 @@ Rules:
    `[pricing]` entries for every candidate; state root
    `evaluation/model_selection/state/`.
 3. `openrouter_smoke.py` green.
-4. Gateway-routed adapter in the B1 harness.
+4. `autograder bench dry-run` green for the arm (leakage check passed,
+   predicted cost shown) — the harness is gateway-routed for every role.
 5. Owner approval for the specific run, recorded with its hygiene fields.

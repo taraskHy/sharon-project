@@ -98,6 +98,10 @@ class ReliabilityRun:
     records: list[DecisionRecord] = field(default_factory=list)
     paused: bool = False
     pause_reason: str = ""
+    #: evidencecrops.collect_crops report (provider, AVAILABLE/UNAVAILABLE,
+    #: reason, counts) — set by the caller so the log/GUI can say WHY the
+    #: verifier did or did not see a crop.
+    evidence_crops: dict = field(default_factory=dict)
 
     def accounting(self) -> dict:
         ledger = EarlyExitLedger()
