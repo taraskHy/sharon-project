@@ -330,12 +330,16 @@ def alignment_from_discovery(fact_value: Any, variants: Iterable[str], key) -> d
         entry = fact_value.get(v) if isinstance(fact_value, dict) else None
         if entry is None:
             out[v] = "unresolved"
-        elif entry.get("identity") is True:
+        elif entry is True or (isinstance(entry, dict) and entry.get("identity") is True):
+            # `{"heart": true}` (prob sidecar) and `{"identity": true}` both mean
+            # "this variant prints the key's own order"
             out[v] = qmap
-        else:
-            out[v] = {qid: (qmap.get(qid, {}) if (isinstance(m, dict) and m.get("identity") is True)
+        elif isinstance(entry, dict):
+            out[v] = {qid: (qmap.get(qid, {}) if (m is True or (isinstance(m, dict) and m.get("identity") is True))
                             else m)
                       for qid, m in entry.items()}
+        else:
+            out[v] = "unresolved"
     return out
 
 

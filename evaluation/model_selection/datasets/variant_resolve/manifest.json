@@ -1,0 +1,41 @@
+{
+ "name": "variant_resolve — marker-region crops (bottom third of page 1) with audited variant ids",
+ "status": "FROZEN",
+ "frozen_at": "2026-08-22 05:28:52",
+ "cases": 16,
+ "inputs_sha256": "63d209d127860ef4fc98ac8f2a627026b828995e10567e367b0d58df14d0b962",
+ "labels_sha256": "ac825744daed8f714ae3ac3ecb18857ff10c0569fe55cf129536661425a5e83b",
+ "split_assignment": {
+  "DEV": [
+   "prob",
+   "stage_a"
+  ]
+ },
+ "policy": "model-visible: the page-1 marker region (y 66%-100%; header/identity area excluded) + the generic variant ids of that exam family; evaluation-side: the audited variant. Production currently sends the FULL page 1 — this benchmark is the marker-region variant; a production-parity run can render full pages locally without committing them. DEV only (16 cases).",
+ "notes": [
+  "no symbol is assumed universal: variant ids and marker kinds come from each exam family's data",
+  "prob labels are agent-audited (10/13 pinned by totals); flowers are operator content-verified"
+ ],
+ "extra": {
+  "marker_region": [
+   0.66,
+   1.0
+  ],
+  "max_edge": 1400,
+  "stage_a": [
+   [
+    "sample_data/student_exam.pdf",
+    "A1"
+   ],
+   [
+    "test/003_70.pdf",
+    "A2"
+   ],
+   [
+    "test/002_76.pdf",
+    "A3"
+   ]
+  ],
+  "audit_sha256": "f83ed43bff387b243bb49b9af36cca0bdee838cb01e6ff6e58d5b022068b7aba"
+ }
+}

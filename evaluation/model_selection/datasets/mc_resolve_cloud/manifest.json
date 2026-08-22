@@ -1,0 +1,57 @@
+{
+ "name": "mc_resolve_cloud — deterministically ambiguous prob answer-table rows (band crops)",
+ "status": "FROZEN",
+ "frozen_at": "2026-08-22 05:28:50",
+ "cases": 10,
+ "inputs_sha256": "11a23b4d7e2398b37d43235743ad42d08b6eefaed27e428a16f674abe31465f6",
+ "labels_sha256": "96f65db4b9e0ad8e192868fdcdb34a66c4230359238b339f5dccd01129e9ca83",
+ "split_assignment": {
+  "DEV": [
+   "02",
+   "05",
+   "06",
+   "13",
+   "15",
+   "21",
+   "24",
+   "28",
+   "29",
+   "30",
+   "32",
+   "36",
+   "37"
+  ]
+ },
+ "policy": "model-visible: band crop + option letters + deterministic candidate letters (exactly production's mcresolve._prompt_blocks); evaluation-side: audited selected answer + audit text. DEV only: too small for CALIBRATION/HELD_OUT — expand from further audited jobs before selecting a cloud resolver.",
+ "notes": [
+  "band crops regenerated deterministically (ingest.load_pages + tablecrop) — no model",
+  "labels are agent-audited (provenance recorded on every label), not human ground truth",
+  "historical local-Qwen reads live in evaluation/mc_fallback/ as OUTPUTS, never labels"
+ ],
+ "extra": {
+  "prob_root": "C:\\Users\\ethan\\OneDrive\\Desktop\\etgar\\cp_course\\sharon-project\\prob_data",
+  "max_image_edge": 1400,
+  "letters_rtl": [
+   "A",
+   "B",
+   "C",
+   "D"
+  ],
+  "ambiguous_rows_per_exam": {
+   "02": 1,
+   "05": 0,
+   "06": 0,
+   "13": 0,
+   "15": 0,
+   "21": 0,
+   "24": 1,
+   "28": 2,
+   "29": 2,
+   "30": 1,
+   "32": 1,
+   "36": 0,
+   "37": 2
+  },
+  "audit_sha256": "f83ed43bff387b243bb49b9af36cca0bdee838cb01e6ff6e58d5b022068b7aba"
+ }
+}

@@ -1,0 +1,10 @@
+{"case_id": "prob02_r7", "band_png": "bands/prob02_r7.png", "letters": ["A", "B", "C", "D"], "candidates": ["D", "C"]}
+{"case_id": "prob24_r4", "band_png": "bands/prob24_r4.png", "letters": ["A", "B", "C", "D"], "candidates": ["D", "C"]}
+{"case_id": "prob28_r7", "band_png": "bands/prob28_r7.png", "letters": ["A", "B", "C", "D"], "candidates": ["D", "A", "C"]}
+{"case_id": "prob28_r10", "band_png": "bands/prob28_r10.png", "letters": ["A", "B", "C", "D"], "candidates": ["D", "C"]}
+{"case_id": "prob29_r3", "band_png": "bands/prob29_r3.png", "letters": ["A", "B", "C", "D"], "candidates": ["D", "B"]}
+{"case_id": "prob29_r8", "band_png": "bands/prob29_r8.png", "letters": ["A", "B", "C", "D"], "candidates": ["C", "D"]}
+{"case_id": "prob30_r7", "band_png": "bands/prob30_r7.png", "letters": ["A", "B", "C", "D"], "candidates": ["A", "C"]}
+{"case_id": "prob32_r4", "band_png": "bands/prob32_r4.png", "letters": ["A", "B", "C", "D"], "candidates": ["D", "B"]}
+{"case_id": "prob37_r8", "band_png": "bands/prob37_r8.png", "letters": ["A", "B", "C", "D"], "candidates": ["D", "B"]}
+{"case_id": "prob37_r9", "band_png": "bands/prob37_r9.png", "letters": ["A", "B", "C", "D"], "candidates": ["B", "C"]}

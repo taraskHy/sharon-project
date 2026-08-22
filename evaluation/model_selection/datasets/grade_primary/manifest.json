@@ -1,0 +1,91 @@
+{
+ "name": "grade_primary — frozen audited cell transcriptions + NO-RAG grading packs",
+ "status": "FROZEN",
+ "frozen_at": "2026-08-22 05:28:41",
+ "cases": 67,
+ "inputs_sha256": "7b6e0f1cde043590cf8b20f9f8aff1baad730126a43aac454fe2a64c8d7bb114",
+ "labels_sha256": "b49fc862b13362e945822a2569fa746a0cf263174c3d0c5051b96552ba6fd4af",
+ "split_assignment": {
+  "DEV": [
+   "e002",
+   "e003",
+   "e007"
+  ],
+  "CALIBRATION": [
+   "e004"
+  ],
+  "HELD_OUT": [
+   "e005",
+   "e006"
+  ]
+ },
+ "policy": "model-visible: pack (question text, rubric, official solution, max points, policy), selected=None, frozen audited transcription, version=None. NO RAG. Evaluation-side: owner final score / rubric decisions (owner_labels.json, written by scripts/grade_label_ui.py); no label is ever derived from a model.",
+ "notes": [
+  "first model-selection grading benchmark is NO-RAG by construction",
+  "evidence_images are for the OWNER's labeling only — never a model input of this role",
+  "label reality: human per-item scores did not exist before this dataset; the owner labeling tool creates them"
+ ],
+ "extra": {
+  "key_path": "C:\\Users\\ethan\\OneDrive\\Desktop\\etgar\\cp_course\\sharon-project\\eval_out\\shared\\answer_key.json",
+  "key_sha256": "92921e03ad9a4c072274617f2cb7bdcd918dd462b539e47e626c43a7ecbf38ce",
+  "key_provenance": "image-processing exam key parsed locally by qwen3-vl:8b-instruct from sample_data/Exam_solution.pdf (2026-07-12); eval_out copy carries the Q2.8 G/F/F repair from versions-override.json",
+  "grading_policy": "choice_and_explanation_independent",
+  "pack_builder": "gradingpack.build_pack narrowed per sub-item; no course/retrieval",
+  "excluded_cells": [
+   {
+    "cell": "e003_q1_r2",
+    "why": "incomplete line set ['hl_e003_q1_r2__l2']"
+   },
+   {
+    "cell": "e004_q1_r7",
+    "why": "incomplete line set ['hl_e004_q1_r7__l2']"
+   },
+   {
+    "cell": "e004_q2_r7",
+    "why": "incomplete line set ['hl_e004_q2_r7__l2']"
+   },
+   {
+    "cell": "e005_q1_r3",
+    "why": "incomplete line set ['hl_e005_q1_r3__l2', 'hl_e005_q1_r3__l3']"
+   },
+   {
+    "cell": "e005_q1_r5",
+    "why": "incomplete line set ['hl_e005_q1_r5__l2', 'hl_e005_q1_r5__l3']"
+   },
+   {
+    "cell": "e005_q1_r8",
+    "why": "incomplete line set ['hl_e005_q1_r8__l2', 'hl_e005_q1_r8__l3']"
+   },
+   {
+    "cell": "e005_q2_r2",
+    "why": "incomplete line set ['hl_e005_q2_r2__l2', 'hl_e005_q2_r2__l3']"
+   },
+   {
+    "cell": "e005_q2_r3",
+    "why": "incomplete line set ['hl_e005_q2_r3__l2']"
+   },
+   {
+    "cell": "e005_q2_r4",
+    "why": "incomplete line set ['hl_e005_q2_r4__l2', 'hl_e005_q2_r4__l3']"
+   },
+   {
+    "cell": "e005_q2_r5",
+    "why": "incomplete line set ['hl_e005_q2_r5__l2', 'hl_e005_q2_r5__l3']"
+   },
+   {
+    "cell": "e005_q2_r6",
+    "why": "incomplete line set ['hl_e005_q2_r6__l2']"
+   },
+   {
+    "cell": "e005_q2_r7",
+    "why": "incomplete line set ['hl_e005_q2_r7__l2', 'hl_e005_q2_r7__l3']"
+   },
+   {
+    "cell": "e006_q2_r5",
+    "why": "incomplete line set ['hl_e006_q2_r5__l2']"
+   }
+  ],
+  "cells_total": 80,
+  "cases": 67
+ }
+}
