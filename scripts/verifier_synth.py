@@ -283,6 +283,7 @@ def build_synthetic(store, selected: dict | None = None) -> dict:
                            "expected_verdict": "review", "polarity": "negative",
                            "source": "synthetic_near_miss", "corruption_type": rule,
                            "corruption_group": "numeric" if rule in NUMERIC_RULES else "text",
+                           "synthetic_group": "numeric_math" if rule in NUMERIC_RULES else "text",
                            "error_kinds": kinds, "cer_vs_audited": round(cer(reference, cand), 4),
                            "audited_reference": reference})
     inputs.sort(key=lambda r: r["case_id"])
@@ -364,9 +365,39 @@ def write_proposal(store, synth: dict) -> Path:
     return out
 
 
-def freeze_synthetic(store, synth: dict) -> dict:
-    if not synth["report"]["zero_image_overlap_between_splits"]:
+def _composition(report: dict) -> dict:
+    """The approved-composition fingerprint: totals, groups, types, splits."""
+    return {"total": report["synthetic_cases_total"],
+            "text": report["text_cases"],
+            "numeric_math": report["numeric_cases"],
+            "by_type": {k: report["cases_by_corruption_type"].get(k, 0) for k in ALL_RULES},
+            "by_split": {s: v["cases"] for s, v in report["by_split"].items()}}
+
+
+def freeze_synthetic(store, synth: dict, expect: dict | None = None,
+                     require_proposal_match: bool = True) -> dict:
+    """Transactional freeze of verifier_bench/synthetic/. Refuses when the
+    built composition differs from the saved proposal (what the owner saw)
+    or from an explicit ``expect`` composition."""
+    report = synth["report"]
+    if not report["zero_image_overlap_between_splits"]:
         raise SynthError("refusing to freeze: image overlap between splits")
+    built = _composition(report)
+    if require_proposal_match:
+        proposal_path = store.bench_dir / vsel.RAW_DIRNAME / PROPOSAL_FILENAME
+        if not proposal_path.exists():
+            raise SynthError("no saved proposal to freeze against — run propose first")
+        proposed = _composition(json.loads(proposal_path.read_text(encoding="utf-8")))
+        if proposed != built:
+            raise SynthError(f"built composition {built} differs from the saved proposal "
+                             f"{proposed} — not freezing")
+    if expect is not None:
+        for k, v in expect.items():
+            if built.get(k) != v:
+                raise SynthError(f"composition mismatch on {k!r}: built {built.get(k)} "
+                                 f"!= expected {v} — not freezing")
+    real_dir = store.bench_dir / vsel.RAW_DIRNAME / vsel.SELECTED_DIRNAME
+    real_manifest = json.loads((real_dir / "manifest.json").read_text(encoding="utf-8"))
     out_dir = store.bench_dir / vsel.RAW_DIRNAME / SYNTH_DIRNAME
     out_dir.mkdir(parents=True, exist_ok=True)
     paths = {"cases_inputs.jsonl": synth["inputs"], "cases_labels.jsonl": synth["labels"]}
@@ -384,13 +415,33 @@ def freeze_synthetic(store, synth: dict) -> dict:
         for tmp, _ in tmps:
             tmp.unlink(missing_ok=True)
         raise
+    image_ids_per_split: dict[str, set] = {}
+    case_ids_per_split: dict[str, list] = {}
+    for lab in synth["labels"]:
+        image_ids_per_split.setdefault(lab["split"], set()).add(lab["item_id"])
+        case_ids_per_split.setdefault(lab["split"], []).append(lab["case_id"])
     manifest = {
         "_policy": ("Frozen SYNTHETIC_NEAR_MISS verifier component. Model-visible: "
                     "cases_inputs.jsonl only (opaque id, crop, candidate). Report "
                     "SEPARATELY from the REAL component (FAR overall + FAR by "
                     "corruption type, esp. numeric); COMBINED only secondarily."),
         "frozen_at": refaudit._now(),
-        "report": synth["report"],
+        "rules_version": RULES_VERSION,
+        "selection_policy_version": SELECTION_POLICY_VERSION,
+        "source_audit_sha256": refaudit._sha256_json(store.entries_canonical()),
+        "real_benchmark": {
+            "manifest_sha256": _sha((real_dir / "manifest.json").read_bytes()),
+            "inputs_sha256": real_manifest["inputs_sha256"],
+            "labels_sha256": real_manifest["labels_sha256"],
+            "raw_pool": real_manifest.get("raw_pool"),
+            "decision": real_manifest.get("decision"),
+        },
+        "split_assignment": (real_manifest.get("decision") or {}).get("writer_assignment"),
+        "image_ids_per_split": {s: sorted(v) for s, v in sorted(image_ids_per_split.items())},
+        "case_ids_per_split": {s: sorted(v) for s, v in sorted(case_ids_per_split.items())},
+        "composition": built,
+        "zero_image_overlap_between_splits": True,      # asserted above
+        "report": report,
         "inputs_sha256": _sha((out_dir / "cases_inputs.jsonl").read_bytes()),
         "labels_sha256": _sha((out_dir / "cases_labels.jsonl").read_bytes()),
         "audit_sha256": refaudit._sha256_json(store.entries_canonical()),
@@ -402,6 +453,148 @@ def freeze_synthetic(store, synth: dict) -> dict:
     tmp.write_text(checks, encoding="utf-8")
     os.replace(tmp, out_dir / "CHECKSUMS.sha256")
     return manifest
+
+
+# ----------------------------------------------------------- verification ----
+
+_LEAK_TOKENS = tuple(ALL_RULES) + ("supported", "review", "synthetic", "reference",
+                                   "numeric", "verdict", "split", "writer")
+
+
+def verify_frozen_synthetic(store) -> dict:
+    """Re-read the frozen synthetic component and check every invariant the
+    owner required. Raises SynthError listing all failures."""
+    normalize, _lev, _wa = refaudit._load_metric_fns()
+    sig = refaudit.digit_op_signature
+    key = lambda t: (normalize(t), sig(t))  # noqa: E731
+    syn_dir = store.bench_dir / vsel.RAW_DIRNAME / SYNTH_DIRNAME
+    real_dir = store.bench_dir / vsel.RAW_DIRNAME / vsel.SELECTED_DIRNAME
+    raw_dir = store.bench_dir / vsel.RAW_DIRNAME
+    failures: list[str] = []
+
+    def need(path: Path) -> bytes:
+        if not path.exists():
+            failures.append(f"missing {path.name}")
+            return b""
+        return path.read_bytes()
+
+    manifest_bytes = need(syn_dir / "manifest.json")
+    inputs_bytes = need(syn_dir / "cases_inputs.jsonl")
+    labels_bytes = need(syn_dir / "cases_labels.jsonl")
+    checks_bytes = need(syn_dir / "CHECKSUMS.sha256")
+    if failures:
+        raise SynthError("; ".join(failures))
+    manifest = json.loads(manifest_bytes)
+    inputs = [json.loads(l) for l in inputs_bytes.decode("utf-8").splitlines() if l.strip()]
+    labels = [json.loads(l) for l in labels_bytes.decode("utf-8").splitlines() if l.strip()]
+
+    # checksums + manifest hashes
+    expected = {"cases_inputs.jsonl": _sha(inputs_bytes), "cases_labels.jsonl": _sha(labels_bytes),
+                "manifest.json": _sha(manifest_bytes)}
+    recorded = {}
+    for line in checks_bytes.decode("utf-8").splitlines():
+        if line.strip():
+            h, name = line.split(None, 1)
+            recorded[name.strip()] = h
+    if recorded != expected:
+        failures.append(f"CHECKSUMS mismatch: {recorded} vs {expected}")
+    if manifest.get("inputs_sha256") != expected["cases_inputs.jsonl"]:
+        failures.append("manifest inputs_sha256 mismatch")
+    if manifest.get("labels_sha256") != expected["cases_labels.jsonl"]:
+        failures.append("manifest labels_sha256 mismatch")
+
+    # composition
+    comp = manifest.get("composition", {})
+    by_item: dict[str, list] = collections.defaultdict(list)
+    for lab in labels:
+        by_item[lab["item_id"]].append(lab)
+    n_text = sum(1 for l in labels if l.get("synthetic_group") == "text")
+    n_num = sum(1 for l in labels if l.get("synthetic_group") == "numeric_math")
+    if len(inputs) != len(labels) or len(labels) != comp.get("total"):
+        failures.append(f"case count {len(labels)} != composition total {comp.get('total')}")
+    if n_text != comp.get("text") or n_num != comp.get("numeric_math"):
+        failures.append(f"group counts text={n_text} numeric_math={n_num} != {comp}")
+    if len(by_item) != len(store.eligible_ids):
+        failures.append(f"unique images {len(by_item)} != eligible {len(store.eligible_ids)}")
+    for item_id, rows in by_item.items():
+        groups = [l["synthetic_group"] for l in rows]
+        if groups.count("text") != 1:
+            failures.append(f"{item_id}: {groups.count('text')} text cases (need exactly 1)")
+        if groups.count("numeric_math") > 1 or len(rows) > MAX_PER_IMAGE:
+            failures.append(f"{item_id}: too many cases {groups}")
+    if sum(1 for rows in by_item.values() if len(rows) == 2) != n_num:
+        failures.append("images with 2 cases != numeric_math case count")
+
+    # splits: zero overlap + consistent with the frozen REAL manifest
+    real_manifest = json.loads((real_dir / "manifest.json").read_text(encoding="utf-8"))
+    real_split = {i: s for s, ids in real_manifest["image_ids_per_split"].items() for i in ids}
+    for item_id, rows in by_item.items():
+        splits = {l["split"] for l in rows}
+        if len(splits) != 1:
+            failures.append(f"{item_id}: cases in multiple splits {splits}")
+        elif real_split.get(item_id) != next(iter(splits)):
+            failures.append(f"{item_id}: split {splits} != REAL split {real_split.get(item_id)}")
+    if not manifest.get("zero_image_overlap_between_splits"):
+        failures.append("manifest does not assert zero image overlap")
+
+    # no duplicate (candidate, reference) pairs; candidate != reference
+    cand_by_id = {r["case_id"]: r["candidate_transcription"] for r in inputs}
+    seen: set = set()
+    for lab in labels:
+        cand = cand_by_id.get(lab["case_id"])
+        if cand is None:
+            failures.append(f"{lab['case_id']}: label without input row")
+            continue
+        k = (lab["item_id"], key(cand))
+        if key(cand) == key(lab["audited_reference"]):
+            failures.append(f"{lab['case_id']}: candidate equals its reference")
+        if k in seen:
+            failures.append(f"{lab['case_id']}: duplicate candidate for {lab['item_id']}")
+        seen.add(k)
+    # no collision with frozen REAL negative candidates
+    real_inputs = {json.loads(l)["case_id"]: json.loads(l)["candidate_transcription"]
+                   for l in (real_dir / "cases_inputs.jsonl").read_text(encoding="utf-8").splitlines() if l.strip()}
+    real_neg: set = set()
+    for l in (real_dir / "cases_labels.jsonl").read_text(encoding="utf-8").splitlines():
+        if not l.strip():
+            continue
+        lab = json.loads(l)
+        if lab["polarity"] == "negative":
+            real_neg.add((lab["item_id"], key(real_inputs[lab["case_id"]])))
+    collisions = [lab["case_id"] for lab in labels
+                  if (lab["item_id"], key(cand_by_id[lab["case_id"]])) in real_neg]
+    if collisions:
+        failures.append(f"collision with REAL negatives: {collisions}")
+
+    # model-visible isolation
+    for row in inputs:
+        if set(row) != {"case_id", "crop", "candidate_transcription"}:
+            failures.append(f"{row.get('case_id')}: model-visible row carries extra fields")
+        blob = (row["case_id"] + " " + row["crop"]).lower()
+        if any(tok in blob for tok in _LEAK_TOKENS):
+            failures.append(f"{row['case_id']}: label vocabulary leaked into id/crop")
+
+    # REAL / raw / audit artifacts byte-identical to what the manifests recorded
+    real_checks = (real_dir / "CHECKSUMS.sha256").read_text(encoding="utf-8")
+    for line in real_checks.splitlines():
+        if line.strip():
+            h, name = line.split(None, 1)
+            if _sha((real_dir / name.strip()).read_bytes()) != h:
+                failures.append(f"REAL component file changed: {name.strip()}")
+    raw_manifest = json.loads((raw_dir / "manifest.json").read_text(encoding="utf-8"))
+    if _sha((raw_dir / "cases_inputs.jsonl").read_bytes()) != raw_manifest["inputs_sha256"] \
+            or _sha((raw_dir / "cases_labels.jsonl").read_bytes()) != raw_manifest["labels_sha256"]:
+        failures.append("raw pool files changed")
+    if manifest.get("source_audit_sha256") != refaudit._sha256_json(store.entries_canonical()):
+        failures.append("audit state changed since the synthetic freeze")
+    if manifest.get("real_benchmark", {}).get("manifest_sha256") != _sha((real_dir / "manifest.json").read_bytes()):
+        failures.append("REAL manifest changed since the synthetic freeze")
+
+    if failures:
+        raise SynthError("frozen synthetic component FAILED verification: " + "; ".join(failures))
+    return {"ok": True, "cases": len(labels), "unique_images": len(by_item),
+            "text": n_text, "numeric_math": n_num,
+            "manifest_sha256": expected["manifest.json"], "checksums": expected}
 
 
 def _print(r: dict) -> None:
@@ -443,9 +636,20 @@ def main(argv=None) -> int:
     ap.add_argument("--bench-dir", default=None)
     sub = ap.add_subparsers(dest="cmd", required=True)
     sub.add_parser("propose")
-    sub.add_parser("freeze")
+    fr = sub.add_parser("freeze", help="freeze exactly the saved proposal (owner-approved)")
+    fr.add_argument("--expect-total", type=int, default=None)
+    fr.add_argument("--expect-text", type=int, default=None)
+    fr.add_argument("--expect-numeric", type=int, default=None)
+    sub.add_parser("verify", help="re-verify the frozen synthetic component")
     args = ap.parse_args(argv)
     store = refaudit.AuditStore(Path(args.bench_dir) if args.bench_dir else None)
+    if args.cmd == "verify":
+        try:
+            print(json.dumps(verify_frozen_synthetic(store), indent=1))
+            return 0
+        except SynthError as exc:
+            print(f"FAILED: {exc}")
+            return 2
     try:
         synth = build_synthetic(store, load_selected_with_candidates(store))
     except SynthError as exc:
@@ -455,8 +659,19 @@ def main(argv=None) -> int:
     if args.cmd == "propose":
         print(f"proposal written: {write_proposal(store, synth)}")
         return 0
-    m = freeze_synthetic(store, synth)
+    expect = {k: v for k, v in (("total", args.expect_total), ("text", args.expect_text),
+                                ("numeric_math", args.expect_numeric)) if v is not None}
+    try:
+        m = freeze_synthetic(store, synth, expect=expect or None)
+    except SynthError as exc:
+        print(f"REFUSED: {exc}")
+        return 2
     print(f"frozen: {store.bench_dir / vsel.RAW_DIRNAME / SYNTH_DIRNAME} inputs_sha256={m['inputs_sha256'][:12]}...")
+    try:
+        print(json.dumps(verify_frozen_synthetic(store), indent=1))
+    except SynthError as exc:
+        print(f"POST-FREEZE VERIFY FAILED: {exc}")
+        return 3
     return 0
 
 

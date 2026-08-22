@@ -122,6 +122,15 @@ other numbers.
   overall, FAR by corruption type, FAR on the numeric group; COMBINED only
   secondarily, never hiding either source.
 
+- *SYNTHETIC_NEAR_MISS frozen 2026-08-22* (owner-approved, selection-policy-v2):
+  136 cases = 102 text + 34 numeric/math (short_token_omission 39,
+  token_duplication 34, char_deletion 29, digit_substitution 26,
+  operator_substitution 8); DEV 44 / CALIBRATION 27 / HELD_OUT 65;
+  `verifier_bench/synthetic/` with manifest (rules + policy versions, source
+  audit hash, REAL benchmark hashes, split assignment, image + case ids per
+  split, composition, zero-overlap assertion) and `CHECKSUMS.sha256`;
+  `verifier_synth.py verify` re-checks every invariant.
+
 **Model-selection objective for OCR_VERIFY — safety first.** Primary
 metric: **FALSE ACCEPT RATE** = incorrect transcription classified
 SUPPORTED (on negatives). Also reported: false reject rate (correct
