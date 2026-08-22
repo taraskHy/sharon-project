@@ -57,8 +57,11 @@ def _register_bundle_evidence(bundle_dir: Path, data_dir: Path) -> dict | None:
         db.close()
 
 
-def _print_evidence_report(rep: dict, id_map: dict[str, str], *, file=sys.stderr) -> None:
-    """Human-readable stale/preserved accounting, joined with dataset case ids."""
+def _print_evidence_report(rep: dict, id_map: dict[str, str], *, file=None) -> None:
+    """Human-readable stale/preserved accounting, joined with dataset case ids.
+    ``file`` is resolved at CALL time (a def-time ``sys.stderr`` default binds
+    whatever stream was current when the module was first imported)."""
+    file = file or sys.stderr
     cid = lambda i: id_map.get(i, i)  # noqa: E731
     print(f"[evidence] labels preserved : {rep['labels_preserved']} (nothing deleted)", file=file)
     print(f"[evidence] labels fresh     : {rep['labels_fresh']}", file=file)
