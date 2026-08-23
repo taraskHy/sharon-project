@@ -74,7 +74,7 @@ def test_bundle_is_anonymized_and_self_contained(bundle_dir):
     assert len(id_map) == 67 and set(id_map.values()) == {l["case_id"] for l in
                                                          (json.loads(x) for x in (DATASET / "cases_labels.jsonl").read_text(encoding="utf-8").splitlines())}
     meta = json.loads((bundle_dir / "bundle.json").read_text(encoding="utf-8"))
-    assert meta["items"] == 67 and meta["images"] == 91 and meta["source"]["dataset_inputs_sha256"]
+    assert meta["items"] == 67 and meta["images"] == 83 and meta["source"]["dataset_inputs_sha256"]
     with pytest.raises(FileExistsError):
         build_bundle(DATASET, bundle_dir, evaluation_root=REPO / "evaluation")
 

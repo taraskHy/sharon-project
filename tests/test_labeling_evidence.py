@@ -60,12 +60,15 @@ def _upstream_line_records() -> dict[str, list[dict]]:
 
 
 def _authoritative_count(case_id: str, label_row: dict, upstream: dict[str, list[dict]]) -> int:
-    """One image per recorded line (line cells); exam-002 cells are one crop."""
+    """One EFFECTIVE image per recorded line (line cells); exam-002 cells are one
+    crop. A line a human ruled to be a segmentation artifact carries no writing
+    and is deliberately NOT shown as a separate answer image — it stays in
+    `evidence_lines` as history, not in `evidence_images` as evidence."""
     if label_row["writer"] == "e002":
         return 1
     recs = upstream[case_id]
     assert recs and recs[0]["n_lines"] == len(recs)
-    return recs[0]["n_lines"]
+    return recs[0]["n_lines"] - int(label_row.get("lines_no_text_artifact") or 0)
 
 
 @pytest.fixture(scope="module")
@@ -90,26 +93,43 @@ def test_e004_q2_r3_two_lines_end_to_end(bundle_dir, tmp_path):
     # 2. dataset: the label row carries both lines, in order, with provenance
     lab = _labels()[cid]
     assert lab["line_count"] == 2 and lab["evidence_kind"] == "line_crops"
-    assert lab["evidence_images"] == ["hebrew_bench_v2/crops/hl_e004_q2_r3__l1.png", "htr_pilot/images/e004/q2_r3_l2.png"]
+    assert lab["evidence_images"] == ["hebrew_bench_v2/crops/hl_e004_q2_r3__l1.png",
+                                      "model_selection/datasets/grade_primary/manual_evidence_repairs/crops/e004_q2_r3__l2.png"]
     assert [e["index"] for e in lab["evidence_lines"]] == [1, 2]
     assert lab["evidence_lines"][0]["bench_item"] == "hl_e004_q2_r3__l1"
     assert lab["evidence_lines"][1]["bench_item"] is None
-    assert lab["evidence_lines"][1]["transcription_status"].startswith("no_audited_transcription:")
+    # line 2 was never audited by the OCR benchmark; the OWNER transcribed it by
+    # hand, and that repair is recorded without erasing what came before
+    assert lab["evidence_lines"][1]["transcription_status"] == "manual_grade_evidence_repair:transcribed"
+    assert lab["evidence_lines"][1]["original_transcription_status"].startswith("no_audited_transcription:")
+    assert lab["evidence_lines"][1]["original_image"] == "htr_pilot/images/e004/q2_r3_l2.png"
+    assert lab["evidence_lines"][1]["repair"]["verified_by"]
     assert lab["transcription_items"] == ["hl_e004_q2_r3__l1"]           # the audited OCR item is unchanged
-    assert lab["transcription_complete"] is False
-    assert lab["lines_without_audited_transcription"] == ["e004_q2_r3__l2"]
+    assert lab["transcription_complete"] is True
+    assert lab["lines_without_audited_transcription"] == []
+    assert lab["evidence_repairs"] == ["e004_q2_r3__l2"]
     assert lab["line_inventory_source"] == "evaluation/htr_pilot/splits/train.json"
     expected_bytes = [(REPO / "evaluation" / rel).read_bytes() for rel in lab["evidence_images"]]
     assert expected_bytes[0] == up_images[0].read_bytes()             # bench crop == upstream line image
-    assert expected_bytes[1] == up_images[1].read_bytes()
+    # EFFECTIVE evidence: image 2 is the crop the OWNER defined and transcribed,
+    # not the mis-segmented upstream crop it replaced (which stays as history).
+    assert lab["evidence_images"] == [e["image"] for e in lab["evidence_lines"]]
+    assert lab["evidence_images"][1] == lab["evidence_lines"][1]["image"]
+    assert lab["evidence_images"][1] != lab["evidence_lines"][1]["original_image"]
+    assert lab["evidence_images"][1].endswith("manual_evidence_repairs/crops/e004_q2_r3__l2.png")
+    assert expected_bytes[1] != up_images[1].read_bytes(), "the known-bad crop is no longer active evidence"
     # 3. bundle: two crops copied in the recorded order, fingerprinted
     b = Bundle(bundle_dir)
     oid = next(k for k, v in b.id_map.items() if v == cid)
     it = b.item(oid)
     assert len(it["images"]) == 2
     assert [(bundle_dir / rel).read_bytes() for rel in it["images"]] == expected_bytes
-    assert it["provenance"]["line_count"] == 2 and it["provenance"]["lines_transcribed"] == 1
-    assert it["provenance"]["transcription_complete"] is False
+    assert it["provenance"]["line_count"] == 2
+    assert it["provenance"]["transcription_complete"] is True
+    # both lines bear text: one audited by the OCR benchmark, one typed by the owner
+    assert it["provenance"]["lines_transcribed"] == 2
+    assert it["provenance"]["lines_no_text_artifact"] == 0
+    assert it["provenance"]["lines_resolved"] == 2
     assert it["evidence_sha256"] == evidence_fingerprint([bundle_dir / rel for rel in it["images"]])
     assert b.private_provenance[oid]["crop_files"] == lab["evidence_images"]
     # 4. grader API: two crops, in order, same bytes
@@ -120,7 +140,7 @@ def test_e004_q2_r3_two_lines_end_to_end(bundle_dir, tmp_path):
     assert payload["images"] == [f"/api/images/{oid}/1", f"/api/images/{oid}/2"]
     assert [c.get(u).content for u in payload["images"]] == expected_bytes
     assert payload["evidence_sha256"] == it["evidence_sha256"]
-    assert payload["provenance"]["line_count"] == 2 and payload["provenance"]["transcription_complete"] is False
+    assert payload["provenance"]["line_count"] == 2 and payload["provenance"]["transcription_complete"] is True
     assert c.get(f"/api/images/{oid}/3").status_code == 404          # exactly two
     # 5. grader UI contract: every image in `images` is rendered, in order
     _assert_grader_page_renders_all_images_in_order()
@@ -154,25 +174,46 @@ def test_every_case_renders_one_crop_per_authoritative_evidence_image(bundle_dir
         cid = b.id_map[it["item_id"]]
         lab = labels[cid]
         want = _authoritative_count(cid, lab, upstream)
-        assert len(lab["evidence_images"]) == want == lab["line_count"], cid
+        assert len(lab["evidence_images"]) == want == lab["lines_transcribed"], cid
+        assert want == lab["line_count"] - int(lab.get("lines_no_text_artifact") or 0), cid
         payload = c.get(f"/api/items/{it['item_id']}").json()["item"]
         assert len(payload["images"]) == want, cid
         served = [c.get(u).content for u in payload["images"]]
         assert served == [(REPO / "evaluation" / rel).read_bytes() for rel in lab["evidence_images"]], cid
         total += want
-    assert b.meta["images"] == total == 91
+    assert b.meta["images"] == total == 83, "91 recorded lines, 8 of them ruled no-text artifacts"
 
 
 @real_dataset
-def test_incomplete_transcriptions_are_flagged_not_hidden():
+def test_no_transcription_is_incomplete_and_the_repairs_are_disclosed():
+    """Every case is now complete — but "complete" must never mean "hidden".
+    Each of the nine that needed a human decision still says so, in the open:
+    the line the OCR benchmark never audited, the crop it was repaired from,
+    and who verified it."""
+    from tests.prerepair import repair_store
+
     labels = _labels()
-    incomplete = sorted(c for c, l in labels.items() if l["transcription_complete"] is False)
-    assert incomplete == ["e003_q1_r5", "e003_q2_r2", "e003_q2_r3", "e003_q2_r4", "e003_q2_r7",
-                          "e004_q2_r3", "e004_q2_r5", "e006_q2_r6", "e007_q1_r1"]
-    for cid in incomplete:
+    store = repair_store()
+    assert sorted(c for c, l in labels.items() if l["transcription_complete"] is False) == []
+    repaired = sorted(c for c, l in labels.items() if l.get("evidence_repairs"))
+    assert repaired == ["e003_q1_r5", "e003_q2_r2", "e003_q2_r3", "e003_q2_r4", "e003_q2_r7",
+                        "e004_q2_r3", "e004_q2_r5", "e006_q2_r6", "e007_q1_r1"]
+    assert len(store) == 9 and sorted(store) == sorted(s for c in repaired for s in labels[c]["evidence_repairs"])
+    for cid in repaired:
         lab = labels[cid]
-        assert len(lab["evidence_images"]) == lab["line_count"] > len(lab["transcription_items"])
-        assert lab["lines_without_audited_transcription"]
+        assert lab["lines_without_audited_transcription"] == []
+        assert lab["line_count"] > len(lab["transcription_items"]), \
+            "the OCR benchmark still covers fewer lines than the cell has — the gap is closed by a HUMAN"
+        assert len(lab["evidence_images"]) == lab["lines_transcribed"], cid
+        assert lab["lines_resolved"] == lab["line_count"], cid
+        for sid in lab["evidence_repairs"]:
+            line = next(e for e in lab["evidence_lines"] if e["sample_id"] == sid)
+            rec = store[sid]
+            assert line["transcription_status"] == "manual_grade_evidence_repair:" + rec["disposition"]
+            assert line["original_transcription_status"].startswith("no_audited_transcription:")
+            assert rec["human_verified"] is True and rec["verified_by"]
+            assert (REPO / "evaluation" / "model_selection" / "datasets" / "grade_primary"
+                    / rec["crop_path"]).exists()
 
 
 # ------------------------------------------------------------ fingerprint --

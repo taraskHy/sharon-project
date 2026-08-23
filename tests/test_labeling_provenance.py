@@ -50,10 +50,14 @@ def test_provenance_is_explicit_and_matches_the_dataset_case(bundle_dir):
         assert pv["case_id"] == cid
         assert pv["exam"] == lab["writer"][1:] and pv["question_id"] == lab["question_id"]
         assert pv["part"] == f"r{lab['sub_item_id']}" and pv["row"] == int(lab["sub_item_id"])
-        # line count = the dataset's authoritative recorded line count (one crop per line);
-        # lines_transcribed = lines the frozen transcription covers
-        assert pv["line_count"] == lab["line_count"] == len(lab["evidence_images"])
-        assert pv["lines_transcribed"] == len(lab["transcription_items"]) <= pv["line_count"]
+        # line_count = the dataset's authoritative recorded line count. The EFFECTIVE
+        # images are one per text-bearing line: a line a human ruled to be a
+        # segmentation artifact is resolved but is not shown as an answer image.
+        assert pv["line_count"] == lab["line_count"]
+        assert len(lab["evidence_images"]) == pv["lines_transcribed"] == lab["lines_transcribed"]
+        assert pv["lines_no_text_artifact"] == lab["lines_no_text_artifact"]
+        assert pv["lines_resolved"] == pv["lines_transcribed"] + pv["lines_no_text_artifact"] <= pv["line_count"]
+        assert (pv["lines_resolved"] == pv["line_count"]) is pv["transcription_complete"]
         assert pv["transcription_complete"] == lab["transcription_complete"]
         # page number comes from an upstream RECORD, never from the id
         priv = b.private_provenance[it["item_id"]]

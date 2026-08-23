@@ -36,7 +36,7 @@ with `backup --copy-to <OneDrive folder>` instead.
 ## Commands
 
 ```powershell
-# once: build the anonymized bundle from the frozen grade_primary dataset (67 cases, 91 images)
+# once: build the anonymized bundle from the frozen grade_primary dataset (67 cases, 83 images)
 .\.venv\Scripts\python.exe -m labeling_app build-bundle
 # rebuild IN PLACE after the dataset changed (old bundle kept aside, item ids stable,
 # labels preserved; labels whose evidence changed are reported as STALE — see below)
@@ -119,9 +119,12 @@ promote it to ground truth (recorded under `ignored_ineligible` in
 GRADE_PRIMARY model accuracy is measured only on human-labelable cases.
 Today's frozen grade_primary: 67 source cases, 67 human-labelable, 0
 deterministic-zero (all cells are explanation-only under the independent
-policy); 91 answer crops (one per recorded handwritten line; 9 cases carry a
-line without an audited transcription and are flagged
-`transcription_complete: false`).
+policy); 83 answer crops (the EFFECTIVE evidence: 91 recorded handwritten
+lines, 8 of them ruled no-text segmentation artifacts by a human and therefore
+not shown as separate answer images). Nine cases formerly carried a line
+without an audited transcription and were flagged
+`transcription_complete: false`; all nine have since been resolved by hand,
+so every case is complete.
 
 ## Grader workflow
 
@@ -143,7 +146,7 @@ reconstructed from the opaque id:
 | case id (e.g. `e003_q1_r1`) | dataset case id | yes |
 | question / part (row) | dataset case id | yes |
 | page number | e002 cells: `evaluation/hebrew_bench/crops_manifest.json`; e003–e007 lines: `evaluation/htr_pilot_sources.json` (q1 → page 11, q2 → page 12) | yes |
-| line count | dataset `line_count` = the AUTHORITATIVE upstream line inventory (`evaluation/htr_pilot/splits/*.json`, `n_lines` per cell; one crop per recorded line, in line order; exam-002 cells = one cell crop). `lines_transcribed` = lines the frozen transcription covers; when smaller the grader sees "transcription covers k of N lines — grade from the image(s)" | yes |
+| line count | dataset `line_count` = the AUTHORITATIVE upstream line inventory (`evaluation/htr_pilot/splits/*.json`, `n_lines` per cell; one crop per recorded line, in line order; exam-002 cells = one cell crop). `lines_transcribed` = lines that bear text, `lines_no_text_artifact` = lines a human ruled to be a segmentation artifact, `lines_resolved` = their sum. While `lines_resolved < line_count` the grader sees "transcription covers k of N lines — grade from the image(s)"; when an artifact resolved the gap the grader instead sees "N recorded lines — k with handwriting, m checked and found to be a scanning artifact with no writing (N of N accounted for)" | yes |
 | line bounding box on the page | **not recorded upstream → "unavailable"** | reported as unavailable |
 | source PDF filename (`test/003_70.pdf`) | carries the instructor's **total grade** in its name → **private** (`bundle/private/provenance.json`, admin view only) | no |
 
@@ -186,6 +189,48 @@ file + manifest revision updated), the bundle rebuilt with `--replace`.
 2 lines → dataset 2 crops → bundle 2 crops → API 2 crops (same bytes, same
 order) → grader page renders every image in order; and, for every case,
 rendered crops == authoritative evidence images.
+
+### Effective vs historical evidence (2026-08-23)
+
+Those nine lines have since been resolved by hand
+(`docs/model-selection.md` → *Repairing those nine lines*). Two fields now
+carry different jobs, and must not be conflated:
+
+| field | meaning |
+|---|---|
+| `evidence_lines` | the **historical record** — every recorded line, the crop it originally came from (`original_image`, `original_transcription_status`), and the `repair` decision applied to it |
+| `evidence_images` | the **effective evidence** a grader is shown now |
+
+The effective view is derived from each line's resolution
+(`evidence_repairs.resolution_summary`):
+
+* a line a human **transcribed** contributes its **repaired** crop — the
+  mis-segmented one it replaced is never served again, though it stays named
+  and on disk;
+* a line a human ruled a **`no_text_segmentation_artifact`** contributes
+  **nothing**: a bogus sliver is not a separate answer image, and showing it as
+  one misleads whoever is grading;
+* every other line contributes its own crop, unchanged.
+
+Line counts are kept as separate dimensions rather than one overloaded number
+(`lines_transcribed` keeps its literal meaning — lines that bear text):
+
+```
+lines_resolved = lines_transcribed + lines_no_text_artifact
+transcription_complete = (lines_resolved == line_count)
+```
+
+so a case resolved partly by an artifact ruling is reported as
+"1 text line + 1 segmentation artifact = 2/2 resolved", never as a bare
+"1 of 2 transcribed". Today: 91 recorded lines, 83 text-bearing, 8 artifact
+rulings → **83 effective images** across 67 items.
+
+**`autograder bench repair-grading-evidence` refuses on a repaired dataset.**
+It re-derives the evidence block from the frozen OCR benchmark alone, which
+knows nothing about the human repair layer, so running it would put the
+mis-segmented crops back as active evidence and strip the repair provenance.
+Use `bench apply-evidence-repairs`, which composes the builder output with the
+repair layer and is idempotent.
 
 ## Evidence fingerprints, rebuilds and stale labels
 

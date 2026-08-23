@@ -131,9 +131,19 @@
     });
     $("noimg").style.display = urls.length ? "none" : "block";
     const pv = it.provenance || {};
-    $("trnote").textContent = (pv.transcription_complete === false)
-      ? `note: the transcription covers ${pv.lines_transcribed} of ${pv.line_count} handwritten lines — grade from the image(s) above`
-      : "";
+    // lines_transcribed is literal (text-bearing lines). A line a human ruled to be a
+    // scanning artifact is RESOLVED but carries no text and is not shown as an image, so
+    // say that plainly instead of implying the answer is only partly transcribed.
+    const nArt = Number(pv.lines_no_text_artifact || 0);
+    const notes = [];
+    if (nArt > 0)
+      notes.push(`this answer has ${pv.line_count} recorded lines — ${pv.lines_transcribed} with handwriting, `
+        + `${nArt} checked and found to be a scanning artifact with no writing `
+        + `(${pv.lines_resolved} of ${pv.line_count} accounted for)`);
+    if (pv.transcription_complete === false)
+      notes.push(`the transcription covers ${pv.lines_transcribed} of ${pv.line_count} handwritten lines — grade from the image(s) above`);
+    else if (nArt > 0) notes.push("the image(s) above are the complete answer");
+    $("trnote").textContent = notes.length ? "note: " + notes.join("; ") : "";
     const st = $("stale");
     if (it.my_evidence_stale) {
       st.style.display = "block";
@@ -145,7 +155,7 @@
     if (pv.part) parts.push("Part " + esc(pv.part));
     parts.push(pv.page ? ("Page " + esc(pv.page)) : "Page: unavailable");
     if (pv.case_id) parts.push("Case " + esc(pv.case_id));
-    if (pv.line_count > 1) parts.push(esc(pv.line_count) + " lines");
+    if (pv.line_count > 1) parts.push(esc(pv.line_count) + " lines" + (nArt > 0 ? ` (${esc(nArt)} no-text artifact)` : ""));
     let src = "<strong>Source:</strong> " + parts.join(" · ");
     if (pv.page_url) src += ` &nbsp;<a href="${pv.page_url}" target="_blank" rel="noopener">[View full source page]</a> <span class="muted">(instructor marks removed; context only — grade the crop)</span>`;
     else src += " <span class='muted'>· full source page: unavailable</span>";

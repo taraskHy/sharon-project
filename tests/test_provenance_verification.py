@@ -21,7 +21,8 @@ from pathlib import Path
 import pytest
 
 from labeling_app.cli import main
-from labeling_app.db import (DEFAULT_LABEL_SOURCE, STATE_AUTHORITATIVE, STATE_EVIDENCE_REVIEW, LabelDB)
+from labeling_app.db import (AUTHORITATIVE_LABEL_SOURCES, DEFAULT_LABEL_SOURCE, STATE_AUTHORITATIVE,
+                             STATE_EVIDENCE_REVIEW, LabelDB)
 
 REPO = Path(__file__).resolve().parents[1]
 DATASET = REPO / "evaluation" / "model_selection" / "datasets" / "grade_primary"
@@ -300,34 +301,114 @@ def test_dataset_status_keeps_ground_truth_and_transcription_separate():
 
 
 @real_dataset
-def test_live_dataset_reports_58_scorable_and_9_incomplete():
-    """The real grade_primary dataset: 67 cases, 9 of them not measurable until
-    their restored line is transcribed — derived, never hardcoded."""
+def test_live_dataset_reports_nothing_held_back_by_the_transcription_dimension():
+    """The real grade_primary dataset: 67 cases, none of them held back. The nine
+    restored lines each carry a complete human decision, so the transcription
+    dimension no longer excludes anything — derived, never hardcoded."""
     from autograder.benchmark.manifests import load_manifest
     from autograder.benchmark.status import role_dataset_status
     m = load_manifest("grade_primary")
     st = role_dataset_status("grade_primary", m)
     assert st["cases"] == 67
-    assert st["transcription_incomplete"] == 9
+    assert st["transcription_incomplete"] == 0 and st["transcription_incomplete_cases"] == []
+    assert st["labeled_not_scorable"] == 0
+    assert st["scorable_for_accuracy"] == st["labeled"]
     assert st["scorable_for_accuracy"] + st["labeled_not_scorable"] == st["labeled"]
-    # and every incomplete case names exactly which line is missing
+    # the per-case accounting still holds, in both directions
     for c in m.cases:
         missing = c.label.get("lines_without_audited_transcription") or []
         assert bool(missing) is (c.label.get("transcription_complete") is False)
-        if missing:
-            ids = {e["sample_id"] for e in c.label["evidence_lines"] if e.get("sample_id")}
-            assert set(missing) <= ids
-            assert c.label["line_count"] == len(c.label["evidence_lines"])
+        assert missing == []
+        assert c.label["line_count"] == len(c.label["evidence_lines"])
+        ids = {e["sample_id"] for e in c.label["evidence_lines"] if e.get("sample_id")}
+        assert set(c.label.get("evidence_repairs") or []) <= ids
 
 
 @real_dataset
-def test_missing_transcriptions_command_lists_the_exact_lines(capsys):
+def test_every_case_becomes_scorable_once_ground_truth_is_imported(tmp_path):
+    """Ground truth lives in the labeling DB and is imported at run time, so the
+    dataset's own `score` is null and `labeled` is 0. Stamping the 67 scores onto
+    a COPY shows what the imported dataset will report: 67 of 67 scorable, READY.
+    The checked-in dataset is not touched."""
+    import hashlib
+    from autograder.benchmark.status import role_dataset_status
+    from tests.prerepair import copy_live_dataset
+
+    d = copy_live_dataset(tmp_path / "datasets" / "grade_primary")
+    rows = [json.loads(l) for l in (d / "cases_labels.jsonl").read_text(encoding="utf-8").splitlines() if l.strip()]
+    for r in rows:
+        r["score"] = 1.0
+    body = "".join(json.dumps(r, ensure_ascii=False) + "\n" for r in rows)
+    (d / "cases_labels.jsonl").write_text(body, encoding="utf-8", newline="\n")
+    man = json.loads((d / "manifest.json").read_text(encoding="utf-8"))
+    man["labels_sha256"] = hashlib.sha256(body.encode("utf-8")).hexdigest()
+    (d / "manifest.json").write_text(json.dumps(man, ensure_ascii=False, indent=1), encoding="utf-8", newline="\n")
+
+    st = role_dataset_status("grade_primary", datasets_root=d.parent)
+    assert st["cases"] == 67 and st["labeled"] == 67
+    assert st["scorable_for_accuracy"] == 67 and st["labeled_not_scorable"] == 0
+    assert st["status"] == "READY"
+
+
+@real_dataset
+def test_missing_transcriptions_command_reports_nothing_left_to_transcribe(capsys):
     from autograder.cli import main as autograder_main
     assert autograder_main(["bench", "missing-transcriptions", "--role", "grade_primary", "--json"]) == 0
     out = json.loads(capsys.readouterr().out)
-    assert out["cases_total"] == 67 and out["cases_incomplete"] == 9 and out["cases_complete"] == 58
-    for row in out["cases"]:
-        assert row["missing"] and row["line_count"] == row["lines_transcribed"] + len(row["missing"])
-        for m in row["missing"]:
-            assert m["sample_id"] and m["image"] and (REPO / "evaluation" / m["image"]).exists()
-            assert m["transcription_status"].startswith("no_audited_transcription:")
+    assert out["cases_total"] == 67 and out["cases_incomplete"] == 0 and out["cases_complete"] == 67
+    assert out["cases"] == []
+
+
+@real_dataset
+def test_the_nine_manual_repairs_stay_auditable_after_completion(capsys):
+    """Completion must not erase the record: the repair command still names all
+    nine decisions, who verified them, and which crop each was made from."""
+    from autograder.cli import main as autograder_main
+    from tests.prerepair import repair_store, repaired_line_ids
+
+    assert autograder_main(["bench", "evidence-repairs", "--role", "grade_primary", "--json"]) == 0
+    out = json.loads(capsys.readouterr().out)
+    assert out["expected"] == 9 and out["repaired"] == 9
+    assert out["remaining"] == [] and out["unexpected_records"] == []
+    assert out["complete"] is True and out["problems"] == []
+    assert sorted(out["applied"]) == repaired_line_ids()
+    assert out["by_disposition"] == {"transcribed": 1, "no_text_segmentation_artifact": 8}
+    assert out["frozen_bench_sha256"], "the frozen OCR benchmark hashes are reported alongside"
+    store = repair_store()
+    assert sorted(store) == repaired_line_ids()
+    for line_id, rec in store.items():
+        assert rec["human_verified"] is True and rec["verified_by"]
+        assert (DATASET / rec["crop_path"]).exists()
+        assert rec["original_crop"]["status"] == "bad_segmentation", line_id
+        assert rec["source_pdf"] and rec["source_page"], line_id
+
+
+LIVE_DB = Path.home() / "AppData" / "Local" / "autograder" / "labeling" / "labels.db"
+live_db = pytest.mark.skipif(not LIVE_DB.exists(), reason="no live labeling database on this machine")
+
+
+@live_db
+def test_the_live_ground_truth_survives_every_evidence_version():
+    """Erik copied 67 instructor grades from the original graded exams. Repairing
+    the evidence the app DISPLAYS can never invalidate them: an authoritative
+    label did not depend on what the app showed. Read-only."""
+    db = LabelDB(LIVE_DB)
+    rep = db.verify_provenance()
+    assert rep["labels_total"] == 67
+    assert rep["labels_by_source"] == {"human_independent_grading": 0,
+                                       "original_instructor_grade": 67, "adjudicated": 0}
+    assert rep["scores_unchanged"] is True
+    assert rep["scores_changed_since_provenance_recorded"] == []
+    assert rep["stale_labels"] == [], "no grader is asked to re-grade"
+    per = rep["per_grader"]["Erik"]
+    assert per["labels"] == 67 and per["by_source"] == {"original_instructor_grade": 67}
+    assert per["entered_by"] == ["Erik"] and per["asserted_by"] == ["owner"]
+    assert per["statuses"] == ["saved"]
+    # every one of them is an AUTHORITATIVE source, which is why the repair
+    # leaves them valid — the repair itself stays recorded either way
+    assert set(per["by_source"]) <= set(AUTHORITATIVE_LABEL_SOURCES)
+    assert rep["authoritative_missing_entered_by"] == [] and rep["authoritative_missing_asserted_by"] == []
+    # labels DO sit on evidence that was repaired — and none of them is stale,
+    # which is the whole point: the repair stays recorded, the grade stays valid
+    assert rep["authoritative_labels_on_repaired_evidence"]
+    assert set(rep["authoritative_labels_on_repaired_evidence"]) & set(rep["stale_labels"]) == set()

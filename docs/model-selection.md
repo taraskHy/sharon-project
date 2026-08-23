@@ -331,7 +331,7 @@ subsets are never optimized after results exist.
 |---|---|---|---|---|
 | OCR_PRIMARY | **READY** | frozen hebrew_bench_v2, 129 items (DEV 60 / CALIB 23 / HELD_OUT 46) | audited refs (102) + text-layer (27), all provenance-valid | smoke 8 |
 | OCR_VERIFY | **READY** | frozen REAL 303 + SYNTHETIC 136 | expected verdict per case | smoke 12; REAL/SYNTHETIC separate |
-| GRADE_PRIMARY | **NEEDS_OWNER_LABELS** | `evaluation/model_selection/datasets/grade_primary` — 67 cases (DEV 32 / CALIB 14 / HELD_OUT 21; writer Split A); 13 incomplete cells excluded; evidence = one crop per recorded handwritten line from the upstream htr_pilot inventory (91 crops; re-frozen 2026-08-22, inputs unchanged — `manifest.revisions`) | 0 owner labels; `owner_labels.json` via `scripts/grade_label_ui.py` | inputs = NO-RAG packs from the frozen key + audited transcriptions; runnable now for decision/validation metrics only; 9 cases are `transcription_complete: false` (a line without an audited transcription) and are excluded from accuracy metrics (`labeled_excluded_transcription_incomplete`) |
+| GRADE_PRIMARY | **NEEDS_OWNER_LABELS** | `evaluation/model_selection/datasets/grade_primary` — 67 cases (DEV 32 / CALIB 14 / HELD_OUT 21; writer Split A); 13 incomplete cells excluded; evidence = one crop per recorded handwritten line from the upstream htr_pilot inventory (91 recorded lines -> 83 EFFECTIVE grader-visible crops after 8 human no-text-artifact rulings; re-frozen 2026-08-22, manually repaired 2026-08-23 — `manifest.revisions`) | 0 owner labels; `owner_labels.json` via `scripts/grade_label_ui.py` | inputs = NO-RAG packs from the frozen key + audited transcriptions; runnable now for decision/validation metrics only; all 67 are `transcription_complete: true` since the owner resolved the 9 outstanding lines by hand (1 transcribed, 8 ruled no-text artifacts), so none is excluded from accuracy metrics |
 | GRADE_ESCALATE | **PENDING_OTHER_EXPERIMENT** | harvested by `bench build-escalation --from-run <grade_primary run>` | owner labels of the harvested cases | difficulty is never invented |
 | MC_RESOLVE | **READY** (DEV only, n=10) | `datasets/mc_resolve_cloud` — deterministic band crops of the 10 ambiguous prob rows | agent-audited answers (provenance on every label; owner verified 3 totals only) | expand before selecting a cloud resolver |
 | VARIANT_RESOLVE | **READY** (DEV only, n=16) | `datasets/variant_resolve` — marker-region crops (page-1 bottom third): 13 prob suits + 3 Stage-A flowers | 13 agent-audited suits (10 pinned by totals) + 3 operator content-verified flowers | production sends the full page; parity run can render locally |
@@ -438,6 +438,29 @@ repaired line ids, the repair-store hash, the frozen-bench hashes, and a note
 that any run or bundle built against the previous `inputs_sha256` is a different
 evidence version. Rebuild the labeling bundle after applying
 (`python -m labeling_app build-bundle --replace`).
+
+**Effective vs historical evidence.** `apply_repairs` also re-derives what a
+grader is actually shown. `evidence_lines` stays the immutable history — every
+recorded line, its original crop and status, and the decision applied to it —
+while `evidence_images` narrows to real answer evidence: a transcribed line
+contributes its repaired crop, an artifact ruling contributes nothing. The line
+dimensions are stated separately rather than folded into one number:
+
+```
+lines_resolved = lines_transcribed + lines_no_text_artifact
+transcription_complete = (lines_resolved == line_count)
+```
+
+Today: 91 recorded lines → 83 text-bearing + 8 artifact rulings = 91 resolved,
+67/67 complete, **83 effective evidence images**. GRADE_PRIMARY itself is
+text-only, so this affects the labeling UI, provenance and dataset invariants —
+not the grading model's input. A run that only re-derives this view is recorded
+as `kind: effective_evidence_resolution` with `inputs_changed: false`.
+
+`bench repair-grading-evidence` **refuses** once any row carries
+`evidence_repairs`: it derives from the frozen OCR benchmark alone and would
+discard the human layer. `bench apply-evidence-repairs` is the repair-aware
+path, and is idempotent.
 
 ### Spend safety — the live-call sequence (Part 7)
 

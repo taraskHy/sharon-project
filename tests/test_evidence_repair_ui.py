@@ -8,19 +8,17 @@ instructor's grade is never on screen while the transcription is being typed.
 from __future__ import annotations
 
 import json
-import shutil
 from pathlib import Path
 
 import pytest
 from streamlit.testing.v1 import AppTest
 
 from autograder.benchmark.evidence_repairs import RepairStore, expected_repairs, repair_status
-from autograder.benchmark.manifests import DEFAULT_DATASETS_ROOT
+from tests.prerepair import DATASET as REAL_DATASET
+from tests.prerepair import REPO as REPO_ROOT
+from tests.prerepair import build_pre_repair_dataset, copy_live_dataset
 
-REPO_ROOT = Path(__file__).resolve().parents[1]
 UI = REPO_ROOT / "scripts" / "evidence_repair_ui.py"
-REAL_DATASET = DEFAULT_DATASETS_ROOT / "grade_primary"
-DATASET_FILES = ("cases_inputs.jsonl", "cases_labels.jsonl", "manifest.json", "CHECKSUMS.sha256")
 
 pytestmark = pytest.mark.skipif(not (REAL_DATASET / "manifest.json").exists(),
                                 reason="grade_primary dataset is not built here")
@@ -28,12 +26,10 @@ pytestmark = pytest.mark.skipif(not (REAL_DATASET / "manifest.json").exists(),
 
 @pytest.fixture()
 def datasets_root(tmp_path: Path) -> Path:
-    """A writable copy of the dataset, laid out the way the UI expects."""
-    d = tmp_path / "datasets" / "grade_primary"
-    d.mkdir(parents=True)
-    for name in DATASET_FILES:
-        shutil.copy2(REAL_DATASET / name, d / name)
-    return d.parent
+    """The dataset in its PRE-repair state, laid out the way the UI expects —
+    the tool only has work to show while lines are still untranscribed. The
+    checked-in dataset is post-repair and is never written by a test."""
+    return build_pre_repair_dataset(tmp_path / "datasets" / "grade_primary").parent
 
 
 def _open(datasets_root: Path, timeout: int = 180) -> AppTest:
@@ -44,15 +40,24 @@ def _open(datasets_root: Path, timeout: int = 180) -> AppTest:
     return at
 
 
-def _screen_text(at: AppTest) -> str:
+def _worklist_text(at: AppTest) -> str:
+    """The EDITING surface — what the human is being asked to work on. The
+    integrity/status JSON at the foot of the page is deliberately excluded: it
+    names every repair, including finished ones, and that is useful audit data,
+    not a work item."""
     parts: list[str] = []
     for kind in ("title", "subheader", "header", "markdown", "caption", "warning", "info", "error", "success", "code"):
         parts += [str(getattr(e, "value", "")) for e in getattr(at, kind)]
     parts += [str(e.value) for e in at.text_area]
     parts += [str(e.value) for e in at.text_input]
-    parts += [json.dumps(e.value, ensure_ascii=False, default=str) for e in at.json]
     parts += [str(getattr(e, "label", "")) for e in at.button]
     return "\n".join(parts)
+
+
+def _screen_text(at: AppTest) -> str:
+    """Everything rendered, status JSON included."""
+    return "\n".join([_worklist_text(at)]
+                     + [json.dumps(e.value, ensure_ascii=False, default=str) for e in at.json])
 
 
 def test_ui_shows_the_first_unrepaired_line_with_its_real_context(datasets_root: Path, no_network):
@@ -103,11 +108,16 @@ def test_saving_through_the_ui_records_an_admissible_repair(datasets_root: Path,
     assert rec["source_pdf"] and rec["source_page"], "the source page is recorded with the repair"
     assert rec["original_crop"]["status"] == "bad_segmentation", "the crop it replaces is recorded too"
     assert repair_status(d)["repaired"] == 1
-    after = _screen_text(at)                      # the repaired line leaves the worklist; the next one is shown
-    assert expected_repairs(d)[1]["line_id"] in after
-    assert item["line_id"] not in after
-    assert "1 / 8" in after and "8 of 9" not in after
-    assert "1 of 9 lines repaired" in after
+    # what "off the worklist" actually means, checked against production state
+    assert repair_status(d)["remaining"] == [e["line_id"] for e in expected_repairs(d)[1:]]
+    # ...and the record it just wrote is admissible, not merely present
+    from autograder.benchmark.evidence_repairs import verify_repairs
+    assert verify_repairs(d, evaluation_root=REPO_ROOT / "evaluation")["problems"] == []
+    # the repaired line is no longer the ACTIVE work item; the next one is
+    work = _worklist_text(at)
+    assert expected_repairs(d)[1]["line_id"] in work
+    assert item["line_id"] not in work, "the finished line is off the worklist"
+    assert "1 / 8" in work and "1 of 9 lines repaired" in work
 
 
 def test_the_artifact_path_saves_without_inventing_text(datasets_root: Path, no_network):
@@ -144,3 +154,20 @@ def test_ui_reports_completion_and_the_apply_command(datasets_root: Path, no_net
     text = _screen_text(_open(datasets_root))
     assert "All expected lines are repaired." in text
     assert "apply-evidence-repairs" in text, "the tool hands over the exact next command"
+
+
+def test_ui_on_the_live_repaired_dataset_offers_no_work(tmp_path: Path, no_network):
+    """Against the checked-in (already repaired) dataset the tool must not invite
+    a second round of transcription — every line already carries a decision."""
+    live = copy_live_dataset(tmp_path / "datasets" / "grade_primary", with_repairs=True)
+    at = _open(live.parent)
+    text, work = _screen_text(at), _worklist_text(at)
+    assert "All expected lines are repaired." in text
+    assert "apply-evidence-repairs" in text
+    assert not at.text_area, "no transcription box is offered when nothing is outstanding"
+    assert repair_status(live)["remaining"] == []
+    # nothing is a work item, yet the integrity panel still discloses all nine —
+    # audit data is not hidden just because the work is finished
+    for line_id in sorted(RepairStore(live).records()):
+        assert line_id in text, line_id
+        assert line_id not in work, line_id

@@ -47,6 +47,8 @@ from .manifests import REPO_ROOT
 REPAIRS_FILENAME = "manual_evidence_repairs.jsonl"
 REPAIRS_CROPS_DIRNAME = "manual_evidence_repairs"
 REPAIR_SOURCE = "manual_grade_evidence_repair"
+#: a revision that only re-derives the EFFECTIVE evidence view from decisions already recorded
+EFFECTIVE_EVIDENCE_SOURCE = "effective_evidence_resolution"
 REPAIR_SCHEMA_VERSION = 1
 DISPOSITIONS = ("transcribed", "no_text_segmentation_artifact")
 #: the frozen OCR benchmark files this workflow must never change
@@ -235,6 +237,9 @@ class RepairStore:
             raise RepairError("a segmentation-artifact repair carries no transcription")
         if not (verified_by or "").strip():
             raise RepairError("a repair must record who verified it")
+        if not (original_crop or {}).get("image") or not (original_crop or {}).get("sha256"):
+            raise RepairError("a repair must record the crop it replaces (image + sha256) so the historical "
+                              "evidence stays recoverable")
         rec = {
             "schema_version": REPAIR_SCHEMA_VERSION,
             "case_id": case_id, "line_id": line_id, "line_index": line_index, "line_count": line_count,
@@ -372,6 +377,19 @@ def verify_repairs(dataset_dir: Path, *, evaluation_root: Path | None = None,
             problems.append({"line_id": lid, "problem": f"unknown disposition {r.get('disposition')!r}"})
         if r.get("disposition") == "transcribed" and not (r.get("transcription") or "").strip():
             problems.append({"line_id": lid, "problem": "transcribed repair without text"})
+        if r.get("disposition") == "no_text_segmentation_artifact" and (r.get("transcription") or "").strip():
+            problems.append({"line_id": lid, "problem": "a no-text artifact ruling carries a transcription; "
+                                                        "text was attached to a decision that recorded none"})
+        oc = r.get("original_crop") or {}            # the recovery chain must stay intact, not just claimed
+        if not oc.get("image") or not oc.get("sha256"):
+            problems.append({"line_id": lid, "problem": "no record of the crop this repair replaced"})
+        else:
+            orig = Path(evaluation_root or (REPO_ROOT / "evaluation")) / oc["image"]
+            if not orig.exists():
+                problems.append({"line_id": lid, "problem": f"the crop this repair replaced is gone ({oc['image']})"})
+            elif _sha_file(orig) != oc["sha256"]:
+                problems.append({"line_id": lid, "problem": "the crop this repair replaced no longer hashes to the "
+                                                            "sha256 recorded with the decision"})
         cp = d / (r.get("crop_path") or "")
         if not r.get("crop_path") or not cp.exists():
             problems.append({"line_id": lid, "problem": "repaired crop file missing"})
@@ -389,9 +407,51 @@ def verify_repairs(dataset_dir: Path, *, evaluation_root: Path | None = None,
                     problems.append({"line_id": lid, "problem": "recorded geometry does not re-derive the stored crop"})
             except (RepairError, DatasetBuildError) as ex:
                 problems.append({"line_id": lid, "problem": f"geometry could not be re-derived: {ex}"})
+    problems += _applied_records_still_match(d, recs)
     st = repair_status(d)
     return {"ok": not problems and st["complete"], "problems": problems, **st,
             "frozen_bench_sha256": frozen_bench_hashes()}
+
+
+def _applied_records_still_match(dataset_dir: Path, recs: dict[str, dict]) -> list[dict]:
+    """A repair that has already been APPLIED is embedded in the dataset: the
+    label row carries the decision, the crop hash and who verified it, and the
+    model input carries the text. Editing the store afterwards would silently
+    disagree with what the dataset says was decided — catch that."""
+    d = Path(dataset_dir)
+    labels_p, inputs_p = d / "cases_labels.jsonl", d / "cases_inputs.jsonl"
+    if not labels_p.exists():
+        return []
+    rows = [json.loads(l) for l in labels_p.read_text(encoding="utf-8").splitlines() if l.strip()]
+    texts = {}
+    if inputs_p.exists():
+        texts = {r["case_id"]: (r.get("transcription") or "")
+                 for r in (json.loads(l) for l in inputs_p.read_text(encoding="utf-8").splitlines() if l.strip())}
+    out: list[dict] = []
+    for row in rows:
+        for sid in (row.get("evidence_repairs") or []):
+            rec = recs.get(sid)
+            if rec is None:
+                out.append({"line_id": sid, "problem": "applied by the dataset but missing from the repair store"})
+                continue
+            block = next((e.get("repair") or {} for e in (row.get("evidence_lines") or [])
+                          if e.get("sample_id") == sid), {})
+            for field in ("source", "disposition", "verified_by", "created_at", "crop_sha256", "crop_path"):
+                if block.get(field) != rec.get(field):
+                    out.append({"line_id": sid,
+                                "problem": f"the repair store's {field} no longer matches the applied dataset "
+                                           f"({rec.get(field)!r} vs {block.get(field)!r})"})
+            if texts:
+                applied = texts.get(row["case_id"], "").split("\n")
+                if rec.get("disposition") == "transcribed" and rec["transcription"] not in applied:
+                    out.append({"line_id": sid,
+                                "problem": "the repair store's transcription is not the text applied to the "
+                                           "case; the store was edited after the repair was applied"})
+                if rec.get("disposition") == "no_text_segmentation_artifact" and (rec.get("transcription") or "").strip():
+                    out.append({"line_id": sid,
+                                "problem": "text was attached to an applied no-text ruling; the case's "
+                                           "transcription never contained it"})
+    return out
 
 
 # ----------------------------------------------------------------- applying --
@@ -446,6 +506,76 @@ def _repaired_transcription(row_label: dict, input_row: dict, recs: dict[str, di
     return "\n".join(p for p in parts if p != ""), new_lines, used
 
 
+# ------------------------------------------------- effective vs historical --
+
+def line_resolution(line: dict, *, unresolved: set[str]) -> str:
+    """How ONE recorded line stands today: ``transcribed`` (it carries text —
+    audited by the OCR benchmark or typed by a human), ``artifact`` (a human
+    ruled the crop is not a line of writing at all), or ``unresolved`` (still
+    waiting for a decision)."""
+    rep = line.get("repair") or {}
+    if rep:
+        d = rep.get("disposition")
+        if d not in DISPOSITIONS:                  # never fail open: an unclassified
+            raise RepairError(                     # decision must not quietly become evidence
+                f"{line.get('sample_id')}: repair disposition {d!r} is not one of {DISPOSITIONS}; "
+                "refusing to guess whether its crop is answer evidence")
+        return "artifact" if d == "no_text_segmentation_artifact" else "transcribed"
+    return "unresolved" if line.get("sample_id") in unresolved else "transcribed"
+
+
+def resolution_summary(row: dict) -> dict[str, Any]:
+    """The EFFECTIVE evidence of one case, plus the explicit line dimensions.
+
+    ``evidence_lines`` is the historical record — every recorded line, with the
+    crop it originally came from and what was decided about it. ``evidence_images``
+    is what a grader should actually be shown NOW:
+
+    * a line a human transcribed contributes its REPAIRED crop, not the
+      mis-segmented one it replaced;
+    * a line a human ruled to be a segmentation artifact contributes NOTHING —
+      a bogus sliver is not a separate answer image, and presenting it as one
+      misleads whoever is grading;
+    * every other line contributes its own crop, unchanged.
+
+    The counts are kept as separate dimensions rather than overloading one
+    number: ``lines_transcribed`` stays literal (lines that bear text), and the
+    artifact resolutions are counted alongside it, so
+    ``lines_resolved == line_count`` is what "complete" means.
+
+    Note ``lines_transcribed == len(evidence_images)`` holds for a RESOLVED row
+    only: a line still awaiting a decision is shown (it is the best evidence
+    there is) but counted as neither transcribed nor artifact."""
+    unresolved = set(row.get("lines_without_audited_transcription") or [])
+    lines = sorted(row.get("evidence_lines") or [], key=lambda l: l.get("index", 0))
+    kinds = [line_resolution(l, unresolved=unresolved) for l in lines]
+    transcribed = kinds.count("transcribed")
+    artifact = kinds.count("artifact")
+    n = row.get("line_count")
+    n = len(lines) if n is None else int(n)          # an explicit 0 is honoured, not replaced
+    return {
+        "evidence_images": [l["image"] for l, k in zip(lines, kinds) if k != "artifact"],
+        "lines_transcribed": transcribed,
+        "lines_no_text_artifact": artifact,
+        "lines_resolved": transcribed + artifact,
+        "transcription_complete": (transcribed + artifact) == n,
+    }
+
+
+#: fields the repair layer adds, always written in this order so a row's bytes
+#: are a function of the decisions, not of how many passes produced them
+_REPAIR_TAIL = ("evidence_repairs", "lines_transcribed", "lines_no_text_artifact", "lines_resolved")
+
+
+def _canonical(row: dict) -> dict:
+    """The repair layer's fields, in a fixed position at the end of the row."""
+    out = {k: v for k, v in row.items() if k not in _REPAIR_TAIL}
+    for k in _REPAIR_TAIL:
+        if k in row:
+            out[k] = row[k]
+    return out
+
+
 def apply_repairs(dataset_dir: Path, *, bench_root: Path = DEFAULT_BENCH_ROOT,
                   htr_root: Path = DEFAULT_HTR_ROOT, evaluation_root: Path | None = None,
                   now: str | None = None, dry_run: bool = False, allow_partial: bool = False) -> dict[str, Any]:
@@ -476,25 +606,35 @@ def apply_repairs(dataset_dir: Path, *, bench_root: Path = DEFAULT_BENCH_ROOT,
     inputs = [json.loads(l) for l in inputs_p.read_text(encoding="utf-8").splitlines() if l.strip()]
     labels = [json.loads(l) for l in labels_p.read_text(encoding="utf-8").splitlines() if l.strip()]
     by_case_input = {r["case_id"]: r for r in inputs}
-    changed_cases, used_lines = [], []
+    changed_cases, used_lines, rows_changed = [], [], []
     new_labels = []
     for row in labels:
         cid = row["case_id"]
         missing = list(row.get("lines_without_audited_transcription") or [])
         if not missing or not all(sid in recs for sid in missing):
-            new_labels.append(row)
+            if "evidence_lines" not in row:        # a role whose labels carry no evidence
+                new_labels.append(row)             # block (mc/variant): nothing to resolve
+                continue
+            # no repair to fold in, but the effective-evidence view is always
+            # re-derived so every row states the same dimensions
+            resolved = _canonical({**row, **resolution_summary(row)})
+            if resolved != row:
+                rows_changed.append(cid)
+            new_labels.append(resolved)
             continue
         inp = by_case_input[cid]
         before_text = inp.get("transcription") or ""
         text, new_lines, used = _repaired_transcription(
             row, inp, recs, evaluation_root=ev_root, dataset_dir=d)
         inp["transcription"] = text
-        new_row = {**row, "evidence_lines": new_lines, "transcription_complete": True,
+        new_row = {**row, "evidence_lines": new_lines,
                    "lines_without_audited_transcription": [],
                    "evidence_repairs": sorted(used),
                    "transcription_source": (row.get("transcription_source") or "")
                    + f" + {REPAIR_SOURCE} for {', '.join(sorted(used))}"}
+        new_row = _canonical({**new_row, **resolution_summary(new_row)})
         new_labels.append(new_row)
+        rows_changed.append(cid)
         used_lines.extend(used)
         changed_cases.append({"case_id": cid, "lines_repaired": sorted(used),
                               "transcription_chars_before": len(before_text), "transcription_chars_after": len(text),
@@ -520,18 +660,35 @@ def apply_repairs(dataset_dir: Path, *, bench_root: Path = DEFAULT_BENCH_ROOT,
     if _sha_file(inputs_p) != new_inputs_sha or _sha_file(labels_p) != new_labels_sha:
         raise DatasetBuildError("post-write verification failed")
     man["inputs_sha256"], man["labels_sha256"] = new_inputs_sha, new_labels_sha
+    repaired_now = bool(used_lines)
     man.setdefault("revisions", []).append({
-        "at": now or _now(), "kind": REPAIR_SOURCE,
-        "why": ("lines recorded in the authoritative line inventory but never audited by the OCR benchmark "
-                "(their upstream crop was tagged bad_segmentation) were re-cropped and transcribed by a human "
-                "for GRADE_PRIMARY only; evaluation/hebrew_bench_v2 is unchanged"),
-        "previous_inputs_sha256": old_inputs_sha, "inputs_sha256": new_inputs_sha, "inputs_changed": True,
+        "at": now or _now(),
+        "kind": REPAIR_SOURCE if repaired_now else EFFECTIVE_EVIDENCE_SOURCE,
+        "why": (("lines recorded in the authoritative line inventory but never audited by the OCR benchmark "
+                 "(their upstream crop was tagged bad_segmentation) were re-cropped and transcribed by a human "
+                 "for GRADE_PRIMARY only; evaluation/hebrew_bench_v2 is unchanged") if repaired_now else
+                ("the effective grader-visible evidence was re-derived from the recorded repair decisions: a "
+                 "transcribed line now shows its repaired crop, a line ruled a segmentation artifact is no "
+                 "longer presented as a separate answer image, and the line dimensions "
+                 "(lines_transcribed / lines_no_text_artifact / lines_resolved) are stated explicitly. The "
+                 "historical crop, hash and status of every line stay in evidence_lines; no human decision was "
+                 "re-made and evaluation/hebrew_bench_v2 is unchanged")),
+        "previous_inputs_sha256": old_inputs_sha, "inputs_sha256": new_inputs_sha,
+        "inputs_changed": new_inputs_sha != old_inputs_sha,
         "previous_labels_sha256": old_labels_sha, "labels_sha256": new_labels_sha,
         "lines_repaired": sorted(used_lines), "cases_changed": [c["case_id"] for c in changed_cases],
+        "rows_changed": sorted(rows_changed),
+        "evidence_images_before": sum(len(r.get("evidence_images") or []) for r in labels),
+        "evidence_images_after": sum(len(r.get("evidence_images") or []) for r in new_labels),
+        "effective_evidence_dropped": sorted(
+            (r["case_id"], img) for r, n in zip(labels, new_labels)
+            for img in (set(r.get("evidence_images") or []) - set(n.get("evidence_images") or []))),
         "repair_store": REPAIRS_FILENAME, "repair_store_sha256": ver["store_sha256"],
         "frozen_bench_sha256": frozen_before,
-        "note": "model input changed: any downstream run/bundle made against the previous inputs_sha256 is a "
-                "different evidence version and must be re-registered"})
+        "note": ("model input changed: any downstream run/bundle made against the previous inputs_sha256 is a "
+                 "different evidence version and must be re-registered" if new_inputs_sha != old_inputs_sha else
+                 "the model input (transcription) is unchanged; the grader-visible evidence version changed, so "
+                 "the labeling bundle must be rebuilt (python -m labeling_app build-bundle --replace)")})
     man.setdefault("extra", {})["evidence_inventory"] = summary["evidence_inventory"]
     man_p.write_text(json.dumps(man, ensure_ascii=False, indent=1), encoding="utf-8", newline="\n")
     (d / "CHECKSUMS.sha256").write_text(
@@ -542,7 +699,8 @@ def apply_repairs(dataset_dir: Path, *, bench_root: Path = DEFAULT_BENCH_ROOT,
     return summary
 
 
-__all__ = ["REPAIRS_FILENAME", "REPAIRS_CROPS_DIRNAME", "REPAIR_SOURCE", "REPAIR_SCHEMA_VERSION", "DISPOSITIONS",
+__all__ = ["REPAIRS_FILENAME", "REPAIRS_CROPS_DIRNAME", "REPAIR_SOURCE", "EFFECTIVE_EVIDENCE_SOURCE",
+           "line_resolution", "resolution_summary", "REPAIR_SCHEMA_VERSION", "DISPOSITIONS",
            "FROZEN_BENCH_FILES", "RepairError", "RepairStore", "case_geometry", "cell_crop_path", "locate_exact",
            "render_band", "suggested_band", "expected_repairs", "repair_status", "verify_repairs", "apply_repairs",
            "frozen_bench_hashes", "assert_frozen_bench_unchanged"]

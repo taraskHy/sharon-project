@@ -519,6 +519,17 @@ def repair_grading_evidence(dataset_dir: Path, *, bench_root: Path = DEFAULT_BEN
         raise DatasetBuildError("cases_labels.jsonl does not match the manifest hash; refusing to touch a drifted dataset")
     inputs = {r["case_id"]: r for r in (json.loads(l) for l in inputs_p.read_text(encoding="utf-8").splitlines() if l.strip())}
     rows = [json.loads(l) for l in labels_p.read_text(encoding="utf-8").splitlines() if l.strip()]
+    # This command re-derives the evidence block from the FROZEN OCR benchmark alone,
+    # which knows nothing about the supplemental human repair layer. Running it on a
+    # repaired dataset would put the mis-segmented crops back as ACTIVE evidence and
+    # strip the repair provenance off the rows — silently undoing a human decision.
+    repaired = sorted(r["case_id"] for r in rows if r.get("evidence_repairs"))
+    if repaired:
+        raise DatasetBuildError(
+            f"{len(repaired)} case(s) carry applied manual evidence repairs ({', '.join(repaired[:3])}"
+            f"{'…' if len(repaired) > 3 else ''}); this command re-derives evidence from the OCR benchmark "
+            "only and would discard them. Use `bench apply-evidence-repairs` instead, which composes the "
+            "builder output with the human repair layer.")
     cells = audited_cells(bench_root, htr_root=htr_root, evaluation_root=evaluation_root)
     new_rows, updated, changed = [], [], []
     for row in rows:

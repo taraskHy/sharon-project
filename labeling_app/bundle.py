@@ -58,10 +58,12 @@ FORBIDDEN_IN_BUNDLE = ("split", "writer", "label_status", "transcription_items",
                        "transcription_source", "evidence_images", "score", "rubric_met", "owner_note",
                        "owner_status", "question_id", "sub_item_id", "evidence_lines", "evidence_kind",
                        "line_inventory_source", "lines_without_audited_transcription", "line_count",
-                       "transcription_complete")
+                       "transcription_complete", "evidence_repairs", "lines_transcribed",
+                       "lines_no_text_artifact", "lines_resolved")
 #: provenance fields a grader may see (everything else stays in private/provenance.json)
 GRADER_PROVENANCE_FIELDS = ("exam", "case_id", "question_id", "part", "row", "line_count", "lines_transcribed",
-                            "transcription_complete", "page", "page_available", "unavailable")
+                            "lines_no_text_artifact", "lines_resolved", "transcription_complete",
+                            "page", "page_available", "unavailable")
 
 PAGE_MAX_EDGE = 1400
 #: strict red-ink rule (scripts/m2_bench_build.has_red_ink): after masking, a page with
@@ -116,10 +118,23 @@ def case_provenance(case_id: str, label_row: dict, sources: dict[str, Any]) -> d
     writer, q, r = m.group(1), m.group(2), m.group(3)
     items = list(label_row.get("transcription_items") or [])
     # line_count is the dataset's AUTHORITATIVE recorded line count (upstream
-    # line inventory); older label rows without it fall back to the audited
-    # items. lines_transcribed = lines covered by the frozen transcription.
+    # line inventory); older label rows without it fall back to the audited items.
+    #
+    # The line dimensions are kept SEPARATE rather than folded into one number:
+    #   lines_transcribed      lines that bear text (audited OCR, or typed by a human)
+    #   lines_no_text_artifact lines a human ruled to be a segmentation artifact
+    #   lines_resolved         = transcribed + artifact; == line_count means complete
+    # `lines_transcribed` keeps its literal meaning, so a case resolved partly by an
+    # artifact ruling is never displayed as merely "1 of 2 transcribed". Rows written
+    # before the effective-evidence layer carry none of these: fall back to the
+    # audited item count, which is what the field meant then.
     recorded = label_row.get("line_count")
     line_count = int(recorded) if recorded is not None else len(items)
+    transcribed = label_row.get("lines_transcribed")
+    transcribed = int(transcribed) if transcribed is not None else len(items)
+    artifact = int(label_row.get("lines_no_text_artifact") or 0)
+    resolved = label_row.get("lines_resolved")
+    resolved = int(resolved) if resolved is not None else transcribed + artifact
     prov: dict[str, Any] = {
         "exam": writer[1:],                       # e003 -> "003" (anonymized exam number)
         "writer": writer,
@@ -128,7 +143,9 @@ def case_provenance(case_id: str, label_row: dict, sources: dict[str, Any]) -> d
         "part": f"r{r}",
         "row": int(r),
         "line_count": line_count,
-        "lines_transcribed": len(items),
+        "lines_transcribed": transcribed,
+        "lines_no_text_artifact": artifact,
+        "lines_resolved": resolved,
         "transcription_complete": bool(label_row.get("transcription_complete", True)),
         "evidence_kind": label_row.get("evidence_kind"),
         "line_inventory_source": label_row.get("line_inventory_source"),

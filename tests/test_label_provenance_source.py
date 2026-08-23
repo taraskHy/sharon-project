@@ -283,19 +283,40 @@ def test_the_nine_repaired_cases_keep_authoritative_labels_valid(tmp_path):
 
 
 @real_dataset
-def test_the_nine_repaired_cases_are_excluded_from_grading_accuracy(tmp_path):
-    """The grading model consumes the TRANSCRIPTION, so a restored line without an
-    audited transcription is invisible to it: those cases must not count toward
-    model accuracy (they remain valid ground truth for every other purpose)."""
-    from autograder.benchmark.roles import GradeAdapter
+def test_the_nine_repaired_cases_are_scorable_once_their_repair_is_complete():
+    """Before the human repair these nine were invisible in part to the grading
+    model — it consumes the TRANSCRIPTION — so they could not count toward model
+    accuracy. The owner has since transcribed or ruled on every one of them, so
+    the exclusion no longer applies: they are scorable BECAUSE each carries a
+    complete, human-verified decision. Both halves of that are asserted here."""
+    from tests.prerepair import pre_repair_rows, repair_store
 
-    rows = {json.loads(l)["case_id"]: json.loads(l)
-            for l in (DATASET / "cases_labels.jsonl").read_text(encoding="utf-8").splitlines() if l.strip()}
-    incomplete = {c for c, r in rows.items() if r.get("transcription_complete") is False}
-    assert incomplete == set(REPAIRED_CASES)
+    _, before = pre_repair_rows()
+    before_rows = {r["case_id"]: r for r in before}
+    assert {c for c, r in before_rows.items() if r["transcription_complete"] is False} == set(REPAIRED_CASES)
     for c in REPAIRED_CASES:
-        missing = rows[c].get("lines_without_audited_transcription") or []
-        assert len(missing) == 1, c          # exactly the restored line lacks a transcription
+        assert len(before_rows[c]["lines_without_audited_transcription"]) == 1, c
+
+    after = {json.loads(l)["case_id"]: json.loads(l)
+             for l in (DATASET / "cases_labels.jsonl").read_text(encoding="utf-8").splitlines() if l.strip()}
+    store = repair_store()
+    assert {c for c, r in after.items() if r.get("transcription_complete") is False} == set()
+    for c in REPAIRED_CASES:
+        row = after[c]
+        assert row["transcription_complete"] is True and row["lines_without_audited_transcription"] == []
+        assert len(row["evidence_repairs"]) == 1, c
+        rec = store[row["evidence_repairs"][0]]
+        assert rec["human_verified"] is True and rec["verified_by"], c
+        assert rec["disposition"] in ("transcribed", "no_text_segmentation_artifact"), c
+    # the score itself never moved: the repair changed the model's input, not the label
+    assert [after[c]["score"] for c in REPAIRED_CASES] == [before_rows[c]["score"] for c in REPAIRED_CASES]
+    assert [after[c]["max_score"] for c in REPAIRED_CASES] == [before_rows[c]["max_score"] for c in REPAIRED_CASES]
+
+
+def test_a_transcription_incomplete_case_is_excluded_from_grading_accuracy():
+    """The exclusion MECHANISM stays covered even though no real case trips it
+    any more — it is what protects accuracy metrics from partial evidence."""
+    from autograder.benchmark.roles import GradeAdapter
 
     def _row(cid, complete, score):
         return {"case_id": cid, "split": "DEV", "component": "grade", "decision": "AUTO",

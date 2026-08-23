@@ -36,6 +36,29 @@ def no_network(monkeypatch):
     return None
 
 
+@pytest.fixture
+def pre_repair_dataset(tmp_path):
+    """The grade_primary dataset as it was BEFORE the owner's manual evidence
+    repair, reconstructed into tmp_path and hash-verified against the sha256
+    pair the manifest revision recorded. The checked-in dataset is post-repair
+    and is never written by a test."""
+    from tests.prerepair import DATASET, build_pre_repair_dataset
+    if not (DATASET / "manifest.json").exists():
+        pytest.skip("grade_primary dataset is not built here")
+    return build_pre_repair_dataset(tmp_path / "datasets" / "grade_primary")
+
+
+@pytest.fixture
+def live_dataset_copy(tmp_path):
+    """A writable copy of the CURRENT (repaired) dataset, with the owner's real
+    repair store beside it — for exercising apply/verify against the real
+    post-repair state without touching the original."""
+    from tests.prerepair import DATASET, copy_live_dataset
+    if not (DATASET / "manifest.json").exists():
+        pytest.skip("grade_primary dataset is not built here")
+    return copy_live_dataset(tmp_path / "datasets" / "grade_primary", with_repairs=True)
+
+
 @pytest.fixture(autouse=True)
 def _reset_pipeline_hooks():
     """``orchestrator.install_hooks`` mutates PROCESS-GLOBAL state (the MC

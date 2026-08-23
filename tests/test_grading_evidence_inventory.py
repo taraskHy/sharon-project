@@ -20,13 +20,17 @@ import pytest
 
 from autograder.benchmark.datasets import (EVIDENCE_LABEL_FIELDS, DatasetBuildError, audited_cells,
                                            evidence_label_fields, load_line_inventory, repair_grading_evidence)
+from autograder.benchmark.evidence_repairs import REPAIR_SOURCE
+from tests.prerepair import DATASET, REPO, pre_repair_rows, repair_store, repaired_cases, repaired_line_ids
 
-REPO = Path(__file__).resolve().parents[1]
-DATASET = REPO / "evaluation" / "model_selection" / "datasets" / "grade_primary"
 HTR = REPO / "evaluation" / "htr_pilot"
 pytestmark = pytest.mark.skipif(not (DATASET / "manifest.json").exists() or not (HTR / "splits").exists(),
                                 reason="grade_primary dataset / HTR pilot package not present")
 
+#: the cells the OCR benchmark never audited every line of. The builder still
+#: reports them incomplete — it derives from the frozen benchmark, which the
+#: manual repair deliberately did not touch. The current dataset resolves them
+#: with a supplemental HUMAN repair layer that lives outside that benchmark.
 INCOMPLETE = ["e003_q1_r5", "e003_q2_r2", "e003_q2_r3", "e003_q2_r4", "e003_q2_r7",
               "e004_q2_r3", "e004_q2_r5", "e006_q2_r6", "e007_q1_r1"]
 
@@ -37,6 +41,14 @@ def _rows(p: Path) -> list[dict]:
 
 def _sha(p: Path) -> str:
     return hashlib.sha256(p.read_bytes()).hexdigest()
+
+
+def _sha_bytes(b: bytes) -> str:
+    return hashlib.sha256(b).hexdigest()
+
+
+def _body(records: list[dict]) -> bytes:
+    return "".join(json.dumps(r, ensure_ascii=False) + "\n" for r in records).encode("utf-8")
 
 
 def test_line_inventory_records_every_upstream_line():
@@ -80,21 +92,66 @@ def test_audited_cells_take_evidence_from_the_inventory():
     assert sum(1 for v in cells.values() if not v["complete"]) == 13
 
 
-def test_frozen_dataset_is_exactly_what_the_builder_derives():
+def test_the_builder_alone_still_derives_the_pre_repair_evidence():
+    """The builder reads the FROZEN OCR benchmark, which the manual repair never
+    touched — so on its own it must still report the nine cells as incomplete.
+    That is the base layer, and it stays reproducible."""
     cells = audited_cells()
+    _, pre_labels = pre_repair_rows()
+    assert len(pre_labels) == 67
+    for row in pre_labels:
+        block = {k: row[k] for k in EVIDENCE_LABEL_FIELDS}
+        assert block == evidence_label_fields(cells[row["case_id"]]), row["case_id"]
+        keys = list(row)
+        assert keys.index("lines_without_audited_transcription") + 1 == keys.index("max_score")
+    assert sorted(r["case_id"] for r in pre_labels if r["transcription_complete"] is False) == INCOMPLETE
+
+
+def test_frozen_dataset_is_the_builder_output_plus_the_manual_repair_layer():
+    """The current dataset = what the builder derives + the owner's supplemental
+    human repairs. The two layers are composed here, never conflated: the base
+    block is compared field by field, and only a repaired line is allowed to
+    differ — in exactly the ways apply_repairs records."""
+    cells = audited_cells()
+    store = repair_store()
     labels = _rows(DATASET / "cases_labels.jsonl")
     assert len(labels) == 67
     for row in labels:
-        block = {k: row[k] for k in EVIDENCE_LABEL_FIELDS}
-        assert block == evidence_label_fields(cells[row["case_id"]]), row["case_id"]
-        # the evidence block sits where the builder writes it (before max_score)
+        base = evidence_label_fields(cells[row["case_id"]])
+        repaired = list(row.get("evidence_repairs") or [])
         keys = list(row)
         assert keys.index("lines_without_audited_transcription") + 1 == keys.index("max_score")
+        if not repaired:
+            assert {k: row[k] for k in EVIDENCE_LABEL_FIELDS} == base, row["case_id"]
+            continue
+        # the base layer said "incomplete"; the repair layer resolves it
+        assert base["transcription_complete"] is False
+        assert sorted(base["lines_without_audited_transcription"]) == sorted(repaired)
+        assert row["transcription_complete"] is True and row["lines_without_audited_transcription"] == []
+        assert row["evidence_kind"] == base["evidence_kind"] and row["line_count"] == base["line_count"]
+        assert row["line_inventory_source"] == base["line_inventory_source"]
+        for cur, was in zip(row["evidence_lines"], base["evidence_lines"]):
+            if cur["sample_id"] not in repaired:
+                assert cur == was, row["case_id"]
+                continue
+            rec = store[cur["sample_id"]]
+            assert {k: v for k, v in cur.items() if k in was and k not in ("image", "transcription_status")} \
+                == {k: v for k, v in was.items() if k not in ("image", "transcription_status")}
+            assert cur["original_image"] == was["image"], "the builder's crop path is kept, not lost"
+            assert cur["original_transcription_status"] == was["transcription_status"]
+            assert cur["transcription_status"] == f"{REPAIR_SOURCE}:{rec['disposition']}"
+            assert cur["image"].endswith(rec["crop_path"]) and (REPO / "evaluation" / cur["image"]).exists()
+    assert sorted(r["case_id"] for r in labels if r.get("evidence_repairs")) == INCOMPLETE == repaired_cases()
     man = json.loads((DATASET / "manifest.json").read_text(encoding="utf-8"))
-    assert man["extra"]["evidence_inventory"]["evidence_images"] == 91
-    assert man["extra"]["evidence_inventory"]["transcription_incomplete_cases"] == INCOMPLETE
-    assert man["revisions"][-1]["kind"] == "evidence_inventory_repair"
-    assert man["revisions"][-1]["inputs_changed"] is False and man["revisions"][-1]["cases_evidence_changed"] == INCOMPLETE
+    # 91 recorded lines; 8 of them ruled no-text artifacts, so 83 EFFECTIVE images
+    assert sum(r["line_count"] for r in labels) == 91
+    assert man["extra"]["evidence_inventory"]["evidence_images"] == 83
+    assert man["extra"]["evidence_inventory"]["transcription_incomplete_cases"] == []
+    assert man["revisions"][0]["kind"] == "evidence_inventory_repair"
+    assert man["revisions"][0]["inputs_changed"] is False
+    assert man["revisions"][0]["cases_evidence_changed"] == INCOMPLETE
+    rev = next(r for r in man["revisions"] if r["kind"] == REPAIR_SOURCE)
+    assert sorted(rev["lines_repaired"]) == repaired_line_ids()
 
 
 def _old_shape(row: dict) -> dict:
@@ -112,32 +169,44 @@ def _old_shape(row: dict) -> dict:
 
 
 def test_repair_is_deterministic_and_reproduces_the_frozen_file(tmp_path):
+    """Historical reproducibility of the EVIDENCE-INVENTORY repair (revision 0),
+    which predates the manual human repair and must stay exactly reproducible.
+
+    Both ends of that revision are taken from the manifest itself, so the later
+    manual repair cannot drag this test along with it: the input is
+    `revisions[0].previous_labels_sha256` and the output is
+    `revisions[0].labels_sha256` — NOT whatever the file happens to hold today.
+    """
     man = json.loads((DATASET / "manifest.json").read_text(encoding="utf-8"))
-    previous_sha = man["revisions"][0]["previous_labels_sha256"]
-    # 1. reconstruct the dataset as it was BEFORE the repair
+    rev0 = man["revisions"][0]
+    previous_sha, produced_sha = rev0["previous_labels_sha256"], rev0["labels_sha256"]
+    pre_inputs, pre_labels = pre_repair_rows()          # strip the manual layer first
+    assert _sha_bytes(_body(pre_labels)) == produced_sha, "the pre-manual-repair state is revision 0's output"
+    # 1. reconstruct the dataset as it was BEFORE the evidence-inventory repair
     old = tmp_path / "grade_primary"
     old.mkdir()
-    shutil.copy(DATASET / "cases_inputs.jsonl", old / "cases_inputs.jsonl")
-    body = "".join(json.dumps(_old_shape(r), ensure_ascii=False) + "\n" for r in _rows(DATASET / "cases_labels.jsonl"))
-    (old / "cases_labels.jsonl").write_bytes(body.encode("utf-8"))
+    (old / "cases_inputs.jsonl").write_bytes(_body(pre_inputs))
+    (old / "cases_labels.jsonl").write_bytes(_body([_old_shape(r) for r in pre_labels]))
     assert _sha(old / "cases_labels.jsonl") == previous_sha              # the reconstruction is byte-exact
     old_man = {k: v for k, v in man.items() if k != "revisions"}
     old_man["labels_sha256"] = previous_sha
+    old_man["inputs_sha256"] = rev0["inputs_sha256"]
     old_man["extra"] = {k: v for k, v in man["extra"].items() if k != "evidence_inventory"}
     (old / "manifest.json").write_text(json.dumps(old_man, ensure_ascii=False, indent=1), encoding="utf-8", newline="\n")
     # 2. dry run writes nothing
     dry = repair_grading_evidence(old, dry_run=True)
     assert dry["written"] is False and _sha(old / "cases_labels.jsonl") == previous_sha
     assert [c["case_id"] for c in dry["cases_evidence_changed"]] == INCOMPLETE and len(dry["rows_updated"]) == 67
-    # 3. the repair reproduces today's frozen file byte for byte; inputs untouched
+    # 3. the repair reproduces revision 0's output byte for byte; inputs untouched
     res = repair_grading_evidence(old, now="2026-08-22 20:15:00")
     assert res["written"] is True
-    assert (old / "cases_labels.jsonl").read_bytes() == (DATASET / "cases_labels.jsonl").read_bytes()
-    assert _sha(old / "cases_inputs.jsonl") == man["inputs_sha256"]
+    assert _sha(old / "cases_labels.jsonl") == produced_sha
+    assert (old / "cases_labels.jsonl").read_bytes() == _body(pre_labels)
+    assert _sha(old / "cases_inputs.jsonl") == rev0["inputs_sha256"]
     new_man = json.loads((old / "manifest.json").read_text(encoding="utf-8"))
-    assert new_man["labels_sha256"] == man["labels_sha256"] and new_man["inputs_sha256"] == man["inputs_sha256"]
+    assert new_man["labels_sha256"] == produced_sha and new_man["inputs_sha256"] == rev0["inputs_sha256"]
     assert new_man["revisions"][-1]["cases_evidence_changed"] == INCOMPLETE
-    assert (old / "CHECKSUMS.sha256").read_text(encoding="utf-8") == (DATASET / "CHECKSUMS.sha256").read_text(encoding="utf-8")
+    assert new_man["revisions"][-1] == rev0, "the recorded revision is reproduced exactly"
     # 4. idempotent: a second repair changes nothing
     again = repair_grading_evidence(old)
     assert again["written"] is False and again["rows_updated"] == []
@@ -147,6 +216,20 @@ def test_repair_is_deterministic_and_reproduces_the_frozen_file(tmp_path):
     (bad / "cases_inputs.jsonl").write_bytes((bad / "cases_inputs.jsonl").read_bytes() + b"\n")
     with pytest.raises(DatasetBuildError, match="does not match the manifest hash"):
         repair_grading_evidence(bad)
+
+
+def test_the_evidence_inventory_repair_never_saw_the_manual_layer():
+    """Revision 0 predates the manual repair: it must not mention it, and its
+    output hash must be the manual repair's INPUT hash. The chain is unbroken."""
+    man = json.loads((DATASET / "manifest.json").read_text(encoding="utf-8"))
+    rev0 = man["revisions"][0]
+    rev1 = next(r for r in man["revisions"] if r["kind"] == REPAIR_SOURCE)
+    assert rev0["kind"] == "evidence_inventory_repair"
+    assert rev0["labels_sha256"] == rev1["previous_labels_sha256"]
+    assert rev0["inputs_sha256"] == rev1["previous_inputs_sha256"]
+    assert REPAIR_SOURCE not in json.dumps(rev0, ensure_ascii=False)
+    _, pre_labels = pre_repair_rows()
+    assert not any("evidence_repairs" in r for r in pre_labels)
 
 
 def test_grade_adapter_excludes_transcription_incomplete_cases_from_accuracy():
@@ -164,3 +247,33 @@ def test_grade_adapter_excludes_transcription_incomplete_cases_from_accuracy():
     agg = ad.aggregate(scored, [])
     assert agg["cases"] == 3 and agg["labeled_excluded_transcription_incomplete"] == 1
     assert agg["exact_score_pct"] == 100.0 and agg["harmful_upgrades"] == 0      # only the complete labeled case counts
+
+
+def test_evidence_images_are_the_effective_evidence_not_the_full_line_list():
+    """`evidence_lines` is the historical record of every recorded line;
+    `evidence_images` is what a grader is actually shown. They agree on ordinary
+    rows and differ ONLY where a human ruled a line to be a segmentation
+    artifact — that sliver is not an answer image, though its crop, hash and
+    status remain recoverable."""
+    labels = _rows(DATASET / "cases_labels.jsonl")
+    store = repair_store()
+    narrowed = {}
+    for row in labels:
+        lines = [e["image"] for e in row["evidence_lines"]]
+        artifacts = [e for e in row["evidence_lines"]
+                     if (e.get("repair") or {}).get("disposition") == "no_text_segmentation_artifact"]
+        assert row["evidence_images"] == [e["image"] for e in row["evidence_lines"] if e not in artifacts],             row["case_id"]
+        assert all((REPO / "evaluation" / img).exists() for img in row["evidence_images"]), row["case_id"]
+        if artifacts:
+            narrowed[row["case_id"]] = artifacts
+            assert row["evidence_images"] != lines
+            for e in artifacts:                      # excluded, but never lost
+                assert e["image"] not in row["evidence_images"]
+                assert e["original_image"] not in row["evidence_images"]
+                assert (REPO / "evaluation" / e["original_image"]).exists()
+                assert e["repair"]["crop_sha256"] == store[e["sample_id"]]["crop_sha256"]
+        else:
+            assert row["evidence_images"] == lines, row["case_id"]
+    assert len(narrowed) == 8, "the eight artifact rulings, and nothing else, narrow the effective evidence"
+    assert sum(len(v) for v in narrowed.values()) == 8
+    assert sum(len(r["evidence_images"]) for r in labels) == 83
