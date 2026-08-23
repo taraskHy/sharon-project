@@ -15,6 +15,7 @@ from __future__ import annotations
 import hashlib
 import json
 import shutil
+import tempfile
 import sqlite3
 import time
 from pathlib import Path
@@ -203,8 +204,15 @@ def make_backup(db, bundle, data_dir: Path, *, copy_to: Path | None = None, now:
     else:
         try:
             from .export import write_export
-            live_db = db if isinstance(db, LabelDB) else LabelDB(src_path)
-            data = write_export(live_db, b, dest / "final_labels.json", now=now)
+            # Export from a THROWAWAY copy of the verified snapshot. Not from the
+            # live file (LabelDB.__init__ sets journal_mode and runs DDL — exactly
+            # what this function promises not to do), and not from the snapshot
+            # itself, which must stay a single self-contained file with no
+            # -wal/-shm beside it.
+            with tempfile.TemporaryDirectory(prefix="labeling-export-") as tmp:
+                work = Path(tmp) / "labels.db"
+                shutil.copy2(dest / "labels.db", work)
+                data = write_export(LabelDB(work), b, dest / "final_labels.json", now=now)
             export = {"status": "written", "final_count": data.get("final_count")}
         except Exception as e:  # noqa: BLE001 — the snapshot already succeeded; record, don't fail
             export = {"status": "skipped", "reason": f"export failed ({type(e).__name__}: {e})"}

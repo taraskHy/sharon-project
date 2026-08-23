@@ -74,11 +74,55 @@ def frozen_transcription(cell: str) -> str:
     return "\n".join(parts)
 
 
+def split_of(cell: str) -> str | None:
+    """The grade_primary split a cell belongs to, or None when the dataset does
+    not contain it. Read straight from the frozen dataset, never guessed."""
+    labels = REPO / "evaluation" / "model_selection" / "datasets" / "grade_primary" / "cases_labels.jsonl"
+    if not labels.exists():
+        return None
+    for line in labels.read_text(encoding="utf-8").splitlines():
+        if line.strip():
+            row = json.loads(line)
+            if row["case_id"] == cell:
+                return row.get("split")
+    return None
+
+
+def assert_cells_are_development_only(cells: list[str]) -> None:
+    """Refuse to spend money on a CALIBRATION or HELD_OUT cell.
+
+    These cells were pre-registered on 2026-08-17, BEFORE the grade_primary
+    writer splits were frozen — so the list predates split discipline and two of
+    them landed outside DEV (e004 is CALIBRATION, e006 is HELD_OUT). This script
+    calls a live model directly, outside the bench harness, so none of the
+    harness guards apply to it: no --confirm-held-out, no HELD_OUT_EXECUTIONS
+    log, no leakage check. Grading a held-out answer here would burn the split
+    silently and permanently.
+
+    The pre-registration list is left intact as the historical record; execution
+    is what is gated."""
+    offenders = {c: split_of(c) for c in cells}
+    bad = {c: s for c, s in offenders.items() if s not in (None, "DEV")}
+    if bad:
+        raise SystemExit(
+            "REFUSED: this A/B calls a live model outside the bench harness, so HELD_OUT and "
+            "CALIBRATION discipline is not enforced for it by anything else.\n"
+            + "".join(f"  {c}: split {s}\n" for c, s in sorted(bad.items()))
+            + "Re-pre-register DEV-only cells (or pass --cells with DEV cells) before running. "
+              "HELD_OUT may only ever be executed through "
+              "`autograder bench final-eval --confirm-held-out`, which logs it permanently.")
+
+
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--out", default="evaluation/grading_rag_ab_v1")
     ap.add_argument("--analyze-only", action="store_true", help="G only: no calls")
+    ap.add_argument("--cells", default=None,
+                    help="comma-separated cell ids (default: the pre-registered list); DEV only")
     args = ap.parse_args()
+    cells = [c.strip() for c in args.cells.split(",")] if args.cells else list(PREREGISTERED_CELLS)
+    if not args.analyze_only:
+        assert_cells_are_development_only(cells)      # before any credential is touched
     out = REPO / args.out
     (out / "armA").mkdir(parents=True, exist_ok=True)
     (out / "armB").mkdir(parents=True, exist_ok=True)

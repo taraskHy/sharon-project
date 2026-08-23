@@ -202,3 +202,68 @@ def test_an_empty_or_tableless_snapshot_is_never_called_a_backup(tmp_path):
     with pytest.raises(BackupError, match="no labels table"):
         snapshot_sqlite(partial, tmp_path / "out2.db")
     assert not (tmp_path / "out2.db").exists()
+
+
+# --------------------------------- barrier 5: spellings and the opt-in switch --
+
+def test_the_opt_in_is_not_flipped_by_a_falsy_value(monkeypatch):
+    """`LABELING_ALLOW_LIVE_DB=0` read as truthy would silently disarm the guard."""
+    for falsy in ("0", "false", "no", "off", ""):
+        monkeypatch.setenv(LIVE_DB_OPT_IN, falsy)
+        with pytest.raises(LabelError):
+            LabelDB(live_db_path())
+    for truthy in ("1", "true", "YES", "on"):
+        monkeypatch.setenv(LIVE_DB_OPT_IN, truthy)
+        assert assert_not_live_database(live_db_path()) is None
+
+
+def test_extended_length_and_unc_spellings_are_caught(tmp_path):
+    r"""Extended-length and UNC spellings reach the same bytes; string
+    comparison alone misses both, so the filesystem is asked."""
+    live = live_db_path()
+    if not live.exists():
+        pytest.skip("no live labeling database on this machine")
+    spellings = [rf"\?\{live}", str(live).replace("C:\\", r"\localhost\C$" + "\\", 1)]
+    for spelling in spellings:
+        try:
+            reachable = Path(spelling).exists()
+        except OSError:
+            reachable = False
+        if not reachable:
+            continue                                   # that syntax is not available here
+        with pytest.raises(LabelError, match="refusing to open the LIVE"):
+            LabelDB(spelling)
+
+
+def test_export_does_not_register_the_bundle(tmp_path, capsys):
+    """`export` is step two of the label-import sequence. Registering there once
+    inserted 67 orphan items AND retired all 67 real ones."""
+    from tests.test_evidence_report_case_ids import _counts, _dataset
+    from labeling_app.bundle import Bundle, build_bundle
+    from labeling_app.cli import main
+    dataset = _dataset(tmp_path)
+    data = tmp_path / "data"
+    repo = Path(__file__).resolve().parents[1]
+    build_bundle(dataset, data / "bundle", evaluation_root=repo / "evaluation", page_max_edge=200,
+                 now="2026-08-23 06:00:00")
+    loaded = Bundle(data / "bundle")
+    db = LabelDB(data / "labels.db")
+    db.load_items(loaded.items)
+    db.sync_evidence(loaded.fingerprints)
+    capsys.readouterr()
+    before = _counts(data / "labels.db")
+
+    other = tmp_path / "other_bundle"
+    build_bundle(dataset, other, evaluation_root=repo / "evaluation", page_max_edge=200,
+                 now="2026-08-23 06:01:00", salt="a-different-salt")
+    assert main(["export", "--data-dir", str(data), "--bundle", str(other),
+                 "--out", str(tmp_path / "final_labels.json")]) == 0
+    capsys.readouterr()
+    assert _counts(data / "labels.db") == before, "`export` registered the bundle"
+    import sqlite3
+    con = sqlite3.connect(f"file:{(data / 'labels.db').as_posix()}?mode=ro", uri=True)
+    try:
+        assert dict(con.execute("SELECT eligible, COUNT(*) FROM items GROUP BY eligible")) == {1: 67}, \
+            "`export` retired the real items"
+    finally:
+        con.close()

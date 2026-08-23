@@ -155,6 +155,9 @@ def _inside_inputs(value: str, input_values: set[str]) -> bool:
 
 
 _SPLIT_TOKEN = re.compile(r"\b(DEV|CALIBRATION|HELD_OUT)\b")
+#: label fields that ARE the grading target — a number from one of these reaching
+#: the prompt would tell the model the answer it is being measured against
+_SCORE_LABEL_FIELDS = frozenset({"score", "label_score", "ground_truth_score", "final_score"})
 
 
 def leakage_check(case: BenchCase, request: Request, model_visible_fields: tuple[str, ...]) -> None:
@@ -178,7 +181,50 @@ def leakage_check(case: BenchCase, request: Request, model_visible_fields: tuple
             input_values.add(str(v))
         elif isinstance(v, (list, tuple)):          # e.g. the generic version ids / option letters
             input_values.update(str(x) for x in v if isinstance(x, (str, int, float)))
+
+    # A SEPARATE, deeper collection used only by the numeric check below. The
+    # grading pack is a nested dict, so its numbers (max_score, option indices)
+    # are legitimately in the prompt; the shallow set above deliberately stays
+    # shallow, because widening it would excuse a nested string leak.
+    numeric_inputs: set[str] = set()
+
+    def _collect_numbers(v) -> None:
+        if isinstance(v, bool):
+            return
+        if isinstance(v, (int, float)):
+            numeric_inputs.add(str(v))
+            if float(v).is_integer():
+                numeric_inputs.add(str(int(v)))     # 4.0 is written "4" in the prompt
+        elif isinstance(v, str):
+            numeric_inputs.add(v)
+        elif isinstance(v, dict):
+            for x in v.values():
+                _collect_numbers(x)
+        elif isinstance(v, (list, tuple)):
+            for x in v:
+                _collect_numbers(x)
+
+    for v in case.inputs.values():
+        _collect_numbers(v)
+
     for k, v in case.label.items():
+        # The grading TARGET is a NUMBER, and a string-only comparison left exactly
+        # that unchecked. Scoped to the target fields on purpose: bookkeeping counts
+        # like `line_count` legitimately share digits with the prompt.
+        #
+        # Honest limit: a single-character value (a bare 0-4) cannot be told apart
+        # from the "Score range: 0..4" line or the pack's own numbers, so only
+        # multi-character forms (0.5, 1.5, 2.5, 3.5, 10 ...) are decidable here.
+        # The structural guarantee is what actually prevents the leak — build_request
+        # is never handed case.label — this is the backstop.
+        if k in _SCORE_LABEL_FIELDS and isinstance(v, (int, float)) and not isinstance(v, bool):
+            forms = {str(v)} | ({str(int(v))} if float(v).is_integer() else set())
+            for form in forms:
+                if len(form) < 2 or form in numeric_inputs:
+                    continue
+                if re.search(r"(?<![\w.])" + re.escape(form) + r"(?![\w.])", content):
+                    raise LeakageError(
+                        f"{case.case_id}: label field {k!r} value {v!r} appears in the request")
         # A label value that is part of a model-visible input (e.g. the
         # audited reference sitting inside a token-duplication candidate) is
         # visible by construction, not a leak; anything else is.
@@ -198,7 +244,10 @@ def leakage_check(case: BenchCase, request: Request, model_visible_fields: tuple
 
 _LABEL_NAMES_NEVER_IN_PROMPT = frozenset({
     "expected_verdict", "polarity", "error_kinds", "cer_vs_audited", "audited_reference",
-    "corruption_type", "synthetic_group", "reference_status", "rubric_met", "fixed_judge_verdict"})
+    "corruption_type", "synthetic_group", "reference_status", "rubric_met", "fixed_judge_verdict",
+    # the grading TARGET and its neighbours: naming any of these in a prompt would
+    # tell the model what it is being measured against
+    "score", "label_score", "ground_truth_score", "owner_note", "owner_status", "label_status"})
 
 
 def resolve_candidate(spec: RunSpec, registry: CandidateRegistry) -> str:

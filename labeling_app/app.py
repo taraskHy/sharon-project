@@ -242,12 +242,9 @@ async def api_my_items(request: Request) -> Response:
 def _evidence_report_with_cases(request: Request) -> dict:
     """The DB's exact stale/preserved accounting, joined with dataset case ids
     (admin only — case ids never reach graders)."""
+    from .cli import _join_case_ids                # one join, used by CLI and API alike
     bundle: Bundle = request.app.state.bundle
-    rep = request.app.state.db.evidence_report()
-    for key in ("stale_labels", "unknown_evidence_labels", "stale_finals", "items_evidence_changed"):
-        for row in rep.get(key, []):
-            row["case_id"] = bundle.id_map.get(row["item_id"])
-    rep["affected_case_ids"] = sorted({r["case_id"] for r in rep.get("items_evidence_changed", []) if r.get("case_id")})
+    rep = _join_case_ids(request.app.state.db.evidence_report(), bundle.id_map)
     rep["startup_sync"] = request.app.state.evidence_sync
     return rep
 

@@ -300,8 +300,14 @@ def _open(args, *, register: bool = True):
 
 
 def cmd_export(args) -> int:
+    """Write final_labels.json. Reads the database; never registers the bundle.
+
+    Registering here once reproduced the orphan-item incident in full: a bundle
+    whose id salt differed from the database's inserted 67 phantom items AND
+    retired all 67 real ones to eligible=0. `export` is step two of the
+    label-import sequence, so it is exactly the command that must not do that."""
     from .export import write_export
-    data_dir, bundle, db = _open(args)
+    data_dir, bundle, db = _open(args, register=False)
     out = Path(args.out) if args.out else data_dir / "exports" / "final_labels.json"
     data = write_export(db, bundle, out)
     print(json.dumps({"written": str(out), "final_count": data["final_count"], "content_sha256": data["content_sha256"]}, indent=1))

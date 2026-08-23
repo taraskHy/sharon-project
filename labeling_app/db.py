@@ -222,13 +222,23 @@ def assert_not_live_database(path: Path) -> None:
     ``LABELING_ALLOW_LIVE_DB=1``, and should still open it read-only."""
     if not (os.environ.get("PYTEST_CURRENT_TEST") or os.environ.get("PYTEST_VERSION")):
         return
-    if os.environ.get(LIVE_DB_OPT_IN):
-        return
+    if str(os.environ.get(LIVE_DB_OPT_IN, "")).strip().lower() in ("1", "true", "yes", "on"):
+        return                                         # explicit opt-in only; "0" does NOT disable the guard
+    live = live_db_path()
     try:
-        resolved = Path(path).resolve()
+        resolved = Path(os.path.normpath(os.path.realpath(str(path))))
     except OSError:                                    # unresolvable path cannot be the live one
         return
-    if resolved == live_db_path():
+    same = resolved == live
+    if not same:
+        # String comparison alone misses \\?\ extended-length paths, UNC admin
+        # shares (\\localhost\C$\...) and hard links, which all reach the same
+        # bytes. Ask the filesystem, not the string.
+        try:
+            same = live.exists() and Path(path).exists() and os.path.samefile(str(path), str(live))
+        except OSError:
+            same = False
+    if same:
         raise LabelError(
             f"refusing to open the LIVE labeling database from a test ({resolved}). "
             "LabelDB is a writer — it sets journal_mode and runs DDL, and closing it checkpoints "
