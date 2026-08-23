@@ -50,7 +50,9 @@ from typing import Any, Iterator
 from . import SCHEMA_VERSION
 
 LABEL_STATUSES = ("saved", "skipped", "flagged")
-FINAL_SOURCES = ("agreement", "adjudicated")
+#: how a FINAL was REACHED. "authoritative" = a single instructor-copied grade
+#: promoted as-is: not two graders agreeing, not an adjudicator's judgement.
+FINAL_SOURCES = ("agreement", "adjudicated", "authoritative")
 #: PROVENANCE of a label's score — how the number was DERIVED. Deliberately
 #: independent of ``evidence_sha256``, which records WHICH evidence version was
 #: on screen. The two answer different questions and must not be conflated:
@@ -1060,6 +1062,102 @@ class LabelDB:
         return self.set_final(item_id, score=l0["score"], rubric=l0["rubric"], note="",
                               source="agreement", adjudicator=adjudicator,
                               expected_item_revision=ov["revision"] if expected_item_revision is None else expected_item_revision)
+
+    def finalize_authoritative(self, *, apply: bool = False, adjudicator: str = "owner") -> dict[str, Any]:
+        """Promote single authoritative instructor grades to FINAL, in bulk.
+
+        These scores were COPIED from the original graded exam for the whole
+        grading unit. They are not a judgement formed from the app's evidence,
+        so the ordinary routes to FINAL do not fit: `finalize_agreement` wants
+        two independent graders who will never exist here, and calling it
+        "adjudicated" would claim a judgement nobody made. They are promoted
+        as-is, under their own source, with `ground_truth_source` recording
+        where the number came from.
+
+        The score is NEVER recomputed or reinterpreted — it is copied verbatim,
+        together with the grader's rubric decisions.
+
+        Strict, per item; anything that does not qualify is reported with a
+        reason and skipped, never forced:
+          * exactly ONE label, whose source is in AUTHORITATIVE_LABEL_SOURCES
+          * that label is status 'saved' with a score in 0..max_score
+          * provenance is complete (entered_by and provenance_asserted_by)
+          * the item is currently eligible for a human label
+          * no FINAL exists yet, or the existing one already matches exactly
+
+        Idempotent: an item whose FINAL already matches is reported as
+        `already_final` and is not rewritten, so a second run changes nothing.
+        `apply=False` (the default) is a dry run that writes nothing.
+        """
+        planned: list[dict] = []
+        skipped: list[dict] = []
+        already: list[dict] = []
+        with self._conn() as c:
+            items = {r["item_id"]: dict(r) for r in c.execute(
+                "SELECT item_id, max_score, rubric_ids, revision, eligible, evidence_sha256 FROM items")}
+            finals = {r["item_id"]: dict(r) for r in c.execute("SELECT * FROM final_labels")}
+            by_item: dict[str, list[dict]] = {}
+            for r in c.execute("SELECT * FROM labels ORDER BY item_id, grader"):
+                by_item.setdefault(r["item_id"], []).append(dict(r))
+        for item_id in sorted(items):
+            it = items[item_id]
+            labels = by_item.get(item_id, [])
+            auth = [l for l in labels
+                    if (l.get("label_source") or DEFAULT_LABEL_SOURCE) in AUTHORITATIVE_LABEL_SOURCES]
+            def skip(reason: str) -> None:
+                skipped.append({"item_id": item_id, "reason": reason})
+            if not auth:
+                skip("no authoritative label"); continue
+            if len(auth) != 1:
+                skip(f"{len(auth)} authoritative labels; expected exactly one"); continue
+            lab = auth[0]
+            if len(labels) != 1:
+                skip(f"{len(labels)} labels on the item; a bulk promotion needs exactly one"); continue
+            if lab["status"] != "saved":
+                skip(f"label status {lab['status']!r}, not 'saved'"); continue
+            if lab["score"] is None:
+                skip("label carries no score"); continue
+            if not (0 <= float(lab["score"]) <= float(it["max_score"]) + 1e-9):
+                skip(f"score {lab['score']} outside 0..{it['max_score']}"); continue
+            if not (lab.get("entered_by") or "").strip() or not (lab.get("provenance_asserted_by") or "").strip():
+                skip("incomplete provenance (entered_by / provenance_asserted_by)"); continue
+            if not int(it["eligible"]):
+                skip("item is not eligible for a human label"); continue
+            rubric = sorted(json.loads(lab["rubric"] or "[]"))
+            existing = finals.get(item_id)
+            if existing is not None:
+                same = (float(existing["score"]) == float(lab["score"])
+                        and sorted(json.loads(existing["rubric"] or "[]")) == rubric
+                        and existing["source"] == "authoritative")
+                if same:
+                    already.append({"item_id": item_id, "score": float(lab["score"])})
+                else:
+                    skip(f"a different FINAL already exists (score {existing['score']}, "
+                         f"source {existing['source']}) — resolve it by hand")
+                continue
+            planned.append({"item_id": item_id, "grader": lab["grader"], "score": float(lab["score"]),
+                            "rubric": rubric, "label_source": lab["label_source"],
+                            "entered_by": lab.get("entered_by") or "",
+                            "source_ref": lab.get("source_ref") or "",
+                            "item_revision": int(it["revision"])})
+        out = {"eligible_for_promotion": len(planned), "already_final": len(already),
+               "skipped": len(skipped), "items_total": len(items),
+               "planned": planned, "already": already, "skipped_detail": skipped,
+               "applied": False, "promoted": 0}
+        if not apply or not planned:
+            return out
+        promoted = 0
+        for row in planned:
+            self.set_final(row["item_id"], score=row["score"], rubric=row["rubric"], note="",
+                           source="authoritative", adjudicator=adjudicator,
+                           expected_item_revision=row["item_revision"])
+            promoted += 1
+        with self._conn(write=True) as c:
+            self._event(c, adjudicator, "finalize_authoritative", None, None,
+                        {"promoted": promoted, "already_final": len(already), "skipped": len(skipped),
+                         "note": "single instructor-copied grades promoted verbatim; no score recomputed"})
+        out["applied"], out["promoted"] = True, promoted
+        return out
 
     def reopen(self, item_id: str, *, admin: str = "admin") -> None:
         with self._conn(write=True) as c:

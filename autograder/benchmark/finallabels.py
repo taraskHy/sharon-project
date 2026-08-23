@@ -18,6 +18,10 @@ from pathlib import Path
 from typing import Any
 
 FINAL_LABELS_FILENAME = "final_labels.json"
+#: how a FINAL was REACHED. "authoritative" is a single instructor-copied grade
+#: promoted verbatim — see labeling_app.db.finalize_authoritative. An export
+#: carrying any other value is recorded and skipped, never silently dropped.
+FINAL_SOURCES_ACCEPTED = ("agreement", "adjudicated", "authoritative")
 #: schema 3 adds ground-truth PROVENANCE (ground_truth_source) alongside the
 #: evidence version; schema 1/2 exports stay importable (source treated as unknown)
 SUPPORTED_EXPORT_SCHEMA = (1, 2, 3)
@@ -38,12 +42,20 @@ def import_final_labels(export_path: Path, dataset_dir: Path, *, now: str | None
     unknown: list[str] = []
     ignored_ineligible: dict[str, dict] = {}
     ignored_stale_evidence: dict[str, dict] = {}
+    ignored_unknown_source: dict[str, dict] = {}
     for row in data.get("items", []):
         cid = row["item_id"]
         if cid not in known:
             unknown.append(cid)
             continue
-        if row.get("source") not in ("agreement", "adjudicated"):
+        if row.get("source") not in FINAL_SOURCES_ACCEPTED:
+            # Recorded, never silent: an unrecognised FINAL source used to drop the
+            # row without a trace, so a whole export could import zero labels and
+            # still look successful.
+            ignored_unknown_source[cid] = {"reason": "unrecognised FINAL source",
+                                           "source": row.get("source"),
+                                           "accepted": list(FINAL_SOURCES_ACCEPTED),
+                                           "ignored_human_final_label": float(row["final_score"])}
             continue
         if row.get("evidence_stale") is True:
             # the FINAL was made against evidence the labeling bundle has since
@@ -87,9 +99,12 @@ def import_final_labels(export_path: Path, dataset_dir: Path, *, now: str | None
         out["ignored_ineligible"] = dict(sorted(ignored_ineligible.items()))
     if ignored_stale_evidence:
         out["ignored_stale_evidence"] = dict(sorted(ignored_stale_evidence.items()))
+    if ignored_unknown_source:
+        out["ignored_unknown_source"] = dict(sorted(ignored_unknown_source.items()))
     (dataset_dir / FINAL_LABELS_FILENAME).write_text(json.dumps(out, ensure_ascii=False, indent=1, sort_keys=True),
                                                      encoding="utf-8", newline="\n")
     return {"imported": len(labels), "unknown_case_ids": unknown,
+            "ignored_unknown_source": dict(sorted(ignored_unknown_source.items())),
             "ignored_ineligible": sorted(ignored_ineligible), "ignored_stale_evidence": sorted(ignored_stale_evidence),
             "path": str(dataset_dir / FINAL_LABELS_FILENAME)}
 

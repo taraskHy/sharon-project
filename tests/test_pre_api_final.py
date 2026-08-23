@@ -228,6 +228,19 @@ def test_owner_labels_flow_into_the_manifest_without_touching_frozen_files(tmp_p
     src = DATASETS / "grade_primary"
     dst = tmp_path / "grade_primary"
     shutil.copytree(src, dst)
+    # FINAL ground truth, once imported, OUTRANKS a provisional owner label —
+    # assert that first, then test the owner-label path on a dataset without one.
+    final_labels = dst / "final_labels.json"
+    if final_labels.exists():
+        m_final = load_manifest("grade_primary", datasets_root=tmp_path)
+        cid = m_final.cases[0].case_id
+        final_score = json.loads(final_labels.read_text(encoding="utf-8"))["labels"][cid]["score"]
+        OwnerLabelStore(dst).record(cid, score=2.0, max_score=4.0)
+        m_both = load_manifest("grade_primary", datasets_root=tmp_path)
+        assert next(c for c in m_both.cases if c.case_id == cid).label["score"] == final_score,             "an imported FINAL must outrank a provisional owner label"
+        (dst / "owner_labels.json").unlink()
+        final_labels.unlink()                               # now exercise the owner-label path alone
+
     before = {p.name: p.read_bytes() for p in dst.iterdir() if p.is_file()}
     m0 = load_manifest("grade_primary", datasets_root=tmp_path)
     cid = m0.cases[0].case_id
@@ -309,4 +322,8 @@ def test_readiness_headline_without_key(tmp_path, monkeypatch, no_network):
     assert rep["network_calls"] == 0
     text = format_readiness(rep)
     assert "PRE-API SETUP COMPLETE: YES" in text and "READY FOR API KEY: YES" in text
-    assert "OWNER ACTION REQUIRED" in text
+    # "OWNER ACTION REQUIRED" appears only while something is actually outstanding.
+    # GRADE_PRIMARY now carries 67 imported FINAL labels, so that section is absent
+    # unless another role still needs the owner.
+    outstanding = [c for c in cats.values() if not c.get("ok") and c.get("owner_action")]
+    assert ("OWNER ACTION REQUIRED" in text) == bool(outstanding)

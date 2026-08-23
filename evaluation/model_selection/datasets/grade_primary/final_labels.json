@@ -1,0 +1,954 @@
+{
+ "imported_at": "2026-08-23 10:32:34",
+ "labels": {
+  "e002_q1_r1": {
+   "adjudicator": "owner",
+   "contributing_graders": [
+    "Erik"
+   ],
+   "evidence_repaired": false,
+   "evidence_sha256": "d73ad545e3d5ab6b004a28f4a643e3a3b731c30af89c10956ff665cb9260f80f",
+   "finalized_at": "2026-08-23 10:32:09",
+   "ground_truth_source": "original_instructor_grade",
+   "note": "",
+   "rubric_decisions": [],
+   "score": 0.0,
+   "source": "authoritative"
+  },
+  "e002_q1_r2": {
+   "adjudicator": "owner",
+   "contributing_graders": [
+    "Erik"
+   ],
+   "evidence_repaired": false,
+   "evidence_sha256": "d7ef6a4725f0e01c8318155974156c15ad644bf001597127df19596036274b1e",
+   "finalized_at": "2026-08-23 10:32:09",
+   "ground_truth_source": "original_instructor_grade",
+   "note": "",
+   "rubric_decisions": [],
+   "score": 4.0,
+   "source": "authoritative"
+  },
+  "e002_q1_r3": {
+   "adjudicator": "owner",
+   "contributing_graders": [
+    "Erik"
+   ],
+   "evidence_repaired": false,
+   "evidence_sha256": "47e794cc437211a6209a465e8a033fbed0d7001065f692a9e9f6653534cd82ad",
+   "finalized_at": "2026-08-23 10:32:09",
+   "ground_truth_source": "original_instructor_grade",
+   "note": "",
+   "rubric_decisions": [],
+   "score": 4.0,
+   "source": "authoritative"
+  },
+  "e002_q1_r4": {
+   "adjudicator": "owner",
+   "contributing_graders": [
+    "Erik"
+   ],
+   "evidence_repaired": false,
+   "evidence_sha256": "4c54e031a8f8274d3cd1fd9306051c2b3061c9e04406b0e830b555d26201d2e1",
+   "finalized_at": "2026-08-23 10:32:09",
+   "ground_truth_source": "original_instructor_grade",
+   "note": "",
+   "rubric_decisions": [],
+   "score": 4.0,
+   "source": "authoritative"
+  },
+  "e002_q1_r5": {
+   "adjudicator": "owner",
+   "contributing_graders": [
+    "Erik"
+   ],
+   "evidence_repaired": false,
+   "evidence_sha256": "81e2d24d8b45715a82d604c554342d774248e1ff8a5b7e3391871d5f382463d4",
+   "finalized_at": "2026-08-23 10:32:09",
+   "ground_truth_source": "original_instructor_grade",
+   "note": "",
+   "rubric_decisions": [],
+   "score": 2.0,
+   "source": "authoritative"
+  },
+  "e002_q1_r6": {
+   "adjudicator": "owner",
+   "contributing_graders": [
+    "Erik"
+   ],
+   "evidence_repaired": false,
+   "evidence_sha256": "9431d82b07ed28075d72a2a37f68993a76ff0d3dec49d567bb4267a636b7af70",
+   "finalized_at": "2026-08-23 10:32:09",
+   "ground_truth_source": "original_instructor_grade",
+   "note": "",
+   "rubric_decisions": [],
+   "score": 2.0,
+   "source": "authoritative"
+  },
+  "e002_q1_r7": {
+   "adjudicator": "owner",
+   "contributing_graders": [
+    "Erik"
+   ],
+   "evidence_repaired": false,
+   "evidence_sha256": "e7fb8a60fba1f2824ff756184156cfc0b041379c3fa40c74db693c95647e1453",
+   "finalized_at": "2026-08-23 10:32:09",
+   "ground_truth_source": "original_instructor_grade",
+   "note": "",
+   "rubric_decisions": [],
+   "score": 4.0,
+   "source": "authoritative"
+  },
+  "e002_q1_r8": {
+   "adjudicator": "owner",
+   "contributing_graders": [
+    "Erik"
+   ],
+   "evidence_repaired": false,
+   "evidence_sha256": "cff71ee1ef8b43036c8dd0535515d7cfc5240bff9b93ee877ed14ec159c59cf2",
+   "finalized_at": "2026-08-23 10:32:09",
+   "ground_truth_source": "original_instructor_grade",
+   "note": "",
+   "rubric_decisions": [],
+   "score": 2.0,
+   "source": "authoritative"
+  },
+  "e002_q2_r1": {
+   "adjudicator": "owner",
+   "contributing_graders": [
+    "Erik"
+   ],
+   "evidence_repaired": false,
+   "evidence_sha256": "bb8c678894b9495514e48a94d603c8af98fc6e2c187db38dc9aae26ddf42bd20",
+   "finalized_at": "2026-08-23 10:32:09",
+   "ground_truth_source": "original_instructor_grade",
+   "note": "",
+   "rubric_decisions": [],
+   "score": 4.0,
+   "source": "authoritative"
+  },
+  "e002_q2_r2": {
+   "adjudicator": "owner",
+   "contributing_graders": [
+    "Erik"
+   ],
+   "evidence_repaired": false,
+   "evidence_sha256": "4a5a62c95ef40fcb6ece7b5e9c08892998d2c88fe876b1ac3f58f43ad3cbeb61",
+   "finalized_at": "2026-08-23 10:32:09",
+   "ground_truth_source": "original_instructor_grade",
+   "note": "",
+   "rubric_decisions": [],
+   "score": 4.0,
+   "source": "authoritative"
+  },
+  "e002_q2_r3": {
+   "adjudicator": "owner",
+   "contributing_graders": [
+    "Erik"
+   ],
+   "evidence_repaired": false,
+   "evidence_sha256": "ed22a5521bc2fdf79e0c8db5317db4fd5ddbd6397e5a8afa9c713b62853233e1",
+   "finalized_at": "2026-08-23 10:32:09",
+   "ground_truth_source": "original_instructor_grade",
+   "note": "",
+   "rubric_decisions": [],
+   "score": 4.0,
+   "source": "authoritative"
+  },
+  "e002_q2_r4": {
+   "adjudicator": "owner",
+   "contributing_graders": [
+    "Erik"
+   ],
+   "evidence_repaired": false,
+   "evidence_sha256": "4918077667c0556fd8a1825e989378bb8e8871f81c079c8f9f3144c823bf0e75",
+   "finalized_at": "2026-08-23 10:32:09",
+   "ground_truth_source": "original_instructor_grade",
+   "note": "",
+   "rubric_decisions": [],
+   "score": 4.0,
+   "source": "authoritative"
+  },
+  "e002_q2_r5": {
+   "adjudicator": "owner",
+   "contributing_graders": [
+    "Erik"
+   ],
+   "evidence_repaired": false,
+   "evidence_sha256": "fb7250a6aa9979d75f1d12c2adcfe656c3b2b5675120392fdf8f154fde994d37",
+   "finalized_at": "2026-08-23 10:32:09",
+   "ground_truth_source": "original_instructor_grade",
+   "note": "",
+   "rubric_decisions": [],
+   "score": 4.0,
+   "source": "authoritative"
+  },
+  "e002_q2_r6": {
+   "adjudicator": "owner",
+   "contributing_graders": [
+    "Erik"
+   ],
+   "evidence_repaired": false,
+   "evidence_sha256": "0c71973515adaa434990cd03d77da4ea73e0ddf7d278e756e1f39de261e5bf24",
+   "finalized_at": "2026-08-23 10:32:09",
+   "ground_truth_source": "original_instructor_grade",
+   "note": "",
+   "rubric_decisions": [],
+   "score": 4.0,
+   "source": "authoritative"
+  },
+  "e002_q2_r7": {
+   "adjudicator": "owner",
+   "contributing_graders": [
+    "Erik"
+   ],
+   "evidence_repaired": false,
+   "evidence_sha256": "d7cf26e8d34894835c6c9d4b072e819d0d49c5755e55d5800c9f2c7c14f7e493",
+   "finalized_at": "2026-08-23 10:32:09",
+   "ground_truth_source": "original_instructor_grade",
+   "note": "",
+   "rubric_decisions": [],
+   "score": 4.0,
+   "source": "authoritative"
+  },
+  "e002_q2_r8": {
+   "adjudicator": "owner",
+   "contributing_graders": [
+    "Erik"
+   ],
+   "evidence_repaired": false,
+   "evidence_sha256": "dd61bc06c6ebba6d991b97571d2a3dc1f749067ea1e4a72b12bb3f89d1cda8a8",
+   "finalized_at": "2026-08-23 10:32:09",
+   "ground_truth_source": "original_instructor_grade",
+   "note": "",
+   "rubric_decisions": [],
+   "score": 4.0,
+   "source": "authoritative"
+  },
+  "e003_q1_r1": {
+   "adjudicator": "owner",
+   "contributing_graders": [
+    "Erik"
+   ],
+   "evidence_repaired": false,
+   "evidence_sha256": "db4f371d024ca813c614ac177431eab6df5c1a3de93093add57ffa1e7b174532",
+   "finalized_at": "2026-08-23 10:32:09",
+   "ground_truth_source": "original_instructor_grade",
+   "note": "",
+   "rubric_decisions": [],
+   "score": 4.0,
+   "source": "authoritative"
+  },
+  "e003_q1_r3": {
+   "adjudicator": "owner",
+   "contributing_graders": [
+    "Erik"
+   ],
+   "evidence_repaired": false,
+   "evidence_sha256": "dd652771340886003547812df03f08aea86ca50fd6f92281ae9981af584c75ff",
+   "finalized_at": "2026-08-23 10:32:09",
+   "ground_truth_source": "original_instructor_grade",
+   "note": "",
+   "rubric_decisions": [],
+   "score": 0.0,
+   "source": "authoritative"
+  },
+  "e003_q1_r4": {
+   "adjudicator": "owner",
+   "contributing_graders": [
+    "Erik"
+   ],
+   "evidence_repaired": false,
+   "evidence_sha256": "707cab416fe72d1b628fb3a1a6ff3d9cb782991ef85385982405ec5c866ba371",
+   "finalized_at": "2026-08-23 10:32:09",
+   "ground_truth_source": "original_instructor_grade",
+   "note": "",
+   "rubric_decisions": [],
+   "score": 4.0,
+   "source": "authoritative"
+  },
+  "e003_q1_r5": {
+   "adjudicator": "owner",
+   "contributing_graders": [
+    "Erik"
+   ],
+   "evidence_repaired": true,
+   "evidence_sha256": "d4dae8fe26fb8199ffdfdff62ad9ecbaf7869b29ca45a16a2697a5b82b7a4b1d",
+   "finalized_at": "2026-08-23 10:32:09",
+   "ground_truth_source": "original_instructor_grade",
+   "note": "",
+   "rubric_decisions": [],
+   "score": 4.0,
+   "source": "authoritative"
+  },
+  "e003_q1_r6": {
+   "adjudicator": "owner",
+   "contributing_graders": [
+    "Erik"
+   ],
+   "evidence_repaired": false,
+   "evidence_sha256": "8affbc8338e9fa561511584b7eeb1f398e9014e3863ae564e9d0d6ab4d764c21",
+   "finalized_at": "2026-08-23 10:32:09",
+   "ground_truth_source": "original_instructor_grade",
+   "note": "",
+   "rubric_decisions": [],
+   "score": 4.0,
+   "source": "authoritative"
+  },
+  "e003_q1_r7": {
+   "adjudicator": "owner",
+   "contributing_graders": [
+    "Erik"
+   ],
+   "evidence_repaired": false,
+   "evidence_sha256": "8bc7b995f71989efebf8001f6b4306dbf35199c33a089fada11fb3b8bd750427",
+   "finalized_at": "2026-08-23 10:32:09",
+   "ground_truth_source": "original_instructor_grade",
+   "note": "",
+   "rubric_decisions": [],
+   "score": 4.0,
+   "source": "authoritative"
+  },
+  "e003_q1_r8": {
+   "adjudicator": "owner",
+   "contributing_graders": [
+    "Erik"
+   ],
+   "evidence_repaired": false,
+   "evidence_sha256": "cda8ab8dcae076d3315fe55ef83f5dfc5fe7ed586a876bc7b62dca746f6a12ca",
+   "finalized_at": "2026-08-23 10:32:09",
+   "ground_truth_source": "original_instructor_grade",
+   "note": "",
+   "rubric_decisions": [],
+   "score": 2.0,
+   "source": "authoritative"
+  },
+  "e003_q2_r1": {
+   "adjudicator": "owner",
+   "contributing_graders": [
+    "Erik"
+   ],
+   "evidence_repaired": false,
+   "evidence_sha256": "c786c7790a36352ef6989bf154e82b8773f560df3fbe4995ce6888f179c034aa",
+   "finalized_at": "2026-08-23 10:32:09",
+   "ground_truth_source": "original_instructor_grade",
+   "note": "",
+   "rubric_decisions": [],
+   "score": 4.0,
+   "source": "authoritative"
+  },
+  "e003_q2_r2": {
+   "adjudicator": "owner",
+   "contributing_graders": [
+    "Erik"
+   ],
+   "evidence_repaired": true,
+   "evidence_sha256": "4b2eb96857a126ee616c3de239facab50c6cb8143639305858cde456558ccf64",
+   "finalized_at": "2026-08-23 10:32:09",
+   "ground_truth_source": "original_instructor_grade",
+   "note": "",
+   "rubric_decisions": [],
+   "score": 4.0,
+   "source": "authoritative"
+  },
+  "e003_q2_r3": {
+   "adjudicator": "owner",
+   "contributing_graders": [
+    "Erik"
+   ],
+   "evidence_repaired": true,
+   "evidence_sha256": "499ff1d1e494497f4f406c012619fc5ff154360fbc99b599f162fb4c3c94bb1a",
+   "finalized_at": "2026-08-23 10:32:09",
+   "ground_truth_source": "original_instructor_grade",
+   "note": "",
+   "rubric_decisions": [],
+   "score": 0.0,
+   "source": "authoritative"
+  },
+  "e003_q2_r4": {
+   "adjudicator": "owner",
+   "contributing_graders": [
+    "Erik"
+   ],
+   "evidence_repaired": true,
+   "evidence_sha256": "bd2cf3e403bd36e7a6c4a008f0e24bd042746c8cf4b8e67ff832bf2cb65a9fcd",
+   "finalized_at": "2026-08-23 10:32:09",
+   "ground_truth_source": "original_instructor_grade",
+   "note": "",
+   "rubric_decisions": [],
+   "score": 0.0,
+   "source": "authoritative"
+  },
+  "e003_q2_r5": {
+   "adjudicator": "owner",
+   "contributing_graders": [
+    "Erik"
+   ],
+   "evidence_repaired": false,
+   "evidence_sha256": "045751b012e3acb8ac18629e9485bcda8b90bebb11c776e610160e91d339a84a",
+   "finalized_at": "2026-08-23 10:32:09",
+   "ground_truth_source": "original_instructor_grade",
+   "note": "",
+   "rubric_decisions": [],
+   "score": 0.0,
+   "source": "authoritative"
+  },
+  "e003_q2_r6": {
+   "adjudicator": "owner",
+   "contributing_graders": [
+    "Erik"
+   ],
+   "evidence_repaired": false,
+   "evidence_sha256": "ce0568c45c78402a2aef42470bec1c849dbb8cefc88080a21301ce9ce4ecea45",
+   "finalized_at": "2026-08-23 10:32:09",
+   "ground_truth_source": "original_instructor_grade",
+   "note": "",
+   "rubric_decisions": [],
+   "score": 0.0,
+   "source": "authoritative"
+  },
+  "e003_q2_r7": {
+   "adjudicator": "owner",
+   "contributing_graders": [
+    "Erik"
+   ],
+   "evidence_repaired": true,
+   "evidence_sha256": "0e283328c845afe508b2b634d137b12b7bea0f247ba2e7e34523f505bcb00c0c",
+   "finalized_at": "2026-08-23 10:32:09",
+   "ground_truth_source": "original_instructor_grade",
+   "note": "",
+   "rubric_decisions": [],
+   "score": 4.0,
+   "source": "authoritative"
+  },
+  "e003_q2_r8": {
+   "adjudicator": "owner",
+   "contributing_graders": [
+    "Erik"
+   ],
+   "evidence_repaired": false,
+   "evidence_sha256": "584b0f675d69bccbd3f72a68e8827e885ce72d2f27fcdf336f45a7c3ff8fe8b2",
+   "finalized_at": "2026-08-23 10:32:09",
+   "ground_truth_source": "original_instructor_grade",
+   "note": "",
+   "rubric_decisions": [],
+   "score": 4.0,
+   "source": "authoritative"
+  },
+  "e004_q1_r1": {
+   "adjudicator": "owner",
+   "contributing_graders": [
+    "Erik"
+   ],
+   "evidence_repaired": false,
+   "evidence_sha256": "cadef3499f16d83bfdd34526c329bd17ded097d38a4c6af881b9488ba949bee8",
+   "finalized_at": "2026-08-23 10:32:09",
+   "ground_truth_source": "original_instructor_grade",
+   "note": "",
+   "rubric_decisions": [],
+   "score": 4.0,
+   "source": "authoritative"
+  },
+  "e004_q1_r2": {
+   "adjudicator": "owner",
+   "contributing_graders": [
+    "Erik"
+   ],
+   "evidence_repaired": false,
+   "evidence_sha256": "0de8b887a540ab2a9ad575960adbd7b29110b26d94f1fee9e8d5afd30fcafab2",
+   "finalized_at": "2026-08-23 10:32:09",
+   "ground_truth_source": "original_instructor_grade",
+   "note": "",
+   "rubric_decisions": [],
+   "score": 4.0,
+   "source": "authoritative"
+  },
+  "e004_q1_r3": {
+   "adjudicator": "owner",
+   "contributing_graders": [
+    "Erik"
+   ],
+   "evidence_repaired": false,
+   "evidence_sha256": "a303aa4a45fddbe865e065771cf675cef84920cb13d8227728ff4fb01eadb55c",
+   "finalized_at": "2026-08-23 10:32:09",
+   "ground_truth_source": "original_instructor_grade",
+   "note": "",
+   "rubric_decisions": [],
+   "score": 2.0,
+   "source": "authoritative"
+  },
+  "e004_q1_r4": {
+   "adjudicator": "owner",
+   "contributing_graders": [
+    "Erik"
+   ],
+   "evidence_repaired": false,
+   "evidence_sha256": "98be003c6f1e54884daafc0e339a5c6820ef53e98d5412484de8f351851a26d8",
+   "finalized_at": "2026-08-23 10:32:09",
+   "ground_truth_source": "original_instructor_grade",
+   "note": "",
+   "rubric_decisions": [],
+   "score": 4.0,
+   "source": "authoritative"
+  },
+  "e004_q1_r5": {
+   "adjudicator": "owner",
+   "contributing_graders": [
+    "Erik"
+   ],
+   "evidence_repaired": false,
+   "evidence_sha256": "cc13045a42b8cfb62480a950baea44209d48dcecb1a780cd7817bb169dfc1845",
+   "finalized_at": "2026-08-23 10:32:09",
+   "ground_truth_source": "original_instructor_grade",
+   "note": "",
+   "rubric_decisions": [],
+   "score": 2.0,
+   "source": "authoritative"
+  },
+  "e004_q1_r6": {
+   "adjudicator": "owner",
+   "contributing_graders": [
+    "Erik"
+   ],
+   "evidence_repaired": false,
+   "evidence_sha256": "2367368811593564834c4466845028354a7a6268bcad46fcd934d904cbdc2e19",
+   "finalized_at": "2026-08-23 10:32:09",
+   "ground_truth_source": "original_instructor_grade",
+   "note": "",
+   "rubric_decisions": [],
+   "score": 2.0,
+   "source": "authoritative"
+  },
+  "e004_q1_r8": {
+   "adjudicator": "owner",
+   "contributing_graders": [
+    "Erik"
+   ],
+   "evidence_repaired": false,
+   "evidence_sha256": "dadd4061ccb131cf08097faf47cc708721c46107533741f8353923b8dc73f9cc",
+   "finalized_at": "2026-08-23 10:32:09",
+   "ground_truth_source": "original_instructor_grade",
+   "note": "",
+   "rubric_decisions": [],
+   "score": 2.0,
+   "source": "authoritative"
+  },
+  "e004_q2_r1": {
+   "adjudicator": "owner",
+   "contributing_graders": [
+    "Erik"
+   ],
+   "evidence_repaired": false,
+   "evidence_sha256": "b4c3fa13b1c10852f2e0f4b99aed191b33f614d57a3afb3498f1928683093dad",
+   "finalized_at": "2026-08-23 10:32:09",
+   "ground_truth_source": "original_instructor_grade",
+   "note": "",
+   "rubric_decisions": [],
+   "score": 4.0,
+   "source": "authoritative"
+  },
+  "e004_q2_r2": {
+   "adjudicator": "owner",
+   "contributing_graders": [
+    "Erik"
+   ],
+   "evidence_repaired": false,
+   "evidence_sha256": "f28fdab517c2f64c60566e3102199e674ea954ffc97db57ee0b5b1dbd810b150",
+   "finalized_at": "2026-08-23 10:32:09",
+   "ground_truth_source": "original_instructor_grade",
+   "note": "",
+   "rubric_decisions": [],
+   "score": 4.0,
+   "source": "authoritative"
+  },
+  "e004_q2_r3": {
+   "adjudicator": "owner",
+   "contributing_graders": [
+    "Erik"
+   ],
+   "evidence_repaired": true,
+   "evidence_sha256": "22c6040c74ee6a21f21b319619bd256727387e5dd0920625d445a603e7776e40",
+   "finalized_at": "2026-08-23 10:32:09",
+   "ground_truth_source": "original_instructor_grade",
+   "note": "",
+   "rubric_decisions": [],
+   "score": 4.0,
+   "source": "authoritative"
+  },
+  "e004_q2_r4": {
+   "adjudicator": "owner",
+   "contributing_graders": [
+    "Erik"
+   ],
+   "evidence_repaired": false,
+   "evidence_sha256": "166bb04e38b14b86e69509f6ee50b553a7ee3d0adaf1bb761eecea1e5492497f",
+   "finalized_at": "2026-08-23 10:32:09",
+   "ground_truth_source": "original_instructor_grade",
+   "note": "",
+   "rubric_decisions": [],
+   "score": 0.0,
+   "source": "authoritative"
+  },
+  "e004_q2_r5": {
+   "adjudicator": "owner",
+   "contributing_graders": [
+    "Erik"
+   ],
+   "evidence_repaired": true,
+   "evidence_sha256": "11f92872a9e329fcf5d81f8ae11c37aca4b481b9edb2a5c7ae12b92f59c44e7c",
+   "finalized_at": "2026-08-23 10:32:09",
+   "ground_truth_source": "original_instructor_grade",
+   "note": "",
+   "rubric_decisions": [],
+   "score": 0.0,
+   "source": "authoritative"
+  },
+  "e004_q2_r6": {
+   "adjudicator": "owner",
+   "contributing_graders": [
+    "Erik"
+   ],
+   "evidence_repaired": false,
+   "evidence_sha256": "911cf19c0a44c4da2b7e14a8cafe1a63f43c11c4d652aff234f546d140fb6374",
+   "finalized_at": "2026-08-23 10:32:09",
+   "ground_truth_source": "original_instructor_grade",
+   "note": "",
+   "rubric_decisions": [],
+   "score": 4.0,
+   "source": "authoritative"
+  },
+  "e004_q2_r8": {
+   "adjudicator": "owner",
+   "contributing_graders": [
+    "Erik"
+   ],
+   "evidence_repaired": false,
+   "evidence_sha256": "b5a73408769128068de6a6590e85fdcfac6bdcc28f45349e3c9a0ea67193e091",
+   "finalized_at": "2026-08-23 10:32:09",
+   "ground_truth_source": "original_instructor_grade",
+   "note": "",
+   "rubric_decisions": [],
+   "score": 2.0,
+   "source": "authoritative"
+  },
+  "e005_q1_r1": {
+   "adjudicator": "owner",
+   "contributing_graders": [
+    "Erik"
+   ],
+   "evidence_repaired": false,
+   "evidence_sha256": "636e35a2783100a9cf44298e4f85b1daac3fa1867a6ea20f7f8ebbf2083b31c0",
+   "finalized_at": "2026-08-23 10:32:09",
+   "ground_truth_source": "original_instructor_grade",
+   "note": "",
+   "rubric_decisions": [],
+   "score": 4.0,
+   "source": "authoritative"
+  },
+  "e005_q1_r2": {
+   "adjudicator": "owner",
+   "contributing_graders": [
+    "Erik"
+   ],
+   "evidence_repaired": false,
+   "evidence_sha256": "3563045ebcb51b0740b521dc00cf6d6528ea60f0dc68f464c3e8001c00e89dab",
+   "finalized_at": "2026-08-23 10:32:09",
+   "ground_truth_source": "original_instructor_grade",
+   "note": "",
+   "rubric_decisions": [],
+   "score": 0.0,
+   "source": "authoritative"
+  },
+  "e005_q1_r4": {
+   "adjudicator": "owner",
+   "contributing_graders": [
+    "Erik"
+   ],
+   "evidence_repaired": false,
+   "evidence_sha256": "997882abc00be4f0ac1ff80a4a706d7c9b37e6b756077174312d77940f463808",
+   "finalized_at": "2026-08-23 10:32:09",
+   "ground_truth_source": "original_instructor_grade",
+   "note": "",
+   "rubric_decisions": [
+    "R1"
+   ],
+   "score": 0.0,
+   "source": "authoritative"
+  },
+  "e005_q1_r6": {
+   "adjudicator": "owner",
+   "contributing_graders": [
+    "Erik"
+   ],
+   "evidence_repaired": false,
+   "evidence_sha256": "6ba2ce4d1b628bedf1e13ee9dfcbcd05be3eb6cd55f59996a6aebb6c5e73ff64",
+   "finalized_at": "2026-08-23 10:32:09",
+   "ground_truth_source": "original_instructor_grade",
+   "note": "",
+   "rubric_decisions": [],
+   "score": 0.0,
+   "source": "authoritative"
+  },
+  "e005_q1_r7": {
+   "adjudicator": "owner",
+   "contributing_graders": [
+    "Erik"
+   ],
+   "evidence_repaired": false,
+   "evidence_sha256": "e03490f5221e250d0682d16c9cc2881f00c6a5bb515c8261878b9eeafef02808",
+   "finalized_at": "2026-08-23 10:32:09",
+   "ground_truth_source": "original_instructor_grade",
+   "note": "",
+   "rubric_decisions": [],
+   "score": 0.0,
+   "source": "authoritative"
+  },
+  "e005_q2_r1": {
+   "adjudicator": "owner",
+   "contributing_graders": [
+    "Erik"
+   ],
+   "evidence_repaired": false,
+   "evidence_sha256": "243ba3906eef5d8c84801a973d9dc6e5f12936d8df13883674fa3e5371678306",
+   "finalized_at": "2026-08-23 10:32:09",
+   "ground_truth_source": "original_instructor_grade",
+   "note": "",
+   "rubric_decisions": [],
+   "score": 0.0,
+   "source": "authoritative"
+  },
+  "e005_q2_r8": {
+   "adjudicator": "owner",
+   "contributing_graders": [
+    "Erik"
+   ],
+   "evidence_repaired": false,
+   "evidence_sha256": "b1a46b4faec24f830c65c92f24cb14e75ea4f70df3f07a4f1b755da21da4c10b",
+   "finalized_at": "2026-08-23 10:32:09",
+   "ground_truth_source": "original_instructor_grade",
+   "note": "",
+   "rubric_decisions": [],
+   "score": 4.0,
+   "source": "authoritative"
+  },
+  "e006_q1_r1": {
+   "adjudicator": "owner",
+   "contributing_graders": [
+    "Erik"
+   ],
+   "evidence_repaired": false,
+   "evidence_sha256": "2bd7a51975f6b4c0e5c4113ed2f0baf5a1594d9e6bb67106474b2c71a23cf1fb",
+   "finalized_at": "2026-08-23 10:32:09",
+   "ground_truth_source": "original_instructor_grade",
+   "note": "",
+   "rubric_decisions": [],
+   "score": 0.0,
+   "source": "authoritative"
+  },
+  "e006_q1_r2": {
+   "adjudicator": "owner",
+   "contributing_graders": [
+    "Erik"
+   ],
+   "evidence_repaired": false,
+   "evidence_sha256": "f1edf514f4feb9a1eaa6b07a623ace836cc0c24471d70424563e7c3a4a9e8dc2",
+   "finalized_at": "2026-08-23 10:32:09",
+   "ground_truth_source": "original_instructor_grade",
+   "note": "",
+   "rubric_decisions": [],
+   "score": 4.0,
+   "source": "authoritative"
+  },
+  "e006_q1_r3": {
+   "adjudicator": "owner",
+   "contributing_graders": [
+    "Erik"
+   ],
+   "evidence_repaired": false,
+   "evidence_sha256": "9983c3322f3c77ada25d50b921712d37cee5377779f8a3280d1d887a271d593e",
+   "finalized_at": "2026-08-23 10:32:09",
+   "ground_truth_source": "original_instructor_grade",
+   "note": "",
+   "rubric_decisions": [],
+   "score": 4.0,
+   "source": "authoritative"
+  },
+  "e006_q1_r4": {
+   "adjudicator": "owner",
+   "contributing_graders": [
+    "Erik"
+   ],
+   "evidence_repaired": false,
+   "evidence_sha256": "908fc9f27cfc694b94c563c044ad74ba4fc9f82bad49218d2e7339fd328107db",
+   "finalized_at": "2026-08-23 10:32:09",
+   "ground_truth_source": "original_instructor_grade",
+   "note": "",
+   "rubric_decisions": [],
+   "score": 4.0,
+   "source": "authoritative"
+  },
+  "e006_q1_r5": {
+   "adjudicator": "owner",
+   "contributing_graders": [
+    "Erik"
+   ],
+   "evidence_repaired": false,
+   "evidence_sha256": "19d6aa2f8a304e6706e554baed1312232681ab1e8639ca82dd725ea6fc46d8bf",
+   "finalized_at": "2026-08-23 10:32:09",
+   "ground_truth_source": "original_instructor_grade",
+   "note": "",
+   "rubric_decisions": [],
+   "score": 4.0,
+   "source": "authoritative"
+  },
+  "e006_q1_r6": {
+   "adjudicator": "owner",
+   "contributing_graders": [
+    "Erik"
+   ],
+   "evidence_repaired": false,
+   "evidence_sha256": "c2c948db4001151b5e058f308ca1314b7411ff5ad0a9ab55d96d0cde0a74ffa6",
+   "finalized_at": "2026-08-23 10:32:09",
+   "ground_truth_source": "original_instructor_grade",
+   "note": "",
+   "rubric_decisions": [],
+   "score": 4.0,
+   "source": "authoritative"
+  },
+  "e006_q1_r7": {
+   "adjudicator": "owner",
+   "contributing_graders": [
+    "Erik"
+   ],
+   "evidence_repaired": false,
+   "evidence_sha256": "a0fc627d7a21d23f6081fb40e389c99ed32c9715109ba0dea887320743eb4f1f",
+   "finalized_at": "2026-08-23 10:32:09",
+   "ground_truth_source": "original_instructor_grade",
+   "note": "",
+   "rubric_decisions": [],
+   "score": 4.0,
+   "source": "authoritative"
+  },
+  "e006_q1_r8": {
+   "adjudicator": "owner",
+   "contributing_graders": [
+    "Erik"
+   ],
+   "evidence_repaired": false,
+   "evidence_sha256": "29483b17bf9ca38239422cf2b35286b91a98d41d57b580aa72fc245a57a08dab",
+   "finalized_at": "2026-08-23 10:32:09",
+   "ground_truth_source": "original_instructor_grade",
+   "note": "",
+   "rubric_decisions": [],
+   "score": 4.0,
+   "source": "authoritative"
+  },
+  "e006_q2_r1": {
+   "adjudicator": "owner",
+   "contributing_graders": [
+    "Erik"
+   ],
+   "evidence_repaired": false,
+   "evidence_sha256": "8a4c87c0b59ff748729951503e0be568636c7c6ba20683b290bea9814c351458",
+   "finalized_at": "2026-08-23 10:32:09",
+   "ground_truth_source": "original_instructor_grade",
+   "note": "",
+   "rubric_decisions": [],
+   "score": 4.0,
+   "source": "authoritative"
+  },
+  "e006_q2_r3": {
+   "adjudicator": "owner",
+   "contributing_graders": [
+    "Erik"
+   ],
+   "evidence_repaired": false,
+   "evidence_sha256": "fad7a4ac64966105eca78a1b48a0734d03307081abf373ecd5ae0d9e8442899d",
+   "finalized_at": "2026-08-23 10:32:09",
+   "ground_truth_source": "original_instructor_grade",
+   "note": "",
+   "rubric_decisions": [],
+   "score": 4.0,
+   "source": "authoritative"
+  },
+  "e006_q2_r4": {
+   "adjudicator": "owner",
+   "contributing_graders": [
+    "Erik"
+   ],
+   "evidence_repaired": false,
+   "evidence_sha256": "b7b3917b45affc61bc381bbd393995a13bad8f029396df79f596a3b54a04aa03",
+   "finalized_at": "2026-08-23 10:32:09",
+   "ground_truth_source": "original_instructor_grade",
+   "note": "",
+   "rubric_decisions": [],
+   "score": 4.0,
+   "source": "authoritative"
+  },
+  "e006_q2_r6": {
+   "adjudicator": "owner",
+   "contributing_graders": [
+    "Erik"
+   ],
+   "evidence_repaired": true,
+   "evidence_sha256": "78eb104ef9cf03c57cfcca9b6dfded14a53e88bb82aa52bcfb54d925fd4e1690",
+   "finalized_at": "2026-08-23 10:32:09",
+   "ground_truth_source": "original_instructor_grade",
+   "note": "",
+   "rubric_decisions": [],
+   "score": 2.0,
+   "source": "authoritative"
+  },
+  "e006_q2_r7": {
+   "adjudicator": "owner",
+   "contributing_graders": [
+    "Erik"
+   ],
+   "evidence_repaired": false,
+   "evidence_sha256": "1e97552a759015d101c379826820266ce2c7f57243b939ed717df85c6c9423b7",
+   "finalized_at": "2026-08-23 10:32:09",
+   "ground_truth_source": "original_instructor_grade",
+   "note": "",
+   "rubric_decisions": [],
+   "score": 4.0,
+   "source": "authoritative"
+  },
+  "e006_q2_r8": {
+   "adjudicator": "owner",
+   "contributing_graders": [
+    "Erik"
+   ],
+   "evidence_repaired": false,
+   "evidence_sha256": "aacb924a33d9243bb4a2214102b52aaf8da6483978103845be8dc1b3456d2a3e",
+   "finalized_at": "2026-08-23 10:32:09",
+   "ground_truth_source": "original_instructor_grade",
+   "note": "",
+   "rubric_decisions": [],
+   "score": 4.0,
+   "source": "authoritative"
+  },
+  "e007_q1_r1": {
+   "adjudicator": "owner",
+   "contributing_graders": [
+    "Erik"
+   ],
+   "evidence_repaired": true,
+   "evidence_sha256": "216bab8461782586b9a083db2fcb667f91288a494bc6a57b2fef76409958ecec",
+   "finalized_at": "2026-08-23 10:32:09",
+   "ground_truth_source": "original_instructor_grade",
+   "note": "",
+   "rubric_decisions": [],
+   "score": 4.0,
+   "source": "authoritative"
+  }
+ },
+ "schema_version": 1,
+ "source_export": {
+  "bundle_items_sha256": "25c49f82dee305dde4febd8790878e6c2ac414116e043209105bec288391276a",
+  "content_sha256": "55b002a364338e80461b749251d020b26d3c00decfb8d71ab5d000f6e626899d",
+  "exported_at": "2026-08-23 10:32:24",
+  "file_sha256": "11477de07a024e14785ed3e54320ff659118265fc5271315e017e710baf73a49",
+  "final_count": 67,
+  "path": "C:\\Users\\ethan\\AppData\\Local\\autograder\\labeling\\exports\\final_labels.json"
+ }
+}

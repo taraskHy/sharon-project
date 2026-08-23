@@ -63,6 +63,31 @@ class LeakageError(RuntimeError):
     """A request would carry evaluation-side information."""
 
 
+class UnpricedCandidate(RuntimeError):
+    """A live cloud run was requested for a model with no local price."""
+
+
+def require_priced_candidate(model: str, pricing: dict | None) -> None:
+    """Refuse a live cloud run for a model this machine cannot price.
+
+    `predicted_call_cost` returns 0.0 for an unknown model, so an unpriced
+    candidate would sail through every pre-call budget check and the $10
+    ceiling could only react AFTER the provider had already charged. Silence
+    there is the whole failure: the run looks free until the ledger says
+    otherwise. A campaign must therefore list every cloud candidate it intends
+    to call in models.toml [pricing], with prices read from the provider's own
+    page."""
+    entry = (pricing or {}).get(model)
+    have = (isinstance(entry, dict)
+            and float(entry.get("input") or 0) > 0 and float(entry.get("output") or 0) > 0)
+    if not have:
+        raise UnpricedCandidate(
+            f"refusing a LIVE run of {model!r}: it has no usable entry in the local [pricing] table, so the "
+            "pre-call budget check would estimate $0 and could not refuse a call that crosses the ceiling. "
+            "Add `[pricing.\"" + model + "\"] input=<USD per 1M> output=<USD per 1M>` to models.toml "
+            "(read the numbers off the provider's model page) and pass --models-config models.toml.")
+
+
 @dataclass
 class RunSpec:
     role: str
@@ -467,6 +492,10 @@ def run_benchmark(spec: RunSpec, *, gateway=None, registry: CandidateRegistry | 
         # -> checkpoint -> compare with ledger -> budget safe? -> allowed.
         # Only cloud routes are gated; local/mock routes have no account side.
         from ..usage import is_cloud_route
+        if is_cloud_route(route.backend, route.base_url):
+            # BEFORE any provider request: a model we cannot price cannot be
+            # budget-gated, so it does not run at all.
+            require_priced_candidate(getattr(route, "model", "") or "", getattr(gw, "pricing_config", None))
         if is_cloud_route(route.backend, route.base_url) and not spec.skip_key_preflight:
             preflight = _live_preflight(spec, gw, route, cases, adapter, files_root)
             if not preflight.get("allowed"):

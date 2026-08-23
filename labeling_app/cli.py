@@ -147,6 +147,30 @@ def cmd_evidence_report(args) -> int:
     return 0
 
 
+def cmd_finalize_authoritative(args) -> int:
+    """Promote single instructor-copied grades to FINAL, in bulk.
+
+    Dry run by default: it prints exactly what WOULD be promoted and writes
+    nothing. `--apply` performs the promotion, verbatim — no score is ever
+    recomputed."""
+    data_dir, bundle, db = _open(args, register=False)
+    out = db.finalize_authoritative(apply=bool(args.apply), adjudicator=args.adjudicator)
+    mode = ("APPLIED" if out["applied"] else
+            ("APPLIED — nothing left to promote" if args.apply else "DRY RUN — nothing written"))
+    print(f"[finalize] {mode}", file=sys.stderr)
+    print(f"[finalize] items {out['items_total']} | eligible for promotion {out['eligible_for_promotion']} | "
+          f"already FINAL {out['already_final']} | skipped {out['skipped']}", file=sys.stderr)
+    for r in out["skipped_detail"][:20]:
+        print(f"[finalize]   SKIP {bundle.id_map.get(r['item_id'], r['item_id'])}: {r['reason']}", file=sys.stderr)
+    if out["applied"]:
+        print(f"[finalize] promoted {out['promoted']}", file=sys.stderr)
+    else:
+        print("[finalize] re-run with --apply to write (take a backup first: "
+              "`python -m labeling_app backup`)", file=sys.stderr)
+    print(json.dumps({"data_dir": str(data_dir), "db": str(db.path), **out}, ensure_ascii=False, indent=1))
+    return 0
+
+
 def cmd_verify_provenance(args) -> int:
     """READ-ONLY verification of the stored label provenance. Opens ONLY the
     database (no bundle, no dataset, no eligibility recompute) so it works while
@@ -363,6 +387,15 @@ def main(argv: list[str] | None = None) -> int:
                                                   "from the audit trail that recording it changed no score")
     vp.add_argument("--data-dir", default=None)
     vp.set_defaults(func=cmd_verify_provenance)
+
+    fa = sub.add_parser("finalize-authoritative",
+                        help="promote single instructor-copied grades to FINAL, verbatim (dry run unless --apply)")
+    fa.add_argument("--data-dir", default=None)
+    fa.add_argument("--bundle", default=None)
+    fa.add_argument("--dataset", default=None)
+    fa.add_argument("--apply", action="store_true", help="write; without it this is a dry run")
+    fa.add_argument("--adjudicator", default="owner", help="who authorised the promotion")
+    fa.set_defaults(func=cmd_finalize_authoritative)
     g = sub.add_parser("set-provenance", help="record HOW an existing grader's scores were derived (never edits a score)")
     g.add_argument("--grader", required=True)
     g.add_argument("--source", required=True, choices=list(LABEL_SOURCES))
