@@ -495,7 +495,7 @@ reliability/shadow route.
 - **ModelGateway route:** `grade_primary` (default of
   ReliabilityConfig.primary_task) — [models.grade_primary]
   backend="openrouter", model="${GRADE_PRIMARY_MODEL}", max_tokens=300,
-  reasoning={effort="none"}, prompt_version="grade-v1". Gated, default OFF:
+  reasoning={effort="none"}, prompt_version="grade-v2". Gated, default OFF:
   without `--models-config` the gateway runtime does not exist;
   `--grading-mode` defaults "legacy" and non-legacy modes hard-require
   `--models-config`. The legacy judge never uses this route.
@@ -595,7 +595,7 @@ reliability/shadow route.
 - **ModelGateway route:** `grade_escalate` (default in the escalate_grade
   signature and ReliabilityConfig.escalate_task) — [models.grade_escalate]
   backend=openrouter, model=${GRADE_ESCALATE_MODEL}, max_tokens=600,
-  reasoning effort high, prompt_version 'grade-v1', temperature 0.0 from
+  reasoning effort high, prompt_version 'grade-v2', temperature 0.0 from
   [defaults]. Gateway wraps privacy scan, request cache, ledger
   (stage='escalation', pack_hash, rag_* meta), and budget. Config-gated: no
   models.toml entry means gateway.route raises GatewayConfigError and

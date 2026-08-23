@@ -154,7 +154,7 @@ def main() -> int:
         cfg.write_text(
             '[defaults]\nstructured_mode = "json_schema"\ntemperature = 0.0\ntimeout_s = 180.0\n'
             '[models.grade_primary]\nbackend = "openrouter"\nmodel = "${GRADE_PRIMARY_MODEL}"\n'
-            'max_tokens = 300\nreasoning = { effort = "none" }\nprompt_version = "grade-v1"\ncacheable = false\n'
+            'max_tokens = 300\nreasoning = { effort = "none" }\nprompt_version = "grade-v2"\ncacheable = false\n'
             '[budget]\nenabled = true\nmax_calls_per_job = 12\nsoft_fraction = 0.8\n', encoding="utf-8")
         rt = setup_from_config(cfg, out / "state")
         embed_fn = courses.ollama_embed_fn()

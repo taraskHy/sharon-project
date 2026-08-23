@@ -33,7 +33,7 @@ Hooks into the validated pipeline (both default OFF): `extract.set_mc_resolver`
 structured_mode = "json_schema"; temperature = 0.0; timeout_s = 300.0
 [models.grade_primary]
 backend = "openrouter"; model = "${GRADE_PRIMARY_MODEL}"; max_tokens = 300
-reasoning = { effort = "none" }; prompt_version = "grade-v1"
+reasoning = { effort = "none" }; prompt_version = "grade-v2"
 [models.mc_resolve]
 backend = "ollama"; base_url = "http://localhost:11434/v1"
 model = "qwen3.8:27b-q4_K_M"; extra_generation = { think = false }

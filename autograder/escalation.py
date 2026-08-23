@@ -261,13 +261,27 @@ GRADE_SYSTEM = (
 
 def grade_prompt(pack: QuestionGradingPack, *, selected: str | None, transcription: str,
                  version: str | None) -> list[dict]:
+    """Build the grader prompt.
+
+    NO SELECTION -> NO LINE. When ``selected`` is absent the "Student selected
+    option" line is omitted entirely, rather than rendered as "(none)". A
+    grader reading "(none)" takes it as "the student left the answer blank",
+    which is a wrong choice under several grading policies — so an unresolved
+    or not-applicable selection would silently become a wrong one. Omission
+    says what is true: the selection is not part of this grading task.
+
+    This matches ``privacy.build_grading_request``, which has always omitted
+    the line when there is no option. A genuinely BLANK multiple-choice
+    response is a different fact and needs its own explicit state; it must not
+    be expressed by passing None here.
+    """
     correct = None
     if version:
         correct = {sid: v.get(version) for sid, v in pack.correct_by_version.items()}
     return [{"type": "text", "text": (
         pack.to_grader_context() + "\n\n"
         + (f"Correct option(s) for this exam version: {correct}\n" if correct else "")
-        + f"Student selected option: {selected or '(none)'}\n"
+        + (f"Student selected option: {selected}\n" if selected else "")
         + f"Student explanation (verbatim transcription):\n---\n{transcription}\n---\n"
         + f"Allowed rubric item ids: {pack.rubric_item_ids() or '(none)'}. "
         + f"Score range: 0..{pack.max_score:g}.")}]

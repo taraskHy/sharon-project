@@ -324,7 +324,7 @@ def pack_from_inputs(p: dict):
 
 class GradeAdapter:
     adapter_version = "grade-bench-v1"
-    prompt_version = "grade-v1"
+    prompt_version = "grade-v2"
     model_visible_fields = ("case_id", "pack", "selected", "transcription", "version")
     default_max_tokens = 600
 
