@@ -1,0 +1,38 @@
+{
+ "role": "grade_primary",
+ "split": "DEV",
+ "rules_version": "smoke-rules-v2 (2026-08-23, DEV only; min-id per slot unless the role declares SMOKE_ORDER / SMOKE_DIVERSITY)",
+ "manifest_hashes": {
+  "inputs_sha256": "61ea571e9413b20b4b1e2d6dc84e14688cdd2ff4a1a3e0751a2233cf4dbc050c",
+  "labels_sha256": "8bda05df1d8a2627334000c006e689afc3275cc7db2a24f4c79995e20e0770b7",
+  "manifest_sha256": "35be93e57163caec47a51a35ba8b994394b797fdf566d9d40b18196330791079",
+  "final_labels_sha256": "3bdd38c3ec1787bb053447382e1cb545c3ea1f478d459b317b23cefd49999869"
+ },
+ "cases": [
+  {
+   "slot": "no_credit",
+   "why": "a zero: the grader must be able to withhold all credit, not just award it",
+   "case_id": "e003_q2_r6",
+   "component": "ALL",
+   "split": "DEV"
+  },
+  {
+   "slot": "partial_credit",
+   "why": "partial credit: the hardest judgement — some rubric credit, not all",
+   "case_id": "e002_q1_r8",
+   "component": "ALL",
+   "split": "DEV"
+  },
+  {
+   "slot": "full_credit",
+   "why": "full credit: a correct answer must not be marked down",
+   "case_id": "e007_q1_r1",
+   "component": "ALL",
+   "split": "DEV"
+  }
+ ],
+ "unfilled_slots": [],
+ "selection_sha256": "ad104dbe3e9171c485dd9fe4e6b109880d574883ec4a0e59e33bd35712725cbd",
+ "frozen_at": "2026-08-23 10:52:44",
+ "_policy": "Pre-registered DEV smoke subset for the first live execution of a candidate. Frozen before any new model output; never modified or optimized after results. Model-visible inputs are still ONLY the manifest's inputs for these case ids."
+}

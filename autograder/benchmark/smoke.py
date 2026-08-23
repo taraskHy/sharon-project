@@ -10,7 +10,12 @@ re-verifies the hash, that every id exists, and that every id is DEV.
     evaluation/model_selection/smoke/<role>_smoke.json
 
 Rules are data (SMOKE_RULES below, version-stamped). Each slot picks the
-lexicographically smallest qualifying case id — no judgement, no peeking.
+FIRST qualifying case id in the role's slot order — by default the smallest
+case id, so the choice carries no judgement. A role may override that order
+(SMOKE_ORDER) and may require each slot to introduce a new value of some
+attribute (SMOKE_DIVERSITY, e.g. a different writer per slot). Both are still
+pure functions of the frozen manifest: no peeking at model output, and the
+result is reproducible from the rules alone.
 """
 from __future__ import annotations
 
@@ -24,7 +29,8 @@ from typing import Any, Callable
 from .manifests import REPO_ROOT, BenchCase, BenchmarkManifest
 
 DEFAULT_SMOKE_ROOT = REPO_ROOT / "evaluation" / "model_selection" / "smoke"
-SMOKE_RULES_VERSION = "smoke-rules-v1 (2026-08-22, DEV only, min-id per slot)"
+SMOKE_RULES_VERSION = ("smoke-rules-v2 (2026-08-23, DEV only; min-id per slot unless the role "
+                       "declares SMOKE_ORDER / SMOKE_DIVERSITY)")
 
 
 class SmokeError(RuntimeError):
@@ -86,7 +92,44 @@ SMOKE_RULES: dict[str, list[tuple[str, str, Callable[[BenchCase], bool]]]] = {
         ("synthetic_token_duplication", "SYNTHETIC near miss: token duplication / addition",
          lambda c: c.component == "SYNTHETIC" and c.label.get("corruption_type") == "token_duplication_addition"),
     ],
+    "grade_primary": [
+        ("no_credit", "a zero: the grader must be able to withhold all credit, not just award it",
+         lambda c: _score(c) == 0.0),
+        ("partial_credit", "partial credit: the hardest judgement — some rubric credit, not all",
+         lambda c: 0.0 < _score(c) < _max_score(c)),
+        ("full_credit", "full credit: a correct answer must not be marked down",
+         lambda c: _score(c) >= _max_score(c) > 0),
+    ],
 }
+
+#: role -> sort key over DEV cases; the first qualifying case per slot wins.
+#: Default (absent) = lexicographic case id.
+SMOKE_ORDER: dict[str, Callable[[BenchCase], Any]] = {
+    # LONGEST answer first. "Do not cherry-pick easy cases": the shortest answer
+    # in a bucket is usually a fragment that tests nothing, and min-id would pick
+    # exactly that. Ties fall back to the case id, so this stays deterministic.
+    "grade_primary": lambda c: (-len((c.inputs or {}).get("transcription") or ""), c.case_id),
+}
+
+#: role -> attribute each slot must introduce a NEW value of (or None).
+#: Spreads the subset across students instead of grading one person three times.
+SMOKE_DIVERSITY: dict[str, Callable[[BenchCase], Any]] = {
+    "grade_primary": lambda c: c.meta.get("writer") or c.label.get("writer"),
+}
+
+
+def _score(c: BenchCase) -> float | None:
+    """The authoritative FINAL score merged into the manifest, or None.
+
+    Only a case with real ground truth can fill a score-bucket slot: an
+    unlabeled case would silently land in whichever bucket None compares into.
+    """
+    s = c.label.get("score")
+    return None if s is None else float(s)
+
+
+def _max_score(c: BenchCase) -> float:
+    return float(c.label.get("max_score") or 0.0)
 
 
 def _selection_hash(cases: list[dict]) -> str:
@@ -102,16 +145,25 @@ def propose_smoke(role: str, manifest: BenchmarkManifest) -> dict[str, Any]:
     rules = SMOKE_RULES.get(role)
     if not rules:
         raise SmokeError(f"no smoke rules for role {role!r}")
-    dev = sorted(manifest.by_split("DEV"), key=lambda c: c.case_id)
+    order = SMOKE_ORDER.get(role) or (lambda c: c.case_id)
+    diversity = SMOKE_DIVERSITY.get(role)
+    dev = sorted(manifest.by_split("DEV"), key=order)
     taken: set[str] = set()
+    seen_diverse: set[Any] = set()
     chosen: list[dict] = []
     for slot, why, pred in rules:
-        pick = next((c for c in dev if c.case_id not in taken and pred(c)), None)
+        def _ok(c):
+            if c.case_id in taken or not pred(c):
+                return False
+            return not (diversity and diversity(c) in seen_diverse)
+        pick = next((c for c in dev if _ok(c)), None)
         if pick is None:
             chosen.append({"slot": slot, "why": why, "case_id": None, "component": None,
                            "note": "no DEV case satisfies this rule"})
             continue
         taken.add(pick.case_id)
+        if diversity:
+            seen_diverse.add(diversity(pick))
         chosen.append({"slot": slot, "why": why, "case_id": pick.case_id, "component": pick.component,
                        "split": pick.split, **({"category": pick.meta.get("category")} if pick.meta.get("category") else {})})
     cases = [c for c in chosen if c["case_id"]]
@@ -180,5 +232,5 @@ def smoke_status(role: str, manifest: BenchmarkManifest | None, root: Path = DEF
         return {"role": role, "frozen": True, "path": str(p), "valid": False, "error": str(e)}
 
 
-__all__ = ["DEFAULT_SMOKE_ROOT", "SMOKE_RULES", "SMOKE_RULES_VERSION", "SmokeError", "propose_smoke",
+__all__ = ["DEFAULT_SMOKE_ROOT", "SMOKE_RULES", "SMOKE_ORDER", "SMOKE_DIVERSITY", "SMOKE_RULES_VERSION", "SmokeError", "propose_smoke",
            "freeze_smoke", "load_smoke", "smoke_case_ids", "smoke_status", "smoke_path"]

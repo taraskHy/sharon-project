@@ -40,7 +40,13 @@ prompt_version = "ocr-verify-v1"
 [models.grade_primary]
 backend = "openrouter"
 model = "${GRADE_PRIMARY_MODEL}"
-max_tokens = 300                       # routine grading: tiny structured output
+# Must equal GradeAdapter.default_max_tokens: the benchmark that SELECTS this
+# model and this route emit the same prompt and the same GradeResult schema, so
+# a different output budget would mean selecting on one cap and deploying on
+# another (tests/test_production_benchmark_parity.py pins this). It also matches
+# grade_escalate, which uses the identical schema — a truncated response is a
+# schema failure, i.e. a silent REVIEW.
+max_tokens = 600
 reasoning = { effort = "none" }
 prompt_version = "grade-v1"
 
