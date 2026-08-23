@@ -1080,6 +1080,7 @@ class LabelDB:
     def snapshot_to(self, dest: Path) -> None:
         """Consistent copy of the live database (SQLite online backup API)."""
         dest = Path(dest)
+        assert_not_live_database(dest)        # a snapshot must never be written ONTO the deployment
         dest.parent.mkdir(parents=True, exist_ok=True)
         with self._conn() as src:
             dst = sqlite3.connect(str(dest))

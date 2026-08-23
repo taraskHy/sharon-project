@@ -108,11 +108,18 @@ def test_no_test_module_can_reach_the_live_labeling_database():
         for n, line in enumerate(path.read_text(encoding="utf-8").splitlines(), 1):
             if "re.search" in line or line.lstrip().startswith("#"):
                 continue                            # a scanner's own pattern is not a call site
-            if re.search(r"LabelDB\s*\(\s*(LIVE_DB|live_db_path\(\))", line):
+            names_live = re.search(r"(LIVE_DB|live_db_path\(\)|LOCALAPPDATA|AppData)", line)
+            if not names_live or "LIVE_DB = " in line:
+                continue
+            # snapshot_sqlite(LIVE, dest) is the SANCTIONED read-only path: the deployment
+            # is the SOURCE. The dangerous shape is the deployment in the DESTINATION
+            # position (swapped arguments), which writes onto it — allow only the former.
+            if re.search(r"snapshot_sqlite\s*\(\s*(LIVE_DB|live_db_path\(\))\s*,", line):
+                continue
+            # a deployment path handed to any other writer, in any argument position
+            if re.search(r"(LabelDB|load_items|save_label|sync_evidence|sync_eligibility|set_final|"
+                         r"snapshot_to|snapshot_sqlite|make_backup)\s*\(", line):
                 offenders.append(f"{path.name}:{n}: {line.strip()}")
-            if re.search(r"(LOCALAPPDATA|AppData)", line) and "snapshot" not in line and "LIVE_DB =" not in line:
-                if re.search(r"LabelDB|load_items|save_label|sync_evidence|set_final", line):
-                    offenders.append(f"{path.name}:{n}: {line.strip()}")
     assert offenders == [], (
         "these lines could open the live labeling database with a writer; snapshot it first with "
         "labeling_app.backup.snapshot_sqlite and open the copy:\n  " + "\n  ".join(offenders))
@@ -138,3 +145,60 @@ def test_snapshotting_the_live_database_is_read_only_and_allowed(tmp_path):
     assert (live.stat().st_size, live.stat().st_mtime_ns) == before, "the source was not written"
     assert snap.exists() and not list(tmp_path.glob("labels.db-*")), "no WAL sidecars beside a snapshot"
     LabelDB(snap)                                   # opening the COPY is fine
+
+
+# ------------------------------------------- barrier 4: the DESTINATION too --
+
+def test_a_snapshot_can_never_be_written_onto_the_live_database(tmp_path):
+    """The guard's own advice is `snapshot_sqlite(live, copy)`. Swap the two
+    arguments by accident and the deployment becomes the DESTINATION of a
+    backup — a write, straight onto the file the guard exists to protect.
+    The destination is checked exactly like the source."""
+    from labeling_app.backup import BackupError, snapshot_sqlite
+    live = live_db_path()
+    source = tmp_path / "source.db"
+    LabelDB(source).load_items([{"item_id": "g1", "max_score": 4.0, "rubric_items": [{"id": "R1", "text": "r"}]}])
+    before = (live.stat().st_size, live.stat().st_mtime_ns) if live.exists() else None
+
+    with pytest.raises(LabelError, match="refusing to open the LIVE labeling database"):
+        snapshot_sqlite(source, live)                       # arguments swapped
+
+    if before is not None:
+        assert (live.stat().st_size, live.stat().st_mtime_ns) == before, "the deployment was written to"
+
+
+def test_labeldb_snapshot_to_refuses_the_live_database_as_a_destination(tmp_path):
+    source = tmp_path / "source.db"
+    db = LabelDB(source)
+    db.load_items([{"item_id": "g1", "max_score": 4.0, "rubric_items": [{"id": "R1", "text": "r"}]}])
+    with pytest.raises(LabelError, match="refusing to open the LIVE labeling database"):
+        db.snapshot_to(live_db_path())
+    db.snapshot_to(tmp_path / "ok.db")                      # an ordinary destination still works
+    assert (tmp_path / "ok.db").exists()
+
+
+def test_a_backup_onto_its_own_source_is_refused(tmp_path):
+    from labeling_app.backup import BackupError, snapshot_sqlite
+    src = tmp_path / "labels.db"
+    LabelDB(src).load_items([{"item_id": "g1", "max_score": 4.0, "rubric_items": [{"id": "R1", "text": "r"}]}])
+    with pytest.raises(BackupError, match="onto itself"):
+        snapshot_sqlite(src, src)
+
+
+def test_an_empty_or_tableless_snapshot_is_never_called_a_backup(tmp_path):
+    """An empty file passes every integrity check trivially. Reporting that as a
+    verified backup is precisely the failure this machinery exists to prevent."""
+    from labeling_app.backup import BackupError, snapshot_sqlite
+    empty = tmp_path / "empty.db"
+    sqlite3.connect(str(empty)).close()                     # a valid, completely empty database
+    with pytest.raises(BackupError, match="preserves nothing"):
+        snapshot_sqlite(empty, tmp_path / "out.db")
+    assert not (tmp_path / "out.db").exists()
+
+    partial = tmp_path / "partial.db"
+    con = sqlite3.connect(str(partial))
+    con.execute("CREATE TABLE items (item_id TEXT PRIMARY KEY)")
+    con.commit(); con.close()
+    with pytest.raises(BackupError, match="no labels table"):
+        snapshot_sqlite(partial, tmp_path / "out2.db")
+    assert not (tmp_path / "out2.db").exists()

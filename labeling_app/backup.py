@@ -84,6 +84,12 @@ def snapshot_sqlite(src: Path, dest: Path) -> dict[str, Any]:
     src, dest = Path(src), Path(dest)
     if not src.exists():
         raise FileNotFoundError(f"no database at {src} — nothing to back up")
+    # A snapshot is written TO dest: if the arguments are swapped, that write lands on the
+    # deployment. Guard the destination the same way LabelDB guards its own path.
+    from .db import assert_not_live_database
+    assert_not_live_database(dest)
+    if dest.resolve() == src.resolve():
+        raise BackupError(f"refusing to back {src} up onto itself")
     dest.parent.mkdir(parents=True, exist_ok=True)
     wal = src.with_name(src.name + "-wal")
     source_wal_bytes = wal.stat().st_size if wal.exists() else 0
@@ -132,6 +138,14 @@ def snapshot_sqlite(src: Path, dest: Path) -> dict[str, Any]:
                           f"and NO backup was written.{hint}") from e
     problems = [f"{k}={health[k]}" for k in ("integrity_check", "quick_check", "foreign_key_check")
                 if health[k] != "ok"]
+    # An empty or table-less file passes every integrity check trivially. Counting that as a
+    # verified backup is exactly the failure this function exists to prevent: it would report
+    # success while preserving nothing.
+    if all(health["counts"].get(t) is None for t in COUNTED_TABLES):
+        problems.append("the snapshot contains none of the expected tables "
+                        f"({', '.join(COUNTED_TABLES)}) — it preserves nothing")
+    elif health["counts"].get("labels") is None:
+        problems.append("the snapshot has no labels table — it is not a labeling database")
     if health["counts"] != source_counts:
         problems.append(f"row counts changed: source {source_counts} -> snapshot {health['counts']}")
     if problems:
