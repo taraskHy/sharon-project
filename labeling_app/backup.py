@@ -121,8 +121,15 @@ def snapshot_sqlite(src: Path, dest: Path) -> dict[str, Any]:
         health = verify_database(dest)
     except sqlite3.DatabaseError as e:
         _discard()
+        hint = ""
+        if source_wal_bytes:
+            hint = (f" A -wal sidecar of {source_wal_bytes} bytes sits beside the source: if the main database "
+                    "was restored from a backup while that write-ahead log was left in place, the log belongs "
+                    "to the OLD database and cannot be applied to the new one. Stop the labeling server, move "
+                    "labels.db-wal and labels.db-shm aside, and retry — the main file alone is then the "
+                    "database.")
         raise BackupError(f"the snapshot of {src} is unreadable ({type(e).__name__}: {e}); it was discarded, "
-                          "and NO backup was written") from e
+                          f"and NO backup was written.{hint}") from e
     problems = [f"{k}={health[k]}" for k in ("integrity_check", "quick_check", "foreign_key_check")
                 if health[k] != "ok"]
     if health["counts"] != source_counts:
