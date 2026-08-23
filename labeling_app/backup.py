@@ -21,51 +21,121 @@ from pathlib import Path
 from typing import Any
 
 
+#: tables whose row counts must survive a backup unchanged
+COUNTED_TABLES = ("items", "labels", "final_labels", "graders", "events")
+
+
+class BackupError(RuntimeError):
+    """The snapshot is not a usable backup. Never raised for a good one, and
+    never swallowed: an unverifiable snapshot must not be reported as success."""
+
+
+def _counts(con: sqlite3.Connection) -> dict[str, Any]:
+    """Row counts + schema stamp read through an OPEN connection (so a WAL-mode
+    source is counted as the connection sees it, WAL content included)."""
+    out: dict[str, Any] = {}
+    tables = {r[0] for r in con.execute("SELECT name FROM sqlite_master WHERE type='table'")}
+    for t in COUNTED_TABLES:
+        out[t] = con.execute(f"SELECT COUNT(*) FROM {t}").fetchone()[0] if t in tables else None
+    if "meta" in tables:
+        row = con.execute("SELECT value FROM meta WHERE key='schema_version'").fetchone()
+        out["schema_version"] = row[0] if row else None
+    return out
+
+
+def verify_database(path: Path) -> dict[str, Any]:
+    """Full health report of a database FILE: integrity_check, quick_check,
+    foreign_key_check and row counts. Raises sqlite3.DatabaseError if the file
+    is damaged badly enough that the checks cannot even run — the caller decides
+    whether that is fatal."""
+    p = Path(path)
+    con = sqlite3.connect(f"file:{p.as_posix()}?mode=ro", uri=True, timeout=15.0)
+    try:
+        integrity = [r[0] for r in con.execute("PRAGMA integrity_check")]
+        quick = [r[0] for r in con.execute("PRAGMA quick_check")]
+        fk = con.execute("PRAGMA foreign_key_check").fetchall()
+        return {"integrity_check": "ok" if integrity == ["ok"] else integrity,
+                "quick_check": "ok" if quick == ["ok"] else quick,
+                "foreign_key_check": "ok" if not fk else [list(r) for r in fk],
+                "counts": _counts(con)}
+    finally:
+        con.close()
+
+
 def snapshot_sqlite(src: Path, dest: Path) -> dict[str, Any]:
-    """Consistent copy of a (possibly live, WAL-mode) SQLite file using the
-    online backup API over a READ-ONLY connection. No schema migration, no
-    write to the source. Returns {bytes, sha256, counts}."""
+    """A VERIFIED, self-contained copy of a (possibly live, WAL-mode) SQLite
+    database, taken with SQLite's online backup API over a READ-ONLY connection.
+
+    WAL safety: the online backup API copies the database as the source
+    CONNECTION sees it, which includes everything committed to the write-ahead
+    log — it is never a main-file-only copy. The source is opened read-only, so
+    this is safe while the labeling server holds its own WAL connection open,
+    and the source is never written, migrated or checkpointed.
+
+    Self-contained: the snapshot is switched to a rollback journal and its
+    ``-wal``/``-shm`` sidecars are removed, so the backup is one file that can
+    be copied anywhere.
+
+    VERIFIED: the snapshot is then integrity-checked, foreign-key-checked and
+    its row counts compared against the source. If any check fails the partial
+    file is deleted and ``BackupError`` is raised — an incomplete or damaged
+    snapshot is NEVER reported as a successful backup.
+    """
     src, dest = Path(src), Path(dest)
     if not src.exists():
         raise FileNotFoundError(f"no database at {src} — nothing to back up")
     dest.parent.mkdir(parents=True, exist_ok=True)
-    ro = sqlite3.connect(f"file:{src.as_posix()}?mode=ro", uri=True, timeout=15.0)
+    wal = src.with_name(src.name + "-wal")
+    source_wal_bytes = wal.stat().st_size if wal.exists() else 0
+
+    def _discard():
+        for p in (dest, dest.with_name(dest.name + "-wal"), dest.with_name(dest.name + "-shm")):
+            p.unlink(missing_ok=True)
+
     try:
-        out = sqlite3.connect(str(dest))
+        ro = sqlite3.connect(f"file:{src.as_posix()}?mode=ro", uri=True, timeout=15.0)
+    except sqlite3.Error as e:
+        raise BackupError(f"cannot open {src} for backup: {type(e).__name__}: {e}") from e
+    try:
         try:
-            ro.backup(out)
-            # The backup API copies the source's WAL journal mode into the
-            # snapshot; switch it to a single self-contained file so no
-            # -wal/-shm sidecars ever appear next to a backup.
-            out.execute("PRAGMA journal_mode=DELETE")
-        finally:
-            out.close()
+            source_counts = _counts(ro)          # what the SOURCE connection can actually see
+            out = sqlite3.connect(str(dest))
+            try:
+                ro.backup(out)
+                out.execute("PRAGMA journal_mode=DELETE")
+            finally:
+                out.close()
+        except sqlite3.DatabaseError as e:
+            _discard()
+            raise BackupError(
+                f"the source database {src} could not be snapshotted ({type(e).__name__}: {e}). "
+                "It is damaged or its write-ahead log cannot be read; NO backup was written. "
+                "Stop the labeling server so SQLite can checkpoint cleanly, then retry, and "
+                "restore from the newest verified backup if this persists.") from e
     finally:
         ro.close()
     for side in (dest.with_name(dest.name + "-wal"), dest.with_name(dest.name + "-shm")):
         side.unlink(missing_ok=True)
-    counts = _quick_counts(dest)
-    return {"bytes": dest.stat().st_size, "sha256": hashlib.sha256(dest.read_bytes()).hexdigest(), "counts": counts}
 
-
-def _quick_counts(db_path: Path) -> dict[str, Any]:
-    """Self-describing numbers for the manifest (read-only; tolerant of older
-    or newer schemas — missing tables simply report null)."""
-    out: dict[str, Any] = {}
     try:
-        c = sqlite3.connect(f"file:{Path(db_path).as_posix()}?mode=ro", uri=True)
-        try:
-            tables = {r[0] for r in c.execute("SELECT name FROM sqlite_master WHERE type='table'")}
-            for t in ("items", "labels", "final_labels", "graders", "events"):
-                out[t] = c.execute(f"SELECT COUNT(*) FROM {t}").fetchone()[0] if t in tables else None
-            if "meta" in tables:
-                row = c.execute("SELECT value FROM meta WHERE key='schema_version'").fetchone()
-                out["schema_version"] = row[0] if row else None
-        finally:
-            c.close()
-    except sqlite3.Error as e:  # pragma: no cover — counts are informational
-        out["error"] = str(e)
-    return out
+        health = verify_database(dest)
+    except sqlite3.DatabaseError as e:
+        _discard()
+        raise BackupError(f"the snapshot of {src} is unreadable ({type(e).__name__}: {e}); it was discarded, "
+                          "and NO backup was written") from e
+    problems = [f"{k}={health[k]}" for k in ("integrity_check", "quick_check", "foreign_key_check")
+                if health[k] != "ok"]
+    if health["counts"] != source_counts:
+        problems.append(f"row counts changed: source {source_counts} -> snapshot {health['counts']}")
+    if problems:
+        _discard()
+        raise BackupError(f"the snapshot of {src} did not verify ({'; '.join(problems)}); it was discarded, "
+                          "and NO backup was written")
+    return {"bytes": dest.stat().st_size,
+            "sha256": hashlib.sha256(dest.read_bytes()).hexdigest(),
+            "counts": health["counts"],
+            "verified": {k: health[k] for k in ("integrity_check", "quick_check", "foreign_key_check")},
+            "source_wal_bytes": source_wal_bytes}
 
 
 def _try_load_bundle(bundle, bundle_dir: Path | None):
@@ -93,8 +163,17 @@ def make_backup(db, bundle, data_dir: Path, *, copy_to: Path | None = None, now:
     dest = Path(data_dir) / "backups" / stamp
     dest.mkdir(parents=True, exist_ok=True)
     src_path = Path(db.path) if isinstance(db, LabelDB) else Path(db)
-    # 1. the database — read-only online backup; never depends on anything else
-    snap = snapshot_sqlite(src_path, dest / "labels.db")
+    # 1. the database — read-only online backup; never depends on anything else.
+    #    A snapshot that does not verify raises: no half-backup is left behind,
+    #    and the caller is never told a damaged database was backed up.
+    try:
+        snap = snapshot_sqlite(src_path, dest / "labels.db")
+    except Exception:
+        try:
+            next(dest.iterdir())
+        except StopIteration:
+            dest.rmdir()
+        raise
     # 2. the export — best effort, never blocks
     export: dict[str, Any] = {"status": "skipped", "reason": None}
     b, reason = _try_load_bundle(bundle, bundle_dir)
@@ -114,10 +193,12 @@ def make_backup(db, bundle, data_dir: Path, *, copy_to: Path | None = None, now:
             continue
         files[p.name] = {"sha256": hashlib.sha256(p.read_bytes()).hexdigest(), "bytes": p.stat().st_size}
     manifest = {"created_at": now or time.strftime("%Y-%m-%d %H:%M:%S"), "source_db": str(src_path),
-                "db_counts": snap["counts"], "export": export, "files": files}
+                "db_counts": snap["counts"], "db_verified": snap["verified"],
+                "source_wal_bytes": snap["source_wal_bytes"], "export": export, "files": files}
     (dest / "backup_manifest.json").write_text(json.dumps(manifest, ensure_ascii=False, indent=1), encoding="utf-8",
                                                newline="\n")
-    out = {"backup_dir": str(dest), "files": files, "db_counts": snap["counts"], "export": export}
+    out = {"backup_dir": str(dest), "files": files, "db_counts": snap["counts"],
+           "db_verified": snap["verified"], "export": export}
     if copy_to:
         target = Path(copy_to) / dest.name
         shutil.copytree(dest, target, dirs_exist_ok=True)
@@ -125,4 +206,4 @@ def make_backup(db, bundle, data_dir: Path, *, copy_to: Path | None = None, now:
     return out
 
 
-__all__ = ["make_backup", "snapshot_sqlite"]
+__all__ = ["make_backup", "snapshot_sqlite", "verify_database", "BackupError", "COUNTED_TABLES"]

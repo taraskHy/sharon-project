@@ -115,13 +115,33 @@ def cmd_build_bundle(args) -> int:
     return 0
 
 
-def cmd_evidence_report(args) -> int:
-    data_dir, bundle, db = _open(args)
-    rep = db.evidence_report()
-    for key in ("stale_labels", "unknown_evidence_labels", "stale_finals", "items_evidence_changed"):
+def _join_case_ids(rep: dict, id_map: dict[str, str]) -> dict:
+    """Attach dataset case ids to a report WITHOUT hiding anything.
+
+    An item the current bundle does not know keeps its item id in
+    ``affected_case_ids`` and is named in ``items_not_in_current_bundle``,
+    instead of silently becoming ``case_id: null`` and vanishing from the
+    affected list — which understated the blast radius exactly when the bundle
+    and the database had drifted apart, i.e. when it mattered most."""
+    unmapped: set[str] = set()
+    for key in ("stale_labels", "unknown_evidence_labels", "stale_finals", "items_evidence_changed",
+                "authoritative_labels_on_repaired_evidence"):
         for row in rep.get(key, []):
-            row["case_id"] = bundle.id_map.get(row["item_id"])
-    rep["affected_case_ids"] = sorted({r["case_id"] for r in rep.get("items_evidence_changed", []) if r.get("case_id")})
+            case = id_map.get(row["item_id"])
+            row["case_id"] = case
+            if case is None:
+                unmapped.add(row["item_id"])
+                row["case_id_unavailable"] = ("this item is not in the current bundle — the bundle was rebuilt "
+                                              "with a different id salt, or is stale/missing")
+    rep["affected_case_ids"] = sorted({r.get("case_id") or r["item_id"]
+                                       for r in rep.get("items_evidence_changed", [])})
+    rep["items_not_in_current_bundle"] = sorted(unmapped)
+    return rep
+
+
+def cmd_evidence_report(args) -> int:
+    data_dir, bundle, db = _open(args, register=False)      # reporting never registers a bundle
+    rep = _join_case_ids(db.evidence_report(), bundle.id_map)
     _print_evidence_report(rep, bundle.id_map)
     print(json.dumps({"data_dir": str(data_dir), "db": str(db.path), **rep}, ensure_ascii=False, indent=1))
     return 0
@@ -247,7 +267,16 @@ def cmd_serve(args) -> int:
     return 0
 
 
-def _open(args):
+def _open(args, *, register: bool = True):
+    """Open (data_dir, bundle, db).
+
+    ``register=False`` for REPORTING commands. Registering a bundle is a WRITE:
+    ``load_items`` inserts every item id the bundle carries, and the sync calls
+    rewrite eligibility and evidence fingerprints. A bundle whose id salt differs
+    from the one the database was built against therefore inserts a whole second
+    set of item rows — which is how 67 orphan items once appeared in the live
+    database, and why a report could then show ``case_id: null`` for items the
+    new bundle does not know. A command that only reads must only read."""
     from .app import Bundle, LabelDB
     data_dir = Path(args.data_dir) if args.data_dir else default_data_dir()
     bundle = Bundle(Path(args.bundle) if getattr(args, "bundle", None) else data_dir / "bundle")
@@ -259,6 +288,8 @@ def _open(args):
     if getattr(args, "dataset", None) and not rec["applied"]:
         raise SystemExit(f"--dataset given but the eligibility recompute was not applied: {rec['reason']}")
     db = LabelDB(data_dir / "labels.db")
+    if not register:
+        return data_dir, bundle, db
     db.load_items(bundle.items)
     # fail-safe: unknown eligibility never flips flags (a status/export run can
     # never erase the running server's enforcement)
@@ -298,11 +329,8 @@ def cmd_backup(args) -> int:
 
 
 def cmd_status(args) -> int:
-    data_dir, bundle, db = _open(args)
-    rep = db.evidence_report()
-    for key in ("stale_labels", "unknown_evidence_labels", "stale_finals", "items_evidence_changed"):
-        for row in rep.get(key, []):
-            row["case_id"] = bundle.id_map.get(row["item_id"])
+    data_dir, bundle, db = _open(args, register=False)      # reporting never registers a bundle
+    rep = _join_case_ids(db.evidence_report(), bundle.id_map)
     print(json.dumps({"data_dir": str(data_dir), "db": str(db.path), "bundle_items": len(bundle.items),
                       "summary": db.summary(), "evidence": rep}, ensure_ascii=False, indent=1))
     return 0

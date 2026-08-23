@@ -36,6 +36,31 @@ def no_network(monkeypatch):
     return None
 
 
+@pytest.fixture(autouse=True, scope="session")
+def _labeling_data_dir_is_never_the_live_one(tmp_path_factory):
+    """No test may resolve to the real deployment's labeling data directory.
+
+    Belt: every test session runs with LABELING_DATA_DIR pointed at a throwaway
+    directory, so `default_data_dir()` can never return the live one.
+    Braces: `LabelDB.__init__` refuses the live labels.db under pytest anyway
+    (labeling_app.db.assert_not_live_database) — a test that hardcodes the path
+    still fails before SQLite is opened.
+
+    This exists because a test once opened the live database read-write and
+    physically corrupted its `items` table."""
+    import os
+    sandbox = tmp_path_factory.mktemp("labeling_data_dir")
+    previous = os.environ.get("LABELING_DATA_DIR")
+    os.environ["LABELING_DATA_DIR"] = str(sandbox)
+    try:
+        yield sandbox
+    finally:
+        if previous is None:
+            os.environ.pop("LABELING_DATA_DIR", None)
+        else:
+            os.environ["LABELING_DATA_DIR"] = previous
+
+
 @pytest.fixture
 def pre_repair_dataset(tmp_path):
     """The grade_primary dataset as it was BEFORE the owner's manual evidence

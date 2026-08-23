@@ -39,6 +39,7 @@ States (derived, never stored as truth):
 from __future__ import annotations
 
 import json
+import os
 import sqlite3
 import threading
 import time
@@ -192,8 +193,54 @@ _MIGRATIONS = {
 }
 
 
+#: opt-in for the rare test that deliberately wants the real deployment path
+LIVE_DB_OPT_IN = "LABELING_ALLOW_LIVE_DB"
+
+
+def live_db_path() -> Path:
+    """The one database a test must never open: the real deployment's labels.db.
+
+    Resolved WITHOUT LABELING_DATA_DIR on purpose — a test that redirects that
+    variable is exactly the safe case, and must not accidentally make the guard
+    point somewhere else."""
+    base = os.environ.get("LOCALAPPDATA") or str(Path.home() / ".local" / "share")
+    return (Path(base) / "autograder" / "labeling" / "labels.db").resolve()
+
+
+def assert_not_live_database(path: Path) -> None:
+    """Refuse to open the live labeling database from a test.
+
+    ``LabelDB.__init__`` is a WRITER: it sets ``journal_mode``, runs DDL and
+    migrations, and its connection checkpoints the WAL when it closes. Doing
+    that to the deployment's database — especially while the labeling server
+    holds it open — can physically corrupt the only copy of the human ground
+    truth. Under pytest that is never intentional, so it fails loudly here,
+    BEFORE any SQLite connection is opened.
+
+    Production is unaffected: the check only fires when pytest is running.
+    A test that genuinely needs the real file (forensics) may set
+    ``LABELING_ALLOW_LIVE_DB=1``, and should still open it read-only."""
+    if not (os.environ.get("PYTEST_CURRENT_TEST") or os.environ.get("PYTEST_VERSION")):
+        return
+    if os.environ.get(LIVE_DB_OPT_IN):
+        return
+    try:
+        resolved = Path(path).resolve()
+    except OSError:                                    # unresolvable path cannot be the live one
+        return
+    if resolved == live_db_path():
+        raise LabelError(
+            f"refusing to open the LIVE labeling database from a test ({resolved}). "
+            "LabelDB is a writer — it sets journal_mode and runs DDL, and closing it checkpoints "
+            "the WAL, which can corrupt the deployment's only copy of the ground truth. Point the "
+            "test at tmp_path, or snapshot the live file first with "
+            f"labeling_app.backup.snapshot_sqlite and open the copy. Set {LIVE_DB_OPT_IN}=1 only "
+            "for deliberate read-only forensics.")
+
+
 class LabelDB:
     def __init__(self, path: str | Path, *, claim_ttl_s: int = CLAIM_TTL_S):
+        assert_not_live_database(path)
         self.path = Path(path)
         self.path.parent.mkdir(parents=True, exist_ok=True)
         self.claim_ttl_s = claim_ttl_s
@@ -1048,6 +1095,7 @@ class LabelDB:
             self._local.conn = None
 
 
-__all__ = ["LabelDB", "StaleWrite", "StaleEvidence", "LabelError", "LABEL_STATUSES", "FINAL_SOURCES", "CLAIM_TTL_S",
+__all__ = ["LabelDB", "StaleWrite", "StaleEvidence", "LabelError",
+           "assert_not_live_database", "live_db_path", "LIVE_DB_OPT_IN", "LABEL_STATUSES", "FINAL_SOURCES", "CLAIM_TTL_S",
            "STATE_EVIDENCE_REVIEW", "STATE_AUTHORITATIVE", "LABEL_SOURCES", "DEFAULT_LABEL_SOURCE",
            "AUTHORITATIVE_LABEL_SOURCES"]
