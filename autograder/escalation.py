@@ -375,7 +375,10 @@ def validate_grade(g: GradeResult, pack: QuestionGradingPack, *, selection_corre
         p.append("rubric items on a choice_only question")
 
     ev = validate_evidence(credited=g.credited(), transcription=transcription,
-                           specs=pack.rubric_specs(), policy=pack.evidence_policy)
+                           specs=pack.rubric_specs(), policy=pack.evidence_policy,
+                           # a positive score IS the assertion of merit that
+                           # `evidence_policy=required` demands be grounded
+                           credit_awarded=g.score > 0)
     p.extend(ev.problems)
     inv = check_question_invariants(g, pack)
     p.extend(inv.problems)

@@ -1,0 +1,20 @@
+{
+ "decision": "DROP_FROM_GRADE_PRIMARY",
+ "reasons": [
+  "0 valid predictions across all 26 cases (valid recall 0.000)",
+  "macro-F1 0.1304, far below the always-valid baseline 0.4583",
+  "excessive Hebrew token usage: 164,958 input tokens vs gemini's 35,750 for byte-identical prompts (4.6x)",
+  "empty-evidence behaviour: 19/19 credit-awarding grades ungrounded; cited no evidence at all in 19.2% of cases",
+  "its 100% AUTO rate was an artefact of never making a claim the validator could reject - under the fail-closed rule it becomes 26.92%"
+ ],
+ "artifacts": "PRESERVED - all Luna run directories and outputs remain untouched and readable",
+ "model": "openai/gpt-5.6-luna-pro",
+ "phase": "DEV_verdict_26_cases",
+ "decided_at": "2026-08-25",
+ "population": "grade_primary__dev_verdict",
+ "selection_sha256": "e08984a3bf7f374e6241aef57a8d43747da4d0f222eb8a132fc50fbc14410665",
+ "run_id": "dev__dev_verdict__all__openai-gpt-5.6-luna-pro__44745e98b2",
+ "valid_for_model_selection": true,
+ "note": "AUTO/REVIEW figures in this run's metrics.json predate the required-evidence fail-closed rule. Rescored values are in DEV_RESCORED_2026-08-25.json; the historical file is left untouched on purpose. Verdict metrics are unaffected - the rule changes routing, not predictions.",
+ "invalid_class_performance": "NOT MEASURED (no ground-truth support in any split)"
+}

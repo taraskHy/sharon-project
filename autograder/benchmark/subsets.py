@@ -53,6 +53,12 @@ def _derivable_supported_verdict(c: BenchCase) -> bool:
 
 #: (role, subset name) -> (split, why, predicate)
 SUBSET_RULES: dict[tuple[str, str], tuple[str, str, Callable[[BenchCase], bool]]] = {
+    ("grade_primary", "calibration_verdict"): (
+        "CALIBRATION",
+        "every CALIBRATION case whose canonical explanation verdict is mathematically derivable "
+        "and belongs to a class that has ground-truth support (valid | partially_valid)",
+        _derivable_supported_verdict,
+    ),
     ("grade_primary", "dev_verdict"): (
         "DEV",
         "every DEV case whose canonical explanation verdict is mathematically derivable "

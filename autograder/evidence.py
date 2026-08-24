@@ -87,10 +87,13 @@ class EvidenceValidation:
     verified: list[str] = field(default_factory=list)
     fabricated: list[str] = field(default_factory=list)
     missing: list[str] = field(default_factory=list)
+    #: credit was awarded with nothing verifiable behind it (fail-closed rule)
+    ungrounded_credit: bool = False
 
     def as_dict(self) -> dict:
         return {"ok": self.ok, "checked": self.checked, "verified": list(self.verified),
                 "fabricated": list(self.fabricated), "missing": list(self.missing),
+                "ungrounded_credit": self.ungrounded_credit,
                 "problems": list(self.problems)}
 
 
@@ -107,6 +110,7 @@ def _requires_evidence(spec: Any) -> bool:
 def validate_evidence(*, credited: Iterable[CreditedItem], transcription: Optional[str],
                       specs: dict[str, Any] | None = None,
                       policy: str = "required",
+                      credit_awarded: bool = False,
                       max_chars: int = MAX_EVIDENCE_CHARS) -> EvidenceValidation:
     """Deterministic check of every credited rubric item.
 
@@ -114,11 +118,25 @@ def validate_evidence(*, credited: Iterable[CreditedItem], transcription: Option
     exists, unless their spec opts out; ``optional`` — cited spans are still
     verified, but a missing span is not a problem; ``disabled`` — no check
     (only for packs with no semantic rubric, e.g. choice_only).
+
+    ``credit_awarded`` closes the rule. Iterating credited items alone is
+    open at the bottom: a grader that awards a positive score while marking
+    NO rubric item met has nothing to iterate, so it passed validation and
+    went straight to AUTO. That is backwards — an ungrounded assertion of
+    merit is exactly what "evidence required" exists to catch, and the models
+    that most needed catching were the ones citing least. Measured over the
+    26-case DEV population: 19/19 of one candidate's credit-awarding grades
+    carried no verified span at all, and every one of them was AUTO.
+
+    So under ``required``: credit must rest on at least one VERIFIED span,
+    unless a credited item's spec explicitly opted out of evidence. No credit
+    (score 0) demands no grounding — the grader is explaining an absence.
     """
     v = EvidenceValidation(True)
     if policy == "disabled":
         return v
     specs = specs or {}
+    exempt: list[str] = []
     seen: set[str] = set()
     for item in credited:
         if item.id in seen:
@@ -132,6 +150,9 @@ def validate_evidence(*, credited: Iterable[CreditedItem], transcription: Option
                 v.missing.append(item.id)
                 v.problems.append(
                     f"rubric item {item.id} credited without student evidence")
+            else:
+                # the spec legitimately allows credit with no quoted span
+                exempt.append(item.id)
             continue
         if len(text) > max_chars + 20:
             v.problems.append(f"rubric item {item.id} evidence exceeds {max_chars} characters")
@@ -147,5 +168,20 @@ def validate_evidence(*, credited: Iterable[CreditedItem], transcription: Option
             v.problems.append(
                 f"rubric item {item.id} cites evidence absent from the student "
                 f"transcription: {text[:60]!r}")
+    # FAIL CLOSED: credit that rests on nothing verifiable is not AUTO-able.
+    #
+    # ...but only where grounding is EXPRESSIBLE. A pack with no rubric items
+    # declares nothing to cite, so no grader could ever satisfy the rule and
+    # every positive score would be permanently REVIEW — a demand the model
+    # cannot meet is not a safety check, it is a deadlock. Requiring `specs`
+    # keeps the rule where it bites (packs that DO define rubric items) and
+    # silent where it cannot.
+    if policy == "required" and credit_awarded and specs and not v.verified and not exempt:
+        v.ungrounded_credit = True
+        # Wording note: this string travels into traces, which are asserted to
+        # carry no student text or identity vocabulary. Keep it generic.
+        v.problems.append(
+            "credit awarded with no verified evidence span "
+            "(no rubric item cites text that occurs in the transcription)")
     v.ok = not v.problems
     return v

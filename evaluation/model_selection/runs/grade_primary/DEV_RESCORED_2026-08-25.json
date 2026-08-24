@@ -1,0 +1,46 @@
+{
+ "artifact": "dev_rescored_after_fail_closed_rule",
+ "created_at": "2026-08-25",
+ "note": "recomputed from persisted outputs; no provider calls. Verdict metrics are unchanged by the rule - it moves AUTO/REVIEW routing, not predictions. Historical metrics.json files are left untouched.",
+ "models": {
+  "google/gemini-3.7-flash": {
+   "auto_rate_pct": 42.31,
+   "review_rate_pct": 57.69,
+   "evidence_validation_failures": 15,
+   "harmful_verdict_upgrades": 2,
+   "harmful_verdict_downgrades": 6,
+   "verdict_exact_pct": 69.23,
+   "verdict_macro_f1": 0.5575,
+   "verdict_balanced_accuracy": 0.5113,
+   "valid_recall": 0.7727,
+   "partial_recall": 0.25,
+   "ungrounded_credit": 15
+  },
+  "openai/gpt-5.6-luna-pro": {
+   "auto_rate_pct": 26.92,
+   "review_rate_pct": 73.08,
+   "evidence_validation_failures": 19,
+   "harmful_verdict_upgrades": 0,
+   "harmful_verdict_downgrades": 23,
+   "verdict_exact_pct": 11.54,
+   "verdict_macro_f1": 0.1304,
+   "verdict_balanced_accuracy": 0.375,
+   "valid_recall": 0.0,
+   "partial_recall": 0.75,
+   "ungrounded_credit": 19
+  },
+  "anthropic/claude-sonnet-5": {
+   "auto_rate_pct": 53.85,
+   "review_rate_pct": 46.15,
+   "evidence_validation_failures": 9,
+   "harmful_verdict_upgrades": 0,
+   "harmful_verdict_downgrades": 15,
+   "verdict_exact_pct": 42.31,
+   "verdict_macro_f1": 0.481,
+   "verdict_balanced_accuracy": 0.5568,
+   "valid_recall": 0.3636,
+   "partial_recall": 0.75,
+   "ungrounded_credit": 9
+  }
+ }
+}

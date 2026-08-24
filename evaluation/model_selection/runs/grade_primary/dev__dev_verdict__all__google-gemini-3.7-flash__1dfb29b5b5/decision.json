@@ -1,0 +1,22 @@
+{
+ "decision": "ADVANCE_TO_CALIBRATION",
+ "reasons": [
+  "best macro-F1 on the 26-case DEV verdict population: 0.5575 (+0.0992 over the always-valid baseline 0.4583)",
+  "best valid recall 0.773; 0 provider failures; 0 schema failures",
+  "cheapest arm by 6.8x ($0.022932 for 26 cases)"
+ ],
+ "carry_forward_concern": [
+  "15 of 22 credit-awarding grades rest on no verified span (10 credit rubric item R1 with an EMPTY student_evidence)",
+  "after the fail-closed rule its AUTO rate falls 61.54% -> 42.31%",
+  "partially_valid recall is only 0.250"
+ ],
+ "model": "google/gemini-3.7-flash",
+ "phase": "DEV_verdict_26_cases",
+ "decided_at": "2026-08-25",
+ "population": "grade_primary__dev_verdict",
+ "selection_sha256": "e08984a3bf7f374e6241aef57a8d43747da4d0f222eb8a132fc50fbc14410665",
+ "run_id": "dev__dev_verdict__all__google-gemini-3.7-flash__1dfb29b5b5",
+ "valid_for_model_selection": true,
+ "note": "AUTO/REVIEW figures in this run's metrics.json predate the required-evidence fail-closed rule. Rescored values are in DEV_RESCORED_2026-08-25.json; the historical file is left untouched on purpose. Verdict metrics are unaffected - the rule changes routing, not predictions.",
+ "invalid_class_performance": "NOT MEASURED (no ground-truth support in any split)"
+}

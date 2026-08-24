@@ -64,6 +64,10 @@ def _pct(n: int, d: int) -> float | None:
     return round(100.0 * n / d, 2) if d else None
 
 
+#: ordering of the canonical verdicts, low to high credit
+VERDICT_RANK = {"invalid": 0, "partially_valid": 1, "valid": 2}
+
+
 def _verdict_metrics(judged: list[dict], classes: tuple[str, ...]) -> dict[str, Any]:
     """Classification metrics for the canonical explanation verdict.
 
@@ -105,6 +109,11 @@ def _verdict_metrics(judged: list[dict], classes: tuple[str, ...]) -> dict[str, 
             f1s.append(f1 or 0.0)
     return {
         "verdict_exact_pct": _pct(correct, n),
+        "verdict_balanced_accuracy": round(statistics.mean(
+            [(per_class[c]["recall"] or 0.0) for c in classes
+             if per_class[c]["support"]]), 4) if any(per_class[c]["support"] for c in classes) else None,
+        "harmful_verdict_upgrades": sum(1 for r in judged if r.get("harmful_verdict_upgrade")),
+        "harmful_verdict_downgrades": sum(1 for r in judged if r.get("harmful_verdict_downgrade")),
         "verdict_confusion": confusion,
         "verdict_per_class": per_class,
         "verdict_macro_f1": round(statistics.mean(f1s), 4) if f1s else None,
@@ -406,9 +415,19 @@ class GradeAdapter:
         sel = case.inputs.get("selected")
         v = validate_grade(g, pack, selection_correct=lab.get("selection_correct"), selected=sel,
                            transcription=case.inputs["transcription"])
+        # Evidence GROUNDING failures only. The previous substring test on
+        # "evidence" also caught "evidence exceeds length limit", which is
+        # verbosity, not a grounding problem — it inflated one candidate's
+        # evidence-failure count by 3 in the 2026-08-25 DEV run.
+        ev = v.evidence or {}
         row.update({"score": g.score, "uncertain": g.uncertain, "validation_ok": v.ok,
                     "validation_problems": list(v.problems),
-                    "evidence_failure": any("evidence" in p for p in v.problems),
+                    "evidence_failure": bool(ev.get("fabricated") or ev.get("missing")
+                                             or ev.get("ungrounded_credit")),
+                    "evidence_fabricated": list(ev.get("fabricated") or []),
+                    "evidence_missing": list(ev.get("missing") or []),
+                    "evidence_ungrounded_credit": bool(ev.get("ungrounded_credit")),
+                    "evidence_verified": list(ev.get("verified") or []),
                     "decision": "AUTO" if (v.ok and not g.uncertain) else "REVIEW",
                     "met_ids": sorted(g.met_ids())})
 
@@ -422,7 +441,13 @@ class GradeAdapter:
         row["predicted_verdict"] = predicted
         truth = lab.get("explanation_verdict")
         if lab.get("explanation_verdict_derivable") and truth:
-            row.update({"label_verdict": truth, "verdict_exact": predicted == truth})
+            # Direction matters, not just correctness. An UPGRADE hands a student
+            # credit the rubric did not earn them; a DOWNGRADE withholds credit
+            # they did earn. They are different harms and are counted separately.
+            rank = VERDICT_RANK
+            row.update({"label_verdict": truth, "verdict_exact": predicted == truth,
+                        "harmful_verdict_upgrade": rank.get(predicted, 0) > rank.get(truth, 0),
+                        "harmful_verdict_downgrade": rank.get(predicted, 0) < rank.get(truth, 0)})
         else:
             row["verdict_unavailable_reason"] = (
                 lab.get("explanation_verdict_reason") or "no derived verdict on this label")

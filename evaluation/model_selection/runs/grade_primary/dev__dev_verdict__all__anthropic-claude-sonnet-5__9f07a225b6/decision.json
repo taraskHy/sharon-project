@@ -1,0 +1,22 @@
+{
+ "decision": "ADVANCE_TO_CALIBRATION",
+ "reasons": [
+  "best balanced accuracy 0.5568 and best partial-class recall 0.750",
+  "valid precision 1.000 - when it says valid it is never wrong, the safety-relevant direction",
+  "0 provider failures; 0 schema failures; only 9 ungrounded-credit cases, the fewest"
+ ],
+ "carry_forward_concern": [
+  "6.8x gemini's cost ($0.155642 for 26 cases)",
+  "lowest valid recall of the two advancing models (0.364) -> more REVIEW volume",
+  "3 responses exceeded the 220-char evidence length limit"
+ ],
+ "model": "anthropic/claude-sonnet-5",
+ "phase": "DEV_verdict_26_cases",
+ "decided_at": "2026-08-25",
+ "population": "grade_primary__dev_verdict",
+ "selection_sha256": "e08984a3bf7f374e6241aef57a8d43747da4d0f222eb8a132fc50fbc14410665",
+ "run_id": "dev__dev_verdict__all__anthropic-claude-sonnet-5__9f07a225b6",
+ "valid_for_model_selection": true,
+ "note": "AUTO/REVIEW figures in this run's metrics.json predate the required-evidence fail-closed rule. Rescored values are in DEV_RESCORED_2026-08-25.json; the historical file is left untouched on purpose. Verdict metrics are unaffected - the rule changes routing, not predictions.",
+ "invalid_class_performance": "NOT MEASURED (no ground-truth support in any split)"
+}

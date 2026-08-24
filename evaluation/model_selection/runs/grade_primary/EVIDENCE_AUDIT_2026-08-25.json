@@ -1,0 +1,677 @@
+{
+ "artifact": "evidence_validation_audit",
+ "created_at": "2026-08-25",
+ "scope": "frozen 26-case DEV verdict population; persisted outputs only, no provider calls",
+ "rule": "required-evidence FAIL-CLOSED (credit must rest on >=1 verified span)",
+ "conclusion": "Zero citations failed for normalization reasons and zero were fabricated. Every failure is EMPTY_REQUIRED_EVIDENCE: the model asserted merit without quoting the student at all. The validator's Hebrew normalization was therefore NOT changed - loosening it would have weakened a check that was never the cause.",
+ "counts_by_model_and_category": {
+  "anthropic/claude-sonnet-5|EMPTY_REQUIRED_EVIDENCE": 9,
+  "google/gemini-3.7-flash|EMPTY_REQUIRED_EVIDENCE": 15,
+  "openai/gpt-5.6-luna-pro|EMPTY_REQUIRED_EVIDENCE": 19
+ },
+ "entries": [
+  {
+   "model": "google/gemini-3.7-flash",
+   "case_id": "e002_q1_r2",
+   "category": "EMPTY_REQUIRED_EVIDENCE",
+   "detail": "score>0 but no rubric item credited at all",
+   "raw_score": 4.0,
+   "credited": [],
+   "top_level_evidence": "נשאר בתמונה רק התדרים הגבוהים",
+   "frozen_transcription": "נשאר בתמונה רק התדרים הגבוהים",
+   "normalized_transcription": "נשאר בתמונה רק התדרים הגבוהים",
+   "problems": [
+    "credit awarded without any verified student evidence (no rubric item cites a span that occurs in the transcription)"
+   ]
+  },
+  {
+   "model": "google/gemini-3.7-flash",
+   "case_id": "e002_q1_r3",
+   "category": "EMPTY_REQUIRED_EVIDENCE",
+   "detail": "rubric item credited with an empty student_evidence",
+   "raw_score": 4.0,
+   "credited": [
+    {
+     "id": "R1",
+     "cited_evidence": null
+    }
+   ],
+   "top_level_evidence": "העוצמה של הדרגות הגבוהות בפרמידה חזקה ביחס למקורי",
+   "frozen_transcription": "העוצמה של הדרגות הגבוהות בפרמידה חזקה ביחס למקורי",
+   "normalized_transcription": "העוצמה של הדרגות הגבוהות בפרמידה חזקה ביחס למקורי",
+   "problems": [
+    "rubric item R1 credited without student evidence",
+    "credit awarded without any verified student evidence (no rubric item cites a span that occurs in the transcription)"
+   ]
+  },
+  {
+   "model": "google/gemini-3.7-flash",
+   "case_id": "e002_q1_r4",
+   "category": "EMPTY_REQUIRED_EVIDENCE",
+   "detail": "score>0 but no rubric item credited at all",
+   "raw_score": 4.0,
+   "credited": [],
+   "top_level_evidence": "נשאר בתמונה רק התדרים הנמוכים",
+   "frozen_transcription": "נשאר בתמונה רק התדרים הנמוכים",
+   "normalized_transcription": "נשאר בתמונה רק התדרים הנמוכים",
+   "problems": [
+    "credit awarded without any verified student evidence (no rubric item cites a span that occurs in the transcription)"
+   ]
+  },
+  {
+   "model": "google/gemini-3.7-flash",
+   "case_id": "e002_q1_r8",
+   "category": "EMPTY_REQUIRED_EVIDENCE",
+   "detail": "score>0 but no rubric item credited at all",
+   "raw_score": 2.0,
+   "credited": [],
+   "top_level_evidence": "פה האיזורים הבהירים יותר נעשים יותר שינוי מהאזורים הכהים",
+   "frozen_transcription": "בדומה לפעולה 7, מבהיר את התמונה אבל פה האיזורים הבהירים יותר נעשים יותר שינוי מהאזורים הכהים",
+   "normalized_transcription": "בדומה לפעולה 7, מבהיר את התמונה אבל פה האיזורים הבהירים יותר נעשים יותר שינוי מהאזורים הכהים",
+   "problems": [
+    "credit awarded without any verified student evidence (no rubric item cites a span that occurs in the transcription)"
+   ]
+  },
+  {
+   "model": "google/gemini-3.7-flash",
+   "case_id": "e002_q2_r1",
+   "category": "EMPTY_REQUIRED_EVIDENCE",
+   "detail": "rubric item credited with an empty student_evidence",
+   "raw_score": 4.0,
+   "credited": [
+    {
+     "id": "R1",
+     "cited_evidence": null
+    }
+   ],
+   "top_level_evidence": "עבור גילוי שפות יהיה רוב התמונה ב0 ורק עבור שפות 255",
+   "frozen_transcription": "עבור גילוי שפות יהיה רוב התמונה ב0 ורק עבור שפות 255",
+   "normalized_transcription": "עבור גילוי שפות יהיה רוב התמונה ב0 ורק עבור שפות 255",
+   "problems": [
+    "rubric item R1 credited without student evidence",
+    "credit awarded without any verified student evidence (no rubric item cites a span that occurs in the transcription)"
+   ]
+  },
+  {
+   "model": "google/gemini-3.7-flash",
+   "case_id": "e002_q2_r2",
+   "category": "EMPTY_REQUIRED_EVIDENCE",
+   "detail": "rubric item credited with an empty student_evidence",
+   "raw_score": 4.0,
+   "credited": [
+    {
+     "id": "R1",
+     "cited_evidence": null
+    }
+   ],
+   "top_level_evidence": "הטשטוש לפני מוביל לפחות שפות שמתגלות",
+   "frozen_transcription": "בדומה לו, רק שהטשטוש לפני מוביל לפחות שפות שמתגלות",
+   "normalized_transcription": "בדומה לו, רק שהטשטוש לפני מוביל לפחות שפות שמתגלות",
+   "problems": [
+    "rubric item R1 credited without student evidence",
+    "credit awarded without any verified student evidence (no rubric item cites a span that occurs in the transcription)"
+   ]
+  },
+  {
+   "model": "google/gemini-3.7-flash",
+   "case_id": "e002_q2_r4",
+   "category": "EMPTY_REQUIRED_EVIDENCE",
+   "detail": "score>0 but no rubric item credited at all",
+   "raw_score": 2.0,
+   "credited": [],
+   "top_level_evidence": "כולם משומשים בכמות יחסית אחידה",
+   "frozen_transcription": "[לא קריא] אופטימלי, מוביל ל[לא קריא] אופטימלים משמע כולם משומשים בכמות יחסית אחידה",
+   "normalized_transcription": "[לא קריא] אופטימלי, מוביל ל[לא קריא] אופטימלים משמע כולם משומשים בכמות יחסית אחידה",
+   "problems": [
+    "credit awarded without any verified student evidence (no rubric item cites a span that occurs in the transcription)"
+   ]
+  },
+  {
+   "model": "google/gemini-3.7-flash",
+   "case_id": "e002_q2_r6",
+   "category": "EMPTY_REQUIRED_EVIDENCE",
+   "detail": "rubric item credited with an empty student_evidence",
+   "raw_score": 4.0,
+   "credited": [
+    {
+     "id": "R1",
+     "cited_evidence": null
+    }
+   ],
+   "top_level_evidence": "המעכה זהה לסכימת תמונה זהה עם תנודה קלה. מין תמונת echo",
+   "frozen_transcription": "המעכה זהה לסכימת תמונה זהה עם תנודה קלה. מין תמונת echo כזאת תגרום להיסטוגרמה החדשה להיות קרובה להכפלה ב-2 [לא קריא]",
+   "normalized_transcription": "המעכה זהה לסכימת תמונה זהה עם תנודה קלה. מין תמונת echo כזאת תגרום להיסטוגרמה החדשה להיות קרובה להכפלה ב-2 [לא קריא]",
+   "problems": [
+    "rubric item R1 credited without student evidence",
+    "credit awarded without any verified student evidence (no rubric item cites a span that occurs in the transcription)"
+   ]
+  },
+  {
+   "model": "google/gemini-3.7-flash",
+   "case_id": "e002_q2_r7",
+   "category": "EMPTY_REQUIRED_EVIDENCE",
+   "detail": "rubric item credited with an empty student_evidence",
+   "raw_score": 4.0,
+   "credited": [
+    {
+     "id": "R1",
+     "cited_evidence": null
+    }
+   ],
+   "top_level_evidence": "צורדת ההיסטוגרמה זהה, אך הגדלים והכמויות הם פי 2, כי גודל התמונה הינו פי 2 עם אותה התפלגות",
+   "frozen_transcription": "צורדת ההיסטוגרמה זהה, אך הגדלים והכמויות הם פי 2, כי גודל התמונה הינו פי 2 עם אותה התפלגות",
+   "normalized_transcription": "צורדת ההיסטוגרמה זהה, אך הגדלים והכמויות הם פי 2, כי גודל התמונה הינו פי 2 עם אותה התפלגות",
+   "problems": [
+    "rubric item R1 credited without student evidence",
+    "credit awarded without any verified student evidence (no rubric item cites a span that occurs in the transcription)"
+   ]
+  },
+  {
+   "model": "google/gemini-3.7-flash",
+   "case_id": "e003_q1_r1",
+   "category": "EMPTY_REQUIRED_EVIDENCE",
+   "detail": "rubric item credited with an empty student_evidence",
+   "raw_score": 4.0,
+   "credited": [
+    {
+     "id": "R1",
+     "cited_evidence": null
+    }
+   ],
+   "top_level_evidence": "ניתן לראות ברמות התדרים הגבוהים שיש שפות בכיוון התנועה(הטשטוש)",
+   "frozen_transcription": "ניתן לראות ברמות התדרים הגבוהים שיש שפות בכיוון התנועה(הטשטוש)",
+   "normalized_transcription": "ניתן לראות ברמות התדרים הגבוהים שיש שפות בכיוון התנועה(הטשטוש)",
+   "problems": [
+    "rubric item R1 credited without student evidence",
+    "credit awarded without any verified student evidence (no rubric item cites a span that occurs in the transcription)"
+   ]
+  },
+  {
+   "model": "google/gemini-3.7-flash",
+   "case_id": "e003_q1_r4",
+   "category": "EMPTY_REQUIRED_EVIDENCE",
+   "detail": "rubric item credited with an empty student_evidence",
+   "raw_score": 4.0,
+   "credited": [
+    {
+     "id": "R1",
+     "cited_evidence": null
+    }
+   ],
+   "top_level_evidence": "רק תדרים נמוכים נשמרו ולכן כל הרמות של התדרים הגבוהים מאופסות",
+   "frozen_transcription": "ניתן לראות שרק תדרים נמוכים נשמרו ולכן כל הרמות של התדרים הגבוהים מאופסות",
+   "normalized_transcription": "ניתן לראות שרק תדרים נמוכים נשמרו ולכן כל הרמות של התדרים הגבוהים מאופסות",
+   "problems": [
+    "rubric item R1 credited without student evidence",
+    "credit awarded without any verified student evidence (no rubric item cites a span that occurs in the transcription)"
+   ]
+  },
+  {
+   "model": "google/gemini-3.7-flash",
+   "case_id": "e003_q1_r5",
+   "category": "EMPTY_REQUIRED_EVIDENCE",
+   "detail": "rubric item credited with an empty student_evidence",
+   "raw_score": 4.0,
+   "credited": [
+    {
+     "id": "R1",
+     "cited_evidence": null
+    }
+   ],
+   "top_level_evidence": "הרעש והטשטוש שלו בכיוון ציר ה-x",
+   "frozen_transcription": "הרעש והטשטוש שלו בכיוון ציר ה-x מובלט בתדרים הגבוהים",
+   "normalized_transcription": "הרעש והטשטוש שלו בכיוון ציר ה-x מובלט בתדרים הגבוהים",
+   "problems": [
+    "rubric item R1 credited without student evidence",
+    "credit awarded without any verified student evidence (no rubric item cites a span that occurs in the transcription)"
+   ]
+  },
+  {
+   "model": "google/gemini-3.7-flash",
+   "case_id": "e003_q1_r6",
+   "category": "EMPTY_REQUIRED_EVIDENCE",
+   "detail": "rubric item credited with an empty student_evidence",
+   "raw_score": 4.0,
+   "credited": [
+    {
+     "id": "R1",
+     "cited_evidence": null
+    }
+   ],
+   "top_level_evidence": "הרעש והטשטוש שלו בכיוון ציר ה-y מובלט בתדרים הגבוהיים",
+   "frozen_transcription": "הרעש והטשטוש שלו בכיוון ציר ה-y מובלט בתדרים הגבוהיים",
+   "normalized_transcription": "הרעש והטשטוש שלו בכיוון ציר ה-y מובלט בתדרים הגבוהיים",
+   "problems": [
+    "rubric item R1 credited without student evidence",
+    "credit awarded without any verified student evidence (no rubric item cites a span that occurs in the transcription)"
+   ]
+  },
+  {
+   "model": "google/gemini-3.7-flash",
+   "case_id": "e003_q2_r2",
+   "category": "EMPTY_REQUIRED_EVIDENCE",
+   "detail": "rubric item credited with an empty student_evidence",
+   "raw_score": 4.0,
+   "credited": [
+    {
+     "id": "R1",
+     "cited_evidence": null
+    }
+   ],
+   "top_level_evidence": "טשטוש הוריד רעש ולכן פחות פיקסלים נקלטו כשפה והערך 255 בהיסטוגרמה ירד",
+   "frozen_transcription": "טשטוש הוריד רעש ולכן פחות פיקסלים נקלטו כשפה והערך 255 בהיסטוגרמה ירד",
+   "normalized_transcription": "טשטוש הוריד רעש ולכן פחות פיקסלים נקלטו כשפה והערך 255 בהיסטוגרמה ירד",
+   "problems": [
+    "rubric item R1 credited without student evidence",
+    "credit awarded without any verified student evidence (no rubric item cites a span that occurs in the transcription)"
+   ]
+  },
+  {
+   "model": "google/gemini-3.7-flash",
+   "case_id": "e007_q1_r1",
+   "category": "EMPTY_REQUIRED_EVIDENCE",
+   "detail": "score>0 but no rubric item credited at all",
+   "raw_score": 2.0,
+   "credited": [],
+   "top_level_evidence": "ניתן לראות שיש סוג של מתיחה",
+   "frozen_transcription": "ניתן לראות כי בשכבות של הגלים הם לא שומרים את אותה תוצאה עבור התמונה ניתן לראות שיש סוג של מתיחה",
+   "normalized_transcription": "ניתן לראות כי בשכבות של הגלים הם לא שומרים את אותה תוצאה עבור התמונה ניתן לראות שיש סוג של מתיחה",
+   "problems": [
+    "credit awarded without any verified student evidence (no rubric item cites a span that occurs in the transcription)"
+   ]
+  },
+  {
+   "model": "openai/gpt-5.6-luna-pro",
+   "case_id": "e002_q1_r2",
+   "category": "EMPTY_REQUIRED_EVIDENCE",
+   "detail": "score>0 but no rubric item credited at all",
+   "raw_score": 2.0,
+   "credited": [],
+   "top_level_evidence": "נשאר בתמונה רק התדרים הגבוהים",
+   "frozen_transcription": "נשאר בתמונה רק התדרים הגבוהים",
+   "normalized_transcription": "נשאר בתמונה רק התדרים הגבוהים",
+   "problems": [
+    "credit awarded without any verified student evidence (no rubric item cites a span that occurs in the transcription)"
+   ]
+  },
+  {
+   "model": "openai/gpt-5.6-luna-pro",
+   "case_id": "e002_q1_r3",
+   "category": "EMPTY_REQUIRED_EVIDENCE",
+   "detail": "score>0 but no rubric item credited at all",
+   "raw_score": 2.0,
+   "credited": [],
+   "top_level_evidence": "ההסבר מציין חיזוק של דרגות גבוהות ביחס למקור, אך אינו מתייחס לכך שיש 8 פעולות ו-9 היסטוגרמות או להיסטוגרמה מיותרת.",
+   "frozen_transcription": "העוצמה של הדרגות הגבוהות בפרמידה חזקה ביחס למקורי",
+   "normalized_transcription": "העוצמה של הדרגות הגבוהות בפרמידה חזקה ביחס למקורי",
+   "problems": [
+    "credit awarded without any verified student evidence (no rubric item cites a span that occurs in the transcription)"
+   ]
+  },
+  {
+   "model": "openai/gpt-5.6-luna-pro",
+   "case_id": "e002_q1_r4",
+   "category": "EMPTY_REQUIRED_EVIDENCE",
+   "detail": "score>0 but no rubric item credited at all",
+   "raw_score": 2.0,
+   "credited": [],
+   "top_level_evidence": "The explanation correctly states that only low frequencies remain, but does not address the 8 actions, 9 histograms, or the one extra histogram.",
+   "frozen_transcription": "נשאר בתמונה רק התדרים הנמוכים",
+   "normalized_transcription": "נשאר בתמונה רק התדרים הנמוכים",
+   "problems": [
+    "credit awarded without any verified student evidence (no rubric item cites a span that occurs in the transcription)"
+   ]
+  },
+  {
+   "model": "openai/gpt-5.6-luna-pro",
+   "case_id": "e002_q1_r5",
+   "category": "EMPTY_REQUIRED_EVIDENCE",
+   "detail": "score>0 but no rubric item credited at all",
+   "raw_score": 2.0,
+   "credited": [],
+   "top_level_evidence": "ההסבר מזהה טשטוש עקב קונבולוציה בציר x, אך אינו מתייחס ל-8 פעולות, 9 היסטוגרמות או להיסטוגרמה המיותרת.",
+   "frozen_transcription": "מריחה בציר x עקב הקונבולוציה",
+   "normalized_transcription": "מריחה בציר x עקב הקונבולוציה",
+   "problems": [
+    "credit awarded without any verified student evidence (no rubric item cites a span that occurs in the transcription)"
+   ]
+  },
+  {
+   "model": "openai/gpt-5.6-luna-pro",
+   "case_id": "e002_q1_r6",
+   "category": "EMPTY_REQUIRED_EVIDENCE",
+   "detail": "score>0 but no rubric item credited at all",
+   "raw_score": 2.0,
+   "credited": [],
+   "top_level_evidence": "ההסבר מזהה טשטוש עקב קונבולוציה בציר y, אך אינו מתייחס ל-8 פעולות, 9 היסטוגרמות או להיסטוגרמה המיותרת.",
+   "frozen_transcription": "מריחה בציר y עקב הקונבולוציה",
+   "normalized_transcription": "מריחה בציר y עקב הקונבולוציה",
+   "problems": [
+    "credit awarded without any verified student evidence (no rubric item cites a span that occurs in the transcription)"
+   ]
+  },
+  {
+   "model": "openai/gpt-5.6-luna-pro",
+   "case_id": "e002_q2_r2",
+   "category": "EMPTY_REQUIRED_EVIDENCE",
+   "detail": "score>0 but no rubric item credited at all",
+   "raw_score": 2.0,
+   "credited": [],
+   "top_level_evidence": "הטשטוש לפני מוביל לפחות שפות שמתגלות",
+   "frozen_transcription": "בדומה לו, רק שהטשטוש לפני מוביל לפחות שפות שמתגלות",
+   "normalized_transcription": "בדומה לו, רק שהטשטוש לפני מוביל לפחות שפות שמתגלות",
+   "problems": [
+    "credit awarded without any verified student evidence (no rubric item cites a span that occurs in the transcription)"
+   ]
+  },
+  {
+   "model": "openai/gpt-5.6-luna-pro",
+   "case_id": "e002_q2_r3",
+   "category": "EMPTY_REQUIRED_EVIDENCE",
+   "detail": "score>0 but no rubric item credited at all",
+   "raw_score": 2.0,
+   "credited": [],
+   "top_level_evidence": "הסבר חלקי על שיווי היסטוגרמה, אך אינו מציין שיש 8 פעולות, 9 היסטוגרמות והיסטוגרמה אחת מיותרת.",
+   "frozen_transcription": "פרעה אחידה של ההיסטוגרמה המקורית לאורך כל הטווח",
+   "normalized_transcription": "פרעה אחידה של ההיסטוגרמה המקורית לאורך כל הטווח",
+   "problems": [
+    "credit awarded without any verified student evidence (no rubric item cites a span that occurs in the transcription)"
+   ]
+  },
+  {
+   "model": "openai/gpt-5.6-luna-pro",
+   "case_id": "e002_q2_r5",
+   "category": "EMPTY_REQUIRED_EVIDENCE",
+   "detail": "score>0 but no rubric item credited at all",
+   "raw_score": 2.0,
+   "credited": [],
+   "top_level_evidence": "הסבר חלקי: מציין ריווח אחיד, אך אינו מתייחס לכך שיש 8 פעולות, 9 היסטוגרמות, והיסטוגרמה אחת מיותרת.",
+   "frozen_transcription": "[לא קריא] אחיד מוביל לריווח אחיד בין הערכים שקיימים בכימוי",
+   "normalized_transcription": "[לא קריא] אחיד מוביל לריווח אחיד בין הערכים שקיימים בכימוי",
+   "problems": [
+    "credit awarded without any verified student evidence (no rubric item cites a span that occurs in the transcription)"
+   ]
+  },
+  {
+   "model": "openai/gpt-5.6-luna-pro",
+   "case_id": "e002_q2_r6",
+   "category": "EMPTY_REQUIRED_EVIDENCE",
+   "detail": "score>0 but no rubric item credited at all",
+   "raw_score": 2.0,
+   "credited": [],
+   "top_level_evidence": "ההסבר מזהה אפקט echo וסכימה, אך אינו מציין שיש 8 פעולות, 9 היסטוגרמות, והיסטוגרמה אחת מיותרת.",
+   "frozen_transcription": "המעכה זהה לסכימת תמונה זהה עם תנודה קלה. מין תמונת echo כזאת תגרום להיסטוגרמה החדשה להיות קרובה להכפלה ב-2 [לא קריא]",
+   "normalized_transcription": "המעכה זהה לסכימת תמונה זהה עם תנודה קלה. מין תמונת echo כזאת תגרום להיסטוגרמה החדשה להיות קרובה להכפלה ב-2 [לא קריא]",
+   "problems": [
+    "credit awarded without any verified student evidence (no rubric item cites a span that occurs in the transcription)"
+   ]
+  },
+  {
+   "model": "openai/gpt-5.6-luna-pro",
+   "case_id": "e002_q2_r7",
+   "category": "EMPTY_REQUIRED_EVIDENCE",
+   "detail": "score>0 but no rubric item credited at all",
+   "raw_score": 2.0,
+   "credited": [],
+   "top_level_evidence": "ההסבר מציין שההיסטוגרמה זהה ושכמויות הפיקסלים פי 2, אך אינו מתייחס ל-8 פעולות ול-9 היסטוגרמות או להיסטוגרמה המיותרת.",
+   "frozen_transcription": "צורדת ההיסטוגרמה זהה, אך הגדלים והכמויות הם פי 2, כי גודל התמונה הינו פי 2 עם אותה התפלגות",
+   "normalized_transcription": "צורדת ההיסטוגרמה זהה, אך הגדלים והכמויות הם פי 2, כי גודל התמונה הינו פי 2 עם אותה התפלגות",
+   "problems": [
+    "credit awarded without any verified student evidence (no rubric item cites a span that occurs in the transcription)"
+   ]
+  },
+  {
+   "model": "openai/gpt-5.6-luna-pro",
+   "case_id": "e002_q2_r8",
+   "category": "EMPTY_REQUIRED_EVIDENCE",
+   "detail": "score>0 but no rubric item credited at all",
+   "raw_score": 2.0,
+   "credited": [],
+   "top_level_evidence": "Correctly states pixel values map from x to 2x, but omits the 8/9 histogram context and the redundant histogram criterion.",
+   "frozen_transcription": "כל ערך x בהיסטוגרמה ממופה ל2x בהיסטוגרמה החדשה",
+   "normalized_transcription": "כל ערך x בהיסטוגרמה ממופה ל2x בהיסטוגרמה החדשה",
+   "problems": [
+    "credit awarded without any verified student evidence (no rubric item cites a span that occurs in the transcription)"
+   ]
+  },
+  {
+   "model": "openai/gpt-5.6-luna-pro",
+   "case_id": "e003_q1_r1",
+   "category": "EMPTY_REQUIRED_EVIDENCE",
+   "detail": "score>0 but no rubric item credited at all",
+   "raw_score": 2.0,
+   "credited": [],
+   "top_level_evidence": "ההסבר מתאר טשטוש בכיוון התנועה ברמות תדר גבוהות, אך אינו מתייחס לכך שיש 8 פעולות, 9 היסטוגרמות ואחת מיותרת.",
+   "frozen_transcription": "ניתן לראות ברמות התדרים הגבוהים שיש שפות בכיוון התנועה(הטשטוש)",
+   "normalized_transcription": "ניתן לראות ברמות התדרים הגבוהים שיש שפות בכיוון התנועה(הטשטוש)",
+   "problems": [
+    "credit awarded without any verified student evidence (no rubric item cites a span that occurs in the transcription)"
+   ]
+  },
+  {
+   "model": "openai/gpt-5.6-luna-pro",
+   "case_id": "e003_q1_r4",
+   "category": "EMPTY_REQUIRED_EVIDENCE",
+   "detail": "score>0 but no rubric item credited at all",
+   "raw_score": 2.0,
+   "credited": [],
+   "top_level_evidence": "ההסבר מתאר נכון את פעולת מסנן המעבר הנמוך, אך אינו מתייחס לכך שיש 8 פעולות ו-9 היסטוגרמות ולכן אחת מיותרת.",
+   "frozen_transcription": "ניתן לראות שרק תדרים נמוכים נשמרו ולכן כל הרמות של התדרים הגבוהים מאופסות",
+   "normalized_transcription": "ניתן לראות שרק תדרים נמוכים נשמרו ולכן כל הרמות של התדרים הגבוהים מאופסות",
+   "problems": [
+    "credit awarded without any verified student evidence (no rubric item cites a span that occurs in the transcription)"
+   ]
+  },
+  {
+   "model": "openai/gpt-5.6-luna-pro",
+   "case_id": "e003_q1_r5",
+   "category": "EMPTY_REQUIRED_EVIDENCE",
+   "detail": "score>0 but no rubric item credited at all",
+   "raw_score": 2.0,
+   "credited": [],
+   "top_level_evidence": "ההסבר מציין טשטוש ורעש בכיוון x ותדרים גבוהים, אך אינו מתייחס ל-8 פעולות, 9 היסטוגרמות או להיסטוגרמה המיותרת.",
+   "frozen_transcription": "הרעש והטשטוש שלו בכיוון ציר ה-x מובלט בתדרים הגבוהים",
+   "normalized_transcription": "הרעש והטשטוש שלו בכיוון ציר ה-x מובלט בתדרים הגבוהים",
+   "problems": [
+    "credit awarded without any verified student evidence (no rubric item cites a span that occurs in the transcription)"
+   ]
+  },
+  {
+   "model": "openai/gpt-5.6-luna-pro",
+   "case_id": "e003_q1_r8",
+   "category": "EMPTY_REQUIRED_EVIDENCE",
+   "detail": "score>0 but no rubric item credited at all",
+   "raw_score": 2.0,
+   "credited": [],
+   "top_level_evidence": "מציין באופן חלקי שהערכים הבהירים נעשו בהירים יותר, אך אינו מסביר את מתיחת ההיסטוגרמה פי 2 או את קיום ההיסטוגרמה המיותרת.",
+   "frozen_transcription": "ברמה העליונה שכוללת את DC ניתן לראות שערכים בהירים יותר, נהיו יותר בהירים",
+   "normalized_transcription": "ברמה העליונה שכוללת את dc ניתן לראות שערכים בהירים יותר, נהיו יותר בהירים",
+   "problems": [
+    "credit awarded without any verified student evidence (no rubric item cites a span that occurs in the transcription)"
+   ]
+  },
+  {
+   "model": "openai/gpt-5.6-luna-pro",
+   "case_id": "e003_q2_r1",
+   "category": "EMPTY_REQUIRED_EVIDENCE",
+   "detail": "score>0 but no rubric item credited at all",
+   "raw_score": 2.0,
+   "credited": [],
+   "top_level_evidence": "ההסבר מתאר נכון את תוצאת Canny, אך אינו מתייחס ל-8 פעולות, 9 היסטוגרמות או להיסטוגרמה המיותרת.",
+   "frozen_transcription": "כל פיקסלי השפות שנקלטו קיבלו  ערך 255 לעומת שאר הפיקסלים(הרוב)",
+   "normalized_transcription": "כל פיקסלי השפות שנקלטו קיבלו ערך 255 לעומת שאר הפיקסלים(הרוב)",
+   "problems": [
+    "credit awarded without any verified student evidence (no rubric item cites a span that occurs in the transcription)"
+   ]
+  },
+  {
+   "model": "openai/gpt-5.6-luna-pro",
+   "case_id": "e003_q2_r2",
+   "category": "EMPTY_REQUIRED_EVIDENCE",
+   "detail": "score>0 but no rubric item credited at all",
+   "raw_score": 2.0,
+   "credited": [],
+   "top_level_evidence": "ההסבר מזהה שטשטוש מפחית פיקסלים בערך 255, אך אינו מתייחס לכך שיש 8 פעולות, 9 היסטוגרמות והיסטוגרמה מיותרת.",
+   "frozen_transcription": "טשטוש הוריד רעש ולכן פחות פיקסלים נקלטו כשפה והערך 255 בהיסטוגרמה ירד",
+   "normalized_transcription": "טשטוש הוריד רעש ולכן פחות פיקסלים נקלטו כשפה והערך 255 בהיסטוגרמה ירד",
+   "problems": [
+    "credit awarded without any verified student evidence (no rubric item cites a span that occurs in the transcription)"
+   ]
+  },
+  {
+   "model": "openai/gpt-5.6-luna-pro",
+   "case_id": "e003_q2_r7",
+   "category": "EMPTY_REQUIRED_EVIDENCE",
+   "detail": "score>0 but no rubric item credited at all",
+   "raw_score": 2.0,
+   "credited": [],
+   "top_level_evidence": "מסביר הכפלה פי 2 של מספר הפיקסלים, אך אינו מציין שיש 8 פעולות, 9 היסטוגרמות והיסטוגרמה אחת מיותרת.",
+   "frozen_transcription": "הוכפל מספר הפיקסלים בכל התמונה פי 2 והוכפל מספר הפיקסלים בכל ערך",
+   "normalized_transcription": "הוכפל מספר הפיקסלים בכל התמונה פי 2 והוכפל מספר הפיקסלים בכל ערך",
+   "problems": [
+    "credit awarded without any verified student evidence (no rubric item cites a span that occurs in the transcription)"
+   ]
+  },
+  {
+   "model": "openai/gpt-5.6-luna-pro",
+   "case_id": "e003_q2_r8",
+   "category": "EMPTY_REQUIRED_EVIDENCE",
+   "detail": "score>0 but no rubric item credited at all",
+   "raw_score": 2.0,
+   "credited": [],
+   "top_level_evidence": "ההסבר מציין הזזה ימינה, אך אינו מתאר את מתיחת ההיסטוגרמה פי 2 או את קיומה של היסטוגרמה מיותרת.",
+   "frozen_transcription": "ניתן לראות שמספר הפיקסלים בכל עוצמה הוזז ימינה באותו מרחק שהיה במקור.",
+   "normalized_transcription": "ניתן לראות שמספר הפיקסלים בכל עוצמה הוזז ימינה באותו מרחק שהיה במקור.",
+   "problems": [
+    "credit awarded without any verified student evidence (no rubric item cites a span that occurs in the transcription)"
+   ]
+  },
+  {
+   "model": "anthropic/claude-sonnet-5",
+   "case_id": "e002_q1_r4",
+   "category": "EMPTY_REQUIRED_EVIDENCE",
+   "detail": "score>0 but no rubric item credited at all",
+   "raw_score": 4.0,
+   "credited": [],
+   "top_level_evidence": "נשאר בתמונה רק התדרים הנמוכים - correctly matches official solution that low frequencies remain.",
+   "frozen_transcription": "נשאר בתמונה רק התדרים הנמוכים",
+   "normalized_transcription": "נשאר בתמונה רק התדרים הנמוכים",
+   "problems": [
+    "credit awarded without any verified student evidence (no rubric item cites a span that occurs in the transcription)"
+   ]
+  },
+  {
+   "model": "anthropic/claude-sonnet-5",
+   "case_id": "e002_q1_r6",
+   "category": "EMPTY_REQUIRED_EVIDENCE",
+   "detail": "score>0 but no rubric item credited at all",
+   "raw_score": 2.0,
+   "credited": [],
+   "top_level_evidence": "Student gives brief correct direction of blur ('מריחה בציר y') but no discussion of the 9 histograms / extra histogram issue required by rubric.",
+   "frozen_transcription": "מריחה בציר y עקב הקונבולוציה",
+   "normalized_transcription": "מריחה בציר y עקב הקונבולוציה",
+   "problems": [
+    "credit awarded without any verified student evidence (no rubric item cites a span that occurs in the transcription)"
+   ]
+  },
+  {
+   "model": "anthropic/claude-sonnet-5",
+   "case_id": "e002_q2_r2",
+   "category": "EMPTY_REQUIRED_EVIDENCE",
+   "detail": "score>0 but no rubric item credited at all",
+   "raw_score": 2.0,
+   "credited": [],
+   "top_level_evidence": "The student correctly notes blurring leads to fewer detected edges, matching the official solution's reasoning, but doesn't address the rubric's point about 8 operations vs 9 histograms with one extra.",
+   "frozen_transcription": "בדומה לו, רק שהטשטוש לפני מוביל לפחות שפות שמתגלות",
+   "normalized_transcription": "בדומה לו, רק שהטשטוש לפני מוביל לפחות שפות שמתגלות",
+   "problems": [
+    "credit awarded without any verified student evidence (no rubric item cites a span that occurs in the transcription)"
+   ]
+  },
+  {
+   "model": "anthropic/claude-sonnet-5",
+   "case_id": "e002_q2_r3",
+   "category": "EMPTY_REQUIRED_EVIDENCE",
+   "detail": "score>0 but no rubric item credited at all",
+   "raw_score": 2.0,
+   "credited": [],
+   "top_level_evidence": "Student describes histogram equalization generally ('פרעה אחידה של ההיסטוגרמה המקורית לאורך כל הטווח') but does not address the extra histogram issue (R1) or identify histogram B with 0/255 values.",
+   "frozen_transcription": "פרעה אחידה של ההיסטוגרמה המקורית לאורך כל הטווח",
+   "normalized_transcription": "פרעה אחידה של ההיסטוגרמה המקורית לאורך כל הטווח",
+   "problems": [
+    "credit awarded without any verified student evidence (no rubric item cites a span that occurs in the transcription)"
+   ]
+  },
+  {
+   "model": "anthropic/claude-sonnet-5",
+   "case_id": "e002_q2_r5",
+   "category": "EMPTY_REQUIRED_EVIDENCE",
+   "detail": "score>0 but no rubric item credited at all",
+   "raw_score": 2.0,
+   "credited": [],
+   "top_level_evidence": "Student mentions uniform spacing leading to uniform quantization gaps but does not address the extra/redundant histogram (R1).",
+   "frozen_transcription": "[לא קריא] אחיד מוביל לריווח אחיד בין הערכים שקיימים בכימוי",
+   "normalized_transcription": "[לא קריא] אחיד מוביל לריווח אחיד בין הערכים שקיימים בכימוי",
+   "problems": [
+    "credit awarded without any verified student evidence (no rubric item cites a span that occurs in the transcription)"
+   ]
+  },
+  {
+   "model": "anthropic/claude-sonnet-5",
+   "case_id": "e002_q2_r6",
+   "category": "EMPTY_REQUIRED_EVIDENCE",
+   "detail": "score>0 but no rubric item credited at all",
+   "raw_score": 2.0,
+   "credited": [],
+   "top_level_evidence": "Student identifies echo-like sum of shifted image and predicts histogram roughly doubles, but doesn't address the extra histogram issue in R1.",
+   "frozen_transcription": "המעכה זהה לסכימת תמונה זהה עם תנודה קלה. מין תמונת echo כזאת תגרום להיסטוגרמה החדשה להיות קרובה להכפלה ב-2 [לא קריא]",
+   "normalized_transcription": "המעכה זהה לסכימת תמונה זהה עם תנודה קלה. מין תמונת echo כזאת תגרום להיסטוגרמה החדשה להיות קרובה להכפלה ב-2 [לא קריא]",
+   "problems": [
+    "credit awarded without any verified student evidence (no rubric item cites a span that occurs in the transcription)"
+   ]
+  },
+  {
+   "model": "anthropic/claude-sonnet-5",
+   "case_id": "e002_q2_r8",
+   "category": "EMPTY_REQUIRED_EVIDENCE",
+   "detail": "score>0 but no rubric item credited at all",
+   "raw_score": 2.0,
+   "credited": [],
+   "top_level_evidence": "The student correctly describes the mapping x->2x (stretching), but doesn't address the gap/odd-value issue mentioned in the official solution, which is key reasoning for identifying the correct histogram among the extra one.",
+   "frozen_transcription": "כל ערך x בהיסטוגרמה ממופה ל2x בהיסטוגרמה החדשה",
+   "normalized_transcription": "כל ערך x בהיסטוגרמה ממופה ל2x בהיסטוגרמה החדשה",
+   "problems": [
+    "evidence exceeds length limit",
+    "credit awarded without any verified student evidence (no rubric item cites a span that occurs in the transcription)"
+   ]
+  },
+  {
+   "model": "anthropic/claude-sonnet-5",
+   "case_id": "e003_q1_r8",
+   "category": "EMPTY_REQUIRED_EVIDENCE",
+   "detail": "score>0 but no rubric item credited at all",
+   "raw_score": 2.0,
+   "credited": [],
+   "top_level_evidence": "Student only vaguely notes brighter values become brighter, without explaining histogram stretching, missing pixel values, or the extra histogram issue.",
+   "frozen_transcription": "ברמה העליונה שכוללת את DC ניתן לראות שערכים בהירים יותר, נהיו יותר בהירים",
+   "normalized_transcription": "ברמה העליונה שכוללת את dc ניתן לראות שערכים בהירים יותר, נהיו יותר בהירים",
+   "problems": [
+    "credit awarded without any verified student evidence (no rubric item cites a span that occurs in the transcription)"
+   ]
+  },
+  {
+   "model": "anthropic/claude-sonnet-5",
+   "case_id": "e003_q2_r7",
+   "category": "EMPTY_REQUIRED_EVIDENCE",
+   "detail": "score>0 but no rubric item credited at all",
+   "raw_score": 2.0,
+   "credited": [],
+   "top_level_evidence": "The student correctly notes pixel count doubles per gray value, but does not mention the extra/irrelevant histogram (8 operations vs 9 histograms) as required by R1.",
+   "frozen_transcription": "הוכפל מספר הפיקסלים בכל התמונה פי 2 והוכפל מספר הפיקסלים בכל ערך",
+   "normalized_transcription": "הוכפל מספר הפיקסלים בכל התמונה פי 2 והוכפל מספר הפיקסלים בכל ערך",
+   "problems": [
+    "credit awarded without any verified student evidence (no rubric item cites a span that occurs in the transcription)"
+   ]
+  }
+ ]
+}
