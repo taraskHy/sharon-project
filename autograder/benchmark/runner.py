@@ -119,6 +119,7 @@ class RunSpec:
     skip_key_preflight: bool = False        # tests only: skip the GET /api/v1/key preflight step
     final_evaluation: bool = False          # ONLY the `bench final-eval` path sets this (HELD_OUT live run)
     smoke_root: Path | None = None
+    prompt_version: str | None = None   # pin a prompt version (A/B against an older one)
 
 
 @dataclass
@@ -570,7 +571,7 @@ def run_benchmark(spec: RunSpec, *, gateway=None, registry: CandidateRegistry | 
                                  f"pass --split {want.lower()}")
 
     candidate = resolve_candidate(spec, registry)
-    adapter = adapter_for(spec.role)
+    adapter = adapter_for(spec.role, spec.prompt_version)
     cases = manifest.by_split(split, spec.component)
     if spec.subset == "smoke":
         from .smoke import DEFAULT_SMOKE_ROOT, smoke_case_ids

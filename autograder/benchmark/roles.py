@@ -381,14 +381,22 @@ def pack_from_inputs(p: dict):
 
 
 class GradeAdapter:
-    adapter_version = "grade-bench-v2"  # verdict target + grade-v3 prompt
+    adapter_version = "grade-bench-v2"  # verdict target (scoring semantics)
+    #: the DEFAULT prompt version; an experiment may pin an older one to
+    #: reproduce or A/B against it. Both halves of the prompt are resolved from
+    #: whatever this instance carries, so a run's recorded prompt_version fully
+    #: determines what was sent.
     prompt_version = "grade-v4-charitable"
     model_visible_fields = ("case_id", "pack", "selected", "transcription", "version")
     default_max_tokens = 600
 
-    def __init__(self, role: str = "grade_primary"):
+    def __init__(self, role: str = "grade_primary", prompt_version: str | None = None):
         self.role = role
         self.task = "grade_escalate" if role == "grade_escalate" else "grade_primary"
+        if prompt_version:
+            from ..escalation import grade_system_for
+            grade_system_for(prompt_version)      # refuse an unknown version early
+            self.prompt_version = prompt_version
 
     def build_request(self, inputs: dict, bench_root: Path) -> Request:
         # Resolve BOTH halves of the prompt from this adapter's declared
@@ -662,13 +670,18 @@ class AlignResolveAdapter:
 
 # ----------------------------------------------------------------------------
 
-def adapter_for(role: str):
+def adapter_for(role: str, prompt_version: str | None = None):
+    """The adapter for a role. ``prompt_version`` pins a specific prompt (only
+    the grading roles have more than one); None keeps the adapter default."""
+    if role in ("grade_primary", "grade_escalate"):
+        return GradeAdapter(role, prompt_version=prompt_version)
+    if prompt_version:
+        raise ValueError(f"role {role!r} has a single prompt version; "
+                         f"cannot pin {prompt_version!r}")
     if role == "ocr_verify":
         return OcrVerifyAdapter()
     if role == "ocr_primary":
         return OcrPrimaryAdapter()
-    if role in ("grade_primary", "grade_escalate"):
-        return GradeAdapter(role)
     if role == "mc_resolve_cloud":
         return McResolveAdapter()
     if role == "variant_resolve":

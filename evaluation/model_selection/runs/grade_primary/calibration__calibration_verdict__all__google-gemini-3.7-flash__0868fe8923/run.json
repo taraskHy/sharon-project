@@ -126,9 +126,15 @@
    "mode": "dry_run",
    "note": "",
    "retry_failed": false
+  },
+  {
+   "ts": "2026-08-25 02:46:02",
+   "mode": "dry_run",
+   "note": "",
+   "retry_failed": false
   }
  ],
- "updated_at": "2026-08-25 00:18:30",
+ "updated_at": "2026-08-25 02:46:02",
  "cases_done": 12,
  "cases_failed": 0,
  "cases_skipped_resume": 0,

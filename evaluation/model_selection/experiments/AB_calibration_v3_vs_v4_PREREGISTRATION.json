@@ -1,0 +1,321 @@
+{
+ "artifact": "ab_experiment_preregistration",
+ "experiment": "grade_primary CALIBRATION A/B: grade-v3 vs grade-v4-charitable",
+ "created_at": "2026-08-25",
+ "question": "Does grade-v4-charitable align better with the authoritative instructor labels than grade-v3, while preserving evidence grounding and avoiding grade inflation? More credit is NOT better on its own.",
+ "design": {
+  "kind": "within-model paired A/B on identical cases",
+  "only_intended_difference": "prompt_version",
+  "arms": [
+   "A1 gemini grade-v3",
+   "A2 gemini grade-v4-charitable",
+   "B1 sonnet grade-v3",
+   "B2 sonnet grade-v4-charitable"
+  ],
+  "fixed_execution_order": [
+   "A1",
+   "A2",
+   "B1",
+   "B2"
+  ],
+  "rag": "RAG_DISABLED",
+  "split": "CALIBRATION",
+  "writer": "e004",
+  "held_out_cases": 0
+ },
+ "population": {
+  "case_count": 12,
+  "class_distribution": {
+   "valid": 7,
+   "partially_valid": 5
+  },
+  "selection_sha256": "047d9e4632e7080ac37664aef7ee43f30097d1d764d7da22a19119a0bd569c63",
+  "selection_sha256_matches_v3_record": true,
+  "cases": [
+   {
+    "order": 0,
+    "case_id": "e004_q1_r1",
+    "verdict": "valid",
+    "writer": "e004",
+    "question_id": "1",
+    "sub_item_id": "1",
+    "instructor_final_score": 4.0,
+    "max_score": 4.0
+   },
+   {
+    "order": 1,
+    "case_id": "e004_q1_r2",
+    "verdict": "valid",
+    "writer": "e004",
+    "question_id": "1",
+    "sub_item_id": "2",
+    "instructor_final_score": 4.0,
+    "max_score": 4.0
+   },
+   {
+    "order": 2,
+    "case_id": "e004_q1_r3",
+    "verdict": "partially_valid",
+    "writer": "e004",
+    "question_id": "1",
+    "sub_item_id": "3",
+    "instructor_final_score": 2.0,
+    "max_score": 4.0
+   },
+   {
+    "order": 3,
+    "case_id": "e004_q1_r4",
+    "verdict": "valid",
+    "writer": "e004",
+    "question_id": "1",
+    "sub_item_id": "4",
+    "instructor_final_score": 4.0,
+    "max_score": 4.0
+   },
+   {
+    "order": 4,
+    "case_id": "e004_q1_r5",
+    "verdict": "partially_valid",
+    "writer": "e004",
+    "question_id": "1",
+    "sub_item_id": "5",
+    "instructor_final_score": 2.0,
+    "max_score": 4.0
+   },
+   {
+    "order": 5,
+    "case_id": "e004_q1_r6",
+    "verdict": "partially_valid",
+    "writer": "e004",
+    "question_id": "1",
+    "sub_item_id": "6",
+    "instructor_final_score": 2.0,
+    "max_score": 4.0
+   },
+   {
+    "order": 6,
+    "case_id": "e004_q1_r8",
+    "verdict": "partially_valid",
+    "writer": "e004",
+    "question_id": "1",
+    "sub_item_id": "8",
+    "instructor_final_score": 2.0,
+    "max_score": 4.0
+   },
+   {
+    "order": 7,
+    "case_id": "e004_q2_r1",
+    "verdict": "valid",
+    "writer": "e004",
+    "question_id": "2",
+    "sub_item_id": "1",
+    "instructor_final_score": 4.0,
+    "max_score": 4.0
+   },
+   {
+    "order": 8,
+    "case_id": "e004_q2_r2",
+    "verdict": "valid",
+    "writer": "e004",
+    "question_id": "2",
+    "sub_item_id": "2",
+    "instructor_final_score": 4.0,
+    "max_score": 4.0
+   },
+   {
+    "order": 9,
+    "case_id": "e004_q2_r3",
+    "verdict": "valid",
+    "writer": "e004",
+    "question_id": "2",
+    "sub_item_id": "3",
+    "instructor_final_score": 4.0,
+    "max_score": 4.0
+   },
+   {
+    "order": 10,
+    "case_id": "e004_q2_r6",
+    "verdict": "valid",
+    "writer": "e004",
+    "question_id": "2",
+    "sub_item_id": "6",
+    "instructor_final_score": 4.0,
+    "max_score": 4.0
+   },
+   {
+    "order": 11,
+    "case_id": "e004_q2_r8",
+    "verdict": "partially_valid",
+    "writer": "e004",
+    "question_id": "2",
+    "sub_item_id": "8",
+    "instructor_final_score": 2.0,
+    "max_score": 4.0
+   }
+  ]
+ },
+ "dataset_hashes": {
+  "inputs_sha256": "61ea571e9413b20b4b1e2d6dc84e14688cdd2ff4a1a3e0751a2233cf4dbc050c",
+  "labels_sha256": "2281f063f33c5ddf37675766892ef3b47148254674768b85d4eee40e8523ccd9",
+  "manifest_sha256": "f3caddb961650a10a41a1bbf84ce048101b01977122bad04c1e9810ceb995585",
+  "final_labels_sha256": "3bdd38c3ec1787bb053447382e1cb545c3ea1f478d459b317b23cefd49999869"
+ },
+ "prompt_hashes": {
+  "grade-v3": "602c454acef6d24fe86444f463f47659ed47daa3add0189b7dbc24c19bae328c",
+  "grade-v4-charitable": "2332e45856e361c4306dcdcb05f753fd8fd45d627ee3e7b945a2cb1748a58170"
+ },
+ "arms": {
+  "A1": {
+   "arm_id": "A1",
+   "candidate": "google/gemini-3.7-flash",
+   "prompt_version": "grade-v3",
+   "subset": "calibration_verdict",
+   "run_id": "calibration__calibration_verdict__all__google-gemini-3.7-flash__0868fe8923",
+   "config_hash": "0868fe8923fe5c9556c394aa92478c83f5e8e760711ec9d12e0debe98e738ffc",
+   "prompt_sha256": "602c454acef6d24fe86444f463f47659ed47daa3add0189b7dbc24c19bae328c",
+   "schema_sha256": "965698fcc7f8985873ead882aa3a7062a9329d206e25385105604c05577d1c0c",
+   "adapter_version": "grade-bench-v2",
+   "route": {
+    "task": "grade_primary",
+    "backend": "openrouter",
+    "model": "google/gemini-3.7-flash",
+    "structured_mode": "json_schema",
+    "max_tokens": 1200,
+    "temperature": 0.0,
+    "reasoning": {
+     "effort": "low"
+    },
+    "extra_generation": {},
+    "prompt_version": "grade-v3"
+   },
+   "predicted_cost_usd": 0.03024,
+   "pricing_usd_per_1m": {
+    "input": 0.375,
+    "output": 1.875
+   }
+  },
+  "A2": {
+   "arm_id": "A2",
+   "candidate": "google/gemini-3.7-flash",
+   "prompt_version": "grade-v4-charitable",
+   "subset": "calibration_verdict_v4",
+   "run_id": "calibration__calibration_verdict_v4__all__google-gemini-3.7-flash__9d4e07e8dc",
+   "config_hash": "9d4e07e8dcec01d4297e319a6071a0acf7f3d650e06116057136d04841c357db",
+   "prompt_sha256": "2332e45856e361c4306dcdcb05f753fd8fd45d627ee3e7b945a2cb1748a58170",
+   "schema_sha256": "965698fcc7f8985873ead882aa3a7062a9329d206e25385105604c05577d1c0c",
+   "adapter_version": "grade-bench-v2",
+   "route": {
+    "task": "grade_primary",
+    "backend": "openrouter",
+    "model": "google/gemini-3.7-flash",
+    "structured_mode": "json_schema",
+    "max_tokens": 1200,
+    "temperature": 0.0,
+    "reasoning": {
+     "effort": "low"
+    },
+    "extra_generation": {},
+    "prompt_version": "grade-v4-charitable"
+   },
+   "predicted_cost_usd": 0.033976,
+   "pricing_usd_per_1m": {
+    "input": 0.375,
+    "output": 1.875
+   }
+  },
+  "B1": {
+   "arm_id": "B1",
+   "candidate": "anthropic/claude-sonnet-5",
+   "prompt_version": "grade-v3",
+   "subset": "calibration_verdict",
+   "run_id": "calibration__calibration_verdict__all__anthropic-claude-sonnet-5__a163501062",
+   "config_hash": "a163501062983b07e0680eeeaf8ee2c6fddb65445b4f07c87b68b148489468e3",
+   "prompt_sha256": "602c454acef6d24fe86444f463f47659ed47daa3add0189b7dbc24c19bae328c",
+   "schema_sha256": "965698fcc7f8985873ead882aa3a7062a9329d206e25385105604c05577d1c0c",
+   "adapter_version": "grade-bench-v2",
+   "route": {
+    "task": "grade_primary",
+    "backend": "openrouter",
+    "model": "anthropic/claude-sonnet-5",
+    "structured_mode": "json_schema",
+    "max_tokens": 600,
+    "temperature": 0.0,
+    "reasoning": {
+     "effort": "none"
+    },
+    "extra_generation": {},
+    "prompt_version": "grade-v3"
+   },
+   "predicted_cost_usd": 0.089279,
+   "pricing_usd_per_1m": {
+    "input": 2.0,
+    "output": 10.0
+   }
+  },
+  "B2": {
+   "arm_id": "B2",
+   "candidate": "anthropic/claude-sonnet-5",
+   "prompt_version": "grade-v4-charitable",
+   "subset": "calibration_verdict_v4",
+   "run_id": "calibration__calibration_verdict_v4__all__anthropic-claude-sonnet-5__a410eb2419",
+   "config_hash": "a410eb24191d6a8aedb403a4eaa0104c65096d5d744c60d3ec32111f4c93f8ca",
+   "prompt_sha256": "2332e45856e361c4306dcdcb05f753fd8fd45d627ee3e7b945a2cb1748a58170",
+   "schema_sha256": "965698fcc7f8985873ead882aa3a7062a9329d206e25385105604c05577d1c0c",
+   "adapter_version": "grade-bench-v2",
+   "route": {
+    "task": "grade_primary",
+    "backend": "openrouter",
+    "model": "anthropic/claude-sonnet-5",
+    "structured_mode": "json_schema",
+    "max_tokens": 600,
+    "temperature": 0.0,
+    "reasoning": {
+     "effort": "none"
+    },
+    "extra_generation": {},
+    "prompt_version": "grade-v4-charitable"
+   },
+   "predicted_cost_usd": 0.109206,
+   "pricing_usd_per_1m": {
+    "input": 2.0,
+    "output": 10.0
+   }
+  }
+ },
+ "git_commit_at_preregistration": "6ea8572cf62a4fd0a3ce95ce4b483e1d757d3e8c",
+ "ledger_at_preregistration_usd": {
+  "provider_calls_usd": 0.2595952,
+  "reconciliation_usd": 0.01072437,
+  "total_usd": 0.27031956,
+  "provider_call_rows": 89,
+  "reconciliation_rows": 1
+ },
+ "pricing_source": "OpenRouter /api/v1/models, mirrored in models.toml [pricing]; verified 2026-08-25",
+ "predicted_additional_usd": 0.262701,
+ "operational_limits": {
+  "max_intended_evaluations": 48,
+  "max_additional_predicted_usd": 0.35,
+  "cumulative_operational_stop_usd": 0.7,
+  "project_warn_usd": 8.0,
+  "project_hard_ceiling_usd": 10.0
+ },
+ "primary_criteria": [
+  "harmful downgrades decrease",
+  "alignment with instructor labels improves or holds",
+  "harmful upgrades do not rise disproportionately",
+  "evidence grounding preserved",
+  "REVIEW rate does not worsen without a safety reason",
+  "schema/provider failure rate does not worsen"
+ ],
+ "limitations": [
+  "invalid-class performance = NOT MEASURED (zero support in every split)",
+  "CALIBRATION contains a single writer (e004)",
+  "n = 12",
+  "HELD_OUT untouched",
+  "only two verdict classes measured",
+  "only this grading policy / rubric family measured",
+  "no result generalises to other writers, subjects or rubric structures"
+ ],
+ "immutability": "Written BEFORE any provider output for these arms exists; never edited afterwards.",
+ "preregistration_sha256": "4fe60f29e6cb40742661dbbb2e14e5b11a576f3d2cf4b41b69bcfe6705af1093"
+}

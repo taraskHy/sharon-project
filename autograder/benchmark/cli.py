@@ -99,6 +99,7 @@ def _spec_from_args(args, dry_run: bool, *, final_evaluation: bool = False) -> R
     return RunSpec(
         role=args.role, split=args.split, candidate=args.candidate, component=args.component,
         subset=getattr(args, "subset", None), final_evaluation=final_evaluation,
+        prompt_version=getattr(args, "prompt_version", None),
         backend=args.backend, base_url=args.base_url,
         models_config=Path(args.models_config) if args.models_config else None,
         registry_path=Path(args.registry), bench_root=Path(args.bench_root),
@@ -475,6 +476,9 @@ def add_bench_commands(sub) -> None:
                             "execution); dev_verdict = the frozen full DEV verdict-evaluable "
                             "population")
         p.add_argument("--allow-unlisted", action="store_true")
+        p.add_argument("--prompt-version", default=None,
+                       help="pin a grading prompt version (e.g. grade-v3) instead of the "
+                            "adapter default; recorded in the run config hash")
         if name == "run":
             p.add_argument("--retry-failed", action="store_true", help="explicitly re-attempt failed cases (recorded)")
             p.add_argument("--i-understand-this-spends-money", action="store_true")
