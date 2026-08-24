@@ -1,0 +1,27 @@
+{
+ "run_id": "dev__smoke__all__openai-gpt-5.6-luna-pro__a6c6f078c9",
+ "mode": "dry_run",
+ "cases": 2,
+ "skipped_resume": 0,
+ "predicted_cost_total": 0.001654,
+ "pricing_table_available": true,
+ "rows": [
+  {
+   "case_id": "e002_q1_r8",
+   "split": "DEV",
+   "component": "ALL",
+   "predicted_cost": 0.0008235499999999999,
+   "text_chars": 2072,
+   "images": 0
+  },
+  {
+   "case_id": "e007_q1_r1",
+   "split": "DEV",
+   "component": "ALL",
+   "predicted_cost": 0.0008302,
+   "text_chars": 2205,
+   "images": 0
+  }
+ ],
+ "leakage_check": "passed"
+}

@@ -232,6 +232,20 @@ def freeze_smoke(role: str, manifest: BenchmarkManifest, root: Path = DEFAULT_SM
     prop["_policy"] = ("Pre-registered DEV smoke subset for the first live execution of a candidate. "
                        "Frozen before any new model output; never modified or optimized after results. "
                        "Model-visible inputs are still ONLY the manifest's inputs for these case ids.")
+    if unfilled:
+        # A gap that is only a slot name in a list is a gap nobody reads. Say
+        # what is NOT observable, so a later reader cannot mistake this subset
+        # for full coverage of the role's slots.
+        prop["_unfilled_slots_why"] = (
+            "Frozen deliberately with allow_unfilled. These slots had NO qualifying case in "
+            "the frozen dataset, so this subset does not observe them at all: "
+            + ", ".join(unfilled)
+            + ". For grade_primary/verdict_invalid this is structural — an `invalid` label "
+              "requires an instructor score of 0 together with a CORRECT selection, and the "
+              "2026-08-25 selection audit (8/8 human-audited) found every zero-score DEV case "
+              "had a WRONG selection. Credit-withholding on a correct choice is therefore not "
+              "measurable on this dataset. Do not read a result from this subset as evidence "
+              "about the missing class.")
     p.parent.mkdir(parents=True, exist_ok=True)
     p.write_text(json.dumps(prop, ensure_ascii=False, indent=1), encoding="utf-8", newline="\n")
     return prop

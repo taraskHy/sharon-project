@@ -202,10 +202,30 @@ def test_the_frozen_subset_is_exactly_what_the_rules_produce(manifest, frozen):
     assert frozen["selection_sha256"] == fresh["selection_sha256"]
 
 
-def test_the_frozen_subset_is_dev_only_and_covers_every_class(manifest, frozen):
+def test_the_frozen_subset_is_dev_only(frozen):
     assert all(c["split"] == "DEV" for c in frozen["cases"])
-    assert not frozen["unfilled_slots"], frozen["unfilled_slots"]
-    assert sorted(c["slot"] for c in frozen["cases"]) == sorted(SLOTS)
+    assert frozen["split"] == "DEV"
+
+
+def test_the_frozen_subset_covers_every_class_that_has_support(manifest, frozen):
+    """Every slot is either filled or explicitly recorded as unfillable — a
+    slot may never be silently absent."""
+    filled = {c["slot"] for c in frozen["cases"]}
+    assert filled | set(frozen["unfilled_slots"]) == set(SLOTS)
+    assert not (filled & set(frozen["unfilled_slots"]))
+
+
+def test_a_deliberate_gap_is_explained_not_just_named(frozen):
+    """`unfilled_slots: ["verdict_invalid"]` alone is a gap nobody reads. The
+    frozen file has to say what is NOT observable, so a later reader cannot
+    mistake this subset for full coverage."""
+    if not frozen["unfilled_slots"]:
+        pytest.skip("nothing unfilled")
+    why = frozen.get("_unfilled_slots_why", "")
+    assert why, "an unfilled slot must carry its reason into the frozen file"
+    for slot in frozen["unfilled_slots"]:
+        assert slot in why
+    assert "not measurable" in why or "structural" in why
 
 
 def test_a_tampered_frozen_file_is_refused(tmp_path, manifest, frozen):

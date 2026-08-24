@@ -1,0 +1,34 @@
+{
+ "role": "grade_primary",
+ "split": "DEV",
+ "rules_version": "smoke-rules-v3 (2026-08-24, DEV only; min-id per slot unless the role declares SMOKE_ORDER / SMOKE_DIVERSITY; grade_primary slots are the three canonical explanation-verdict classes and require a derivable verdict, replacing the v2 final-score buckets)",
+ "manifest_hashes": {
+  "inputs_sha256": "61ea571e9413b20b4b1e2d6dc84e14688cdd2ff4a1a3e0751a2233cf4dbc050c",
+  "labels_sha256": "2281f063f33c5ddf37675766892ef3b47148254674768b85d4eee40e8523ccd9",
+  "manifest_sha256": "f3caddb961650a10a41a1bbf84ce048101b01977122bad04c1e9810ceb995585",
+  "final_labels_sha256": "3bdd38c3ec1787bb053447382e1cb545c3ea1f478d459b317b23cefd49999869"
+ },
+ "cases": [
+  {
+   "slot": "verdict_partially_valid",
+   "why": "factor 0.5: the hardest judgement — some credit, not all",
+   "case_id": "e002_q1_r8",
+   "component": "ALL",
+   "split": "DEV"
+  },
+  {
+   "slot": "verdict_valid",
+   "why": "factor 1: a sufficient explanation must not be marked down",
+   "case_id": "e007_q1_r1",
+   "component": "ALL",
+   "split": "DEV"
+  }
+ ],
+ "unfilled_slots": [
+  "verdict_invalid"
+ ],
+ "selection_sha256": "4e527bfb52e8839ff40b702476d4e8e8a574a73e0e064640be883505d5bc9496",
+ "frozen_at": "2026-08-24 22:47:29",
+ "_policy": "Pre-registered DEV smoke subset for the first live execution of a candidate. Frozen before any new model output; never modified or optimized after results. Model-visible inputs are still ONLY the manifest's inputs for these case ids.",
+ "_unfilled_slots_why": "Frozen deliberately with allow_unfilled. These slots had NO qualifying case in the frozen dataset, so this subset does not observe them at all: verdict_invalid. For grade_primary/verdict_invalid this is structural — an `invalid` label requires an instructor score of 0 together with a CORRECT selection, and the 2026-08-25 selection audit (8/8 human-audited) found every zero-score DEV case had a WRONG selection. Credit-withholding on a correct choice is therefore not measurable on this dataset. Do not read a result from this subset as evidence about the missing class."
+}
