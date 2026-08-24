@@ -1,0 +1,27 @@
+{
+ "cases": 3,
+ "labels_available": true,
+ "labeled_excluded_transcription_incomplete": 0,
+ "auto_rate_pct": 33.33,
+ "review_rate_pct": 66.67,
+ "schema_failures": 1,
+ "evidence_validation_failures": 0,
+ "validation_failures": 1,
+ "usage": {
+  "calls_live": 3,
+  "cache_hits": 0,
+  "latency_mean_s": 7.313,
+  "latency_median_s": 7.313,
+  "input_tokens": 4871,
+  "output_tokens": 609,
+  "reasoning_tokens": 398,
+  "total_tokens": 5480,
+  "reported_cost": 0.015832
+ },
+ "exact_score_pct": 0.0,
+ "mean_abs_score_error": 3.0,
+ "harmful_upgrades": 0,
+ "harmful_downgrades": 2,
+ "cases_selected": 3,
+ "cases_with_result": 3
+}

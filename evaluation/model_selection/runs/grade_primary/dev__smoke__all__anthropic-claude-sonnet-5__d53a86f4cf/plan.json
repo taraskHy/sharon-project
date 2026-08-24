@@ -1,0 +1,35 @@
+{
+ "run_id": "dev__smoke__all__anthropic-claude-sonnet-5__d53a86f4cf",
+ "mode": "dry_run",
+ "cases": 3,
+ "skipped_resume": 0,
+ "predicted_cost_total": 0.021198,
+ "pricing_table_available": true,
+ "rows": [
+  {
+   "case_id": "e002_q1_r8",
+   "split": "DEV",
+   "component": "ALL",
+   "predicted_cost": 0.0070515,
+   "text_chars": 2104,
+   "images": 0
+  },
+  {
+   "case_id": "e003_q2_r6",
+   "split": "DEV",
+   "component": "ALL",
+   "predicted_cost": 0.0070285,
+   "text_chars": 2058,
+   "images": 0
+  },
+  {
+   "case_id": "e007_q1_r1",
+   "split": "DEV",
+   "component": "ALL",
+   "predicted_cost": 0.007118,
+   "text_chars": 2237,
+   "images": 0
+  }
+ ],
+ "leakage_check": "passed"
+}

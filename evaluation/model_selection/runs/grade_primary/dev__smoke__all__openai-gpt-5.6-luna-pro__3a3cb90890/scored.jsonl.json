@@ -1,0 +1,29 @@
+[
+ {
+  "case_id": "e002_q1_r8",
+  "split": "DEV",
+  "component": "ALL",
+  "schema_failure": true,
+  "decision": "REVIEW",
+  "score": null,
+  "transcription_complete": true
+ },
+ {
+  "case_id": "e003_q2_r6",
+  "split": "DEV",
+  "component": "ALL",
+  "schema_failure": true,
+  "decision": "REVIEW",
+  "score": null,
+  "transcription_complete": true
+ },
+ {
+  "case_id": "e007_q1_r1",
+  "split": "DEV",
+  "component": "ALL",
+  "schema_failure": true,
+  "decision": "REVIEW",
+  "score": null,
+  "transcription_complete": true
+ }
+]

@@ -1,0 +1,137 @@
+{
+ "run_id": "dev__smoke__all__google-gemini-3.7-flash__375101c9b6",
+ "config_hash": "375101c9b69879f9701de8ef0bd369c910b0b7bfc7dcb82ff513ca11845b40ab",
+ "created_at": "2026-08-23 10:53:03",
+ "git_commit": "962f730ef8beaba634a4176b71e9780172215a43",
+ "spec": {
+  "role": "grade_primary",
+  "split": "dev",
+  "candidate": "google/gemini-3.7-flash",
+  "component": null,
+  "backend": "openrouter",
+  "base_url": null,
+  "models_config": "models.toml",
+  "registry_path": "C:\\Users\\ethan\\OneDrive\\Desktop\\etgar\\cp_course\\sharon-project\\evaluation\\model_selection\\candidates.toml",
+  "bench_root": "C:\\Users\\ethan\\OneDrive\\Desktop\\etgar\\cp_course\\sharon-project\\evaluation\\hebrew_bench_v2",
+  "datasets_root": "C:\\Users\\ethan\\OneDrive\\Desktop\\etgar\\cp_course\\sharon-project\\evaluation\\model_selection\\datasets",
+  "state_root": "C:\\Users\\ethan\\OneDrive\\Desktop\\etgar\\cp_course\\sharon-project\\evaluation\\model_selection\\state",
+  "runs_root": "C:\\Users\\ethan\\OneDrive\\Desktop\\etgar\\cp_course\\sharon-project\\evaluation\\model_selection\\runs",
+  "held_out_log": "C:\\Users\\ethan\\OneDrive\\Desktop\\etgar\\cp_course\\sharon-project\\evaluation\\model_selection\\HELD_OUT_EXECUTIONS.jsonl",
+  "limit": null,
+  "dry_run": true,
+  "confirm_held_out": false,
+  "retry_failed": false,
+  "allow_unlisted": false,
+  "note": "",
+  "max_tokens": null,
+  "reasoning": null,
+  "provider": null,
+  "warn_usd": null,
+  "hard_usd": null,
+  "validation_retries": 0,
+  "subset": "smoke",
+  "skip_key_preflight": false,
+  "final_evaluation": false,
+  "smoke_root": null
+ },
+ "config": {
+  "role": "grade_primary",
+  "task": "grade_primary",
+  "split": "DEV",
+  "component": null,
+  "subset": "smoke",
+  "candidate": "google/gemini-3.7-flash",
+  "backend": "openrouter",
+  "base_url": null,
+  "route": {
+   "task": "grade_primary",
+   "backend": "openrouter",
+   "model": "google/gemini-3.7-flash",
+   "structured_mode": "json_schema",
+   "max_tokens": 600,
+   "temperature": 0.0,
+   "reasoning": null,
+   "extra_generation": {},
+   "prompt_version": "grade-v1"
+  },
+  "adapter_version": "grade-bench-v1",
+  "validation_retries": 0,
+  "prompt_version": "grade-v1",
+  "prompt_sha256": "6baf7d862e2fa77de0eb26798a7fb114b91186451f1ee929676a9cb7f1907306",
+  "schema_name": "GradeResult",
+  "schema_sha256": "965698fcc7f8985873ead882aa3a7062a9329d206e25385105604c05577d1c0c",
+  "manifest_hashes": {
+   "inputs_sha256": "61ea571e9413b20b4b1e2d6dc84e14688cdd2ff4a1a3e0751a2233cf4dbc050c",
+   "labels_sha256": "8bda05df1d8a2627334000c006e689afc3275cc7db2a24f4c79995e20e0770b7",
+   "manifest_sha256": "35be93e57163caec47a51a35ba8b994394b797fdf566d9d40b18196330791079",
+   "final_labels_sha256": "3bdd38c3ec1787bb053447382e1cb545c3ea1f478d459b317b23cefd49999869"
+  },
+  "case_ids_sha256": "d8f8668c6bf45a4c21195c9576f832b9577872bc3c716dadfe776f4240f4a8c0"
+ },
+ "manifest": {
+  "role": "grade_primary",
+  "name": "grade_primary — frozen audited cell transcriptions + NO-RAG grading packs",
+  "status": "FROZEN",
+  "root": "C:\\Users\\ethan\\OneDrive\\Desktop\\etgar\\cp_course\\sharon-project\\evaluation\\model_selection\\datasets\\grade_primary",
+  "cases": 67,
+  "components": [
+   "ALL"
+  ],
+  "counts": {
+   "DEV": {
+    "ALL": 32
+   },
+   "CALIBRATION": {
+    "ALL": 14
+   },
+   "HELD_OUT": {
+    "ALL": 21
+   }
+  },
+  "hashes": {
+   "inputs_sha256": "61ea571e9413b20b4b1e2d6dc84e14688cdd2ff4a1a3e0751a2233cf4dbc050c",
+   "labels_sha256": "8bda05df1d8a2627334000c006e689afc3275cc7db2a24f4c79995e20e0770b7",
+   "manifest_sha256": "35be93e57163caec47a51a35ba8b994394b797fdf566d9d40b18196330791079",
+   "final_labels_sha256": "3bdd38c3ec1787bb053447382e1cb545c3ea1f478d459b317b23cefd49999869"
+  },
+  "split_assignment": {
+   "DEV": [
+    "e002",
+    "e003",
+    "e007"
+   ],
+   "CALIBRATION": [
+    "e004"
+   ],
+   "HELD_OUT": [
+    "e005",
+    "e006"
+   ]
+  },
+  "notes": [
+   "B3: frozen transcriptions + NO-RAG grading packs; no OCR model runs during grading selection",
+   "label reality: no per-item instructor labels exist yet; until an owner-scored subset exists only decision/AUTO/REVIEW/validation metrics are computed and accuracy metrics are reported as unavailable",
+   "build: `autograder bench build-grading` (benchmark/datasets.py); owner labels via scripts/grade_label_ui.py",
+   "first model-selection grading benchmark is NO-RAG by construction",
+   "evidence_images are for the OWNER's labeling only — never a model input of this role",
+   "label reality: human per-item scores did not exist before this dataset; the owner labeling tool creates them"
+  ]
+ },
+ "cases_selected": 3,
+ "history": [
+  {
+   "ts": "2026-08-23 10:53:03",
+   "mode": "dry_run",
+   "note": "",
+   "retry_failed": false
+  }
+ ],
+ "updated_at": "2026-08-23 10:53:03",
+ "cases_done": 3,
+ "cases_failed": 0,
+ "cases_skipped_resume": 0,
+ "stopped_reason": null,
+ "last_mode": "dry_run",
+ "warnings": [],
+ "last_preflight": null
+}

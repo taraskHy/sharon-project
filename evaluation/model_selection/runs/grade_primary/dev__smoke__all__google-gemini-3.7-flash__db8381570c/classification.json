@@ -1,0 +1,34 @@
+{
+ "classification": "INFRASTRUCTURE_VALIDATION",
+ "valid_for_model_selection": false,
+ "classified_at": "2026-08-24",
+ "run_date": "2026-08-24",
+ "summary": "First live execution of the GRADE_PRIMARY benchmark. It validated the INFRASTRUCTURE and found four blockers. It did NOT measure grading quality and must never be cited as a comparative result.",
+ "reasons": [
+  "benchmark target semantics unresolved: GradeResult.score was compared against the instructor FINAL sub-item score, but production uses that number only as a ratio quantised to a 3-level explanation verdict (reliability._verdict_from_score); the final number is computed deterministically from selection_correct x verdict factor (grade.py:471). selected=None for 67/67 cases, so the selection half of that product was withheld from the model.",
+  "transport: openai/gpt-5.6-luna-pro produced 0 tokens — every call rejected pre-inference with HTTP 400 invalid_json_schema (missing additionalProperties:false).",
+  "route parity: models.toml [models.grade_primary].reasoning={effort='none'} never reached the provider; reasoning consumed 1106/1262 gemini output tokens and truncated one sonnet case at max_tokens=600.",
+  "accounting: the local ledger recorded $0.019786 against $0.030510 of true account spend; the failed-but-billed truncated call was not ledgered."
+ ],
+ "metrics_explicitly_not_meaningful": [
+  "exact_score_pct",
+  "mean_abs_score_error",
+  "harmful_upgrades",
+  "harmful_downgrades",
+  "auto_rate_pct",
+  "review_rate_pct"
+ ],
+ "do_not_cite": "gemini 1/3 exact and sonnet 0/2 exact are NOT accuracy measurements. Every parsed grade was 0.0, which the corrected semantics predict for an input with no selection.",
+ "artifacts_preserved": true,
+ "outputs_rewritten": false,
+ "write_up": "evaluation/model_selection/runs/grade_primary/SMOKE_2026-08-24.md",
+ "supersedes_nothing": true,
+ "next_valid_run_requires": [
+  "grading semantics decision (benchmark target: explanation verdict, not final score)",
+  "strict schema fix deployed (done 2026-08-24)",
+  "reasoning propagation fix deployed (done 2026-08-24)",
+  "ledger accounting fix deployed (done 2026-08-24)"
+ ],
+ "run_id": "dev__smoke__all__google-gemini-3.7-flash__db8381570c",
+ "candidate": "google/gemini-3.7-flash"
+}
