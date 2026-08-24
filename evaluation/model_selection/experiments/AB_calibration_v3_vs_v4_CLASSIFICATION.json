@@ -1,0 +1,91 @@
+{
+ "artifact": "experiment_classification",
+ "created_at": "2026-08-25",
+ "experiment": "grade_primary CALIBRATION A/B: grade-v3 vs grade-v4-charitable",
+ "preregistration_sha256": "4fe60f29e6cb40742661dbbb2e14e5b11a576f3d2cf4b41b69bcfe6705af1093",
+ "classification": "VALID_FOR_PROMPT_COMPARISON",
+ "valid_for": [
+  "within-model comparison of grade-v3 vs grade-v4-charitable on these 12 cases",
+  "evidence-grounding comparison between the two prompts",
+  "AUTO/REVIEW workload comparison between the two prompts"
+ ],
+ "not_valid_for": [
+  "selecting a production model (n=12, one writer, two classes)",
+  "any claim about the invalid class (zero support)",
+  "generalisation to other writers, subjects, rubric families or grading policies",
+  "statistical significance claims"
+ ],
+ "outcome_summary": {
+  "gemini": {
+   "verdicts": "identical under both prompts (0 transitions)",
+   "accuracy_pct": [
+    50.0,
+    50.0
+   ],
+   "macro_f1": [
+    0.5238,
+    0.5238
+   ],
+   "harmful_upgrades": [
+    2,
+    2
+   ],
+   "harmful_downgrades": [
+    4,
+    4
+   ],
+   "evidence_engagement_pct": [
+    25.0,
+    100.0
+   ],
+   "auto_rate_pct": [
+    50.0,
+    100.0
+   ]
+  },
+  "sonnet": {
+   "verdicts": "1 case corrected by v4 (e004_q1_r8), 0 regressions",
+   "accuracy_pct": [
+    58.33,
+    66.67
+   ],
+   "macro_f1": [
+    0.7024,
+    0.7917
+   ],
+   "harmful_upgrades": [
+    0,
+    0
+   ],
+   "harmful_downgrades": [
+    5,
+    4
+   ],
+   "evidence_engagement_pct": [
+    57.1,
+    100.0
+   ],
+   "auto_rate_pct": [
+    75.0,
+    100.0
+   ]
+  }
+ },
+ "criteria": {
+  "A_harmful_downgrades_decrease": "partially met (sonnet 5->4; gemini unchanged)",
+  "B_alignment_improves_or_holds": "met (sonnet +8.34pp; gemini stable)",
+  "C_harmful_upgrades_do_not_rise": "met - zero new upgrades in either model",
+  "D_evidence_grounding_preserved": "strongly exceeded (25->100%, 57->100%)",
+  "E_review_does_not_worsen": "met (50->0%, 25->0%)",
+  "F_failures_do_not_worsen": "met (0 everywhere)"
+ },
+ "headline": "The charitable prompt's largest measured effect was GROUNDING, not leniency: evidence engagement rose 25->100% (gemini) and 57->100% (sonnet) with zero fabricated spans. Verdict alignment improved only for sonnet, by one case.",
+ "recommendation": {
+  "anthropic/claude-sonnet-5": "ADVANCE",
+  "google/gemini-3.7-flash": "MAYBE",
+  "prompt": "grade-v4-charitable weakly dominates grade-v3 on this population"
+ },
+ "invalid_class_performance": "NOT MEASURED",
+ "no_labels_changed": true,
+ "held_out_touched": false
+}

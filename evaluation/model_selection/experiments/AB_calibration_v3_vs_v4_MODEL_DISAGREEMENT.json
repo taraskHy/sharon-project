@@ -1,0 +1,30 @@
+{
+ "experiment": "grade_primary CALIBRATION A/B: grade-v3 vs grade-v4-charitable",
+ "preregistration_sha256": "4fe60f29e6cb40742661dbbb2e14e5b11a576f3d2cf4b41b69bcfe6705af1093",
+ "created_at": "2026-08-25",
+ "limitations": [
+  "invalid-class performance = NOT MEASURED (zero ground-truth support in every split)",
+  "CALIBRATION contains a single writer (e004)",
+  "n = 12",
+  "HELD_OUT untouched and unmeasured",
+  "only two verdict classes measured",
+  "only this grading policy / rubric family measured; no generalisation to other writers, subjects or rubric structures"
+ ],
+ "invalid_class_performance": "NOT MEASURED",
+ "artifact": "model_disagreement_under_v4",
+ "count": 2,
+ "rows": [
+  {
+   "case_id": "e004_q1_r5",
+   "truth": "partially_valid",
+   "gemini_v4": "valid",
+   "sonnet_v4": "partially_valid"
+  },
+  {
+   "case_id": "e004_q1_r6",
+   "truth": "partially_valid",
+   "gemini_v4": "valid",
+   "sonnet_v4": "partially_valid"
+  }
+ ]
+}
