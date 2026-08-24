@@ -1,0 +1,524 @@
+[
+ {
+  "case_id": "e002_q1_r2",
+  "split": "DEV",
+  "component": "ALL",
+  "schema_failure": false,
+  "decision": "AUTO",
+  "score": 4.0,
+  "transcription_complete": true,
+  "uncertain": false,
+  "validation_ok": true,
+  "validation_problems": [],
+  "evidence_failure": false,
+  "met_ids": [],
+  "predicted_verdict": "valid",
+  "label_verdict": "valid",
+  "verdict_exact": true,
+  "raw_score_abs_delta": 0.0
+ },
+ {
+  "case_id": "e002_q1_r3",
+  "split": "DEV",
+  "component": "ALL",
+  "schema_failure": false,
+  "decision": "REVIEW",
+  "score": 4.0,
+  "transcription_complete": true,
+  "uncertain": false,
+  "validation_ok": false,
+  "validation_problems": [
+   "rubric item R1 credited without student evidence"
+  ],
+  "evidence_failure": true,
+  "met_ids": [
+   "R1"
+  ],
+  "predicted_verdict": "valid",
+  "label_verdict": "valid",
+  "verdict_exact": true,
+  "raw_score_abs_delta": 0.0
+ },
+ {
+  "case_id": "e002_q1_r4",
+  "split": "DEV",
+  "component": "ALL",
+  "schema_failure": false,
+  "decision": "AUTO",
+  "score": 4.0,
+  "transcription_complete": true,
+  "uncertain": false,
+  "validation_ok": true,
+  "validation_problems": [],
+  "evidence_failure": false,
+  "met_ids": [],
+  "predicted_verdict": "valid",
+  "label_verdict": "valid",
+  "verdict_exact": true,
+  "raw_score_abs_delta": 0.0
+ },
+ {
+  "case_id": "e002_q1_r5",
+  "split": "DEV",
+  "component": "ALL",
+  "schema_failure": false,
+  "decision": "AUTO",
+  "score": 4.0,
+  "transcription_complete": true,
+  "uncertain": false,
+  "validation_ok": true,
+  "validation_problems": [],
+  "evidence_failure": false,
+  "met_ids": [
+   "R1"
+  ],
+  "predicted_verdict": "valid",
+  "label_verdict": "partially_valid",
+  "verdict_exact": false,
+  "raw_score_abs_delta": 2.0
+ },
+ {
+  "case_id": "e002_q1_r6",
+  "split": "DEV",
+  "component": "ALL",
+  "schema_failure": false,
+  "decision": "AUTO",
+  "score": 4.0,
+  "transcription_complete": true,
+  "uncertain": false,
+  "validation_ok": true,
+  "validation_problems": [],
+  "evidence_failure": false,
+  "met_ids": [
+   "R1"
+  ],
+  "predicted_verdict": "valid",
+  "label_verdict": "partially_valid",
+  "verdict_exact": false,
+  "raw_score_abs_delta": 2.0
+ },
+ {
+  "case_id": "e002_q1_r7",
+  "split": "DEV",
+  "component": "ALL",
+  "schema_failure": false,
+  "decision": "AUTO",
+  "score": 0.0,
+  "transcription_complete": true,
+  "uncertain": false,
+  "validation_ok": true,
+  "validation_problems": [],
+  "evidence_failure": false,
+  "met_ids": [],
+  "predicted_verdict": "invalid",
+  "label_verdict": "valid",
+  "verdict_exact": false,
+  "raw_score_abs_delta": 4.0
+ },
+ {
+  "case_id": "e002_q1_r8",
+  "split": "DEV",
+  "component": "ALL",
+  "schema_failure": false,
+  "decision": "AUTO",
+  "score": 2.0,
+  "transcription_complete": true,
+  "uncertain": false,
+  "validation_ok": true,
+  "validation_problems": [],
+  "evidence_failure": false,
+  "met_ids": [],
+  "predicted_verdict": "partially_valid",
+  "label_verdict": "partially_valid",
+  "verdict_exact": true,
+  "raw_score_abs_delta": 0.0
+ },
+ {
+  "case_id": "e002_q2_r1",
+  "split": "DEV",
+  "component": "ALL",
+  "schema_failure": false,
+  "decision": "REVIEW",
+  "score": 4.0,
+  "transcription_complete": true,
+  "uncertain": false,
+  "validation_ok": false,
+  "validation_problems": [
+   "rubric item R1 credited without student evidence"
+  ],
+  "evidence_failure": true,
+  "met_ids": [
+   "R1"
+  ],
+  "predicted_verdict": "valid",
+  "label_verdict": "valid",
+  "verdict_exact": true,
+  "raw_score_abs_delta": 0.0
+ },
+ {
+  "case_id": "e002_q2_r2",
+  "split": "DEV",
+  "component": "ALL",
+  "schema_failure": false,
+  "decision": "REVIEW",
+  "score": 4.0,
+  "transcription_complete": true,
+  "uncertain": false,
+  "validation_ok": false,
+  "validation_problems": [
+   "rubric item R1 credited without student evidence"
+  ],
+  "evidence_failure": true,
+  "met_ids": [
+   "R1"
+  ],
+  "predicted_verdict": "valid",
+  "label_verdict": "valid",
+  "verdict_exact": true,
+  "raw_score_abs_delta": 0.0
+ },
+ {
+  "case_id": "e002_q2_r3",
+  "split": "DEV",
+  "component": "ALL",
+  "schema_failure": false,
+  "decision": "AUTO",
+  "score": 4.0,
+  "transcription_complete": true,
+  "uncertain": false,
+  "validation_ok": true,
+  "validation_problems": [],
+  "evidence_failure": false,
+  "met_ids": [
+   "R1"
+  ],
+  "predicted_verdict": "valid",
+  "label_verdict": "valid",
+  "verdict_exact": true,
+  "raw_score_abs_delta": 0.0
+ },
+ {
+  "case_id": "e002_q2_r4",
+  "split": "DEV",
+  "component": "ALL",
+  "schema_failure": false,
+  "decision": "AUTO",
+  "score": 2.0,
+  "transcription_complete": true,
+  "uncertain": false,
+  "validation_ok": true,
+  "validation_problems": [],
+  "evidence_failure": false,
+  "met_ids": [],
+  "predicted_verdict": "partially_valid",
+  "label_verdict": "valid",
+  "verdict_exact": false,
+  "raw_score_abs_delta": 2.0
+ },
+ {
+  "case_id": "e002_q2_r5",
+  "split": "DEV",
+  "component": "ALL",
+  "schema_failure": false,
+  "decision": "AUTO",
+  "score": 4.0,
+  "transcription_complete": true,
+  "uncertain": false,
+  "validation_ok": true,
+  "validation_problems": [],
+  "evidence_failure": false,
+  "met_ids": [
+   "R1"
+  ],
+  "predicted_verdict": "valid",
+  "label_verdict": "valid",
+  "verdict_exact": true,
+  "raw_score_abs_delta": 0.0
+ },
+ {
+  "case_id": "e002_q2_r6",
+  "split": "DEV",
+  "component": "ALL",
+  "schema_failure": false,
+  "decision": "REVIEW",
+  "score": 4.0,
+  "transcription_complete": true,
+  "uncertain": false,
+  "validation_ok": false,
+  "validation_problems": [
+   "rubric item R1 credited without student evidence"
+  ],
+  "evidence_failure": true,
+  "met_ids": [
+   "R1"
+  ],
+  "predicted_verdict": "valid",
+  "label_verdict": "valid",
+  "verdict_exact": true,
+  "raw_score_abs_delta": 0.0
+ },
+ {
+  "case_id": "e002_q2_r7",
+  "split": "DEV",
+  "component": "ALL",
+  "schema_failure": false,
+  "decision": "REVIEW",
+  "score": 4.0,
+  "transcription_complete": true,
+  "uncertain": false,
+  "validation_ok": false,
+  "validation_problems": [
+   "rubric item R1 credited without student evidence"
+  ],
+  "evidence_failure": true,
+  "met_ids": [
+   "R1"
+  ],
+  "predicted_verdict": "valid",
+  "label_verdict": "valid",
+  "verdict_exact": true,
+  "raw_score_abs_delta": 0.0
+ },
+ {
+  "case_id": "e002_q2_r8",
+  "split": "DEV",
+  "component": "ALL",
+  "schema_failure": false,
+  "decision": "AUTO",
+  "score": 4.0,
+  "transcription_complete": true,
+  "uncertain": false,
+  "validation_ok": true,
+  "validation_problems": [],
+  "evidence_failure": false,
+  "met_ids": [
+   "R1"
+  ],
+  "predicted_verdict": "valid",
+  "label_verdict": "valid",
+  "verdict_exact": true,
+  "raw_score_abs_delta": 0.0
+ },
+ {
+  "case_id": "e003_q1_r1",
+  "split": "DEV",
+  "component": "ALL",
+  "schema_failure": false,
+  "decision": "REVIEW",
+  "score": 4.0,
+  "transcription_complete": true,
+  "uncertain": false,
+  "validation_ok": false,
+  "validation_problems": [
+   "rubric item R1 credited without student evidence"
+  ],
+  "evidence_failure": true,
+  "met_ids": [
+   "R1"
+  ],
+  "predicted_verdict": "valid",
+  "label_verdict": "valid",
+  "verdict_exact": true,
+  "raw_score_abs_delta": 0.0
+ },
+ {
+  "case_id": "e003_q1_r4",
+  "split": "DEV",
+  "component": "ALL",
+  "schema_failure": false,
+  "decision": "REVIEW",
+  "score": 4.0,
+  "transcription_complete": true,
+  "uncertain": false,
+  "validation_ok": false,
+  "validation_problems": [
+   "rubric item R1 credited without student evidence"
+  ],
+  "evidence_failure": true,
+  "met_ids": [
+   "R1"
+  ],
+  "predicted_verdict": "valid",
+  "label_verdict": "valid",
+  "verdict_exact": true,
+  "raw_score_abs_delta": 0.0
+ },
+ {
+  "case_id": "e003_q1_r5",
+  "split": "DEV",
+  "component": "ALL",
+  "schema_failure": false,
+  "decision": "REVIEW",
+  "score": 4.0,
+  "transcription_complete": true,
+  "uncertain": false,
+  "validation_ok": false,
+  "validation_problems": [
+   "rubric item R1 credited without student evidence"
+  ],
+  "evidence_failure": true,
+  "met_ids": [
+   "R1"
+  ],
+  "predicted_verdict": "valid",
+  "label_verdict": "valid",
+  "verdict_exact": true,
+  "raw_score_abs_delta": 0.0
+ },
+ {
+  "case_id": "e003_q1_r6",
+  "split": "DEV",
+  "component": "ALL",
+  "schema_failure": false,
+  "decision": "REVIEW",
+  "score": 4.0,
+  "transcription_complete": true,
+  "uncertain": false,
+  "validation_ok": false,
+  "validation_problems": [
+   "rubric item R1 credited without student evidence"
+  ],
+  "evidence_failure": true,
+  "met_ids": [
+   "R1"
+  ],
+  "predicted_verdict": "valid",
+  "label_verdict": "valid",
+  "verdict_exact": true,
+  "raw_score_abs_delta": 0.0
+ },
+ {
+  "case_id": "e003_q1_r7",
+  "split": "DEV",
+  "component": "ALL",
+  "schema_failure": false,
+  "decision": "AUTO",
+  "score": 0.0,
+  "transcription_complete": true,
+  "uncertain": false,
+  "validation_ok": true,
+  "validation_problems": [],
+  "evidence_failure": false,
+  "met_ids": [],
+  "predicted_verdict": "invalid",
+  "label_verdict": "valid",
+  "verdict_exact": false,
+  "raw_score_abs_delta": 4.0
+ },
+ {
+  "case_id": "e003_q1_r8",
+  "split": "DEV",
+  "component": "ALL",
+  "schema_failure": false,
+  "decision": "AUTO",
+  "score": 0.0,
+  "transcription_complete": true,
+  "uncertain": false,
+  "validation_ok": true,
+  "validation_problems": [],
+  "evidence_failure": false,
+  "met_ids": [],
+  "predicted_verdict": "invalid",
+  "label_verdict": "partially_valid",
+  "verdict_exact": false,
+  "raw_score_abs_delta": 2.0
+ },
+ {
+  "case_id": "e003_q2_r1",
+  "split": "DEV",
+  "component": "ALL",
+  "schema_failure": false,
+  "decision": "AUTO",
+  "score": 4.0,
+  "transcription_complete": true,
+  "uncertain": false,
+  "validation_ok": true,
+  "validation_problems": [],
+  "evidence_failure": false,
+  "met_ids": [
+   "R1"
+  ],
+  "predicted_verdict": "valid",
+  "label_verdict": "valid",
+  "verdict_exact": true,
+  "raw_score_abs_delta": 0.0
+ },
+ {
+  "case_id": "e003_q2_r2",
+  "split": "DEV",
+  "component": "ALL",
+  "schema_failure": false,
+  "decision": "REVIEW",
+  "score": 4.0,
+  "transcription_complete": true,
+  "uncertain": false,
+  "validation_ok": false,
+  "validation_problems": [
+   "rubric item R1 credited without student evidence"
+  ],
+  "evidence_failure": true,
+  "met_ids": [
+   "R1"
+  ],
+  "predicted_verdict": "valid",
+  "label_verdict": "valid",
+  "verdict_exact": true,
+  "raw_score_abs_delta": 0.0
+ },
+ {
+  "case_id": "e003_q2_r7",
+  "split": "DEV",
+  "component": "ALL",
+  "schema_failure": false,
+  "decision": "AUTO",
+  "score": 4.0,
+  "transcription_complete": true,
+  "uncertain": false,
+  "validation_ok": true,
+  "validation_problems": [],
+  "evidence_failure": false,
+  "met_ids": [
+   "R1"
+  ],
+  "predicted_verdict": "valid",
+  "label_verdict": "valid",
+  "verdict_exact": true,
+  "raw_score_abs_delta": 0.0
+ },
+ {
+  "case_id": "e003_q2_r8",
+  "split": "DEV",
+  "component": "ALL",
+  "schema_failure": false,
+  "decision": "AUTO",
+  "score": 0.0,
+  "transcription_complete": true,
+  "uncertain": false,
+  "validation_ok": true,
+  "validation_problems": [],
+  "evidence_failure": false,
+  "met_ids": [],
+  "predicted_verdict": "invalid",
+  "label_verdict": "valid",
+  "verdict_exact": false,
+  "raw_score_abs_delta": 4.0
+ },
+ {
+  "case_id": "e007_q1_r1",
+  "split": "DEV",
+  "component": "ALL",
+  "schema_failure": false,
+  "decision": "AUTO",
+  "score": 2.0,
+  "transcription_complete": true,
+  "uncertain": false,
+  "validation_ok": true,
+  "validation_problems": [],
+  "evidence_failure": false,
+  "met_ids": [],
+  "predicted_verdict": "partially_valid",
+  "label_verdict": "valid",
+  "verdict_exact": false,
+  "raw_score_abs_delta": 2.0
+ }
+]

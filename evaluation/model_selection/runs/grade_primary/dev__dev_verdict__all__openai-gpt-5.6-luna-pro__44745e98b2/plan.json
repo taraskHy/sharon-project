@@ -1,0 +1,219 @@
+{
+ "run_id": "dev__dev_verdict__all__openai-gpt-5.6-luna-pro__44745e98b2",
+ "mode": "dry_run",
+ "cases": 26,
+ "skipped_resume": 0,
+ "predicted_cost_total": 0.022472,
+ "pricing_table_available": true,
+ "rows": [
+  {
+   "case_id": "e002_q1_r2",
+   "split": "DEV",
+   "component": "ALL",
+   "predicted_cost": 0.00085795,
+   "text_chars": 2760,
+   "images": 0
+  },
+  {
+   "case_id": "e002_q1_r3",
+   "split": "DEV",
+   "component": "ALL",
+   "predicted_cost": 0.0008681499999999999,
+   "text_chars": 2964,
+   "images": 0
+  },
+  {
+   "case_id": "e002_q1_r4",
+   "split": "DEV",
+   "component": "ALL",
+   "predicted_cost": 0.0008582,
+   "text_chars": 2765,
+   "images": 0
+  },
+  {
+   "case_id": "e002_q1_r5",
+   "split": "DEV",
+   "component": "ALL",
+   "predicted_cost": 0.0008638,
+   "text_chars": 2877,
+   "images": 0
+  },
+  {
+   "case_id": "e002_q1_r6",
+   "split": "DEV",
+   "component": "ALL",
+   "predicted_cost": 0.0008638,
+   "text_chars": 2877,
+   "images": 0
+  },
+  {
+   "case_id": "e002_q1_r7",
+   "split": "DEV",
+   "component": "ALL",
+   "predicted_cost": 0.0008599,
+   "text_chars": 2799,
+   "images": 0
+  },
+  {
+   "case_id": "e002_q1_r8",
+   "split": "DEV",
+   "component": "ALL",
+   "predicted_cost": 0.0008663,
+   "text_chars": 2927,
+   "images": 0
+  },
+  {
+   "case_id": "e002_q2_r1",
+   "split": "DEV",
+   "component": "ALL",
+   "predicted_cost": 0.0008617000000000001,
+   "text_chars": 2835,
+   "images": 0
+  },
+  {
+   "case_id": "e002_q2_r2",
+   "split": "DEV",
+   "component": "ALL",
+   "predicted_cost": 0.0008625,
+   "text_chars": 2851,
+   "images": 0
+  },
+  {
+   "case_id": "e002_q2_r3",
+   "split": "DEV",
+   "component": "ALL",
+   "predicted_cost": 0.0008648,
+   "text_chars": 2897,
+   "images": 0
+  },
+  {
+   "case_id": "e002_q2_r4",
+   "split": "DEV",
+   "component": "ALL",
+   "predicted_cost": 0.0008671,
+   "text_chars": 2943,
+   "images": 0
+  },
+  {
+   "case_id": "e002_q2_r5",
+   "split": "DEV",
+   "component": "ALL",
+   "predicted_cost": 0.00086195,
+   "text_chars": 2840,
+   "images": 0
+  },
+  {
+   "case_id": "e002_q2_r6",
+   "split": "DEV",
+   "component": "ALL",
+   "predicted_cost": 0.00086575,
+   "text_chars": 2916,
+   "images": 0
+  },
+  {
+   "case_id": "e002_q2_r7",
+   "split": "DEV",
+   "component": "ALL",
+   "predicted_cost": 0.0008689500000000001,
+   "text_chars": 2980,
+   "images": 0
+  },
+  {
+   "case_id": "e002_q2_r8",
+   "split": "DEV",
+   "component": "ALL",
+   "predicted_cost": 0.000864,
+   "text_chars": 2881,
+   "images": 0
+  },
+  {
+   "case_id": "e003_q1_r1",
+   "split": "DEV",
+   "component": "ALL",
+   "predicted_cost": 0.00087125,
+   "text_chars": 3026,
+   "images": 0
+  },
+  {
+   "case_id": "e003_q1_r4",
+   "split": "DEV",
+   "component": "ALL",
+   "predicted_cost": 0.0008604,
+   "text_chars": 2809,
+   "images": 0
+  },
+  {
+   "case_id": "e003_q1_r5",
+   "split": "DEV",
+   "component": "ALL",
+   "predicted_cost": 0.000865,
+   "text_chars": 2901,
+   "images": 0
+  },
+  {
+   "case_id": "e003_q1_r6",
+   "split": "DEV",
+   "component": "ALL",
+   "predicted_cost": 0.0008650499999999999,
+   "text_chars": 2902,
+   "images": 0
+  },
+  {
+   "case_id": "e003_q1_r7",
+   "split": "DEV",
+   "component": "ALL",
+   "predicted_cost": 0.00085825,
+   "text_chars": 2766,
+   "images": 0
+  },
+  {
+   "case_id": "e003_q1_r8",
+   "split": "DEV",
+   "component": "ALL",
+   "predicted_cost": 0.00086535,
+   "text_chars": 2908,
+   "images": 0
+  },
+  {
+   "case_id": "e003_q2_r1",
+   "split": "DEV",
+   "component": "ALL",
+   "predicted_cost": 0.0008622,
+   "text_chars": 2845,
+   "images": 0
+  },
+  {
+   "case_id": "e003_q2_r2",
+   "split": "DEV",
+   "component": "ALL",
+   "predicted_cost": 0.0008634500000000001,
+   "text_chars": 2870,
+   "images": 0
+  },
+  {
+   "case_id": "e003_q2_r7",
+   "split": "DEV",
+   "component": "ALL",
+   "predicted_cost": 0.00086765,
+   "text_chars": 2954,
+   "images": 0
+  },
+  {
+   "case_id": "e003_q2_r8",
+   "split": "DEV",
+   "component": "ALL",
+   "predicted_cost": 0.00086515,
+   "text_chars": 2904,
+   "images": 0
+  },
+  {
+   "case_id": "e007_q1_r1",
+   "split": "DEV",
+   "component": "ALL",
+   "predicted_cost": 0.00087295,
+   "text_chars": 3060,
+   "images": 0
+  }
+ ],
+ "leakage_check": "passed"
+}

@@ -1,0 +1,27 @@
+{
+ "rows_before": 18,
+ "rows_after": 44,
+ "cost_before": 0.062543,
+ "run_cost": 0.029203,
+ "cost_after": 0.091746,
+ "run_calls": 24,
+ "run_cache_hits": 2,
+ "by_model": {
+  "openai/gpt-5.6-luna-pro": {
+   "calls": 24,
+   "input_tokens": 164958,
+   "output_tokens": 5818,
+   "total_tokens": 170776,
+   "reported_cost": 0.029203
+  }
+ },
+ "by_task": {
+  "grade_primary": {
+   "calls": 24,
+   "input_tokens": 164958,
+   "output_tokens": 5818,
+   "total_tokens": 170776,
+   "reported_cost": 0.029203
+  }
+ }
+}

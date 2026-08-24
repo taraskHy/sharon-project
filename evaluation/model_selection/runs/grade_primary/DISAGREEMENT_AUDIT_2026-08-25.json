@@ -1,0 +1,1010 @@
+{
+ "artifact": "disagreement_audit_queue",
+ "created_at": "2026-08-25",
+ "purpose": "Cases where the models and the DERIVED ground truth disagree. FOR HUMAN INSPECTION ONLY. No label was changed and no prompt was tuned on the basis of any of this.",
+ "population": {
+  "subset": "grade_primary__dev_verdict",
+  "selection_sha256": "e08984a3bf7f374e6241aef57a8d43747da4d0f222eb8a132fc50fbc14410665",
+  "cases": 26,
+  "class_distribution": {
+   "valid": 22,
+   "partially_valid": 4
+  }
+ },
+ "runs": {
+  "google/gemini-3.7-flash": "dev__dev_verdict__all__google-gemini-3.7-flash__1dfb29b5b5",
+  "openai/gpt-5.6-luna-pro": "dev__dev_verdict__all__openai-gpt-5.6-luna-pro__44745e98b2",
+  "anthropic/claude-sonnet-5": "dev__dev_verdict__all__anthropic-claude-sonnet-5__9f07a225b6"
+ },
+ "how_labels_were_derived": "instructor final score + selection correctness + the frozen grading policy: 4 => selection correct AND explanation valid; 2 => selection correct AND partially_valid. The derivation assumes the INSTRUCTOR graded by the same composition the machine policy encodes.",
+ "hypothesis_to_test_by_hand": "Category 2 (all three models independently score BELOW the derived verdict) is consistent with two different causes and this artifact cannot separate them: (a) all three models are too harsh, or (b) the derived label is optimistic because the instructor awarded full credit for a correct choice while being lenient on the explanation. Read the transcription against the rubric before concluding either.",
+ "categories": {
+  "all_three_disagree": [
+   "e002_q1_r7",
+   "e002_q2_r4",
+   "e003_q1_r7",
+   "e003_q2_r8",
+   "e007_q1_r1"
+  ],
+  "all_three_lower": [
+   "e002_q1_r7",
+   "e002_q2_r4",
+   "e003_q1_r7",
+   "e003_q2_r8",
+   "e007_q1_r1"
+  ],
+  "models_split": [
+   "e002_q1_r2",
+   "e002_q1_r3",
+   "e002_q1_r4",
+   "e002_q1_r5",
+   "e002_q1_r6",
+   "e002_q1_r8",
+   "e002_q2_r1",
+   "e002_q2_r2",
+   "e002_q2_r3",
+   "e002_q2_r4",
+   "e002_q2_r5",
+   "e002_q2_r6",
+   "e002_q2_r7",
+   "e002_q2_r8",
+   "e003_q1_r1",
+   "e003_q1_r4",
+   "e003_q1_r5",
+   "e003_q1_r6",
+   "e003_q1_r8",
+   "e003_q2_r1",
+   "e003_q2_r2",
+   "e003_q2_r7",
+   "e003_q2_r8",
+   "e007_q1_r1"
+  ],
+  "no_evidence_cited": []
+ },
+ "cases": [
+  {
+   "case_id": "e002_q1_r2",
+   "derived_verdict": "valid",
+   "instructor_final_score": 4.0,
+   "writer": "e002",
+   "question_id": "1",
+   "transcription_chars": 29,
+   "predictions": {
+    "google/gemini-3.7-flash": {
+     "verdict": "valid",
+     "raw_score": 4.0,
+     "uncertain": false,
+     "evidence": "נשאר בתמונה רק התדרים הגבוהים",
+     "rubric_items_met": []
+    },
+    "openai/gpt-5.6-luna-pro": {
+     "verdict": "partially_valid",
+     "raw_score": 2.0,
+     "uncertain": false,
+     "evidence": "נשאר בתמונה רק התדרים הגבוהים",
+     "rubric_items_met": []
+    },
+    "anthropic/claude-sonnet-5": {
+     "verdict": "valid",
+     "raw_score": 4.0,
+     "uncertain": false,
+     "evidence": "Student correctly states only high frequencies remain, matching official solution for HP filter.",
+     "rubric_items_met": [
+      "R1"
+     ]
+    }
+   },
+   "flags": [
+    "models_split"
+   ]
+  },
+  {
+   "case_id": "e002_q1_r3",
+   "derived_verdict": "valid",
+   "instructor_final_score": 4.0,
+   "writer": "e002",
+   "question_id": "1",
+   "transcription_chars": 49,
+   "predictions": {
+    "google/gemini-3.7-flash": {
+     "verdict": "valid",
+     "raw_score": 4.0,
+     "uncertain": false,
+     "evidence": "העוצמה של הדרגות הגבוהות בפרמידה חזקה ביחס למקורי",
+     "rubric_items_met": [
+      "R1"
+     ]
+    },
+    "openai/gpt-5.6-luna-pro": {
+     "verdict": "partially_valid",
+     "raw_score": 2.0,
+     "uncertain": false,
+     "evidence": "ההסבר מציין חיזוק של דרגות גבוהות ביחס למקור, אך אינו מתייחס לכך שיש 8 פעולות ו-9 היסטוגרמות או להיסטוגרמה מיותרת.",
+     "rubric_items_met": []
+    },
+    "anthropic/claude-sonnet-5": {
+     "verdict": "partially_valid",
+     "raw_score": 2.0,
+     "uncertain": false,
+     "evidence": "Student mentions high-frequency strengthening but doesn't address low frequencies unaffected, per official solution.",
+     "rubric_items_met": [
+      "R1"
+     ]
+    }
+   },
+   "flags": [
+    "models_split"
+   ]
+  },
+  {
+   "case_id": "e002_q1_r4",
+   "derived_verdict": "valid",
+   "instructor_final_score": 4.0,
+   "writer": "e002",
+   "question_id": "1",
+   "transcription_chars": 29,
+   "predictions": {
+    "google/gemini-3.7-flash": {
+     "verdict": "valid",
+     "raw_score": 4.0,
+     "uncertain": false,
+     "evidence": "נשאר בתמונה רק התדרים הנמוכים",
+     "rubric_items_met": []
+    },
+    "openai/gpt-5.6-luna-pro": {
+     "verdict": "partially_valid",
+     "raw_score": 2.0,
+     "uncertain": false,
+     "evidence": "The explanation correctly states that only low frequencies remain, but does not address the 8 actions, 9 histograms, or the one extra histogram.",
+     "rubric_items_met": []
+    },
+    "anthropic/claude-sonnet-5": {
+     "verdict": "valid",
+     "raw_score": 4.0,
+     "uncertain": false,
+     "evidence": "נשאר בתמונה רק התדרים הנמוכים - correctly matches official solution that low frequencies remain.",
+     "rubric_items_met": []
+    }
+   },
+   "flags": [
+    "models_split"
+   ]
+  },
+  {
+   "case_id": "e002_q1_r5",
+   "derived_verdict": "partially_valid",
+   "instructor_final_score": 2.0,
+   "writer": "e002",
+   "question_id": "1",
+   "transcription_chars": 28,
+   "predictions": {
+    "google/gemini-3.7-flash": {
+     "verdict": "valid",
+     "raw_score": 4.0,
+     "uncertain": false,
+     "evidence": "מריחה בציר x עקב הקונבולוציה",
+     "rubric_items_met": [
+      "R1"
+     ]
+    },
+    "openai/gpt-5.6-luna-pro": {
+     "verdict": "partially_valid",
+     "raw_score": 2.0,
+     "uncertain": false,
+     "evidence": "ההסבר מזהה טשטוש עקב קונבולוציה בציר x, אך אינו מתייחס ל-8 פעולות, 9 היסטוגרמות או להיסטוגרמה המיותרת.",
+     "rubric_items_met": []
+    },
+    "anthropic/claude-sonnet-5": {
+     "verdict": "partially_valid",
+     "raw_score": 2.0,
+     "uncertain": false,
+     "evidence": "The explanation correctly identifies blurring along x-axis due to convolution, but is brief and doesn't mention the added Gaussian noise component or elaborate on the effect on edges.",
+     "rubric_items_met": [
+      "R1"
+     ]
+    }
+   },
+   "flags": [
+    "models_split"
+   ]
+  },
+  {
+   "case_id": "e002_q1_r6",
+   "derived_verdict": "partially_valid",
+   "instructor_final_score": 2.0,
+   "writer": "e002",
+   "question_id": "1",
+   "transcription_chars": 28,
+   "predictions": {
+    "google/gemini-3.7-flash": {
+     "verdict": "valid",
+     "raw_score": 4.0,
+     "uncertain": false,
+     "evidence": "מריחה בציר y עקב הקונבולוציה",
+     "rubric_items_met": [
+      "R1"
+     ]
+    },
+    "openai/gpt-5.6-luna-pro": {
+     "verdict": "partially_valid",
+     "raw_score": 2.0,
+     "uncertain": false,
+     "evidence": "ההסבר מזהה טשטוש עקב קונבולוציה בציר y, אך אינו מתייחס ל-8 פעולות, 9 היסטוגרמות או להיסטוגרמה המיותרת.",
+     "rubric_items_met": []
+    },
+    "anthropic/claude-sonnet-5": {
+     "verdict": "partially_valid",
+     "raw_score": 2.0,
+     "uncertain": false,
+     "evidence": "Student gives brief correct direction of blur ('מריחה בציר y') but no discussion of the 9 histograms / extra histogram issue required by rubric.",
+     "rubric_items_met": []
+    }
+   },
+   "flags": [
+    "models_split"
+   ]
+  },
+  {
+   "case_id": "e002_q1_r7",
+   "derived_verdict": "valid",
+   "instructor_final_score": 4.0,
+   "writer": "e002",
+   "question_id": "1",
+   "transcription_chars": 69,
+   "predictions": {
+    "google/gemini-3.7-flash": {
+     "verdict": "invalid",
+     "raw_score": 0.0,
+     "uncertain": false,
+     "evidence": null,
+     "rubric_items_met": []
+    },
+    "openai/gpt-5.6-luna-pro": {
+     "verdict": "invalid",
+     "raw_score": 0.0,
+     "uncertain": false,
+     "evidence": null,
+     "rubric_items_met": []
+    },
+    "anthropic/claude-sonnet-5": {
+     "verdict": "invalid",
+     "raw_score": 0.0,
+     "uncertain": false,
+     "evidence": "The explanation discusses image pyramid brightness rather than explaining why brightness enhancement doesn't change the histogram shape; irrelevant to the rubric.",
+     "rubric_items_met": []
+    }
+   },
+   "flags": [
+    "all_three_disagree",
+    "all_three_lower"
+   ]
+  },
+  {
+   "case_id": "e002_q1_r8",
+   "derived_verdict": "partially_valid",
+   "instructor_final_score": 2.0,
+   "writer": "e002",
+   "question_id": "1",
+   "transcription_chars": 92,
+   "predictions": {
+    "google/gemini-3.7-flash": {
+     "verdict": "partially_valid",
+     "raw_score": 2.0,
+     "uncertain": false,
+     "evidence": "פה האיזורים הבהירים יותר נעשים יותר שינוי מהאזורים הכהים",
+     "rubric_items_met": []
+    },
+    "openai/gpt-5.6-luna-pro": {
+     "verdict": "invalid",
+     "raw_score": 0.0,
+     "uncertain": false,
+     "evidence": null,
+     "rubric_items_met": []
+    },
+    "anthropic/claude-sonnet-5": {
+     "verdict": "invalid",
+     "raw_score": 0.0,
+     "uncertain": false,
+     "evidence": "Student's explanation doesn't describe multiplying pixel values by 2 or histogram stretching; describes a contrast-like effect but not tied to the operation's actual mechanism or histogram identification.",
+     "rubric_items_met": []
+    }
+   },
+   "flags": [
+    "models_split"
+   ]
+  },
+  {
+   "case_id": "e002_q2_r1",
+   "derived_verdict": "valid",
+   "instructor_final_score": 4.0,
+   "writer": "e002",
+   "question_id": "2",
+   "transcription_chars": 52,
+   "predictions": {
+    "google/gemini-3.7-flash": {
+     "verdict": "valid",
+     "raw_score": 4.0,
+     "uncertain": false,
+     "evidence": "עבור גילוי שפות יהיה רוב התמונה ב0 ורק עבור שפות 255",
+     "rubric_items_met": [
+      "R1"
+     ]
+    },
+    "openai/gpt-5.6-luna-pro": {
+     "verdict": "invalid",
+     "raw_score": 0.0,
+     "uncertain": false,
+     "evidence": null,
+     "rubric_items_met": []
+    },
+    "anthropic/claude-sonnet-5": {
+     "verdict": "valid",
+     "raw_score": 4.0,
+     "uncertain": false,
+     "evidence": "Student correctly describes binary output of Canny edge detection: 0 for most pixels, 255 for edges.",
+     "rubric_items_met": [
+      "R1"
+     ]
+    }
+   },
+   "flags": [
+    "models_split"
+   ]
+  },
+  {
+   "case_id": "e002_q2_r2",
+   "derived_verdict": "valid",
+   "instructor_final_score": 4.0,
+   "writer": "e002",
+   "question_id": "2",
+   "transcription_chars": 50,
+   "predictions": {
+    "google/gemini-3.7-flash": {
+     "verdict": "valid",
+     "raw_score": 4.0,
+     "uncertain": false,
+     "evidence": "הטשטוש לפני מוביל לפחות שפות שמתגלות",
+     "rubric_items_met": [
+      "R1"
+     ]
+    },
+    "openai/gpt-5.6-luna-pro": {
+     "verdict": "partially_valid",
+     "raw_score": 2.0,
+     "uncertain": false,
+     "evidence": "הטשטוש לפני מוביל לפחות שפות שמתגלות",
+     "rubric_items_met": []
+    },
+    "anthropic/claude-sonnet-5": {
+     "verdict": "partially_valid",
+     "raw_score": 2.0,
+     "uncertain": false,
+     "evidence": "The student correctly notes blurring leads to fewer detected edges, matching the official solution's reasoning, but doesn't address the rubric's point about 8 operations vs 9 histograms with one extra.",
+     "rubric_items_met": []
+    }
+   },
+   "flags": [
+    "models_split"
+   ]
+  },
+  {
+   "case_id": "e002_q2_r3",
+   "derived_verdict": "valid",
+   "instructor_final_score": 4.0,
+   "writer": "e002",
+   "question_id": "2",
+   "transcription_chars": 47,
+   "predictions": {
+    "google/gemini-3.7-flash": {
+     "verdict": "valid",
+     "raw_score": 4.0,
+     "uncertain": false,
+     "evidence": "פרעה אחידה של ההיסטוגרמה המקורית לאורך כל הטווח",
+     "rubric_items_met": [
+      "R1"
+     ]
+    },
+    "openai/gpt-5.6-luna-pro": {
+     "verdict": "partially_valid",
+     "raw_score": 2.0,
+     "uncertain": false,
+     "evidence": "הסבר חלקי על שיווי היסטוגרמה, אך אינו מציין שיש 8 פעולות, 9 היסטוגרמות והיסטוגרמה אחת מיותרת.",
+     "rubric_items_met": []
+    },
+    "anthropic/claude-sonnet-5": {
+     "verdict": "partially_valid",
+     "raw_score": 2.0,
+     "uncertain": false,
+     "evidence": "Student describes histogram equalization generally ('פרעה אחידה של ההיסטוגרמה המקורית לאורך כל הטווח') but does not address the extra histogram issue (R1) or identify histogram B with 0/255 values.",
+     "rubric_items_met": []
+    }
+   },
+   "flags": [
+    "models_split"
+   ]
+  },
+  {
+   "case_id": "e002_q2_r4",
+   "derived_verdict": "valid",
+   "instructor_final_score": 4.0,
+   "writer": "e002",
+   "question_id": "2",
+   "transcription_chars": 82,
+   "predictions": {
+    "google/gemini-3.7-flash": {
+     "verdict": "partially_valid",
+     "raw_score": 2.0,
+     "uncertain": false,
+     "evidence": "כולם משומשים בכמות יחסית אחידה",
+     "rubric_items_met": []
+    },
+    "openai/gpt-5.6-luna-pro": {
+     "verdict": "invalid",
+     "raw_score": 0.0,
+     "uncertain": false,
+     "evidence": null,
+     "rubric_items_met": []
+    },
+    "anthropic/claude-sonnet-5": {
+     "verdict": "invalid",
+     "raw_score": 0.0,
+     "uncertain": true,
+     "evidence": "Transcription is largely illegible ([לא קריא]) and the visible text incorrectly suggests bins are used evenly, contradicting the correct non-uniform bin concept.'",
+     "rubric_items_met": []
+    }
+   },
+   "flags": [
+    "all_three_disagree",
+    "all_three_lower",
+    "models_split"
+   ]
+  },
+  {
+   "case_id": "e002_q2_r5",
+   "derived_verdict": "valid",
+   "instructor_final_score": 4.0,
+   "writer": "e002",
+   "question_id": "2",
+   "transcription_chars": 58,
+   "predictions": {
+    "google/gemini-3.7-flash": {
+     "verdict": "valid",
+     "raw_score": 4.0,
+     "uncertain": false,
+     "evidence": "אחיד מוביל לריווח אחיד בין הערכים שקיימים בכימוי",
+     "rubric_items_met": [
+      "R1"
+     ]
+    },
+    "openai/gpt-5.6-luna-pro": {
+     "verdict": "partially_valid",
+     "raw_score": 2.0,
+     "uncertain": false,
+     "evidence": "הסבר חלקי: מציין ריווח אחיד, אך אינו מתייחס לכך שיש 8 פעולות, 9 היסטוגרמות, והיסטוגרמה אחת מיותרת.",
+     "rubric_items_met": []
+    },
+    "anthropic/claude-sonnet-5": {
+     "verdict": "partially_valid",
+     "raw_score": 2.0,
+     "uncertain": false,
+     "evidence": "Student mentions uniform spacing leading to uniform quantization gaps but does not address the extra/redundant histogram (R1).",
+     "rubric_items_met": []
+    }
+   },
+   "flags": [
+    "models_split"
+   ]
+  },
+  {
+   "case_id": "e002_q2_r6",
+   "derived_verdict": "valid",
+   "instructor_final_score": 4.0,
+   "writer": "e002",
+   "question_id": "2",
+   "transcription_chars": 116,
+   "predictions": {
+    "google/gemini-3.7-flash": {
+     "verdict": "valid",
+     "raw_score": 4.0,
+     "uncertain": false,
+     "evidence": "המעכה זהה לסכימת תמונה זהה עם תנודה קלה. מין תמונת echo",
+     "rubric_items_met": [
+      "R1"
+     ]
+    },
+    "openai/gpt-5.6-luna-pro": {
+     "verdict": "partially_valid",
+     "raw_score": 2.0,
+     "uncertain": false,
+     "evidence": "ההסבר מזהה אפקט echo וסכימה, אך אינו מציין שיש 8 פעולות, 9 היסטוגרמות, והיסטוגרמה אחת מיותרת.",
+     "rubric_items_met": []
+    },
+    "anthropic/claude-sonnet-5": {
+     "verdict": "partially_valid",
+     "raw_score": 2.0,
+     "uncertain": false,
+     "evidence": "Student identifies echo-like sum of shifted image and predicts histogram roughly doubles, but doesn't address the extra histogram issue in R1.",
+     "rubric_items_met": []
+    }
+   },
+   "flags": [
+    "models_split"
+   ]
+  },
+  {
+   "case_id": "e002_q2_r7",
+   "derived_verdict": "valid",
+   "instructor_final_score": 4.0,
+   "writer": "e002",
+   "question_id": "2",
+   "transcription_chars": 90,
+   "predictions": {
+    "google/gemini-3.7-flash": {
+     "verdict": "valid",
+     "raw_score": 4.0,
+     "uncertain": false,
+     "evidence": "צורדת ההיסטוגרמה זהה, אך הגדלים והכמויות הם פי 2, כי גודל התמונה הינו פי 2 עם אותה התפלגות",
+     "rubric_items_met": [
+      "R1"
+     ]
+    },
+    "openai/gpt-5.6-luna-pro": {
+     "verdict": "partially_valid",
+     "raw_score": 2.0,
+     "uncertain": false,
+     "evidence": "ההסבר מציין שההיסטוגרמה זהה ושכמויות הפיקסלים פי 2, אך אינו מתייחס ל-8 פעולות ול-9 היסטוגרמות או להיסטוגרמה המיותרת.",
+     "rubric_items_met": []
+    },
+    "anthropic/claude-sonnet-5": {
+     "verdict": "valid",
+     "raw_score": 4.0,
+     "uncertain": false,
+     "evidence": "Student correctly states histogram shape is identical but counts double, matching official solution reasoning.",
+     "rubric_items_met": [
+      "R1"
+     ]
+    }
+   },
+   "flags": [
+    "models_split"
+   ]
+  },
+  {
+   "case_id": "e002_q2_r8",
+   "derived_verdict": "valid",
+   "instructor_final_score": 4.0,
+   "writer": "e002",
+   "question_id": "2",
+   "transcription_chars": 46,
+   "predictions": {
+    "google/gemini-3.7-flash": {
+     "verdict": "valid",
+     "raw_score": 4.0,
+     "uncertain": false,
+     "evidence": "כל ערך x בהיסטוגרמה ממופה ל2x בהיסטוגרמה החדשה",
+     "rubric_items_met": [
+      "R1"
+     ]
+    },
+    "openai/gpt-5.6-luna-pro": {
+     "verdict": "partially_valid",
+     "raw_score": 2.0,
+     "uncertain": false,
+     "evidence": "Correctly states pixel values map from x to 2x, but omits the 8/9 histogram context and the redundant histogram criterion.",
+     "rubric_items_met": []
+    },
+    "anthropic/claude-sonnet-5": {
+     "verdict": "partially_valid",
+     "raw_score": 2.0,
+     "uncertain": false,
+     "evidence": "The student correctly describes the mapping x->2x (stretching), but doesn't address the gap/odd-value issue mentioned in the official solution, which is key reasoning for identifying the correct histogram among the extra one.",
+     "rubric_items_met": []
+    }
+   },
+   "flags": [
+    "models_split"
+   ]
+  },
+  {
+   "case_id": "e003_q1_r1",
+   "derived_verdict": "valid",
+   "instructor_final_score": 4.0,
+   "writer": "e003",
+   "question_id": "1",
+   "transcription_chars": 62,
+   "predictions": {
+    "google/gemini-3.7-flash": {
+     "verdict": "valid",
+     "raw_score": 4.0,
+     "uncertain": false,
+     "evidence": "ניתן לראות ברמות התדרים הגבוהים שיש שפות בכיוון התנועה(הטשטוש)",
+     "rubric_items_met": [
+      "R1"
+     ]
+    },
+    "openai/gpt-5.6-luna-pro": {
+     "verdict": "partially_valid",
+     "raw_score": 2.0,
+     "uncertain": false,
+     "evidence": "ההסבר מתאר טשטוש בכיוון התנועה ברמות תדר גבוהות, אך אינו מתייחס לכך שיש 8 פעולות, 9 היסטוגרמות ואחת מיותרת.",
+     "rubric_items_met": []
+    },
+    "anthropic/claude-sonnet-5": {
+     "verdict": "valid",
+     "raw_score": 4.0,
+     "uncertain": false,
+     "evidence": "Student correctly identifies directional edges in high frequencies matching motion direction, consistent with Motion Blur reasoning.",
+     "rubric_items_met": [
+      "R1"
+     ]
+    }
+   },
+   "flags": [
+    "models_split"
+   ]
+  },
+  {
+   "case_id": "e003_q1_r4",
+   "derived_verdict": "valid",
+   "instructor_final_score": 4.0,
+   "writer": "e003",
+   "question_id": "1",
+   "transcription_chars": 73,
+   "predictions": {
+    "google/gemini-3.7-flash": {
+     "verdict": "valid",
+     "raw_score": 4.0,
+     "uncertain": false,
+     "evidence": "רק תדרים נמוכים נשמרו ולכן כל הרמות של התדרים הגבוהים מאופסות",
+     "rubric_items_met": [
+      "R1"
+     ]
+    },
+    "openai/gpt-5.6-luna-pro": {
+     "verdict": "partially_valid",
+     "raw_score": 2.0,
+     "uncertain": false,
+     "evidence": "ההסבר מתאר נכון את פעולת מסנן המעבר הנמוך, אך אינו מתייחס לכך שיש 8 פעולות ו-9 היסטוגרמות ולכן אחת מיותרת.",
+     "rubric_items_met": []
+    },
+    "anthropic/claude-sonnet-5": {
+     "verdict": "valid",
+     "raw_score": 4.0,
+     "uncertain": false,
+     "evidence": "Student correctly explains low pass filter keeps low frequencies and zeroes high frequencies, matching official solution.",
+     "rubric_items_met": [
+      "R1"
+     ]
+    }
+   },
+   "flags": [
+    "models_split"
+   ]
+  },
+  {
+   "case_id": "e003_q1_r5",
+   "derived_verdict": "valid",
+   "instructor_final_score": 4.0,
+   "writer": "e003",
+   "question_id": "1",
+   "transcription_chars": 52,
+   "predictions": {
+    "google/gemini-3.7-flash": {
+     "verdict": "valid",
+     "raw_score": 4.0,
+     "uncertain": false,
+     "evidence": "הרעש והטשטוש שלו בכיוון ציר ה-x",
+     "rubric_items_met": [
+      "R1"
+     ]
+    },
+    "openai/gpt-5.6-luna-pro": {
+     "verdict": "partially_valid",
+     "raw_score": 2.0,
+     "uncertain": false,
+     "evidence": "ההסבר מציין טשטוש ורעש בכיוון x ותדרים גבוהים, אך אינו מתייחס ל-8 פעולות, 9 היסטוגרמות או להיסטוגרמה המיותרת.",
+     "rubric_items_met": []
+    },
+    "anthropic/claude-sonnet-5": {
+     "verdict": "invalid",
+     "raw_score": 0.0,
+     "uncertain": false,
+     "evidence": "Explanation is vague, mentions noise and blur in x direction highlighted in high frequencies, but doesn't correctly explain the effect of convolution with a Gaussian mask on edges.",
+     "rubric_items_met": []
+    }
+   },
+   "flags": [
+    "models_split"
+   ]
+  },
+  {
+   "case_id": "e003_q1_r6",
+   "derived_verdict": "valid",
+   "instructor_final_score": 4.0,
+   "writer": "e003",
+   "question_id": "1",
+   "transcription_chars": 53,
+   "predictions": {
+    "google/gemini-3.7-flash": {
+     "verdict": "valid",
+     "raw_score": 4.0,
+     "uncertain": false,
+     "evidence": "הרעש והטשטוש שלו בכיוון ציר ה-y מובלט בתדרים הגבוהיים",
+     "rubric_items_met": [
+      "R1"
+     ]
+    },
+    "openai/gpt-5.6-luna-pro": {
+     "verdict": "invalid",
+     "raw_score": 0.0,
+     "uncertain": false,
+     "evidence": "ההסבר מתייחס לרעש ולטשטוש, אך אינו מציין את 8 הפעולות, 9 ההיסטוגרמות או היסטוגרמה מיותרת.",
+     "rubric_items_met": []
+    },
+    "anthropic/claude-sonnet-5": {
+     "verdict": "invalid",
+     "raw_score": 0.0,
+     "uncertain": false,
+     "evidence": "The explanation mentions noise and blur along y-axis and high frequencies, but doesn't correctly address the edge/blur direction reasoning required by the official solution; it's vague and doesn't demonstrate correct reasoning about the convolution effect.",
+     "rubric_items_met": []
+    }
+   },
+   "flags": [
+    "models_split"
+   ]
+  },
+  {
+   "case_id": "e003_q1_r7",
+   "derived_verdict": "valid",
+   "instructor_final_score": 4.0,
+   "writer": "e003",
+   "question_id": "1",
+   "transcription_chars": 36,
+   "predictions": {
+    "google/gemini-3.7-flash": {
+     "verdict": "invalid",
+     "raw_score": 0.0,
+     "uncertain": false,
+     "evidence": null,
+     "rubric_items_met": []
+    },
+    "openai/gpt-5.6-luna-pro": {
+     "verdict": "invalid",
+     "raw_score": 0.0,
+     "uncertain": false,
+     "evidence": "ההסבר אינו מתייחס לכך שיש היסטוגרמה אחת מיותרת או לכך שהגברת בהירות אינה משנה את ההיסטוגרמה.",
+     "rubric_items_met": []
+    },
+    "anthropic/claude-sonnet-5": {
+     "verdict": "invalid",
+     "raw_score": 0.0,
+     "uncertain": false,
+     "evidence": "Student's explanation about DC level and brightness of upper level does not address the histogram shift concept expected in the official solution; it's vague and doesn't clearly explain why brightness increase leaves histogram shape unchanged.",
+     "rubric_items_met": []
+    }
+   },
+   "flags": [
+    "all_three_disagree",
+    "all_three_lower"
+   ]
+  },
+  {
+   "case_id": "e003_q1_r8",
+   "derived_verdict": "partially_valid",
+   "instructor_final_score": 2.0,
+   "writer": "e003",
+   "question_id": "1",
+   "transcription_chars": 73,
+   "predictions": {
+    "google/gemini-3.7-flash": {
+     "verdict": "invalid",
+     "raw_score": 0.0,
+     "uncertain": false,
+     "evidence": null,
+     "rubric_items_met": []
+    },
+    "openai/gpt-5.6-luna-pro": {
+     "verdict": "partially_valid",
+     "raw_score": 2.0,
+     "uncertain": false,
+     "evidence": "מציין באופן חלקי שהערכים הבהירים נעשו בהירים יותר, אך אינו מסביר את מתיחת ההיסטוגרמה פי 2 או את קיום ההיסטוגרמה המיותרת.",
+     "rubric_items_met": []
+    },
+    "anthropic/claude-sonnet-5": {
+     "verdict": "partially_valid",
+     "raw_score": 2.0,
+     "uncertain": false,
+     "evidence": "Student only vaguely notes brighter values become brighter, without explaining histogram stretching, missing pixel values, or the extra histogram issue.",
+     "rubric_items_met": []
+    }
+   },
+   "flags": [
+    "models_split"
+   ]
+  },
+  {
+   "case_id": "e003_q2_r1",
+   "derived_verdict": "valid",
+   "instructor_final_score": 4.0,
+   "writer": "e003",
+   "question_id": "2",
+   "transcription_chars": 62,
+   "predictions": {
+    "google/gemini-3.7-flash": {
+     "verdict": "valid",
+     "raw_score": 4.0,
+     "uncertain": false,
+     "evidence": "כל פיקסלי השפות שנקלטו קיבלו  ערך 255 לעומת שאר הפיקסלים(הרוב)",
+     "rubric_items_met": [
+      "R1"
+     ]
+    },
+    "openai/gpt-5.6-luna-pro": {
+     "verdict": "partially_valid",
+     "raw_score": 2.0,
+     "uncertain": false,
+     "evidence": "ההסבר מתאר נכון את תוצאת Canny, אך אינו מתייחס ל-8 פעולות, 9 היסטוגרמות או להיסטוגרמה המיותרת.",
+     "rubric_items_met": []
+    },
+    "anthropic/claude-sonnet-5": {
+     "verdict": "valid",
+     "raw_score": 4.0,
+     "uncertain": false,
+     "evidence": "Student correctly describes Canny edge detection producing binary image: edge pixels=255, rest low/0.",
+     "rubric_items_met": [
+      "R1"
+     ]
+    }
+   },
+   "flags": [
+    "models_split"
+   ]
+  },
+  {
+   "case_id": "e003_q2_r2",
+   "derived_verdict": "valid",
+   "instructor_final_score": 4.0,
+   "writer": "e003",
+   "question_id": "2",
+   "transcription_chars": 69,
+   "predictions": {
+    "google/gemini-3.7-flash": {
+     "verdict": "valid",
+     "raw_score": 4.0,
+     "uncertain": false,
+     "evidence": "טשטוש הוריד רעש ולכן פחות פיקסלים נקלטו כשפה והערך 255 בהיסטוגרמה ירד",
+     "rubric_items_met": [
+      "R1"
+     ]
+    },
+    "openai/gpt-5.6-luna-pro": {
+     "verdict": "partially_valid",
+     "raw_score": 2.0,
+     "uncertain": false,
+     "evidence": "ההסבר מזהה שטשטוש מפחית פיקסלים בערך 255, אך אינו מתייחס לכך שיש 8 פעולות, 9 היסטוגרמות והיסטוגרמה מיותרת.",
+     "rubric_items_met": []
+    },
+    "anthropic/claude-sonnet-5": {
+     "verdict": "valid",
+     "raw_score": 4.0,
+     "uncertain": false,
+     "evidence": "Correctly explains blur reduces edges, lowering count of 255-valued pixels in histogram, matching official reasoning.",
+     "rubric_items_met": [
+      "R1"
+     ]
+    }
+   },
+   "flags": [
+    "models_split"
+   ]
+  },
+  {
+   "case_id": "e003_q2_r7",
+   "derived_verdict": "valid",
+   "instructor_final_score": 4.0,
+   "writer": "e003",
+   "question_id": "2",
+   "transcription_chars": 64,
+   "predictions": {
+    "google/gemini-3.7-flash": {
+     "verdict": "valid",
+     "raw_score": 4.0,
+     "uncertain": false,
+     "evidence": "הוכפל מספר הפיקסלים בכל התמונה פי 2 והוכפל מספר הפיקסלים בכל ערך",
+     "rubric_items_met": [
+      "R1"
+     ]
+    },
+    "openai/gpt-5.6-luna-pro": {
+     "verdict": "partially_valid",
+     "raw_score": 2.0,
+     "uncertain": false,
+     "evidence": "מסביר הכפלה פי 2 של מספר הפיקסלים, אך אינו מציין שיש 8 פעולות, 9 היסטוגרמות והיסטוגרמה אחת מיותרת.",
+     "rubric_items_met": []
+    },
+    "anthropic/claude-sonnet-5": {
+     "verdict": "partially_valid",
+     "raw_score": 2.0,
+     "uncertain": false,
+     "evidence": "The student correctly notes pixel count doubles per gray value, but does not mention the extra/irrelevant histogram (8 operations vs 9 histograms) as required by R1.",
+     "rubric_items_met": []
+    }
+   },
+   "flags": [
+    "models_split"
+   ]
+  },
+  {
+   "case_id": "e003_q2_r8",
+   "derived_verdict": "valid",
+   "instructor_final_score": 4.0,
+   "writer": "e003",
+   "question_id": "2",
+   "transcription_chars": 69,
+   "predictions": {
+    "google/gemini-3.7-flash": {
+     "verdict": "invalid",
+     "raw_score": 0.0,
+     "uncertain": false,
+     "evidence": null,
+     "rubric_items_met": []
+    },
+    "openai/gpt-5.6-luna-pro": {
+     "verdict": "partially_valid",
+     "raw_score": 2.0,
+     "uncertain": false,
+     "evidence": "ההסבר מציין הזזה ימינה, אך אינו מתאר את מתיחת ההיסטוגרמה פי 2 או את קיומה של היסטוגרמה מיותרת.",
+     "rubric_items_met": []
+    },
+    "anthropic/claude-sonnet-5": {
+     "verdict": "invalid",
+     "raw_score": 0.0,
+     "uncertain": false,
+     "evidence": "Student describes a shift ('הוזז ימינה'), not a doubling/stretching of pixel values, which is incorrect for this operation.",
+     "rubric_items_met": []
+    }
+   },
+   "flags": [
+    "all_three_disagree",
+    "all_three_lower",
+    "models_split"
+   ]
+  },
+  {
+   "case_id": "e007_q1_r1",
+   "derived_verdict": "valid",
+   "instructor_final_score": 4.0,
+   "writer": "e007",
+   "question_id": "1",
+   "transcription_chars": 96,
+   "predictions": {
+    "google/gemini-3.7-flash": {
+     "verdict": "partially_valid",
+     "raw_score": 2.0,
+     "uncertain": false,
+     "evidence": "ניתן לראות שיש סוג של מתיחה",
+     "rubric_items_met": []
+    },
+    "openai/gpt-5.6-luna-pro": {
+     "verdict": "invalid",
+     "raw_score": 0.0,
+     "uncertain": false,
+     "evidence": null,
+     "rubric_items_met": []
+    },
+    "anthropic/claude-sonnet-5": {
+     "verdict": "invalid",
+     "raw_score": 0.0,
+     "uncertain": false,
+     "evidence": "Student's explanation is vague and generic, does not address directional/motion blur reasoning or the specific rubric point about the extra histogram.",
+     "rubric_items_met": []
+    }
+   },
+   "flags": [
+    "all_three_disagree",
+    "all_three_lower",
+    "models_split"
+   ]
+  }
+ ]
+}

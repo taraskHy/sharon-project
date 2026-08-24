@@ -1,0 +1,219 @@
+{
+ "run_id": "dev__dev_verdict__all__google-gemini-3.7-flash__1dfb29b5b5",
+ "mode": "dry_run",
+ "cases": 26,
+ "skipped_resume": 0,
+ "predicted_cost_total": 0.065534,
+ "pricing_table_available": true,
+ "rows": [
+  {
+   "case_id": "e002_q1_r2",
+   "split": "DEV",
+   "component": "ALL",
+   "predicted_cost": 0.00250865625,
+   "text_chars": 2760,
+   "images": 0
+  },
+  {
+   "case_id": "e002_q1_r3",
+   "split": "DEV",
+   "component": "ALL",
+   "predicted_cost": 0.00252778125,
+   "text_chars": 2964,
+   "images": 0
+  },
+  {
+   "case_id": "e002_q1_r4",
+   "split": "DEV",
+   "component": "ALL",
+   "predicted_cost": 0.002509125,
+   "text_chars": 2765,
+   "images": 0
+  },
+  {
+   "case_id": "e002_q1_r5",
+   "split": "DEV",
+   "component": "ALL",
+   "predicted_cost": 0.002519625,
+   "text_chars": 2877,
+   "images": 0
+  },
+  {
+   "case_id": "e002_q1_r6",
+   "split": "DEV",
+   "component": "ALL",
+   "predicted_cost": 0.002519625,
+   "text_chars": 2877,
+   "images": 0
+  },
+  {
+   "case_id": "e002_q1_r7",
+   "split": "DEV",
+   "component": "ALL",
+   "predicted_cost": 0.0025123125,
+   "text_chars": 2799,
+   "images": 0
+  },
+  {
+   "case_id": "e002_q1_r8",
+   "split": "DEV",
+   "component": "ALL",
+   "predicted_cost": 0.0025243125,
+   "text_chars": 2927,
+   "images": 0
+  },
+  {
+   "case_id": "e002_q2_r1",
+   "split": "DEV",
+   "component": "ALL",
+   "predicted_cost": 0.0025156875,
+   "text_chars": 2835,
+   "images": 0
+  },
+  {
+   "case_id": "e002_q2_r2",
+   "split": "DEV",
+   "component": "ALL",
+   "predicted_cost": 0.0025171875,
+   "text_chars": 2851,
+   "images": 0
+  },
+  {
+   "case_id": "e002_q2_r3",
+   "split": "DEV",
+   "component": "ALL",
+   "predicted_cost": 0.0025215,
+   "text_chars": 2897,
+   "images": 0
+  },
+  {
+   "case_id": "e002_q2_r4",
+   "split": "DEV",
+   "component": "ALL",
+   "predicted_cost": 0.0025258125,
+   "text_chars": 2943,
+   "images": 0
+  },
+  {
+   "case_id": "e002_q2_r5",
+   "split": "DEV",
+   "component": "ALL",
+   "predicted_cost": 0.00251615625,
+   "text_chars": 2840,
+   "images": 0
+  },
+  {
+   "case_id": "e002_q2_r6",
+   "split": "DEV",
+   "component": "ALL",
+   "predicted_cost": 0.00252328125,
+   "text_chars": 2916,
+   "images": 0
+  },
+  {
+   "case_id": "e002_q2_r7",
+   "split": "DEV",
+   "component": "ALL",
+   "predicted_cost": 0.00252928125,
+   "text_chars": 2980,
+   "images": 0
+  },
+  {
+   "case_id": "e002_q2_r8",
+   "split": "DEV",
+   "component": "ALL",
+   "predicted_cost": 0.00252,
+   "text_chars": 2881,
+   "images": 0
+  },
+  {
+   "case_id": "e003_q1_r1",
+   "split": "DEV",
+   "component": "ALL",
+   "predicted_cost": 0.00253359375,
+   "text_chars": 3026,
+   "images": 0
+  },
+  {
+   "case_id": "e003_q1_r4",
+   "split": "DEV",
+   "component": "ALL",
+   "predicted_cost": 0.00251325,
+   "text_chars": 2809,
+   "images": 0
+  },
+  {
+   "case_id": "e003_q1_r5",
+   "split": "DEV",
+   "component": "ALL",
+   "predicted_cost": 0.002521875,
+   "text_chars": 2901,
+   "images": 0
+  },
+  {
+   "case_id": "e003_q1_r6",
+   "split": "DEV",
+   "component": "ALL",
+   "predicted_cost": 0.00252196875,
+   "text_chars": 2902,
+   "images": 0
+  },
+  {
+   "case_id": "e003_q1_r7",
+   "split": "DEV",
+   "component": "ALL",
+   "predicted_cost": 0.00250921875,
+   "text_chars": 2766,
+   "images": 0
+  },
+  {
+   "case_id": "e003_q1_r8",
+   "split": "DEV",
+   "component": "ALL",
+   "predicted_cost": 0.00252253125,
+   "text_chars": 2908,
+   "images": 0
+  },
+  {
+   "case_id": "e003_q2_r1",
+   "split": "DEV",
+   "component": "ALL",
+   "predicted_cost": 0.002516625,
+   "text_chars": 2845,
+   "images": 0
+  },
+  {
+   "case_id": "e003_q2_r2",
+   "split": "DEV",
+   "component": "ALL",
+   "predicted_cost": 0.00251896875,
+   "text_chars": 2870,
+   "images": 0
+  },
+  {
+   "case_id": "e003_q2_r7",
+   "split": "DEV",
+   "component": "ALL",
+   "predicted_cost": 0.00252684375,
+   "text_chars": 2954,
+   "images": 0
+  },
+  {
+   "case_id": "e003_q2_r8",
+   "split": "DEV",
+   "component": "ALL",
+   "predicted_cost": 0.00252215625,
+   "text_chars": 2904,
+   "images": 0
+  },
+  {
+   "case_id": "e007_q1_r1",
+   "split": "DEV",
+   "component": "ALL",
+   "predicted_cost": 0.00253678125,
+   "text_chars": 3060,
+   "images": 0
+  }
+ ],
+ "leakage_check": "passed"
+}

@@ -1,0 +1,219 @@
+{
+ "run_id": "dev__dev_verdict__all__anthropic-claude-sonnet-5__9f07a225b6",
+ "mode": "dry_run",
+ "cases": 26,
+ "skipped_resume": 0,
+ "predicted_cost_total": 0.193516,
+ "pricing_table_available": true,
+ "rows": [
+  {
+   "case_id": "e002_q1_r2",
+   "split": "DEV",
+   "component": "ALL",
+   "predicted_cost": 0.0073795,
+   "text_chars": 2760,
+   "images": 0
+  },
+  {
+   "case_id": "e002_q1_r3",
+   "split": "DEV",
+   "component": "ALL",
+   "predicted_cost": 0.0074815,
+   "text_chars": 2964,
+   "images": 0
+  },
+  {
+   "case_id": "e002_q1_r4",
+   "split": "DEV",
+   "component": "ALL",
+   "predicted_cost": 0.007382,
+   "text_chars": 2765,
+   "images": 0
+  },
+  {
+   "case_id": "e002_q1_r5",
+   "split": "DEV",
+   "component": "ALL",
+   "predicted_cost": 0.007438,
+   "text_chars": 2877,
+   "images": 0
+  },
+  {
+   "case_id": "e002_q1_r6",
+   "split": "DEV",
+   "component": "ALL",
+   "predicted_cost": 0.007438,
+   "text_chars": 2877,
+   "images": 0
+  },
+  {
+   "case_id": "e002_q1_r7",
+   "split": "DEV",
+   "component": "ALL",
+   "predicted_cost": 0.007399,
+   "text_chars": 2799,
+   "images": 0
+  },
+  {
+   "case_id": "e002_q1_r8",
+   "split": "DEV",
+   "component": "ALL",
+   "predicted_cost": 0.007463,
+   "text_chars": 2927,
+   "images": 0
+  },
+  {
+   "case_id": "e002_q2_r1",
+   "split": "DEV",
+   "component": "ALL",
+   "predicted_cost": 0.007417,
+   "text_chars": 2835,
+   "images": 0
+  },
+  {
+   "case_id": "e002_q2_r2",
+   "split": "DEV",
+   "component": "ALL",
+   "predicted_cost": 0.007425,
+   "text_chars": 2851,
+   "images": 0
+  },
+  {
+   "case_id": "e002_q2_r3",
+   "split": "DEV",
+   "component": "ALL",
+   "predicted_cost": 0.007448,
+   "text_chars": 2897,
+   "images": 0
+  },
+  {
+   "case_id": "e002_q2_r4",
+   "split": "DEV",
+   "component": "ALL",
+   "predicted_cost": 0.007471,
+   "text_chars": 2943,
+   "images": 0
+  },
+  {
+   "case_id": "e002_q2_r5",
+   "split": "DEV",
+   "component": "ALL",
+   "predicted_cost": 0.0074195,
+   "text_chars": 2840,
+   "images": 0
+  },
+  {
+   "case_id": "e002_q2_r6",
+   "split": "DEV",
+   "component": "ALL",
+   "predicted_cost": 0.0074575,
+   "text_chars": 2916,
+   "images": 0
+  },
+  {
+   "case_id": "e002_q2_r7",
+   "split": "DEV",
+   "component": "ALL",
+   "predicted_cost": 0.0074895,
+   "text_chars": 2980,
+   "images": 0
+  },
+  {
+   "case_id": "e002_q2_r8",
+   "split": "DEV",
+   "component": "ALL",
+   "predicted_cost": 0.00744,
+   "text_chars": 2881,
+   "images": 0
+  },
+  {
+   "case_id": "e003_q1_r1",
+   "split": "DEV",
+   "component": "ALL",
+   "predicted_cost": 0.0075125,
+   "text_chars": 3026,
+   "images": 0
+  },
+  {
+   "case_id": "e003_q1_r4",
+   "split": "DEV",
+   "component": "ALL",
+   "predicted_cost": 0.007404,
+   "text_chars": 2809,
+   "images": 0
+  },
+  {
+   "case_id": "e003_q1_r5",
+   "split": "DEV",
+   "component": "ALL",
+   "predicted_cost": 0.00745,
+   "text_chars": 2901,
+   "images": 0
+  },
+  {
+   "case_id": "e003_q1_r6",
+   "split": "DEV",
+   "component": "ALL",
+   "predicted_cost": 0.0074505,
+   "text_chars": 2902,
+   "images": 0
+  },
+  {
+   "case_id": "e003_q1_r7",
+   "split": "DEV",
+   "component": "ALL",
+   "predicted_cost": 0.0073825,
+   "text_chars": 2766,
+   "images": 0
+  },
+  {
+   "case_id": "e003_q1_r8",
+   "split": "DEV",
+   "component": "ALL",
+   "predicted_cost": 0.0074535,
+   "text_chars": 2908,
+   "images": 0
+  },
+  {
+   "case_id": "e003_q2_r1",
+   "split": "DEV",
+   "component": "ALL",
+   "predicted_cost": 0.007422,
+   "text_chars": 2845,
+   "images": 0
+  },
+  {
+   "case_id": "e003_q2_r2",
+   "split": "DEV",
+   "component": "ALL",
+   "predicted_cost": 0.0074345,
+   "text_chars": 2870,
+   "images": 0
+  },
+  {
+   "case_id": "e003_q2_r7",
+   "split": "DEV",
+   "component": "ALL",
+   "predicted_cost": 0.0074765,
+   "text_chars": 2954,
+   "images": 0
+  },
+  {
+   "case_id": "e003_q2_r8",
+   "split": "DEV",
+   "component": "ALL",
+   "predicted_cost": 0.0074515,
+   "text_chars": 2904,
+   "images": 0
+  },
+  {
+   "case_id": "e007_q1_r1",
+   "split": "DEV",
+   "component": "ALL",
+   "predicted_cost": 0.0075295,
+   "text_chars": 3060,
+   "images": 0
+  }
+ ],
+ "leakage_check": "passed"
+}
