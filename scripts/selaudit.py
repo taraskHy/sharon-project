@@ -205,11 +205,35 @@ class SelectionAuditStore:
     def outcome(self, case_id: str) -> str:
         return self.decision(case_id).get("outcome", "unaudited")
 
+    def version_confirmed(self, case_id: str) -> bool:
+        """Whether this writer's exam VERSION comes from the authoritative
+        operator-confirmed mapping. Without it there is no key to compare a
+        marked letter against."""
+        return case_id.split("_")[0] in AUDITED_VERSION_BY_WRITER
+
     def selection_correct(self, case_id: str) -> bool | None:
         """True / False / None. ``unresolved`` and ``unaudited`` are both None
-        — an unresolved case is never silently False."""
+        — an unresolved case is never silently False.
+
+        CORRECTNESS ALSO REQUIRES A CONFIRMED EXAM VERSION. The audit records
+        what the student MARKED, which is a fact a human can read off the
+        page; whether that mark is CORRECT is a comparison against the key,
+        and the key is selected by the exam version. Where the version was
+        never audited (e004), the marked letter is preserved and correctness
+        stays unresolved — deriving it from an unverified version would put a
+        guess into ground truth.
+        """
         o = self.outcome(case_id)
-        return True if o == "correct" else False if o == "incorrect" else None
+        if o not in ("correct", "incorrect"):
+            return None
+        if not self.version_confirmed(case_id):
+            return None
+        return o == "correct"
+
+    def marked_option(self, case_id: str) -> str | None:
+        """The letter the human read off the answer table, always preserved
+        even when correctness cannot be settled."""
+        return self.decision(case_id).get("selected_option")
 
     # -- writes --------------------------------------------------------------
 
@@ -307,10 +331,27 @@ def derive_all(store: SelectionAuditStore | None = None) -> list[dict]:
         )
         row = d.as_row()
         row["split"] = split
-        row["selection_correct_source"] = (
-            "human_visual_audit" if case_id in store.case_ids and sel is not None
-            else "implied_by_full_or_partial_credit" if d.derivable and row["instructor_final_score"]
-            else None)
+        audited = case_id in store.case_ids and store.outcome(case_id) != "unaudited"
+        row["marked_option"] = store.marked_option(case_id) if audited else None
+        row["exam_version_confirmed"] = store.version_confirmed(case_id) if audited else None
+        if sel is not None:
+            row["selection_correct_source"] = (
+                "human_visual_audit + operator-confirmed exam version")
+        elif audited:
+            # the human read the mark, but no confirmed version means no key to
+            # compare it against. This is NOT "nobody has looked yet": no
+            # further selection audit can resolve it, only a version audit.
+            from autograder.benchmark.verdicts import UNRESOLVED_VERSION_UNCONFIRMED
+
+            row["selection_correct_source"] = None
+            row["derivation_reason"] = UNRESOLVED_VERSION_UNCONFIRMED
+            row["selection_unresolved_reason"] = (
+                "exam version not audited for this writer; marked option recorded, "
+                "correctness not derivable")
+        elif d.derivable and row["instructor_final_score"]:
+            row["selection_correct_source"] = "implied_by_full_or_partial_credit"
+        else:
+            row["selection_correct_source"] = None
         rows.append(row)
     return rows
 

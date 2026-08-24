@@ -67,6 +67,10 @@ DERIVABLE_FULL = "full_credit_implies_valid"
 DERIVABLE_PARTIAL = "partial_credit_implies_partially_valid"
 DERIVABLE_ZERO = "zero_with_correct_selection_implies_invalid"
 UNRESOLVED_ZERO_UNKNOWN_SELECTION = "zero_but_selection_correctness_unknown"
+#: audited — a human read the marked option — but the exam VERSION was never
+#: confirmed, so there is no key to compare the mark against. Distinct from
+#: "nobody has looked yet": no further selection audit can resolve it.
+UNRESOLVED_VERSION_UNCONFIRMED = "zero_marked_option_recorded_but_exam_version_unconfirmed"
 EXCLUDED_WRONG_SELECTION = "zero_because_selection_wrong_explanation_never_scored"
 UNRESOLVED_EMPTY_TRANSCRIPTION = "zero_with_no_transcription_cannot_separate_invalid_from_missing"
 UNRESOLVED_UNEXPECTED_SCORE = "score_not_reachable_by_the_frozen_policy"
@@ -198,5 +202,6 @@ __all__ = ["CANONICAL_VERDICTS", "OCR_SIDE_VERDICTS", "VerdictDerivation",
            "DerivationSummary", "verdict_from_model_score", "factor_for",
            "final_score_for", "derive_verdict", "summarize",
            "DERIVABLE_FULL", "DERIVABLE_PARTIAL", "DERIVABLE_ZERO",
-           "UNRESOLVED_ZERO_UNKNOWN_SELECTION", "EXCLUDED_WRONG_SELECTION",
+           "UNRESOLVED_ZERO_UNKNOWN_SELECTION", "UNRESOLVED_VERSION_UNCONFIRMED",
+           "EXCLUDED_WRONG_SELECTION",
            "UNRESOLVED_EMPTY_TRANSCRIPTION", "UNRESOLVED_UNEXPECTED_SCORE"]

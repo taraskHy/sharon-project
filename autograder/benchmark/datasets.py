@@ -816,6 +816,7 @@ def apply_verdict_targets(dataset_dir: Path, *, derivations: list[dict],
                           grading_policy_version: str,
                           auditable_case_ids: Iterable[str] = (),
                           selection_audit_sha256: str | None = None,
+                          note: str = "",
                           allow_unresolved: bool = False,
                           now: str | None = None, dry_run: bool = False) -> dict[str, Any]:
     """Add the derived explanation-verdict ground truth to a frozen
@@ -934,7 +935,8 @@ def apply_verdict_targets(dataset_dir: Path, *, derivations: list[dict],
     man.setdefault("revisions", []).append({
         "at": now or time.strftime("%Y-%m-%d %H:%M:%S"),
         "kind": "verdict_target",
-        "why": ("benchmark target corrected to the model's actual responsibility: the "
+        "why": (note or
+                "benchmark target corrected to the model's actual responsibility: the "
                 "canonical explanation verdict that production maps deterministically "
                 "into the final score (docs/grade-primary-benchmark-target.md). "
                 "Label-side only - the model-visible inputs are unchanged."),

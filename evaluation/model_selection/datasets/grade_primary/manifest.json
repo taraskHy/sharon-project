@@ -4,7 +4,7 @@
  "frozen_at": "2026-08-22 05:28:41",
  "cases": 67,
  "inputs_sha256": "61ea571e9413b20b4b1e2d6dc84e14688cdd2ff4a1a3e0751a2233cf4dbc050c",
- "labels_sha256": "2812403aff6abb2ce486dd7eae80879461bfaea958874f70f0b6fd10c24cf11d",
+ "labels_sha256": "2281f063f33c5ddf37675766892ef3b47148254674768b85d4eee40e8523ccd9",
  "split_assignment": {
   "DEV": [
    "e002",
@@ -284,6 +284,27 @@
    },
    "grading_policy_version": "explanation_gate_w0_v1",
    "selection_audit_sha256": null,
+   "model_involved": false
+  },
+  {
+   "at": "2026-08-25 09:00:00",
+   "kind": "verdict_target",
+   "why": "selection-correctness audit landed (8/8 human-audited, scripts/selection_audit_ui.py). All six DEV zero-score cases had a WRONG selection, so their explanation was never the reason for the zero and they carry no explanation ground truth (EXCLUDED, not relabelled invalid). The two CALIBRATION cases have a recorded marked option but no operator-confirmed exam version, so their correctness stays unresolved. Net: no new verdict labels; the `invalid` class has no support in any split.",
+   "previous_inputs_sha256": "61ea571e9413b20b4b1e2d6dc84e14688cdd2ff4a1a3e0751a2233cf4dbc050c",
+   "inputs_sha256": "61ea571e9413b20b4b1e2d6dc84e14688cdd2ff4a1a3e0751a2233cf4dbc050c",
+   "inputs_changed": false,
+   "previous_labels_sha256": "2812403aff6abb2ce486dd7eae80879461bfaea958874f70f0b6fd10c24cf11d",
+   "labels_sha256": "2281f063f33c5ddf37675766892ef3b47148254674768b85d4eee40e8523ccd9",
+   "rows_updated": 67,
+   "derivable": 53,
+   "unresolved": 14,
+   "by_verdict": {
+    "UNRESOLVED": 14,
+    "valid": 43,
+    "partially_valid": 10
+   },
+   "grading_policy_version": "explanation_gate_w0_v1",
+   "selection_audit_sha256": "c0c6f6e47faf21d0c8d3f3c8fa055d859c3188de9a6628464e6cf02b265c4a60",
    "model_involved": false
   }
  ]

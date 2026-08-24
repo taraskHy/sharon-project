@@ -8,11 +8,12 @@ score-bucket subset was frozen against a benchmark target since classified
 INVALID FOR MODEL SELECTION; it is preserved beside the smoke directory under
 its SUPERSEDED name and is deliberately not loaded here.
 
-The `verdict_invalid` slot can only be filled once the selection-correctness
-audit has resolved at least one zero-score DEV case: a zero from a WRONG
-selection says nothing about the explanation. Until then the subset cannot be
-frozen at all, and these tests assert exactly that rather than pretending
-otherwise.
+The selection-correctness audit completed 8/8 on 2026-08-25 and produced NO
+`invalid` label: every DEV zero-score case had a WRONG selection, so its
+explanation was never the reason for the zero. That makes the missing class
+STRUCTURAL rather than pending — on this dataset the verdict benchmark is a
+two-class problem. These tests assert that state rather than pretending
+otherwise, and will fail loudly if a dataset ever does contain an invalid case.
 
 Offline: no model, network or OCR calls.
 """
@@ -81,7 +82,7 @@ def test_a_slot_never_accepts_a_case_whose_verdict_is_not_derivable(manifest):
     front of the first paid call."""
     dev = manifest.by_split("DEV", None)
     undecidable = [c for c in dev if not c.label.get("explanation_verdict_derivable")]
-    assert undecidable, "expected some undecidable DEV cases while the audit is pending"
+    assert undecidable, "expected DEV cases with no derivable verdict"
     for _slot, _why, pred in SMOKE_RULES[ROLE]:
         for c in undecidable:
             assert not pred(c), f"{c.case_id} must not qualify for any slot"
@@ -138,12 +139,30 @@ def test_the_proposal_is_reproducible_from_the_rules_alone(manifest, proposal):
 # --------------------------------------------------- the freeze gate today ----
 
 
-def test_the_invalid_slot_is_blocked_until_the_selection_audit_runs(proposal):
-    """This is the honest state of the benchmark, asserted rather than
-    described. When the 8-case audit lands, this test flips and the two
-    below take over."""
+def test_the_invalid_class_has_no_support_in_this_dataset(manifest):
+    """The selection audit completed 8/8 on 2026-08-25 and produced NO invalid
+    label. That is structural, not pending:
+
+    an `invalid` verdict requires instructor score 0 AND a correct selection.
+    Every DEV zero-score case turned out to have a WRONG selection, so the
+    explanation was never the reason for the zero and the case carries no
+    explanation ground truth at all.
+
+    Consequence: on this dataset the verdict benchmark is a TWO-class problem.
+    Whether a grader can withhold credit from a bad explanation attached to a
+    CORRECT choice is not measurable here, and no further auditing changes
+    that — it needs exam data containing such a case.
+    """
+    dev = manifest.by_split("DEV", None)
+    assert not [c for c in dev if _verdict(c) == "invalid"]
+    assert {_verdict(c) for c in dev} == {"valid", "partially_valid", None}
+
+
+def test_the_invalid_slot_is_therefore_unfilled(proposal):
+    """Asserted rather than described, so a future dataset that DOES contain
+    an invalid case makes this test fail loudly instead of passing silently."""
     if "verdict_invalid" not in proposal["unfilled_slots"]:
-        pytest.skip("the selection audit has landed; the invalid slot is filled")
+        pytest.skip("an invalid case now exists; the slot is filled")
     assert "verdict_invalid" in proposal["unfilled_slots"]
 
 

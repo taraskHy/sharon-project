@@ -1,0 +1,85 @@
+{
+ "schema_version": 1,
+ "decisions": {
+  "e002_q1_r1": {
+   "case_id": "e002_q1_r1",
+   "outcome": "incorrect",
+   "selected_option": "A",
+   "auditor": "owner",
+   "note": "",
+   "evidence": "human inspection of the exam answer table",
+   "source": "human_visual_audit",
+   "model_involved": false
+  },
+  "e003_q1_r3": {
+   "case_id": "e003_q1_r3",
+   "outcome": "incorrect",
+   "selected_option": "D",
+   "auditor": "owner",
+   "note": "",
+   "evidence": "human inspection of the exam answer table",
+   "source": "human_visual_audit",
+   "model_involved": false
+  },
+  "e003_q2_r3": {
+   "case_id": "e003_q2_r3",
+   "outcome": "incorrect",
+   "selected_option": "D",
+   "auditor": "owner",
+   "note": "",
+   "evidence": "human inspection of the exam answer table",
+   "source": "human_visual_audit",
+   "model_involved": false
+  },
+  "e003_q2_r4": {
+   "case_id": "e003_q2_r4",
+   "outcome": "incorrect",
+   "selected_option": "A",
+   "auditor": "owner",
+   "note": "",
+   "evidence": "human inspection of the exam answer table",
+   "source": "human_visual_audit",
+   "model_involved": false
+  },
+  "e003_q2_r5": {
+   "case_id": "e003_q2_r5",
+   "outcome": "incorrect",
+   "selected_option": "H",
+   "auditor": "owner",
+   "note": "",
+   "evidence": "human inspection of the exam answer table",
+   "source": "human_visual_audit",
+   "model_involved": false
+  },
+  "e003_q2_r6": {
+   "case_id": "e003_q2_r6",
+   "outcome": "incorrect",
+   "selected_option": "B",
+   "auditor": "owner",
+   "note": "",
+   "evidence": "human inspection of the exam answer table",
+   "source": "human_visual_audit",
+   "model_involved": false
+  },
+  "e004_q2_r4": {
+   "case_id": "e004_q2_r4",
+   "outcome": "incorrect",
+   "selected_option": "D",
+   "auditor": "owner",
+   "note": "",
+   "evidence": "human inspection of the exam answer table",
+   "source": "human_visual_audit",
+   "model_involved": false
+  },
+  "e004_q2_r5": {
+   "case_id": "e004_q2_r5",
+   "outcome": "incorrect",
+   "selected_option": "I",
+   "auditor": "owner",
+   "note": "",
+   "evidence": "human inspection of the exam answer table",
+   "source": "human_visual_audit",
+   "model_involved": false
+  }
+ }
+}
