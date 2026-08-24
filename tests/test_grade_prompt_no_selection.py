@@ -140,7 +140,7 @@ def test_the_67_cases_still_carry_everything_the_grader_needs():
         assert c["transcription"] in text, f"{c['case_id']}: the student answer is missing"
         assert pack.question_text.strip()[:40] in text, f"{c['case_id']}: the question is missing"
         assert "EXPLANATION-QUALITY value" in text
-        assert f"  {pack.max_score:g}  = valid" in text
+        assert f"  {pack.max_score:g}  = " in text
         for rid in pack.rubric_item_ids():
             assert rid in text, f"{c['case_id']}: rubric id {rid} is missing"
 
@@ -161,7 +161,9 @@ def test_the_leakage_check_still_passes_on_every_frozen_case():
 def test_the_prompt_version_was_bumped_with_the_prompt():
     """A changed prompt under an unchanged version would make two different
     runs look comparable in the artifacts."""
-    assert GradeAdapter.prompt_version == "grade-v3"
+    from autograder.escalation import ACTIVE_GRADE_PROMPT_VERSION
+
+    assert GradeAdapter.prompt_version == ACTIVE_GRADE_PROMPT_VERSION
     import tomllib
     for name in ("models.example.toml", "models.toml"):
         p = REPO / name
@@ -169,4 +171,5 @@ def test_the_prompt_version_was_bumped_with_the_prompt():
             continue
         cfg = tomllib.loads(p.read_text(encoding="utf-8"))
         for task in ("grade_primary", "grade_escalate"):
-            assert cfg["models"][task]["prompt_version"] == "grade-v3", f"{name}:{task}"
+            got = cfg["models"][task]["prompt_version"]
+            assert got == GradeAdapter.prompt_version, f"{name}:{task} -> {got}"

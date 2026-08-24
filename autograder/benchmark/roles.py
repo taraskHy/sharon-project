@@ -382,7 +382,7 @@ def pack_from_inputs(p: dict):
 
 class GradeAdapter:
     adapter_version = "grade-bench-v2"  # verdict target + grade-v3 prompt
-    prompt_version = "grade-v3"
+    prompt_version = "grade-v4-charitable"
     model_visible_fields = ("case_id", "pack", "selected", "transcription", "version")
     default_max_tokens = 600
 
@@ -391,11 +391,16 @@ class GradeAdapter:
         self.task = "grade_escalate" if role == "grade_escalate" else "grade_primary"
 
     def build_request(self, inputs: dict, bench_root: Path) -> Request:
-        from ..escalation import GRADE_SYSTEM, GradeResult, grade_prompt
+        # Resolve BOTH halves of the prompt from this adapter's declared
+        # version, so a run's recorded prompt_version fully determines what was
+        # sent — and so production and the benchmark can never drift apart.
+        from ..escalation import GradeResult, grade_prompt, grade_system_for
         pack = pack_from_inputs(inputs["pack"])
         blocks = grade_prompt(pack, selected=inputs.get("selected"),
-                              transcription=inputs["transcription"], version=inputs.get("version"))
-        return Request(system=GRADE_SYSTEM, content_blocks=blocks, output_model=GradeResult,
+                              transcription=inputs["transcription"], version=inputs.get("version"),
+                              prompt_version=self.prompt_version)
+        return Request(system=grade_system_for(self.prompt_version), content_blocks=blocks,
+                       output_model=GradeResult,
                        prompt_version=self.prompt_version, max_tokens=self.default_max_tokens)
 
     def score(self, case: BenchCase, output: dict | None, error: str | None) -> dict:

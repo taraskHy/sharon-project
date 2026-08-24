@@ -55,8 +55,21 @@
      "uncertain": false
     }
    },
-   "human_decision": null,
-   "human_note": ""
+   "human_decision": "B",
+   "human_note": "",
+   "decided_at": "2026-08-25 01:52:57",
+   "decided_blind": true,
+   "decision_history": [
+    {
+     "at": "2026-08-25 01:52:57",
+     "action": "decide",
+     "decision": "B",
+     "note": "",
+     "auditor": "owner",
+     "made_blind": true
+    }
+   ],
+   "models_revealed_at": "2026-08-25 01:52:57"
   },
   {
    "case_id": "e002_q2_r4",
@@ -101,8 +114,21 @@
      "uncertain": true
     }
    },
-   "human_decision": null,
-   "human_note": ""
+   "human_decision": "A",
+   "human_note": "",
+   "decided_at": "2026-08-25 01:59:17",
+   "decided_blind": true,
+   "decision_history": [
+    {
+     "at": "2026-08-25 01:59:17",
+     "action": "decide",
+     "decision": "A",
+     "note": "",
+     "auditor": "owner",
+     "made_blind": true
+    }
+   ],
+   "models_revealed_at": "2026-08-25 01:59:17"
   },
   {
    "case_id": "e003_q1_r7",
@@ -147,8 +173,21 @@
      "uncertain": false
     }
    },
-   "human_decision": null,
-   "human_note": ""
+   "human_decision": "A",
+   "human_note": "",
+   "decided_at": "2026-08-25 01:59:54",
+   "decided_blind": true,
+   "decision_history": [
+    {
+     "at": "2026-08-25 01:59:54",
+     "action": "decide",
+     "decision": "A",
+     "note": "",
+     "auditor": "owner",
+     "made_blind": true
+    }
+   ],
+   "models_revealed_at": "2026-08-25 01:59:54"
   },
   {
    "case_id": "e003_q2_r8",
@@ -193,8 +232,21 @@
      "uncertain": false
     }
    },
-   "human_decision": null,
-   "human_note": ""
+   "human_decision": "B",
+   "human_note": "",
+   "decided_at": "2026-08-25 02:00:53",
+   "decided_blind": true,
+   "decision_history": [
+    {
+     "at": "2026-08-25 02:00:53",
+     "action": "decide",
+     "decision": "B",
+     "note": "",
+     "auditor": "owner",
+     "made_blind": true
+    }
+   ],
+   "models_revealed_at": "2026-08-25 02:00:53"
   },
   {
    "case_id": "e007_q1_r1",
@@ -239,8 +291,21 @@
      "uncertain": false
     }
    },
-   "human_decision": null,
-   "human_note": ""
+   "human_decision": "A",
+   "human_note": "",
+   "decided_at": "2026-08-25 02:01:29",
+   "decided_blind": true,
+   "decision_history": [
+    {
+     "at": "2026-08-25 02:01:29",
+     "action": "decide",
+     "decision": "A",
+     "note": "",
+     "auditor": "owner",
+     "made_blind": true
+    }
+   ],
+   "models_revealed_at": "2026-08-25 02:01:29"
   }
  ]
 }

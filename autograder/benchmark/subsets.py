@@ -53,6 +53,15 @@ def _derivable_supported_verdict(c: BenchCase) -> bool:
 
 #: (role, subset name) -> (split, why, predicate)
 SUBSET_RULES: dict[tuple[str, str], tuple[str, str, Callable[[BenchCase], bool]]] = {
+    # Same POPULATION as calibration_verdict, recorded as a separate experiment
+    # for the grade-v4-charitable prompt. The v3 freeze is never edited: two
+    # prompts are two experiments, and their identical selection_sha256 is the
+    # proof that only the prompt changed and not the case list.
+    ("grade_primary", "calibration_verdict_v4"): (
+        "CALIBRATION",
+        "the calibration_verdict population, re-registered for the grade-v4-charitable prompt",
+        _derivable_supported_verdict,
+    ),
     ("grade_primary", "calibration_verdict"): (
         "CALIBRATION",
         "every CALIBRATION case whose canonical explanation verdict is mathematically derivable "

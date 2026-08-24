@@ -1,0 +1,107 @@
+{
+ "run_id": "calibration__calibration_verdict_v4__all__google-gemini-3.7-flash__9d4e07e8dc",
+ "mode": "dry_run",
+ "cases": 12,
+ "skipped_resume": 0,
+ "predicted_cost_total": 0.033976,
+ "pricing_table_available": true,
+ "rows": [
+  {
+   "case_id": "e004_q1_r1",
+   "split": "CALIBRATION",
+   "component": "ALL",
+   "predicted_cost": 0.00284184375,
+   "text_chars": 6314,
+   "images": 0
+  },
+  {
+   "case_id": "e004_q1_r2",
+   "split": "CALIBRATION",
+   "component": "ALL",
+   "predicted_cost": 0.0028205625,
+   "text_chars": 6087,
+   "images": 0
+  },
+  {
+   "case_id": "e004_q1_r3",
+   "split": "CALIBRATION",
+   "component": "ALL",
+   "predicted_cost": 0.00284109375,
+   "text_chars": 6306,
+   "images": 0
+  },
+  {
+   "case_id": "e004_q1_r4",
+   "split": "CALIBRATION",
+   "component": "ALL",
+   "predicted_cost": 0.002821875,
+   "text_chars": 6101,
+   "images": 0
+  },
+  {
+   "case_id": "e004_q1_r5",
+   "split": "CALIBRATION",
+   "component": "ALL",
+   "predicted_cost": 0.00283190625,
+   "text_chars": 6208,
+   "images": 0
+  },
+  {
+   "case_id": "e004_q1_r6",
+   "split": "CALIBRATION",
+   "component": "ALL",
+   "predicted_cost": 0.0028318125,
+   "text_chars": 6207,
+   "images": 0
+  },
+  {
+   "case_id": "e004_q1_r8",
+   "split": "CALIBRATION",
+   "component": "ALL",
+   "predicted_cost": 0.00282946875,
+   "text_chars": 6182,
+   "images": 0
+  },
+  {
+   "case_id": "e004_q2_r1",
+   "split": "CALIBRATION",
+   "component": "ALL",
+   "predicted_cost": 0.002828625,
+   "text_chars": 6173,
+   "images": 0
+  },
+  {
+   "case_id": "e004_q2_r2",
+   "split": "CALIBRATION",
+   "component": "ALL",
+   "predicted_cost": 0.00282853125,
+   "text_chars": 6172,
+   "images": 0
+  },
+  {
+   "case_id": "e004_q2_r3",
+   "split": "CALIBRATION",
+   "component": "ALL",
+   "predicted_cost": 0.0028355625,
+   "text_chars": 6247,
+   "images": 0
+  },
+  {
+   "case_id": "e004_q2_r6",
+   "split": "CALIBRATION",
+   "component": "ALL",
+   "predicted_cost": 0.002833125,
+   "text_chars": 6221,
+   "images": 0
+  },
+  {
+   "case_id": "e004_q2_r8",
+   "split": "CALIBRATION",
+   "component": "ALL",
+   "predicted_cost": 0.002831625,
+   "text_chars": 6205,
+   "images": 0
+  }
+ ],
+ "leakage_check": "passed"
+}

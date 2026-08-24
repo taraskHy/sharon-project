@@ -253,7 +253,7 @@ class GradeResult(BaseModel):
 #: final grade itself from the deterministically-resolved selection.
 #:
 #: v3 makes the requested quantity match the consumed quantity.
-GRADE_SYSTEM = (
+GRADE_SYSTEM_V3 = (
     "You judge the QUALITY OF ONE WRITTEN EXPLANATION against the supplied "
     "rubric and official solution. That judgement is your ONLY task.\n\n"
     "You are NOT grading the student's overall answer, and you are NOT "
@@ -288,25 +288,169 @@ GRADE_SYSTEM = (
 )
 
 
-def explanation_scale(max_score: float) -> str:
+#: grade-v4-charitable (2026-08-25). Same TARGET as v3 — explanation quality on
+#: three levels — but graded on MEANING rather than on resemblance to the
+#: official solution's wording.
+#:
+#: Why: a blinded five-case human audit of the cases where every candidate
+#: scored below the label returned A=3 / B=2. Three said the label was right
+#: and the models were simply too strict; two said instructor practice is more
+#: lenient than the encoded rubric. Both readings point the same way — v3
+#: graded more literally than the person whose grades are the ground truth.
+#:
+#: This is NOT "award more points". The charitable reading applies to how a
+#: correct idea may be EXPRESSED, never to what the student must have MEANT.
+#: Everything the credit rests on still has to be in the student's own text.
+GRADE_SYSTEM_V4_CHARITABLE = (
+    "You judge the QUALITY OF ONE WRITTEN EXPLANATION against the supplied "
+    "rubric and official solution. That judgement is your ONLY task.\n\n"
+    "You are NOT grading the student's overall answer, and you are NOT "
+    "computing the student's final score for this question. A separate "
+    "deterministic step combines your judgement with whether the student's "
+    "multiple-choice / matching selection was correct. That step is not yours.\n\n"
+    "Therefore:\n"
+    "- Judge ONLY the text of the student explanation shown below.\n"
+    "- The student's selected option is deliberately NOT part of this task. Do "
+    "not reason about which option was chosen, whether one was chosen, or "
+    "whether it was right.\n"
+    "- Do NOT require the explanation to name, restate or identify a letter or "
+    "option, unless a rubric item explicitly demands it.\n"
+    "- Never lower your judgement because no selection appears in this prompt. "
+    "Its absence carries no information about the explanation.\n\n"
+
+    "GRADE THE MEANING, NOT THE WORDING. Judge what the student's text "
+    "actually claims. The official solution shows ONE correct way to express "
+    "the answer; it is not a template the student must match. Read the "
+    "explanation as an experienced human grader would: charitably about "
+    "EXPRESSION, strictly about CONTENT.\n\n"
+
+    "FULL explanation quality — award it when the student communicates the "
+    "central correct idea the question asks for. Accept paraphrases, informal "
+    "or imprecise terminology, short explanations, imperfect grammar, spelling "
+    "and typing mistakes, and generic wording that still identifies the "
+    "relevant concept, effect, relationship or direction. Accept an "
+    "explanation that omits secondary details the rubric does not make "
+    "essential, and one expressed quite differently from the official "
+    "solution. Do not require the official solution's exact vocabulary, every "
+    "intermediate step, every possible consequence, a formula where the same "
+    "idea is stated correctly in words, formal academic phrasing, or the "
+    "student to restate what their own explanation already implies. A CONCISE "
+    "answer can earn full quality when its text establishes the central "
+    "correct claim.\n\n"
+
+    "PARTIAL explanation quality — award it when the text contains "
+    "meaningful, relevant, correct content but does not fully establish the "
+    "central answer: the reasoning points in the right direction but is too "
+    "vague for full credit; the correct effect is identified but not its "
+    "mechanism; one important logical connection is missing; a correct central "
+    "observation is made but barely explained; or correct content is mixed "
+    "with a mistake that is not fatal to it. Text carrying real, "
+    "question-specific correct content should normally receive at least "
+    "partial quality rather than none.\n\n"
+
+    "ZERO explanation quality — reserve it for text that states the wrong "
+    "direction or the opposite effect, materially contradicts the correct "
+    "explanation, is irrelevant to the question, merely restates the question "
+    "without making a claim, contains no identifiable correct and relevant "
+    "idea, or could only be credited by inventing content the student did not "
+    "write. Do NOT give zero merely because the answer is short, the "
+    "terminology is loose, the grammar or spelling is poor, it is less "
+    "detailed than the official solution, or it is generally phrased while "
+    "still making a relevant correct claim.\n\n"
+
+    "BORDERLINE: when the student's actual text reasonably supports two "
+    "adjacent levels, choose the HIGHER one — but only when the higher level "
+    "is supported by something the student genuinely wrote.\n\n"
+
+    "NEVER SUPPLY THE MISSING REASONING YOURSELF. Do not complete, repair or "
+    "infer the argument from the official solution, the rubric, any course "
+    "context, general domain knowledge, or what the student probably intended. "
+    "Charity applies to how an idea is expressed, never to whether it is "
+    "present. A statement so general that it would fit almost any unrelated "
+    "problem is not full quality merely because it sounds plausible — it must "
+    "say something specific to THIS question to earn credit.\n\n"
+
+    "Course context, when present, is supplemental reference material for "
+    "judging CORRECTNESS — it is never evidence of what the student wrote: "
+    "never assume the student wrote something merely because it appears in the "
+    "course context. Preserve the student's wording as given — never rewrite "
+    "it.\n\n"
+
+    "Report explanation quality in `score`, using EXACTLY one of the three "
+    "values stated below the transcription. `score` is the EXPLANATION-QUALITY "
+    "value only — it is NOT the student's final score for the question.\n\n"
+
+    "EVIDENCE. Whenever you award ANY credit above zero, you must quote a "
+    "SHORT span copied VERBATIM from the student transcription that carries "
+    "the credited idea, and return one entry per rubric item: its id, whether "
+    "it is met, and — when met — that span (copy it exactly; never paraphrase, "
+    "translate, correct or invent a span; a span from the official solution or "
+    "the course context does not count; if no span in the transcription "
+    "supports the item, the item is not met). Leniency never relaxes this: if "
+    "you cannot point at the student's own words, you have not found the idea "
+    "there.\n\n"
+
+    "Set uncertain=true if the transcription is materially unreadable or "
+    "incomplete, or if the rubric leaves the EXPLANATION QUALITY genuinely "
+    "undecidable. Do not reconstruct an unreadable answer charitably — say you "
+    "are uncertain instead. Reply with ONLY the JSON object."
+)
+
+#: Every grading prompt version, by name. Historical versions stay verbatim so
+#: an old run's artifacts can still be reproduced from its recorded
+#: ``prompt_version``; nothing here is ever edited in place.
+GRADE_SYSTEM_BY_VERSION: dict[str, str] = {
+    "grade-v3": GRADE_SYSTEM_V3,
+    "grade-v4-charitable": GRADE_SYSTEM_V4_CHARITABLE,
+}
+
+#: The version production and the benchmark both use right now.
+ACTIVE_GRADE_PROMPT_VERSION = "grade-v4-charitable"
+
+#: Back-compatible alias for callers that just want the current system prompt.
+GRADE_SYSTEM = GRADE_SYSTEM_BY_VERSION[ACTIVE_GRADE_PROMPT_VERSION]
+
+
+def grade_system_for(prompt_version: str | None = None) -> str:
+    """The system prompt for a named version (default: the active one)."""
+    v = prompt_version or ACTIVE_GRADE_PROMPT_VERSION
+    try:
+        return GRADE_SYSTEM_BY_VERSION[v]
+    except KeyError:
+        raise ValueError(
+            f"unknown grading prompt version {v!r}; known: "
+            f"{sorted(GRADE_SYSTEM_BY_VERSION)}") from None
+
+
+def explanation_scale(max_score: float, prompt_version: str | None = None) -> str:
     """The three explanation-quality values the model may return, spelled out.
 
     Production quantises ``score`` by RATIO into three verdicts
     (``reliability._verdict_from_score``), so only three values carry meaning.
     Naming them removes the model's incentive to invent intermediate numbers
     that are then silently collapsed.
+
+    The v3 wording is kept verbatim so an old run remains reproducible from its
+    recorded ``prompt_version``.
     """
-    return (f"  {0:g}  = invalid: the explanation is wrong, empty of relevant "
-            f"content, or does not support the rubric at all\n"
-            f"  {max_score / 2:g}  = partially valid: partly correct reasoning, "
-            f"or correct but incomplete against the rubric\n"
-            f"  {max_score:g}  = valid: correct and sufficient reasoning for this "
-            f"question")
+    if (prompt_version or ACTIVE_GRADE_PROMPT_VERSION) == "grade-v3":
+        return (f"  {0:g}  = invalid: the explanation is wrong, empty of relevant "
+                f"content, or does not support the rubric at all\n"
+                f"  {max_score / 2:g}  = partially valid: partly correct reasoning, "
+                f"or correct but incomplete against the rubric\n"
+                f"  {max_score:g}  = valid: correct and sufficient reasoning for this "
+                f"question")
+    return (f"  {0:g}  = no credit: wrong direction, irrelevant, or no identifiable "
+            f"correct idea in the student's own text\n"
+            f"  {max_score / 2:g}  = partial: real, question-specific correct content, "
+            f"but the central answer is not fully established\n"
+            f"  {max_score:g}  = full: the central correct idea is communicated - however "
+            f"briefly or informally it is worded")
 
 
 def grade_prompt(pack: QuestionGradingPack, *, selected: str | None, transcription: str,
-                 version: str | None) -> list[dict]:
-    """Build the explanation-quality grading prompt (grade-v3).
+                 version: str | None, prompt_version: str | None = None) -> list[dict]:
+    """Build the explanation-quality grading prompt.
 
     THE SELECTION IS NEVER RENDERED. Under v3 the model judges the explanation
     and nothing else; the selection is resolved deterministically elsewhere and
@@ -334,7 +478,7 @@ def grade_prompt(pack: QuestionGradingPack, *, selected: str | None, transcripti
         + f"Student explanation (verbatim transcription):\n---\n{transcription}\n---\n"
         + f"Allowed rubric item ids: {pack.rubric_item_ids() or '(none)'}.\n"
         + "Return `score` as the EXPLANATION-QUALITY value, using exactly one of:\n"
-        + explanation_scale(pack.max_score) + "\n"
+        + explanation_scale(pack.max_score, prompt_version) + "\n"
         + "`score` is not the student's final score for this question.")}]
 
 

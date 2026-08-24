@@ -1,4 +1,8 @@
-"""grade-v3: `score` means EXPLANATION QUALITY, not the student's final grade.
+"""`score` means EXPLANATION QUALITY, not the student's final grade.
+
+Introduced with grade-v3 and still true under grade-v4-charitable: these are
+the version-INDEPENDENT properties of the grading prompt. Wording that is
+specific to one version is pinned in that version's own test module.
 
 grade-v2 asked the model for "the score (within the stated maximum)" and showed
 it the pack's final-score composition rules ("explanation weight 0", "no credit
@@ -28,7 +32,8 @@ import pytest
 
 from autograder.benchmark.manifests import load_manifest
 from autograder.benchmark.roles import GradeAdapter
-from autograder.escalation import GRADE_SYSTEM, explanation_scale, grade_prompt
+from autograder.escalation import (ACTIVE_GRADE_PROMPT_VERSION, GRADE_SYSTEM,
+                                   explanation_scale, grade_prompt)
 from autograder.gradingpack import QuestionGradingPack
 
 MAX = 4.0
@@ -130,18 +135,19 @@ def test_absence_of_a_selection_is_explicitly_declared_uninformative():
 
 def test_a_valid_explanation_may_score_max_with_no_selection():
     body = _prompt(selected=None)
-    assert f"  {MAX:g}  = valid" in body
+    # wording is version-specific; the LEVEL is the invariant
+    assert f"  {MAX:g}  = " in body
     # nothing in the prompt conditions the max on a selection being present
     scale = body.split("using exactly one of:")[1]
     assert "select" not in scale.lower() and "option" not in scale.lower()
 
 
 def test_a_partial_explanation_maps_to_half_max():
-    assert f"  {MAX / 2:g}  = partially valid" in _prompt()
+    assert f"  {MAX / 2:g}  = " in _prompt()
 
 
 def test_an_invalid_explanation_maps_to_zero():
-    assert "  0  = invalid" in _prompt()
+    assert "  0  = " in _prompt()
 
 
 def test_the_scale_offers_exactly_three_values():
@@ -279,21 +285,22 @@ def test_the_benchmark_request_is_the_production_request(manifest):
     assert req.system is GRADE_SYSTEM
     assert req.content_blocks == expected
     assert req.output_model is GradeResult
-    assert req.prompt_version == "grade-v3"
+    assert req.prompt_version == ACTIVE_GRADE_PROMPT_VERSION
 
 
 def test_the_prompt_version_is_declared_consistently():
     import tomllib
     from pathlib import Path
 
-    assert GradeAdapter.prompt_version == "grade-v3"
+    assert GradeAdapter.prompt_version == ACTIVE_GRADE_PROMPT_VERSION
     for name in ("models.toml", "models.example.toml"):
         p = Path(name)
         if not p.exists():
             continue
         cfg = tomllib.loads(p.read_text(encoding="utf-8"))
         for task in ("grade_primary", "grade_escalate"):
-            assert cfg["models"][task]["prompt_version"] == "grade-v3", f"{name}:{task}"
+            got = cfg["models"][task]["prompt_version"]
+            assert got == ACTIVE_GRADE_PROMPT_VERSION, f"{name}:{task} -> {got}"
 
 
 def test_the_adapter_version_moved_with_the_scoring_semantics():
