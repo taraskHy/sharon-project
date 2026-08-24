@@ -554,10 +554,20 @@ def run_benchmark(spec: RunSpec, *, gateway=None, registry: CandidateRegistry | 
                 "--i-understand-this-spends-money`. The execution is logged permanently in "
                 f"{spec.held_out_log}; inspected held-out results can never again be treated as unseen")
     if spec.subset is not None:
-        if spec.subset != "smoke":
-            raise ValueError(f"unknown subset {spec.subset!r}; the only pre-registered subset is 'smoke'")
-        if split != "DEV":
-            raise ValueError("the smoke subset is DEV-only by construction; pass --split dev")
+        from .subsets import SUBSET_RULES, available_subsets
+
+        known = ["smoke"] + available_subsets(spec.role)
+        if spec.subset not in known:
+            raise ValueError(f"unknown subset {spec.subset!r}; pre-registered subsets for "
+                             f"{spec.role}: {known}")
+        if spec.subset == "smoke":
+            if split != "DEV":
+                raise ValueError("the smoke subset is DEV-only by construction; pass --split dev")
+        else:
+            want = SUBSET_RULES[(spec.role, spec.subset)][0]
+            if split != want:
+                raise ValueError(f"subset {spec.subset!r} is {want}-only by construction; "
+                                 f"pass --split {want.lower()}")
 
     candidate = resolve_candidate(spec, registry)
     adapter = adapter_for(spec.role)
@@ -566,6 +576,15 @@ def run_benchmark(spec: RunSpec, *, gateway=None, registry: CandidateRegistry | 
         from .smoke import DEFAULT_SMOKE_ROOT, smoke_case_ids
         ids = set(smoke_case_ids(spec.role, manifest, spec.smoke_root or DEFAULT_SMOKE_ROOT))
         cases = [c for c in cases if c.case_id in ids]
+    elif spec.subset is not None:
+        # a frozen FULL case list: the pre-registered evaluation population
+        from .subsets import subset_case_ids
+        ids = set(subset_case_ids(spec.role, spec.subset, manifest))
+        cases = [c for c in cases if c.case_id in ids]
+        if len(cases) != len(ids):
+            missing = sorted(ids - {c.case_id for c in cases})
+            raise ValueError(f"subset {spec.subset!r}: {len(missing)} frozen case(s) are not "
+                             f"in this split/component selection: {missing[:5]}")
     if spec.limit:
         cases = cases[: spec.limit]
     if spec.role == "ocr_primary":

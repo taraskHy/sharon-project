@@ -470,8 +470,10 @@ def add_bench_commands(sub) -> None:
         p.add_argument("--limit", type=int, default=None)
         p.add_argument("--max-tokens", type=int, default=None)
         p.add_argument("--note", default="")
-        p.add_argument("--subset", default=None, choices=["smoke"],
-                       help="smoke = the frozen pre-registered DEV smoke subset (first live execution)")
+        p.add_argument("--subset", default=None, choices=["smoke", "dev_verdict"],
+                       help="smoke = the frozen pre-registered DEV smoke subset (first live "
+                            "execution); dev_verdict = the frozen full DEV verdict-evaluable "
+                            "population")
         p.add_argument("--allow-unlisted", action="store_true")
         if name == "run":
             p.add_argument("--retry-failed", action="store_true", help="explicitly re-attempt failed cases (recorded)")
