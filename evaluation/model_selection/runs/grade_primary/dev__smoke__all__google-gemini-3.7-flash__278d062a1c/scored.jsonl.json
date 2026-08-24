@@ -1,0 +1,38 @@
+[
+ {
+  "case_id": "e002_q1_r8",
+  "split": "DEV",
+  "component": "ALL",
+  "schema_failure": false,
+  "decision": "AUTO",
+  "score": 2.0,
+  "transcription_complete": true,
+  "uncertain": false,
+  "validation_ok": true,
+  "validation_problems": [],
+  "evidence_failure": false,
+  "met_ids": [],
+  "predicted_verdict": "partially_valid",
+  "label_verdict": "partially_valid",
+  "verdict_exact": true,
+  "raw_score_abs_delta": 0.0
+ },
+ {
+  "case_id": "e007_q1_r1",
+  "split": "DEV",
+  "component": "ALL",
+  "schema_failure": false,
+  "decision": "AUTO",
+  "score": 2.0,
+  "transcription_complete": true,
+  "uncertain": false,
+  "validation_ok": true,
+  "validation_problems": [],
+  "evidence_failure": false,
+  "met_ids": [],
+  "predicted_verdict": "partially_valid",
+  "label_verdict": "valid",
+  "verdict_exact": false,
+  "raw_score_abs_delta": 2.0
+ }
+]

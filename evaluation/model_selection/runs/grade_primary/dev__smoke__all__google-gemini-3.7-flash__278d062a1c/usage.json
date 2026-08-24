@@ -1,0 +1,27 @@
+{
+ "rows_before": 14,
+ "rows_after": 16,
+ "cost_before": 0.047425,
+ "run_cost": 0.002105,
+ "cost_after": 0.04953,
+ "run_calls": 2,
+ "run_cache_hits": 0,
+ "by_model": {
+  "google/gemini-3.7-flash": {
+   "calls": 2,
+   "input_tokens": 3099,
+   "output_tokens": 503,
+   "total_tokens": 3602,
+   "reported_cost": 0.002105
+  }
+ },
+ "by_task": {
+  "grade_primary": {
+   "calls": 2,
+   "input_tokens": 3099,
+   "output_tokens": 503,
+   "total_tokens": 3602,
+   "reported_cost": 0.002105
+  }
+ }
+}

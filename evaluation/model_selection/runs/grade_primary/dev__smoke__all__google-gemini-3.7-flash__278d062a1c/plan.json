@@ -1,0 +1,27 @@
+{
+ "run_id": "dev__smoke__all__google-gemini-3.7-flash__278d062a1c",
+ "mode": "dry_run",
+ "cases": 2,
+ "skipped_resume": 0,
+ "predicted_cost_total": 0.005061,
+ "pricing_table_available": true,
+ "rows": [
+  {
+   "case_id": "e002_q1_r8",
+   "split": "DEV",
+   "component": "ALL",
+   "predicted_cost": 0.0025243125,
+   "text_chars": 2927,
+   "images": 0
+  },
+  {
+   "case_id": "e007_q1_r1",
+   "split": "DEV",
+   "component": "ALL",
+   "predicted_cost": 0.00253678125,
+   "text_chars": 3060,
+   "images": 0
+  }
+ ],
+ "leakage_check": "passed"
+}
