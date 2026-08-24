@@ -240,6 +240,8 @@ class BudgetManager:
             return self._cost
         return sum(float(e.get("reported_cost") or 0) for e in self.ledger.entries()
                    if _row_is_cloud(e) and not e.get("cache_hit"))
+        # NOTE: non-billable rows (pre-inference rejections) carry
+        # reported_cost 0, so they are counted structurally but add nothing.
 
     def check(self, *, task: str, route, meta: dict,
               predicted_cost: float = 0.0) -> None:
@@ -290,6 +292,38 @@ class BudgetManager:
 # ------------------------------------------------------------------------
 # experiment-budget helpers (model-selection campaigns)
 # ------------------------------------------------------------------------
+
+
+def reconcile_cost(usage: dict, route=None, pricing: dict | None = None) -> tuple[float, str]:
+    """The charge to record for one provider response, and where it came from.
+
+    Precedence is deliberate and one-way:
+
+    1. ``reported_cost`` — the PROVIDER's own number (OpenRouter returns it in
+       ``usage.cost``). Authoritative: it already accounts for the provider
+       actually routed to, cache discounts, and promotional pricing. Never
+       overwritten by a local calculation.
+    2. local ``[pricing]`` x reported tokens — only when the provider reported
+       no cost but did report tokens (generic OpenAI-compatible servers).
+       Marked ``local_pricing`` so a reconciliation report can separate
+       measured spend from estimated spend.
+    3. ``0.0`` / ``none`` — nothing billable was reported.
+
+    Returns ``(cost_usd, source)`` where source is
+    ``provider`` | ``local_pricing`` | ``none``.
+    """
+    if usage and usage.get("reported_cost") is not None:
+        return float(usage["reported_cost"]), "provider"
+    tin = int((usage or {}).get("input_tokens") or 0)
+    tout = int((usage or {}).get("output_tokens") or 0)
+    if not (tin or tout):
+        return 0.0, "none"
+    model = (usage or {}).get("model") or getattr(route, "model", None)
+    row = (pricing or {}).get(model) if model else None
+    if not row:
+        return 0.0, "none"
+    cost = tin / 1_000_000 * float(row.get("input", 0.0)) +         tout / 1_000_000 * float(row.get("output", 0.0))
+    return round(cost, 8), "local_pricing"
 
 
 def predicted_call_cost(route, system: str, content_blocks: list[dict],

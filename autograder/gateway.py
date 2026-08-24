@@ -246,20 +246,68 @@ class ModelGateway:
                                   route, system, content_blocks, self.pricing_config))
         backend = self.backend_for(task)
         t0 = time.monotonic()
-        value = backend.parse(system=system, content_blocks=content_blocks,
-                              output_model=output_model, max_tokens=max_tokens)
+        try:
+            value = backend.parse(system=system, content_blocks=content_blocks,
+                                  output_model=output_model, max_tokens=max_tokens)
+        except BaseException as exc:
+            # THE MONEY IS ALREADY SPENT. A truncated body, a schema violation,
+            # a provider error carrying usage — every one of those was billed
+            # by the provider before we ever looked at it. Account for it, then
+            # let the failure propagate unchanged.
+            dt = time.monotonic() - t0
+            self._account(backend, task=task, route=route, meta=meta,
+                          latency_s=round(dt, 3), outcome=type(exc).__name__)
+            raise
         dt = time.monotonic() - t0
         usage = dict(getattr(backend, "last_usage", {}) or {})
         res = CallResult(value=value, task=task, route=route, cache_hit=False,
                          latency_s=round(dt, 3), usage=usage, fingerprint=fp)
         if self.cache is not None and route.cacheable and fp:
             self.cache.put(fp, value, {"task": task, "model": route.model})
-        self._ledger_record(res, meta)
-        if self.budget is not None:
-            self.budget.charge(task=task, route=route, usage=usage, meta=meta)
+        self._account(backend, task=task, route=route, meta=meta,
+                      latency_s=round(dt, 3), outcome="ok", result=res)
         return res
 
-    def _ledger_record(self, res: CallResult, meta: dict) -> None:
+    # -- accounting -----------------------------------------------------------
+
+    def _account(self, backend, *, task: str, route, meta: dict, latency_s: float,
+                 outcome: str, result: "CallResult | None" = None) -> None:
+        """Ledger + budget for ONE completed ``parse()``, success or failure.
+
+        One row per PROVIDER RESPONSE, not one row per logical call: a
+        validation-repair round-trip bills once per attempt, and each attempt
+        is recorded. Backends that expose no billing events (mock, local
+        Ollama) keep the historical single-row behaviour.
+        """
+        from .usage import reconcile_cost
+
+        events = list(getattr(backend, "billing_events", None) or [])
+        if not events:
+            if result is not None:
+                self._ledger_record(result, meta, outcome=outcome)
+                if self.budget is not None:
+                    self.budget.charge(task=task, route=route,
+                                       usage=result.usage, meta=meta)
+            return
+        n = len(events)
+        for i, ev in enumerate(events):
+            row = ev.as_dict()
+            usage = dict(ev.usage or {})
+            cost, source = reconcile_cost(usage, route, self.pricing_config)
+            usage["reported_cost"] = cost if ev.billable else 0.0
+            row["reported_cost"] = usage["reported_cost"]
+            row["cost_source"] = source
+            # the LAST event carries the call's outcome and latency
+            row["outcome"] = outcome if i == n - 1 else "superseded_attempt"
+            self._ledger_record(
+                CallResult(value=None, task=task, route=route, cache_hit=False,
+                           latency_s=latency_s if i == n - 1 else None, usage=usage),
+                meta, outcome=row["outcome"], extra=row)
+            if self.budget is not None and ev.billable:
+                self.budget.charge(task=task, route=route, usage=usage, meta=meta)
+
+    def _ledger_record(self, res: CallResult, meta: dict, *, outcome: str | None = None,
+                       extra: dict | None = None) -> None:
         if self.ledger is None:
             return
         from .usage import effective_provider, is_cloud_route
@@ -280,6 +328,13 @@ class ModelGateway:
                 "provider", "request_id", "input_tokens", "cached_input_tokens",
                 "output_tokens", "reasoning_tokens", "total_tokens", "reported_cost")},
         }
+        if outcome is not None:
+            entry["outcome"] = outcome
+        if extra:
+            # lifecycle flags: call_attempted / inference_reached /
+            # usage_returned / parse_ok / billable / http_status / cost_source
+            entry.update({k: v for k, v in extra.items() if k not in entry or entry[k] is None})
+        entry.setdefault("billable", not res.cache_hit)
         self.ledger.record(safe_ledger_entry(entry))
 
 

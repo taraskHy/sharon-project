@@ -30,9 +30,11 @@ from typing import TypeVar
 import httpx
 from pydantic import BaseModel, ValidationError
 
+from ..strictschema import strict_json_schema
 from .base import (
     BackendConfig,
     BackendError,
+    BillingEvent,
     HealthReport,
     VisionBackend,
     extract_json_object,
@@ -83,8 +85,75 @@ class OpenAICompatBackend(VisionBackend):
             timeout=httpx.Timeout(config.timeout_s, connect=15.0),
             transport=transport,  # tests inject httpx.MockTransport here
         )
+        #: usage of the most recent provider response (ledger reads this)
+        self.last_usage: dict = {}
+        #: EVERY provider response of the current parse() call. Appended to
+        #: before any parsing runs, so a parse failure cannot erase a charge.
+        self.billing_events: list[BillingEvent] = []
+        self._attempt_no = 0
 
     # -- request plumbing ---------------------------------------------------
+
+    # -- billing accounting -------------------------------------------------
+    #
+    # A provider charge exists the moment the provider runs the model. It is
+    # recorded HERE, at the HTTP boundary, before any schema validation can
+    # fail — never in the success path of parse().
+
+    def _usage_from_response(self, data: dict) -> dict:
+        """Normalize a chat-completions ``usage`` block. Subclasses extend
+        this with provider-specific fields (cost, request id, ...)."""
+        usage = (data or {}).get("usage") or {}
+        details = usage.get("completion_tokens_details") or {}
+        pdetails = usage.get("prompt_tokens_details") or {}
+        return {
+            "model": (data or {}).get("model") or self.config.model,
+            "input_tokens": usage.get("prompt_tokens"),
+            "cached_input_tokens": pdetails.get("cached_tokens"),
+            "output_tokens": usage.get("completion_tokens"),
+            "reasoning_tokens": details.get("reasoning_tokens"),
+            "total_tokens": usage.get("total_tokens"),
+            # generic OpenAI-compatible servers do not report a price
+            "reported_cost": usage.get("cost"),
+        }
+
+    def _note_provider_response(self, *, data: dict | None, http_status: int | None,
+                                error: str | None = None) -> BillingEvent:
+        """Record one provider response. Called for EVERY HTTP reply — 200 or
+        not — so the ledger can tell "refused before inference" (no usage,
+        not billable) from "ran and billed us, then failed downstream"."""
+        usage = self._usage_from_response(data or {})
+        has_usage = any(usage.get(k) for k in
+                        ("input_tokens", "output_tokens", "total_tokens", "reported_cost"))
+        finish = None
+        try:
+            finish = (data or {})["choices"][0].get("finish_reason")
+        except (KeyError, IndexError, TypeError):
+            finish = None
+        self._attempt_no += 1
+        ev = BillingEvent(
+            usage=usage if has_usage else {"model": usage.get("model")},
+            http_status=http_status,
+            call_attempted=True,
+            inference_reached=bool(has_usage) or http_status == 200,
+            usage_returned=bool(has_usage),
+            finish_reason=finish,
+            attempt=self._attempt_no,
+            error=error,
+        )
+        self.billing_events.append(ev)
+        if has_usage:
+            self.last_usage = dict(usage)
+        return ev
+
+    @staticmethod
+    def _body_json(resp: httpx.Response) -> dict:
+        """Best-effort JSON of a response body; {} when it is not JSON.
+        Error bodies sometimes still carry a usage block."""
+        try:
+            return resp.json() if resp.content else {}
+        except ValueError:
+            return {}
 
     def _post_chat(self, payload: dict) -> dict:
         last_error: Exception | None = None
@@ -107,21 +176,50 @@ class OpenAICompatBackend(VisionBackend):
                 last_error = BackendError(
                     f"HTTP {resp.status_code} from backend: {resp.text[:300]}"
                 )
+                self._note_provider_response(
+                    data=self._body_json(resp), http_status=resp.status_code,
+                    error=f"retryable HTTP {resp.status_code}")
                 time.sleep(delay)
                 continue
             if resp.status_code != 200:
+                # Recorded before raising: a rejected request that never
+                # reached inference carries no usage and is not billable,
+                # but "we were refused" must still be auditable.
+                self._note_provider_response(
+                    data=self._body_json(resp), http_status=resp.status_code,
+                    error=f"HTTP {resp.status_code}")
                 raise BackendError(
                     f"HTTP {resp.status_code} from backend: {resp.text[:500]}"
                 )
             try:
-                return resp.json()
+                data = resp.json()
             except json.JSONDecodeError as e:
+                self._note_provider_response(data=None, http_status=resp.status_code,
+                                             error="non-JSON body")
                 raise BackendError(
                     f"backend returned a non-JSON HTTP body: {resp.text[:300]}"
                 ) from e
+            self._note_provider_response(data=data, http_status=resp.status_code)
+            return data
         raise BackendError(
             f"backend unreachable after {self.config.transport_retries + 1} attempts: {last_error}"
         )
+
+    def schema_for(self, output_model: type[BaseModel]) -> dict:
+        """The JSON Schema actually sent to the provider.
+
+        Strict providers (OpenAI/Azure, which is what OpenRouter routed
+        ``openai/gpt-5.6-luna-pro`` to) validate this BEFORE inference and
+        reject anything whose objects are not closed with
+        ``additionalProperties: false``. Applied centrally here so every
+        output model and every backend inheriting this transport is covered,
+        and so the copy embedded in the prompt is identical to the copy in
+        ``response_format``.
+        """
+        schema = output_model.model_json_schema()
+        if not getattr(self.config, "strict_schema", True):
+            return schema
+        return strict_json_schema(schema)
 
     def _build_payload(
         self, messages: list[dict], output_model: type[BaseModel], max_tokens: int
@@ -139,7 +237,7 @@ class OpenAICompatBackend(VisionBackend):
                 "type": "json_schema",
                 "json_schema": {
                     "name": output_model.__name__,
-                    "schema": output_model.model_json_schema(),
+                    "schema": self.schema_for(output_model),
                 },
             }
         elif self.config.structured_mode == "json_object":
@@ -165,7 +263,7 @@ class OpenAICompatBackend(VisionBackend):
         schema_note = (
             "Respond with ONLY a single JSON object (no prose, no markdown fences) "
             "that conforms exactly to this JSON Schema:\n"
-            + json.dumps(output_model.model_json_schema(), ensure_ascii=False)
+            + json.dumps(self.schema_for(output_model), ensure_ascii=False)
         )
         user_content = _to_openai_blocks(content_blocks) + [
             {"type": "text", "text": schema_note}
@@ -175,32 +273,54 @@ class OpenAICompatBackend(VisionBackend):
             {"role": "user", "content": user_content},
         ]
 
+        # One parse() == one accounting unit. Every provider response below
+        # is appended to self.billing_events; the gateway ledgers ALL of them,
+        # including the ones whose bodies we then fail to use.
+        self.billing_events = []
+        self._attempt_no = 0
+
         last_validation_error = ""
         for attempt in range(self.config.validation_retries + 1):
             data = self._post_chat(self._build_payload(messages, output_model, max_tokens))
+            event = self.billing_events[-1] if self.billing_events else None
             try:
                 choice = data["choices"][0]
                 raw = choice["message"]["content"] or ""
                 finish = choice.get("finish_reason")
             except (KeyError, IndexError, TypeError) as e:
+                if event is not None:
+                    event.parse_ok = False
                 raise BackendError(
                     f"unexpected chat-completions response shape: {str(data)[:300]}"
                 ) from e
             if finish == "length":
+                # The provider generated (and billed) max_tokens of output.
+                # The charge stands; only our use of it failed.
+                if event is not None:
+                    event.parse_ok = False
                 raise BackendError(
                     f"output was truncated at max_tokens={max_tokens} "
                     "(finish_reason=length); raise --max-tokens"
                 )
             if finish == "content_filter":
+                if event is not None:
+                    event.parse_ok = False
                 raise BackendError("the backend refused this request (content_filter)")
             try:
-                return output_model.model_validate_json(extract_json_object(raw))
+                value = output_model.model_validate_json(extract_json_object(raw))
+                if event is not None:
+                    event.parse_ok = True
+                return value
             except ValidationError as e:
+                if event is not None:
+                    event.parse_ok = False
                 last_validation_error = (
                     f"{e.error_count()} error(s), first: {e.errors()[0].get('msg', '?')} "
                     f"at {'.'.join(str(x) for x in e.errors()[0].get('loc', ()))}"
                 )
             except json.JSONDecodeError as e:  # pragma: no cover - validate_json raises ValidationError
+                if event is not None:
+                    event.parse_ok = False
                 last_validation_error = str(e)
             # Repair round-trip: show the model its own output and the error.
             messages.append({"role": "assistant", "content": raw})

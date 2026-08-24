@@ -303,13 +303,67 @@ def resolve_candidate(spec: RunSpec, registry: CandidateRegistry) -> str:
     return slug
 
 
+#: Decoding parameters a benchmark run must inherit from the PRODUCTION route
+#: so the two agree. The model slug is deliberately NOT here: the candidate
+#: under test is the one thing the benchmark is allowed to change.
+ROUTE_PARITY_FIELDS = ("structured_mode", "max_tokens", "temperature", "timeout_s",
+                       "reasoning", "provider", "extra_generation")
+
+
+def production_route_defaults(models_config, task: str) -> dict:
+    """The production decoding configuration for ``task`` from models.toml.
+
+    A benchmark that decodes differently from production measures a model
+    nobody will ever run. Before this existed, ``build_route`` hard-coded its
+    own knobs and silently dropped ``[models.grade_primary].reasoning``
+    ({"effort": "none"}) — so the 2026-08-24 smoke run paid for reasoning
+    tokens that production would never have generated, and lost a case to
+    truncation because those tokens consumed the 600-token cap.
+
+    Reads decoding knobs ONLY. ``model``/``backend``/``base_url`` are ignored:
+    the candidate and its transport come from the run spec.
+    """
+    if not models_config:
+        return {}
+    path = Path(models_config)
+    if not path.exists():
+        return {}
+    import tomllib
+
+    data = tomllib.loads(path.read_text(encoding="utf-8"))
+    merged = {**(data.get("defaults") or {}), **((data.get("models") or {}).get(task) or {})}
+    return {k: merged[k] for k in ROUTE_PARITY_FIELDS if merged.get(k) is not None}
+
+
 def build_route(spec: RunSpec, candidate: str, request_prompt_version: str, default_max_tokens: int):
+    """Production parity, with explicit run-spec values winning.
+
+    Precedence: explicit RunSpec field > models.toml production route >
+    benchmark default. The result is recorded in the run's config hash, so a
+    parameter change is always visible as a different run identity.
+    """
     from ..gateway import TaskRoute
+
+    task = ROLE_TASKS[spec.role]
+    prod = production_route_defaults(spec.models_config, task)
+    knobs: dict = {
+        "structured_mode": "json_schema",
+        "max_tokens": default_max_tokens,
+        "temperature": 0.0,
+        "reasoning": None,
+        "provider": None,
+    }
+    knobs.update(prod)
+    # explicit CLI/spec overrides beat the production file
+    if spec.max_tokens is not None:
+        knobs["max_tokens"] = spec.max_tokens
+    if spec.reasoning is not None:
+        knobs["reasoning"] = spec.reasoning
+    if spec.provider is not None:
+        knobs["provider"] = spec.provider
     return TaskRoute(
-        task=ROLE_TASKS[spec.role], backend=spec.backend, model=candidate, base_url=spec.base_url,
-        structured_mode="json_schema", max_tokens=spec.max_tokens or default_max_tokens,
-        temperature=0.0, reasoning=spec.reasoning, provider=spec.provider,
-        prompt_version=request_prompt_version, cacheable=True, enabled=True)
+        task=task, backend=spec.backend, model=candidate, base_url=spec.base_url,
+        prompt_version=request_prompt_version, cacheable=True, enabled=True, **knobs)
 
 
 def build_gateway(spec: RunSpec, route, registry: CandidateRegistry, warn_sink: Callable[[str], None]):

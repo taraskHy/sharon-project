@@ -56,6 +56,11 @@ class BackendConfig:
     base_url: str | None = None  # e.g. http://localhost:11434/v1 for Ollama
     api_key_env: str = "GRADER_API_KEY"
     structured_mode: str = "json_schema"  # json_schema | json_object | prompt
+    #: Emit strict-provider-compatible schemas (closed objects, every property
+    #: required, optionality expressed as an explicit null). Required by
+    #: OpenAI/Azure structured output; harmless for permissive servers. Set
+    #: False only for a server that demonstrably rejects the strict form.
+    strict_schema: bool = True
     max_tokens: int = 16000
     temperature: float | None = 0.0  # None = provider default
     timeout_s: float = 300.0
@@ -81,10 +86,73 @@ class HealthReport:
     detail: str
 
 
+@dataclass
+class BillingEvent:
+    """ONE provider HTTP response that may have incurred a charge.
+
+    A charge is created by the PROVIDER, not by our ability to parse what it
+    sent back. Every response therefore produces one of these BEFORE any
+    parsing/validation runs, so a downstream failure can never erase the
+    money. The lifecycle flags are recorded separately and never collapsed:
+
+    ``call_attempted``   an HTTP request left this process
+    ``inference_reached``the provider ran the model (200, or an error body
+                         that still reports token usage)
+    ``usage_returned``   the response carried a usage block we could read
+    ``parse_ok``         the body validated against the output schema; set
+                         later by the caller, None until then
+
+    ``billable`` is the accounting decision: True when the provider reported
+    tokens or a cost. A pre-inference rejection (HTTP 400 invalid schema,
+    401, 404) carries no usage and is NOT billable — but it is still
+    recorded, so "we called and were refused" is distinguishable from "we
+    never called".
+    """
+
+    usage: dict[str, Any] = field(default_factory=dict)
+    http_status: int | None = None
+    call_attempted: bool = True
+    inference_reached: bool = False
+    usage_returned: bool = False
+    parse_ok: bool | None = None
+    finish_reason: str | None = None
+    attempt: int = 1
+    error: str | None = None
+
+    @property
+    def billable(self) -> bool:
+        u = self.usage or {}
+        return bool(
+            (u.get("input_tokens") or 0)
+            or (u.get("output_tokens") or 0)
+            or (u.get("total_tokens") or 0)
+            or (u.get("reported_cost") or 0)
+        )
+
+    def as_dict(self) -> dict[str, Any]:
+        return {
+            "http_status": self.http_status,
+            "call_attempted": self.call_attempted,
+            "inference_reached": self.inference_reached,
+            "usage_returned": self.usage_returned,
+            "parse_ok": self.parse_ok,
+            "finish_reason": self.finish_reason,
+            "attempt": self.attempt,
+            "billable": self.billable,
+            "error": self.error,
+            **dict(self.usage or {}),
+        }
+
+
 class VisionBackend(ABC):
     """Contract every inference backend implements."""
 
     config: BackendConfig
+
+    #: Every provider response of the CURRENT ``parse()`` call, in order.
+    #: Backends that talk to a paid provider must append one entry per HTTP
+    #: response (see ``BillingEvent``). Reset at the start of each ``parse()``.
+    billing_events: list["BillingEvent"]
 
     @abstractmethod
     def parse(

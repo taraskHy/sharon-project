@@ -141,26 +141,29 @@ class OpenRouterBackend(OpenAICompatBackend):
         payload["usage"] = {"include": True}
         return payload
 
+    def _usage_from_response(self, data: dict) -> dict:
+        """OpenRouter reports the AUTHORITATIVE charge for the request in
+        ``usage.cost`` (we ask for it via ``usage: {include: true}``). That
+        number is preserved verbatim and always preferred over any locally
+        computed price — local pricing is only ever a fallback estimate for
+        providers that report no cost (see ``usage.reconcile_cost``)."""
+        u = super()._usage_from_response(data)
+        usage = (data or {}).get("usage") or {}
+        u.update({
+            "request_id": (data or {}).get("id"),
+            "provider": (data or {}).get("provider"),
+            "reported_cost": usage.get("cost"),
+            "cost_source": "provider" if usage.get("cost") is not None else None,
+        })
+        return u
+
     def _post_chat(self, payload: dict) -> dict:
+        # Base class records the BillingEvent (via _usage_from_response) for
+        # every response, including the error ones, before raising.
         try:
-            data = super()._post_chat(payload)
+            return super()._post_chat(payload)
         except BackendError as e:
             raise BackendError(_redact(str(e), self._key)) from None
-        usage = data.get("usage") or {}
-        details = usage.get("completion_tokens_details") or {}
-        pdetails = usage.get("prompt_tokens_details") or {}
-        self.last_usage = {
-            "request_id": data.get("id"),
-            "provider": data.get("provider"),
-            "model": data.get("model") or self.config.model,
-            "input_tokens": usage.get("prompt_tokens"),
-            "cached_input_tokens": pdetails.get("cached_tokens"),
-            "output_tokens": usage.get("completion_tokens"),
-            "reasoning_tokens": details.get("reasoning_tokens"),
-            "total_tokens": usage.get("total_tokens"),
-            "reported_cost": usage.get("cost"),
-        }
-        return data
 
     # -- identity / health -----------------------------------------------------
 
