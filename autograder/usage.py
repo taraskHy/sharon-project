@@ -99,7 +99,10 @@ class UsageLedger:
 
     def aggregate(self, job_id: str | None = None) -> dict:
         rows = [e for e in self.entries() if job_id is None or e.get("job_id") == job_id]
-        cloud = [e for e in rows if _row_is_cloud(e)]
+        # A reconciliation books historical MONEY, not a request: counting it as
+        # a call would corrupt calls-per-exam, cache-hit rate and token averages.
+        # Its cost is still budgeted (see BudgetManager._ledger_cost).
+        cloud = [e for e in rows if _row_is_cloud(e) and not is_reconciliation(e)]
         cloud_calls = [e for e in cloud if not e.get("cache_hit")]
         n_cache = sum(1 for e in cloud if e.get("cache_hit"))
         by_exam: dict[str, dict] = defaultdict(lambda: {"cloud_calls": 0, "tokens": 0, "escalations": 0})
@@ -397,4 +400,93 @@ def run_cost_report(ledger: UsageLedger, baseline_rows: int) -> dict:
         "run_cache_hits": sum(1 for e in run if _row_is_cloud(e) and e.get("cache_hit")),
         "by_model": aggregate_by(run, "model"),
         "by_task": aggregate_by(run, "task"),
+    }
+
+
+# ------------------------------------------------------------------------
+# historical spend reconciliation
+# ------------------------------------------------------------------------
+
+#: Ledger rows are provider calls unless they say otherwise. Rows written
+#: before this field existed have no ``entry_kind`` and are provider calls.
+ENTRY_KIND_PROVIDER_CALL = "provider_call"
+ENTRY_KIND_RECONCILIATION = "reconciliation"
+
+
+def entry_kind(row: dict) -> str:
+    return row.get("entry_kind") or ENTRY_KIND_PROVIDER_CALL
+
+
+def is_reconciliation(row: dict) -> bool:
+    return entry_kind(row) == ENTRY_KIND_RECONCILIATION
+
+
+def record_reconciliation(ledger: "UsageLedger", *, amount_usd: float, reason: str,
+                          provenance: str, occurred_at: str | None = None,
+                          model: str | None = None, task: str | None = None,
+                          related_case_ids: list[str] | None = None,
+                          ts: str | None = None) -> dict:
+    """Book money the provider charged that the ledger never recorded.
+
+    The pre-2026-08-24 gateway wrote its ledger row only after ``parse()``
+    returned, so a response that was generated, billed, and then discarded
+    (truncation, schema failure) left no trace. Fixing the code stops FUTURE
+    losses; it does not un-spend the money already gone. Until the historical
+    amount is booked, every budget decision — the $8 warning, the $10 ceiling,
+    "how much is left" — is computed against a number that is known to be too
+    small.
+
+    This entry is NOT a provider call:
+
+    * ``entry_kind = "reconciliation"`` keeps it out of call counts, token
+      aggregates and cache statistics;
+    * ``reported_cost`` DOES count toward cumulative spend, which is the whole
+      point;
+    * token fields are omitted entirely when the provider's counts were never
+      captured. A reconciliation must never invent tokens to look complete.
+
+    ``amount_usd`` must be positive: this books a known past charge, it is not
+    a mechanism for adjusting spend downward.
+    """
+    if amount_usd <= 0:
+        raise ValueError("a reconciliation books a positive past charge; "
+                         f"got {amount_usd!r}")
+    entry = {
+        "ts": ts or time.strftime("%Y-%m-%d %H:%M:%S"),
+        "entry_kind": ENTRY_KIND_RECONCILIATION,
+        "provider_call": False,
+        "cloud": True,               # it is cloud spend, and must be budgeted as such
+        "cache_hit": False,
+        "task": task,
+        "model": model,
+        "backend": "openrouter",
+        "effective_provider": "openrouter",
+        "reported_cost": round(float(amount_usd), 8),
+        "cost_source": "provider_account_delta",
+        "occurred_at": occurred_at,
+        "reason": reason,
+        "provenance": provenance,
+        "related_case_ids": list(related_case_ids or []),
+        # tokens deliberately absent: they were never captured, and a
+        # reconciliation must not fabricate them
+        "tokens_available": False,
+    }
+    ledger.record(entry)
+    return entry
+
+
+def reconciled_total(ledger: "UsageLedger") -> dict:
+    """Cumulative cloud spend split by where the number came from."""
+    rows = ledger.entries()
+    calls = sum(float(r.get("reported_cost") or 0) for r in rows
+                if _row_is_cloud(r) and not r.get("cache_hit") and not is_reconciliation(r))
+    recon = sum(float(r.get("reported_cost") or 0) for r in rows if is_reconciliation(r))
+    return {
+        "provider_calls_usd": round(calls, 8),
+        "reconciliation_usd": round(recon, 8),
+        "total_usd": round(calls + recon, 8),
+        "provider_call_rows": sum(1 for r in rows
+                                  if _row_is_cloud(r) and not r.get("cache_hit")
+                                  and not is_reconciliation(r)),
+        "reconciliation_rows": sum(1 for r in rows if is_reconciliation(r)),
     }

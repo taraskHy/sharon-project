@@ -64,6 +64,55 @@ def _pct(n: int, d: int) -> float | None:
     return round(100.0 * n / d, 2) if d else None
 
 
+def _verdict_metrics(judged: list[dict], classes: tuple[str, ...]) -> dict[str, Any]:
+    """Classification metrics for the canonical explanation verdict.
+
+    Accuracy alone hides the rare classes (``partially_valid`` is 4 of 32 DEV
+    cases), so the confusion matrix and macro-F1 are reported alongside it and
+    per-class precision/recall is reported only where the class actually has
+    support — an F1 over an empty class is noise, not a measurement.
+    """
+    n = len(judged)
+    correct = sum(1 for r in judged if r["verdict_exact"])
+    # confusion[truth][predicted]
+    confusion = {t: {p: 0 for p in classes} for t in classes}
+    for r in judged:
+        t, p = r["label_verdict"], r["predicted_verdict"]
+        confusion.setdefault(t, {}).setdefault(p, 0)
+        confusion[t][p] += 1
+
+    per_class: dict[str, Any] = {}
+    f1s = []
+    for c in classes:
+        tp = confusion.get(c, {}).get(c, 0)
+        support = sum(confusion.get(c, {}).values())
+        predicted = sum(confusion.get(t, {}).get(c, 0) for t in confusion)
+        if support == 0 and predicted == 0:
+            per_class[c] = {"support": 0, "precision": None, "recall": None, "f1": None,
+                            "note": "no support and never predicted — not measured"}
+            continue
+        precision = tp / predicted if predicted else None
+        recall = tp / support if support else None
+        if precision and recall:
+            f1 = 2 * precision * recall / (precision + recall)
+        else:
+            f1 = 0.0 if support or predicted else None
+        per_class[c] = {"support": support, "predicted": predicted,
+                        "precision": round(precision, 4) if precision is not None else None,
+                        "recall": round(recall, 4) if recall is not None else None,
+                        "f1": round(f1, 4) if f1 is not None else None}
+        if support:
+            f1s.append(f1 or 0.0)
+    return {
+        "verdict_exact_pct": _pct(correct, n),
+        "verdict_confusion": confusion,
+        "verdict_per_class": per_class,
+        "verdict_macro_f1": round(statistics.mean(f1s), 4) if f1s else None,
+        "verdict_classes_with_support": sum(1 for c in classes
+                                            if sum(confusion.get(c, {}).values())),
+    }
+
+
 def _usage_stats(rows: list[dict]) -> dict[str, Any]:
     live = [r for r in rows if r.get("ok") is not None and not r.get("cache_hit")]
     lat = [float(r["latency_s"]) for r in rows if r.get("latency_s") is not None and not r.get("cache_hit")]
@@ -362,11 +411,45 @@ class GradeAdapter:
                     "evidence_failure": any("evidence" in p for p in v.problems),
                     "decision": "AUTO" if (v.ok and not g.uncertain) else "REVIEW",
                     "met_ids": sorted(g.met_ids())})
+
+        # ---- PRIMARY TARGET: the canonical explanation verdict ---------------
+        # The raw number is a proposal production never uses as a number; it is
+        # normalized through the SAME function production calls, so the
+        # benchmark can never drift into its own interpretation.
+        from .verdicts import verdict_from_model_score
+
+        predicted = verdict_from_model_score(g.score, pack.max_score)
+        row["predicted_verdict"] = predicted
+        truth = lab.get("explanation_verdict")
+        if lab.get("explanation_verdict_derivable") and truth:
+            row.update({"label_verdict": truth, "verdict_exact": predicted == truth})
+        else:
+            row["verdict_unavailable_reason"] = (
+                lab.get("explanation_verdict_reason") or "no derived verdict on this label")
+
+        # ---- SECONDARY (derived): the final number -------------------------
+        # Only meaningful once the selection state is known: the model is not
+        # shown the selection and is not responsible for it.
+        sc = lab.get("selection_correct")
+        if sc is not None:
+            from .verdicts import final_score_for
+
+            implied = final_score_for(selection_correct=bool(sc), verdict=predicted,
+                                      max_points=pack.max_score)
+            row["implied_final_score"] = implied
+            if lab.get("score") is not None:
+                ls = float(lab["score"])
+                row.update({"label_score": ls,
+                            "final_exact": abs(implied - ls) < 1e-9,
+                            "final_abs_error": round(abs(implied - ls), 4),
+                            "harmful_upgrade": implied > ls, "harmful_downgrade": implied < ls})
+
+        # ---- DIAGNOSTIC ONLY: raw proposal vs instructor number -------------
+        # Retained for continuity with earlier runs. NOT an accuracy metric:
+        # these are different quantities (see
+        # docs/grade-primary-benchmark-target.md).
         if lab.get("score") is not None:
-            ls = float(lab["score"])
-            row.update({"label_score": ls, "exact": abs(g.score - ls) < 1e-9,
-                        "abs_error": round(abs(g.score - ls), 4),
-                        "harmful_upgrade": g.score > ls, "harmful_downgrade": g.score < ls})
+            row["raw_score_abs_delta"] = round(abs(g.score - float(lab["score"])), 4)
         if lab.get("rubric_met") is not None:
             want = set(lab["rubric_met"]); got = set(g.met_ids())
             ids = set(pack.rubric_item_ids()) or (want | got)
@@ -393,14 +476,35 @@ class GradeAdapter:
             "validation_failures": sum(1 for r in scored if r.get("validation_ok") is False),
             "usage": _usage_stats(raw_rows),
         }
-        if labeled:
+        # ---- PRIMARY: explanation-verdict accuracy --------------------------
+        from .verdicts import CANONICAL_VERDICTS
+
+        judged = [r for r in scored if "label_verdict" in r
+                  and r.get("transcription_complete", True)]
+        out["verdict_cases"] = len(judged)
+        out["verdict_cases_excluded_no_ground_truth"] = n - len(judged)
+        if judged:
+            out.update(_verdict_metrics(judged, CANONICAL_VERDICTS))
+        else:
+            out["verdict_metrics"] = (
+                "unavailable: no case in this selection carries a derived explanation "
+                "verdict — run the selection-correctness audit and the verdict-target "
+                "dataset revision (docs/grade-primary-benchmark-target.md)")
+
+        # ---- SECONDARY (derived): final-score agreement ---------------------
+        final = [r for r in labeled if "final_exact" in r]
+        if final:
             out.update({
-                "exact_score_pct": _pct(sum(1 for r in labeled if r["exact"]), len(labeled)),
-                "mean_abs_score_error": round(statistics.mean(r["abs_error"] for r in labeled), 4),
-                "harmful_upgrades": sum(1 for r in labeled if r["harmful_upgrade"]),
-                "harmful_downgrades": sum(1 for r in labeled if r["harmful_downgrade"]),
+                "final_score_cases": len(final),
+                "final_score_exact_pct": _pct(sum(1 for r in final if r["final_exact"]), len(final)),
+                "final_score_mae": round(statistics.mean(r["final_abs_error"] for r in final), 4),
+                "harmful_upgrades": sum(1 for r in final if r["harmful_upgrade"]),
+                "harmful_downgrades": sum(1 for r in final if r["harmful_downgrade"]),
             })
         else:
+            out["final_score_metrics"] = ("unavailable: derived from selection correctness, "
+                                          "which is not known for these cases")
+        if not labeled:
             out["accuracy_metrics"] = ("unavailable: no per-item owner labels in this dataset — only "
                                        "decision/validation metrics are reported (NOT accuracy)")
         if rub:

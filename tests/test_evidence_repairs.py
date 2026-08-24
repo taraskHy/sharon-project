@@ -25,6 +25,20 @@ from autograder.benchmark.evidence_repairs import (
     case_geometry, expected_repairs, frozen_bench_hashes, locate_exact, render_band, repair_status,
     suggested_band, verify_repairs)
 from tests.prerepair import DATASET as REAL_DATASET
+
+
+def _without_verdict(row: dict) -> dict:
+    """A label row as the EVIDENCE-REPAIR layer produced it.
+
+    The live dataset carries a later revision (verdict_target, 2026-08-24)
+    that adds the derived explanation-verdict block. These tests rebuild the
+    dataset only up to the evidence-repair layer, so the comparison has to
+    drop the fields that layer never wrote — otherwise a legitimate later
+    revision looks like a repair-layer regression.
+    """
+    from autograder.benchmark.datasets import VERDICT_LABEL_FIELDS
+
+    return {k: v for k, v in row.items() if k not in VERDICT_LABEL_FIELDS}
 from tests.prerepair import (DATASET_FILES, REPO, build_pre_repair_dataset, copy_repair_store, repair_store,
                              repaired_cases, repaired_line_ids)
 
@@ -702,7 +716,7 @@ def test_the_live_dataset_is_the_pre_repair_dataset_plus_the_owners_decisions(tm
                 if e["image"] in row["evidence_images"]:      # transcribed lines are effective evidence
                     row["evidence_images"][row["evidence_images"].index(e["image"])] = live_line["image"]
                 e["image"] = live_line["image"]
-        assert row == live[row["case_id"]], row["case_id"]
+        assert row == _without_verdict(live[row["case_id"]]), row["case_id"]
     assert sorted(substituted) == repaired_line_ids(), "nothing else needed adjusting"
 
     rebuilt = json.loads((d / "manifest.json").read_text(encoding="utf-8"))
@@ -717,7 +731,13 @@ def test_the_live_dataset_is_the_pre_repair_dataset_plus_the_owners_decisions(tm
     for key in ("previous_inputs_sha256", "inputs_sha256", "inputs_changed", "previous_labels_sha256",
                 "lines_repaired", "cases_changed", "repair_store", "repair_store_sha256", "frozen_bench_sha256"):
         assert a[key] == b[key], key
-    assert len(rebuilt["revisions"]) == len(live_man["revisions"]) - 1
+    # Compare only the EVIDENCE chain: the live dataset may carry later,
+    # unrelated revisions (verdict_target) that a repair rebuild never writes.
+    from autograder.benchmark.evidence_repairs import EFFECTIVE_EVIDENCE_SOURCE
+
+    live_kinds = [r["kind"] for r in live_man["revisions"]]
+    evidence_chain = live_kinds[:live_kinds.index(EFFECTIVE_EVIDENCE_SOURCE) + 1]
+    assert len(rebuilt["revisions"]) == len(evidence_chain) - 1
 
 
 def test_the_repair_left_the_frozen_ocr_benchmark_alone():
@@ -887,11 +907,15 @@ def test_the_effective_evidence_revision_is_recorded_and_the_chain_is_unbroken()
     man = json.loads((REAL_DATASET / "manifest.json").read_text(encoding="utf-8"))
     revs = man["revisions"]
     kinds = [r["kind"] for r in revs]
-    assert kinds == ["evidence_inventory_repair", REPAIR_SOURCE, EFFECTIVE_EVIDENCE_SOURCE]
-    eff = revs[-1]
+    assert kinds[:3] == ["evidence_inventory_repair", REPAIR_SOURCE, EFFECTIVE_EVIDENCE_SOURCE]
+    # later, unrelated revisions may follow (verdict_target); the evidence chain
+    # is the prefix and must stay unbroken regardless of what came after
+    eff = revs[2]
     assert eff["inputs_changed"] is False, "the grading model's text input did not change"
     assert eff["previous_inputs_sha256"] == eff["inputs_sha256"] == man["inputs_sha256"]
-    assert eff["previous_labels_sha256"] != eff["labels_sha256"] == man["labels_sha256"]
+    assert eff["previous_labels_sha256"] != eff["labels_sha256"]
+    if len(revs) == 3:
+        assert eff["labels_sha256"] == man["labels_sha256"]
     assert eff["lines_repaired"] == [], "no human decision was re-made"
     assert len(eff["rows_changed"]) == 67, "every row now states the same dimensions"
     assert eff["frozen_bench_sha256"] == frozen_bench_hashes()
@@ -1040,7 +1064,8 @@ def test_the_result_is_the_same_however_the_decisions_arrive(tmp_path: Path):
     # ...including the field ORDER inside each row, which is what made this
     # order-dependent before: the repair layer's fields sit in a fixed position
     for a, b in zip(_rows(staged / "cases_labels.jsonl"), _rows(one_shot / "cases_labels.jsonl")):
-        assert list(a) == list(b) == list(_label_map(REAL_DATASET)[a["case_id"]])
+        assert list(a) == list(b) == list(
+            _without_verdict(_label_map(REAL_DATASET)[a["case_id"]]))
 
 
 def test_changing_a_decision_after_it_was_applied_is_refused_not_ignored(live_dataset_copy: Path):

@@ -1,0 +1,267 @@
+{
+ "run_id": "dev__all__openai-gpt-5.6-luna-pro__1e397252b3",
+ "mode": "dry_run",
+ "cases": 32,
+ "skipped_resume": 0,
+ "predicted_cost_total": 0.0263,
+ "pricing_table_available": true,
+ "rows": [
+  {
+   "case_id": "e002_q1_r1",
+   "split": "DEV",
+   "component": "ALL",
+   "predicted_cost": 0.00082635,
+   "text_chars": 2128,
+   "images": 0
+  },
+  {
+   "case_id": "e002_q1_r2",
+   "split": "DEV",
+   "component": "ALL",
+   "predicted_cost": 0.0008152000000000001,
+   "text_chars": 1905,
+   "images": 0
+  },
+  {
+   "case_id": "e002_q1_r3",
+   "split": "DEV",
+   "component": "ALL",
+   "predicted_cost": 0.0008254,
+   "text_chars": 2109,
+   "images": 0
+  },
+  {
+   "case_id": "e002_q1_r4",
+   "split": "DEV",
+   "component": "ALL",
+   "predicted_cost": 0.00081545,
+   "text_chars": 1910,
+   "images": 0
+  },
+  {
+   "case_id": "e002_q1_r5",
+   "split": "DEV",
+   "component": "ALL",
+   "predicted_cost": 0.0008210499999999999,
+   "text_chars": 2022,
+   "images": 0
+  },
+  {
+   "case_id": "e002_q1_r6",
+   "split": "DEV",
+   "component": "ALL",
+   "predicted_cost": 0.0008210499999999999,
+   "text_chars": 2022,
+   "images": 0
+  },
+  {
+   "case_id": "e002_q1_r7",
+   "split": "DEV",
+   "component": "ALL",
+   "predicted_cost": 0.00081715,
+   "text_chars": 1944,
+   "images": 0
+  },
+  {
+   "case_id": "e002_q1_r8",
+   "split": "DEV",
+   "component": "ALL",
+   "predicted_cost": 0.0008235499999999999,
+   "text_chars": 2072,
+   "images": 0
+  },
+  {
+   "case_id": "e002_q2_r1",
+   "split": "DEV",
+   "component": "ALL",
+   "predicted_cost": 0.00081895,
+   "text_chars": 1980,
+   "images": 0
+  },
+  {
+   "case_id": "e002_q2_r2",
+   "split": "DEV",
+   "component": "ALL",
+   "predicted_cost": 0.00081975,
+   "text_chars": 1996,
+   "images": 0
+  },
+  {
+   "case_id": "e002_q2_r3",
+   "split": "DEV",
+   "component": "ALL",
+   "predicted_cost": 0.00082205,
+   "text_chars": 2042,
+   "images": 0
+  },
+  {
+   "case_id": "e002_q2_r4",
+   "split": "DEV",
+   "component": "ALL",
+   "predicted_cost": 0.0008243500000000001,
+   "text_chars": 2088,
+   "images": 0
+  },
+  {
+   "case_id": "e002_q2_r5",
+   "split": "DEV",
+   "component": "ALL",
+   "predicted_cost": 0.0008192000000000001,
+   "text_chars": 1985,
+   "images": 0
+  },
+  {
+   "case_id": "e002_q2_r6",
+   "split": "DEV",
+   "component": "ALL",
+   "predicted_cost": 0.000823,
+   "text_chars": 2061,
+   "images": 0
+  },
+  {
+   "case_id": "e002_q2_r7",
+   "split": "DEV",
+   "component": "ALL",
+   "predicted_cost": 0.0008262,
+   "text_chars": 2125,
+   "images": 0
+  },
+  {
+   "case_id": "e002_q2_r8",
+   "split": "DEV",
+   "component": "ALL",
+   "predicted_cost": 0.00082125,
+   "text_chars": 2026,
+   "images": 0
+  },
+  {
+   "case_id": "e003_q1_r1",
+   "split": "DEV",
+   "component": "ALL",
+   "predicted_cost": 0.0008285,
+   "text_chars": 2171,
+   "images": 0
+  },
+  {
+   "case_id": "e003_q1_r3",
+   "split": "DEV",
+   "component": "ALL",
+   "predicted_cost": 0.0008267999999999999,
+   "text_chars": 2137,
+   "images": 0
+  },
+  {
+   "case_id": "e003_q1_r4",
+   "split": "DEV",
+   "component": "ALL",
+   "predicted_cost": 0.00081765,
+   "text_chars": 1954,
+   "images": 0
+  },
+  {
+   "case_id": "e003_q1_r5",
+   "split": "DEV",
+   "component": "ALL",
+   "predicted_cost": 0.00082225,
+   "text_chars": 2046,
+   "images": 0
+  },
+  {
+   "case_id": "e003_q1_r6",
+   "split": "DEV",
+   "component": "ALL",
+   "predicted_cost": 0.0008223,
+   "text_chars": 2047,
+   "images": 0
+  },
+  {
+   "case_id": "e003_q1_r7",
+   "split": "DEV",
+   "component": "ALL",
+   "predicted_cost": 0.0008155,
+   "text_chars": 1911,
+   "images": 0
+  },
+  {
+   "case_id": "e003_q1_r8",
+   "split": "DEV",
+   "component": "ALL",
+   "predicted_cost": 0.0008226,
+   "text_chars": 2053,
+   "images": 0
+  },
+  {
+   "case_id": "e003_q2_r1",
+   "split": "DEV",
+   "component": "ALL",
+   "predicted_cost": 0.00081945,
+   "text_chars": 1990,
+   "images": 0
+  },
+  {
+   "case_id": "e003_q2_r2",
+   "split": "DEV",
+   "component": "ALL",
+   "predicted_cost": 0.0008207,
+   "text_chars": 2015,
+   "images": 0
+  },
+  {
+   "case_id": "e003_q2_r3",
+   "split": "DEV",
+   "component": "ALL",
+   "predicted_cost": 0.000823,
+   "text_chars": 2061,
+   "images": 0
+  },
+  {
+   "case_id": "e003_q2_r4",
+   "split": "DEV",
+   "component": "ALL",
+   "predicted_cost": 0.0008226,
+   "text_chars": 2053,
+   "images": 0
+  },
+  {
+   "case_id": "e003_q2_r5",
+   "split": "DEV",
+   "component": "ALL",
+   "predicted_cost": 0.0008199500000000001,
+   "text_chars": 2000,
+   "images": 0
+  },
+  {
+   "case_id": "e003_q2_r6",
+   "split": "DEV",
+   "component": "ALL",
+   "predicted_cost": 0.00082125,
+   "text_chars": 2026,
+   "images": 0
+  },
+  {
+   "case_id": "e003_q2_r7",
+   "split": "DEV",
+   "component": "ALL",
+   "predicted_cost": 0.0008248999999999999,
+   "text_chars": 2099,
+   "images": 0
+  },
+  {
+   "case_id": "e003_q2_r8",
+   "split": "DEV",
+   "component": "ALL",
+   "predicted_cost": 0.0008223999999999999,
+   "text_chars": 2049,
+   "images": 0
+  },
+  {
+   "case_id": "e007_q1_r1",
+   "split": "DEV",
+   "component": "ALL",
+   "predicted_cost": 0.0008302,
+   "text_chars": 2205,
+   "images": 0
+  }
+ ],
+ "leakage_check": "passed"
+}

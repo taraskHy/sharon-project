@@ -319,9 +319,14 @@ def test_a_transcription_incomplete_case_is_excluded_from_grading_accuracy():
     from autograder.benchmark.roles import GradeAdapter
 
     def _row(cid, complete, score):
+        # verdict target: the primary metric is the explanation verdict, and a
+        # partially-evidenced case must stay out of it exactly as before
+        verdict = "valid" if score == 4.0 else "invalid"
         return {"case_id": cid, "split": "DEV", "component": "grade", "decision": "AUTO",
                 "schema_failure": False, "score": score, "label_score": 4.0,
-                "exact": score == 4.0, "abs_error": abs(score - 4.0),
+                "label_verdict": "valid", "predicted_verdict": verdict,
+                "verdict_exact": verdict == "valid",
+                "final_exact": score == 4.0, "final_abs_error": abs(score - 4.0),
                 "harmful_upgrade": score > 4.0, "harmful_downgrade": score < 4.0,
                 "uncertain": False, "validation_ok": True,
                 "transcription_complete": complete}
@@ -330,7 +335,9 @@ def test_a_transcription_incomplete_case_is_excluded_from_grading_accuracy():
     agg = GradeAdapter("grade_primary").aggregate([_row("a", True, 4.0), _row("b", False, 0.0)], [])
     assert agg["labeled_excluded_transcription_incomplete"] == 1
     # the incomplete case does NOT drag accuracy down — it is simply not measured
-    assert agg["exact_score_pct"] == 100.0
+    assert agg["verdict_cases"] == 1
+    assert agg["verdict_exact_pct"] == 100.0
+    assert agg["final_score_exact_pct"] == 100.0
 
 
 # --------------------------------------------------------- export / leak --

@@ -29,8 +29,10 @@ from typing import Any, Callable
 from .manifests import REPO_ROOT, BenchCase, BenchmarkManifest
 
 DEFAULT_SMOKE_ROOT = REPO_ROOT / "evaluation" / "model_selection" / "smoke"
-SMOKE_RULES_VERSION = ("smoke-rules-v2 (2026-08-23, DEV only; min-id per slot unless the role "
-                       "declares SMOKE_ORDER / SMOKE_DIVERSITY)")
+SMOKE_RULES_VERSION = ("smoke-rules-v3 (2026-08-24, DEV only; min-id per slot unless the role "
+                       "declares SMOKE_ORDER / SMOKE_DIVERSITY; grade_primary slots are the "
+                       "three canonical explanation-verdict classes and require a derivable "
+                       "verdict, replacing the v2 final-score buckets)")
 
 
 class SmokeError(RuntimeError):
@@ -92,13 +94,24 @@ SMOKE_RULES: dict[str, list[tuple[str, str, Callable[[BenchCase], bool]]]] = {
         ("synthetic_token_duplication", "SYNTHETIC near miss: token duplication / addition",
          lambda c: c.component == "SYNTHETIC" and c.label.get("corruption_type") == "token_duplication_addition"),
     ],
+    # The grading model's responsibility is the explanation VERDICT, not the
+    # final number (docs/grade-primary-benchmark-target.md), so the slots are
+    # the three canonical verdict classes — one per production factor.
+    #
+    # A slot only accepts a case whose verdict is MATHEMATICALLY DERIVABLE.
+    # That matters most for `invalid`: a zero-score case is only an invalid
+    # EXPLANATION when the selection was correct. A zero from a wrong
+    # selection carries no explanation ground truth, and letting it fill this
+    # slot would put a fabricated label in front of the first paid call.
     "grade_primary": [
-        ("no_credit", "a zero: the grader must be able to withhold all credit, not just award it",
-         lambda c: _score(c) == 0.0),
-        ("partial_credit", "partial credit: the hardest judgement — some rubric credit, not all",
-         lambda c: 0.0 < _score(c) < _max_score(c)),
-        ("full_credit", "full credit: a correct answer must not be marked down",
-         lambda c: _score(c) >= _max_score(c) > 0),
+        ("verdict_invalid", "factor 0: the grader must be able to withhold all credit "
+                            "(requires a confirmed-correct selection, else the zero says "
+                            "nothing about the explanation)",
+         lambda c: _verdict(c) == "invalid"),
+        ("verdict_partially_valid", "factor 0.5: the hardest judgement — some credit, not all",
+         lambda c: _verdict(c) == "partially_valid"),
+        ("verdict_valid", "factor 1: a sufficient explanation must not be marked down",
+         lambda c: _verdict(c) == "valid"),
     ],
 }
 
@@ -116,6 +129,18 @@ SMOKE_ORDER: dict[str, Callable[[BenchCase], Any]] = {
 SMOKE_DIVERSITY: dict[str, Callable[[BenchCase], Any]] = {
     "grade_primary": lambda c: c.meta.get("writer") or c.label.get("writer"),
 }
+
+
+def _verdict(c: BenchCase) -> str | None:
+    """The DERIVED canonical explanation verdict of a case, or None.
+
+    Only a case whose verdict is mathematically unique can fill a slot: an
+    undecidable case would otherwise land in whichever bucket ``None``
+    compares into, which is exactly how a fabricated label reaches a paid run.
+    """
+    if not c.label.get("explanation_verdict_derivable"):
+        return None
+    return c.label.get("explanation_verdict")
 
 
 def _score(c: BenchCase) -> float | None:
@@ -178,13 +203,31 @@ def smoke_path(role: str, root: Path = DEFAULT_SMOKE_ROOT) -> Path:
 
 
 def freeze_smoke(role: str, manifest: BenchmarkManifest, root: Path = DEFAULT_SMOKE_ROOT, *,
-                 now: str | None = None) -> dict[str, Any]:
+                 now: str | None = None, allow_unfilled: bool = False) -> dict[str, Any]:
     """Write the frozen subset once. Refuses to overwrite an existing file
-    (a smoke subset is never re-selected after it exists)."""
+    (a smoke subset is never re-selected after it exists), and refuses to
+    freeze a subset that does not cover every slot.
+
+    An unfilled slot is a hole in what the first paid run can observe, and the
+    holes are never random: for grade_primary the slot most likely to be empty
+    is ``verdict_invalid``, whose ground truth needs the selection-correctness
+    audit. Freezing without it would ship a subset that cannot tell whether a
+    grader can WITHHOLD credit — the one behaviour a grading benchmark must
+    not leave unmeasured. Pass ``allow_unfilled`` to accept the gap knowingly;
+    the frozen file records it either way.
+    """
     p = smoke_path(role, root)
     if p.exists():
         raise SmokeError(f"{p} already exists: smoke subsets are frozen and never re-selected")
     prop = propose_smoke(role, manifest)
+    unfilled = list(prop.get("unfilled_slots") or [])
+    if unfilled and not allow_unfilled:
+        raise SmokeError(
+            f"{role}: {len(unfilled)} slot(s) could not be filled from the frozen dataset: "
+            + ", ".join(unfilled)
+            + ". Freezing now would hide that gap behind a hash. Supply the missing ground "
+              "truth (for grade_primary's verdict slots: scripts/selection_audit_ui.py, then "
+              "re-apply the verdict-target revision), or pass allow_unfilled to accept it.")
     prop["frozen_at"] = now or time.strftime("%Y-%m-%d %H:%M:%S")
     prop["_policy"] = ("Pre-registered DEV smoke subset for the first live execution of a candidate. "
                        "Frozen before any new model output; never modified or optimized after results. "

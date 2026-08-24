@@ -89,17 +89,26 @@ def repaired_line_ids(dataset: Path = DATASET) -> list[str]:
                   for sid in (r.get("evidence_repairs") or []))
 
 
+from autograder.benchmark.datasets import VERDICT_LABEL_FIELDS
+
 # ------------------------------------------------- the inverse of apply_repairs --
 
 def _unapply_label(row: dict) -> dict:
     """Undo BOTH layers apply_repairs writes: the effective-evidence view (the
     explicit line dimensions, and `evidence_images` narrowed to real answer
-    evidence) and, on a repaired row, the repair itself."""
+    evidence) and, on a repaired row, the repair itself.
+
+    Reconstructing the state at revision N also means undoing every revision
+    AFTER N. The verdict-target revision (2026-08-24) added the derived
+    explanation-verdict block to every label row, long after the evidence
+    repair, so those fields are stripped here too — otherwise the
+    reconstruction would carry fields that did not exist yet and could never
+    match the historical hash."""
     reps = list(row.get("evidence_repairs") or [])
     out: dict = {}
     for k, v in row.items():
-        if k == "evidence_repairs" or k in RESOLUTION_FIELDS:
-            continue                                   # neither field existed before the repair
+        if k == "evidence_repairs" or k in RESOLUTION_FIELDS or k in VERDICT_LABEL_FIELDS:
+            continue                                   # none of these existed before the repair
         if k == "evidence_lines" and reps:
             v = [({kk: vv for kk, vv in e.items() if kk not in REPAIR_LINE_FIELDS}
                   | {"image": e["original_image"], "transcription_status": e["original_transcription_status"]})

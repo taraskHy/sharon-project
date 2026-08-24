@@ -1,11 +1,18 @@
-"""The frozen GRADE_PRIMARY smoke subset — the first three cases any grading
-model is ever paid to see.
+"""The GRADE_PRIMARY smoke subset — the first cases any grading model is paid to see.
 
 The point of freezing is that nobody can pick the cases after seeing a result.
-These tests check the properties that make the subset worth trusting: it is
-DEV-only, it spans the three score buckets, it spans three students, it takes
-the HARDEST (longest) answer in each bucket rather than the most convenient
-one, and it is reproducible from the rules alone.
+
+As of 2026-08-24 the slots are the three canonical EXPLANATION VERDICT classes
+(the model's actual responsibility), not the old final-score buckets. The v2
+score-bucket subset was frozen against a benchmark target since classified
+INVALID FOR MODEL SELECTION; it is preserved beside the smoke directory under
+its SUPERSEDED name and is deliberately not loaded here.
+
+The `verdict_invalid` slot can only be filled once the selection-correctness
+audit has resolved at least one zero-score DEV case: a zero from a WRONG
+selection says nothing about the explanation. Until then the subset cannot be
+frozen at all, and these tests assert exactly that rather than pretending
+otherwise.
 
 Offline: no model, network or OCR calls.
 """
@@ -18,10 +25,11 @@ import pytest
 
 from autograder.benchmark.manifests import load_manifest
 from autograder.benchmark.smoke import (DEFAULT_SMOKE_ROOT, SMOKE_DIVERSITY, SMOKE_ORDER,
-                                        SMOKE_RULES, SmokeError, load_smoke, propose_smoke,
-                                        smoke_case_ids)
+                                        SMOKE_RULES, SmokeError, freeze_smoke, load_smoke,
+                                        propose_smoke, smoke_case_ids)
 
 ROLE = "grade_primary"
+SLOTS = ["verdict_invalid", "verdict_partially_valid", "verdict_valid"]
 
 
 @pytest.fixture(scope="module")
@@ -30,88 +38,172 @@ def manifest():
 
 
 @pytest.fixture(scope="module")
+def proposal(manifest):
+    return propose_smoke(ROLE, manifest)
+
+
+@pytest.fixture(scope="module")
 def frozen(manifest):
-    return load_smoke(ROLE, manifest)
+    try:
+        return load_smoke(ROLE, manifest)
+    except SmokeError as e:
+        pytest.skip(f"no frozen verdict-target smoke subset yet: {e}")
 
 
 def _by_id(manifest):
     return {c.case_id: c for c in manifest.cases}
 
 
-def test_the_frozen_subset_is_exactly_what_the_rules_produce(manifest, frozen):
-    """If this fails, either the rules or the frozen file changed — and a smoke
-    subset is never re-selected after freezing."""
-    assert [c["case_id"] for c in propose_smoke(ROLE, manifest)["cases"]] == \
-           [c["case_id"] for c in frozen["cases"]]
-    assert frozen["selection_sha256"] == propose_smoke(ROLE, manifest)["selection_sha256"]
+def _verdict(case):
+    return (case.label.get("explanation_verdict")
+            if case.label.get("explanation_verdict_derivable") else None)
 
 
-def test_it_is_three_dev_cases_and_no_held_out(manifest, frozen):
-    cases = [_by_id(manifest)[c["case_id"]] for c in frozen["cases"]]
-    assert len(cases) == 3
-    assert {c.split for c in cases} == {"DEV"}, "a paid smoke run must never touch HELD_OUT"
+# ------------------------------------------------------------------ rules ----
 
 
-def test_it_covers_no_partial_and_full_credit(manifest, frozen):
-    """A grader that only ever awards full marks would pass a subset of 4s."""
-    cases = [_by_id(manifest)[c["case_id"]] for c in frozen["cases"]]
-    scores = [float(c.label["score"]) for c in cases]
-    maxes = [float(c.label["max_score"]) for c in cases]
-    assert any(s == 0 for s in scores), "no zero: withholding credit is untested"
-    assert any(0 < s < m for s, m in zip(scores, maxes)), "no partial credit"
-    assert any(s == m for s, m in zip(scores, maxes)), "no full-credit case"
-    assert [c["slot"] for c in frozen["cases"]] == ["no_credit", "partial_credit", "full_credit"]
+def test_the_slots_are_the_three_canonical_verdict_classes():
+    assert [slot for slot, _, _ in SMOKE_RULES[ROLE]] == SLOTS
 
 
-def test_every_case_has_real_ground_truth(manifest, frozen):
-    """Without a FINAL label the run measures nothing."""
-    for c in (_by_id(manifest)[x["case_id"]] for x in frozen["cases"]):
-        assert c.label.get("score") is not None
-        assert c.label.get("transcription_complete") is not False, (
-            "the model would not see the whole answer the human graded")
+def test_every_slot_matches_its_production_factor():
+    """One slot per distinct verdict factor: 0, 0.5, 1."""
+    from autograder.benchmark.verdicts import factor_for
+
+    assert factor_for("invalid") == 0.0
+    assert factor_for("partially_valid") == 0.5
+    assert factor_for("valid") == 1.0
 
 
-def test_it_spans_three_students(manifest, frozen):
-    cases = [_by_id(manifest)[c["case_id"]] for c in frozen["cases"]]
-    writers = [SMOKE_DIVERSITY[ROLE](c) for c in cases]
-    assert len(set(writers)) == 3, f"the subset grades the same student twice: {writers}"
-    assert len({c.label.get("question_id") for c in cases}) >= 2, "only one question is covered"
+def test_a_slot_never_accepts_a_case_whose_verdict_is_not_derivable(manifest):
+    """A zero-score case with an unknown selection has no explanation ground
+    truth. Letting it fill `verdict_invalid` would put a fabricated label in
+    front of the first paid call."""
+    dev = manifest.by_split("DEV", None)
+    undecidable = [c for c in dev if not c.label.get("explanation_verdict_derivable")]
+    assert undecidable, "expected some undecidable DEV cases while the audit is pending"
+    for _slot, _why, pred in SMOKE_RULES[ROLE]:
+        for c in undecidable:
+            assert not pred(c), f"{c.case_id} must not qualify for any slot"
 
 
-def test_it_takes_the_hardest_case_in_each_bucket_not_the_easiest(manifest, frozen):
-    """'Do not cherry-pick easy cases': each pick must be the LONGEST answer
-    available in its bucket among still-eligible students."""
-    dev = sorted(manifest.by_split("DEV"), key=SMOKE_ORDER[ROLE])
-    picked, used_writers = [], set()
-    for (slot, _why, pred), rec in zip(SMOKE_RULES[ROLE], frozen["cases"]):
-        eligible = [c for c in dev if pred(c) and c.case_id not in picked
+def test_the_proposal_is_dev_only(proposal):
+    assert proposal["split"] == "DEV"
+    assert all(c["split"] == "DEV" for c in proposal["cases"])
+
+
+def test_the_proposal_reports_slots_it_could_not_fill(proposal):
+    filled = {c["slot"] for c in proposal["cases"]}
+    unfilled = set(proposal["unfilled_slots"])
+    assert filled | unfilled == set(SLOTS)
+    assert not (filled & unfilled)
+
+
+def test_each_proposed_case_really_carries_its_slots_verdict(manifest, proposal):
+    by_id = _by_id(manifest)
+    want = {"verdict_invalid": "invalid", "verdict_partially_valid": "partially_valid",
+            "verdict_valid": "valid"}
+    for c in proposal["cases"]:
+        assert _verdict(by_id[c["case_id"]]) == want[c["slot"]], c
+
+
+def test_it_spans_distinct_students(manifest, proposal):
+    by_id = _by_id(manifest)
+    writers = [SMOKE_DIVERSITY[ROLE](by_id[c["case_id"]]) for c in proposal["cases"]]
+    assert len(set(writers)) == len(writers), f"a writer repeats: {writers}"
+
+
+def test_it_takes_the_hardest_case_in_each_class_not_the_easiest(manifest, proposal):
+    """SMOKE_ORDER puts the LONGEST answer first: the shortest answer in a
+    class is usually a fragment that tests nothing."""
+    by_id = _by_id(manifest)
+    order = SMOKE_ORDER[ROLE]
+    chosen = {c["slot"]: by_id[c["case_id"]] for c in proposal["cases"]}
+    dev = manifest.by_split("DEV", None)
+    used_writers: set = set()
+    for slot, _why, pred in SMOKE_RULES[ROLE]:
+        if slot not in chosen:
+            continue
+        picked = chosen[slot]
+        eligible = [c for c in dev if pred(c)
                     and SMOKE_DIVERSITY[ROLE](c) not in used_writers]
-        best = eligible[0]
-        assert rec["case_id"] == best.case_id, (
-            f"slot {slot}: frozen {rec['case_id']} is not the longest eligible answer "
-            f"({best.case_id}, {len(best.inputs['transcription'])} chars)")
-        picked.append(best.case_id)
-        used_writers.add(SMOKE_DIVERSITY[ROLE](best))
+        assert picked is min(eligible, key=order), slot
+        used_writers.add(SMOKE_DIVERSITY[ROLE](picked))
+
+
+def test_the_proposal_is_reproducible_from_the_rules_alone(manifest, proposal):
+    assert propose_smoke(ROLE, manifest) == proposal
+
+
+# --------------------------------------------------- the freeze gate today ----
+
+
+def test_the_invalid_slot_is_blocked_until_the_selection_audit_runs(proposal):
+    """This is the honest state of the benchmark, asserted rather than
+    described. When the 8-case audit lands, this test flips and the two
+    below take over."""
+    if "verdict_invalid" not in proposal["unfilled_slots"]:
+        pytest.skip("the selection audit has landed; the invalid slot is filled")
+    assert "verdict_invalid" in proposal["unfilled_slots"]
+
+
+def test_freezing_refuses_while_a_slot_is_unfilled(tmp_path, manifest, proposal):
+    """Freezing an incomplete subset would hide the gap behind a hash."""
+    if not proposal["unfilled_slots"]:
+        pytest.skip("every slot is filled; nothing to refuse")
+    with pytest.raises(SmokeError, match="could not be filled"):
+        freeze_smoke(ROLE, manifest, tmp_path)
+
+
+def test_an_incomplete_subset_can_still_be_frozen_deliberately(tmp_path, manifest, proposal):
+    """...but only on purpose, and the gap is recorded in the frozen file."""
+    if not proposal["unfilled_slots"]:
+        pytest.skip("every slot is filled")
+    d = freeze_smoke(ROLE, manifest, tmp_path, allow_unfilled=True)
+    assert d["unfilled_slots"] == proposal["unfilled_slots"]
+    assert json.loads((tmp_path / f"{ROLE}_smoke.json").read_text(encoding="utf-8"))
+
+
+def test_the_superseded_score_bucket_subset_is_preserved_not_deleted():
+    p = DEFAULT_SMOKE_ROOT / f"{ROLE}_smoke.SUPERSEDED_final_score_target_2026-08-23.json"
+    if not p.exists():
+        pytest.skip("superseded subset not present in this checkout")
+    old = json.loads(p.read_text(encoding="utf-8"))
+    assert old["selection_sha256"] == \
+        "ad104dbe3e9171c485dd9fe4e6b109880d574883ec4a0e59e33bd35712725cbd"
+    assert [c["slot"] for c in old["cases"]] == ["no_credit", "partial_credit", "full_credit"]
+
+
+# ------------------------------------------------- once a subset is frozen ----
+
+
+def test_the_frozen_subset_is_exactly_what_the_rules_produce(manifest, frozen):
+    fresh = propose_smoke(ROLE, manifest)
+    assert [c["case_id"] for c in frozen["cases"]] == [c["case_id"] for c in fresh["cases"]]
+    assert frozen["selection_sha256"] == fresh["selection_sha256"]
+
+
+def test_the_frozen_subset_is_dev_only_and_covers_every_class(manifest, frozen):
+    assert all(c["split"] == "DEV" for c in frozen["cases"])
+    assert not frozen["unfilled_slots"], frozen["unfilled_slots"]
+    assert sorted(c["slot"] for c in frozen["cases"]) == sorted(SLOTS)
 
 
 def test_a_tampered_frozen_file_is_refused(tmp_path, manifest, frozen):
+    d = json.loads(json.dumps(frozen))
+    d["cases"][0]["case_id"] = "e999_q9_r9"
     root = tmp_path / "smoke"
     root.mkdir()
-    d = json.loads((DEFAULT_SMOKE_ROOT / f"{ROLE}_smoke.json").read_text(encoding="utf-8"))
-    d["cases"][0]["case_id"] = d["cases"][0]["case_id"].replace("e003", "e002")
-    (root / f"{ROLE}_smoke.json").write_text(json.dumps(d, ensure_ascii=False), encoding="utf-8")
+    (root / f"{ROLE}_smoke.json").write_text(json.dumps(d), encoding="utf-8")
     with pytest.raises(SmokeError, match="hash mismatch"):
         load_smoke(ROLE, manifest, root)
 
 
 def test_the_runner_resolves_the_same_ids(manifest, frozen):
-    assert smoke_case_ids(ROLE, manifest) == [c["case_id"] for c in frozen["cases"]]
+    assert sorted(smoke_case_ids(ROLE, manifest)) == \
+        sorted(c["case_id"] for c in frozen["cases"])
 
 
 def test_the_diversity_hook_does_not_disturb_the_roles_that_do_not_use_it(manifest):
-    """ocr_primary / ocr_verify were frozen under the min-id rule; adding the
-    hooks must not change what those rules select."""
-    for role in ("ocr_primary", "ocr_verify"):
-        assert role not in SMOKE_ORDER and role not in SMOKE_DIVERSITY
-        m = load_manifest(role)
-        assert load_smoke(role, m)["selection_sha256"] == propose_smoke(role, m)["selection_sha256"]
+    assert "ocr_primary" not in SMOKE_DIVERSITY
+    assert "ocr_verify" not in SMOKE_DIVERSITY

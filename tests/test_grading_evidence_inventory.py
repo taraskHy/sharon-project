@@ -238,15 +238,22 @@ def test_grade_adapter_excludes_transcription_incomplete_cases_from_accuracy():
     base = {"split": "DEV", "component": "ALL", "schema_failure": False, "decision": "AUTO", "score": 3.0,
             "validation_ok": True, "evidence_failure": False}
     scored = [
-        {**base, "case_id": "a", "transcription_complete": True, "label_score": 3.0, "exact": True, "abs_error": 0.0,
+        {**base, "case_id": "a", "transcription_complete": True, "label_score": 3.0,
+         "label_verdict": "partially_valid", "predicted_verdict": "partially_valid",
+         "verdict_exact": True, "final_exact": True, "final_abs_error": 0.0,
          "harmful_upgrade": False, "harmful_downgrade": False},
-        {**base, "case_id": "b", "transcription_complete": False, "label_score": 1.0, "exact": False, "abs_error": 2.0,
+        {**base, "case_id": "b", "transcription_complete": False, "label_score": 1.0,
+         "label_verdict": "partially_valid", "predicted_verdict": "valid",
+         "verdict_exact": False, "final_exact": False, "final_abs_error": 2.0,
          "harmful_upgrade": True, "harmful_downgrade": False},
         {**base, "case_id": "c", "transcription_complete": True},
     ]
     agg = ad.aggregate(scored, [])
     assert agg["cases"] == 3 and agg["labeled_excluded_transcription_incomplete"] == 1
-    assert agg["exact_score_pct"] == 100.0 and agg["harmful_upgrades"] == 0      # only the complete labeled case counts
+    # only the complete labeled case counts, on the verdict target and on the
+    # derived final-score metric alike
+    assert agg["verdict_cases"] == 1 and agg["verdict_exact_pct"] == 100.0
+    assert agg["final_score_exact_pct"] == 100.0 and agg["harmful_upgrades"] == 0
 
 
 def test_evidence_images_are_the_effective_evidence_not_the_full_line_list():

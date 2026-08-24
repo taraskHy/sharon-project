@@ -778,3 +778,189 @@ __all__ = ["write_declared_dataset", "DatasetExists", "DatasetBuildError", "WRIT
            "default_grading_key_path", "build_grading_dataset", "build_escalation_dataset",
            "build_mc_dataset", "build_variant_dataset", "render_marker_region", "MARKER_REGION",
            "AUDIT_PROVENANCE", "STAGE_A_COVERS"]
+
+
+# ----------------------------------------------------------------------------
+# 4C GRADE_PRIMARY verdict target (label-side revision)
+# ----------------------------------------------------------------------------
+
+#: Label fields carrying the derived explanation-verdict ground truth.
+VERDICT_LABEL_FIELDS = ("explanation_verdict", "explanation_verdict_derivable",
+                        "explanation_verdict_reason", "selection_correct",
+                        "selection_correct_source", "verdict_provenance")
+
+#: reason code that means "the selection-correctness audit has not run yet"
+_PENDING_AUDIT_REASON = "zero_but_selection_correctness_unknown"
+
+
+def _with_verdict_block(row: dict, block: dict) -> dict:
+    """Insert the verdict fields at a FIXED position: after the row's own
+    fields but BEFORE the evidence-repair tail.
+
+    ``evidence_repairs._canonical`` keeps the repair layer's fields last and
+    re-derives that ordering every time ``apply-evidence-repairs`` runs. If the
+    verdict block sat after them, re-running the repair command would reorder
+    the row, change its bytes and write a spurious revision — an apparently
+    idempotent command silently churning the dataset. Placing the block ahead
+    of the tail keeps both layers stable in either order.
+    """
+    from .evidence_repairs import _REPAIR_TAIL
+
+    stripped = {k: v for k, v in row.items() if k not in VERDICT_LABEL_FIELDS}
+    head = {k: v for k, v in stripped.items() if k not in _REPAIR_TAIL}
+    tail = {k: v for k, v in stripped.items() if k in _REPAIR_TAIL}
+    return {**head, **block, **tail}
+
+
+def apply_verdict_targets(dataset_dir: Path, *, derivations: list[dict],
+                          grading_policy_version: str,
+                          auditable_case_ids: Iterable[str] = (),
+                          selection_audit_sha256: str | None = None,
+                          allow_unresolved: bool = False,
+                          now: str | None = None, dry_run: bool = False) -> dict[str, Any]:
+    """Add the derived explanation-verdict ground truth to a frozen
+    grade_primary dataset, as a LABEL-SIDE revision.
+
+    The benchmark target changes from "reproduce the instructor's final
+    number" to "produce the explanation verdict production actually asks the
+    model for". That is a change to what we SCORE, not to what the model
+    SEES, so:
+
+    * ``cases_inputs.jsonl`` is byte-identical before and after (its sha256
+      must match the manifest at both ends) - no prompt, transcription, pack
+      or case membership moves;
+    * case ids, split assignment and HELD_OUT membership are preserved;
+    * the instructor ``score`` and every evidence/provenance field already on
+      a row are preserved; the verdict fields are ADDED beside them;
+    * every row records how its verdict was obtained, so a derived label can
+      never be mistaken for a human one.
+
+    A row whose verdict is not mathematically unique gets
+    ``explanation_verdict = None`` and ``derivable = False`` with the reason -
+    never a guessed class. Applying while ambiguous cases are still unaudited
+    requires ``allow_unresolved``.
+    """
+    d = Path(dataset_dir)
+    man_p, inputs_p, labels_p = d / "manifest.json", d / "cases_inputs.jsonl", d / "cases_labels.jsonl"
+    if not man_p.exists():
+        raise DatasetBuildError(f"{d} holds no frozen dataset")
+    man = json.loads(man_p.read_text(encoding="utf-8"))
+    if _sha(inputs_p) != man.get("inputs_sha256"):
+        raise DatasetBuildError("cases_inputs.jsonl does not match the manifest hash; "
+                                "refusing to touch a drifted dataset")
+    old_labels_sha = _sha(labels_p)
+    if old_labels_sha != man.get("labels_sha256"):
+        raise DatasetBuildError("cases_labels.jsonl does not match the manifest hash; "
+                                "refusing to touch a drifted dataset")
+
+    by_id = {r["case_id"]: r for r in derivations}
+    rows = [json.loads(l) for l in labels_p.read_text(encoding="utf-8").splitlines() if l.strip()]
+    missing = [r["case_id"] for r in rows if r["case_id"] not in by_id]
+    if missing:
+        raise DatasetBuildError(f"no derivation supplied for {len(missing)} case(s): "
+                                + ", ".join(missing[:5]))
+    unresolved = sorted(c for c, v in by_id.items() if not v.get("derivable"))
+    # Only cases the selection audit can actually reach may block the revision.
+    # HELD_OUT zero-score rows are unresolvable by construction here — the audit
+    # tool never lists or renders them — so they stay permanently unresolved
+    # rather than blocking a DEV/CALIBRATION label revision forever. Their ids
+    # are never enumerated in this summary either.
+    auditable = set(auditable_case_ids)
+    pending = [c for c in unresolved
+               if by_id[c].get("derivation_reason") == _PENDING_AUDIT_REASON
+               and (not auditable or c in auditable)]
+    if pending and not allow_unresolved:
+        raise DatasetBuildError(
+            f"{len(pending)} case(s) still need the selection-correctness audit ("
+            + ", ".join(pending[:5])
+            + "). Run scripts/selection_audit_ui.py, or pass allow_unresolved to "
+              "record them as unresolved on purpose.")
+
+    new_rows, updated = [], []
+    for row in rows:
+        dv = by_id[row["case_id"]]
+        block = {
+            "explanation_verdict": dv.get("derived_explanation_verdict"),
+            "explanation_verdict_derivable": bool(dv.get("derivable")),
+            "explanation_verdict_reason": dv.get("derivation_reason"),
+            "selection_correct": dv.get("selection_correct"),
+            "selection_correct_source": dv.get("selection_correct_source"),
+            "verdict_provenance": {
+                "derived_from": ("instructor final score + selection correctness + "
+                                 "frozen grading policy"),
+                "instructor_score_source": ("final_labels.json "
+                                            "(ground_truth_source=original_instructor_grade)"),
+                "grading_policy_version": grading_policy_version,
+                "conversion": ("grade._grade_sub_item explanation_required & weight==0 "
+                               "branch; factor table grade._verdict_factor; "
+                               "partial_explanation_factor from config.GraderConfig"),
+                "selection_audit_sha256": selection_audit_sha256,
+                "model_involved": False,
+            },
+        }
+        new = _with_verdict_block(row, block)
+        if new != row:
+            updated.append(row["case_id"])
+        new_rows.append(new)
+
+    body = "".join(json.dumps(r, ensure_ascii=False) + "\n" for r in new_rows)
+    new_labels_sha = hashlib.sha256(body.encode("utf-8")).hexdigest()
+    counts: dict[str, int] = {}
+    for dv in by_id.values():
+        key = dv.get("derived_explanation_verdict") or "UNRESOLVED"
+        counts[key] = counts.get(key, 0) + 1
+    summary = {
+        "dataset": str(d), "cases": len(new_rows),
+        "inputs_sha256": man["inputs_sha256"], "inputs_changed": False,
+        "previous_labels_sha256": old_labels_sha, "labels_sha256": new_labels_sha,
+        "rows_updated": updated,
+        "derivable": sum(1 for v in by_id.values() if v.get("derivable")),
+        "unresolved": len(unresolved),
+        # HELD_OUT ids are deliberately omitted from both lists
+        "unresolved_cases": [c for c in unresolved if not auditable or c in auditable],
+        "pending_selection_audit": sorted(pending),
+        "by_verdict": counts,
+        "grading_policy_version": grading_policy_version,
+        "dry_run": dry_run, "written": False,
+    }
+    if dry_run or new_labels_sha == old_labels_sha:
+        return summary
+
+    with labels_p.open("w", encoding="utf-8", newline="\n") as f:
+        f.write(body)
+    if _sha(labels_p) != new_labels_sha or _sha(inputs_p) != man["inputs_sha256"]:
+        raise DatasetBuildError("post-write verification failed")
+    man["labels_sha256"] = new_labels_sha
+    man.setdefault("revisions", []).append({
+        "at": now or time.strftime("%Y-%m-%d %H:%M:%S"),
+        "kind": "verdict_target",
+        "why": ("benchmark target corrected to the model's actual responsibility: the "
+                "canonical explanation verdict that production maps deterministically "
+                "into the final score (docs/grade-primary-benchmark-target.md). "
+                "Label-side only - the model-visible inputs are unchanged."),
+        # the revision chain is walked link by link: every entry states where it
+        # started as well as where it ended, on BOTH files
+        "previous_inputs_sha256": man["inputs_sha256"],
+        "inputs_sha256": man["inputs_sha256"], "inputs_changed": False,
+        "previous_labels_sha256": old_labels_sha, "labels_sha256": new_labels_sha,
+        "rows_updated": len(updated),
+        "derivable": summary["derivable"], "unresolved": summary["unresolved"],
+        "by_verdict": counts,
+        "grading_policy_version": grading_policy_version,
+        "selection_audit_sha256": selection_audit_sha256,
+        "model_involved": False,
+    })
+    man.setdefault("extra", {})["verdict_target"] = {
+        "primary_target": "explanation_verdict",
+        "classes": list(("invalid", "partially_valid", "valid")),
+        "raw_model_score": "diagnostic only; normalized through reliability._verdict_from_score",
+        "secondary_metric": "final score, deterministic from selection_correct + verdict",
+        "derivable": summary["derivable"], "unresolved": summary["unresolved"],
+    }
+    man_p.write_text(json.dumps(man, ensure_ascii=False, indent=1), encoding="utf-8",
+                     newline="\n")
+    (d / "CHECKSUMS.sha256").write_text(
+        f"{man['inputs_sha256']}  cases_inputs.jsonl\n{man['labels_sha256']}  cases_labels.jsonl\n",
+        encoding="utf-8", newline="\n")
+    summary["written"] = True
+    return summary

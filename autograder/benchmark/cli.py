@@ -183,7 +183,8 @@ def cmd_bench_smoke(args) -> int:
         return 0
     if args.smoke_command == "freeze":
         try:
-            d = freeze_smoke(args.role, m, root)
+            d = freeze_smoke(args.role, m, root,
+                             allow_unfilled=getattr(args, "allow_unfilled", False))
         except Exception as e:  # noqa: BLE001
             _log(f"REFUSED: {e}")
             return 3
@@ -497,6 +498,9 @@ def add_bench_commands(sub) -> None:
     common(p)
     from .smoke import DEFAULT_SMOKE_ROOT
     p.add_argument("--smoke-root", default=str(DEFAULT_SMOKE_ROOT))
+    p.add_argument("--allow-unfilled", action="store_true",
+                   help="freeze even though some slot could not be filled "
+                        "(the gap is recorded in the frozen file)")
     p.set_defaults(func=cmd_bench_smoke)
 
     p = bs.add_parser("references", help="ocr_primary: the explicit 129-item reference provenance breakdown")

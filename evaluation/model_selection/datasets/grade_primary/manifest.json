@@ -4,7 +4,7 @@
  "frozen_at": "2026-08-22 05:28:41",
  "cases": 67,
  "inputs_sha256": "61ea571e9413b20b4b1e2d6dc84e14688cdd2ff4a1a3e0751a2233cf4dbc050c",
- "labels_sha256": "8bda05df1d8a2627334000c006e689afc3275cc7db2a24f4c79995e20e0770b7",
+ "labels_sha256": "2812403aff6abb2ce486dd7eae80879461bfaea958874f70f0b6fd10c24cf11d",
  "split_assignment": {
   "DEV": [
    "e002",
@@ -97,6 +97,18 @@
    },
    "transcription_incomplete_cases": [],
    "policy": "every recorded line is evidence for the HUMAN label; a case whose model-visible transcription does not cover every recorded line is transcription_complete=false and is excluded from model ACCURACY metrics (decision metrics still apply)"
+  },
+  "verdict_target": {
+   "primary_target": "explanation_verdict",
+   "classes": [
+    "invalid",
+    "partially_valid",
+    "valid"
+   ],
+   "raw_model_score": "diagnostic only; normalized through reliability._verdict_from_score",
+   "secondary_metric": "final score, deterministic from selection_correct + verdict",
+   "derivable": 53,
+   "unresolved": 14
   }
  },
  "revisions": [
@@ -252,6 +264,27 @@
     "reference_audit_manifest.json": "65ac16385979480945938f45f0d3e5e3255afa7bcb41c4ea7afe2ff2ebcc405f"
    },
    "note": "the model input (transcription) is unchanged; the grader-visible evidence version changed, so the labeling bundle must be rebuilt (python -m labeling_app build-bundle --replace)"
+  },
+  {
+   "at": "2026-08-24 22:10:00",
+   "kind": "verdict_target",
+   "why": "benchmark target corrected to the model's actual responsibility: the canonical explanation verdict that production maps deterministically into the final score (docs/grade-primary-benchmark-target.md). Label-side only - the model-visible inputs are unchanged.",
+   "previous_inputs_sha256": "61ea571e9413b20b4b1e2d6dc84e14688cdd2ff4a1a3e0751a2233cf4dbc050c",
+   "inputs_sha256": "61ea571e9413b20b4b1e2d6dc84e14688cdd2ff4a1a3e0751a2233cf4dbc050c",
+   "inputs_changed": false,
+   "previous_labels_sha256": "8bda05df1d8a2627334000c006e689afc3275cc7db2a24f4c79995e20e0770b7",
+   "labels_sha256": "2812403aff6abb2ce486dd7eae80879461bfaea958874f70f0b6fd10c24cf11d",
+   "rows_updated": 67,
+   "derivable": 53,
+   "unresolved": 14,
+   "by_verdict": {
+    "UNRESOLVED": 14,
+    "valid": 43,
+    "partially_valid": 10
+   },
+   "grading_policy_version": "explanation_gate_w0_v1",
+   "selection_audit_sha256": null,
+   "model_involved": false
   }
  ]
 }

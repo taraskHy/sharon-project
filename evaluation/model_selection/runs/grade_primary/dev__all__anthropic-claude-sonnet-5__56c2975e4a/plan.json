@@ -1,0 +1,267 @@
+{
+ "run_id": "dev__all__anthropic-claude-sonnet-5__56c2975e4a",
+ "mode": "dry_run",
+ "cases": 32,
+ "skipped_resume": 0,
+ "predicted_cost_total": 0.2246,
+ "pricing_table_available": true,
+ "rows": [
+  {
+   "case_id": "e002_q1_r1",
+   "split": "DEV",
+   "component": "ALL",
+   "predicted_cost": 0.0070635,
+   "text_chars": 2128,
+   "images": 0
+  },
+  {
+   "case_id": "e002_q1_r2",
+   "split": "DEV",
+   "component": "ALL",
+   "predicted_cost": 0.006952,
+   "text_chars": 1905,
+   "images": 0
+  },
+  {
+   "case_id": "e002_q1_r3",
+   "split": "DEV",
+   "component": "ALL",
+   "predicted_cost": 0.007054,
+   "text_chars": 2109,
+   "images": 0
+  },
+  {
+   "case_id": "e002_q1_r4",
+   "split": "DEV",
+   "component": "ALL",
+   "predicted_cost": 0.0069545,
+   "text_chars": 1910,
+   "images": 0
+  },
+  {
+   "case_id": "e002_q1_r5",
+   "split": "DEV",
+   "component": "ALL",
+   "predicted_cost": 0.0070105,
+   "text_chars": 2022,
+   "images": 0
+  },
+  {
+   "case_id": "e002_q1_r6",
+   "split": "DEV",
+   "component": "ALL",
+   "predicted_cost": 0.0070105,
+   "text_chars": 2022,
+   "images": 0
+  },
+  {
+   "case_id": "e002_q1_r7",
+   "split": "DEV",
+   "component": "ALL",
+   "predicted_cost": 0.0069715,
+   "text_chars": 1944,
+   "images": 0
+  },
+  {
+   "case_id": "e002_q1_r8",
+   "split": "DEV",
+   "component": "ALL",
+   "predicted_cost": 0.0070355,
+   "text_chars": 2072,
+   "images": 0
+  },
+  {
+   "case_id": "e002_q2_r1",
+   "split": "DEV",
+   "component": "ALL",
+   "predicted_cost": 0.0069895,
+   "text_chars": 1980,
+   "images": 0
+  },
+  {
+   "case_id": "e002_q2_r2",
+   "split": "DEV",
+   "component": "ALL",
+   "predicted_cost": 0.0069975,
+   "text_chars": 1996,
+   "images": 0
+  },
+  {
+   "case_id": "e002_q2_r3",
+   "split": "DEV",
+   "component": "ALL",
+   "predicted_cost": 0.0070205,
+   "text_chars": 2042,
+   "images": 0
+  },
+  {
+   "case_id": "e002_q2_r4",
+   "split": "DEV",
+   "component": "ALL",
+   "predicted_cost": 0.0070435,
+   "text_chars": 2088,
+   "images": 0
+  },
+  {
+   "case_id": "e002_q2_r5",
+   "split": "DEV",
+   "component": "ALL",
+   "predicted_cost": 0.006992,
+   "text_chars": 1985,
+   "images": 0
+  },
+  {
+   "case_id": "e002_q2_r6",
+   "split": "DEV",
+   "component": "ALL",
+   "predicted_cost": 0.00703,
+   "text_chars": 2061,
+   "images": 0
+  },
+  {
+   "case_id": "e002_q2_r7",
+   "split": "DEV",
+   "component": "ALL",
+   "predicted_cost": 0.007062,
+   "text_chars": 2125,
+   "images": 0
+  },
+  {
+   "case_id": "e002_q2_r8",
+   "split": "DEV",
+   "component": "ALL",
+   "predicted_cost": 0.0070125,
+   "text_chars": 2026,
+   "images": 0
+  },
+  {
+   "case_id": "e003_q1_r1",
+   "split": "DEV",
+   "component": "ALL",
+   "predicted_cost": 0.007085,
+   "text_chars": 2171,
+   "images": 0
+  },
+  {
+   "case_id": "e003_q1_r3",
+   "split": "DEV",
+   "component": "ALL",
+   "predicted_cost": 0.007068,
+   "text_chars": 2137,
+   "images": 0
+  },
+  {
+   "case_id": "e003_q1_r4",
+   "split": "DEV",
+   "component": "ALL",
+   "predicted_cost": 0.0069765,
+   "text_chars": 1954,
+   "images": 0
+  },
+  {
+   "case_id": "e003_q1_r5",
+   "split": "DEV",
+   "component": "ALL",
+   "predicted_cost": 0.0070225,
+   "text_chars": 2046,
+   "images": 0
+  },
+  {
+   "case_id": "e003_q1_r6",
+   "split": "DEV",
+   "component": "ALL",
+   "predicted_cost": 0.007023,
+   "text_chars": 2047,
+   "images": 0
+  },
+  {
+   "case_id": "e003_q1_r7",
+   "split": "DEV",
+   "component": "ALL",
+   "predicted_cost": 0.006955,
+   "text_chars": 1911,
+   "images": 0
+  },
+  {
+   "case_id": "e003_q1_r8",
+   "split": "DEV",
+   "component": "ALL",
+   "predicted_cost": 0.007026,
+   "text_chars": 2053,
+   "images": 0
+  },
+  {
+   "case_id": "e003_q2_r1",
+   "split": "DEV",
+   "component": "ALL",
+   "predicted_cost": 0.0069945,
+   "text_chars": 1990,
+   "images": 0
+  },
+  {
+   "case_id": "e003_q2_r2",
+   "split": "DEV",
+   "component": "ALL",
+   "predicted_cost": 0.007007,
+   "text_chars": 2015,
+   "images": 0
+  },
+  {
+   "case_id": "e003_q2_r3",
+   "split": "DEV",
+   "component": "ALL",
+   "predicted_cost": 0.00703,
+   "text_chars": 2061,
+   "images": 0
+  },
+  {
+   "case_id": "e003_q2_r4",
+   "split": "DEV",
+   "component": "ALL",
+   "predicted_cost": 0.007026,
+   "text_chars": 2053,
+   "images": 0
+  },
+  {
+   "case_id": "e003_q2_r5",
+   "split": "DEV",
+   "component": "ALL",
+   "predicted_cost": 0.0069995,
+   "text_chars": 2000,
+   "images": 0
+  },
+  {
+   "case_id": "e003_q2_r6",
+   "split": "DEV",
+   "component": "ALL",
+   "predicted_cost": 0.0070125,
+   "text_chars": 2026,
+   "images": 0
+  },
+  {
+   "case_id": "e003_q2_r7",
+   "split": "DEV",
+   "component": "ALL",
+   "predicted_cost": 0.007049,
+   "text_chars": 2099,
+   "images": 0
+  },
+  {
+   "case_id": "e003_q2_r8",
+   "split": "DEV",
+   "component": "ALL",
+   "predicted_cost": 0.007024,
+   "text_chars": 2049,
+   "images": 0
+  },
+  {
+   "case_id": "e007_q1_r1",
+   "split": "DEV",
+   "component": "ALL",
+   "predicted_cost": 0.007102,
+   "text_chars": 2205,
+   "images": 0
+  }
+ ],
+ "leakage_check": "passed"
+}
