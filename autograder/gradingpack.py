@@ -166,8 +166,18 @@ class QuestionGradingPack:
                                               default=str).encode()).hexdigest()[:16]
         return self.hash
 
-    def to_grader_context(self, include_solution: bool = True) -> str:
-        """Compact text block for the grader prompt — small by design."""
+    def to_grader_context(self, include_solution: bool = True,
+                          include_scoring_rules: bool = True) -> str:
+        """Compact text block for the grader prompt — small by design.
+
+        ``include_scoring_rules=False`` drops the final-score composition rules
+        (e.g. "explanation weight 0", "no credit for an answer without an
+        explanation"). They describe how the student's TOTAL for the sub-item
+        is assembled from the selection and the explanation — a downstream,
+        deterministic step. An explanation judge that reads them starts
+        reasoning about the selection instead of the text in front of it, which
+        is exactly what the grade-v2 prompt did.
+        """
         lines = [f"Question {self.question_id} ({self.question_type}, max {self.max_score:g} pts):",
                  self.question_text.strip()]
         specs = self.rubric_specs()
@@ -176,7 +186,7 @@ class QuestionGradingPack:
             for s in specs.values():
                 need = "" if s.requires_evidence else "  (no quoted span needed)"
                 lines.append(f"  {s.id}: {s.text}{need}")
-        if self.scoring_rules:
+        if self.scoring_rules and include_scoring_rules:
             lines.append("Scoring rules: " + " | ".join(self.scoring_rules))
         if include_solution and self.official_solution:
             lines.append("Official solution notes:")

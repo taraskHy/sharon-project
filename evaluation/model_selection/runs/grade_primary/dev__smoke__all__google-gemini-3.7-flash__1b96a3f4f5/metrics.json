@@ -1,0 +1,28 @@
+{
+ "cases": 2,
+ "labels_available": false,
+ "labeled_excluded_transcription_incomplete": 0,
+ "auto_rate_pct": 0.0,
+ "review_rate_pct": 100.0,
+ "schema_failures": 2,
+ "evidence_validation_failures": 0,
+ "validation_failures": 0,
+ "usage": {
+  "calls_live": 2,
+  "cache_hits": 0,
+  "latency_mean_s": null,
+  "latency_median_s": null,
+  "input_tokens": 0,
+  "output_tokens": 0,
+  "reasoning_tokens": 0,
+  "total_tokens": 0,
+  "reported_cost": 0.0
+ },
+ "verdict_cases": 0,
+ "verdict_cases_excluded_no_ground_truth": 2,
+ "verdict_metrics": "unavailable: no case in this selection carries a derived explanation verdict — run the selection-correctness audit and the verdict-target dataset revision (docs/grade-primary-benchmark-target.md)",
+ "final_score_metrics": "unavailable: derived from selection correctness, which is not known for these cases",
+ "accuracy_metrics": "unavailable: no per-item owner labels in this dataset — only decision/validation metrics are reported (NOT accuracy)",
+ "cases_selected": 2,
+ "cases_with_result": 2
+}

@@ -1,10 +1,18 @@
-"""No selection -> no "Student selected option" line.
+"""The selection never reaches the grading prompt.
 
-The prompt used to render a missing selection as "(none)". A grader reads that
-as "the student left the answer blank", which is a WRONG choice under several
-grading policies — so an unresolved or not-applicable selection silently became
-a wrong one, depressing the score for a reason that has nothing to do with the
-answer being graded.
+History of this guard, tightened twice by evidence:
+
+* v1 rendered a missing selection as "(none)". A grader reads that as "the
+  student left the answer blank" — a WRONG choice under several policies — so
+  an unresolved selection silently became a wrong one.
+* v2 omitted the line when there was no selection, but still SHOWED a real one,
+  and still showed the pack's final-score composition rules. Two live smoke
+  runs then proved the model was reasoning about the selection anyway and
+  returning the student's final grade (0 everywhere).
+* v3 removes the selection from this prompt entirely. The model judges the
+  EXPLANATION; the selection is resolved deterministically elsewhere and
+  combined downstream. A judgement that must not depend on the selection is
+  safest when the selection simply is not there.
 
 The frozen 67-case GRADE_PRIMARY benchmark carries selected=None on every case
 by construction (manifest policy: "model-visible: pack (...), selected=None,
@@ -48,30 +56,32 @@ def test_no_selection_means_the_line_is_absent_entirely(selected):
 
 
 def test_the_omission_leaves_the_rest_of_the_prompt_intact():
-    """Only that one line goes; the grader still gets everything it needs."""
+    """Removing the selection must not remove anything the grader needs."""
     pack = _pack()
-    with_sel = _text(pack, "C")
     without = _text(pack, None)
-    assert without == with_sel.replace(f"{MARKER}: C\n", "")
     for required in ("Student explanation", "Allowed rubric item ids",
-                     f"Score range: 0..{pack.max_score:g}", pack.question_text):
+                     "EXPLANATION-QUALITY value", pack.question_text):
         assert required in without
 
 
-# ------------------------------------------------------- 2. present -> rendered
+# --------------------------------------------- 2. present -> STILL not rendered
 
 
 @pytest.mark.parametrize("selected", ["C", "A", "I", "B"])
-def test_a_real_selection_is_still_shown(selected):
-    text = _text(_pack(), selected)
-    assert f"{MARKER}: {selected}" in text
+def test_a_real_selection_is_never_shown_either(selected):
+    """v3: the prompt is byte-identical whether or not a selection exists.
+    Nothing about the selection can bias an explanation judgement it cannot see."""
+    pack = _pack()
+    assert _text(pack, selected) == _text(pack, None)
+    assert MARKER not in _text(pack, selected)
 
 
-def test_a_real_selection_survives_alongside_the_correct_option_line():
-    """version set -> the correct-option line appears; the selection must too."""
+def test_the_correct_option_line_is_unaffected_by_the_selection():
+    """version set -> the key's accepted option is still available as solution
+    context (it is not the student's choice, and judging reasoning needs it)."""
     pack = _pack()
     text = _text(pack, "C", version="A1")
-    assert f"{MARKER}: C" in text
+    assert MARKER not in text
     assert "Correct option(s) for this exam version" in text
 
 
@@ -129,7 +139,8 @@ def test_the_67_cases_still_carry_everything_the_grader_needs():
         text = adapter.build_request(dict(c), DATASET).content_blocks[0]["text"]
         assert c["transcription"] in text, f"{c['case_id']}: the student answer is missing"
         assert pack.question_text.strip()[:40] in text, f"{c['case_id']}: the question is missing"
-        assert f"Score range: 0..{pack.max_score:g}" in text
+        assert "EXPLANATION-QUALITY value" in text
+        assert f"  {pack.max_score:g}  = valid" in text
         for rid in pack.rubric_item_ids():
             assert rid in text, f"{c['case_id']}: rubric id {rid} is missing"
 
@@ -150,7 +161,7 @@ def test_the_leakage_check_still_passes_on_every_frozen_case():
 def test_the_prompt_version_was_bumped_with_the_prompt():
     """A changed prompt under an unchanged version would make two different
     runs look comparable in the artifacts."""
-    assert GradeAdapter.prompt_version == "grade-v2"
+    assert GradeAdapter.prompt_version == "grade-v3"
     import tomllib
     for name in ("models.example.toml", "models.toml"):
         p = REPO / name
@@ -158,4 +169,4 @@ def test_the_prompt_version_was_bumped_with_the_prompt():
             continue
         cfg = tomllib.loads(p.read_text(encoding="utf-8"))
         for task in ("grade_primary", "grade_escalate"):
-            assert cfg["models"][task]["prompt_version"] == "grade-v2", f"{name}:{task}"
+            assert cfg["models"][task]["prompt_version"] == "grade-v3", f"{name}:{task}"

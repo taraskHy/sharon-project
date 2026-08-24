@@ -157,15 +157,24 @@ def test_remaining_budget_reflects_reconciled_spend(tmp_path):
     assert 10.0 - spent == pytest.approx(9.969490)
 
 
-def test_the_project_ledger_reconciles_to_the_measured_account_delta():
-    """The real campaign ledger, as booked on 2026-08-24."""
+#: the one historical charge booked on 2026-08-24 (sonnet e003_q2_r6, truncated
+#: and discarded before the accounting fix existed). Later runs add provider
+#: calls, so only THIS number is fixed.
+BOOKED_2026_08_24 = 0.010724375
+
+
+def test_the_project_ledger_carries_exactly_one_booked_historical_charge():
+    """Pins the invariant, not a snapshot: the campaign's provider-call total
+    grows with every run, but the reconciliation must never move — a second
+    booking of the same money would inflate the ceiling silently."""
     from pathlib import Path
 
     p = Path("evaluation/model_selection/state/gateway_ledger/usage.jsonl")
     if not p.exists():
         pytest.skip("campaign ledger not present in this checkout")
     tot = reconciled_total(UsageLedger(p))
-    assert tot["provider_calls_usd"] == pytest.approx(0.019785625, abs=1e-8)
-    assert tot["reconciliation_usd"] == pytest.approx(0.010724375, abs=1e-8)
-    # measured GET /api/v1/key delta across the smoke run: $0 -> $0.030510
-    assert tot["total_usd"] == pytest.approx(0.030510, abs=1e-8)
+    assert tot["reconciliation_rows"] == 1
+    assert tot["reconciliation_usd"] == pytest.approx(BOOKED_2026_08_24, abs=1e-8)
+    assert tot["total_usd"] == pytest.approx(
+        tot["provider_calls_usd"] + tot["reconciliation_usd"], abs=1e-8)
+    assert tot["provider_calls_usd"] >= 0.019785625, "provider spend can only grow"

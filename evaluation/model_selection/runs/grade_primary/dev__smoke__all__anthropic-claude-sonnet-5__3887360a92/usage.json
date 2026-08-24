@@ -1,0 +1,27 @@
+{
+ "rows_before": 10,
+ "rows_after": 12,
+ "cost_before": 0.032687,
+ "run_cost": 0.0125,
+ "cost_after": 0.045187,
+ "run_calls": 2,
+ "run_cache_hits": 0,
+ "by_model": {
+  "anthropic/claude-sonnet-5": {
+   "calls": 2,
+   "input_tokens": 5165,
+   "output_tokens": 217,
+   "total_tokens": 5382,
+   "reported_cost": 0.0125
+  }
+ },
+ "by_task": {
+  "grade_primary": {
+   "calls": 2,
+   "input_tokens": 5165,
+   "output_tokens": 217,
+   "total_tokens": 5382,
+   "reported_cost": 0.0125
+  }
+ }
+}

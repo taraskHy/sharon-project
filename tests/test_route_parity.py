@@ -177,3 +177,93 @@ def test_production_defaults_reads_only_decoding_knobs(models_toml):
 def test_missing_models_config_is_not_an_error(tmp_path):
     assert production_route_defaults(tmp_path / "nope.toml", "grade_primary") == {}
     assert production_route_defaults(None, "grade_primary") == {}
+
+
+# ------------------------------------------- declared candidate asymmetry ----
+#
+# Providers do not offer identical inference controls. google/gemini-3.7-flash
+# publishes reasoning.mandatory=true and rejects the role's
+# reasoning={"effort":"none"} with a pre-inference HTTP 400. Benchmarking it in
+# a state it cannot run in measures nothing; dropping it discards a deployable
+# model. The asymmetry is DECLARED in candidates.toml so it reaches the run
+# fingerprint and the cost prediction.
+
+
+def _real_registry():
+    from autograder.benchmark.registry import load_registry
+
+    return load_registry()
+
+
+def test_gemini_gets_its_lowest_supported_effort_not_none(models_toml):
+    reg = _real_registry()
+    r = build_route(RunSpec(role="grade_primary", split="dev", models_config=models_toml),
+                    "google/gemini-3.7-flash", "grade-v3", 600, registry=reg)
+    assert r.reasoning == {"effort": "low"}
+
+
+def test_the_other_candidates_keep_reasoning_disabled(models_toml):
+    reg = _real_registry()
+    for slug in ("openai/gpt-5.6-luna-pro", "anthropic/claude-sonnet-5"):
+        r = build_route(RunSpec(role="grade_primary", split="dev", models_config=models_toml),
+                        slug, "grade-v3", 600, registry=reg)
+        assert r.reasoning == {"effort": "none"}, slug
+        assert r.max_tokens == 600, slug
+
+
+def test_geminis_token_cap_is_raised_so_reasoning_cannot_truncate_the_answer(models_toml):
+    reg = _real_registry()
+    r = build_route(RunSpec(role="grade_primary", split="dev", models_config=models_toml),
+                    "google/gemini-3.7-flash", "grade-v3", 600, registry=reg)
+    assert r.max_tokens == 1200
+    # measured worst-case reasoning (489) + a full structured answer (250) must fit
+    assert r.max_tokens >= 489 + 250
+
+
+def test_the_override_is_inside_the_run_fingerprint(models_toml):
+    """A configuration change must yield a DIFFERENT run identity."""
+    reg = _real_registry()
+    spec = RunSpec(role="grade_primary", split="dev", models_config=models_toml)
+    with_over = build_route(spec, "google/gemini-3.7-flash", "grade-v3", 600,
+                            registry=reg).fingerprint_fields()
+    without = build_route(spec, "google/gemini-3.7-flash", "grade-v3", 600,
+                          registry=None).fingerprint_fields()
+    assert with_over != without
+    assert with_over["reasoning"] == {"effort": "low"} and with_over["max_tokens"] == 1200
+
+
+def test_an_explicit_spec_value_still_beats_a_candidate_override(models_toml):
+    reg = _real_registry()
+    r = build_route(RunSpec(role="grade_primary", split="dev", models_config=models_toml,
+                            max_tokens=4096),
+                    "google/gemini-3.7-flash", "grade-v3", 600, registry=reg)
+    assert r.max_tokens == 4096
+
+
+def test_an_override_may_not_smuggle_in_arbitrary_route_fields(models_toml):
+    """Only decoding knobs are overridable — never the model, backend or the
+    prompt version."""
+    from autograder.benchmark.registry import RoleCandidates
+
+    reg = _real_registry()
+    reg.roles["grade_primary"] = RoleCandidates(
+        role="grade_primary", status="UNSELECTED", gateway_task="grade_primary",
+        env_slug=None, candidates=["vendor/m"],
+        candidate_overrides={"vendor/m": {"model": "someone/else"}})
+    with pytest.raises(ValueError, match="candidate_overrides"):
+        build_route(RunSpec(role="grade_primary", split="dev", models_config=models_toml),
+                    "vendor/m", "grade-v3", 600, registry=reg)
+
+
+def test_a_candidate_without_an_override_is_untouched(models_toml):
+    reg = _real_registry()
+    r = build_route(RunSpec(role="grade_primary", split="dev", models_config=models_toml),
+                    "anthropic/claude-sonnet-5", "grade-v3", 600, registry=reg)
+    assert (r.reasoning, r.max_tokens) == ({"effort": "none"}, 600)
+
+
+def test_the_declared_override_records_why():
+    reg = _real_registry()
+    over = reg.for_role("grade_primary").overrides_for("google/gemini-3.7-flash")
+    assert over.get("why"), "a candidate asymmetry must carry its justification"
+    assert "mandatory" in over["why"].lower()

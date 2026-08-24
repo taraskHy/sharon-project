@@ -48,14 +48,14 @@ model = "${GRADE_PRIMARY_MODEL}"
 # schema failure, i.e. a silent REVIEW.
 max_tokens = 600
 reasoning = { effort = "none" }
-prompt_version = "grade-v2"
+prompt_version = "grade-v3"
 
 [models.grade_escalate]
 backend = "openrouter"
 model = "${GRADE_ESCALATE_MODEL}"
 max_tokens = 600
 reasoning = { effort = "high" }        # reasoning reserved for escalation
-prompt_version = "grade-v2"
+prompt_version = "grade-v3"
 
 [models.mc_resolve_cloud]
 backend = "openrouter"

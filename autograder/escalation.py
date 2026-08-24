@@ -241,50 +241,101 @@ class GradeResult(BaseModel):
         return out
 
 
+#: grade-v3 (2026-08-25). ``score`` means EXPLANATION QUALITY ONLY.
+#:
+#: grade-v2 asked for "the score (within the stated maximum)" and showed the
+#: pack's final-score scoring rules, so the model answered with the student's
+#: FINAL SUB-ITEM GRADE. With no selection in the prompt that grade is
+#: correctly 0 — every candidate returned 0.0 on every case in the 2026-08-24
+#: and 2026-08-25 smoke runs, and their own evidence said why ("no letter/answer
+#: given"). Production never wanted that number: it maps `score` through
+#: reliability._verdict_from_score onto an explanation verdict and computes the
+#: final grade itself from the deterministically-resolved selection.
+#:
+#: v3 makes the requested quantity match the consumed quantity.
 GRADE_SYSTEM = (
-    "You grade ONE student answer against the provided question pack. Grade "
-    "only according to the supplied rubric, and only what the student actually "
-    "wrote. Course context, when present, is supplemental reference material "
-    "for judging CORRECTNESS — it is never evidence of what the student wrote: "
-    "never assume the student wrote something merely because it appears in the "
-    "course context. Preserve the student's wording as given — never rewrite "
-    "it. Return the score (within the stated maximum) and one entry per rubric "
-    "item: its id, whether it is met, and — when met — a SHORT span copied "
-    "VERBATIM from the student transcription that supports it (copy it "
-    "exactly; never paraphrase, translate, correct or invent a span; spans "
-    "from the course context do not count; if no span in the transcription "
-    "supports the item, the item is not met). Set uncertain=true if the "
-    "transcription or the rubric leaves the score genuinely undecidable. Reply "
-    "with ONLY the JSON object."
+    "You judge the QUALITY OF ONE WRITTEN EXPLANATION against the supplied "
+    "rubric and official solution. That judgement is your ONLY task.\n\n"
+    "You are NOT grading the student's overall answer, and you are NOT "
+    "computing the student's final score for this question. A separate "
+    "deterministic step combines your judgement with whether the student's "
+    "multiple-choice / matching selection was correct. That step is not yours.\n\n"
+    "Therefore:\n"
+    "- Judge ONLY the text of the student explanation shown below.\n"
+    "- The student's selected option is deliberately NOT part of this task. Do "
+    "not reason about which option was chosen, whether one was chosen, or "
+    "whether it was right.\n"
+    "- Do NOT require the explanation to name, restate or identify a letter or "
+    "option, unless a rubric item explicitly demands it.\n"
+    "- Never lower your judgement because no selection appears in this prompt. "
+    "Its absence carries no information about the explanation.\n\n"
+    "Grade only according to the supplied rubric, and only what the student "
+    "actually wrote. Course context, when present, is supplemental reference "
+    "material for judging CORRECTNESS — it is never evidence of what the "
+    "student wrote: never assume the student wrote something merely because it "
+    "appears in the course context. Preserve the student's wording as given — "
+    "never rewrite it.\n\n"
+    "Report explanation quality in `score`, using EXACTLY one of the three "
+    "values stated below the transcription. `score` is the EXPLANATION-QUALITY "
+    "value only — it is NOT the student's final score for the question.\n\n"
+    "Also return one entry per rubric item: its id, whether it is met, and — "
+    "when met — a SHORT span copied VERBATIM from the student transcription "
+    "that supports it (copy it exactly; never paraphrase, translate, correct or "
+    "invent a span; spans from the course context do not count; if no span in "
+    "the transcription supports the item, the item is not met). Set "
+    "uncertain=true if the transcription or the rubric leaves the EXPLANATION "
+    "QUALITY genuinely undecidable. Reply with ONLY the JSON object."
 )
+
+
+def explanation_scale(max_score: float) -> str:
+    """The three explanation-quality values the model may return, spelled out.
+
+    Production quantises ``score`` by RATIO into three verdicts
+    (``reliability._verdict_from_score``), so only three values carry meaning.
+    Naming them removes the model's incentive to invent intermediate numbers
+    that are then silently collapsed.
+    """
+    return (f"  {0:g}  = invalid: the explanation is wrong, empty of relevant "
+            f"content, or does not support the rubric at all\n"
+            f"  {max_score / 2:g}  = partially valid: partly correct reasoning, "
+            f"or correct but incomplete against the rubric\n"
+            f"  {max_score:g}  = valid: correct and sufficient reasoning for this "
+            f"question")
 
 
 def grade_prompt(pack: QuestionGradingPack, *, selected: str | None, transcription: str,
                  version: str | None) -> list[dict]:
-    """Build the grader prompt.
+    """Build the explanation-quality grading prompt (grade-v3).
 
-    NO SELECTION -> NO LINE. When ``selected`` is absent the "Student selected
-    option" line is omitted entirely, rather than rendered as "(none)". A
-    grader reading "(none)" takes it as "the student left the answer blank",
-    which is a wrong choice under several grading policies — so an unresolved
-    or not-applicable selection would silently become a wrong one. Omission
-    says what is true: the selection is not part of this grading task.
+    THE SELECTION IS NEVER RENDERED. Under v3 the model judges the explanation
+    and nothing else; the selection is resolved deterministically elsewhere and
+    combined with this judgement downstream. Showing it — or showing a
+    placeholder for its absence — can only bias a judgement that must not
+    depend on it. ``selected`` is still accepted so callers and
+    ``validate_grade`` keep one signature, and is deliberately unused here.
 
-    This matches ``privacy.build_grading_request``, which has always omitted
-    the line when there is no option. A genuinely BLANK multiple-choice
-    response is a different fact and needs its own explicit state; it must not
-    be expressed by passing None here.
+    (v2 rendered "Student selected option: X" and omitted the line when there
+    was none. Omission was right for v2's question but is moot now: v3 never
+    asks about the selection at all.)
+
+    THE PACK'S SCORING RULES ARE NOT RENDERED either. They describe how the
+    student's FINAL sub-item score is composed — e.g. "explanation weight 0",
+    "no credit for an answer without an explanation". Those are downstream
+    composition rules; handing them to an explanation judge is what made v2
+    models reason about the missing selection and return 0.
     """
     correct = None
     if version:
         correct = {sid: v.get(version) for sid, v in pack.correct_by_version.items()}
     return [{"type": "text", "text": (
-        pack.to_grader_context() + "\n\n"
+        pack.to_grader_context(include_scoring_rules=False) + "\n\n"
         + (f"Correct option(s) for this exam version: {correct}\n" if correct else "")
-        + (f"Student selected option: {selected}\n" if selected else "")
         + f"Student explanation (verbatim transcription):\n---\n{transcription}\n---\n"
-        + f"Allowed rubric item ids: {pack.rubric_item_ids() or '(none)'}. "
-        + f"Score range: 0..{pack.max_score:g}.")}]
+        + f"Allowed rubric item ids: {pack.rubric_item_ids() or '(none)'}.\n"
+        + "Return `score` as the EXPLANATION-QUALITY value, using exactly one of:\n"
+        + explanation_scale(pack.max_score) + "\n"
+        + "`score` is not the student's final score for this question.")}]
 
 
 @dataclass

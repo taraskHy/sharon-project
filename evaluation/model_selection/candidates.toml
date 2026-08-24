@@ -66,6 +66,42 @@ candidates = [
 ]
 benchmark = "B3 grade-primary (frozen transcriptions)"
 
+# ---- declared per-candidate route asymmetry -------------------------------
+#
+# Providers do not offer identical inference controls. The role's route sets
+# reasoning = {effort = "none"}; google/gemini-3.7-flash REJECTS that outright:
+#
+#     HTTP 400 "Reasoning is mandatory for this endpoint and cannot be
+#     disabled."   (2026-08-25 smoke, pre-inference, $0 billed)
+#
+# Source-verified against the live catalog, which publishes the capability per
+# model (GET /api/v1/models -> .reasoning):
+#
+#   google/gemini-3.7-flash    mandatory=true   supported_efforts=[high, medium, low]
+#   openai/gpt-5.6-luna-pro    mandatory=false  supported_efforts=[..., none]
+#   anthropic/claude-sonnet-5  mandatory=false  supported_efforts=[max..low]
+#
+# So "low" is the LOWEST effort gemini accepts — not a guess, and not
+# "minimal" (which its own supported_efforts list does not contain).
+#
+# max_tokens is raised for gemini ONLY, because reasoning tokens are drawn
+# from the same budget as the structured answer. Derivation, from measured
+# usage rather than taste:
+#
+#   observed gemini reasoning at DEFAULT (medium) effort, 2026-08-24 smoke:
+#       441, 489, 176 tokens/call  -> worst case 489
+#   observed grade-v3 structured answer size:
+#       luna 165, sonnet 105-112 tokens  -> allow 250
+#   safety factor 2x on reasoning (low <= medium, so this is generous):
+#       489 * 2 + 250 = 1228          -> 1200
+#
+# At the role's 600 the answer would be starved: 489 + 250 already exceeds it,
+# which is exactly how the 2026-08-24 run lost a case to truncation.
+[roles.grade_primary.candidate_overrides."google/gemini-3.7-flash"]
+reasoning = { effort = "low" }
+max_tokens = 1200
+why = "endpoint reports reasoning.mandatory=true; 'low' is its lowest supported_effort. max_tokens raised 600->1200 so mandatory reasoning cannot truncate the structured GradeResult."
+
 [roles.grade_escalate]
 status = "UNSELECTED"
 gateway_task = "grade_escalate"

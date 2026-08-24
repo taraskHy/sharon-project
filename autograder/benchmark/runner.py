@@ -253,7 +253,9 @@ def leakage_check(case: BenchCase, request: Request, model_visible_fields: tuple
         # A label value that is part of a model-visible input (e.g. the
         # audited reference sitting inside a token-duplication candidate) is
         # visible by construction, not a leak; anything else is.
-        if isinstance(v, str) and len(v) >= 4 and v in content and not _inside_inputs(v, input_values):
+        if (isinstance(v, str) and len(v) >= 4 and v in content
+                and not _inside_inputs(v, input_values)
+                and not _fully_enumerated(k, content)):
             raise LeakageError(f"{case.case_id}: label field {k!r} value appears in the request")
         if isinstance(v, (list, tuple)):
             for item in v:
@@ -262,9 +264,69 @@ def leakage_check(case: BenchCase, request: Request, model_visible_fields: tuple
                     raise LeakageError(f"{case.case_id}: label field {k!r} item appears in the request")
     if _SPLIT_TOKEN.search(full):
         raise LeakageError(f"{case.case_id}: split name appears in the request")
+    # A name the model is REQUIRED TO EMIT cannot be evaluation-side
+    # information. `GradeResult.score` collides with the label field `score`,
+    # and grade-v3 must be able to say which field it means ("`score` is the
+    # EXPLANATION-QUALITY value, not the student's final score"). Exempting
+    # exactly the output schema's own property names keeps the guard intact for
+    # every genuinely evaluation-only name — explanation_verdict,
+    # selection_correct, label_score, rubric_met are not GradeResult fields and
+    # stay banned.
+    emitted = set(_output_property_names(request))
     for k in case.label:
+        if k in emitted:
+            continue
         if k in _LABEL_NAMES_NEVER_IN_PROMPT and re.search(r"\b" + re.escape(k) + r"\b", content):
             raise LeakageError(f"{case.case_id}: label field name {k!r} appears in the request")
+
+
+#: Label fields whose value comes from a small closed vocabulary that a prompt
+#: may legitimately ENUMERATE. grade-v3 has to tell the model the three
+#: explanation-quality levels it may return, and that list names every class —
+#: including whichever one happens to be this case's ground truth.
+_ENUMERABLE_LABEL_VOCABULARIES: dict[str, tuple[str, ...]] = {
+    "explanation_verdict": ("invalid", "partially_valid", "valid"),
+}
+
+
+def _fully_enumerated(field: str, content: str) -> bool:
+    """True when EVERY member of ``field``'s vocabulary appears in the content.
+
+    Seeing one class name is a leak; seeing all of them is a menu. A prompt
+    that listed only this case's own verdict would still be caught, because the
+    other members would be missing.
+
+    Each member is matched in either rendered form — ``partially_valid`` or
+    ``partially valid`` — since prose spells it with a space.
+    """
+    vocab = _ENUMERABLE_LABEL_VOCABULARIES.get(field)
+    if not vocab:
+        return False
+    low = content.lower()
+    return all(v in low or v.replace("_", " ") in low for v in vocab)
+
+
+def _output_property_names(request: Request) -> set[str]:
+    """Top-level and nested property names of the request's output schema."""
+    try:
+        schema = request.output_model.model_json_schema()
+    except Exception:  # noqa: BLE001 — a schema we cannot read exempts nothing
+        return set()
+    names: set[str] = set()
+
+    def walk(node):
+        if isinstance(node, dict):
+            props = node.get("properties")
+            if isinstance(props, dict):
+                names.update(props)
+            for v in node.values():
+                walk(v)
+        elif isinstance(node, list):
+            for v in node:
+                walk(v)
+
+    walk(schema)
+    return names
 
 
 _LABEL_NAMES_NEVER_IN_PROMPT = frozenset({
@@ -335,12 +397,26 @@ def production_route_defaults(models_config, task: str) -> dict:
     return {k: merged[k] for k in ROUTE_PARITY_FIELDS if merged.get(k) is not None}
 
 
-def build_route(spec: RunSpec, candidate: str, request_prompt_version: str, default_max_tokens: int):
-    """Production parity, with explicit run-spec values winning.
+#: route knobs a candidate may override in candidates.toml
+CANDIDATE_OVERRIDABLE = ("reasoning", "max_tokens", "provider", "temperature")
 
-    Precedence: explicit RunSpec field > models.toml production route >
-    benchmark default. The result is recorded in the run's config hash, so a
-    parameter change is always visible as a different run identity.
+
+def build_route(spec: RunSpec, candidate: str, request_prompt_version: str, default_max_tokens: int,
+                registry: "CandidateRegistry | None" = None):
+    """Production parity, with declared candidate asymmetry and explicit
+    run-spec values winning.
+
+    Precedence: explicit RunSpec field > candidates.toml candidate override >
+    models.toml production route > benchmark default.
+
+    The candidate override exists because providers do not offer identical
+    inference controls — google/gemini-3.7-flash reports
+    ``reasoning.mandatory = true`` and rejects the role's
+    ``reasoning={"effort": "none"}`` outright. Benchmarking it in a state it
+    cannot run in measures nothing; excluding it discards a deployable model.
+    The asymmetry is therefore DECLARED (never inferred at runtime), and lands
+    in ``fingerprint_fields`` -> the run's config hash, so a run carries the
+    exact configuration it used.
     """
     from ..gateway import TaskRoute
 
@@ -354,7 +430,18 @@ def build_route(spec: RunSpec, candidate: str, request_prompt_version: str, defa
         "provider": None,
     }
     knobs.update(prod)
-    # explicit CLI/spec overrides beat the production file
+    # declared per-candidate asymmetry beats the production file
+    if registry is not None:
+        try:
+            over = registry.for_role(spec.role).overrides_for(candidate)
+        except KeyError:
+            over = {}
+        unknown = set(over) - set(CANDIDATE_OVERRIDABLE) - {"why"}
+        if unknown:
+            raise ValueError(f"{candidate}: candidate_overrides may only set "
+                             f"{list(CANDIDATE_OVERRIDABLE)}; got {sorted(unknown)}")
+        knobs.update({k: v for k, v in over.items() if k in CANDIDATE_OVERRIDABLE})
+    # explicit CLI/spec overrides beat everything
     if spec.max_tokens is not None:
         knobs["max_tokens"] = spec.max_tokens
     if spec.reasoning is not None:
@@ -495,7 +582,8 @@ def run_benchmark(spec: RunSpec, *, gateway=None, registry: CandidateRegistry | 
     files_root = files_root_for(manifest, spec.bench_root)
     probe = adapter.build_request(dict(cases[0].inputs), files_root)
     prov = probe.provenance()
-    route = build_route(spec, candidate, prov["prompt_version"], adapter.default_max_tokens)
+    route = build_route(spec, candidate, prov["prompt_version"], adapter.default_max_tokens,
+                        registry=registry)
     config = {
         "role": spec.role, "task": route.task, "split": split, "component": spec.component,
         "subset": spec.subset,

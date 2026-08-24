@@ -29,6 +29,18 @@ class RoleCandidates:
     vision: bool = False
     benchmark: str = ""
     note: str = ""
+    #: candidate slug -> route parameter overrides for THIS role.
+    #:
+    #: Providers do not offer identical inference controls. Forcing one
+    #: configuration on all of them either excludes a deployable model or
+    #: benchmarks it in a state it cannot actually run in. The benchmark selects
+    #: the best model/CONFIGURATION pair, so a documented asymmetry is data, not
+    #: a bug — but it must be declared here (never inferred at runtime) so it
+    #: travels into the run fingerprint and the cost prediction.
+    candidate_overrides: dict = field(default_factory=dict)
+
+    def overrides_for(self, slug: str) -> dict:
+        return dict(self.candidate_overrides.get(slug) or {})
 
 
 @dataclass
@@ -59,7 +71,8 @@ class CandidateRegistry:
             "path": str(self.path), "version": self.version, "updated": self.updated,
             "budget": {"experiment_total_usd": self.experiment_total_usd, "warn_usd": self.warn_usd},
             "roles": {r: {"status": rc.status, "gateway_task": rc.gateway_task,
-                          "candidates": list(rc.candidates), "benchmark": rc.benchmark}
+                          "candidates": list(rc.candidates), "benchmark": rc.benchmark,
+                          "candidate_overrides": rc.candidate_overrides}
                       for r, rc in self.roles.items()},
         }
 
@@ -76,7 +89,9 @@ def load_registry(path: Path | str = DEFAULT_REGISTRY_PATH) -> CandidateRegistry
             gateway_task=sec.get("gateway_task"), env_slug=sec.get("env_slug"),
             candidates=[str(c) for c in sec.get("candidates", [])],
             vision=bool(sec.get("vision", False)), benchmark=str(sec.get("benchmark", "")),
-            note=str(sec.get("note", "")))
+            note=str(sec.get("note", "")),
+            candidate_overrides={k: dict(v) for k, v in
+                                 (sec.get("candidate_overrides") or {}).items()})
     for r in ROLES:
         if r not in roles:
             # A benchmark role missing from the registry is treated as
