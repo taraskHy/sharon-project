@@ -47,8 +47,32 @@ from pathlib import Path
 from typing import Any
 
 REPO = Path(__file__).resolve().parents[1]
-AUDIT = REPO / "evaluation" / "model_selection" / "runs" / "grade_primary" / \
-    "GROUND_TRUTH_AUDIT_2026-08-25.json"
+_RUNS = REPO / "evaluation" / "model_selection" / "runs" / "grade_primary"
+AUDIT = _RUNS / "GROUND_TRUTH_AUDIT_2026-08-25.json"
+
+
+def resolve_audit_path(argv: list[str] | None = None, env: dict | None = None) -> Path:
+    """Which audit queue to open.
+
+    One blinded UI serves every queue: the blinding rules are a property of the
+    tool, not of a particular file, and duplicating the tool per queue is how
+    one copy quietly loses a guard.
+
+    Order: ``--audit-file PATH``, then ``AUDIT_FILE`` in the environment, else
+    the default queue.
+    """
+    import os
+    import sys
+
+    argv = sys.argv if argv is None else argv
+    env = os.environ if env is None else env
+    if "--audit-file" in argv:
+        i = argv.index("--audit-file")
+        if i + 1 < len(argv):
+            return Path(argv[i + 1])
+    if env.get("AUDIT_FILE"):
+        return Path(env["AUDIT_FILE"])
+    return AUDIT
 
 #: The ONLY fields a pre-decision screen may carry. Allow-list, not deny-list:
 #: a new model-derived field added to the audit file later is excluded by
@@ -151,7 +175,7 @@ def save_audit(doc: dict, path: Path = AUDIT) -> None:
 def main() -> None:  # pragma: no cover - exercised by launching streamlit
     import streamlit as st
 
-    st.set_page_config(page_title="Ground-truth audit (blinded)", page_icon="⚖", layout="wide")
+    st.set_page_config(page_title="Blinded audit", page_icon="⚖", layout="wide")
     st.markdown("""
     <style>
     .rtl { direction: rtl; text-align: right; font-size: 1.15rem; line-height: 1.9;
@@ -164,11 +188,12 @@ def main() -> None:  # pragma: no cover - exercised by launching streamlit
     </style>
     """, unsafe_allow_html=True)
 
-    if not AUDIT.exists():
-        st.error(f"audit file not found: {AUDIT}")
+    audit_path = resolve_audit_path()
+    if not audit_path.exists():
+        st.error(f"audit file not found: {audit_path}")
         st.stop()
 
-    doc = load_audit()                       # fresh read every rerun
+    doc = load_audit(audit_path)             # fresh read every rerun
     cases = doc["cases"]
     OPTIONS = doc["options"]
 
@@ -191,6 +216,7 @@ def main() -> None:  # pragma: no cover - exercised by launching streamlit
     case = cases[pos]
     view = view_payload(case)                # <- the only source for rendering
 
+    st.caption(audit_path.name)
     st.title(view["case_id"])
     a, b, d = st.columns(3)
     a.metric("writer", view["writer"])
@@ -232,7 +258,7 @@ def main() -> None:  # pragma: no cover - exercised by launching streamlit
                 if st.button(f"{key} — {label}", key=f"opt{key}_{pos}",
                              use_container_width=True):
                     record_decision(case, key, note=note)
-                    save_audit(doc)
+                    save_audit(doc, audit_path)
                     st.rerun()
         else:
             st.success(f"recorded: **{case['human_decision']}** — "
@@ -254,7 +280,7 @@ def main() -> None:  # pragma: no cover - exercised by launching streamlit
                 if st.button("reset this decision", key=f"reset{pos}",
                              use_container_width=True, disabled=not reason.strip()):
                     reset_decision(case, reason=reason.strip())
-                    save_audit(doc)
+                    save_audit(doc, audit_path)
                     st.rerun()
 
     st.divider()

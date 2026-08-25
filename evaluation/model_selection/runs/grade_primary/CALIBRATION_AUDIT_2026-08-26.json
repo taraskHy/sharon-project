@@ -1,0 +1,394 @@
+{
+ "artifact": "calibration_case_audit_queue",
+ "created_at": "2026-08-26",
+ "scope": "6 CALIBRATION cases (writer e004) from the completed v3-vs-v4 A/B: four that BOTH models downgraded under BOTH prompts, and two that one model upgraded under grade-v4. Blinded: model output is withheld until each decision is saved.",
+ "instructions": "Decide ONE of A/B/C/D from the rubric, official solution and the student's text. Model outputs are hidden until you save. Nothing is relabelled automatically.",
+ "warning": "Model predictions are shown only AFTER your decision, as context. They are NOT evidence about the label: models agreeing can equally mean models are wrong in the same direction.",
+ "options": {
+  "A": "derived verdict is consistent with the rubric and instructor practice",
+  "B": "instructor practice is more lenient than the literal encoded rubric",
+  "C": "transcription/evidence/rubric artifact is incomplete or incorrect",
+  "D": "genuinely ambiguous"
+ },
+ "note_guidance": {
+  "B": "say what correct idea the instructor appears to have credited"
+ },
+ "interpretation_rules": {
+  "A": "keep the current benchmark label",
+  "B": "keep the authoritative instructor label for alignment metrics; record a rubric-to-practice mismatch; do NOT tune grade-v4 on this case",
+  "C": "mark the previous model comparison for that case invalid until the artifact is repaired",
+  "D": "exclude from strict accuracy metrics or require explicit adjudication"
+ },
+ "held_out_exposed": false,
+ "provider_calls": 0,
+ "cases": [
+  {
+   "case_id": "e004_q1_r1",
+   "writer": "e004",
+   "question_id": "1",
+   "sub_item_id": "1",
+   "question_text": "שאלה מספר 1\n- (1) הפעלת טשטוש Motion Blur",
+   "rubric": [
+    {
+     "id": "R1",
+     "text": "בשאלה זו יש 8 פעולות ו-9 היסטוגרמות. ישנה היסטוגרמה אחת מיותרת."
+    }
+   ],
+   "official_solution": {
+    "1": "ב-Motion Blur אנחנו מחפשים טשטוש כווני ;)מריחה(. שימו לב, Motion Blur יכול להיות בכל זווית, במקרה שלנו תמונה F רואים טשטוש בזווית 45 בכל רמות התדר. סטודנטים התבלבלו עם B. ניתן לראות שתמונה זו היא הפעלת טשטוש גאוסיאני דו-כיווני )רמז: קומבינציה של שתי התמונות C ו I( ותשובה כזו לא התקבלה."
+   },
+   "max_score": 4.0,
+   "frozen_transcription": "הWAVEELETS מטושטשת בכל החלקים",
+   "instructor_final_score": 4.0,
+   "derived_explanation_verdict": "valid",
+   "derivation_reason": "full_credit_implies_valid",
+   "audit_group": "shared_downgrade",
+   "model_predictions": {
+    "google/gemini-3.7-flash | grade-v3": {
+     "raw_score": 0.0,
+     "verdict": "invalid",
+     "uncertain": false,
+     "justification": null,
+     "cited_spans": [],
+     "spans_verified": []
+    },
+    "google/gemini-3.7-flash | grade-v4-charitable": {
+     "raw_score": 0.0,
+     "verdict": "invalid",
+     "uncertain": false,
+     "justification": null,
+     "cited_spans": [],
+     "spans_verified": []
+    },
+    "anthropic/claude-sonnet-5 | grade-v3": {
+     "raw_score": 0.0,
+     "verdict": "invalid",
+     "uncertain": false,
+     "justification": "Student's explanation is unrelated to the rubric item about the extra histogram; it does not address the reasoning required.",
+     "cited_spans": [],
+     "spans_verified": []
+    },
+    "anthropic/claude-sonnet-5 | grade-v4-charitable": {
+     "raw_score": 0.0,
+     "verdict": "invalid",
+     "uncertain": false,
+     "justification": "The student's text mentions wavelets being blurred in all parts, but does not identify directional motion blur at a specific angle across frequency levels, which is the central idea required.",
+     "cited_spans": [],
+     "spans_verified": []
+    }
+   },
+   "human_decision": null,
+   "human_note": ""
+  },
+  {
+   "case_id": "e004_q1_r3",
+   "writer": "e004",
+   "question_id": "1",
+   "sub_item_id": "3",
+   "question_text": "שאלה מספר 1\n- (3) חידוד התמונה באמצעות High Frequency Emphasis",
+   "rubric": [
+    {
+     "id": "R1",
+     "text": "בשאלה זו יש 8 פעולות ו-9 היסטוגרמות. ישנה היסטוגרמה אחת מיותרת."
+    }
+   ],
+   "official_solution": {
+    "3": "בחידוד, התדרים הנמוכים לא יושפעו והתדרים הגבוהים יחוזקו. שימו לב שמדובר ב-wavelet, שמכילה מידע תדרי באופן מרחבי, ולכן תשובות כמו ״שפות יותר ברורות״ או ״פרטים קטנים יותר נראים לעין״ במקום לפרט על שינוי התדר לא התקבלו."
+   },
+   "max_score": 4.0,
+   "frozen_transcription": "התמונה מחודדת יותר ושמרה על הצבעים\nלא כמו E  [לא קריא] יותר Brightness",
+   "instructor_final_score": 2.0,
+   "derived_explanation_verdict": "partially_valid",
+   "derivation_reason": "partial_credit_implies_partially_valid",
+   "audit_group": "shared_downgrade",
+   "model_predictions": {
+    "google/gemini-3.7-flash | grade-v3": {
+     "raw_score": 0.0,
+     "verdict": "invalid",
+     "uncertain": false,
+     "justification": null,
+     "cited_spans": [],
+     "spans_verified": []
+    },
+    "google/gemini-3.7-flash | grade-v4-charitable": {
+     "raw_score": 0.0,
+     "verdict": "invalid",
+     "uncertain": false,
+     "justification": null,
+     "cited_spans": [],
+     "spans_verified": []
+    },
+    "anthropic/claude-sonnet-5 | grade-v3": {
+     "raw_score": 0.0,
+     "verdict": "invalid",
+     "uncertain": false,
+     "justification": "Student only says image is sharper and kept colors, without discussing frequency changes (low freq unaffected, high freq amplified) as required by official solution.",
+     "cited_spans": [],
+     "spans_verified": []
+    },
+    "anthropic/claude-sonnet-5 | grade-v4-charitable": {
+     "raw_score": 0.0,
+     "verdict": "invalid",
+     "uncertain": false,
+     "justification": "Student only says 'התמונה מחודדת יותר ושמרה על הצבעים' without discussing frequency effects (low frequencies unaffected, high frequencies amplified), which the official solution requires.",
+     "cited_spans": [],
+     "spans_verified": []
+    }
+   },
+   "human_decision": null,
+   "human_note": ""
+  },
+  {
+   "case_id": "e004_q2_r6",
+   "writer": "e004",
+   "question_id": "2",
+   "sub_item_id": "6",
+   "question_text": "שאלה מספר 2\n- (6) קונבולוציה עם המסכה [1 0 0 1]",
+   "rubric": [
+    {
+     "id": "R1",
+     "text": "בשאלה זו יש 8 פעולות ו-9 היסטוגרמות. ישנה היסטוגרמה אחת מיותרת."
+    }
+   ],
+   "official_solution": {
+    "6": "המסכה הזו היא מסכת ECHO. הפלט של הקונבולוציה הוא תמונת סכום פיקסל-פיקסל של התמונה המקורית והתמונה מוזזת ב 3 פיקסלים."
+   },
+   "max_score": 4.0,
+   "frozen_transcription": "הכפלת תמונה ב2 זה לקחת ההסטוגרמה ולהגדיל\nטווח שלה בציר x (עשינו את זה  [לא קריא] בהרצאה למדוד או לא)",
+   "instructor_final_score": 4.0,
+   "derived_explanation_verdict": "valid",
+   "derivation_reason": "full_credit_implies_valid",
+   "audit_group": "shared_downgrade",
+   "model_predictions": {
+    "google/gemini-3.7-flash | grade-v3": {
+     "raw_score": 0.0,
+     "verdict": "invalid",
+     "uncertain": false,
+     "justification": null,
+     "cited_spans": [],
+     "spans_verified": []
+    },
+    "google/gemini-3.7-flash | grade-v4-charitable": {
+     "raw_score": 0.0,
+     "verdict": "invalid",
+     "uncertain": false,
+     "justification": null,
+     "cited_spans": [],
+     "spans_verified": []
+    },
+    "anthropic/claude-sonnet-5 | grade-v3": {
+     "raw_score": 0.0,
+     "verdict": "invalid",
+     "uncertain": false,
+     "justification": "Student discusses multiplying an image by 2 and histogram scaling, unrelated to the ECHO mask convolution described in the official solution.",
+     "cited_spans": [],
+     "spans_verified": []
+    },
+    "anthropic/claude-sonnet-5 | grade-v4-charitable": {
+     "raw_score": 0.0,
+     "verdict": "invalid",
+     "uncertain": false,
+     "justification": "Student describes multiplication by 2 (histogram stretching), unrelated to the ECHO mask/convolution question about [1 0 0 1].",
+     "cited_spans": [],
+     "spans_verified": []
+    }
+   },
+   "human_decision": null,
+   "human_note": ""
+  },
+  {
+   "case_id": "e004_q2_r8",
+   "writer": "e004",
+   "question_id": "2",
+   "sub_item_id": "8",
+   "question_text": "שאלה מספר 2\n- (8) הכפלת ערכי התמונה פי 2",
+   "rubric": [
+    {
+     "id": "R1",
+     "text": "בשאלה זו יש 8 פעולות ו-9 היסטוגרמות. ישנה היסטוגרמה אחת מיותרת."
+    }
+   ],
+   "official_solution": {
+    "8": "הכפלת כל ערך פיקסל פי 2 )נכון זה שינוי קונטרסט( גוררת מתיחת ההיסטוגרמה פי 2 בציר X. הפעולה מחייבת שאין ערכי פיקסלים איזוגיים לכן ההיסטוגרמה התמאימה כאן היא G."
+   },
+   "max_score": 4.0,
+   "frozen_transcription": "המסיכה נותנת לנו Echo ואז\nזה יגרור להיסטוגרמה הזו",
+   "instructor_final_score": 2.0,
+   "derived_explanation_verdict": "partially_valid",
+   "derivation_reason": "partial_credit_implies_partially_valid",
+   "audit_group": "shared_downgrade",
+   "model_predictions": {
+    "google/gemini-3.7-flash | grade-v3": {
+     "raw_score": 0.0,
+     "verdict": "invalid",
+     "uncertain": false,
+     "justification": null,
+     "cited_spans": [],
+     "spans_verified": []
+    },
+    "google/gemini-3.7-flash | grade-v4-charitable": {
+     "raw_score": 0.0,
+     "verdict": "invalid",
+     "uncertain": false,
+     "justification": null,
+     "cited_spans": [],
+     "spans_verified": []
+    },
+    "anthropic/claude-sonnet-5 | grade-v3": {
+     "raw_score": 0.0,
+     "verdict": "invalid",
+     "uncertain": false,
+     "justification": "The explanation mentions 'Echo' and a mask, which is irrelevant to doubling pixel values and histogram stretching; it does not address the rubric content at all.",
+     "cited_spans": [],
+     "spans_verified": []
+    },
+    "anthropic/claude-sonnet-5 | grade-v4-charitable": {
+     "raw_score": 0.0,
+     "verdict": "invalid",
+     "uncertain": false,
+     "justification": "The student's text ('המסיכה נותנת לנו Echo ואז זה יגרור להיסטוגרמה הזו') is irrelevant to the operation of doubling pixel values and does not identify the stretching effect or the correct histogram.",
+     "cited_spans": [],
+     "spans_verified": []
+    }
+   },
+   "human_decision": null,
+   "human_note": ""
+  },
+  {
+   "case_id": "e004_q1_r5",
+   "writer": "e004",
+   "question_id": "1",
+   "sub_item_id": "5",
+   "question_text": "שאלה מספר 1\n- (5) הוספת רעש גאוסייני ואחר כך קונבולוציה עם המסכה",
+   "rubric": [
+    {
+     "id": "R1",
+     "text": "בשאלה זו יש 8 פעולות ו-9 היסטוגרמות. ישנה היסטוגרמה אחת מיותרת."
+    }
+   ],
+   "official_solution": {
+    "5": "קונבולוציה עם המסכה )גאוסיינית חד מימדית( גורמת לטשטוש התמונה בכוון אופקי )פעולה 5( או אנכי )פעולה 6(. ולכן השפות האנכיות או האופקיות בהתאמה יושפעו."
+   },
+   "max_score": 4.0,
+   "frozen_transcription": "הWAVELETS מטושטשת אופקית(מקבייל ציר x)",
+   "instructor_final_score": 2.0,
+   "derived_explanation_verdict": "partially_valid",
+   "derivation_reason": "partial_credit_implies_partially_valid",
+   "audit_group": "gemini_upgrade",
+   "model_predictions": {
+    "google/gemini-3.7-flash | grade-v3": {
+     "raw_score": 4.0,
+     "verdict": "valid",
+     "uncertain": false,
+     "justification": "הWAVELETS מטושטשת אופקית(מקבייל ציר x)",
+     "cited_spans": [
+      "מטושטשת אופקית"
+     ],
+     "spans_verified": [
+      true
+     ]
+    },
+    "google/gemini-3.7-flash | grade-v4-charitable": {
+     "raw_score": 4.0,
+     "verdict": "valid",
+     "uncertain": false,
+     "justification": "מטושטשת אופקית(מקבייל ציר x)",
+     "cited_spans": [
+      "מטושטשת אופקית"
+     ],
+     "spans_verified": [
+      true
+     ]
+    },
+    "anthropic/claude-sonnet-5 | grade-v3": {
+     "raw_score": 2.0,
+     "verdict": "partially_valid",
+     "uncertain": false,
+     "justification": "Student states blurring is horizontal ('מטושטשת אופקית' along x-axis), which is a brief, minimal explanation without addressing the extra histogram or full reasoning about edges.",
+     "cited_spans": [],
+     "spans_verified": []
+    },
+    "anthropic/claude-sonnet-5 | grade-v4-charitable": {
+     "raw_score": 2.0,
+     "verdict": "partially_valid",
+     "uncertain": false,
+     "justification": "מטושטשת אופקית(מקבייל ציר x)",
+     "cited_spans": [
+      "מטושטשת אופקית(מקבייל ציר x)"
+     ],
+     "spans_verified": [
+      true
+     ]
+    }
+   },
+   "human_decision": null,
+   "human_note": ""
+  },
+  {
+   "case_id": "e004_q1_r6",
+   "writer": "e004",
+   "question_id": "1",
+   "sub_item_id": "6",
+   "question_text": "שאלה מספר 1\n- (6) הרעשה עם רעש גאוסייני ואחכ קונבולוציה עם המסכה",
+   "rubric": [
+    {
+     "id": "R1",
+     "text": "בשאלה זו יש 8 פעולות ו-9 היסטוגרמות. ישנה היסטוגרמה אחת מיותרת."
+    }
+   ],
+   "official_solution": {
+    "6": "קונבולוציה עם המסכה )גאוסיינית חד מימדית( גורמת לטשטוש התמונה בכוון אופקי )פעולה 5( או אנכי )פעולה 6(. ולכן השפות האנכיות או האופקיות בהתאמה יושפעו."
+   },
+   "max_score": 4.0,
+   "frozen_transcription": "הWAVELETS מטושטשת אנכית\n(מקביל ציר y)",
+   "instructor_final_score": 2.0,
+   "derived_explanation_verdict": "partially_valid",
+   "derivation_reason": "partial_credit_implies_partially_valid",
+   "audit_group": "gemini_upgrade",
+   "model_predictions": {
+    "google/gemini-3.7-flash | grade-v3": {
+     "raw_score": 4.0,
+     "verdict": "valid",
+     "uncertain": false,
+     "justification": "הWAVELETS מטושטשת אנכית",
+     "cited_spans": [],
+     "spans_verified": []
+    },
+    "google/gemini-3.7-flash | grade-v4-charitable": {
+     "raw_score": 4.0,
+     "verdict": "valid",
+     "uncertain": false,
+     "justification": "מטושטשת אנכית",
+     "cited_spans": [
+      "מטושטשת אנכית"
+     ],
+     "spans_verified": [
+      true
+     ]
+    },
+    "anthropic/claude-sonnet-5 | grade-v3": {
+     "raw_score": 2.0,
+     "verdict": "partially_valid",
+     "uncertain": true,
+     "justification": "Student only states blur is vertical (parallel to y-axis) without explaining reasoning about the mask direction or extra histogram noted in rubric.'; brief but partially plausible.'",
+     "cited_spans": [],
+     "spans_verified": []
+    },
+    "anthropic/claude-sonnet-5 | grade-v4-charitable": {
+     "raw_score": 2.0,
+     "verdict": "partially_valid",
+     "uncertain": false,
+     "justification": "הWAVELETS מטושטשת אנכית (מקביל ציר y) - identifies vertical blurring direction but lacks full explanation of edge effect",
+     "cited_spans": [
+      "מטושטשת אנכית"
+     ],
+     "spans_verified": [
+      true
+     ]
+    }
+   },
+   "human_decision": null,
+   "human_note": ""
+  }
+ ]
+}
