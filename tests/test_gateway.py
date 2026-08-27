@@ -244,7 +244,8 @@ def test_openrouter_via_gateway_records_usage(monkeypatch):
         return OpenRouterBackend(cfg, transport=httpx.MockTransport(handler))
 
     gw = ModelGateway.from_dict({"models": {"grade_primary": {"backend": "openrouter", "model": "vendor/model"}}},
-                                backend_factory=factory, ledger=Ledger())
+                                backend_factory=factory, ledger=Ledger(),
+                                execution_mode="research")  # usage-recording vehicle
     res = gw.call(task="grade_primary", system="s", content_blocks=[{"type": "text", "text": "x"}],
                   output_model=Out, meta={"job_id": "j1", "exam_id": "e1", "question_id": "3", "stage": "grade"})
     assert res.usage["total_tokens"] == 15

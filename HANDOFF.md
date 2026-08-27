@@ -1,4 +1,17 @@
-# HANDOFF — current state (2026-07-13, strong-PC validation session)
+# HANDOFF — current state
+
+> **2026-08-27:** the production architecture is settled as **cloud OCR only
+> + LOCAL grading** (grade-v4-charitable), enforced by
+> `autograder/cloudboundary.py`; cloud-grader experiments are research
+> baselines behind `bench ... --research`. Read
+> [docs/architecture.md](docs/architecture.md) §"The production rule" and
+> the 2026-08-27 entry in [PROJECT_STATUS.md](PROJECT_STATUS.md) first. The
+> next step is the LOCAL grading benchmark
+> (docs/model-selection.md §B3-local); the local grader is UNSELECTED until
+> it runs. The hardware notes below (2026-07-13) still describe the strong
+> PC accurately.
+
+# Previous handoff (2026-07-13, strong-PC validation session)
 
 The 2026-07-12 handoff (weak CPU-only PC) is superseded. This session ran
 on the validation machine: Windows 11, Ryzen 5 5600G, 64 GB RAM, **RTX 2000

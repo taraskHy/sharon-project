@@ -1,5 +1,12 @@
 # Model roles
 
+> **2026-08-27 production boundary:** the cloud is allowed for OCR
+> transcription only (`ocr_primary`, `ocr_verify`); `grade_primary`,
+> `grade_escalate` and every auxiliary role run LOCALLY in production
+> (`autograder/cloudboundary.py`). Where a role below says "cloud by
+> convention" for grading/aux roles, that now describes the RESEARCH
+> configuration only (`bench ... --research`). See docs/architecture.md.
+
 Authoritative registry of every model role in the exam autograder, compiled
 2026-08-21 from source-verified per-role records (Part A of the model-selection
 effort). One rule governs the registry: **roles requiring different

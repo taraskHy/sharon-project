@@ -3,16 +3,33 @@
 # only; ${ENV_VAR} references are expanded at load time and OpenRouter tasks
 # with an unset variable fail loudly at gateway construction.
 #
-# Backends: openrouter | ollama (OpenAI-compatible endpoint) | mock
+# Backends: openrouter | ollama (native local endpoint) | openai (any
+# OpenAI-compatible endpoint, base_url required) | mock
 # The OpenRouter key is read ONLY from the OPENROUTER_API_KEY environment
 # variable — never put it in this file.
+#
+# ============================ THE PRODUCTION RULE ============================
+#
+#   OpenRouter (the cloud) is used for OCR TRANSCRIPTION ONLY.
+#   GRADING RUNS LOCALLY. So does RAG. No rubric, official solution,
+#   course context, grade, or grading prompt ever leaves the machine.
+#
+# This file cannot override that rule: the cloud boundary
+# (autograder/cloudboundary.py) refuses any production request that would
+# carry a non-OCR task to a remote endpoint, classifying by the EFFECTIVE
+# backend + URL — pointing grade_primary at openrouter.ai (directly or
+# through an "openai" route) fails at call time, before anything is sent.
+# Historical cloud-grader benchmarks still run, but only through the
+# explicit research mode: autograder bench ... --research
+# (see models.research.example.toml). Those results are research baselines,
+# not a production route.
 
 [defaults]
 structured_mode = "json_schema"
 temperature = 0.0
 timeout_s = 300.0
 
-# ---- cloud tasks (OpenRouter) — slugs deliberately left to the environment ----
+# ---- cloud OCR tasks (OpenRouter) — the ONLY cloud roles in production ----
 #
 # Role states:
 #   model = "${SOME_MODEL}"  chosen via environment; an ENABLED task whose
@@ -21,7 +38,12 @@ timeout_s = 300.0
 #                            any run/benchmark that needs the role refuses
 #                            with a pointer to the candidate registry
 #                            (evaluation/model_selection/candidates.toml).
-# No cloud role has a default model: winners are chosen empirically per role.
+# No role has a default model: winners are chosen empirically per role.
+#
+# What an OCR request may carry (enforced by the boundary's payload
+# contract): the page/crop image, the answer-free question structure needed
+# to locate the writing, and a registered transcription instruction.
+# Never a rubric, solution, RAG chunk, score, or grading policy.
 
 [models.ocr_primary]
 backend = "openrouter"
@@ -30,45 +52,45 @@ max_tokens = 400
 reasoning = { effort = "none" }        # routine OCR: no reasoning
 prompt_version = "ocr-v1"
 
+# ocr_verify is an INDEPENDENT transcription pass: the verifier receives the
+# crop only (never the primary reading), returns its own exact transcription,
+# and agreement is computed locally (escalation.compare_transcriptions).
 [models.ocr_verify]
 backend = "openrouter"
 model = "${OCR_VERIFY_MODEL}"
 max_tokens = 400
 reasoning = { effort = "low" }
-prompt_version = "ocr-verify-v1"
+prompt_version = "ocr-verify-v2-independent"
+
+# ---- grading tasks: LOCAL ONLY ----
+#
+# model = "UNSELECTED" until the LOCAL grading benchmark picks a winner
+# (candidate registry: evaluation/model_selection/candidates.toml
+# [roles.grade_primary_local]). The cloud-grader results (Sonnet/Gemini,
+# grade-v3/v4 A/B) are research baselines and do NOT select this model.
+#
+# max_tokens must equal GradeAdapter.default_max_tokens: the benchmark that
+# selects this model and this route emit the same prompt and the same
+# GradeResult schema (tests/test_production_benchmark_parity.py pins this).
 
 [models.grade_primary]
-backend = "openrouter"
-model = "${GRADE_PRIMARY_MODEL}"
-# Must equal GradeAdapter.default_max_tokens: the benchmark that SELECTS this
-# model and this route emit the same prompt and the same GradeResult schema, so
-# a different output budget would mean selecting on one cap and deploying on
-# another (tests/test_production_benchmark_parity.py pins this). It also matches
-# grade_escalate, which uses the identical schema — a truncated response is a
-# schema failure, i.e. a silent REVIEW.
+backend = "ollama"
+base_url = "http://localhost:11434/v1"
+model = "UNSELECTED"
 max_tokens = 600
-reasoning = { effort = "none" }
+extra_generation = { think = false }
 prompt_version = "grade-v4-charitable"
 
+# Optional second local opinion on an unclean primary grade. Leave UNSELECTED
+# (or remove the table) until a local escalation model is empirically chosen;
+# without it, unclean grades go to human REVIEW — never to the cloud.
 [models.grade_escalate]
-backend = "openrouter"
-model = "${GRADE_ESCALATE_MODEL}"
+backend = "ollama"
+base_url = "http://localhost:11434/v1"
+model = "UNSELECTED"
 max_tokens = 600
-reasoning = { effort = "high" }        # reasoning reserved for escalation
+extra_generation = { think = false }
 prompt_version = "grade-v4-charitable"
-
-[models.mc_resolve_cloud]
-backend = "openrouter"
-model = "${MC_RESOLVE_CLOUD_MODEL}"
-max_tokens = 120
-reasoning = { effort = "none" }
-prompt_version = "mc-v1"
-
-[models.variant_resolve_cloud]
-backend = "openrouter"
-model = "${VARIANT_RESOLVE_CLOUD_MODEL}"
-max_tokens = 300
-prompt_version = "variant-v1"
 
 # ---- local auxiliary tasks (Ollama, thinking disabled) ----
 
@@ -97,10 +119,16 @@ extra_generation = { think = false }
 prompt_version = "policy-v1"
 
 # ---- optional tasks referenced by code but disabled until configured ----
-# alignment.model_align_question tries align_resolve (local) then
-# align_resolve_cloud; discovery.resolve_policy_with_models tries
-# policy_infer then policy_infer_cloud. Absent routes are simply skipped
-# (deterministic/identity fallbacks + review flags); uncomment to enable.
+# alignment.model_align_question tries align_resolve (local);
+# discovery.resolve_policy_with_models tries policy_infer (local). Absent
+# routes are simply skipped (deterministic/identity fallbacks + review
+# flags); uncomment to enable.
+#
+# The *_cloud variants of these auxiliary roles (mc_resolve_cloud,
+# variant_resolve_cloud, align_resolve_cloud, policy_infer_cloud) are NOT
+# part of a production configuration any more: they are not OCR, so the
+# cloud boundary refuses them in production. They remain available to the
+# research benchmarks (models.research.example.toml).
 #
 # [models.align_resolve]
 # backend = "ollama"
@@ -109,20 +137,10 @@ prompt_version = "policy-v1"
 # max_tokens = 300
 # extra_generation = { think = false }
 # prompt_version = "align-v1"
-#
-# [models.align_resolve_cloud]
-# backend = "openrouter"
-# model = "UNSELECTED"          # or "${ALIGN_RESOLVE_CLOUD_MODEL}"
-# max_tokens = 300
-# prompt_version = "align-v1"
-#
-# [models.policy_infer_cloud]
-# backend = "openrouter"
-# model = "UNSELECTED"          # or "${POLICY_INFER_CLOUD_MODEL}"
-# max_tokens = 300
-# prompt_version = "policy-v1"
 
 # ---- budgets (0 or omitted = unlimited; enabled=false disables enforcement) ----
+# In this architecture only the two OCR roles can spend money at all;
+# grading is local and costs $0 in provider fees.
 
 [budget]
 enabled = true
@@ -132,10 +150,8 @@ max_input_tokens_per_job = 0
 max_output_tokens_per_job = 0
 max_cost_per_job = 0
 # Cross-RUN hard ceiling on cumulative reported cost, summed over this state
-# root's persisted gateway ledger — set 10.00 for the model-selection
-# campaign ($8 warning via soft_fraction 0.8). All campaign runs must share
-# ONE state root so one ledger carries the total; with a [pricing] entry for
-# the model, the call that WOULD cross the ceiling is refused up front.
+# root's persisted gateway ledger. With a [pricing] entry for the model, the
+# call that WOULD cross the ceiling is refused up front.
 max_cost_total = 0
 max_calls_per_day = 0
 max_calls_per_month = 0
@@ -143,7 +159,8 @@ soft_fraction = 0.8
 
 # ---- local pricing table (ESTIMATOR ONLY; never fetched from the network) ----
 # USD per 1M tokens. Without this table the pre-run estimator shows call and
-# token counts but no dollar figure — it never guesses a price.
+# token counts but no dollar figure — it never guesses a price, and a PAID
+# OCR run of an unpriced model is refused before the request.
 #
 # [pricing."vendor/model-slug"]
 # input = 0.15

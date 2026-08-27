@@ -21,7 +21,7 @@ Measured on the frozen Hebrew benchmark (`evaluation/hebrew_bench_v2`,
 |---|---|---|
 | Multiple-choice answer grids | **Deterministic CV** (`autograder/tablecrop.py`) + local model for variant symbol only | **Production.** Live: 13/13 variants, 120/120 auto-decided rows correct, 0 silent errors |
 | Printed Hebrew / mixed He-En | Local `qwen3-vl:8b-instruct` (Ollama) | **Production-adequate** (CER 0.066 printed / 0.148 mixed) |
-| Handwritten Hebrew explanations | **Gemini 3 Flash** (optional `GEMINI_API_KEY`) — strongest measured (CER 0.315 vs 0.53-0.68 alternatives); ML Kit Digital Ink + line-split router as the local/offline research arm | **Research-stage — NOT wired into the grading pipeline.** All handwriting reads require human review; see `evaluation/m2_grading/` for the decision-preservation evidence |
+| Handwritten Hebrew explanations | **Cloud OCR (OpenRouter, transcription only) → LOCAL grader** (grade-v4-charitable; `autograder/cloudboundary.py` blocks any non-OCR cloud call). Local grading model UNSELECTED until the local benchmark runs; cloud-grader experiments (Sonnet/Gemini, grade-v3/v4) are research baselines only | **Architecture settled 2026-08; grading remains review-gated until the local grader is selected** |
 | Handwriting local fallback | ML Kit strike-aware router (`scripts/m2_linesplit_v3.py`, `android/mlkit-ink-runner`) | Experimental; needs an Android runtime; ~0.53 median CER |
 
 The core product a client runs today is the **multiple-choice autograder +

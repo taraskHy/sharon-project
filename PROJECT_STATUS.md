@@ -1,4 +1,33 @@
-# Project status — 2026-07-13 (strong-PC validation session)
+# Project status
+
+## 2026-08-27 — production architecture settled: cloud OCR only, local grading
+
+The intended PRODUCTION architecture is now: **OpenRouter for OCR
+transcription only; grading (and RAG) run locally** with the already
+validated generic `grade-v4-charitable` prompt. Enforced in code by
+`autograder/cloudboundary.py` at the gateway choke point (task allowlist
+`ocr_primary`/`ocr_verify` + registered-OCR-prompt check + grading-content
+payload tripwire, classified by effective backend+URL — models.toml cannot
+override it). No cloud grading fallback exists: a dead/malformed local
+grader → `REVIEW / LOCAL_GRADER_UNAVAILABLE`. The ocr_verify pass became an
+INDEPENDENT transcription compared locally (`ocr-verify-v2-independent`).
+
+**Cloud-grader experiments are research baselines. They are NOT the intended
+production grading route.** All grade-v3/v4 DEV+CALIBRATION runs, the
+Sonnet/Gemini comparison, the six-case blinded human audit (decided
+2026-08-27: A×3, B×2, C×1, all blind) and every run manifest/cost record are
+preserved under `evaluation/model_selection/`; reproducing them requires
+`bench ... --research` (`models.research.example.toml`). The local grader is
+**UNSELECTED** — candidates (`qwen3-vl:8b-instruct` laptop /
+`qwen3.8:27b-q4_K_M` strong PC) are registered in
+`candidates.toml [roles.grade_primary_local]`; the winner comes from the
+prepared LOCAL benchmark (docs/model-selection.md §B3-local), not from the
+cloud results. Invalid-class performance remains NOT MEASURED. HELD_OUT
+remains untouched. See docs/architecture.md §"The production rule".
+
+---
+
+# Previous status — 2026-07-13 (strong-PC validation session)
 
 This file reports **what was actually executed and verified**, on what
 hardware, and what remains open. Nothing here is extrapolated from

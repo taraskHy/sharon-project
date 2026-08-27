@@ -33,9 +33,13 @@ def _gw(tmp_path, responses, **kw):
             return responses.pop(0)
         return MockBackend(config=cfg, responder=responder)
 
+    # research mode: cache/ledger/budget mechanics on a cloud-shaped grading
+    # route are what is under test; production would refuse the route outright
+    # (tests/test_cloud_boundary.py).
     gw = ModelGateway.from_dict(
         {"models": {"grade_primary": {"backend": "openrouter", "model": "vendor/m", "prompt_version": "p1"}}},
-        backend_factory=factory, cache=RequestCache(tmp_path / "cache"), **kw)
+        backend_factory=factory, cache=RequestCache(tmp_path / "cache"),
+        execution_mode="research", **kw)
     return gw, counter
 
 
@@ -92,7 +96,8 @@ def test_failures_never_enter_cache(tmp_path):
 
     gw = ModelGateway.from_dict({"models": {"t": {"backend": "openrouter", "model": "m"}}},
                                 backend_factory=lambda c: Boom(config=c),
-                                cache=RequestCache(tmp_path / "c"))
+                                cache=RequestCache(tmp_path / "c"),
+                                execution_mode="research")
     with pytest.raises(BackendError):
         gw.call(task="t", system="s", content_blocks=[{"type": "text", "text": "x"}], output_model=Out)
     assert not list((tmp_path / "c").rglob("*.json"))
@@ -190,7 +195,9 @@ def test_setup_from_config_wires_budget_and_ui_summary(tmp_path, monkeypatch):
     from autograder.orchestrator import setup_from_config
     from autograder.reviewui import settings_summary
     cfg = tmp_path / "models.toml"
-    cfg.write_text('[models.grade_primary]\nbackend="openrouter"\nmodel="vendor/m"\n'
+    # ocr_primary: the one cloud role a PRODUCTION runtime may exercise
+    # (grade_primary is local-only since the 2026-08 boundary).
+    cfg.write_text('[models.ocr_primary]\nbackend="openrouter"\nmodel="vendor/m"\n'
                    '[budget]\nenabled=true\nmax_calls_per_job=2\nmax_cost_per_job=0\nsoft_fraction=0.5\n',
                    encoding="utf-8")
     monkeypatch.setenv("OPENROUTER_API_KEY", "sk-or-SECRET")
@@ -205,11 +212,12 @@ def test_setup_from_config_wires_budget_and_ui_summary(tmp_path, monkeypatch):
     rt = setup_from_config(cfg, tmp_path / "state", backend_factory=factory)
     assert rt.gateway.budget is rt.budget and rt.budget.limits.max_calls_per_job == 2
     assert rt.budget.limits.max_cost is None
+    from autograder.prompts import EXPLANATION_OCR_SYSTEM
     meta = {"job_id": "j", "exam_id": "e"}
-    rt.gateway.call(task="grade_primary", system="s", content_blocks=[{"type": "text", "text": "a"}], output_model=Out, meta=meta)
-    rt.gateway.call(task="grade_primary", system="s", content_blocks=[{"type": "text", "text": "b"}], output_model=Out, meta=meta)
+    rt.gateway.call(task="ocr_primary", system=EXPLANATION_OCR_SYSTEM, content_blocks=[{"type": "text", "text": "a"}], output_model=Out, meta=meta)
+    rt.gateway.call(task="ocr_primary", system=EXPLANATION_OCR_SYSTEM, content_blocks=[{"type": "text", "text": "b"}], output_model=Out, meta=meta)
     with pytest.raises(BudgetExceeded):
-        rt.gateway.call(task="grade_primary", system="s", content_blocks=[{"type": "text", "text": "c"}], output_model=Out, meta=meta)
+        rt.gateway.call(task="ocr_primary", system=EXPLANATION_OCR_SYSTEM, content_blocks=[{"type": "text", "text": "c"}], output_model=Out, meta=meta)
     assert calls["n"] == 2 and rt.warnings   # soft warning fired at 50%
     s = settings_summary(gateway=rt.gateway, ledger=rt.ledger, budget=rt.budget, cache=rt.cache,
                          openrouter_key_present=True)

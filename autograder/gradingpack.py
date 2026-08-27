@@ -80,6 +80,19 @@ class RubricItemSpec:
     kind: str = "semantic"        # semantic | deterministic
 
 
+#: The EXACT section headers ``to_grader_context`` emits, shared with the
+#: cloud boundary's payload tripwire (cloudboundary.forbidden_cloud_markers):
+#: any of these appearing in an outbound cloud-OCR payload proves grading
+#: material leaked into it. Deriving the rendered context and the tripwire
+#: from one tuple means they cannot drift apart.
+CONTEXT_HEADERS: tuple[str, ...] = (
+    "Rubric:",
+    "Scoring rules: ",
+    "Official solution notes:",
+    "Course context (supplemental — rubric/solution take precedence):",
+)
+
+
 @dataclass
 class QuestionGradingPack:
     question_id: str
@@ -182,17 +195,17 @@ class QuestionGradingPack:
                  self.question_text.strip()]
         specs = self.rubric_specs()
         if specs:
-            lines.append("Rubric:")
+            lines.append(CONTEXT_HEADERS[0])                       # Rubric:
             for s in specs.values():
                 need = "" if s.requires_evidence else "  (no quoted span needed)"
                 lines.append(f"  {s.id}: {s.text}{need}")
         if self.scoring_rules and include_scoring_rules:
-            lines.append("Scoring rules: " + " | ".join(self.scoring_rules))
+            lines.append(CONTEXT_HEADERS[1] + " | ".join(self.scoring_rules))
         if include_solution and self.official_solution:
-            lines.append("Official solution notes:")
+            lines.append(CONTEXT_HEADERS[2])                       # Official solution notes:
             lines += [f"  [{k}] {v}" for k, v in self.official_solution.items()]
         if self.rag_evidence:
-            lines.append("Course context (supplemental — rubric/solution take precedence):")
+            lines.append(CONTEXT_HEADERS[3])                       # Course context ...
             lines += [f"  <{e.chunk_id}|{e.source}> {e.text}" for e in self.rag_evidence]
         return "\n".join(lines)
 

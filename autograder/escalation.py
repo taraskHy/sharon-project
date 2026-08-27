@@ -93,6 +93,63 @@ OCR_VERIFY_SYSTEM = (
     "technical tokens, Latin letters, numbers, operators, negations. Reply with "
     "ONLY the JSON object."
 )
+#: ^ RESEARCH-ONLY since the cloud-OCR re-architecture: the fidelity-verdict
+#: contract shows the verifier the primary reading, which anchors it. It is
+#: kept verbatim for the historical B2 benchmark (research mode); production
+#: uses the INDEPENDENT contract below.
+
+
+class OCRVerifyTranscription(BaseModel):
+    """The independent verifier's own reading. Minimal by design — no verdict,
+    no confidence essay: agreement is computed LOCALLY against the primary
+    transcription. ``legibility`` defaults fail-closed to "illegible" so an
+    omitted self-assessment can never satisfy the AUTO gate."""
+
+    transcription: Optional[str] = None
+    legibility: Literal["none", "full", "partial", "illegible"] = "illegible"
+
+
+OCR_VERIFY_INDEPENDENT_SYSTEM = (
+    "You transcribe ONE image of handwritten Hebrew exam text (may mix English "
+    "technical tokens, numbers, and operators). Transcribe EXACTLY what is "
+    "visibly written — never correct, complete, translate, or improve the "
+    "text; preserve the student's wording, spelling and errors as written. "
+    "If nothing is written, return transcription null and legibility \"none\". "
+    "If the writing cannot be read reliably, return legibility \"illegible\" "
+    "(or \"partial\" when only part is readable — transcribe the readable "
+    "part). Reply with ONLY the JSON object."
+)
+
+#: Normalized similarity at or above this = the two independent readings agree.
+OCR_VERIFY_AGREEMENT_MIN = 0.95
+
+
+def compare_transcriptions(primary: str, verifier: str) -> dict:
+    """LOCAL agreement between two independent readings of the same crop.
+
+    Both sides pass the same Hebrew-aware normalization the evidence checker
+    uses (NFKC, bidi/niqqud stripping, quote/dash unification, whitespace
+    collapse), then a similarity ratio plus token-level difference counts are
+    computed. No model judges the comparison."""
+    import difflib
+
+    from .evidence import normalize_for_evidence
+
+    a = normalize_for_evidence(primary or "")
+    b = normalize_for_evidence(verifier or "")
+    ratio = difflib.SequenceMatcher(a=a, b=b, autojunk=False).ratio() if (a or b) else 0.0
+    ta, tb = a.split(), b.split()
+    tok = difflib.SequenceMatcher(a=ta, b=tb, autojunk=False)
+    omissions = additions = substitutions = 0
+    for op, i1, i2, j1, j2 in tok.get_opcodes():
+        if op == "delete":
+            omissions += i2 - i1
+        elif op == "insert":
+            additions += j2 - j1
+        elif op == "replace":
+            substitutions += max(i2 - i1, j2 - j1)
+    return {"similarity": round(ratio, 4), "omissions": omissions,
+            "additions": additions, "substitutions": substitutions}
 
 
 @dataclass
@@ -164,10 +221,14 @@ def escalate_ocr(*, transcription: str, crop_png_b64: str | None, gateway=None,
                            status=OCR_UNRESOLVED_,
                            signals=_ocr_signals(transcription, susp, None, quality_status))
     try:
-        res = gateway.call(task=task, system=OCR_VERIFY_SYSTEM, content_blocks=[
+        # INDEPENDENT verification contract (production): the verifier sees the
+        # crop ONLY — never the primary reading, a rubric, or any grading
+        # context — and returns its own exact transcription. Agreement is then
+        # computed locally. (The legacy fidelity-verdict contract,
+        # OCR_VERIFY_SYSTEM, remains for the historical B2 research benchmark.)
+        res = gateway.call(task=task, system=OCR_VERIFY_INDEPENDENT_SYSTEM, content_blocks=[
             {"type": "image", "source": {"type": "base64", "media_type": "image/png", "data": crop_png_b64}},
-            {"type": "text", "text": "Proposed transcription:\n" + transcription + "\nCheck fidelity now."},
-        ], output_model=OCRVerifyResult, meta={**(meta or {}), "stage": "escalation"})
+        ], output_model=OCRVerifyTranscription, meta={**(meta or {}), "stage": "escalation"})
     except BudgetExceeded:
         # Budget exhaustion is a job-level PAUSE signal, not a verifier
         # failure: mirror escalate_grade so the caller pauses the run instead
@@ -178,7 +239,18 @@ def escalate_ocr(*, transcription: str, crop_png_b64: str | None, gateway=None,
                            status=OCR_UNRESOLVED_, attempted=True, error=type(e).__name__,
                            signals=_ocr_signals(transcription, susp, None, quality_status))
     v = res.value
-    vd = v.model_dump()
+    cmp_ = compare_transcriptions(transcription, v.transcription or "")
+    # AUTO requires FULL agreement: zero token-level differences, mirroring the
+    # legacy gate's "no omissions/substitutions/additions". A ratio alone is
+    # scale-free — on a 160-char answer a whole disagreeing token (e.g. a
+    # meaning-flipping Hebrew negation) still clears 0.95 — so the similarity
+    # floor is a belt, never the gate.
+    supported = (v.legibility == "full" and bool((v.transcription or "").strip())
+                 and cmp_["omissions"] == 0 and cmp_["additions"] == 0
+                 and cmp_["substitutions"] == 0
+                 and cmp_["similarity"] >= OCR_VERIFY_AGREEMENT_MIN)
+    vd = {"verdict": "supported" if supported else "review",
+          "verifier_legibility": v.legibility, **cmp_}
     sig = _ocr_signals(transcription, susp, vd, quality_status)
     call_meta = {
         "model": res.route.model,
@@ -188,12 +260,15 @@ def escalate_ocr(*, transcription: str, crop_png_b64: str | None, gateway=None,
         "latency_s": res.latency_s,
         "cloud": is_cloud_route(res.route.backend, res.route.base_url),
     }
-    if v.verdict == "supported" and v.confidence in ("high", "medium") and not (v.omissions or v.substitutions or v.additions):
+    if supported:
         sig.provider_agreement = True
-        return OCRDecision("auto", transcription, susp, vd, reason="verifier supports transcription",
+        return OCRDecision("auto", transcription, susp, vd,
+                           reason=f"independent reading agrees (similarity {cmp_['similarity']:.2f})",
                            status="OCR_OK", signals=sig, attempted=True, call_meta=call_meta)
     sig.provider_agreement = False
-    return OCRDecision("review", transcription, susp, vd, reason="verifier disagreement",
+    return OCRDecision("review", transcription, susp, vd,
+                       reason=f"independent reading disagrees (similarity {cmp_['similarity']:.2f}, "
+                              f"verifier legibility {v.legibility})",
                        status=OCR_UNRESOLVED_, signals=sig, attempted=True, call_meta=call_meta)
 
 

@@ -45,6 +45,23 @@ def doc():
     return json.loads(QUEUE.read_text(encoding="utf-8"))
 
 
+def _undecided(case: dict) -> dict:
+    """A deep copy of a shipped case restored to its PRE-decision state.
+
+    The six audit decisions were recorded (blind) on 2026-08-27, so the
+    shipped artifact is decided. The blinding/append-only properties are
+    properties of the CODE PATH over an undecided case; they are exercised on
+    faithful pre-decision copies, never by mutating the real artifact."""
+    import copy
+    c = copy.deepcopy(case)
+    for k in ("decided_at", "decided_by", "decided_blind", "models_revealed_at",
+              "decision_revision", "decision_history"):
+        c.pop(k, None)
+    c["human_decision"] = None
+    c["human_note"] = ""
+    return c
+
+
 # ------------------------------------------------------ the queue itself ----
 
 
@@ -78,8 +95,8 @@ def test_no_model_output_reaches_the_pre_decision_screen(doc):
     for c in doc["cases"]:
         names |= set((c.get("model_predictions") or {}).keys())
     assert names, "the queue must carry model predictions in order to withhold them"
-    for c in doc["cases"]:
-        assert not gta.is_decided(c), "fixture expects an undecided queue"
+    for real in doc["cases"]:
+        c = _undecided(real)
         blob = json.dumps(gta.view_payload(c), ensure_ascii=False)
         assert "model_predictions" not in blob
         for n in names:
@@ -96,7 +113,7 @@ def test_no_model_output_reaches_the_pre_decision_screen(doc):
 def test_the_audit_group_is_hidden_before_the_decision(doc):
     """Telling the auditor a case is a 'shared_downgrade' announces that every
     model called it weak — the exact anchor this audit exists to avoid."""
-    for c in doc["cases"]:
+    for c in map(_undecided, doc["cases"]):
         blob = json.dumps(gta.view_payload(c), ensure_ascii=False)
         assert "audit_group" not in blob
         assert "shared_downgrade" not in blob and "gemini_upgrade" not in blob
@@ -104,13 +121,13 @@ def test_the_audit_group_is_hidden_before_the_decision(doc):
 
 def test_the_direction_of_the_disagreement_is_not_inferable_from_the_payload(doc):
     """A downgrade case and an upgrade case must expose the same field set."""
-    down = next(c for c in doc["cases"] if c["audit_group"] == "shared_downgrade")
-    up = next(c for c in doc["cases"] if c["audit_group"] == "gemini_upgrade")
+    down = _undecided(next(c for c in doc["cases"] if c["audit_group"] == "shared_downgrade"))
+    up = _undecided(next(c for c in doc["cases"] if c["audit_group"] == "gemini_upgrade"))
     assert set(gta.view_payload(down)) == set(gta.view_payload(up))
 
 
 def test_the_allow_list_excludes_anything_added_later(doc):
-    c = dict(doc["cases"][0])
+    c = _undecided(doc["cases"][0])
     c["some_future_model_field"] = "both models downgraded this"
     payload = gta.view_payload(c)
     assert "some_future_model_field" not in payload
@@ -121,7 +138,7 @@ def test_the_allow_list_excludes_anything_added_later(doc):
 
 
 def test_decision_history_is_append_only(doc):
-    c = dict(doc["cases"][0])
+    c = _undecided(doc["cases"][0])
     gta.record_decision(c, "A", now="2026-08-26 10:00:00")
     gta.reset_decision(c, reason="re-read", now="2026-08-26 10:05:00")
     gta.record_decision(c, "B", note="lenient on the mechanism", now="2026-08-26 10:10:00")
@@ -132,7 +149,7 @@ def test_decision_history_is_append_only(doc):
 
 
 def test_the_first_decision_is_made_blind_and_a_later_one_is_not(doc):
-    c = dict(doc["cases"][0])
+    c = _undecided(doc["cases"][0])
     gta.record_decision(c, "A", now="2026-08-26 10:00:00")
     assert c["decided_blind"] is True
     gta.reset_decision(c, reason="x", now="2026-08-26 10:05:00")
@@ -141,14 +158,14 @@ def test_the_first_decision_is_made_blind_and_a_later_one_is_not(doc):
 
 
 def test_revealing_the_models_does_not_unlock_the_decision(doc):
-    c = dict(doc["cases"][0])
+    c = _undecided(doc["cases"][0])
     gta.record_decision(c, "A", now="2026-08-26 10:00:00")
     gta.view_payload(c)                       # reveals
     assert c["human_decision"] == "A" and gta.is_decided(c)
 
 
 def test_a_reset_never_pretends_the_models_were_unseen(doc):
-    c = dict(doc["cases"][0])
+    c = _undecided(doc["cases"][0])
     gta.record_decision(c, "A", now="2026-08-26 10:00:00")
     gta.reset_decision(c, reason="x", now="2026-08-26 10:05:00")
     assert c["models_revealed_at"] == "2026-08-26 10:00:00"
@@ -189,6 +206,7 @@ def test_benchmark_labels_are_not_rewritten_by_the_audit(doc, tmp_path):
     before = {c.case_id: c.label.get("explanation_verdict")
               for c in load_manifest("grade_primary").cases}
     d = json.loads(json.dumps(doc))
+    d["cases"] = [_undecided(c) for c in d["cases"]]     # re-adjudicate from scratch
     for c in d["cases"]:
         gta.record_decision(c, "B", now="2026-08-26 11:00:00")
     p = tmp_path / "audit.json"
@@ -205,6 +223,7 @@ def test_recompute_reports_both_versions_and_excludes_only_c_and_d(tmp_path):
     import scripts.calibration_audit_recompute as rc
 
     d = json.loads(QUEUE.read_text(encoding="utf-8"))
+    d["cases"] = [_undecided(c) for c in d["cases"]]     # scripted scenario, not the real audit
     by_id = {c["case_id"]: c for c in d["cases"]}
     for cid, dec in (("e004_q1_r1", "A"), ("e004_q1_r3", "B"),
                      ("e004_q2_r6", "C"), ("e004_q2_r8", "D")):
@@ -267,10 +286,16 @@ def test_the_manifest_carries_frozen_provenance(doc):
 
 
 def test_the_content_hash_ignores_decisions(doc):
-    """Deciding a case must not change what the population claims to be."""
+    """Deciding a case must not change what the population claims to be —
+    pinned twice: the SHIPPED decided artifact still matches its recorded
+    hash (the provenance test), and re-deciding a pre-decision copy leaves
+    the hash unchanged."""
+    import copy
     before = _content_hash(doc)
-    gta.record_decision(doc["cases"][0], "A", now="2026-08-27 10:00:00")
-    assert _content_hash(doc) == before
+    d2 = copy.deepcopy(doc)
+    d2["cases"][0] = _undecided(d2["cases"][0])
+    gta.record_decision(d2["cases"][0], "A", now="2026-08-27 10:00:00")
+    assert _content_hash(d2) == before
 
 
 def test_every_case_names_its_split_and_masked_source_page(doc):
@@ -304,7 +329,7 @@ def test_the_pre_decision_payload_never_references_the_raw_marked_page(doc):
 
 
 def test_a_saved_decision_refuses_a_silent_overwrite(doc):
-    c = dict(doc["cases"][0])
+    c = _undecided(doc["cases"][0])
     gta.record_decision(c, "A", now="2026-08-27 10:00:00")
     with pytest.raises(ValueError, match="reset explicitly"):
         gta.record_decision(c, "B", now="2026-08-27 10:01:00")
@@ -314,7 +339,7 @@ def test_a_saved_decision_refuses_a_silent_overwrite(doc):
 
 def test_a_decision_pins_its_blind_payload_and_revision(doc):
     import hashlib
-    c = dict(doc["cases"][0])
+    c = _undecided(doc["cases"][0])
     expected = hashlib.sha256(
         json.dumps(gta.pre_decision_payload(c), ensure_ascii=False, sort_keys=True)
         .encode("utf-8")).hexdigest()

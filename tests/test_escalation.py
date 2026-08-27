@@ -3,9 +3,9 @@
 from __future__ import annotations
 
 from autograder.backends.mock import MockBackend
-from autograder.escalation import (GradeResult, OCRVerifyResult, ReviewMetrics,
-                                   escalate_grade, escalate_ocr, ocr_suspicion,
-                                   validate_grade)
+from autograder.escalation import (GradeResult, OCRVerifyResult, OCRVerifyTranscription,
+                                   ReviewMetrics, escalate_grade, escalate_ocr,
+                                   ocr_suspicion, validate_grade)
 from autograder.gateway import ModelGateway
 from autograder.gradingpack import build_pack
 from tests.test_grade import make_key
@@ -41,19 +41,24 @@ def test_ocr_suspicion_is_conservative():
 
 
 def test_ocr_not_suspicious_means_no_verifier_call():
-    gw, calls = _gw({"ocr_verify": [OCRVerifyResult(verdict="review")]})
+    gw, calls = _gw({"ocr_verify": [OCRVerifyTranscription(transcription="x", legibility="full")]})
     d = escalate_ocr(transcription="ניתן לראות שהתדרים הגבוהים נשמרים בתמונה לאחר הסינון",
                      crop_png_b64="AAA=", gateway=gw)
     assert d.outcome == "auto" and calls["ocr_verify"] == 0
 
 
-def test_ocr_suspicious_verifier_supports_then_auto_else_review():
-    gw, calls = _gw({"ocr_verify": [OCRVerifyResult(verdict="supported", confidence="high"),
-                                    OCRVerifyResult(verdict="review", substitutions=["DC->pc"])]})
+def test_ocr_suspicious_independent_reading_agrees_then_auto_else_review():
+    """The verifier returns its OWN transcription of the crop; agreement is
+    computed locally. Same text -> auto; a substituted token -> review."""
+    gw, calls = _gw({"ocr_verify": [
+        OCRVerifyTranscription(transcription="מסנן DC נשאר", legibility="full"),
+        OCRVerifyTranscription(transcription="מסנן pc נשאר", legibility="full")]})
     ok = escalate_ocr(transcription="מסנן DC נשאר", crop_png_b64="AAA=", gateway=gw)
     assert ok.outcome == "auto" and calls["ocr_verify"] == 1
+    assert ok.verify["verdict"] == "supported" and ok.verify["similarity"] == 1.0
     bad = escalate_ocr(transcription="מסנן DC נשאר", crop_png_b64="AAA=", gateway=gw)
-    assert bad.outcome == "review" and bad.verify["substitutions"] == ["DC->pc"]
+    assert bad.outcome == "review" and bad.verify["substitutions"] == 1
+    assert bad.verify["similarity"] < 1.0
 
 
 def test_ocr_suspicious_without_verifier_is_review():

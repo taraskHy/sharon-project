@@ -53,7 +53,8 @@ def _call_result():
         {"models": {"grade_primary": {"backend": "openrouter", "model": "vendor/grade-1",
                                       "prompt_version": "grade-v7",
                                       "reasoning": {"effort": "low"}}}},
-        backend_factory=lambda c: MockBackend(config=c, responder=lambda *a: GradeResult(score=2)))
+        backend_factory=lambda c: MockBackend(config=c, responder=lambda *a: GradeResult(score=2)),
+        execution_mode="research")   # cloud-shaped grading route as a provenance vehicle
     be = gw.backend_for("grade_primary")
     be.last_usage = {"provider": "SomeProvider", "model": "vendor/grade-1-2026-05",
                      "request_id": "req-9", "generation_id": "gen-9", "total_tokens": 400}
@@ -81,7 +82,8 @@ def test_provenance_never_carries_a_secret():
                                                   "extra_generation": {"api_key": "sk-SECRET",
                                                                        "top_p": 1.0}}}},
                                 backend_factory=lambda c: MockBackend(
-                                    config=c, responder=lambda *a: GradeResult(score=1)))
+                                    config=c, responder=lambda *a: GradeResult(score=1)),
+                                execution_mode="research")
     res = gw.call(task="t", system="s", content_blocks=[{"type": "text", "text": "x"}],
                   output_model=GradeResult)
     p = provenance_from_call(res, system="s", content_blocks=[], output_model=GradeResult)

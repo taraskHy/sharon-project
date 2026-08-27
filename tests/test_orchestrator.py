@@ -120,8 +120,12 @@ def test_rerun_resumes_missing_items_only(tmp_path):
         return MockBackend(config=cfg, responder=responder)
 
     def gw():
+        # research mode: the cache-resume mechanics are what is under test; a
+        # production gateway would refuse the cloud-shaped grading route
+        # outright (tests/test_cloud_boundary.py).
         return ModelGateway.from_dict({"models": {"grade_primary": {"backend": "openrouter", "model": "m"}}},
-                                      backend_factory=factory, cache=RequestCache(tmp_path / "c"))
+                                      backend_factory=factory, cache=RequestCache(tmp_path / "c"),
+                                      execution_mode="research")
 
     g1 = gw()
     g1.call(task="grade_primary", system="s", content_blocks=[{"type": "text", "text": "exam1"}], output_model=Out)

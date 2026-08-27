@@ -418,11 +418,12 @@ if screen == SCREEN_DASHBOARD:
             _nc = len(_cs.list_courses())
         except Exception:  # noqa: BLE001
             _nc = 0
-        c = st.columns(4)
+        c = st.columns(5)
         c[0].metric("Courses", _nc)
         c[1].metric("Exam packages", len(_pk))
-        c[2].metric("OpenRouter", "configured" if openrouter_credential_present() else "not configured")
-        c[3].metric("Grading mode", grading_mode)
+        c[2].metric("OpenRouter (OCR only)", "configured" if openrouter_credential_present() else "not configured")
+        c[3].metric("Grading", "LOCAL")
+        c[4].metric("Grading mode", grading_mode)
         if st.button("➕ Set up exam", type="primary"):
             _nav(SCREEN_SETUP)
     else:
@@ -1255,15 +1256,63 @@ elif screen == SCREEN_ADVANCED:
     st.caption("Technical configuration. The OpenRouter key is read only from the OPENROUTER_API_KEY "
                "environment variable and is never shown or stored.")
 
+    # ---- the production architecture: cloud OCR / local grading ----
+    st.subheader("Production architecture")
+    st.info("**OCR** = OpenRouter (cloud), transcription only · **GRADING** = LOCAL "
+            "(grade-v4-charitable; no rubric, solution, RAG context, or grade ever leaves "
+            "the machine). Cloud grading is refused by the boundary (cloudboundary.py); "
+            "the historical cloud-grader runs are research baselines "
+            "(`bench ... --research`), not a production route.")
+    from autograder.spend import architecture_split
+    _arch_ledger = None
+    if job_dir is not None and _job_ledger_path(job_dir).exists():
+        _arch_ledger = _job_ledger_path(job_dir)
+    _acols = st.columns(2)
+    with _acols[0]:
+        st.markdown("**OCR (cloud allowed)**")
+        st.write(f"OpenRouter credential: **{'configured' if key_present else 'NOT configured'}**")
+        if _arch_ledger is not None:
+            _a = architecture_split(_arch_ledger)
+            st.write(f"cloud OCR calls {_a['ocr']['cloud_calls']} "
+                     f"(verification {_a['ocr']['verify_calls']}) · cache hits {_a['ocr']['cache_hits']} · "
+                     f"tokens in {_a['ocr']['input_tokens']:,} / out {_a['ocr']['output_tokens']:,} · "
+                     f"cost ${_a['ocr']['cost']:.4f}")
+        else:
+            st.caption("no batch ledger yet — counts appear after a graded batch")
+    with _acols[1]:
+        st.markdown("**GRADING (local only)**")
+        _gp = (role_status(_models_toml()).get("tasks") or {}).get("grade_primary") or {}
+        if _gp.get("status") == "SELECTED_LOCAL":
+            st.write(f"local grading model: **{_gp.get('model')}** · RAG: **{rag_policy}**")
+        else:
+            st.write(f"local grading model: **LOCAL GRADER UNSELECTED** · RAG: **{rag_policy}**")
+            st.caption("run the LOCAL grading benchmark and choose a model "
+                       "(candidates.toml [roles.grade_primary_local])")
+        if _arch_ledger is not None:
+            _a = architecture_split(_arch_ledger)
+            _lat = _a['grading']['mean_latency_s']
+            st.write(f"local grading calls {_a['grading']['local_calls']} · "
+                     f"mean latency {_lat if _lat is not None else '—'} s · "
+                     f"cloud grading calls {_a['grading']['cloud_calls']}"
+                     + ("" if _a["grading_stayed_local"] else "  ⛔ BOUNDARY VIOLATION"))
+
     # ---- role -> model (UNSELECTED marked) ----
     st.subheader("Model roles")
     _roles = role_status(_models_toml())
     if _roles.get("using_example_as_template"):
-        st.warning("models.toml is missing — showing models.example.toml as the template. Cloud roles are "
+        st.warning("models.toml is missing — showing models.example.toml as the template. Roles are "
                    "UNSELECTED until you copy it to models.toml and choose models.")
     _mark = {"UNSELECTED": "⚠ UNSELECTED", "ABSENT": "⚠ UNSELECTED (absent)", "CONFIGURED_CLOUD": "cloud ✓",
-             "SELECTED_LOCAL": "local ✓", "DISABLED": "disabled"}
-    st.table([{"role / task": t, "status": _mark.get(v.get("status"), v.get("status")),
+             "SELECTED_LOCAL": "local ✓", "DISABLED": "disabled",
+             "BLOCKED_IN_PRODUCTION": "⛔ DISABLED IN PRODUCTION"}
+
+    def _role_mark(t, v):
+        status = v.get("status")
+        if status == "UNSELECTED" and not v.get("cloud") and t in ("grade_primary", "grade_escalate"):
+            return "⚠ LOCAL GRADER UNSELECTED"
+        return _mark.get(status, status)
+
+    st.table([{"role / task": t, "status": _role_mark(t, v),
                "backend": v.get("backend") or "—", "model": v.get("model") or "—"}
               for t, v in (_roles.get("tasks") or {}).items()])
     try:

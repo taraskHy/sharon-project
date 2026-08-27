@@ -352,15 +352,24 @@ def _decide_item(*, q, ks, se, version, policy, pack, config, gateway, crops, ra
         except BudgetExceeded as e:
             t.failed("ocr_explanation", f"budget exhausted: {e}", task="ocr_primary")
             return finish("PAUSED", "BUDGET_PAUSED", f"budget exhausted: {e}", None)
-        except Exception as e:  # noqa: BLE001 — an OCR provider failure is a REVIEW
+        except Exception as e:  # noqa: BLE001 — an OCR-side failure is a REVIEW
+            from .extract import OCRPageSelectionError
             t.failed("ocr_explanation", f"{type(e).__name__}: {e}", task="ocr_primary")
+            if isinstance(e, OCRPageSelectionError):
+                # No provider was contacted: the survey placed the question
+                # nowhere, and the whole exam is never silently sent instead.
+                return finish("REVIEW", "OCR_UNRESOLVED", str(e),
+                              _evaluation(sid, "illegible",
+                                          "page selection unavailable — OCR refused rather "
+                                          "than sending the whole exam"))
             return finish("REVIEW", "PROVIDER_FAILED",
                           f"lazy explanation OCR failed: {type(e).__name__}",
                           _evaluation(sid, "illegible", "the OCR model could not be reached"))
         t.executed("ocr_explanation", task=ocr_res.get("task"), model=ocr_res.get("model"),
                    cache_hit=ocr_res.get("cache_hit"), usage=ocr_res.get("usage"),
                    request_id=ocr_res.get("request_id"),
-                   latency_s=ocr_res.get("latency_s"), cloud=True)
+                   latency_s=ocr_res.get("latency_s"),
+                   cloud=_route_is_cloud(gateway, ocr_res.get("task") or "ocr_primary"))
         se.explanation_transcription = ocr_res.get("transcription")
         se.explanation_legibility = ocr_res.get("legibility") or "none"
 
@@ -500,20 +509,46 @@ def _decide_item(*, q, ks, se, version, policy, pack, config, gateway, crops, ra
     except BudgetExceeded as e:
         t.failed("grade_primary", f"budget exhausted: {e}", task=config.primary_task)
         return finish("PAUSED", "BUDGET_PAUSED", f"budget exhausted: {e}", None)
-    except Exception as e:  # noqa: BLE001 — a provider failure is a REVIEW, not a crash
+    except Exception as e:  # noqa: BLE001 — a grader failure is a REVIEW, not a crash
         t.failed("grade_primary", f"{type(e).__name__}: {e}", task=config.primary_task)
-        return finish("REVIEW", "PROVIDER_FAILED", f"grading provider failed: {type(e).__name__}",
-                      _evaluation(sid, "illegible", "the grading model could not be reached"))
+        # There is NO cloud fallback: a local grading route that cannot be
+        # reached (or answers malformed) parks the item for a human with a
+        # typed reason. Nothing is retried on another provider.
+        local = _route_is_cloud(gateway, config.primary_task) is False
+        code = "LOCAL_GRADER_UNAVAILABLE" if local else "PROVIDER_FAILED"
+        why = ("the local grading model could not be reached or did not return "
+               "a valid grade" if local else "the grading model could not be reached")
+        return finish("REVIEW", code, f"grading failed: {type(e).__name__}",
+                      _evaluation(sid, "illegible", why))
+
+    if decision.result is None and decision.stage == "none":
+        # escalate_grade absorbed the primary grader's failure into a review
+        # decision (provider down / malformed beyond parsing). Type it here:
+        # a dead LOCAL grading route is LOCAL_GRADER_UNAVAILABLE (tier-0
+        # systemic), never a per-item validation problem — and there is no
+        # cloud fallback in either case.
+        t.failed("grade_primary", "; ".join(decision.problems) or decision.reason,
+                 task=config.primary_task)
+        local = _route_is_cloud(gateway, config.primary_task) is False
+        code = "LOCAL_GRADER_UNAVAILABLE" if local else "PROVIDER_FAILED"
+        why = ("the local grading model could not be reached or did not return "
+               "a valid grade" if local else "the grading model could not be reached")
+        return finish("REVIEW", code, f"{decision.reason}: "
+                      f"{'; '.join(decision.problems)[:200]}",
+                      _evaluation(sid, "illegible", why))
 
     t.executed("grade_primary", task=config.primary_task,
-               model=_model_for(gateway, config.primary_task), cloud=True)
+               model=_model_for(gateway, config.primary_task),
+               cloud=_route_is_cloud(gateway, config.primary_task))
     if decision.stage == "primary_rag":
         t.executed("grading_rag", task=config.primary_task,
-                   model=_model_for(gateway, config.primary_task), cloud=True,
+                   model=_model_for(gateway, config.primary_task),
+                   cloud=_route_is_cloud(gateway, config.primary_task),
                    reason="retried with course context")
     if decision.stage == "escalated":
         t.executed("grade_escalate", task=config.escalate_task,
-                   model=_model_for(gateway, config.escalate_task), cloud=True)
+                   model=_model_for(gateway, config.escalate_task),
+                   cloud=_route_is_cloud(gateway, config.escalate_task))
     else:
         t.skipped("grade_escalate", "no_suspicion_signal", detail=decision.reason,
                   avoided={"grading": 1, "cloud": 1})
@@ -578,6 +613,18 @@ def _model_for(gateway, task: str) -> Optional[str]:
         return gateway.route(task).model
     except Exception:  # noqa: BLE001
         return None
+
+
+def _route_is_cloud(gateway, task: str) -> Optional[bool]:
+    """Effective cloud classification of a task's route (None: no route).
+    Grading is local in production, so trace rows must record what the route
+    actually is instead of assuming cloud."""
+    from .usage import is_cloud_route
+    try:
+        r = gateway.route(task)
+    except Exception:  # noqa: BLE001
+        return None
+    return is_cloud_route(r.backend, r.base_url)
 
 
 # --------------------------------------------------------------------------

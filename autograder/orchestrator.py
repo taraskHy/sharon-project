@@ -60,6 +60,29 @@ def setup_from_config(models_config: str | Path, state_root: str | Path,
     limits = budget or BudgetLimits.from_config(gw.budget_config) or BudgetLimits()
     bm = BudgetManager(limits, ledger=ledger, warn=warnings.append)
     gw.budget = bm
+    # Unknown OCR pricing + a configured cost ceiling = an unenforceable
+    # ceiling: an unpriced model predicts $0, so the call that WOULD cross the
+    # ceiling could never be refused up front. A paid production OCR role must
+    # therefore be priced before the runtime will run at all. (Roles whose
+    # model is still UNSELECTED/unset refuse later, per use, with their own
+    # message; ceilings of 0/None mean "unlimited" and need no estimator.)
+    from .cloudboundary import CLOUD_OCR_ALLOWLIST, is_remote_route
+    from .gateway import UNSELECTED
+    if limits.max_cost or limits.max_cost_total:
+        pricing = gw.pricing_config or {}
+        for task, r in gw.routes.items():
+            if (r.enabled and task in CLOUD_OCR_ALLOWLIST
+                    and is_remote_route(r.backend, r.base_url)
+                    and r.model and r.model != UNSELECTED):
+                p = pricing.get(r.model)
+                usable = isinstance(p, dict) and float(p.get("input") or 0) > 0 \
+                    and float(p.get("output") or 0) > 0
+                if not usable:
+                    raise GatewayConfigError(
+                        f"task {task!r}: model {r.model!r} has no usable [pricing] entry, "
+                        "so the configured cost ceiling cannot be enforced before a "
+                        "request. Add the price to models.toml [pricing] (USD per 1M "
+                        "tokens) before a paid OCR run.")
     return Runtime(gw, cache, ledger, bm, root, warnings)
 
 
@@ -124,9 +147,15 @@ def prepare_exam_package(runtime: Runtime | None, *, key: AnswerKey, key_bytes: 
 
 
 def install_hooks(runtime: Runtime | None, policies: dict[str, str] | None,
-                  *, min_confidence: float = 0.9, allow_cloud_mc: bool = True) -> None:
+                  *, min_confidence: float = 0.9, allow_cloud_mc: bool = False) -> None:
     """Attach the MC resolution chain + policy gate to the validated pipeline
-    for THIS process. runtime None removes both (legacy behavior)."""
+    for THIS process. runtime None removes both (legacy behavior).
+
+    ``allow_cloud_mc`` defaults to False: MC resolution is not OCR
+    transcription, so the production cloud boundary (cloudboundary.py) refuses
+    the mc_resolve_cloud stage anyway — the default just avoids attempting a
+    call the boundary would reject. The chain stays deterministic-first ->
+    local model -> human review."""
     from . import extract, grade
     from .mcresolve import resolve_row
 

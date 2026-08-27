@@ -321,6 +321,17 @@ def ollama_embed_fn(model: str = DEFAULT_EMBED_MODEL,
                     base_url: str = "http://localhost:11434") -> Callable:
     import httpx
 
+    # RAG is LOCAL by architecture (cloudboundary): the retrieval query embeds
+    # question + rubric + official solution, none of which may leave the
+    # machine. This transport bypasses the gateway, so the locality invariant
+    # is enforced HERE, structurally — not by the default URL alone.
+    from .usage import _is_local_url
+    if not _is_local_url(base_url):
+        raise ValueError(
+            f"embedding endpoint {base_url!r} is not local: RAG queries carry "
+            "the rubric and official solution, which never leave the machine "
+            "(cloudboundary.py). Use a localhost/LAN Ollama endpoint.")
+
     def embed(texts: list[str]) -> np.ndarray:
         with httpx.Client(timeout=300.0) as client:
             resp = client.post(f"{base_url}/api/embed",

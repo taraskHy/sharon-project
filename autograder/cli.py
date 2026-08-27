@@ -493,17 +493,22 @@ def guard_direct_cloud_backend(backend_config: BackendConfig) -> None:
     legacy explanation judge) has none of those safeguards, so it may only
     talk to LOCAL backends (Ollama/vLLM/LM Studio/llama.cpp/...) or mocks.
 
-    Classification uses the EFFECTIVE configuration (usage.is_cloud_route):
-    openrouter/anthropic/gemini by name, openrouter.ai by URL, and ANY remote
-    OpenAI-compatible endpoint. Content-free connectivity probes (doctor, the
-    UI health check) are exempt by simply not calling this guard.
+    Classification uses the EFFECTIVE configuration and the STRICT remote
+    rule (cloudboundary.is_remote_route): openrouter/anthropic/gemini by
+    name, openrouter.ai by URL, ANY remote OpenAI-compatible endpoint — and
+    an ollama-native backend pointed at a public host, which the billing
+    classifier (usage.is_cloud_route) counts as local but which would still
+    carry exam content off-machine. Content-free connectivity probes
+    (doctor, the UI health check) are exempt by simply not calling this
+    guard.
     """
-    from .usage import effective_provider, is_cloud_route
+    from .cloudboundary import is_remote_route
+    from .usage import effective_provider
 
-    if is_cloud_route(backend_config.backend, backend_config.base_url):
+    if is_remote_route(backend_config.backend, backend_config.base_url):
         provider = effective_provider(backend_config.backend, backend_config.base_url)
         raise BackendError(
-            f"refusing to send exam content to the cloud provider {provider!r} "
+            f"refusing to send exam content to the remote provider {provider!r} "
             "over the direct legacy backend path: it bypasses privacy "
             "filtering, the request cache, budget enforcement and the usage "
             "ledger. Route this provider through models.toml task routes and "

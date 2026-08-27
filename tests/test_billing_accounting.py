@@ -58,10 +58,13 @@ def _gw(tmp_path, handler, *, monkeypatch, limits=None, validation_retries=0):
         return OpenRouterBackend(dataclasses.replace(cfg, validation_retries=validation_retries),
                                  transport=httpx.MockTransport(handler))
 
+    # research mode: billed-attempt ACCOUNTING is what is under test, on a
+    # cloud-shaped grading route with a mocked transport; the production
+    # boundary would refuse the route before transport (test_cloud_boundary).
     gw = ModelGateway.from_dict(
         {"models": {"grade_primary": {"backend": "openrouter", "model": "vendor/m",
                                       "max_tokens": 600, "prompt_version": "grade-v2"}}},
-        backend_factory=factory, ledger=ledger)
+        backend_factory=factory, ledger=ledger, execution_mode="research")
     gw.pricing_config = PRICING
     if limits is not None:
         gw.budget = BudgetManager(limits, ledger=ledger)

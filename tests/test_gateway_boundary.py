@@ -101,10 +101,16 @@ def _gateway(tmp_path, route_spec: dict):
         return MockBackend(config=BackendConfig(backend="mock", model="m"),
                            responder=lambda model, system, blocks: GradeResult(score=1.0))
 
+    # research mode: these tests exercise the ACCOUNTING around a cloud-shaped
+    # grading route (ledger/cache/budget wrap both OpenRouter forms), which the
+    # production boundary would refuse outright — its own tests live in
+    # tests/test_cloud_boundary.py. The accounting must behave identically in
+    # research runs, which is exactly what is pinned here.
     gw = ModelGateway.from_dict({"models": {"grade_primary": route_spec}},
                                 backend_factory=factory,
                                 cache=RequestCache(tmp_path / "cache"),
-                                ledger=UsageLedger(tmp_path / "usage.jsonl"))
+                                ledger=UsageLedger(tmp_path / "usage.jsonl"),
+                                execution_mode="research")
     gw.budget = BudgetManager(BudgetLimits(max_calls_per_job=1), ledger=None,
                               warn=lambda m: None)
     return gw

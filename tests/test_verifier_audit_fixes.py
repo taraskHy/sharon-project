@@ -59,10 +59,16 @@ def test_escalate_ocr_reraises_budget_exceeded():
 # ------------------------------------- fail-closed confidence default (F2) --
 
 
-def test_omitted_confidence_defaults_low_and_blocks_auto(tmp_path):
+def test_omitted_self_assessment_defaults_fail_closed_and_blocks_auto(tmp_path):
+    # the research-only verdict schema keeps its fail-closed confidence...
     assert OCRVerifyResult(verdict="supported").confidence == "low"
+    # ...and the production INDEPENDENT schema fails closed on legibility: an
+    # omitted self-assessment reads as "illegible" and can never support AUTO,
+    # even when the returned text happens to match.
+    from autograder.escalation import OCRVerifyTranscription
+    assert OCRVerifyTranscription(transcription=TEXT_SUSPICIOUS).legibility == "illegible"
     responses = _grade_responses()
-    responses["ocr_verify"] = [OCRVerifyResult(verdict="supported")]  # no confidence
+    responses["ocr_verify"] = [OCRVerifyTranscription(transcription=TEXT_SUSPICIOUS)]
     run, rt = _run(tmp_path, _extraction(text=TEXT_SUSPICIOUS, n=1),
                    responses=responses, crops={("1", "1"): _png()})
     d = run.decisions[0]
@@ -72,9 +78,9 @@ def test_omitted_confidence_defaults_low_and_blocks_auto(tmp_path):
     assert rt.calls.get("grade_primary") is None
 
 
-def test_asserted_high_confidence_still_supports_auto(tmp_path):
+def test_full_legibility_independent_agreement_still_supports_auto(tmp_path):
     run, _rt = _run(tmp_path, _extraction(text=TEXT_SUSPICIOUS, n=1),
-                    crops={("1", "1"): _png()})  # scripted verdict: supported/high
+                    crops={("1", "1"): _png()})  # scripted echo, legibility full
     assert run.decisions[0].final_state == "AUTO"
 
 

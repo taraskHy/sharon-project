@@ -21,6 +21,12 @@ from .schema import (
 )
 
 
+class OCRPageSelectionError(ValueError):
+    """Trustworthy page selection is unavailable for a provider-bound OCR
+    request (the survey placed the question nowhere). Raised INSTEAD of
+    silently widening the payload to the whole exam; the item is reviewed."""
+
+
 def _pages_for_question(qid: str, survey: ExamSurvey, pages: list[PageImage]) -> list[PageImage]:
     """Select the pages extraction reads for a question, cheapest-first:
 
@@ -759,6 +765,19 @@ def lazy_explanation_ocr(gateway, q: KeyQuestion, se: SubItemExtraction,
     from .prompts import EXPLANATION_OCR_SYSTEM
     from .schema import ExplanationTranscription
 
+    # Fail-explicit page selection: when the survey placed this question
+    # NOWHERE, _pages_for_question falls back to the whole document. That
+    # fallback is fine for the local eager pass, but a provider-bound OCR
+    # request must never silently widen to the entire exam — the item goes to
+    # REVIEW instead (the caller records the typed failure).
+    placed = bool(sheet_pages_for_question(q.id, survey)) or any(
+        q.id in p.question_ids or p.answer_area_for_question == q.id
+        for p in survey.pages)
+    if not placed:
+        raise OCRPageSelectionError(
+            f"question {q.id}: the survey did not place this question on any "
+            "page; refusing to send the whole exam to the OCR provider. The "
+            "item needs human review (or a corrected survey).")
     relevant = _pages_for_question(q.id, survey, pages)
     blocks: list[dict] = [
         {"type": "text", "text": _question_structure(q)},

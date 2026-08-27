@@ -1,8 +1,16 @@
 # Provider-independent gateway + low-review grading architecture
 
-Status: **implemented, tested offline, NOT yet live** (no OpenRouter request
-and no heavy local model has been executed by this code). Enabled only via
+Status: **implemented, tested offline.** Enabled only via
 `--models-config models.toml`; absent, the validated pipeline is unchanged.
+
+> **2026-08 production boundary:** the cloud (OpenRouter) is allowed for OCR
+> transcription ONLY (`ocr_primary`, `ocr_verify`); grading and RAG run
+> locally. `autograder/cloudboundary.py` enforces this at `ModelGateway.call`
+> by effective backend+URL — a models.toml entry cannot override it, and
+> cloud grading exists only under the explicit research mode
+> (`autograder bench ... --research`). See docs/architecture.md §"The
+> production rule". The configuration examples below that show cloud grading
+> routes describe the RESEARCH configuration (`models.research.example.toml`).
 
 ## Modules
 
@@ -52,7 +60,10 @@ gateway construction, loudly).
    explanation OCR + grading entirely, with a persisted flag;
 3. local Qwen MC resolver before any cloud MC call (loaded lazily, never preloaded);
 4. request cache: identical (task, model, prompt, inputs, pack, params) → zero calls;
-5. crops only, never full pages, in every cloud call;
+5. the smallest reliable image region per cloud call: the deterministic band
+   crop where one exists, else the survey-placed pages for the question —
+   never the whole exam (a question the survey placed nowhere REFUSES the
+   OCR call and goes to review, `extract.OCRPageSelectionError`);
 6. tiny structured outputs (`GradeResult`, `MCRead`, `OCRVerifyResult`), evidence ≤ 200 chars;
 7. reasoning effort `none` for routine tasks, reserved for `grade_escalate`;
 8. grading packs built once per question and reused; RAG evidence top_k=2 / 1200-char budget;

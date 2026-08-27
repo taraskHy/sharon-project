@@ -54,6 +54,69 @@ candidates = [
 ]
 benchmark = "B2 OCR-verifier (image+frozen transcription only)"
 
+# ---- PRODUCTION grading is LOCAL (2026-08 re-architecture) -----------------
+#
+# The cloud grade_primary / grade_escalate roles below are RESEARCH BASELINES:
+# their DEV/CALIBRATION results (grade-v3 vs grade-v4-charitable; Sonnet /
+# Gemini) stay reproducible under `bench ... --research`, but they do NOT
+# select a production grader any more. Production grading model selection
+# runs over [roles.grade_primary_local] with the same frozen verdict
+# benchmark (26 derivable DEV cases; 12 derivable CALIBRATION cases;
+# HELD_OUT untouched; invalid-class performance NOT MEASURED).
+
+[roles.grade_primary_local]
+status = "UNSELECTED"
+gateway_task = "grade_primary"
+vision = false
+backend = "ollama"
+candidates = [
+    "qwen3-vl:8b-instruct",
+    "qwen3.8:27b-q4_K_M",
+]
+benchmark = "B3-local grade-primary (frozen: evaluation/model_selection/experiments/LOCAL_GRADE_PRIMARY_FREEZE_2026-08-27.json; grade-v4-charitable; local backend only; cloud cost $0)"
+note = "no winner until the LOCAL benchmark runs; cloud-grader results are baselines, not selectors. Installed models are DISCOVERED at runtime (scripts/local_grade_preflight.py) — never assumed, never downloaded, no machine paths here."
+prompt_version = "grade-v4-charitable"
+decoding = { temperature = 0.0, max_tokens = 600, think = false, structured_mode = "json_schema" }
+
+# Candidate capability sheets — external facts recorded for planning, not
+# grading logic. RAM/VRAM figures are the Q4_K_M weights plus typical KV
+# overhead at modest context; verify with `ollama ps` during preflight.
+[roles.grade_primary_local.candidate_info."qwen3-vl:8b-instruct"]
+quantization = "Q4_K_M"
+weights_gb = 6.1
+expected_ram_gb = 8
+expected_vram_gb = 8
+context_limit = 262144
+structured_output = "ollama native json_schema `format`"
+hebrew_text = "adequate for short technical Hebrew (production-adequate printed-Hebrew OCR baseline on this model family)"
+laptop_compatible = true
+strong_pc_compatible = true
+note = "vision-capable but grade_primary is text-only; installed on the laptop 2026-08-27"
+
+[roles.grade_primary_local.candidate_info."qwen3.8:27b-q4_K_M"]
+quantization = "Q4_K_M"
+weights_gb = 17.0
+expected_ram_gb = 20
+expected_vram_gb = 15.4
+context_limit = 32768
+structured_output = "ollama native json_schema `format`"
+hebrew_text = "stronger reasoning tier; same family Hebrew handling"
+laptop_compatible = false
+strong_pc_compatible = true
+note = "the strong PC's standing aux-role model (RTX 2000 Ada 15.4 GB: 100% GPU residency verified 2026-07-13 for the 8B; the 27B may partially offload — measure, do not assume)"
+
+[roles.grade_escalate_local]
+status = "UNSELECTED"
+gateway_task = "grade_escalate"
+vision = false
+backend = "ollama"
+candidates = [
+    "qwen3.8:27b-q4_K_M",
+]
+benchmark = "B4-local grade-escalation (after grade_primary_local is frozen)"
+
+# ---- research baselines (cloud; `bench ... --research` only) ---------------
+
 [roles.grade_primary]
 status = "UNSELECTED"
 gateway_task = "grade_primary"

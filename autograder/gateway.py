@@ -130,7 +130,14 @@ class ModelGateway:
 
     def __init__(self, routes: dict[str, TaskRoute], *,
                  backend_factory: Callable[[BackendConfig], VisionBackend] | None = None,
-                 cache=None, ledger=None, budget=None):
+                 cache=None, ledger=None, budget=None,
+                 execution_mode: str = "production"):
+        from .cloudboundary import EXECUTION_MODES
+
+        if execution_mode not in EXECUTION_MODES:
+            raise GatewayConfigError(
+                f"unknown execution mode {execution_mode!r} "
+                f"(expected one of {list(EXECUTION_MODES)})")
         if not routes:
             raise GatewayConfigError("gateway configuration defines no tasks")
         for name, r in routes.items():
@@ -142,6 +149,10 @@ class ModelGateway:
             if r.backend == "openai" and not r.base_url:
                 raise GatewayConfigError(f"task {name!r} ({r.backend}) needs base_url")
         self.routes = routes
+        #: "production" (default) enforces the cloud-OCR boundary on every
+        #: call; "research" exists ONLY for the explicitly invoked historical
+        #: cloud-grader benchmarks (autograder bench ... --research).
+        self.execution_mode = execution_mode
         self._factory = backend_factory or create_backend
         self._backends: dict[str, VisionBackend] = {}
         self.cache = cache        # duck-typed: get(fp) / put(fp, obj, meta)
@@ -212,10 +223,17 @@ class ModelGateway:
 
     def describe(self) -> dict[str, dict]:
         """Task -> configuration summary for the settings UI (no secrets)."""
-        return {t: {"backend": r.backend, "model": r.model, "enabled": r.enabled,
-                    "max_tokens": r.max_tokens, "reasoning": r.reasoning,
-                    "cacheable": r.cacheable}
-                for t, r in self.routes.items()}
+        from .cloudboundary import CLOUD_OCR_ALLOWLIST, is_remote_route
+
+        out = {}
+        for t, r in self.routes.items():
+            remote = is_remote_route(r.backend, r.base_url)
+            out[t] = {"backend": r.backend, "model": r.model, "enabled": r.enabled,
+                      "max_tokens": r.max_tokens, "reasoning": r.reasoning,
+                      "cacheable": r.cacheable, "remote": remote,
+                      "blocked_in_production": (remote and self.execution_mode == "production"
+                                                and t not in CLOUD_OCR_ALLOWLIST)}
+        return out
 
     # -- the call --------------------------------------------------------------
 
@@ -223,6 +241,14 @@ class ModelGateway:
              output_model: type[T], meta: dict | None = None,
              max_tokens: int | None = None) -> CallResult:
         route = self.route(task)
+        # THE PRODUCTION CLOUD BOUNDARY (cloudboundary.py): a remote provider
+        # may receive OCR transcription work only. Checked before the cache,
+        # the budget, and any serialization — a forbidden route is never
+        # consulted at all. Research mode is explicit and benchmark-only.
+        from .cloudboundary import check_cloud_call
+        check_cloud_call(task=task, backend=route.backend, base_url=route.base_url,
+                         execution_mode=self.execution_mode, system=system,
+                         content_blocks=content_blocks)
         meta = dict(meta or {})
         if self.privacy_guard:
             hard, soft = scan_blocks(content_blocks)

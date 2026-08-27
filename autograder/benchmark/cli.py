@@ -107,7 +107,8 @@ def _spec_from_args(args, dry_run: bool, *, final_evaluation: bool = False) -> R
         runs_root=Path(args.runs_root), held_out_log=Path(args.held_out_log),
         limit=args.limit, dry_run=dry_run, confirm_held_out=bool(args.confirm_held_out),
         retry_failed=bool(getattr(args, "retry_failed", False)), allow_unlisted=bool(args.allow_unlisted),
-        note=args.note or "", max_tokens=args.max_tokens)
+        note=args.note or "", max_tokens=args.max_tokens,
+        research=bool(getattr(args, "research", False)))
 
 
 def _run(args, dry_run: bool, *, final_evaluation: bool = False) -> int:
@@ -479,6 +480,10 @@ def add_bench_commands(sub) -> None:
         p.add_argument("--prompt-version", default=None,
                        help="pin a grading prompt version (e.g. grade-v3) instead of the "
                             "adapter default; recorded in the run config hash")
+        p.add_argument("--research", action="store_true",
+                       help="EXPLICIT research mode: required for any live run whose route is "
+                            "remote (production allows the cloud for OCR transcription only; "
+                            "cloud benchmark results are research baselines)")
         if name == "run":
             p.add_argument("--retry-failed", action="store_true", help="explicitly re-attempt failed cases (recorded)")
             p.add_argument("--i-understand-this-spends-money", action="store_true")
@@ -497,6 +502,9 @@ def add_bench_commands(sub) -> None:
     p.add_argument("--allow-unlisted", action="store_true")
     p.add_argument("--retry-failed", action="store_true")
     p.add_argument("--i-understand-this-spends-money", action="store_true")
+    p.add_argument("--research", action="store_true",
+                   help="EXPLICIT research mode (required: a HELD_OUT final evaluation of a "
+                        "remote route is a research act)")
     p.set_defaults(func=cmd_bench_final_eval, subset=None)
 
     p = bs.add_parser("smoke", help="pre-registered DEV smoke subsets: propose | freeze | show")

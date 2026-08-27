@@ -1,5 +1,67 @@
 # Architecture
 
+## The production rule: cloud OCR only, local grading (2026-08)
+
+This is the settled product decision, enforced in code (`autograder/cloudboundary.py`),
+not by configuration:
+
+```
+student crop / page image
+        │
+        ▼
+  OpenRouter OCR ONLY  ─────────  the ONLY thing that ever leaves the machine:
+  (ocr_primary /                  the image + answer-free question structure +
+   ocr_verify)                    a registered verbatim-transcription instruction
+        │
+        ▼
+  immutable transcription  ────── raw OCR output frozen with provenance
+        │                         (crop hash, model, prompt version); never
+        ▼                         rewritten by RAG, grader, or "correction"
+  deterministic policy  ────────  choice_only / wrong-choice zero / blank
+        │                         triage decide BEFORE any further model work
+        ▼
+  local RAG (optional)  ────────  bge-m3 embeddings + index + retrieval, all
+        │                         local; query = question+rubric+solution,
+        ▼                         never the student's words; RAG_DISABLED default
+  LOCAL grader  ────────────────  Ollama / local endpoint, grade-v4-charitable;
+        │                         UNSELECTED until the local benchmark picks
+        ▼                         a winner; unavailable → REVIEW, NEVER cloud
+  GradeResult → verdict  ───────  production verdict conversion (shared with
+        │                         the benchmark, import-level parity)
+        ▼
+  deterministic score  ─────────  plain Python composes the final number
+        │
+        ▼
+  AUTO / REVIEW
+```
+
+**What leaves the machine:** the answer crop or the question's survey-placed
+pages, the answer-free question structure needed to locate the writing, and a
+registered OCR instruction. **What never leaves:** rubrics, official
+solutions, RAG/course context, scores, grades, grading prompts, model
+verdicts, other students' work. The boundary (`cloudboundary.check_cloud_call`)
+rejects any production request that would carry a non-OCR task to a remote
+endpoint — classified by the EFFECTIVE backend + URL, so pointing
+`grade_primary` at openrouter.ai through any backend name fails before
+serialization. There is **no cloud grading fallback**: a dead or malformed
+local grader parks the item as `REVIEW / LOCAL_GRADER_UNAVAILABLE`.
+
+The OCR verify pass is an **independent transcription**: the verifier sees the
+crop only (never the primary reading, which would anchor it), returns its own
+exact transcription, and agreement is computed locally
+(`escalation.compare_transcriptions`).
+
+**Cloud-grader experiments are research baselines. They are NOT the intended
+production grading route.** The grade-v3/grade-v4-charitable DEV/CALIBRATION
+results (Sonnet/Gemini), their run manifests, cost records and the human-audit
+artifacts under `evaluation/model_selection/` are preserved verbatim and stay
+reproducible — but only through the explicit research mode
+(`autograder bench ... --research`, config template
+`models.research.example.toml`). Known limitation carried forward: the
+verdict benchmarks contain **no invalid-class cases** (invalid-class
+performance = NOT MEASURED); do not claim production readiness for invalid
+explanations without new authoritative data.
+
 ## Pipeline
 
 The grading pipeline separates *reading* from *grading* so ambiguity is

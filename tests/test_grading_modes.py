@@ -103,10 +103,15 @@ def _judge_calls(backend) -> int:
     return sum(1 for c in backend.calls if c.output_model == "ExplanationJudgement")
 
 
-def _grade_responses(score=4.0):
+def _grade_responses(score=4.0, verify_text="DC filter"):
+    # ocr_verify is the INDEPENDENT contract: the scripted verifier returns
+    # its own full-legibility reading; agreement is computed locally, so the
+    # default echoes the suspicious fixture text (TEXT_SUSPICIOUS).
+    from autograder.escalation import OCRVerifyTranscription
     return {"grade_primary": [GradeResult(score=score)],
             "grade_escalate": [GradeResult(score=score)],
-            "ocr_verify": [OCRVerifyResult(verdict="supported", confidence="high")]}
+            "ocr_verify": [OCRVerifyTranscription(transcription=verify_text,
+                                                  legibility="full")]}
 
 
 # --------------------------------------------------------------------------

@@ -72,8 +72,25 @@ def test_role_status_marks_unset_env_slugs_unselected_without_echoing_values(mon
     rs = role_status(REPO / "models.example.toml")
     assert rs["tasks"]["ocr_primary"]["status"] == "UNSELECTED"
     assert rs["tasks"]["ocr_primary"]["model"] == "${OCR_PRIMARY_MODEL} (unset)"
-    assert rs["tasks"]["grade_primary"]["status"] == "CONFIGURED_CLOUD"
+    # the 2026-08 architecture: grading is LOCAL and unselected until the
+    # local benchmark picks a winner; the env slug belongs to the research
+    # config only and no longer configures production grading
+    assert rs["tasks"]["grade_primary"]["status"] == "UNSELECTED"
+    assert rs["tasks"]["grade_primary"]["cloud"] is False
     assert "vendor/some-model" not in json.dumps(rs)      # env values are never echoed
+
+
+def test_role_status_blocks_cloud_grading_configs_for_the_gui(tmp_path, monkeypatch):
+    """A models.toml that routes grading to the cloud shows the role as
+    BLOCKED_IN_PRODUCTION (the GUI renders DISABLED IN PRODUCTION) — the
+    boundary refuses it at call time anyway."""
+    monkeypatch.setenv("GRADE_PRIMARY_MODEL", "vendor/some-model")
+    rs = role_status(REPO / "models.research.example.toml")
+    g = rs["tasks"]["grade_primary"]
+    assert g["cloud"] is True and g["blocked_in_production"] is True
+    assert g["status"] == "BLOCKED_IN_PRODUCTION"
+    o = rs["tasks"]["ocr_primary"]
+    assert o["blocked_in_production"] is False
 
 
 def test_friendly_messages_for_unselected_and_missing_credential(monkeypatch):

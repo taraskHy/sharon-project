@@ -30,8 +30,16 @@ from pathlib import Path
 from typing import Any
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
-CLOUD_TASKS = ("ocr_primary", "ocr_verify", "grade_primary", "grade_escalate", "mc_resolve_cloud",
-               "variant_resolve_cloud", "align_resolve_cloud", "policy_infer_cloud")
+#: The tasks a PRODUCTION configuration may route to the cloud — the mirror
+#: of cloudboundary.CLOUD_OCR_ALLOWLIST. Since the 2026-08 re-architecture
+#: grading is local-only; the cloud grade/aux roles below are research-only.
+CLOUD_TASKS = ("ocr_primary", "ocr_verify")
+#: Production roles that must be LOCAL (grading never leaves the machine).
+PRODUCTION_LOCAL_TASKS = ("grade_primary", "grade_escalate")
+#: Roles that exist only for the historical research benchmarks; a production
+#: request on them is refused by the cloud boundary.
+RESEARCH_ONLY_CLOUD_TASKS = ("mc_resolve_cloud", "variant_resolve_cloud",
+                             "align_resolve_cloud", "policy_infer_cloud")
 #: roles whose benchmark must be READY (with a frozen smoke subset) before
 #: the first live experiment — the rest may be owner-pending
 FIRST_EXPERIMENT_ROLES = ("ocr_primary", "ocr_verify")
@@ -83,10 +91,20 @@ def role_status(models_config: Path | None) -> dict[str, Any]:
         else:
             status = "SELECTED_LOCAL"
         shown = raw if not env_refs else ("${" + env_refs[0] + "}" + (" (set)" if env_set else " (unset)"))
+        # The production boundary: a cloud route on a non-OCR task can never
+        # execute in production (cloudboundary.py) — surface that here so the
+        # GUI shows DISABLED IN PRODUCTION instead of a live-looking cloud row.
+        blocked = bool(cloud) and task not in CLOUD_TASKS
+        if blocked and status == "CONFIGURED_CLOUD":
+            status = "BLOCKED_IN_PRODUCTION"
         tasks[task] = {"backend": backend, "model": shown, "status": status, "cloud": cloud,
-                       "base_url": sec.get("base_url")}
+                       "blocked_in_production": blocked, "base_url": sec.get("base_url")}
     for task in CLOUD_TASKS:
-        tasks.setdefault(task, {"backend": None, "model": None, "status": "ABSENT", "cloud": True})
+        tasks.setdefault(task, {"backend": None, "model": None, "status": "ABSENT", "cloud": True,
+                                "blocked_in_production": False})
+    for task in PRODUCTION_LOCAL_TASKS:
+        tasks.setdefault(task, {"backend": None, "model": None, "status": "ABSENT", "cloud": False,
+                                "blocked_in_production": False})
     pricing = data.get("pricing") or {}
     priced = [k for k, v in pricing.items() if isinstance(v, dict) and (v.get("input") or v.get("output"))]
     return {"config": str(cfg_path), "exists": True, "using_example_as_template": using_example,

@@ -1,0 +1,81 @@
+# RESEARCH-ONLY model configuration — historical cloud-grader benchmarks.
+#
+#   THIS IS NOT A PRODUCTION CONFIGURATION.
+#
+# Production grading runs LOCALLY (see models.example.toml). The cloud-grader
+# experiments (grade-v3/grade-v4-charitable on Sonnet/Gemini, DEV +
+# CALIBRATION) are preserved as research baselines; reproducing or extending
+# them requires the EXPLICIT research execution mode:
+#
+#     python -m autograder bench run --role grade_primary ... --research \
+#         --i-understand-this-spends-money
+#
+# Without --research the cloud boundary (autograder/cloudboundary.py)
+# refuses every remote non-OCR request before serialization — copying this
+# file over models.toml does not re-enable cloud grading in production.
+#
+# The OpenRouter key is read ONLY from the OPENROUTER_API_KEY environment
+# variable — never put it in this file.
+
+[defaults]
+structured_mode = "json_schema"
+temperature = 0.0
+timeout_s = 300.0
+
+# ---- historical cloud grading roles (research baselines) ----
+
+[models.grade_primary]
+backend = "openrouter"
+model = "${GRADE_PRIMARY_MODEL}"
+max_tokens = 600
+reasoning = { effort = "none" }
+prompt_version = "grade-v4-charitable"
+
+[models.grade_escalate]
+backend = "openrouter"
+model = "${GRADE_ESCALATE_MODEL}"
+max_tokens = 600
+reasoning = { effort = "high" }
+prompt_version = "grade-v4-charitable"
+
+# ---- cloud OCR roles (same contract as production) ----
+
+[models.ocr_primary]
+backend = "openrouter"
+model = "${OCR_PRIMARY_MODEL}"
+max_tokens = 400
+reasoning = { effort = "none" }
+prompt_version = "ocr-v1"
+
+[models.ocr_verify]
+backend = "openrouter"
+model = "${OCR_VERIFY_MODEL}"
+max_tokens = 400
+reasoning = { effort = "low" }
+prompt_version = "ocr-verify-v1"
+
+# ---- auxiliary cloud roles (research benchmarks B5a-B5c only) ----
+
+[models.mc_resolve_cloud]
+backend = "openrouter"
+model = "${MC_RESOLVE_CLOUD_MODEL}"
+max_tokens = 120
+reasoning = { effort = "none" }
+prompt_version = "mc-v1"
+
+[models.variant_resolve_cloud]
+backend = "openrouter"
+model = "${VARIANT_RESOLVE_CLOUD_MODEL}"
+max_tokens = 300
+prompt_version = "variant-v1"
+
+# ---- experiment budget: same $10 campaign ceiling as candidates.toml ----
+
+[budget]
+enabled = true
+max_cost_total = 10.00
+soft_fraction = 0.8
+
+# [pricing."vendor/model-slug"]
+# input = 0.15
+# output = 0.60

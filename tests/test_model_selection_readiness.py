@@ -138,7 +138,11 @@ def test_gateway_refuses_before_provider_call_when_ceiling_would_cross(tmp_path)
         {"models": {"grade_primary": {"backend": "openrouter", "model": "vendor/m",
                                       "max_tokens": 300}},
          "pricing": {"vendor/m": {"input": 1000.0, "output": 1000.0}}},
-        backend_factory=factory, ledger=ledger, budget=manager)
+        backend_factory=factory, ledger=ledger, budget=manager,
+        # research mode: the pre-call budget refusal is what is under test; a
+        # production gateway would refuse the cloud grading route even earlier
+        # (tests/test_cloud_boundary.py).
+        execution_mode="research")
     with pytest.raises(BudgetExceeded):
         gw.call(task="grade_primary", system="s" * 4000,
                 content_blocks=[{"type": "text", "text": "q"}], output_model=Out)

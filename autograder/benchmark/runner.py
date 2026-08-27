@@ -120,6 +120,12 @@ class RunSpec:
     final_evaluation: bool = False          # ONLY the `bench final-eval` path sets this (HELD_OUT live run)
     smoke_root: Path | None = None
     prompt_version: str | None = None   # pin a prompt version (A/B against an older one)
+    #: EXPLICIT research mode (--research). Required for any LIVE run whose
+    #: effective route is remote: production's cloud boundary allows the cloud
+    #: for OCR transcription only, and the historical cloud-grader benchmarks
+    #: are research baselines, not a production route. Local/mock runs never
+    #: need it.
+    research: bool = False
 
 
 @dataclass
@@ -360,9 +366,17 @@ def resolve_candidate(spec: RunSpec, registry: CandidateRegistry) -> str:
             f"registered candidates: {rc.candidates or '(none registered)'} "
             f"(evaluation/model_selection/candidates.toml)")
     if not spec.allow_unlisted and not registry.is_listed(spec.role, slug):
-        raise UnselectedCandidate(
-            f"{slug!r} is not a registered candidate for {spec.role}; registered: {rc.candidates}. "
-            "Add it to candidates.toml (data, no code change) or pass --allow-unlisted for an exploratory run")
+        # LOCAL candidates live in the role's <role>_local registry section
+        # (production grading is local; the cloud section is research
+        # baselines) — a local slug registered there is a listed candidate.
+        local_role = f"{spec.role}_local"
+        local_listed = (local_role in registry.roles
+                        and slug in registry.for_role(local_role).candidates)
+        if not local_listed:
+            raise UnselectedCandidate(
+                f"{slug!r} is not a registered candidate for {spec.role}; registered: {rc.candidates}"
+                f"{' + local ' + str(registry.for_role(local_role).candidates) if local_role in registry.roles else ''}. "
+                "Add it to candidates.toml (data, no code change) or pass --allow-unlisted for an exploratory run")
     return slug
 
 
@@ -473,7 +487,8 @@ def build_gateway(spec: RunSpec, route, registry: CandidateRegistry, warn_sink: 
         # transport retries stay (network-only, recorded by the backend)
         return create_backend(dataclasses.replace(cfg, validation_retries=spec.validation_retries))
 
-    gw = ModelGateway({route.task: route}, backend_factory=_factory, cache=cache, ledger=ledger, budget=None)
+    gw = ModelGateway({route.task: route}, backend_factory=_factory, cache=cache, ledger=ledger, budget=None,
+                      execution_mode="research" if spec.research else "production")
     limits = BudgetLimits(max_cost_total=float(hard), soft_fraction=float(warn) / float(hard) if hard else 0.8)
     gw.budget = BudgetManager(limits, ledger=ledger, warn=warn_sink)
     if spec.models_config is not None and Path(spec.models_config).exists():
@@ -645,6 +660,19 @@ def run_benchmark(spec: RunSpec, *, gateway=None, registry: CandidateRegistry | 
     gw = None
     preflight: dict | None = None
     if not spec.dry_run:
+        # ---- explicit research mode for remote runs (before anything) -------
+        # A live benchmark against a remote provider is a RESEARCH act: the
+        # production boundary allows the cloud for OCR transcription only, and
+        # cloud-grader results are research baselines. Refuse up front with the
+        # fix, instead of a mid-run CloudBoundaryError.
+        from ..cloudboundary import is_remote_route
+        if is_remote_route(route.backend, route.base_url) and not spec.research:
+            raise RuntimeError(
+                f"live benchmark of {spec.role!r} against the remote provider "
+                f"requires the explicit research mode: add --research. "
+                "Production allows the cloud for OCR transcription only; "
+                "cloud benchmark runs are research baselines "
+                "(docs/architecture.md). Local/mock runs need no flag.")
         gw = gateway or build_gateway(spec, route, registry, warnings.append)
         # Cloud readiness is explained in one sentence, never a stack trace.
         from ..cloudcheck import require_cloud_task

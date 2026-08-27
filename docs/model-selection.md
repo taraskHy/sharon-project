@@ -1,7 +1,25 @@
 # Model selection — candidates, benchmark protocols, budget (2026-08-21)
 
-Status: **prepared, not run.** No OpenRouter key is installed, every cloud
-role is `UNSELECTED`, and nothing in this document has spent a token. The
+> **2026-08-27 re-architecture:** production grading is LOCAL. The cloud
+> grading benchmarks below (B3/B4 on OpenRouter candidates) HAVE run on
+> DEV/CALIBRATION and their results — grade-v3 vs grade-v4-charitable,
+> Sonnet/Gemini, the six-case blinded human audit — are preserved as
+> **research baselines**. They are NOT the intended production grading
+> route and do not select the production grader. Re-running them requires
+> the explicit research mode (`bench ... --research`,
+> `models.research.example.toml`). Production grader selection runs the SAME
+> frozen verdict benchmark against LOCAL candidates
+> (`candidates.toml [roles.grade_primary_local]`) — see §B3-local below.
+> Cloud OCR selection (B1/B2) keeps its protocol — OCR is the one cloud
+> role in production — but like EVERY live benchmark against a remote
+> provider it now requires the explicit `--research` flag (the research
+> gate is deliberately role-independent; add `--research` to the B1/B2
+> live commands below). B2 note: the production ocr_verify contract is now the
+> INDEPENDENT transcription (`ocr-verify-v2-independent`); the frozen B2
+> verdict-contract benchmark is a research artifact of the v1 contract, and
+> verify-model selection must re-benchmark under the independent contract.
+
+The
 role definitions live in [docs/model-roles.md](model-roles.md); the
 candidate sets live in
 [evaluation/model_selection/candidates.toml](../evaluation/model_selection/candidates.toml).
@@ -188,6 +206,48 @@ score error, harmful upgrades (score above labeled), harmful downgrades,
 rubric decision correctness (per rubric item), evidence validation
 failures (`evidence.py`), invalid schema, AUTO rate, REVIEW rate, tokens,
 calls, cost, latency.
+
+### B3-local — the production grader benchmark (prepared, NOT run)
+
+Same frozen dataset, same prompts, same schema, same verdict conversion as
+B3 — only the backend differs: a LOCAL endpoint, `--research` not required,
+cloud grading cost **$0** by construction. The verdict populations are the
+scientifically valid ones already frozen:
+
+* DEV: 26 derivable (valid 22 / partially_valid 4 / invalid 0)
+* CALIBRATION: 12 derivable (valid 7 / partially_valid 5 / invalid 0)
+* HELD_OUT: untouched until one final confirmation run
+* explicit limitation: **invalid-class performance = NOT MEASURED**
+
+Candidates: `candidates.toml [roles.grade_primary_local]` (no winner until
+the benchmark runs; the cloud results are baselines, not selectors).
+
+Staged execution (each stage gates the next):
+
+```
+# 1. mock dry run (zero calls, plan + hashes)
+python -m autograder bench dry-run --role grade_primary --split dev --subset dev_verdict --candidate qwen3-vl:8b-instruct --backend ollama --base-url http://localhost:11434/v1
+
+# 2. tiny DEV smoke (frozen pre-registered subset, local inference)
+python -m autograder bench run --role grade_primary --split dev --subset smoke --candidate qwen3-vl:8b-instruct --backend ollama --base-url http://localhost:11434/v1 --i-understand-this-spends-money
+
+# 3. full derivable DEV
+python -m autograder bench run --role grade_primary --split dev --subset dev_verdict --candidate qwen3-vl:8b-instruct --backend ollama --base-url http://localhost:11434/v1 --i-understand-this-spends-money
+
+# 4. CALIBRATION finalists only
+python -m autograder bench run --role grade_primary --split calibration --subset calibration_verdict_v4 --candidate <finalist> --backend ollama --base-url http://localhost:11434/v1 --i-understand-this-spends-money
+
+# 5. freeze the local model + config in models.toml (owner writes the winner)
+# 6. HELD_OUT later, once only: bench final-eval ... --confirm-held-out
+```
+
+(The `--i-understand-this-spends-money` flag is the live-run gate; a local
+run spends no provider money and reports cloud grading cost $0.) The
+harness rejects a remote URL for a grading role without `--research`, keeps
+production/benchmark request parity by importing the production prompt
+builders, and records model, config hash, dataset hashes, prompt/schema
+sha256, raw outputs, verdict confusion matrix, macro-F1, balanced accuracy,
+per-class recalls, schema failures and latency per case.
 
 ## B4 — grade-escalation benchmark
 

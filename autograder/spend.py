@@ -70,6 +70,59 @@ def ledger_summary(ledger: UsageLedger | str | Path) -> dict[str, Any]:
     }
 
 
+#: The production grading roles — LOCAL by architecture (cloudboundary.py).
+GRADING_TASKS = ("grade_primary", "grade_escalate")
+
+
+def architecture_split(ledger: UsageLedger | str | Path) -> dict[str, Any]:
+    """OCR-vs-grading view of ONE persisted ledger, for the diagnostics GUI.
+
+    The production architecture is cloud-OCR / local-grading, so the panel
+    shows the two sides separately: what the OCR roles spent in the cloud
+    (calls, tokens, cost, cache hits, verification calls) and proof that
+    grading stayed local (``grading.cloud_calls`` MUST be 0 — a nonzero value
+    means the boundary was bypassed and is surfaced loudly, never averaged
+    away). Pure file read; no network."""
+    from .cloudboundary import CLOUD_OCR_ALLOWLIST
+    from .usage import _row_is_cloud
+
+    led = ledger if isinstance(ledger, UsageLedger) else UsageLedger(ledger)
+    rows = led.entries() if led.path.exists() else []
+    ocr = {"cloud_calls": 0, "verify_calls": 0, "cache_hits": 0,
+           "input_tokens": 0, "output_tokens": 0, "cost": 0.0}
+    grading = {"local_calls": 0, "cloud_calls": 0, "cache_hits": 0,
+               "mean_latency_s": None}
+    lat_total, lat_n = 0.0, 0
+    for e in rows:
+        task = str(e.get("task") or "")
+        if task in CLOUD_OCR_ALLOWLIST:
+            if e.get("cache_hit"):
+                ocr["cache_hits"] += 1
+                continue
+            if _row_is_cloud(e):
+                ocr["cloud_calls"] += 1
+                if task == "ocr_verify":
+                    ocr["verify_calls"] += 1
+                ocr["input_tokens"] += int(e.get("input_tokens") or 0)
+                ocr["output_tokens"] += int(e.get("output_tokens") or 0)
+                ocr["cost"] = round(ocr["cost"] + float(e.get("reported_cost") or 0), 6)
+        elif task in GRADING_TASKS:
+            if e.get("cache_hit"):
+                grading["cache_hits"] += 1
+                continue
+            if _row_is_cloud(e):
+                grading["cloud_calls"] += 1          # boundary violation — surfaced, never hidden
+            else:
+                grading["local_calls"] += 1
+                if e.get("latency_s") is not None:
+                    lat_total += float(e["latency_s"])
+                    lat_n += 1
+    if lat_n:
+        grading["mean_latency_s"] = round(lat_total / lat_n, 3)
+    return {"path": str(led.path), "ocr": ocr, "grading": grading,
+            "grading_stayed_local": grading["cloud_calls"] == 0}
+
+
 def budget_status(cumulative_cost: float, *, warn_usd: float = EXPERIMENT_WARN_USD,
                   hard_usd: float = EXPERIMENT_HARD_STOP_USD) -> dict[str, Any]:
     """Classify cumulative spend against the campaign policy.
