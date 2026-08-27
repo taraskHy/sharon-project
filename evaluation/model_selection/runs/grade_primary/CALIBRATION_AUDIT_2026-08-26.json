@@ -99,7 +99,7 @@
      "spans_verified": []
     }
    },
-   "human_decision": null,
+   "human_decision": "B",
    "human_note": "",
    "split": "CALIBRATION",
    "source_page": {
@@ -107,7 +107,25 @@
     "page": 11,
     "masked": true
    },
-   "answer_crop": "evaluation/htr_pilot/images/e004/q1_r1_cell_clean.png"
+   "answer_crop": "evaluation/htr_pilot/images/e004/q1_r1_cell_clean.png",
+   "decided_at": "2026-08-27 17:30:25",
+   "decided_by": "owner",
+   "decided_blind": true,
+   "decision_revision": 1,
+   "decision_history": [
+    {
+     "at": "2026-08-27 17:30:25",
+     "action": "decide",
+     "decision": "B",
+     "note": "",
+     "auditor": "owner",
+     "made_blind": true,
+     "payload_sha256": "cf74d88337e34303ae60834e92cb5a41d525514e5c95c9fcecc3f417c13a6a2a",
+     "revision": 1,
+     "manifest_content_hash": "fa02cff72a7a9c57b7166b7e638ed76016ee9008446b53d992ecd20fb83a7ee3"
+    }
+   ],
+   "models_revealed_at": "2026-08-27 17:30:25"
   },
   {
    "case_id": "e004_q1_r3",
@@ -164,7 +182,7 @@
      "spans_verified": []
     }
    },
-   "human_decision": null,
+   "human_decision": "B",
    "human_note": "",
    "split": "CALIBRATION",
    "source_page": {
@@ -172,7 +190,25 @@
     "page": 11,
     "masked": true
    },
-   "answer_crop": "evaluation/htr_pilot/images/e004/q1_r3_cell_clean.png"
+   "answer_crop": "evaluation/htr_pilot/images/e004/q1_r3_cell_clean.png",
+   "decided_at": "2026-08-27 17:31:14",
+   "decided_by": "owner",
+   "decided_blind": true,
+   "decision_revision": 1,
+   "decision_history": [
+    {
+     "at": "2026-08-27 17:31:14",
+     "action": "decide",
+     "decision": "B",
+     "note": "",
+     "auditor": "owner",
+     "made_blind": true,
+     "payload_sha256": "f8d333d4e85e2789750d6d81e54023baa6e8b35519754e78845297a2cba808b3",
+     "revision": 1,
+     "manifest_content_hash": "fa02cff72a7a9c57b7166b7e638ed76016ee9008446b53d992ecd20fb83a7ee3"
+    }
+   ],
+   "models_revealed_at": "2026-08-27 17:31:14"
   },
   {
    "case_id": "e004_q2_r6",
@@ -229,7 +265,7 @@
      "spans_verified": []
     }
    },
-   "human_decision": null,
+   "human_decision": "A",
    "human_note": "",
    "split": "CALIBRATION",
    "source_page": {
@@ -237,7 +273,25 @@
     "page": 12,
     "masked": true
    },
-   "answer_crop": "evaluation/htr_pilot/images/e004/q2_r6_cell_clean.png"
+   "answer_crop": "evaluation/htr_pilot/images/e004/q2_r6_cell_clean.png",
+   "decided_at": "2026-08-27 17:32:26",
+   "decided_by": "owner",
+   "decided_blind": true,
+   "decision_revision": 1,
+   "decision_history": [
+    {
+     "at": "2026-08-27 17:32:26",
+     "action": "decide",
+     "decision": "A",
+     "note": "",
+     "auditor": "owner",
+     "made_blind": true,
+     "payload_sha256": "384778e6cfc232d42bc8190372a156baf1e6c701a6fa392733f583742f6a4f96",
+     "revision": 1,
+     "manifest_content_hash": "fa02cff72a7a9c57b7166b7e638ed76016ee9008446b53d992ecd20fb83a7ee3"
+    }
+   ],
+   "models_revealed_at": "2026-08-27 17:32:26"
   },
   {
    "case_id": "e004_q2_r8",
@@ -294,7 +348,7 @@
      "spans_verified": []
     }
    },
-   "human_decision": null,
+   "human_decision": "C",
    "human_note": "",
    "split": "CALIBRATION",
    "source_page": {
@@ -302,7 +356,25 @@
     "page": 12,
     "masked": true
    },
-   "answer_crop": "evaluation/htr_pilot/images/e004/q2_r8_cell_clean.png"
+   "answer_crop": "evaluation/htr_pilot/images/e004/q2_r8_cell_clean.png",
+   "decided_at": "2026-08-27 17:32:57",
+   "decided_by": "owner",
+   "decided_blind": true,
+   "decision_revision": 1,
+   "decision_history": [
+    {
+     "at": "2026-08-27 17:32:57",
+     "action": "decide",
+     "decision": "C",
+     "note": "",
+     "auditor": "owner",
+     "made_blind": true,
+     "payload_sha256": "3ca2ab052d3a9c5d1c9d7ba085d9180e61373ec8b62ac29b8ff9b847f611e723",
+     "revision": 1,
+     "manifest_content_hash": "fa02cff72a7a9c57b7166b7e638ed76016ee9008446b53d992ecd20fb83a7ee3"
+    }
+   ],
+   "models_revealed_at": "2026-08-27 17:32:57"
   },
   {
    "case_id": "e004_q1_r5",
@@ -371,7 +443,7 @@
      ]
     }
    },
-   "human_decision": null,
+   "human_decision": "A",
    "human_note": "",
    "split": "CALIBRATION",
    "source_page": {
@@ -379,7 +451,25 @@
     "page": 11,
     "masked": true
    },
-   "answer_crop": "evaluation/htr_pilot/images/e004/q1_r5_cell_clean.png"
+   "answer_crop": "evaluation/htr_pilot/images/e004/q1_r5_cell_clean.png",
+   "decided_at": "2026-08-27 17:34:18",
+   "decided_by": "owner",
+   "decided_blind": true,
+   "decision_revision": 1,
+   "decision_history": [
+    {
+     "at": "2026-08-27 17:34:18",
+     "action": "decide",
+     "decision": "A",
+     "note": "",
+     "auditor": "owner",
+     "made_blind": true,
+     "payload_sha256": "101c5f9a1778995ba2e2c1ae8f233f8003abe86ca35cbf74c65aacd0a5a9ba04",
+     "revision": 1,
+     "manifest_content_hash": "fa02cff72a7a9c57b7166b7e638ed76016ee9008446b53d992ecd20fb83a7ee3"
+    }
+   ],
+   "models_revealed_at": "2026-08-27 17:34:18"
   },
   {
    "case_id": "e004_q1_r6",
@@ -444,7 +534,7 @@
      ]
     }
    },
-   "human_decision": null,
+   "human_decision": "A",
    "human_note": "",
    "split": "CALIBRATION",
    "source_page": {
@@ -452,7 +542,25 @@
     "page": 11,
     "masked": true
    },
-   "answer_crop": "evaluation/htr_pilot/images/e004/q1_r6_cell_clean.png"
+   "answer_crop": "evaluation/htr_pilot/images/e004/q1_r6_cell_clean.png",
+   "decided_at": "2026-08-27 17:34:41",
+   "decided_by": "owner",
+   "decided_blind": true,
+   "decision_revision": 1,
+   "decision_history": [
+    {
+     "at": "2026-08-27 17:34:41",
+     "action": "decide",
+     "decision": "A",
+     "note": "",
+     "auditor": "owner",
+     "made_blind": true,
+     "payload_sha256": "9a1f0c6d4f91a2cfcb6a13d924a016ef8007d42d75bdb0bf092f36566c68bc92",
+     "revision": 1,
+     "manifest_content_hash": "fa02cff72a7a9c57b7166b7e638ed76016ee9008446b53d992ecd20fb83a7ee3"
+    }
+   ],
+   "models_revealed_at": "2026-08-27 17:34:41"
   }
  ]
 }
