@@ -111,6 +111,11 @@ def role_status(models_config: Path | None) -> dict[str, Any]:
             "tasks": tasks,
             "unselected": sorted(t for t, v in tasks.items() if v["status"] in ("UNSELECTED", "ABSENT")),
             "configured_cloud": sorted(t for t, v in tasks.items() if v["status"] == "CONFIGURED_CLOUD"),
+            # cloud routes the boundary will refuse at call time — they cannot
+            # run, but a hardcoded cloud grading slug in models.toml is still
+            # worth surfacing as a config smell rather than silently "OK"
+            "blocked_in_production": sorted(t for t, v in tasks.items()
+                                            if v.get("blocked_in_production")),
             "env_slug_cloud_tasks": env_slugs,
             "budget_section": data.get("budget") or {}, "pricing_table": bool(pricing),
             "pricing_entries": sorted(pricing), "pricing_priced": priced}
