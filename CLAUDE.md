@@ -11,3 +11,14 @@
   backends, or callbacks, and it indexes tests alongside production code.
   Source code and tests are authoritative; the graph is only a map.
 - Details and refresh workflow: `docs/graphify.md`.
+
+## Architecture flow map (/visualize)
+
+- `/visualize` (project skill, `.claude/skills/visualize/`) renders an
+  interactive **system architecture** map — pipeline lanes, components,
+  labeled runtime flows with file:line evidence — from the curated spec
+  `docs/flow-spec.json` (committed). Generated output lands in `flow-out/`
+  (gitignored). Unlike the graphify file graph, it shows DI seams,
+  subprocess hops, data stores, and human-in-the-loop steps.
+- After structural changes, `/visualize` refreshes the map; renderer
+  warnings flag spec drift (stale or unplaced modules).

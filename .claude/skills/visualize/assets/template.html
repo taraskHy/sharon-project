@@ -1,0 +1,848 @@
+<title>__FLOWMAP_TITLE__</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+  :root {
+    --bg: #F6F7F5;
+    --surface: #FFFFFF;
+    --surface-2: #EDF0EC;
+    --ink: #1E2622;
+    --muted: #5A6862;
+    --line: #D7DDD8;
+    --line-soft: #E4E9E4;
+    --accent: #0E7A5F;
+    --accent-soft: #0E7A5F22;
+    --warm: #B4552D;
+    --hit: #0E7A5F;
+    --shadow: 0 1px 2px rgba(30, 38, 34, 0.07), 0 4px 14px rgba(30, 38, 34, 0.06);
+    --shadow-lg: 0 4px 10px rgba(30, 38, 34, 0.10), 0 14px 40px rgba(30, 38, 34, 0.13);
+    --k-call: #55655E;
+    --k-data: #2C6E8F;
+    --k-subprocess: #B4552D;
+    --k-di: #6D5BD0;
+    --k-http: #A26A1B;
+    --k-human: #B0486A;
+    --sans: "IBM Plex Sans", system-ui, "Segoe UI", sans-serif;
+    --mono: "IBM Plex Mono", Consolas, "Cascadia Mono", monospace;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #131816;
+      --surface: #1C2320;
+      --surface-2: #222A26;
+      --ink: #E7ECE8;
+      --muted: #92A099;
+      --line: #333C37;
+      --line-soft: #2A322D;
+      --accent: #41BE97;
+      --accent-soft: #41BE9726;
+      --warm: #E08A5E;
+      --hit: #41BE97;
+      --shadow: 0 1px 2px rgba(0, 0, 0, 0.35), 0 4px 14px rgba(0, 0, 0, 0.30);
+      --shadow-lg: 0 4px 10px rgba(0, 0, 0, 0.40), 0 14px 40px rgba(0, 0, 0, 0.45);
+      --k-call: #8FA098;
+      --k-data: #6FB1D2;
+      --k-subprocess: #E08A5E;
+      --k-di: #A493F0;
+      --k-http: #D2A650;
+      --k-human: #E58BA2;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #131816;
+    --surface: #1C2320;
+    --surface-2: #222A26;
+    --ink: #E7ECE8;
+    --muted: #92A099;
+    --line: #333C37;
+    --line-soft: #2A322D;
+    --accent: #41BE97;
+    --accent-soft: #41BE9726;
+    --warm: #E08A5E;
+    --hit: #41BE97;
+    --shadow: 0 1px 2px rgba(0, 0, 0, 0.35), 0 4px 14px rgba(0, 0, 0, 0.30);
+    --shadow-lg: 0 4px 10px rgba(0, 0, 0, 0.40), 0 14px 40px rgba(0, 0, 0, 0.45);
+    --k-call: #8FA098;
+    --k-data: #6FB1D2;
+    --k-subprocess: #E08A5E;
+    --k-di: #A493F0;
+    --k-http: #D2A650;
+    --k-human: #E58BA2;
+  }
+
+  * { box-sizing: border-box; margin: 0; }
+  html, body { height: 100%; }
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--sans);
+    font-size: 14px;
+    overflow: hidden;
+  }
+  button { font: inherit; color: inherit; background: none; border: none; cursor: pointer; }
+  button:focus-visible, input:focus-visible, [tabindex]:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+  }
+
+  #app { display: flex; flex-direction: column; height: 100vh; }
+
+  /* ---------- top bar ---------- */
+  #topbar {
+    display: flex; align-items: center; gap: 14px;
+    padding: 10px 16px;
+    background: var(--surface);
+    border-bottom: 1px solid var(--line);
+    flex-wrap: wrap;
+    z-index: 30;
+  }
+  #titleblock { margin-right: 6px; }
+  #titleblock h1 { font-size: 16px; font-weight: 700; letter-spacing: -0.01em; text-wrap: balance; }
+  #titleblock .sub { font-size: 11.5px; color: var(--muted); margin-top: 1px; }
+  #search {
+    width: 220px; padding: 6px 10px;
+    font: 13px var(--sans);
+    color: var(--ink);
+    background: var(--bg);
+    border: 1px solid var(--line);
+    border-radius: 7px;
+  }
+  #search::placeholder { color: var(--muted); }
+  #kindchips { display: flex; gap: 6px; flex-wrap: wrap; }
+  .chip {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 4px 9px;
+    font-size: 11px; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase;
+    color: var(--muted);
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    background: var(--surface);
+  }
+  .chip .swatch { width: 14px; height: 0; border-top: 2.5px solid; border-radius: 2px; }
+  .chip.on { color: var(--ink); background: var(--surface-2); }
+  .chip.off { opacity: 0.42; }
+  .chip.off .swatch { border-top-style: dotted; }
+  #viewctl { display: flex; gap: 4px; margin-left: auto; align-items: center; }
+  #viewctl button, #labelmode {
+    padding: 5px 9px;
+    border: 1px solid var(--line);
+    border-radius: 7px;
+    background: var(--surface);
+    color: var(--ink);
+    font-size: 12.5px;
+    line-height: 1;
+  }
+  #viewctl button:hover { background: var(--surface-2); }
+
+  /* ---------- stage / canvas ---------- */
+  #stage { position: relative; flex: 1; overflow: hidden; }
+  #viewport {
+    position: absolute; inset: 0;
+    overflow: hidden;
+    cursor: grab;
+    touch-action: none;
+  }
+  #viewport.panning { cursor: grabbing; }
+  #world { position: absolute; top: 0; left: 0; transform-origin: 0 0; }
+  #edges, #lanes, #nodes, #edgelabels { position: absolute; top: 0; left: 0; }
+  #edges { overflow: visible; pointer-events: none; }
+  #edges path { pointer-events: auto; }
+
+  .lane-col {
+    position: absolute; top: 0;
+    border-radius: 12px;
+    background: transparent;
+  }
+  .lane-col.alt { background: color-mix(in srgb, var(--surface) 46%, transparent); }
+  .lane-head { position: absolute; padding: 0 4px; }
+  .lane-head .lname {
+    font-size: 12px; font-weight: 700; letter-spacing: 0.09em; text-transform: uppercase;
+    color: var(--ink);
+  }
+  .lane-head .lsum { font-size: 11px; color: var(--muted); margin-top: 2px; max-width: 240px; }
+  .lane-head::after {
+    content: ""; display: block; height: 2px; margin-top: 7px;
+    background: linear-gradient(to right, var(--line), transparent);
+    border-radius: 2px;
+  }
+
+  /* ---------- component cards ---------- */
+  .card {
+    position: absolute;
+    width: var(--card-w, 224px);
+    padding: 9px 11px 9px 13px;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 9px;
+    box-shadow: var(--shadow);
+    cursor: pointer;
+  }
+  .card::before {
+    content: ""; position: absolute; left: -1px; top: 10px; bottom: 10px;
+    width: 3.5px; border-radius: 3px; background: var(--muted); opacity: 0.5;
+  }
+  .card .cname { font-size: 13.5px; font-weight: 600; line-height: 1.25; }
+  .card .cmeta {
+    display: flex; gap: 6px; align-items: center; margin-top: 4px;
+    font-size: 10px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase;
+    color: var(--muted);
+  }
+  .card .cmods { font-family: var(--mono); font-size: 10px; color: var(--muted); margin-top: 3px; }
+  .card.k-ui::before { background: var(--accent); opacity: 1; }
+  .card.k-stage::before { background: var(--k-data); opacity: 0.85; }
+  .card.k-service::before { background: var(--muted); opacity: 0.55; }
+  .card.k-store { border-style: solid; background: var(--surface-2); border-radius: 12px; }
+  .card.k-store::before { background: var(--k-http); opacity: 0.8; }
+  .card.k-external { border-style: dashed; background: transparent; }
+  .card.k-external::before { background: var(--k-di); opacity: 0.8; }
+  .card.k-human { }
+  .card.k-human::before { background: var(--k-human); opacity: 0.9; }
+  .card:hover { border-color: var(--muted); }
+  .card.selected { border-color: var(--accent); box-shadow: 0 0 0 2px var(--accent-soft), var(--shadow-lg); }
+  .card.hit { box-shadow: 0 0 0 2px var(--hit), var(--shadow); }
+  .card.dim, .lane-head.dim { opacity: 0.22; }
+
+  /* ---------- edges ---------- */
+  .edge { fill: none; stroke-width: 1.7; opacity: 0.86; }
+  .edge.k-call { stroke: var(--k-call); }
+  .edge.k-data { stroke: var(--k-data); stroke-width: 2.1; }
+  .edge.k-subprocess { stroke: var(--k-subprocess); stroke-dasharray: 7 4.5; stroke-width: 2; }
+  .edge.k-di { stroke: var(--k-di); stroke-dasharray: 2 3.5; stroke-width: 2; stroke-linecap: round; }
+  .edge.k-http { stroke: var(--k-http); stroke-dasharray: 11 4; }
+  .edge.k-human { stroke: var(--k-human); stroke-dasharray: 8 3 2 3; stroke-width: 2; }
+  .edge-hit { fill: none; stroke: transparent; stroke-width: 15; cursor: pointer; }
+  .edge.dim { opacity: 0.07; }
+  .edge.selected, .edge.lit { stroke-width: 3; opacity: 1; }
+  #edges .m-call { fill: var(--k-call); }
+  #edges .m-data { fill: var(--k-data); }
+  #edges .m-subprocess { fill: var(--k-subprocess); }
+  #edges .m-di { fill: var(--k-di); }
+  #edges .m-http { fill: var(--k-http); }
+  #edges .m-human { fill: var(--k-human); }
+
+  .elabel {
+    position: absolute;
+    transform: translate(-50%, -50%);
+    padding: 2px 7px;
+    font-size: 10.5px; font-weight: 500;
+    color: var(--muted);
+    background: color-mix(in srgb, var(--bg) 88%, transparent);
+    border: 1px solid var(--line-soft);
+    border-radius: 999px;
+    pointer-events: none;
+    white-space: nowrap;
+  }
+  .elabel.k-subprocess { color: var(--k-subprocess); border-color: var(--k-subprocess); }
+  .elabel.k-di { color: var(--k-di); border-color: var(--k-di); }
+  .elabel.k-http { color: var(--k-http); }
+  .elabel.k-human { color: var(--k-human); }
+  .elabel.k-data { color: var(--k-data); }
+  .elabel.hidden, .elabel.dim { opacity: 0; }
+  .elabel.lit { opacity: 1; color: var(--ink); border-color: var(--muted); z-index: 5; }
+
+  /* ---------- drawer ---------- */
+  #drawer {
+    position: absolute; top: 0; right: 0; bottom: 0;
+    width: min(380px, 92vw);
+    background: var(--surface);
+    border-left: 1px solid var(--line);
+    box-shadow: var(--shadow-lg);
+    transform: translateX(103%);
+    overflow-y: auto;
+    z-index: 20;
+    padding: 16px 18px 28px;
+  }
+  #drawer.open { transform: translateX(0); }
+  @media (prefers-reduced-motion: no-preference) {
+    #drawer { transition: transform 0.22s ease; }
+    .card, .edge, .elabel, .lane-head { transition: opacity 0.15s ease; }
+  }
+  #drawer .dkind {
+    display: inline-block; padding: 2px 8px; margin-bottom: 8px;
+    font-size: 10px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase;
+    color: var(--muted); border: 1px solid var(--line); border-radius: 999px;
+  }
+  #drawer h2 { font-size: 17px; font-weight: 700; letter-spacing: -0.01em; text-wrap: balance; }
+  #drawer .dsum { margin-top: 7px; color: var(--ink); line-height: 1.5; font-size: 13px; }
+  #drawer .dgroup { margin-top: 3px; font-size: 11.5px; color: var(--muted); }
+  #drawer h3 {
+    margin-top: 18px; padding-top: 12px;
+    border-top: 1px solid var(--line-soft);
+    font-size: 11px; font-weight: 700; letter-spacing: 0.09em; text-transform: uppercase;
+    color: var(--muted);
+  }
+  #dclose { position: absolute; top: 10px; right: 10px; padding: 4px 9px; border-radius: 7px; color: var(--muted); font-size: 15px; }
+  #dclose:hover { background: var(--surface-2); color: var(--ink); }
+  .flowrow {
+    display: flex; align-items: baseline; gap: 7px;
+    width: 100%; text-align: left;
+    padding: 6px 8px; margin: 2px -8px 0;
+    border-radius: 7px; font-size: 12.5px; line-height: 1.35;
+  }
+  .flowrow:hover { background: var(--surface-2); }
+  .flowrow .dir { font-family: var(--mono); font-size: 11px; color: var(--muted); flex: none; }
+  .flowrow .fk { font-size: 9.5px; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; flex: none; }
+  .fk.k-call { color: var(--k-call); } .fk.k-data { color: var(--k-data); }
+  .fk.k-subprocess { color: var(--k-subprocess); } .fk.k-di { color: var(--k-di); }
+  .fk.k-http { color: var(--k-http); } .fk.k-human { color: var(--k-human); }
+  .flowrow .flabel { color: var(--muted); }
+  .modrow { margin-top: 8px; font-size: 12px; }
+  .modrow .mpath { font-family: var(--mono); font-size: 11.5px; }
+  .modrow .mloc { color: var(--muted); font-size: 10.5px; margin-left: 6px; font-variant-numeric: tabular-nums; }
+  .modrow .mdefs { margin-top: 2px; font-family: var(--mono); font-size: 10.5px; color: var(--muted); line-height: 1.6; }
+  .evrow { margin-top: 6px; font-size: 12px; line-height: 1.45; }
+  .evrow .esrc {
+    font-family: var(--mono); font-size: 11px;
+    background: var(--surface-2); border: 1px solid var(--line-soft);
+    padding: 1px 6px; border-radius: 5px;
+    overflow-wrap: anywhere;
+  }
+  .evrow .enote { color: var(--muted); display: block; margin-top: 2px; }
+  .tracebtns { display: flex; gap: 7px; margin-top: 10px; }
+  .tracebtns button {
+    padding: 6px 10px; font-size: 12px; font-weight: 600;
+    border: 1px solid var(--line); border-radius: 7px; background: var(--bg);
+  }
+  .tracebtns button:hover { border-color: var(--accent); color: var(--accent); }
+
+  /* ---------- legend & hint ---------- */
+  #legend {
+    position: absolute; left: 14px; bottom: 14px;
+    background: color-mix(in srgb, var(--surface) 92%, transparent);
+    border: 1px solid var(--line); border-radius: 10px;
+    padding: 10px 13px; z-index: 15;
+    box-shadow: var(--shadow);
+    max-width: 260px;
+  }
+  #legend .lg-title { font-size: 10px; font-weight: 700; letter-spacing: 0.09em; text-transform: uppercase; color: var(--muted); margin-bottom: 6px; }
+  #legend .lg-row { display: flex; align-items: center; gap: 8px; font-size: 11.5px; margin-top: 4px; color: var(--ink); }
+  #legend svg { flex: none; }
+  #legend.collapsed .lg-body { display: none; }
+  #legend .lg-toggle { position: absolute; top: 6px; right: 8px; color: var(--muted); font-size: 11px; }
+  #hint {
+    position: absolute; right: 14px; bottom: 14px;
+    font-size: 11px; color: var(--muted); z-index: 5;
+    background: color-mix(in srgb, var(--bg) 80%, transparent);
+    padding: 4px 8px; border-radius: 6px;
+  }
+  #empty {
+    position: absolute; inset: 0; display: none;
+    align-items: center; justify-content: center;
+    color: var(--muted); font-size: 14px; text-align: center; padding: 40px;
+  }
+</style>
+
+<div id="app">
+  <header id="topbar">
+    <div id="titleblock">
+      <h1 id="ttl">Flow map</h1>
+      <div class="sub" id="sttl"></div>
+    </div>
+    <input id="search" type="search" placeholder="Search components &amp; modules ( / )" autocomplete="off">
+    <div id="kindchips" role="group" aria-label="Flow kind filters"></div>
+    <div id="viewctl">
+      <button id="labelmode" title="Cycle edge-label visibility">Labels: key</button>
+      <button id="zout" title="Zoom out" aria-label="Zoom out">&minus;</button>
+      <button id="zin" title="Zoom in" aria-label="Zoom in">+</button>
+      <button id="zfit" title="Fit diagram to window">Fit</button>
+    </div>
+  </header>
+  <div id="stage">
+    <div id="viewport">
+      <div id="world">
+        <div id="lanes"></div>
+        <svg id="edges" xmlns="http://www.w3.org/2000/svg"><defs id="edefs"></defs><g id="epaths"></g></svg>
+        <div id="nodes"></div>
+        <div id="edgelabels"></div>
+      </div>
+    </div>
+    <div id="empty">No flow spec found. Author flow-spec.json, then re-run the renderer.</div>
+    <aside id="drawer" aria-label="Details"><button id="dclose" aria-label="Close details">&times;</button><div id="dbody"></div></aside>
+    <div id="legend">
+      <button class="lg-toggle" id="lgtoggle">hide</button>
+      <div class="lg-title">Legend</div>
+      <div class="lg-body" id="lgbody"></div>
+    </div>
+    <div id="hint">click a card &middot; drag to pan &middot; scroll to zoom</div>
+  </div>
+</div>
+
+<script>
+window.FLOWMAP = __FLOWMAP_DATA_JSON__;
+</script>
+<script>
+(function () {
+  "use strict";
+  const DATA = window.FLOWMAP || {};
+  const spec = DATA.spec || {};
+  const groups = (spec.groups && spec.groups.length) ? spec.groups : [{ id: "_all", name: "Components" }];
+  const comps = spec.components || [];
+  const flows = (spec.flows || []).map((f, i) => Object.assign({ _i: i }, f));
+  const modDetails = DATA.moduleDetails || {};
+
+  const $ = (id) => document.getElementById(id);
+  const world = $("world"), nodesEl = $("nodes"), lanesEl = $("lanes"),
+        svg = $("edges"), epaths = $("epaths"), edefs = $("edefs"),
+        labelsEl = $("edgelabels"), viewport = $("viewport"),
+        drawer = $("drawer"), dbody = $("dbody");
+
+  if (!comps.length) { $("empty").style.display = "flex"; return; }
+  $("ttl").textContent = spec.title || "Flow map";
+  $("sttl").textContent = (spec.subtitle || "") + (spec.generated ? "  ·  " + spec.generated : "");
+  document.title = spec.title || document.title;
+
+  const KIND_LABELS = { call: "call", data: "data", subprocess: "subprocess", di: "injected", http: "network", human: "human" };
+  const CKIND_LABELS = { ui: "entry point", stage: "pipeline stage", service: "support", store: "data store", external: "external", human: "human" };
+  const kindsPresent = [...new Set(flows.map(f => f.kind || "call"))];
+  const kindOn = {}; kindsPresent.forEach(k => kindOn[k] = true);
+
+  // persisted view conveniences (safe to lose)
+  let labelMode = "key"; // key | all | none
+  try {
+    const saved = JSON.parse(localStorage.getItem("flowmap-ui") || "{}");
+    if (["key", "all", "none"].includes(saved.labelMode)) labelMode = saved.labelMode;
+  } catch (e) { /* storage unavailable */ }
+  function persist() {
+    try { localStorage.setItem("flowmap-ui", JSON.stringify({ labelMode })); } catch (e) { /* ignore */ }
+  }
+
+  // ---------- indices ----------
+  const compById = {}; comps.forEach(c => compById[c.id] = c);
+  const groupIdx = {}; groups.forEach((g, i) => groupIdx[g.id] = i);
+  const flowsBy = { out: {}, in: {} };
+  flows.forEach(f => {
+    (flowsBy.out[f.from] = flowsBy.out[f.from] || []).push(f);
+    (flowsBy.in[f.to] = flowsBy.in[f.to] || []).push(f);
+  });
+
+  // ---------- build cards ----------
+  const CARD_W = 224, COL_GAP = 72, V_GAP = 20, PAD = 36, HEAD_H = 72;
+  document.documentElement.style.setProperty("--card-w", CARD_W + "px");
+  const cardEls = {};
+  comps.forEach(c => {
+    const el = document.createElement("div");
+    el.className = "card k-" + (c.kind || "service");
+    el.tabIndex = 0;
+    el.setAttribute("role", "button");
+    const mods = c.modules || [];
+    el.innerHTML =
+      '<div class="cname"></div>' +
+      '<div class="cmeta">' + (CKIND_LABELS[c.kind] || c.kind || "") + "</div>" +
+      (mods.length ? '<div class="cmods">' + mods.length + (mods.length === 1 ? " module" : " modules") + "</div>" : "");
+    el.querySelector(".cname").textContent = c.name;
+    nodesEl.appendChild(el);
+    cardEls[c.id] = el;
+    el.addEventListener("click", (ev) => { ev.stopPropagation(); selectComp(c.id); });
+    el.addEventListener("keydown", (ev) => { if (ev.key === "Enter" || ev.key === " ") { ev.preventDefault(); selectComp(c.id); } });
+    el.addEventListener("mouseenter", () => hoverComp(c.id, true));
+    el.addEventListener("mouseleave", () => hoverComp(c.id, false));
+  });
+
+  // ---------- layout ----------
+  const pos = {}; // id -> {x, y, w, h, col}
+  const laneOf = (c) => (c.group && groupIdx[c.group] !== undefined) ? groupIdx[c.group] : 0;
+  const byLane = groups.map(() => []);
+  comps.forEach(c => byLane[laneOf(c)].push(c.id));
+
+  function layout() {
+    // measure card heights
+    comps.forEach(c => { pos[c.id] = { w: CARD_W, h: cardEls[c.id].offsetHeight, col: laneOf(c) }; });
+    // two barycenter sweeps to reduce edge crossings within lanes
+    const orderY = {}; comps.forEach((c, i) => orderY[c.id] = i);
+    for (let sweep = 0; sweep < 2; sweep++) {
+      byLane.forEach(ids => {
+        ids.sort((a, b) => bary(a) - bary(b) || orderY[a] - orderY[b]);
+        ids.forEach((id, i) => orderY[id] = i);
+      });
+    }
+    function bary(id) {
+      const ns = [...(flowsBy.out[id] || []).map(f => f.to), ...(flowsBy.in[id] || []).map(f => f.from)]
+        .filter(n => n !== id && pos[n]);
+      if (!ns.length) return orderY[id];
+      return ns.reduce((s, n) => s + orderY[n], 0) / ns.length;
+    }
+    // assign coordinates
+    byLane.forEach((ids, col) => {
+      let y = PAD + HEAD_H;
+      ids.forEach(id => {
+        pos[id].x = PAD + col * (CARD_W + COL_GAP);
+        pos[id].y = y;
+        y += pos[id].h + V_GAP;
+      });
+    });
+    // apply
+    comps.forEach(c => {
+      const p = pos[c.id];
+      cardEls[c.id].style.left = p.x + "px";
+      cardEls[c.id].style.top = p.y + "px";
+    });
+    // lane backgrounds + headers
+    lanesEl.innerHTML = "";
+    const maxY = Math.max(...comps.map(c => pos[c.id].y + pos[c.id].h), 400) + PAD;
+    groups.forEach((g, i) => {
+      const col = document.createElement("div");
+      col.className = "lane-col" + (i % 2 ? " alt" : "");
+      col.style.left = (PAD + i * (CARD_W + COL_GAP) - 14) + "px";
+      col.style.width = (CARD_W + 28) + "px";
+      col.style.height = maxY + "px";
+      lanesEl.appendChild(col);
+      const head = document.createElement("div");
+      head.className = "lane-head";
+      head.dataset.gid = g.id;
+      head.style.left = (PAD + i * (CARD_W + COL_GAP)) + "px";
+      head.style.top = PAD + "px";
+      head.style.width = CARD_W + "px";
+      head.innerHTML = '<div class="lname"></div>' + (g.summary ? '<div class="lsum"></div>' : "");
+      head.querySelector(".lname").textContent = g.name;
+      if (g.summary) head.querySelector(".lsum").textContent = g.summary;
+      lanesEl.appendChild(head);
+    });
+    const W = PAD * 2 + groups.length * CARD_W + (groups.length - 1) * COL_GAP;
+    world.style.width = W + "px"; world.style.height = maxY + "px";
+    svg.setAttribute("width", W); svg.setAttribute("height", maxY);
+    return { W, H: maxY };
+  }
+
+  // ---------- edges ----------
+  const edgeEls = [];
+  function anchor(id, side) {
+    const p = pos[id];
+    if (side === "right") return [p.x + p.w, p.y + p.h / 2];
+    if (side === "left") return [p.x, p.y + p.h / 2];
+    if (side === "top") return [p.x + p.w / 2, p.y];
+    return [p.x + p.w / 2, p.y + p.h];
+  }
+  function drawEdges() {
+    epaths.innerHTML = ""; labelsEl.innerHTML = ""; edgeEls.length = 0;
+    edefs.innerHTML = kindsPresent.map(k =>
+      '<marker id="arr-' + k + '" viewBox="0 0 10 8" refX="8.6" refY="4" markerWidth="8.5" markerHeight="7" orient="auto-start-reverse">' +
+      '<path class="m-' + k + '" d="M0,0.4 L9.4,4 L0,7.6 L2.4,4 Z"></path></marker>').join("");
+    // spread multiple in-edges on a card so arrowheads don't stack
+    const inSlots = {}, outSlots = {};
+    flows.forEach(f => {
+      (inSlots[f.to] = inSlots[f.to] || []).push(f._i);
+      (outSlots[f.from] = outSlots[f.from] || []).push(f._i);
+    });
+    const slotOffset = (slots, i, h) => {
+      const idx = slots.indexOf(i), n = slots.length;
+      return n <= 1 ? 0 : (idx - (n - 1) / 2) * Math.min(14, (h - 14) / Math.max(1, n - 1));
+    };
+    let backCount = 0;
+    flows.forEach(f => {
+      const S = pos[f.from], T = pos[f.to];
+      if (!S || !T) return;
+      const kind = f.kind || "call";
+      let d, mid;
+      if (T.col > S.col) {
+        const oy = slotOffset(outSlots[f.from], f._i, S.h);
+        const iy = slotOffset(inSlots[f.to], f._i, T.h);
+        const a = anchor(f.from, "right"), b = anchor(f.to, "left");
+        a[1] += oy; b[1] += iy;
+        const dx = Math.max(46, (b[0] - a[0]) * 0.45);
+        d = "M" + a[0] + "," + a[1] + " C" + (a[0] + dx) + "," + a[1] + " " + (b[0] - dx) + "," + b[1] + " " + b[0] + "," + b[1];
+        mid = [(a[0] + b[0]) / 2, (a[1] + b[1]) / 2 - 9];
+      } else if (T.col === S.col) {
+        const a = anchor(f.from, "right"), b = anchor(f.to, "right");
+        const bump = CARD_W * 0.24 + 26;
+        d = "M" + a[0] + "," + a[1] + " C" + (a[0] + bump) + "," + a[1] + " " + (b[0] + bump) + "," + b[1] + " " + b[0] + "," + b[1];
+        mid = [a[0] + bump * 0.8, (a[1] + b[1]) / 2];
+      } else {
+        // feedback edge: arc over the top of the lanes
+        backCount++;
+        const a = anchor(f.from, "top"), b = anchor(f.to, "top");
+        const up = PAD - 6 - backCount * 16;
+        d = "M" + a[0] + "," + a[1] + " C" + a[0] + "," + up + " " + b[0] + "," + up + " " + b[0] + "," + b[1];
+        mid = [(a[0] + b[0]) / 2, up + 8];
+      }
+      const hit = document.createElementNS("http://www.w3.org/2000/svg", "path");
+      hit.setAttribute("d", d); hit.setAttribute("class", "edge-hit");
+      const p = document.createElementNS("http://www.w3.org/2000/svg", "path");
+      p.setAttribute("d", d);
+      p.setAttribute("class", "edge k-" + kind);
+      p.setAttribute("marker-end", "url(#arr-" + kind + ")");
+      epaths.appendChild(hit); epaths.appendChild(p);
+      let lab = null;
+      if (f.label) {
+        lab = document.createElement("div");
+        lab.className = "elabel k-" + kind;
+        lab.textContent = f.label;
+        lab.style.left = mid[0] + "px"; lab.style.top = mid[1] + "px";
+        labelsEl.appendChild(lab);
+      }
+      const rec = { f, p, hit, lab, kind };
+      edgeEls.push(rec);
+      const sel = (ev) => { ev.stopPropagation(); selectFlow(f); };
+      hit.addEventListener("click", sel); p.addEventListener("click", sel);
+      hit.addEventListener("mouseenter", () => { p.classList.add("lit"); if (lab) lab.classList.add("lit"); });
+      hit.addEventListener("mouseleave", () => { if (selected.flow !== f) p.classList.remove("lit"); if (lab) lab.classList.remove("lit"); });
+    });
+    applyKindFilters();
+  }
+
+  function applyKindFilters() {
+    edgeEls.forEach(r => {
+      const off = !kindOn[r.kind];
+      r.p.style.display = off ? "none" : "";
+      r.hit.style.display = off ? "none" : "";
+      if (r.lab) {
+        const show = !off && (labelMode === "all" || (labelMode === "key" && r.kind !== "call"));
+        r.lab.classList.toggle("hidden", !show);
+      }
+    });
+  }
+
+  // ---------- selection / highlight ----------
+  const selected = { comp: null, flow: null };
+  function clearHighlight() {
+    Object.values(cardEls).forEach(el => el.classList.remove("dim", "selected", "hit"));
+    document.querySelectorAll(".lane-head").forEach(el => el.classList.remove("dim"));
+    edgeEls.forEach(r => { r.p.classList.remove("dim", "selected", "lit"); if (r.lab) r.lab.classList.remove("dim", "lit"); });
+  }
+  function closeDrawer() {
+    drawer.classList.remove("open");
+    selected.comp = selected.flow = null;
+    clearHighlight();
+  }
+  $("dclose").addEventListener("click", closeDrawer);
+
+  function dimAllExcept(compSet, flowSet) {
+    comps.forEach(c => cardEls[c.id].classList.toggle("dim", !compSet.has(c.id)));
+    edgeEls.forEach(r => {
+      const on = flowSet.has(r.f._i);
+      r.p.classList.toggle("dim", !on);
+      r.p.classList.toggle("lit", on);
+      if (r.lab) { r.lab.classList.toggle("dim", !on); r.lab.classList.toggle("lit", on); }
+    });
+  }
+
+  function hoverComp(id, on) {
+    if (selected.comp || selected.flow) return;
+    if (!on) { clearHighlight(); return; }
+    const cs = new Set([id]), fs = new Set();
+    (flowsBy.out[id] || []).forEach(f => { if (kindOn[f.kind || "call"]) { fs.add(f._i); cs.add(f.to); } });
+    (flowsBy.in[id] || []).forEach(f => { if (kindOn[f.kind || "call"]) { fs.add(f._i); cs.add(f.from); } });
+    dimAllExcept(cs, fs);
+  }
+
+  function trace(id, dir) {
+    const cs = new Set([id]), fs = new Set();
+    const q = [id];
+    while (q.length) {
+      const cur = q.shift();
+      const list = (dir === "down" ? flowsBy.out[cur] : flowsBy.in[cur]) || [];
+      list.forEach(f => {
+        if (!kindOn[f.kind || "call"]) return;
+        const nxt = dir === "down" ? f.to : f.from;
+        fs.add(f._i);
+        if (!cs.has(nxt)) { cs.add(nxt); q.push(nxt); }
+      });
+    }
+    dimAllExcept(cs, fs);
+    cardEls[id].classList.add("selected");
+  }
+
+  function esc(s) { const d = document.createElement("div"); d.textContent = s == null ? "" : String(s); return d.innerHTML; }
+
+  function evidenceHTML(f) {
+    const evs = f.evidence || [];
+    if (!evs.length) return "";
+    return "<h3>Evidence</h3>" + evs.map(e => {
+      const src = typeof e === "string" ? e : e.src;
+      const note = typeof e === "string" ? "" : (e.note || "");
+      return '<div class="evrow"><span class="esrc">' + esc(src) + "</span>" +
+             (note ? '<span class="enote">' + esc(note) + "</span>" : "") + "</div>";
+    }).join("");
+  }
+
+  function selectComp(id) {
+    clearHighlight();
+    selected.comp = id; selected.flow = null;
+    const c = compById[id];
+    cardEls[id].classList.add("selected");
+    hoverCompForce(id);
+    const g = groups[laneOf(c)];
+    const rows = (dir, list) => (list || []).map(f => {
+      const other = compById[dir === "out" ? f.to : f.from];
+      return '<button class="flowrow" data-fi="' + f._i + '">' +
+        '<span class="dir">' + (dir === "out" ? "&rarr;" : "&larr;") + "</span>" +
+        "<span>" + esc(other ? other.name : "?") + "</span>" +
+        '<span class="fk k-' + (f.kind || "call") + '">' + (KIND_LABELS[f.kind || "call"]) + "</span>" +
+        (f.label ? '<span class="flabel">' + esc(f.label) + "</span>" : "") +
+        "</button>";
+    }).join("") || '<div class="evrow" style="color:var(--muted)">none</div>';
+    const modsHTML = (c.modules || []).map(m => {
+      const d = modDetails[m] || {};
+      const defs = (d.defs || []).slice(0, 6).map(x => x.name).join("  ");
+      return '<div class="modrow"><span class="mpath">' + esc(d.path || m) + "</span>" +
+        (d.loc ? '<span class="mloc">' + d.loc + " loc</span>" : "") +
+        (defs ? '<div class="mdefs">' + esc(defs) + "</div>" : "") + "</div>";
+    }).join("");
+    dbody.innerHTML =
+      '<span class="dkind">' + (CKIND_LABELS[c.kind] || c.kind || "component") + "</span>" +
+      "<h2>" + esc(c.name) + "</h2>" +
+      (g ? '<div class="dgroup">' + esc(g.name) + "</div>" : "") +
+      (c.summary ? '<div class="dsum">' + esc(c.summary) + "</div>" : "") +
+      '<div class="tracebtns"><button id="tdown">Trace downstream</button><button id="tup">Trace upstream</button></div>' +
+      "<h3>Flows out</h3>" + rows("out", flowsBy.out[id]) +
+      "<h3>Flows in</h3>" + rows("in", flowsBy.in[id]) +
+      (modsHTML ? "<h3>Modules</h3>" + modsHTML : "");
+    drawer.classList.add("open");
+    dbody.querySelectorAll(".flowrow").forEach(b =>
+      b.addEventListener("click", () => selectFlow(flows[+b.dataset.fi])));
+    $("tdown").addEventListener("click", () => { clearHighlight(); trace(id, "down"); });
+    $("tup").addEventListener("click", () => { clearHighlight(); trace(id, "up"); });
+  }
+  function hoverCompForce(id) {
+    const cs = new Set([id]), fs = new Set();
+    (flowsBy.out[id] || []).concat(flowsBy.in[id] || []).forEach(f => {
+      if (!kindOn[f.kind || "call"]) return;
+      fs.add(f._i); cs.add(f.to); cs.add(f.from);
+    });
+    dimAllExcept(cs, fs);
+    cardEls[id].classList.add("selected");
+  }
+
+  function selectFlow(f) {
+    clearHighlight();
+    selected.flow = f; selected.comp = null;
+    const from = compById[f.from], to = compById[f.to];
+    dimAllExcept(new Set([f.from, f.to]), new Set([f._i]));
+    dbody.innerHTML =
+      '<span class="dkind">' + (KIND_LABELS[f.kind || "call"]) + " flow</span>" +
+      "<h2>" + esc(from ? from.name : f.from) + " &rarr; " + esc(to ? to.name : f.to) + "</h2>" +
+      (f.label ? '<div class="dgroup">' + esc(f.label) + "</div>" : "") +
+      (f.summary ? '<div class="dsum">' + esc(f.summary) + "</div>" : "") +
+      evidenceHTML(f);
+    drawer.classList.add("open");
+  }
+
+  // ---------- search ----------
+  const searchEl = $("search");
+  searchEl.addEventListener("input", () => {
+    const q = searchEl.value.trim().toLowerCase();
+    clearHighlight();
+    if (!q) return;
+    let first = null;
+    comps.forEach(c => {
+      const hay = (c.name + " " + c.id + " " + (c.summary || "") + " " + (c.modules || []).join(" ")).toLowerCase();
+      const hitEl = cardEls[c.id];
+      if (hay.includes(q)) { hitEl.classList.add("hit"); if (!first) first = c.id; }
+      else hitEl.classList.add("dim");
+    });
+  });
+  searchEl.addEventListener("keydown", (ev) => {
+    if (ev.key === "Enter") {
+      const hit = comps.find(c => cardEls[c.id].classList.contains("hit"));
+      if (hit) { panTo(hit.id); selectComp(hit.id); }
+    }
+    if (ev.key === "Escape") { searchEl.value = ""; clearHighlight(); searchEl.blur(); }
+  });
+
+  // ---------- kind chips ----------
+  const chipsEl = $("kindchips");
+  kindsPresent.forEach(k => {
+    const b = document.createElement("button");
+    b.className = "chip on";
+    b.innerHTML = '<span class="swatch" style="border-top-color: var(--k-' + k + ')"></span>' + (KIND_LABELS[k] || k);
+    b.title = "Toggle " + (KIND_LABELS[k] || k) + " flows";
+    b.addEventListener("click", () => {
+      kindOn[k] = !kindOn[k];
+      b.classList.toggle("on", kindOn[k]);
+      b.classList.toggle("off", !kindOn[k]);
+      applyKindFilters();
+    });
+    chipsEl.appendChild(b);
+  });
+
+  // ---------- label-mode button ----------
+  const lm = $("labelmode");
+  const lmText = () => "Labels: " + (labelMode === "key" ? "key" : labelMode);
+  lm.textContent = lmText();
+  lm.addEventListener("click", () => {
+    labelMode = labelMode === "key" ? "all" : labelMode === "all" ? "none" : "key";
+    lm.textContent = lmText(); persist(); applyKindFilters();
+  });
+
+  // ---------- legend ----------
+  const lgbody = $("lgbody");
+  lgbody.innerHTML =
+    kindsPresent.map(k => {
+      const dash = { call: "", data: "", subprocess: "7 4.5", di: "2 3.5", http: "11 4", human: "8 3 2 3" }[k] || "";
+      return '<div class="lg-row"><svg width="34" height="8"><line x1="1" y1="4" x2="33" y2="4" ' +
+        'stroke="var(--k-' + k + ')" stroke-width="2.2"' + (dash ? ' stroke-dasharray="' + dash + '"' : "") + "></line></svg>" +
+        (KIND_LABELS[k] || k) + "</div>";
+    }).join("") +
+    '<div class="lg-row" style="margin-top:8px; color: var(--muted); font-size: 10.5px;">cards: colored spine = role &middot; dashed border = external &middot; tinted = data store</div>';
+  $("lgtoggle").addEventListener("click", () => {
+    const c = $("legend").classList.toggle("collapsed");
+    $("lgtoggle").textContent = c ? "legend" : "hide";
+  });
+
+  // ---------- pan & zoom ----------
+  let scale = 1, tx = 0, ty = 0, bounds = { W: 1200, H: 800 };
+  function apply() { world.style.transform = "translate(" + tx + "px," + ty + "px) scale(" + scale + ")"; }
+  function fit() {
+    const vw = viewport.clientWidth, vh = viewport.clientHeight;
+    scale = Math.min(vw / bounds.W, vh / bounds.H, 1.15) * 0.97;
+    tx = (vw - bounds.W * scale) / 2;
+    ty = Math.max(8, (vh - bounds.H * scale) / 2);
+    apply();
+  }
+  function panTo(id) {
+    const p = pos[id], vw = viewport.clientWidth, vh = viewport.clientHeight;
+    tx = vw / 2 - (p.x + p.w / 2) * scale;
+    ty = vh / 2 - (p.y + p.h / 2) * scale;
+    apply();
+  }
+  viewport.addEventListener("wheel", (ev) => {
+    ev.preventDefault();
+    const r = viewport.getBoundingClientRect();
+    const mx = ev.clientX - r.left, my = ev.clientY - r.top;
+    const f = Math.pow(1.0016, -ev.deltaY);
+    const ns = Math.min(2.6, Math.max(0.22, scale * f));
+    tx = mx - (mx - tx) * (ns / scale);
+    ty = my - (my - ty) * (ns / scale);
+    scale = ns; apply();
+  }, { passive: false });
+  let pan = null;
+  viewport.addEventListener("pointerdown", (ev) => {
+    if (ev.target.closest(".card") || ev.target.closest("#drawer") ||
+        ev.target.closest("#legend") || ev.target.closest("#edges")) return;
+    pan = { x: ev.clientX, y: ev.clientY, tx, ty, moved: false };
+    viewport.classList.add("panning");
+    viewport.setPointerCapture(ev.pointerId);
+  });
+  viewport.addEventListener("pointermove", (ev) => {
+    if (!pan) return;
+    const dx = ev.clientX - pan.x, dy = ev.clientY - pan.y;
+    if (Math.abs(dx) + Math.abs(dy) > 3) pan.moved = true;
+    tx = pan.tx + dx; ty = pan.ty + dy; apply();
+  });
+  viewport.addEventListener("pointerup", (ev) => {
+    const wasClick = pan && !pan.moved;
+    pan = null; viewport.classList.remove("panning");
+    if (wasClick && !ev.target.closest(".card") && !ev.target.closest("path") &&
+        !ev.target.closest("#drawer") && !ev.target.closest("#legend")) closeDrawer();
+  });
+  $("zin").addEventListener("click", () => { scale = Math.min(2.6, scale * 1.25); apply(); });
+  $("zout").addEventListener("click", () => { scale = Math.max(0.22, scale / 1.25); apply(); });
+  $("zfit").addEventListener("click", fit);
+  window.addEventListener("keydown", (ev) => {
+    if (ev.key === "/" && document.activeElement !== searchEl) { ev.preventDefault(); searchEl.focus(); }
+    if (ev.key === "Escape" && document.activeElement !== searchEl) closeDrawer();
+  });
+  window.addEventListener("resize", () => { /* keep current view; user can hit Fit */ });
+
+  // ---------- boot ----------
+  function boot() {
+    bounds = layout();
+    drawEdges();
+    fit();
+  }
+  boot();
+  if (document.fonts && document.fonts.ready) {
+    // card heights change once the webfont lands; re-measure and re-route
+    document.fonts.ready.then(() => boot());
+  }
+})();
+</script>

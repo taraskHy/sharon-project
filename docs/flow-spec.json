@@ -1,0 +1,259 @@
+{
+  "title": "Autograder Flow Map",
+  "subtitle": "How an exam becomes a grade — runtime flows verified in source",
+  "groups": [
+    { "id": "entry", "name": "Entry", "summary": "How work starts: terminal, browser, batch" },
+    { "id": "intake", "name": "Intake & key", "summary": "Pages in; answer key parsed, repaired, cached" },
+    { "id": "extraction", "name": "Extraction", "summary": "What the student marked and wrote" },
+    { "id": "judging", "name": "Judging", "summary": "Deciding each answer, with escalation" },
+    { "id": "results", "name": "Results & review", "summary": "Scores out, humans in" },
+    { "id": "models", "name": "Model access", "summary": "One guarded road to every model" },
+    { "id": "providers", "name": "Providers", "summary": "Where model calls land" }
+  ],
+  "components": [
+    {
+      "id": "cli", "name": "CLI (autograder ...)", "kind": "ui", "group": "entry",
+      "summary": "Console entry: grade, parse-key, run-job, ui, doctor, readiness, bench, eval-batch. run_grade_pipeline (cli.py:553) is the single end-to-end driver used by both grade and eval-batch. Direct cloud backends are refused up front (guard_direct_cloud_backend).",
+      "modules": ["autograder.cli", "autograder.__main__", "autograder.evalcli", "autograder.readiness"]
+    },
+    {
+      "id": "webui", "name": "Web UI (Streamlit)", "kind": "ui", "group": "entry",
+      "summary": "Six screens: dashboard, exam setup, grading progress, review queue, results, advanced. Observes the detached runner only via its PID and on-disk state.",
+      "modules": ["autograder.webui"]
+    },
+    {
+      "id": "jobs", "name": "Batch job runner", "kind": "service", "group": "entry",
+      "summary": "Runs a job dir: one `autograder grade` subprocess per exam, scrapes child stdout into state.json stage updates, honors stop/pause sentinel files (can kill a hung model call), combines outputs at batch end.",
+      "modules": ["autograder.jobs"]
+    },
+    {
+      "id": "benchcli", "name": "Benchmark & eval harness", "kind": "ui", "group": "entry",
+      "summary": "`autograder bench ...`: frozen-manifest model-selection campaigns with their own gateway, cache, ledger and campaign-wide budget ceiling. Reuses the production prompt builders and decoding knobs. Held-out evaluation is a separately confirmed path; --research is the only cloud-boundary bypass.",
+      "modules": ["autograder.benchmark", "autograder.benchmark.cli", "autograder.benchmark.runner", "autograder.benchmark.manifests", "autograder.benchmark.ownerlabels", "autograder.benchmark.report", "autograder.benchmark.datasets", "autograder.benchmark.evidence_repairs", "autograder.benchmark.finallabels", "autograder.benchmark.registry", "autograder.benchmark.roles", "autograder.benchmark.smoke", "autograder.benchmark.status", "autograder.benchmark.subsets", "autograder.benchmark.verdicts"]
+    },
+    {
+      "id": "ingest", "name": "Ingest & masking", "kind": "stage", "group": "intake",
+      "summary": "PDF/images become page images (plus text layer). Red instructor ink is masked out before any model sees a page; masking.json records what was removed.",
+      "modules": ["autograder.ingest", "autograder.masking"]
+    },
+    {
+      "id": "keysvc", "name": "Answer key service", "kind": "stage", "group": "intake",
+      "summary": "Model-parses the key PDF, then deterministic acceptance (flattened-version-columns detector), text-layer repair of per-version letters, operator overrides. Only validated keys reach the persistent key cache; rejected parses are preserved for diagnosis.",
+      "modules": ["autograder.key_parser", "autograder.keycache", "autograder.keyrepair"]
+    },
+    {
+      "id": "surveyvar", "name": "Survey, variant & alignment", "kind": "stage", "group": "intake",
+      "summary": "Low-res whole-doc survey + high-res close-read of just the sheet pages; cover-marker version detection; printed-to-key alignment where an operator override wins, model-derived mappings stay review-flagged, and identity is the fallback.",
+      "modules": ["autograder.survey", "autograder.variant", "autograder.alignment", "autograder.template"]
+    },
+    {
+      "id": "extract", "name": "Extraction & answer tables", "kind": "stage", "group": "extraction",
+      "summary": "Deterministic per-cell ink analysis is the production MC reader; per-row VLM is only a fallback. Answer-sheet authority: question-page scratch never overrides a usable sheet. In reliability mode explanation transcriptions are structurally deferred (stripped, not prompted away).",
+      "modules": ["autograder.extract", "autograder.tablecrop", "autograder.authority", "autograder.imagequality"]
+    },
+    {
+      "id": "mcchain", "name": "MC resolver chain", "kind": "service", "group": "extraction",
+      "summary": "Dependency-injected resolver for multi-mark rows: crop triage, then a local model. The cloud step exists but is off by default — and the production boundary would refuse it anyway. Unresolved rows become review items, never guesses.",
+      "modules": ["autograder.mcresolve"]
+    },
+    {
+      "id": "reliability", "name": "Reliability route", "kind": "stage", "group": "judging",
+      "summary": "Per-sub-item decision machine: policy gate before any spend, lazy OCR only once the gate proves it is needed, escalation on suspicion, typed REVIEW/PAUSED outcomes, decision trace appended as it runs. Gateway-only — it never touches a backend directly.",
+      "modules": ["autograder.reliability", "autograder.policies"]
+    },
+    {
+      "id": "gradescore", "name": "Legacy judge & scoring", "kind": "stage", "group": "judging",
+      "summary": "judge_all: one judge model call per question (legacy and shadow modes). grade_exam: deterministic scoring, caps and review flags; the arithmetic invariant check inserts a review item rather than silently correcting a total.",
+      "modules": ["autograder.grade", "autograder.invariants"]
+    },
+    {
+      "id": "escalation", "name": "Escalation & verification", "kind": "service", "group": "judging",
+      "summary": "OCR verify: independent verifier, 0.95 agreement floor, fail-closed without an evidence crop — and the production crop provider is deliberately unavailable. Grade path: primary grade, validate, optional RAG retry, escalation grader; unresolved disagreement goes to review.",
+      "modules": ["autograder.escalation", "autograder.evidencecrops"]
+    },
+    {
+      "id": "packs", "name": "Grading packs, RAG & preflight", "kind": "service", "group": "judging",
+      "summary": "Per-question grading packs built once per package and reused for every student. Local course RAG (Ollama embeddings). Package discovery plus the single preflight gate that stops a batch on structural defects before they become N identical review items.",
+      "modules": ["autograder.gradingpack", "autograder.courses", "autograder.discovery", "autograder.preflight"]
+    },
+    {
+      "id": "reviewq", "name": "Results & review queue", "kind": "stage", "group": "results",
+      "summary": "result.json + report.md, then a review queue with 14 typed reason codes in 5 priority tiers. Grouping is mechanical-fingerprint only (semantically similar answers are never grouped); batch anomalies surface before per-item review; per-item decision traces explain every grade.",
+      "modules": ["autograder.report", "autograder.reviewqueue", "autograder.reviewui", "autograder.anomaly", "autograder.trace"]
+    },
+    {
+      "id": "human", "name": "Instructor / reviewer", "kind": "human", "group": "results",
+      "summary": "Resolves queued cases in the web UI. Apply-to-all is allowed only for variant/layout decisions — semantic grades raise an error — and every broadcast is audited.",
+      "modules": []
+    },
+    {
+      "id": "jobstore", "name": "Job & exam artifacts", "kind": "store", "group": "results",
+      "summary": "jobs/<id>: job.json, state.json (atomic per transition), anonymized uploads (real names never reach a model), per-exam out dirs (answer_key, survey, alignment, extraction, decisions.jsonl, result.json, report.md, resume fingerprints), grade.log, combined results.",
+      "modules": []
+    },
+    {
+      "id": "orchestrator", "name": "Orchestrator runtime", "kind": "service", "group": "models",
+      "summary": "The single Runtime constructor (setup_from_config): gateway + request cache + usage ledger + budget, all from models.toml. Installs the DI hooks that give the validated pipeline its model access; model failures write model_failures.jsonl and a pause.request.",
+      "modules": ["autograder.orchestrator"]
+    },
+    {
+      "id": "gateway", "name": "Model gateway", "kind": "service", "group": "models",
+      "summary": "Every call, in order: cloud boundary (remote = approved OCR prompts with clean payloads, nothing else), privacy scan (hard identifiers abort), request cache, budget check, provider call, accounting. Failures are ledgered too — the money is already spent.",
+      "modules": ["autograder.gateway", "autograder.cloudboundary", "autograder.privacy"]
+    },
+    {
+      "id": "spendledger", "name": "Caches, ledger & spend", "kind": "store", "group": "models",
+      "summary": "Content-addressed request cache (failures never stored), JSONL usage ledger (one row per provider response, secrets stripped), budget soft-warn/hard-pause, and read-only spend reports kept strictly separate from forward estimates.",
+      "modules": ["autograder.requestcache", "autograder.usage", "autograder.spend", "autograder.estimate"]
+    },
+    {
+      "id": "backends", "name": "Vision backends", "kind": "service", "group": "models",
+      "summary": "The only backend selection site (create_backend): OpenAI-compat, native Ollama, OpenRouter, optional Anthropic, and a recording mock for offline tests. Legacy stages call VisionBackend.parse directly (local/mock enforced); gateway routes arrive here lazily and memoised.",
+      "modules": ["autograder.backends", "autograder.backends.base", "autograder.backends.openai_compat", "autograder.backends.ollama_native", "autograder.backends.openrouter", "autograder.backends.anthropic_backend", "autograder.backends.mock"]
+    },
+    {
+      "id": "llmlocal", "name": "Local models", "kind": "external", "group": "providers",
+      "summary": "Ollama (native /api/chat) and any OpenAI-compatible server (vLLM, LM Studio, llama.cpp...). All grading-content model work stays here in production. Also serves the local RAG embeddings.",
+      "modules": []
+    },
+    {
+      "id": "llmcloud", "name": "Cloud LLM APIs", "kind": "external", "group": "providers",
+      "summary": "OpenRouter (key from env only, usage/cost captured; optional Anthropic extra for doctor/dev comparisons). In production the boundary admits only approved OCR transcription prompts whose payloads carry no grading context.",
+      "modules": []
+    }
+  ],
+  "flows": [
+    { "from": "cli", "to": "webui", "kind": "subprocess", "label": "autograder ui",
+      "summary": "cmd_ui launches Streamlit on webui.py in a child process.",
+      "evidence": [{ "src": "autograder/cli.py:1058", "note": "subprocess.call([python, -m streamlit, run, webui.py, ...])" }] },
+    { "from": "webui", "to": "jobs", "kind": "subprocess", "label": "spawn run-job (detached)",
+      "summary": "Popen `python -m autograder run-job --job-dir <job>`, DETACHED_PROCESS on Windows; PID written to runner.pid. The UI can close and the batch keeps grading.",
+      "evidence": [{ "src": "autograder/webui.py:108", "note": "spawn_runner Popen argv" }, { "src": "autograder/webui.py:116", "note": "runner.pid written" }] },
+    { "from": "cli", "to": "jobs", "kind": "call", "label": "run-job",
+      "summary": "The run-job command drives a whole job directory; the web UI never grades in-process.",
+      "evidence": [{ "src": "autograder/cli.py:1052", "note": "cmd_run_job" }] },
+    { "from": "jobs", "to": "cli", "kind": "subprocess", "label": "one grade per exam",
+      "summary": "Builds `python -m autograder grade --exam ... --resume` per exam, tees stdout to grade.log and regex-scrapes stage names into state.json. stop/pause sentinel files can terminate a hung model call safely.",
+      "evidence": [{ "src": "autograder/jobs.py:291", "note": "_grade_command argv construction" }, { "src": "autograder/jobs.py:374", "note": "Popen + stdout scrape loop" }] },
+    { "from": "cli", "to": "ingest", "kind": "call", "label": "load + mask pages",
+      "summary": "Pages rendered once per exam; instructor red ink masked before any model call.",
+      "evidence": [{ "src": "autograder/cli.py:661", "note": "ingest.load_pages" }, { "src": "autograder/cli.py:666", "note": "masking.mask_pages" }] },
+    { "from": "cli", "to": "keysvc", "kind": "call", "label": "_get_key",
+      "summary": "Parse, deterministically validate, repair and cache the answer key once per package.",
+      "evidence": [{ "src": "autograder/cli.py:593", "note": "_get_key from run_grade_pipeline" }, { "src": "autograder/cli.py:376", "note": "_key_version_problems acceptance" }] },
+    { "from": "keysvc", "to": "backends", "kind": "call", "label": "key parse (legacy direct)",
+      "summary": "parse_answer_key runs on the legacy VisionBackend — local/mock only; the direct-cloud guard refuses anything else before the pipeline starts.",
+      "evidence": [{ "src": "autograder/cli.py:375", "note": "parse_answer_key call" }, { "src": "autograder/cli.py:489", "note": "guard_direct_cloud_backend" }] },
+    { "from": "cli", "to": "surveyvar", "kind": "call", "label": "survey / variant / alignment",
+      "summary": "Whole-doc survey, sheet close-read, cover-marker version decision, then alignment resolution (operator override > cached model mapping > derived > identity).",
+      "evidence": [{ "src": "autograder/cli.py:716", "note": "survey_exam" }, { "src": "autograder/cli.py:690", "note": "decide_version" }, { "src": "autograder/cli.py:787", "note": "derive_alignment chain" }] },
+    { "from": "surveyvar", "to": "backends", "kind": "call", "label": "survey & variant calls (legacy direct)",
+      "summary": "Survey, close-read and variant detection are legacy-path model calls on the direct backend.",
+      "evidence": [{ "src": "autograder/survey.py:48", "note": "survey_exam model call" }, { "src": "autograder/variant.py:157", "note": "detect_variant" }] },
+    { "from": "cli", "to": "packs", "kind": "call", "label": "preflight + packs once per package",
+      "summary": "gate_package stops the batch on structural defects before any student is graded; grading packs are built once per package fingerprint and reused for every student.",
+      "evidence": [{ "src": "autograder/cli.py:639", "note": "preflight.gate_package" }, { "src": "autograder/cli.py:921", "note": "PackStore load/build_all_packs/save" }] },
+    { "from": "packs", "to": "gateway", "kind": "di", "label": "discovery on injected gateway",
+      "summary": "Package discovery receives the gateway as a parameter — invisible to import graphs.",
+      "evidence": [{ "src": "autograder/orchestrator.py:82", "note": "discover_package(gateway=gw)" }] },
+    { "from": "cli", "to": "extract", "kind": "call", "label": "extract_exam",
+      "summary": "Per-question extraction; transcribe_explanations=False in reliability mode, then _enforce_deferred structurally strips transcriptions.",
+      "evidence": [{ "src": "autograder/cli.py:816", "note": "extract_exam call" }, { "src": "autograder/extract.py:742", "note": "_enforce_deferred" }] },
+    { "from": "extract", "to": "backends", "kind": "call", "label": "banded-VLM fallback (legacy direct)",
+      "summary": "The VLM reads answer rows only when the deterministic grid analysis cannot; model disambiguation proposals are advisory-only.",
+      "evidence": [{ "src": "autograder/extract.py:397", "note": "_extract_banded_vlm fallback" }, { "src": "autograder/extract.py:527", "note": "per-row VLM" }] },
+    { "from": "orchestrator", "to": "extract", "kind": "di", "label": "set_mc_resolver(chain)",
+      "summary": "Installed only when --models-config is present; the chain closes over runtime.gateway with cloud MC off by default.",
+      "evidence": [{ "src": "autograder/orchestrator.py:170", "note": "extract.set_mc_resolver(chain)" }, { "src": "autograder/extract.py:349", "note": "module-global resolver seam" }] },
+    { "from": "orchestrator", "to": "gradescore", "kind": "di", "label": "set_grading_policies",
+      "summary": "Process-global policy gate for the judge, installed alongside the MC resolver.",
+      "evidence": [{ "src": "autograder/orchestrator.py:162", "note": "grade.set_grading_policies" }, { "src": "autograder/grade.py:143", "note": "the seam" }] },
+    { "from": "extract", "to": "mcchain", "kind": "call", "label": "multi-mark rows",
+      "summary": "Only multi-mark rows consult the injected resolver; no chain installed means ambiguous + review, never a guess.",
+      "evidence": [{ "src": "autograder/extract.py:455", "note": "chain = get_mc_resolver()" }] },
+    { "from": "mcchain", "to": "gateway", "kind": "call", "label": "local-first MC resolve",
+      "summary": "resolve_row stops at the local step unless cloud MC is explicitly allowed — and the production boundary would refuse the cloud step anyway.",
+      "evidence": [{ "src": "autograder/mcresolve.py:116", "note": "local-then-stop chain" }] },
+    { "from": "cli", "to": "gradescore", "kind": "call", "label": "judge_all + grade_exam",
+      "summary": "Legacy/shadow judging, then deterministic scoring for every mode.",
+      "evidence": [{ "src": "autograder/cli.py:876", "note": "judge_all (legacy/shadow)" }, { "src": "autograder/cli.py:980", "note": "grade_exam" }] },
+    { "from": "gradescore", "to": "backends", "kind": "call", "label": "legacy judge call (legacy direct)",
+      "summary": "One judge model call per question on the direct backend.",
+      "evidence": [{ "src": "autograder/grade.py:258", "note": "llm.parse(JUDGE_SYSTEM, ...)" }] },
+    { "from": "cli", "to": "reliability", "kind": "call", "label": "run_reliability_judging",
+      "summary": "The one call site injects gateway, RAG attach, lazy-OCR fn, evidence crops and the trace store. Reliability output becomes authoritative only in reliability mode; shadow failures are swallowed and never touch the legacy grade.",
+      "evidence": [{ "src": "autograder/cli.py:963", "note": "gateway/rag_attach/ocr_fn/crops injected" }, { "src": "autograder/cli.py:976", "note": "reliability output adopted" }, { "src": "autograder/cli.py:967", "note": "shadow failures swallowed" }] },
+    { "from": "reliability", "to": "extract", "kind": "call", "label": "lazy OCR per item",
+      "summary": "Explanation transcription happens only after the policy gate proves the item needs it.",
+      "evidence": [{ "src": "autograder/cli.py:940", "note": "ocr_fn closure" }, { "src": "autograder/extract.py:755", "note": "lazy_explanation_ocr -> gateway ocr_primary" }] },
+    { "from": "extract", "to": "gateway", "kind": "call", "label": "ocr_primary",
+      "summary": "Deferred transcriptions go through the gateway OCR route — the one task class allowed to leave the machine.",
+      "evidence": [{ "src": "autograder/extract.py:755", "note": "lazy_explanation_ocr" }] },
+    { "from": "reliability", "to": "escalation", "kind": "call", "label": "primary grade + escalations",
+      "summary": "escalate_grade handles primary grading, validation, optional RAG retry and the escalation grader; escalate_ocr verifies suspicious transcriptions.",
+      "evidence": [{ "src": "autograder/reliability.py:494", "note": "_decide_item -> escalate_grade" }, { "src": "autograder/reliability.py:427", "note": "_decide_item -> escalate_ocr" }] },
+    { "from": "escalation", "to": "gateway", "kind": "call", "label": "verifier & grader calls",
+      "summary": "All escalation model work runs on the injected gateway.",
+      "evidence": [{ "src": "autograder/escalation.py:183", "note": "escalate_ocr(gateway=...)" }, { "src": "autograder/escalation.py:621", "note": "escalate_grade" }] },
+    { "from": "escalation", "to": "packs", "kind": "di", "label": "rag_attach on uncertainty",
+      "summary": "RAG context attaches only under RAG_ON_UNCERTAIN / RAG_ON_ESCALATION policies.",
+      "evidence": [{ "src": "autograder/escalation.py:625", "note": "rag_attach parameter" }, { "src": "autograder/cli.py:963", "note": "activate_rag injected" }] },
+    { "from": "packs", "to": "llmlocal", "kind": "http", "label": "RAG embeddings (local)",
+      "summary": "Course index embeddings via local Ollama /api/embed — the only non-LLM network call in the package.",
+      "evidence": [{ "src": "autograder/courses.py:320", "note": "ollama_embed_fn" }] },
+    { "from": "reliability", "to": "gradescore", "kind": "call", "label": "evaluations become grades",
+      "summary": "In reliability mode the route's evaluations are scored as authoritative; in shadow mode they only feed shadow_comparison.json.",
+      "evidence": [{ "src": "autograder/cli.py:976", "note": "judgements = rel_run.evaluations" }, { "src": "autograder/cli.py:1006", "note": "apply_review_items" }] },
+    { "from": "cli", "to": "jobstore", "kind": "data", "label": "stage artifacts per exam",
+      "summary": "answer_key, survey, alignment, extraction, decisions.jsonl, result.json, report.md and per-stage resume fingerprints, rewritten as stages complete.",
+      "evidence": [{ "src": "autograder/cli.py:1029", "note": "result.json + report.md emit" }, { "src": "autograder/trace.py:360", "note": "decisions.jsonl store" }] },
+    { "from": "jobs", "to": "jobstore", "kind": "data", "label": "job.json + state.json",
+      "summary": "Atomic writes after every exam transition; the UI's live progress reads this file, not the process.",
+      "evidence": [{ "src": "autograder/jobs.py:221", "note": "create_job atomic write" }, { "src": "autograder/jobs.py:246", "note": "_save_state" }] },
+    { "from": "webui", "to": "jobstore", "kind": "data", "label": "reads state & results; stages uploads",
+      "summary": "Screens render from state.json/result.json; uploads staged then moved into the job with anonymized names.",
+      "evidence": [{ "src": "autograder/webui.py:194", "note": "_job_overview" }, { "src": "autograder/webui.py:171", "note": "upload staging" }] },
+    { "from": "jobstore", "to": "reviewq", "kind": "data", "label": "queue built from artifacts",
+      "summary": "Review items are rebuilt from persisted result.json + extraction.json — the queue needs no live pipeline.",
+      "evidence": [{ "src": "autograder/reviewui.py:97", "note": "build_review_items" }] },
+    { "from": "webui", "to": "reviewq", "kind": "call", "label": "review & results screens",
+      "summary": "The Streamlit review screen renders the queue backend; results screen shows resolution history.",
+      "evidence": [{ "src": "autograder/webui.py:1103", "note": "resolve from review screen" }, { "src": "autograder/webui.py:1160", "note": "history display" }] },
+    { "from": "reviewq", "to": "human", "kind": "human", "label": "typed queue, anomalies first",
+      "summary": "14 reason codes in 5 priority tiers; batch anomaly warnings precede per-item review because one systemic cause explains many flags.",
+      "evidence": [{ "src": "autograder/reviewqueue.py:39", "note": "REASONS + PRIORITY_TIERS" }, { "src": "autograder/reviewui.py:353", "note": "anomalies surfaced first" }] },
+    { "from": "human", "to": "reviewq", "kind": "human", "label": "resolutions (display-only)",
+      "summary": "Decisions land in review_resolutions.json; apply-to-all is restricted to variant/layout and audited. Verified gap: nothing re-applies resolutions to grades on resume.",
+      "evidence": [{ "src": "autograder/reviewui.py:220", "note": "ResolutionStore.resolve" }, { "src": "autograder/reviewui.py:6", "note": "module docstring: display-only" }] },
+    { "from": "cli", "to": "orchestrator", "kind": "call", "label": "setup_from_config",
+      "summary": "Runs only when --models-config is given; without it the legacy pipeline runs unhooked. Reliability and shadow modes refuse to start without it.",
+      "evidence": [{ "src": "autograder/cli.py:618", "note": "setup_from_config(models_config, out.parent)" }, { "src": "autograder/cli.py:629", "note": "GradingModeError without it" }] },
+    { "from": "orchestrator", "to": "gateway", "kind": "call", "label": "builds the runtime",
+      "summary": "Gateway + request cache + usage ledger + budget manager constructed from models.toml in one place.",
+      "evidence": [{ "src": "autograder/orchestrator.py:46", "note": "setup_from_config constructor" }] },
+    { "from": "gateway", "to": "backends", "kind": "call", "label": "backend_for (lazy, memoised)",
+      "summary": "Routes resolve to concrete backends via the single create_backend selection site.",
+      "evidence": [{ "src": "autograder/gateway.py:217", "note": "backend_for" }, { "src": "autograder/backends/__init__.py:19", "note": "create_backend" }] },
+    { "from": "gateway", "to": "spendledger", "kind": "data", "label": "cache + ledger + budget",
+      "summary": "Cache hit returns without provider contact (still ledgered); every provider response books one ledger row; predicted cost is budget-checked before spend.",
+      "evidence": [{ "src": "autograder/gateway.py:259", "note": "cache get/put in call()" }, { "src": "autograder/gateway.py:291", "note": "_account -> ledger" }] },
+    { "from": "webui", "to": "spendledger", "kind": "data", "label": "estimates & spend views",
+      "summary": "Forward estimates and read-only ledger summaries power the cost panels; the two are never mixed.",
+      "evidence": [{ "src": "autograder/webui.py:822", "note": "estimate panel" }, { "src": "autograder/spend.py:50", "note": "spend views" }] },
+    { "from": "backends", "to": "llmlocal", "kind": "http", "label": "chat completions",
+      "summary": "OpenAI-compatible /chat/completions and native Ollama /api/chat.",
+      "evidence": [{ "src": "autograder/backends/openai_compat.py:82", "note": "httpx POST" }, { "src": "autograder/backends/ollama_native.py:97", "note": "native /api/chat" }] },
+    { "from": "backends", "to": "llmcloud", "kind": "http", "label": "OpenRouter (OCR-only in production)",
+      "summary": "Three boundary layers stand in front of this edge: task allowlist {ocr_primary, ocr_verify}, exact approved system prompts, and payload inspection for grading context.",
+      "evidence": [{ "src": "autograder/backends/openrouter.py:100", "note": "API call" }, { "src": "autograder/cloudboundary.py:44", "note": "CLOUD_OCR_ALLOWLIST" }] },
+    { "from": "benchcli", "to": "gateway", "kind": "call", "label": "own gateway, own budget",
+      "summary": "The benchmark builds its own gateway with a campaign state root and ceiling — and is the only construction site that can set execution_mode=research (--research), the sole boundary bypass; live remote runs are refused without it.",
+      "evidence": [{ "src": "autograder/benchmark/runner.py:471", "note": "build_gateway" }, { "src": "autograder/benchmark/runner.py:669", "note": "refuses live remote without --research" }] }
+  ],
+  "notes": [
+    "Two model paths coexist: legacy stages (key parse, survey/variant, extraction fallback, legacy judge) call VisionBackend.parse directly and are locked to local/mock by guard_direct_cloud_backend; everything reliability-side goes through ModelGateway.call and its cloud boundary.",
+    "--grading-mode gates the judging lane: legacy (default) and shadow run judge_all; reliability and shadow run the reliability route; shadow failures are swallowed (cli.py:967-971) and shadow scores never reach result.json.",
+    "Deliberately off-map: shared foundations (schema, strictschema, prompts, signals, metrics, dataset, reuse, eligibility, cloudcheck) and unwired research modules (provenance, canary — no runtime importer). The labeling app (separate ground-truth system on the other PC) enters only via `bench import-final-labels`.",
+    "Verified gap worth knowing: human review resolutions are recorded but display-only — no pipeline path re-applies them on resume (reviewui.py:6-10; the class docstring at reviewui.py:212 claims otherwise and appears wrong)."
+  ]
+}
