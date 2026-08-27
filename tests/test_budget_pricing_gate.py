@@ -19,6 +19,15 @@ from autograder.usage import predicted_call_cost
 
 REPO = Path(__file__).resolve().parents[1]
 
+#: models.toml is intentionally machine-local (gitignored). A machine without
+#: it cannot start a live run AT ALL — require_priced_candidate refuses every
+#: slug — so the "is everything priced" checks are meaningful only where the
+#: file exists. The refusal behaviour itself is still tested above on every
+#: machine.
+needs_pricing_file = pytest.mark.skipif(
+    not (REPO / "models.toml").exists(),
+    reason="models.toml is machine-local and absent here; no live run can start on this machine")
+
 
 class _Route:
     def __init__(self, model, max_tokens=600):
@@ -52,6 +61,7 @@ def test_the_refusal_names_the_fix():
     assert "models.toml" in msg and "--models-config" in msg and "vendor/slug" in msg
 
 
+@needs_pricing_file
 def test_every_configured_grading_candidate_is_priced():
     """The campaign cannot start with a candidate this machine cannot price."""
     pricing = tomllib.loads((REPO / "models.toml").read_text(encoding="utf-8")).get("pricing") or {}
@@ -61,6 +71,7 @@ def test_every_configured_grading_candidate_is_priced():
             require_priced_candidate(slug, pricing)          # raises if any is unpriced
 
 
+@needs_pricing_file
 def test_the_prices_are_positive_and_output_costs_at_least_input():
     """A transcription slip that swapped or zeroed a column would silently
     shrink every estimate; output is never cheaper than input for these."""
@@ -71,6 +82,7 @@ def test_the_prices_are_positive_and_output_costs_at_least_input():
         assert p["output"] >= p["input"], slug
 
 
+@needs_pricing_file
 def test_the_estimate_is_a_real_number_for_a_real_grade_primary_request():
     """End to end: a priced candidate produces a non-zero dollar figure for the
     actual benchmark request, which is what the ceiling needs."""

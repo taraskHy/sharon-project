@@ -1,6 +1,28 @@
 {
  "artifact": "calibration_case_audit_queue",
  "created_at": "2026-08-26",
+ "schema_version": 1,
+ "audit_id": "CALIBRATION_AUDIT_2026-08-26",
+ "split": "CALIBRATION",
+ "writer": "e004",
+ "case_order": [
+  "e004_q1_r1",
+  "e004_q1_r3",
+  "e004_q2_r6",
+  "e004_q2_r8",
+  "e004_q1_r5",
+  "e004_q1_r6"
+ ],
+ "git_commit": "a8613afc6dd11c07b57fc751574fb467921c202d",
+ "source_dataset": {
+  "name": "grade_primary",
+  "manifest": "evaluation/model_selection/datasets/grade_primary/manifest.json",
+  "status": "FROZEN",
+  "frozen_at": "2026-08-22 05:28:41",
+  "inputs_sha256": "61ea571e9413b20b4b1e2d6dc84e14688cdd2ff4a1a3e0751a2233cf4dbc050c",
+  "labels_sha256": "2281f063f33c5ddf37675766892ef3b47148254674768b85d4eee40e8523ccd9"
+ },
+ "content_hash": "fa02cff72a7a9c57b7166b7e638ed76016ee9008446b53d992ecd20fb83a7ee3",
  "scope": "6 CALIBRATION cases (writer e004) from the completed v3-vs-v4 A/B: four that BOTH models downgraded under BOTH prompts, and two that one model upgraded under grade-v4. Blinded: model output is withheld until each decision is saved.",
  "instructions": "Decide ONE of A/B/C/D from the rubric, official solution and the student's text. Model outputs are hidden until you save. Nothing is relabelled automatically.",
  "warning": "Model predictions are shown only AFTER your decision, as context. They are NOT evidence about the label: models agreeing can equally mean models are wrong in the same direction.",
@@ -78,7 +100,14 @@
     }
    },
    "human_decision": null,
-   "human_note": ""
+   "human_note": "",
+   "split": "CALIBRATION",
+   "source_page": {
+    "pdf": "test/004_58.pdf",
+    "page": 11,
+    "masked": true
+   },
+   "answer_crop": "evaluation/htr_pilot/images/e004/q1_r1_cell_clean.png"
   },
   {
    "case_id": "e004_q1_r3",
@@ -136,7 +165,14 @@
     }
    },
    "human_decision": null,
-   "human_note": ""
+   "human_note": "",
+   "split": "CALIBRATION",
+   "source_page": {
+    "pdf": "test/004_58.pdf",
+    "page": 11,
+    "masked": true
+   },
+   "answer_crop": "evaluation/htr_pilot/images/e004/q1_r3_cell_clean.png"
   },
   {
    "case_id": "e004_q2_r6",
@@ -194,7 +230,14 @@
     }
    },
    "human_decision": null,
-   "human_note": ""
+   "human_note": "",
+   "split": "CALIBRATION",
+   "source_page": {
+    "pdf": "test/004_58.pdf",
+    "page": 12,
+    "masked": true
+   },
+   "answer_crop": "evaluation/htr_pilot/images/e004/q2_r6_cell_clean.png"
   },
   {
    "case_id": "e004_q2_r8",
@@ -252,7 +295,14 @@
     }
    },
    "human_decision": null,
-   "human_note": ""
+   "human_note": "",
+   "split": "CALIBRATION",
+   "source_page": {
+    "pdf": "test/004_58.pdf",
+    "page": 12,
+    "masked": true
+   },
+   "answer_crop": "evaluation/htr_pilot/images/e004/q2_r8_cell_clean.png"
   },
   {
    "case_id": "e004_q1_r5",
@@ -322,7 +372,14 @@
     }
    },
    "human_decision": null,
-   "human_note": ""
+   "human_note": "",
+   "split": "CALIBRATION",
+   "source_page": {
+    "pdf": "test/004_58.pdf",
+    "page": 11,
+    "masked": true
+   },
+   "answer_crop": "evaluation/htr_pilot/images/e004/q1_r5_cell_clean.png"
   },
   {
    "case_id": "e004_q1_r6",
@@ -388,7 +445,14 @@
     }
    },
    "human_decision": null,
-   "human_note": ""
+   "human_note": "",
+   "split": "CALIBRATION",
+   "source_page": {
+    "pdf": "test/004_58.pdf",
+    "page": 11,
+    "masked": true
+   },
+   "answer_crop": "evaluation/htr_pilot/images/e004/q1_r6_cell_clean.png"
   }
  ]
 }

@@ -239,3 +239,95 @@ def test_recompute_never_reads_a_provider():
     assert set(res["arms"]) == {"A1", "A2", "B1", "B2"}
     for arm in res["arms"].values():
         assert arm["pre_audit"]["n"] == 12
+
+
+# ------------------------------------ 7. provenance, images, overwrite guard ----
+
+
+def _content_hash(doc):
+    import hashlib
+    mutable = {"human_decision", "human_note", "decision_history", "decided_at",
+               "decided_by", "decided_blind", "models_revealed_at", "decision_revision"}
+    frozen = [{k: v for k, v in c.items() if k not in mutable} for c in doc["cases"]]
+    return hashlib.sha256(
+        json.dumps(frozen, ensure_ascii=False, sort_keys=True).encode("utf-8")).hexdigest()
+
+
+def test_the_manifest_carries_frozen_provenance(doc):
+    assert doc["schema_version"] == 1
+    assert doc["audit_id"] == "CALIBRATION_AUDIT_2026-08-26"
+    assert doc["split"] == "CALIBRATION" and doc["writer"] == "e004"
+    assert doc["case_order"] == [c["case_id"] for c in doc["cases"]]
+    assert len(doc["git_commit"]) == 40
+    ds = doc["source_dataset"]
+    assert ds["name"] == "grade_primary" and ds["status"] == "FROZEN"
+    assert len(ds["inputs_sha256"]) == 64 and len(ds["labels_sha256"]) == 64
+    assert doc["content_hash"] == _content_hash(doc), \
+        "content_hash must match the auditor-facing material"
+
+
+def test_the_content_hash_ignores_decisions(doc):
+    """Deciding a case must not change what the population claims to be."""
+    before = _content_hash(doc)
+    gta.record_decision(doc["cases"][0], "A", now="2026-08-27 10:00:00")
+    assert _content_hash(doc) == before
+
+
+def test_every_case_names_its_split_and_masked_source_page(doc):
+    for c in doc["cases"]:
+        assert c["split"] == "CALIBRATION", c["case_id"]
+        sp = c["source_page"]
+        assert sp["masked"] is True
+        assert (REPO / sp["pdf"]).exists(), sp["pdf"]
+        assert isinstance(sp["page"], int)
+
+
+def test_answer_crops_exist_and_carry_no_red_ink(doc):
+    np = pytest.importorskip("numpy")
+    PIL = pytest.importorskip("PIL.Image")
+    sys.path.insert(0, str(REPO))
+    from labeling_app.bundle import strict_red_count
+
+    for c in doc["cases"]:
+        crop = REPO / c["answer_crop"]
+        assert crop.exists(), c["answer_crop"]
+        assert "clean" in crop.name and "orig" not in crop.name
+        arr = np.array(PIL.open(crop).convert("RGB"))
+        assert strict_red_count(arr) == 0, f"{c['case_id']}: red ink in the shown crop"
+
+
+def test_the_pre_decision_payload_never_references_the_raw_marked_page(doc):
+    for c in doc["cases"]:
+        blob = json.dumps(gta.view_payload(c), ensure_ascii=False)
+        assert "orig" not in blob, "raw instructor-marked image leaked into the payload"
+        assert "audit_group" not in blob
+
+
+def test_a_saved_decision_refuses_a_silent_overwrite(doc):
+    c = dict(doc["cases"][0])
+    gta.record_decision(c, "A", now="2026-08-27 10:00:00")
+    with pytest.raises(ValueError, match="reset explicitly"):
+        gta.record_decision(c, "B", now="2026-08-27 10:01:00")
+    assert c["human_decision"] == "A"
+    assert [e["action"] for e in c["decision_history"]] == ["decide"]
+
+
+def test_a_decision_pins_its_blind_payload_and_revision(doc):
+    import hashlib
+    c = dict(doc["cases"][0])
+    expected = hashlib.sha256(
+        json.dumps(gta.pre_decision_payload(c), ensure_ascii=False, sort_keys=True)
+        .encode("utf-8")).hexdigest()
+    e1 = gta.record_decision(c, "A", now="2026-08-27 10:00:00",
+                             manifest_hash=doc.get("content_hash"))
+    assert e1["payload_sha256"] == expected
+    assert e1["revision"] == 1 and c["decision_revision"] == 1
+    assert e1["manifest_content_hash"] == doc["content_hash"]
+    assert c["decided_by"] == "owner"
+    gta.reset_decision(c, reason="second look", now="2026-08-27 10:05:00")
+    e2 = gta.record_decision(c, "B", now="2026-08-27 10:10:00")
+    assert e2["revision"] == 2 and e2["made_blind"] is False
+    # the original blind decision is still fully present in the history
+    assert c["decision_history"][0]["decision"] == "A"
+    assert c["decision_history"][0]["made_blind"] is True
+    assert c["decision_history"][0]["payload_sha256"] == expected

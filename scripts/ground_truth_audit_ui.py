@@ -1,8 +1,24 @@
-"""Ground-truth audit UI — BLINDED. The 5 DEV cases where every model scored low.
+"""Ground-truth audit UI — BLINDED. One tool, one set of guards, per-queue files.
 
-Launch:
+Queues (pick with ``--audit-file PATH`` after ``--``, or the ``AUDIT_FILE``
+environment variable; default is the DEV queue):
+
+- GROUND_TRUTH_AUDIT_2026-08-25.json — 5 DEV cases where every model scored low
+- CALIBRATION_AUDIT_2026-08-26.json — 6 CALIBRATION cases from the v3-vs-v4 A/B
+  (four both-model downgrades, two single-model upgrades; which is which is
+  hidden until the decision is saved)
+
+Launch (DEV queue):
 
     .venv\\Scripts\\python.exe -m streamlit run scripts\\ground_truth_audit_ui.py -- --browser.gatherUsageStats false
+
+Launch (CALIBRATION queue):
+
+    .venv\\Scripts\\python.exe -m streamlit run scripts\\ground_truth_audit_ui.py --browser.gatherUsageStats false -- --audit-file evaluation\\model_selection\\runs\\grade_primary\\CALIBRATION_AUDIT_2026-08-26.json
+
+Runs entirely on this machine: local JSON state, local images, PyMuPDF page
+rendering with the instructor's red ink masked. No network, no provider, no
+labels.db.
 
 All five carry instructor 4/4, so the derived explanation verdict is `valid`.
 All three models independently judged the explanation weaker than that. Two
@@ -39,6 +55,7 @@ NOTHING is relabelled here. No model, no OCR, no network.
 
 from __future__ import annotations
 
+import hashlib
 import json
 import os
 import tempfile
@@ -81,6 +98,9 @@ BLINDED_FIELDS: tuple[str, ...] = (
     "case_id", "writer", "question_id", "sub_item_id", "question_text",
     "rubric", "official_solution", "max_score", "frozen_transcription",
     "instructor_final_score", "derived_explanation_verdict", "derivation_reason",
+    # legitimate human grading material, not model output: the red-ink-cleaned
+    # answer crop and the (masked-on-render) source page reference
+    "answer_crop", "source_page",
 )
 
 #: Fields that exist only because a model produced them.
@@ -113,19 +133,40 @@ def view_payload(case: dict) -> dict[str, Any]:
 
 
 def record_decision(case: dict, option: str, *, note: str = "", auditor: str = "owner",
-                    now: str | None = None) -> dict:
-    """Save a decision. Records whether it was made blind."""
+                    now: str | None = None, manifest_hash: str | None = None) -> dict:
+    """Save a decision. Records whether it was made blind.
+
+    A decided case REFUSES a new decision: overwriting takes an explicit
+    ``reset_decision`` first, so no saved judgement can be replaced silently.
+    Each entry pins the exact pre-decision payload it was made from
+    (``payload_sha256``) and, when given, the audit manifest's content hash.
+    """
+    if is_decided(case):
+        raise ValueError(
+            f"{case.get('case_id')}: already decided ({case['human_decision']!r}); "
+            "reset explicitly before re-adjudicating")
     blind = not case.get("models_revealed_at")
+    payload_sha = hashlib.sha256(
+        json.dumps(pre_decision_payload(case), ensure_ascii=False, sort_keys=True)
+        .encode("utf-8")).hexdigest()
+    revision = 1 + sum(1 for e in case.get("decision_history", [])
+                       if e.get("action") == "decide")
     entry = {
         "at": now or time.strftime("%Y-%m-%d %H:%M:%S"),
-        "action": "decide" if not case.get("human_decision") else "re_adjudicate",
+        "action": "decide",
         "decision": option, "note": note, "auditor": auditor,
         "made_blind": blind,
+        "payload_sha256": payload_sha,
+        "revision": revision,
     }
+    if manifest_hash:
+        entry["manifest_content_hash"] = manifest_hash
     case["human_decision"] = option
     case["human_note"] = note
     case["decided_at"] = entry["at"]
+    case["decided_by"] = auditor
     case["decided_blind"] = blind
+    case["decision_revision"] = revision
     case.setdefault("decision_history", []).append(entry)
     if blind:
         # the reveal happens because the decision was saved, never before it
@@ -146,6 +187,7 @@ def reset_decision(case: dict, *, reason: str = "", auditor: str = "owner",
     }
     case["human_decision"] = None
     case["decided_at"] = None
+    case["decided_by"] = None
     case["decided_blind"] = False
     case.setdefault("decision_history", []).append(entry)
     return entry
@@ -201,6 +243,16 @@ def main() -> None:  # pragma: no cover - exercised by launching streamlit
         st.header("Progress")
         done = sum(1 for c in cases if is_decided(c))
         st.metric("decided", f"{done} / {len(cases)}")
+        by_opt = {k: sum(1 for c in cases if c.get("human_decision") == k) for k in OPTIONS}
+        resets = sum(1 for c in cases
+                     for e in c.get("decision_history", []) if e.get("action") == "reset")
+        st.caption("  ·  ".join(f"{k}: {n}" for k, n in by_opt.items())
+                   + f"  ·  remaining: {len(cases) - done}"
+                   + (f"  ·  re-adjudications: {resets}" if resets else ""))
+        if by_opt.get("C"):
+            st.caption(f"⚠ {by_opt['C']} case(s) need evidence repair (C)")
+        if by_opt.get("D"):
+            st.caption(f"◌ {by_opt['D']} case(s) marked ambiguous (D)")
         for i, c in enumerate(cases):
             mark = c.get("human_decision") or "·"
             if st.button(f"{mark}  {c['case_id']}", key=f"nav{i}", use_container_width=True):
@@ -235,6 +287,37 @@ def main() -> None:  # pragma: no cover - exercised by launching streamlit
         st.subheader("Student explanation (frozen transcription)")
         st.markdown(f'<div class="rtl">{view["frozen_transcription"]}</div>',
                     unsafe_allow_html=True)
+        if view.get("answer_crop"):
+            crop = REPO / view["answer_crop"]
+            if crop.exists():
+                st.caption("answer crop (red ink already removed)")
+                st.image(str(crop), width="stretch")
+            else:
+                st.warning(f"answer crop missing from this checkout: {view['answer_crop']}. "
+                           "Judge from the frozen transcription above.")
+        sp = view.get("source_page") or {}
+        if sp.get("pdf") and sp.get("page"):
+            with st.expander("full source page (instructor's red ink masked)"):
+                pdf = REPO / sp["pdf"]
+                if not pdf.exists():
+                    st.warning(f"source PDF missing from this checkout: {sp['pdf']}")
+                else:
+                    try:
+                        import sys as _sys
+                        if str(REPO) not in _sys.path:
+                            _sys.path.insert(0, str(REPO))
+                        from labeling_app.bundle import render_masked_page
+                        png, rep = render_masked_page(pdf, int(sp["page"]), max_edge=1600)
+                        if not rep["ok"]:
+                            st.error(f"masking left {rep['strict_red_after']} strict-red "
+                                     "pixels — page withheld")
+                        else:
+                            st.image(png, width="stretch")
+                            st.caption(f"{sp['pdf']} p.{sp['page']} — rendered locally, "
+                                       f"{rep['masked_pixels']} red pixels whitened, "
+                                       f"residual {rep['strict_red_after']}")
+                    except Exception as e:  # noqa: BLE001
+                        st.warning(f"could not render the page: {type(e).__name__}: {e}")
         st.subheader("Rubric")
         for r in view["rubric"]:
             st.markdown(f'**{r["id"]}** <div class="rtl">{r["text"]}</div>',
@@ -257,7 +340,8 @@ def main() -> None:  # pragma: no cover - exercised by launching streamlit
             for key, label in OPTIONS.items():
                 if st.button(f"{key} — {label}", key=f"opt{key}_{pos}",
                              use_container_width=True):
-                    record_decision(case, key, note=note)
+                    record_decision(case, key, note=note,
+                                    manifest_hash=doc.get("content_hash"))
                     save_audit(doc, audit_path)
                     st.rerun()
         else:
