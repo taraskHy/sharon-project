@@ -1,0 +1,655 @@
+{
+ "artifact": "seen46_zero_leakage_verification",
+ "campaign": "seen46_2026-08-28",
+ "created_at": "2026-08-28 12:28:40",
+ "requests_verified": 46,
+ "problems": [],
+ "verdict": "ZERO-LEAKAGE VERIFIED",
+ "method": "every request built exactly as the runner builds it (same adapter, same prompt version, same files root); runner.leakage_check per case plus a forbidden-token scan; the model-visible whitelist is the adapter's (case_id, pack, selected, transcription, version) and the label dict is never handed to build_request by construction",
+ "requests": [
+  {
+   "case_id": "e002_q1_r1",
+   "request_sha256": "c3b0e2daac0b5cfdfcf0207721427639980d66b952aee6e2ef7dc6840da3455e",
+   "request_chars": 8146,
+   "model_visible_fields": [
+    "case_id",
+    "pack",
+    "selected",
+    "transcription",
+    "version"
+   ],
+   "leakage_check": "passed",
+   "forbidden_tokens": []
+  },
+  {
+   "case_id": "e002_q1_r2",
+   "request_sha256": "aa9eec11a4defd28f6137dee983e7a9f11a48852b1ce64e91d95ccb03fdc2258",
+   "request_chars": 7923,
+   "model_visible_fields": [
+    "case_id",
+    "pack",
+    "selected",
+    "transcription",
+    "version"
+   ],
+   "leakage_check": "passed",
+   "forbidden_tokens": []
+  },
+  {
+   "case_id": "e002_q1_r3",
+   "request_sha256": "903019404b354041d0afb3a6ef8709f02139f2d3118b811243620a201f551031",
+   "request_chars": 8127,
+   "model_visible_fields": [
+    "case_id",
+    "pack",
+    "selected",
+    "transcription",
+    "version"
+   ],
+   "leakage_check": "passed",
+   "forbidden_tokens": []
+  },
+  {
+   "case_id": "e002_q1_r4",
+   "request_sha256": "01272f45ab456262f56316aea05b79263d8b5834a051c1ef51d8410a9ca0f2d9",
+   "request_chars": 7928,
+   "model_visible_fields": [
+    "case_id",
+    "pack",
+    "selected",
+    "transcription",
+    "version"
+   ],
+   "leakage_check": "passed",
+   "forbidden_tokens": []
+  },
+  {
+   "case_id": "e002_q1_r5",
+   "request_sha256": "6bbd7bbbe5ad62a62e1d9c9fccc852fdeabe4a95a3ea279a3956092e6e77f841",
+   "request_chars": 8040,
+   "model_visible_fields": [
+    "case_id",
+    "pack",
+    "selected",
+    "transcription",
+    "version"
+   ],
+   "leakage_check": "passed",
+   "forbidden_tokens": []
+  },
+  {
+   "case_id": "e002_q1_r6",
+   "request_sha256": "b335350befd9fec076d8b784fa73d8609f714dbbacf044ff14e831e45f2dde3e",
+   "request_chars": 8040,
+   "model_visible_fields": [
+    "case_id",
+    "pack",
+    "selected",
+    "transcription",
+    "version"
+   ],
+   "leakage_check": "passed",
+   "forbidden_tokens": []
+  },
+  {
+   "case_id": "e002_q1_r7",
+   "request_sha256": "2db43064827a120ece1bdae59f5055feaf37e89354eeb47af5bf6c1c123ab73a",
+   "request_chars": 7962,
+   "model_visible_fields": [
+    "case_id",
+    "pack",
+    "selected",
+    "transcription",
+    "version"
+   ],
+   "leakage_check": "passed",
+   "forbidden_tokens": []
+  },
+  {
+   "case_id": "e002_q1_r8",
+   "request_sha256": "83fdfe2ea2764a1e7e8b1ba8c7bffa588a37041cb4bb7de3c43f11163180c094",
+   "request_chars": 8090,
+   "model_visible_fields": [
+    "case_id",
+    "pack",
+    "selected",
+    "transcription",
+    "version"
+   ],
+   "leakage_check": "passed",
+   "forbidden_tokens": []
+  },
+  {
+   "case_id": "e002_q2_r1",
+   "request_sha256": "e5893404ffcfdb4f162de57bd712e5449cc57b596b1120560e2d18295a88f058",
+   "request_chars": 7998,
+   "model_visible_fields": [
+    "case_id",
+    "pack",
+    "selected",
+    "transcription",
+    "version"
+   ],
+   "leakage_check": "passed",
+   "forbidden_tokens": []
+  },
+  {
+   "case_id": "e002_q2_r2",
+   "request_sha256": "ced1130915db4784b88e38dac65d61c91cc81dee2f404a00afb47bf2ab4ea176",
+   "request_chars": 8014,
+   "model_visible_fields": [
+    "case_id",
+    "pack",
+    "selected",
+    "transcription",
+    "version"
+   ],
+   "leakage_check": "passed",
+   "forbidden_tokens": []
+  },
+  {
+   "case_id": "e002_q2_r3",
+   "request_sha256": "b026aa40352851ad2d271efcda3af11a56087604ee4b4aabeebfc70b125d2a3e",
+   "request_chars": 8060,
+   "model_visible_fields": [
+    "case_id",
+    "pack",
+    "selected",
+    "transcription",
+    "version"
+   ],
+   "leakage_check": "passed",
+   "forbidden_tokens": []
+  },
+  {
+   "case_id": "e002_q2_r4",
+   "request_sha256": "59aaa5017fe351ff13acae676144310c4b73f69ea4602bca351334639e2c155c",
+   "request_chars": 8106,
+   "model_visible_fields": [
+    "case_id",
+    "pack",
+    "selected",
+    "transcription",
+    "version"
+   ],
+   "leakage_check": "passed",
+   "forbidden_tokens": []
+  },
+  {
+   "case_id": "e002_q2_r5",
+   "request_sha256": "d0ae4923bc7854d8f4ce39ce3ca09d11d467a878059bb90a13c062dd9ef3a431",
+   "request_chars": 8003,
+   "model_visible_fields": [
+    "case_id",
+    "pack",
+    "selected",
+    "transcription",
+    "version"
+   ],
+   "leakage_check": "passed",
+   "forbidden_tokens": []
+  },
+  {
+   "case_id": "e002_q2_r6",
+   "request_sha256": "32fcd8d687f2b48ddde4b161d6bca34e8adcf1f35ecc3a15755e4251b125f1b4",
+   "request_chars": 8079,
+   "model_visible_fields": [
+    "case_id",
+    "pack",
+    "selected",
+    "transcription",
+    "version"
+   ],
+   "leakage_check": "passed",
+   "forbidden_tokens": []
+  },
+  {
+   "case_id": "e002_q2_r7",
+   "request_sha256": "36dae16d6333a8657ec75bfbc3d07894051d31d9c4ed1d62496bd85a84199d85",
+   "request_chars": 8143,
+   "model_visible_fields": [
+    "case_id",
+    "pack",
+    "selected",
+    "transcription",
+    "version"
+   ],
+   "leakage_check": "passed",
+   "forbidden_tokens": []
+  },
+  {
+   "case_id": "e002_q2_r8",
+   "request_sha256": "77018c22b7fcfffac532c4e26eff3cda4400234d9f7bb7e6ded83a09fc20e5aa",
+   "request_chars": 8044,
+   "model_visible_fields": [
+    "case_id",
+    "pack",
+    "selected",
+    "transcription",
+    "version"
+   ],
+   "leakage_check": "passed",
+   "forbidden_tokens": []
+  },
+  {
+   "case_id": "e003_q1_r1",
+   "request_sha256": "95b7ed0ce470c77c1f941533077156bbc912e9700ea860ed4cedcba4ccc7b4b2",
+   "request_chars": 8189,
+   "model_visible_fields": [
+    "case_id",
+    "pack",
+    "selected",
+    "transcription",
+    "version"
+   ],
+   "leakage_check": "passed",
+   "forbidden_tokens": []
+  },
+  {
+   "case_id": "e003_q1_r3",
+   "request_sha256": "4eb7bcf460c6f444bf6ba56a4be2d5f577a9bf82cf06ef07b99baaac174a7665",
+   "request_chars": 8155,
+   "model_visible_fields": [
+    "case_id",
+    "pack",
+    "selected",
+    "transcription",
+    "version"
+   ],
+   "leakage_check": "passed",
+   "forbidden_tokens": []
+  },
+  {
+   "case_id": "e003_q1_r4",
+   "request_sha256": "83dd99c7b6317046753584d7d5c5d7985584aa38a5927b059f505f3a3c0febea",
+   "request_chars": 7972,
+   "model_visible_fields": [
+    "case_id",
+    "pack",
+    "selected",
+    "transcription",
+    "version"
+   ],
+   "leakage_check": "passed",
+   "forbidden_tokens": []
+  },
+  {
+   "case_id": "e003_q1_r5",
+   "request_sha256": "6e0b5cf13d65a78b4c437a6a1d50242ea3cf4020e2c37f55732757f296f119d6",
+   "request_chars": 8064,
+   "model_visible_fields": [
+    "case_id",
+    "pack",
+    "selected",
+    "transcription",
+    "version"
+   ],
+   "leakage_check": "passed",
+   "forbidden_tokens": []
+  },
+  {
+   "case_id": "e003_q1_r6",
+   "request_sha256": "ee077100ee7f7675fb5c7a39b0387f0477a4e97223a7e1c74758fa6d6a37355e",
+   "request_chars": 8065,
+   "model_visible_fields": [
+    "case_id",
+    "pack",
+    "selected",
+    "transcription",
+    "version"
+   ],
+   "leakage_check": "passed",
+   "forbidden_tokens": []
+  },
+  {
+   "case_id": "e003_q1_r7",
+   "request_sha256": "08cfb98efbcdd45a2651a71ab1359252460f28efe387ad1851f9f082096d834f",
+   "request_chars": 7929,
+   "model_visible_fields": [
+    "case_id",
+    "pack",
+    "selected",
+    "transcription",
+    "version"
+   ],
+   "leakage_check": "passed",
+   "forbidden_tokens": []
+  },
+  {
+   "case_id": "e003_q1_r8",
+   "request_sha256": "ede519056c959f49fdbfef7404dcb8c90278e6ed92de0ae0d0e5e6b618a51726",
+   "request_chars": 8071,
+   "model_visible_fields": [
+    "case_id",
+    "pack",
+    "selected",
+    "transcription",
+    "version"
+   ],
+   "leakage_check": "passed",
+   "forbidden_tokens": []
+  },
+  {
+   "case_id": "e003_q2_r1",
+   "request_sha256": "746b46abd2733cc152fe14e8a8b629d85001d0f8fc80bd60606d70e36197b01c",
+   "request_chars": 8008,
+   "model_visible_fields": [
+    "case_id",
+    "pack",
+    "selected",
+    "transcription",
+    "version"
+   ],
+   "leakage_check": "passed",
+   "forbidden_tokens": []
+  },
+  {
+   "case_id": "e003_q2_r2",
+   "request_sha256": "a471350899df054653ff341b1570106a0fa83812ec38d64118c1916605154059",
+   "request_chars": 8033,
+   "model_visible_fields": [
+    "case_id",
+    "pack",
+    "selected",
+    "transcription",
+    "version"
+   ],
+   "leakage_check": "passed",
+   "forbidden_tokens": []
+  },
+  {
+   "case_id": "e003_q2_r3",
+   "request_sha256": "1edb962e1304b0bd1e2fabc4328a5e9fa726a8b45d0f3b873cc6f6d060c7a150",
+   "request_chars": 8079,
+   "model_visible_fields": [
+    "case_id",
+    "pack",
+    "selected",
+    "transcription",
+    "version"
+   ],
+   "leakage_check": "passed",
+   "forbidden_tokens": []
+  },
+  {
+   "case_id": "e003_q2_r4",
+   "request_sha256": "accd2e57b4f6698e1b00953c95cc1b78f91599586337582616554ab7ab516993",
+   "request_chars": 8071,
+   "model_visible_fields": [
+    "case_id",
+    "pack",
+    "selected",
+    "transcription",
+    "version"
+   ],
+   "leakage_check": "passed",
+   "forbidden_tokens": []
+  },
+  {
+   "case_id": "e003_q2_r5",
+   "request_sha256": "8b4399f2742dfe1017a6bfb98d21509baa7fec29de083c7635470b12a9f7f0de",
+   "request_chars": 8018,
+   "model_visible_fields": [
+    "case_id",
+    "pack",
+    "selected",
+    "transcription",
+    "version"
+   ],
+   "leakage_check": "passed",
+   "forbidden_tokens": []
+  },
+  {
+   "case_id": "e003_q2_r6",
+   "request_sha256": "6e966b0d3c25196794925ab1f39bca2efa6d83223f726e1d345cb80ac7a460fa",
+   "request_chars": 8044,
+   "model_visible_fields": [
+    "case_id",
+    "pack",
+    "selected",
+    "transcription",
+    "version"
+   ],
+   "leakage_check": "passed",
+   "forbidden_tokens": []
+  },
+  {
+   "case_id": "e003_q2_r7",
+   "request_sha256": "78aea835d3bf6e4422ab0f6adcde5062e4b2246eab337703d7fc0496aaec619b",
+   "request_chars": 8117,
+   "model_visible_fields": [
+    "case_id",
+    "pack",
+    "selected",
+    "transcription",
+    "version"
+   ],
+   "leakage_check": "passed",
+   "forbidden_tokens": []
+  },
+  {
+   "case_id": "e003_q2_r8",
+   "request_sha256": "cb52e362c04be6035ba4fdcf857861687af6277b1a997060397ecf88dcca63fd",
+   "request_chars": 8067,
+   "model_visible_fields": [
+    "case_id",
+    "pack",
+    "selected",
+    "transcription",
+    "version"
+   ],
+   "leakage_check": "passed",
+   "forbidden_tokens": []
+  },
+  {
+   "case_id": "e007_q1_r1",
+   "request_sha256": "796403b5b5c986a60e596d298561fdb3a806ebe068a93d0bb51c372f0c1ab7dc",
+   "request_chars": 8223,
+   "model_visible_fields": [
+    "case_id",
+    "pack",
+    "selected",
+    "transcription",
+    "version"
+   ],
+   "leakage_check": "passed",
+   "forbidden_tokens": []
+  },
+  {
+   "case_id": "e004_q1_r1",
+   "request_sha256": "c2bee805553f7ead7f01e0c85af6694915c23e28b2d60106fc05045d13bec889",
+   "request_chars": 8156,
+   "model_visible_fields": [
+    "case_id",
+    "pack",
+    "selected",
+    "transcription",
+    "version"
+   ],
+   "leakage_check": "passed",
+   "forbidden_tokens": []
+  },
+  {
+   "case_id": "e004_q1_r2",
+   "request_sha256": "475d16187fc9da4f2bd024f3f2fdaceba866f196d6a75c7f34d6719a4b3286c4",
+   "request_chars": 7929,
+   "model_visible_fields": [
+    "case_id",
+    "pack",
+    "selected",
+    "transcription",
+    "version"
+   ],
+   "leakage_check": "passed",
+   "forbidden_tokens": []
+  },
+  {
+   "case_id": "e004_q1_r3",
+   "request_sha256": "81a42d1c197b66d42948f50010c5a5285ec7dc0e65065dba52a004557bea720a",
+   "request_chars": 8148,
+   "model_visible_fields": [
+    "case_id",
+    "pack",
+    "selected",
+    "transcription",
+    "version"
+   ],
+   "leakage_check": "passed",
+   "forbidden_tokens": []
+  },
+  {
+   "case_id": "e004_q1_r4",
+   "request_sha256": "dfb49c0f42ecd228daadaa8fa3042b986ea922b568a56b8043cf125a497fd616",
+   "request_chars": 7943,
+   "model_visible_fields": [
+    "case_id",
+    "pack",
+    "selected",
+    "transcription",
+    "version"
+   ],
+   "leakage_check": "passed",
+   "forbidden_tokens": []
+  },
+  {
+   "case_id": "e004_q1_r5",
+   "request_sha256": "7e19786585c08206da78d25e1c80f85bc85b440800c813450fe152041b72490d",
+   "request_chars": 8050,
+   "model_visible_fields": [
+    "case_id",
+    "pack",
+    "selected",
+    "transcription",
+    "version"
+   ],
+   "leakage_check": "passed",
+   "forbidden_tokens": []
+  },
+  {
+   "case_id": "e004_q1_r6",
+   "request_sha256": "a37d74b6a25213d4be4601c38dc3da0b632ab3f08d1e02d57fd8f01c62369e80",
+   "request_chars": 8049,
+   "model_visible_fields": [
+    "case_id",
+    "pack",
+    "selected",
+    "transcription",
+    "version"
+   ],
+   "leakage_check": "passed",
+   "forbidden_tokens": []
+  },
+  {
+   "case_id": "e004_q1_r8",
+   "request_sha256": "9fce7cbc610f80d93d6e5e97c11cf273d07ecd89f9c545810414acef6c9859cd",
+   "request_chars": 8024,
+   "model_visible_fields": [
+    "case_id",
+    "pack",
+    "selected",
+    "transcription",
+    "version"
+   ],
+   "leakage_check": "passed",
+   "forbidden_tokens": []
+  },
+  {
+   "case_id": "e004_q2_r1",
+   "request_sha256": "f44e8b1e0c602e777904335a19117f34aa24aec28b3e9bf2321038a2ec4c56f6",
+   "request_chars": 8015,
+   "model_visible_fields": [
+    "case_id",
+    "pack",
+    "selected",
+    "transcription",
+    "version"
+   ],
+   "leakage_check": "passed",
+   "forbidden_tokens": []
+  },
+  {
+   "case_id": "e004_q2_r2",
+   "request_sha256": "af6cbd367d59f64f6f9e3af8d01e4baeda45b9d602d2bf910dd241e41bcda03a",
+   "request_chars": 8014,
+   "model_visible_fields": [
+    "case_id",
+    "pack",
+    "selected",
+    "transcription",
+    "version"
+   ],
+   "leakage_check": "passed",
+   "forbidden_tokens": []
+  },
+  {
+   "case_id": "e004_q2_r3",
+   "request_sha256": "c0dee5052f75e7aa61f2f4332dba702bb6b5ecdb202a15002239609a66e38903",
+   "request_chars": 8089,
+   "model_visible_fields": [
+    "case_id",
+    "pack",
+    "selected",
+    "transcription",
+    "version"
+   ],
+   "leakage_check": "passed",
+   "forbidden_tokens": []
+  },
+  {
+   "case_id": "e004_q2_r4",
+   "request_sha256": "a10f411ecd7b0e4b01bc833e939d509b264a9003fb2c2f22cb6d3d476e3b6dad",
+   "request_chars": 8108,
+   "model_visible_fields": [
+    "case_id",
+    "pack",
+    "selected",
+    "transcription",
+    "version"
+   ],
+   "leakage_check": "passed",
+   "forbidden_tokens": []
+  },
+  {
+   "case_id": "e004_q2_r5",
+   "request_sha256": "0f68bbd6a70b729428a615392f1bb4b322645f18892689013d8d2373b2dfff04",
+   "request_chars": 7990,
+   "model_visible_fields": [
+    "case_id",
+    "pack",
+    "selected",
+    "transcription",
+    "version"
+   ],
+   "leakage_check": "passed",
+   "forbidden_tokens": []
+  },
+  {
+   "case_id": "e004_q2_r6",
+   "request_sha256": "0f021db0338e892cb1724aa587be975f258b3bca22ce4c36d1087fbd305e9c61",
+   "request_chars": 8063,
+   "model_visible_fields": [
+    "case_id",
+    "pack",
+    "selected",
+    "transcription",
+    "version"
+   ],
+   "leakage_check": "passed",
+   "forbidden_tokens": []
+  },
+  {
+   "case_id": "e004_q2_r8",
+   "request_sha256": "6c6b5e404a286a59b0ea5ca5a1c73e4db4e560e5762cabff12835858741c1979",
+   "request_chars": 8047,
+   "model_visible_fields": [
+    "case_id",
+    "pack",
+    "selected",
+    "transcription",
+    "version"
+   ],
+   "leakage_check": "passed",
+   "forbidden_tokens": []
+  }
+ ]
+}

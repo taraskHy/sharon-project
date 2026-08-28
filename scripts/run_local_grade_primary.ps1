@@ -41,11 +41,16 @@ param(
     [switch]$Smoke,
     [switch]$FullDev,
     [switch]$Calibration,
+    [switch]$Seen46,
     [string]$Candidate = "",
     [string]$PromptVersion = "",
     [switch]$Execute,
     [string]$BaseUrl = "http://localhost:11434/v1"
 )
+# -Seen46: the frozen SEEN-46 campaign (whole DEV split, 32 + whole
+# CALIBRATION split, 14; HELD_OUT unreachable). Requires the committed
+# campaign manifest to verify AND a ZERO-LEAKAGE artifact; runs the two
+# splits sequentially through the standard bench runner.
 
 $ErrorActionPreference = "Stop"
 $repo = Split-Path -Parent (Split-Path -Parent $MyInvocation.MyCommand.Path)
@@ -88,7 +93,44 @@ function Write-MachineProfile {
     return $profilePath
 }
 
-$mode = if ($Smoke) { "smoke" } elseif ($FullDev) { "fulldev" } elseif ($Calibration) { "calibration" } else { "preflight" }
+$mode = if ($Smoke) { "smoke" } elseif ($FullDev) { "fulldev" } elseif ($Calibration) { "calibration" } elseif ($Seen46) { "seen46" } else { "preflight" }
+
+if ($mode -eq "seen46") {
+    if (-not $Candidate) { $Candidate = "qwen3-vl:8b-instruct" }
+    if (-not $PromptVersion) {
+        $fp = Join-Path $repo "evaluation\model_selection\experiments\LOCAL_GRADE_CONTRACT_FREEZE_2026-08-28.json"
+        if (Test-Path $fp) { try { $PromptVersion = (Get-Content $fp -Raw | ConvertFrom-Json).prompt_version } catch {} }
+    }
+    if (-not $PromptVersion) { Write-Host "REFUSED: no prompt version resolvable for seen46." -ForegroundColor Red; exit 4 }
+    Write-Host "=== SEEN-46 CAMPAIGN (dev 32 + calibration 14; HELD_OUT unreachable) ===" -ForegroundColor Cyan
+    & $py "scripts\seen46_campaign.py" verify
+    if ($LASTEXITCODE -ne 0) { Write-Host "REFUSED: campaign manifest does not verify." -ForegroundColor Red; exit 4 }
+    $leak = "evaluation\model_selection\runs\local_grade_primary\SEEN46_LEAKAGE_VERIFICATION_2026-08-28.json"
+    if (-not (Test-Path $leak)) { Write-Host "REFUSED: zero-leakage artifact missing. Run: $py scripts\seen46_campaign.py leakage" -ForegroundColor Red; exit 4 }
+    $lv = (Get-Content $leak -Raw | ConvertFrom-Json).verdict
+    if ($lv -ne "ZERO-LEAKAGE VERIFIED") { Write-Host "REFUSED: leakage artifact verdict is '$lv'." -ForegroundColor Red; exit 4 }
+    if (-not $Execute) {
+        Write-Host "DRY: would run split=dev (32) then split=calibration (14) for '$Candidate'. Add -Execute." -ForegroundColor Yellow
+        exit 0
+    }
+    Invoke-Preflight
+    $null = Write-MachineProfile
+    foreach ($sp in @("dev", "calibration")) {
+        Write-Host "=== EXECUTING seen46 split=$sp - local inference only, cloud grading cost `$0 ===" -ForegroundColor Green
+        $args46 = @("-m", "autograder", "bench", "run",
+            "--role", "grade_primary", "--split", $sp,
+            "--candidate", $Candidate, "--backend", "ollama", "--base-url", $BaseUrl,
+            "--runs-root", $runsRoot,
+            "--note", "seen46_2026-08-28 campaign ($sp split, full)",
+            "--i-understand-this-spends-money")
+        if ($PromptVersion) { $args46 += @("--prompt-version", $PromptVersion) }
+        & $py @args46
+        if ($LASTEXITCODE -ne 0) { Write-Host "seen46 split=$sp FAILED (exit $LASTEXITCODE); stopping (results preserved)." -ForegroundColor Red; exit $LASTEXITCODE }
+    }
+    Write-Host ""
+    Write-Host "seen46 complete; run the completion gate: $py scripts\seen46_campaign.py gate"
+    exit 0
+}
 
 if ($mode -eq "preflight") {
     Invoke-Preflight
