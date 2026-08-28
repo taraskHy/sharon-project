@@ -253,7 +253,8 @@ def previous_bundle_info(out_dir: Path) -> dict[str, Any] | None:
 
 def build_bundle(dataset_dir: Path, out_dir: Path, *, evaluation_root: Path, repo_root: Path | None = None,
                  salt: str | None = None, render_pages: bool = True, page_max_edge: int = PAGE_MAX_EDGE,
-                 now: str | None = None, replace: bool = False) -> dict[str, Any]:
+                 now: str | None = None, replace: bool = False,
+                 case_ids: list[str] | None = None) -> dict[str, Any]:
     """Build the anonymized bundle from a frozen grade_primary dataset directory.
     ``evaluation_root`` resolves `evidence_images`; ``repo_root`` (default:
     evaluation_root's parent) resolves the upstream provenance records and PDFs.
@@ -270,6 +271,18 @@ def build_bundle(dataset_dir: Path, out_dir: Path, *, evaluation_root: Path, rep
     man = json.loads((dataset_dir / "manifest.json").read_text(encoding="utf-8"))
     inputs = [json.loads(l) for l in (dataset_dir / "cases_inputs.jsonl").read_text(encoding="utf-8").splitlines() if l.strip()]
     labels = {r["case_id"]: r for r in (json.loads(l) for l in (dataset_dir / "cases_labels.jsonl").read_text(encoding="utf-8").splitlines() if l.strip())}
+    if case_ids is not None:
+        # An explicit campaign population (e.g. the SEEN-46 review campaign):
+        # only the named cases enter the bundle. Rows outside the selection are
+        # never read further — their transcriptions, labels and evidence stay
+        # untouched on disk. A requested id missing from the dataset refuses.
+        want = list(dict.fromkeys(case_ids))
+        have = {r["case_id"] for r in inputs}
+        missing = sorted(set(want) - have)
+        if missing:
+            raise KeyError(f"case_ids not in the dataset: {missing[:5]}")
+        inputs = [r for r in inputs if r["case_id"] in set(want)]
+        labels = {cid: r for cid, r in labels.items() if cid in set(want)}
     previous = previous_bundle_info(out_dir)
     if previous is not None and not replace:
         raise FileExistsError(f"{out_dir} already holds a bundle; pass replace=True (CLI: --replace) to rebuild "

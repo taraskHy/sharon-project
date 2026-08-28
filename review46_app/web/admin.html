@@ -1,0 +1,165 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Review46 Admin</title>
+<style>
+  body { margin:0; font:14px/1.5 system-ui, "Segoe UI", sans-serif; background:#f4f5f7; color:#1c2733; }
+  header { padding:10px 16px; background:#1c2733; color:#fff; display:flex; gap:16px; align-items:center; }
+  header h1 { font-size:15px; margin:0; }
+  main { max-width:1180px; margin:0 auto; padding:14px; }
+  .card { background:#fff; border:1px solid #dde3ea; border-radius:10px; padding:12px 14px; margin-bottom:12px; }
+  .grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(180px,1fr)); gap:10px; }
+  .stat { background:#f8fafc; border:1px solid #e4e9ef; border-radius:8px; padding:8px 10px; }
+  .stat b { display:block; font-size:20px; }
+  table { border-collapse:collapse; width:100%; font-size:13px; }
+  th, td { border-bottom:1px solid #e4e9ef; padding:5px 8px; text-align:left; }
+  tr:hover { background:#f4f8fd; }
+  .he { direction:rtl; text-align:right; white-space:pre-wrap; }
+  .st-CONSENSUS { color:#1d7a46; font-weight:600; }
+  .st-NEEDS_ADJUDICATION { color:#a12727; font-weight:600; }
+  .st-ADJUDICATED { color:#2456a6; font-weight:600; }
+  button { font:inherit; padding:6px 10px; border-radius:7px; border:1px solid #cfd7e0; background:#fff; cursor:pointer; }
+  #detail { position:fixed; right:0; top:0; bottom:0; width:min(660px,92vw); background:#fff;
+            border-left:1px solid #cfd7e0; overflow:auto; padding:14px; display:none; z-index:9; }
+  .mut { color:#5b6b7b; }
+  pre { background:#f6f8fa; border:1px solid #e4e9ef; border-radius:6px; padding:8px; overflow:auto; font-size:12px; }
+</style>
+</head>
+<body>
+<header><h1>SEEN-46 blind review — admin</h1>
+  <button onclick="load()">refresh</button>
+  <button onclick="doExport()">export</button>
+  <button onclick="doBackup()">backup</button>
+  <button onclick="doCompare()">compare</button>
+  <span id="hdr" class="mut" style="color:#cbd5df"></span>
+</header>
+<main>
+  <div class="card"><div id="stats" class="grid"></div></div>
+  <div class="card"><h3 style="margin:4px 0">Reviewers</h3><div id="reviewers"></div></div>
+  <div class="card">
+    <h3 style="margin:4px 0">Cases</h3>
+    <label>filter state: <select id="statef" onchange="renderItems()">
+      <option value="">all</option><option>PENDING</option><option>ONE_REVIEW</option>
+      <option>CONSENSUS</option><option>NEEDS_ADJUDICATION</option><option>ADJUDICATED</option>
+    </select></label>
+    <table id="items"><thead><tr><th>case</th><th>state</th><th>reviews</th><th>human ref</th>
+      <th>instructor (derived)</th><th>model</th><th>flags</th><th></th></tr></thead><tbody></tbody></table>
+  </div>
+  <div class="card"><h3 style="margin:4px 0">Comparison</h3><pre id="compare">not requested yet</pre></div>
+</main>
+<div id="detail"></div>
+<script>
+"use strict";
+let items = [];
+async function api(path, body){
+  const r = await fetch(path, body===undefined?{}:{method:"POST",
+    headers:{"Content-Type":"application/json"}, body:JSON.stringify(body)});
+  return {status:r.status, ...(await r.json().catch(()=>({})))};
+}
+function el(id){ return document.getElementById(id); }
+
+async function load(){
+  const s = await api("/api/admin/summary");
+  if (s.status >= 400) { el("hdr").textContent = s.error || "auth failed"; return; }
+  const st = el("stats"); st.innerHTML = "";
+  const cells = [
+    ["campaign cases", s.cases], ["required reviews", s.required_reviews],
+    ["decisions saved", s.completed_review_decisions],
+    ["cases 0 / 1 / 2 reviews", `${s.cases_by_review_count[0]} / ${s.cases_by_review_count[1]} / ${s.cases_by_review_count[2]}`],
+    ["reviewer agreement", s.reviewer_agreement.rate_pct === null ? "-" : s.reviewer_agreement.rate_pct + "%"],
+    ["needs adjudication", s.needs_adjudication.length],
+    ["adjudicated", s.adjudicated],
+    ["active claims", s.claims_active ?? "-"],
+    ["mean review time", s.mean_review_time_s ? s.mean_review_time_s + "s" : "-"],
+    ["confidence h/m/l", `${s.confidence_counts.high}/${s.confidence_counts.medium}/${s.confidence_counts.low}`],
+    ["issue flags", Object.entries(s.issue_counts).filter(([k,v])=>k!=="none"&&v).map(([k,v])=>`${k}:${v}`).join(" ") || "none"],
+    ["campaign complete", s.campaign_complete ? "YES" : "no"],
+  ];
+  if (s.comparison_preview) cells.push(
+    ["model vs human", s.comparison_preview.model_vs_human_pct + "%"],
+    ["instructor vs human", s.comparison_preview.instructor_vs_human_pct + "%"],
+    ["model vs instructor", s.comparison_preview.model_vs_instructor_pct + "%"]);
+  for (const [k,v] of cells){
+    const d = document.createElement("div"); d.className="stat";
+    d.innerHTML = `<b>${v}</b><span class="mut">${k}</span>`; st.appendChild(d);
+  }
+  el("reviewers").innerHTML = (s.reviewers||[]).map(r =>
+    `<span style="margin-right:14px"><b>${r.name}</b> saved ${r.my_saved ?? 0}, skipped ${r.my_skipped ?? 0}</span>`).join("") || "<span class=mut>none yet</span>";
+  const it = await api("/api/admin/items");
+  items = it.items || [];
+  renderItems();
+}
+
+function renderItems(){
+  const f = el("statef").value;
+  const tb = el("items").querySelector("tbody"); tb.innerHTML = "";
+  for (const o of items){
+    if (f && o.state !== f) continue;
+    const tr = document.createElement("tr");
+    tr.innerHTML = `<td>${o.case_id}</td><td class="st-${o.state}">${o.state}</td>
+      <td>${o.n_reviews} (${(o.reviewers||[]).join(", ")})</td>
+      <td>${o.human_reference_verdict ?? "-"}</td>
+      <td>${o.instructor_derived_verdict ?? "-"}${o.evidence_issue_flag ? " ⚑" : ""}</td>
+      <td>${o.model_verdict ?? "-"}</td><td>${o.evidence_issue_flag ? "evidence-issue" : ""}</td>
+      <td><button onclick="openDetail('${o.item_id}')">open</button></td>`;
+    tb.appendChild(tr);
+  }
+}
+
+async function openDetail(id){
+  const d = await api(`/api/admin/items/${id}`);
+  const c = d.content || {};
+  const rev = (d.reviews||[]).map(r =>
+    `<li><b>${r.reviewer}</b>: ${r.verdict ?? r.status} (conf ${r.confidence ?? "-"}, issue ${r.issue ?? "-"})
+     ${r.text ? " — " + r.text : ""}${r.flag_reason ? " — FLAG: " + r.flag_reason : ""}</li>`).join("");
+  const mp = d.model_proposal || {}, ir = d.instructor_reference || {};
+  el("detail").innerHTML = `
+    <button onclick="el('detail').style.display='none'">close</button>
+    <h3>${d.case_id} <span class="st-${d.state}">${d.state}</span></h3>
+    <p class="he">${(c.question_text||"")}</p>
+    <p class="he" style="background:#fffbe8;padding:6px">${c.transcription||""}</p>
+    <h4>Independent reviews</h4><ul>${rev || "<li class=mut>none</li>"}</ul>
+    <h4>Original instructor (reference)</h4>
+    <pre>${JSON.stringify(ir, null, 1)}</pre>
+    <h4>Local model proposal (frozen)</h4>
+    <pre>${JSON.stringify(mp, null, 1)}</pre>
+    <h4>Adjudicate</h4>
+    <p>verdict:
+      <select id="adjv"><option>valid</option><option>partially_valid</option><option>invalid</option></select>
+      note: <input id="adjn" type="text" style="width:220px">
+      <button onclick="adjudicate('${id}', ${d.item_revision})">save adjudication</button>
+      <button onclick="reopen('${id}')">reopen</button></p>
+    ${d.adjudicated ? `<pre>${JSON.stringify(d.adjudicated, null, 1)}</pre>` : ""}`;
+  el("detail").style.display = "block";
+}
+
+async function adjudicate(id, revision){
+  const r = await api(`/api/admin/items/${id}/adjudicate`,
+    {verdict: el("adjv").value, note: el("adjn").value, adjudicator: "admin",
+     expected_item_revision: revision});
+  if (r.status >= 400) alert(r.error || "failed"); else { el("detail").style.display="none"; load(); }
+}
+async function reopen(id){
+  const r = await api(`/api/admin/items/${id}/reopen`, {});
+  if (r.status >= 400) alert(r.error || "failed"); else { el("detail").style.display="none"; load(); }
+}
+async function doExport(){
+  const r = await fetch("/api/admin/export");
+  const j = await r.json();
+  el("compare").textContent = "export written (X-Export-Path header on the response); "
+    + (j.cases ? j.cases.length + " cases" : JSON.stringify(j).slice(0, 200));
+}
+async function doBackup(){
+  const r = await api("/api/admin/backup", {});
+  alert(r.status < 400 ? "backup OK" : (r.error || "backup failed"));
+}
+async function doCompare(){
+  const r = await api("/api/admin/compare" + (confirm("Campaign complete? OK = full, Cancel = explicitly-partial preview") ? "" : "?partial=1"));
+  el("compare").textContent = JSON.stringify(r, null, 1);
+}
+load();
+</script>
+</body>
+</html>

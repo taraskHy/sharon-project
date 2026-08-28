@@ -1,0 +1,232 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Explanation Review</title>
+<style>
+  :root { --bg:#f6f7f9; --card:#fff; --ink:#1c2733; --mut:#5b6b7b; --line:#dde3ea;
+          --ok:#1d7a46; --mid:#a06a00; --bad:#a12727; --acc:#2456a6; }
+  * { box-sizing:border-box; }
+  body { margin:0; font:15px/1.5 system-ui, "Segoe UI", sans-serif; background:var(--bg); color:var(--ink); }
+  header { display:flex; align-items:center; gap:12px; padding:10px 16px; background:var(--card);
+           border-bottom:1px solid var(--line); position:sticky; top:0; z-index:5; }
+  header h1 { font-size:16px; margin:0; }
+  #progress { color:var(--mut); font-size:13px; margin-left:auto; }
+  main { max-width:980px; margin:0 auto; padding:16px; }
+  .card { background:var(--card); border:1px solid var(--line); border-radius:10px; padding:14px 16px; margin-bottom:12px; }
+  .card h2 { font-size:13px; text-transform:uppercase; letter-spacing:.06em; color:var(--mut); margin:0 0 8px; }
+  .he { direction:rtl; text-align:right; font-size:16px; white-space:pre-wrap; }
+  .transcript { font-size:19px; background:#fffbe8; border:1px solid #efe3ae; border-radius:8px; padding:10px 12px; }
+  .crops img { max-width:100%; border:1px solid var(--line); border-radius:6px; margin:4px 0; display:block; }
+  .row { display:flex; gap:10px; flex-wrap:wrap; align-items:center; }
+  button { font:inherit; padding:9px 14px; border-radius:8px; border:1px solid var(--line);
+           background:#fff; cursor:pointer; }
+  button:disabled { opacity:.45; cursor:default; }
+  .verdict { font-weight:600; border-width:2px; }
+  .verdict.sel-invalid { border-color:var(--bad); background:#fdecec; }
+  .verdict.sel-partial { border-color:var(--mid); background:#fdf3e0; }
+  .verdict.sel-valid { border-color:var(--ok); background:#e9f7ee; }
+  .chip { padding:6px 10px; border-radius:999px; font-size:13px; }
+  .chip.sel { border-color:var(--acc); background:#e8effc; font-weight:600; }
+  #savebar { display:flex; gap:10px; align-items:center; }
+  #save { background:var(--acc); color:#fff; border-color:var(--acc); font-weight:600; padding:10px 22px; }
+  textarea, select, input[type=text], input[type=password] { font:inherit; padding:8px; border:1px solid var(--line); border-radius:8px; width:100%; }
+  #login { max-width:420px; margin:60px auto; }
+  .hint { color:var(--mut); font-size:12px; }
+  .msg { color:var(--bad); font-weight:600; }
+  a { color:var(--acc); }
+  .kbd { font:12px ui-monospace, monospace; background:#eef1f5; border:1px solid var(--line); border-radius:4px; padding:0 5px; }
+</style>
+</head>
+<body>
+<header>
+  <h1>Explanation review</h1>
+  <span id="who" class="hint"></span>
+  <span id="progress"></span>
+</header>
+<main>
+  <div id="login" class="card" style="display:none">
+    <h2>Welcome</h2>
+    <p>Enter a display name (it identifies your reviews; use the same name to resume).</p>
+    <p><input id="name" type="text" placeholder="your name" autocomplete="username"></p>
+    <p id="tokrow" style="display:none"><input id="token" type="password" placeholder="invite token"></p>
+    <p><button id="start">Start reviewing</button> <span id="loginmsg" class="msg"></span></p>
+    <p class="hint">You will judge the QUALITY of a student's written explanation against the
+       question, rubric and official solution — independently. Grade the meaning, not the wording:
+       a concise, informal or imperfectly-worded answer that states the central correct idea is
+       <b>valid</b>; meaningful correct direction that leaves the central idea incomplete is
+       <b>partially valid</b>; wrong, contradictory or irrelevant content is <b>invalid</b>.
+       Never invent reasoning the student did not write. Ignore which multiple-choice option was
+       selected — that is scored separately.</p>
+  </div>
+
+  <div id="review" style="display:none">
+    <div class="card"><h2>Question <span id="qmeta" class="hint"></span></h2>
+      <div id="question" class="he"></div></div>
+    <div class="card"><h2>Rubric</h2><div id="rubric" class="he"></div></div>
+    <div class="card"><h2>Official solution (one correct way to express it — not a template)</h2>
+      <div id="solution" class="he"></div></div>
+    <div class="card"><h2>Student's explanation (frozen transcription)</h2>
+      <div id="transcript" class="he transcript"></div></div>
+    <div class="card crops"><h2>Answer as written (crops)</h2><div id="crops"></div>
+      <div id="pagelink"></div></div>
+
+    <div class="card">
+      <h2>Your decision</h2>
+      <div class="row" style="margin-bottom:8px">
+        <button class="verdict" data-v="valid">valid <span class="kbd">1</span></button>
+        <button class="verdict" data-v="partially_valid">partially valid <span class="kbd">2</span></button>
+        <button class="verdict" data-v="invalid">invalid <span class="kbd">3</span></button>
+      </div>
+      <div class="row" style="margin-bottom:8px">
+        <span class="hint">confidence:</span>
+        <button class="chip conf" data-c="high">high <span class="kbd">h</span></button>
+        <button class="chip conf" data-c="medium">medium <span class="kbd">m</span></button>
+        <button class="chip conf" data-c="low">low <span class="kbd">l</span></button>
+      </div>
+      <div class="row" style="margin-bottom:8px">
+        <span class="hint">issue:</span>
+        <select id="issue">
+          <option value="none">none</option>
+          <option value="transcription_evidence">transcription / evidence issue</option>
+          <option value="rubric_official_solution">rubric / official-solution issue</option>
+          <option value="genuinely_ambiguous">genuinely ambiguous</option>
+          <option value="needs_source_page">needs source-page inspection</option>
+        </select>
+      </div>
+      <p><textarea id="note" rows="2" placeholder="optional note"></textarea></p>
+      <div id="savebar">
+        <button id="save" disabled>Save &amp; next <span class="kbd">Enter</span></button>
+        <button id="skip">Skip <span class="kbd">s</span></button>
+        <button id="flagbtn">Can't decide — flag</button>
+        <span id="msg" class="msg"></span>
+      </div>
+    </div>
+  </div>
+
+  <div id="done" class="card" style="display:none">
+    <h2>All done</h2>
+    <p>No more cases need your review right now. Thank you! You can close this tab —
+       your decisions are saved.</p>
+  </div>
+</main>
+<script>
+"use strict";
+let item = null, verdict = null, conf = null, saving = false;
+
+async function api(path, body) {
+  const r = await fetch(path, body === undefined ? {} :
+    {method:"POST", headers:{"Content-Type":"application/json"}, body: JSON.stringify(body)});
+  const j = await r.json().catch(() => ({}));
+  return {status: r.status, ...j};
+}
+function el(id){ return document.getElementById(id); }
+function show(id){ for (const s of ["login","review","done"]) el(s).style.display = s===id?"":"none"; }
+function setProgress(p){
+  if (!p) return;
+  el("progress").textContent = `saved ${p.my_saved ?? 0} · skipped ${p.my_skipped ?? 0}`;
+}
+
+function paintDecision(){
+  document.querySelectorAll(".verdict").forEach(b => {
+    b.classList.remove("sel-invalid","sel-partial","sel-valid");
+    if (b.dataset.v === verdict)
+      b.classList.add(verdict==="invalid"?"sel-invalid":verdict==="valid"?"sel-valid":"sel-partial");
+  });
+  document.querySelectorAll(".conf").forEach(b => b.classList.toggle("sel", b.dataset.c === conf));
+  el("save").disabled = !(verdict && conf) || saving;
+}
+
+function renderItem(it){
+  item = it;
+  verdict = it.my_review?.verdict || null;
+  conf = it.my_review?.confidence || null;
+  el("issue").value = it.my_review?.issue || "none";
+  el("note").value = it.my_review?.text || "";
+  el("qmeta").textContent = it.provenance?.case_id ? `(${it.provenance.case_id})` : "";
+  el("question").textContent = it.question_text || "";
+  el("rubric").textContent = (it.rubric || []).join("\n");
+  const sol = it.official_solution || {};
+  el("solution").textContent = Object.values(sol).join("\n") || "(none)";
+  el("transcript").textContent = it.transcription || "(empty)";
+  const crops = el("crops"); crops.innerHTML = "";
+  for (const url of it.images || []) {
+    const img = document.createElement("img"); img.src = url; crops.appendChild(img);
+  }
+  el("pagelink").innerHTML = it.provenance?.page_url
+    ? `<a href="${it.provenance.page_url}" target="_blank">open full source page (instructor ink masked)</a>`
+    : `<span class="hint">no source page available for this case</span>`;
+  el("msg").textContent = "";
+  paintDecision();
+  show("review");
+  window.scrollTo(0, 0);
+}
+
+async function next(includeSkipped){
+  const r = await api("/api/next", {include_skipped: !!includeSkipped});
+  setProgress(r.progress);
+  if (r.done) { show("done"); return; }
+  renderItem(r.item);
+}
+
+async function save(){
+  if (!(verdict && conf) || saving) return;
+  saving = true; paintDecision();
+  const r = await api(`/api/items/${item.item_id}/decision`, {
+    verdict, confidence: conf, issue: el("issue").value, note: el("note").value,
+    expected_revision: item.label_revision || 0, evidence_sha256: item.evidence_sha256});
+  saving = false;
+  if (r.status === 409) { el("msg").textContent = "This case changed elsewhere — reloading it.";
+    const again = await api(`/api/items/${item.item_id}`); renderItem(again.item); return; }
+  if (r.status >= 400) { el("msg").textContent = r.error || "save failed"; paintDecision(); return; }
+  setProgress(r.progress);
+  next();
+}
+
+async function skip(){
+  const r = await api(`/api/items/${item.item_id}/skip`, {expected_revision: item.label_revision || 0});
+  if (r.status < 400) next(); else el("msg").textContent = r.error || "skip failed";
+}
+async function flagIt(){
+  const reason = prompt("Why can't this be decided? (goes to the adjudicator)") || "";
+  if (!reason) return;
+  const r = await api(`/api/items/${item.item_id}/flag`, {reason, expected_revision: item.label_revision || 0});
+  if (r.status < 400) next(); else el("msg").textContent = r.error || "flag failed";
+}
+
+document.querySelectorAll(".verdict").forEach(b => b.onclick = () => { verdict = b.dataset.v; paintDecision(); });
+document.querySelectorAll(".conf").forEach(b => b.onclick = () => { conf = b.dataset.c; paintDecision(); });
+el("save").onclick = save;
+el("skip").onclick = skip;
+el("flagbtn").onclick = flagIt;
+document.addEventListener("keydown", e => {
+  if (el("review").style.display === "none") return;
+  if (e.target.tagName === "TEXTAREA" || e.target.tagName === "INPUT" || e.target.tagName === "SELECT") return;
+  const k = e.key.toLowerCase();
+  if (k === "1") { verdict = "valid"; paintDecision(); }
+  else if (k === "2") { verdict = "partially_valid"; paintDecision(); }
+  else if (k === "3") { verdict = "invalid"; paintDecision(); }
+  else if (k === "h") { conf = "high"; paintDecision(); }
+  else if (k === "m") { conf = "medium"; paintDecision(); }
+  else if (k === "l") { conf = "low"; paintDecision(); }
+  else if (k === "s") skip();
+  else if (k === "enter") save();
+});
+
+el("start").onclick = async () => {
+  const r = await api("/api/session", {name: el("name").value, token: el("token").value});
+  if (r.status >= 400) { el("loginmsg").textContent = r.error || "cannot start"; return; }
+  el("who").textContent = r.reviewer;
+  next();
+};
+
+(async function boot(){
+  const me = await api("/api/me");
+  if (me.invite_token_required) el("tokrow").style.display = "";
+  if (me.reviewer) { el("who").textContent = me.reviewer; setProgress(me.progress); next(); }
+  else show("login");
+})();
+</script>
+</body>
+</html>
