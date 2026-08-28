@@ -1,0 +1,19 @@
+﻿{
+    "recorded_at":  "2026-08-28 04:13:57",
+    "gpus":  [
+                 {
+                     "vram_bytes":  4293918720,
+                     "name":  "NVIDIA RTX 2000 Ada Generation"
+                 },
+                 {
+                     "vram_bytes":  536870912,
+                     "name":  "AMD Radeon(TM) Graphics"
+                 }
+             ],
+    "cpu":  "AMD Ryzen 5 5600G with Radeon Graphics         ",
+    "ram_free_gb":  43,
+    "ram_total_gb":  63.4,
+    "os":  "Microsoft Windows 11 Pro",
+    "git_commit":  "ac3227a44c9f3bcaefa6463f7544c1ff2a322efb",
+    "hostname_hash":  "A885C0F2AB4B2042"
+}

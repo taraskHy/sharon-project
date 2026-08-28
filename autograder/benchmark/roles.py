@@ -87,8 +87,9 @@ def _verdict_metrics(judged: list[dict], classes: tuple[str, ...]) -> dict[str, 
 
     per_class: dict[str, Any] = {}
     f1s = []
-    for c in classes:
-        tp = confusion.get(c, {}).get(c, 0)
+    recalls_full: list[float] = []           # FULL precision — rounding before
+    for c in classes:                        # averaging overstated balanced
+        tp = confusion.get(c, {}).get(c, 0)  # accuracy by 1e-4 (review 2026-08-28)
         support = sum(confusion.get(c, {}).values())
         predicted = sum(confusion.get(t, {}).get(c, 0) for t in confusion)
         if support == 0 and predicted == 0:
@@ -107,11 +108,11 @@ def _verdict_metrics(judged: list[dict], classes: tuple[str, ...]) -> dict[str, 
                         "f1": round(f1, 4) if f1 is not None else None}
         if support:
             f1s.append(f1 or 0.0)
+            recalls_full.append(recall or 0.0)
     return {
         "verdict_exact_pct": _pct(correct, n),
-        "verdict_balanced_accuracy": round(statistics.mean(
-            [(per_class[c]["recall"] or 0.0) for c in classes
-             if per_class[c]["support"]]), 4) if any(per_class[c]["support"] for c in classes) else None,
+        "verdict_balanced_accuracy": (round(statistics.mean(recalls_full), 4)
+                                      if recalls_full else None),
         "harmful_verdict_upgrades": sum(1 for r in judged if r.get("harmful_verdict_upgrade")),
         "harmful_verdict_downgrades": sum(1 for r in judged if r.get("harmful_verdict_downgrade")),
         "verdict_confusion": confusion,

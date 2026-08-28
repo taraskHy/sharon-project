@@ -1,0 +1,74 @@
+{
+ "cases": 12,
+ "labels_available": false,
+ "labeled_excluded_transcription_incomplete": 0,
+ "auto_rate_pct": 100.0,
+ "review_rate_pct": 0.0,
+ "schema_failures": 0,
+ "evidence_validation_failures": 0,
+ "ungrounded_invalid_verdicts": 0,
+ "validation_failures": 0,
+ "usage": {
+  "calls_live": 12,
+  "cache_hits": 0,
+  "latency_mean_s": 4.378,
+  "latency_median_s": 2.758,
+  "input_tokens": 20575,
+  "output_tokens": 644,
+  "reasoning_tokens": 0,
+  "total_tokens": 21219,
+  "reported_cost": 0.0
+ },
+ "verdict_cases": 12,
+ "verdict_cases_excluded_no_ground_truth": 0,
+ "verdict_exact_pct": 25.0,
+ "verdict_balanced_accuracy": 0.2715,
+ "harmful_verdict_upgrades": 0,
+ "harmful_verdict_downgrades": 9,
+ "verdict_confusion": {
+  "invalid": {
+   "invalid": 0,
+   "partially_valid": 0,
+   "valid": 0
+  },
+  "partially_valid": {
+   "invalid": 3,
+   "partially_valid": 2,
+   "valid": 0
+  },
+  "valid": {
+   "invalid": 2,
+   "partially_valid": 4,
+   "valid": 1
+  }
+ },
+ "verdict_per_class": {
+  "invalid": {
+   "support": 0,
+   "predicted": 5,
+   "precision": 0.0,
+   "recall": null,
+   "f1": 0.0
+  },
+  "partially_valid": {
+   "support": 5,
+   "predicted": 6,
+   "precision": 0.3333,
+   "recall": 0.4,
+   "f1": 0.3636
+  },
+  "valid": {
+   "support": 7,
+   "predicted": 1,
+   "precision": 1.0,
+   "recall": 0.1429,
+   "f1": 0.25
+  }
+ },
+ "verdict_macro_f1": 0.3068,
+ "verdict_classes_with_support": 2,
+ "final_score_metrics": "unavailable: derived from selection correctness, which is not known for these cases",
+ "accuracy_metrics": "unavailable: no per-item owner labels in this dataset — only decision/validation metrics are reported (NOT accuracy)",
+ "cases_selected": 12,
+ "cases_with_result": 12
+}

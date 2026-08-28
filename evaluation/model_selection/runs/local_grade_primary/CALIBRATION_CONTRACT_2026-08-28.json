@@ -1,0 +1,1079 @@
+{
+ "artifact": "calibration_output_contract_report",
+ "created_at": "2026-08-28",
+ "experiment_sha256": "e86845b9c85fbd4dcd3daa16b34871d5f3a7602007527b5222f5550ccfe0fecf",
+ "ground_truth_statement": "actual instructor-assigned grades (final_labels.json, ground_truth_source=original_instructor_grade) + actual selection correctness + frozen production scoring policy. A/B/C/D human-audit decisions are diagnostic flags only and NEVER targets; no previous model output (Qwen/Gemini/Sonnet/Luna), model vote, or subjective ranking defines a target; no target reaches a model request",
+ "targets_reverified_from_instructor_grades": true,
+ "strict_rule": "strict model-quality denominators use calibration_strict_case_ids only; excluded cases still run for diagnostic completeness",
+ "baselines": {
+  "population": {
+   "strict_cases": 11,
+   "valid": 7,
+   "partially_valid": 4,
+   "invalid": 0
+  },
+  "always_valid": {
+   "accuracy_pct": 63.64,
+   "balanced_accuracy": 0.5,
+   "macro_f1_supported": 0.3889
+  },
+  "always_partially_valid": {
+   "accuracy_pct": 36.36,
+   "balanced_accuracy": 0.5,
+   "macro_f1_supported": 0.2667
+  },
+  "majority_class_accuracy_pct": 63.64,
+  "note": "invalid-class performance = NOT MEASURED (no authoritative invalid example exists)"
+ },
+ "candidates": {
+  "qwen3-vl:8b-instruct": {
+   "run_id": "calibration__calibration_verdict_v4__all__qwen3-vl-8b-instruct__0a865643c3",
+   "run_dir": "evaluation\\model_selection\\runs\\local_grade_primary\\grade_primary\\calibration__calibration_verdict_v4__all__qwen3-vl-8b-instruct__0a865643c3",
+   "rows": [
+    {
+     "case_id": "e004_q1_r1",
+     "actual_instructor_score": 4.0,
+     "instructor_derived_verdict": "valid",
+     "model_raw_score": 0.0,
+     "model_verdict": "invalid",
+     "predicted_final_score": 0.0,
+     "final_exact": false,
+     "rubric_items": [
+      {
+       "id": "R1",
+       "met": false,
+       "student_evidence": "הWAVEELETS מטושטשת בכל החלקים",
+       "verifies": true
+      }
+     ],
+     "top_evidence_null": true,
+     "uncertain": false,
+     "decision": "AUTO",
+     "validation_ok": true,
+     "validation_problems": [],
+     "evidence_failure": false,
+     "ungrounded_invalid": false,
+     "schema_failure": false,
+     "latency_s": 11.578,
+     "cache_hit": false,
+     "input_tokens": 1754,
+     "output_tokens": 66,
+     "strict_included": true,
+     "audit_flag": null,
+     "verdict_exact": false
+    },
+    {
+     "case_id": "e004_q1_r2",
+     "actual_instructor_score": 4.0,
+     "instructor_derived_verdict": "valid",
+     "model_raw_score": 4.0,
+     "model_verdict": "valid",
+     "predicted_final_score": 4.0,
+     "final_exact": true,
+     "rubric_items": [
+      {
+       "id": "R1",
+       "met": true,
+       "student_evidence": "התדר הנמוך נעלם בגלל HighpassFilter",
+       "verifies": true
+      }
+     ],
+     "top_evidence_null": true,
+     "uncertain": false,
+     "decision": "AUTO",
+     "validation_ok": true,
+     "validation_problems": [],
+     "evidence_failure": false,
+     "ungrounded_invalid": false,
+     "schema_failure": false,
+     "latency_s": 1.907,
+     "cache_hit": false,
+     "input_tokens": 1662,
+     "output_tokens": 57,
+     "strict_included": true,
+     "audit_flag": null,
+     "verdict_exact": true
+    },
+    {
+     "case_id": "e004_q1_r3",
+     "actual_instructor_score": 2.0,
+     "instructor_derived_verdict": "partially_valid",
+     "model_raw_score": 2.0,
+     "model_verdict": "partially_valid",
+     "predicted_final_score": 2.0,
+     "final_exact": true,
+     "rubric_items": [
+      {
+       "id": "R1",
+       "met": true,
+       "student_evidence": "התמונה מחודדת יותר",
+       "verifies": true
+      }
+     ],
+     "top_evidence_null": true,
+     "uncertain": false,
+     "decision": "AUTO",
+     "validation_ok": true,
+     "validation_problems": [],
+     "evidence_failure": false,
+     "ungrounded_invalid": false,
+     "schema_failure": false,
+     "latency_s": 1.766,
+     "cache_hit": false,
+     "input_tokens": 1738,
+     "output_tokens": 51,
+     "strict_included": true,
+     "audit_flag": null,
+     "verdict_exact": true
+    },
+    {
+     "case_id": "e004_q1_r4",
+     "actual_instructor_score": 4.0,
+     "instructor_derived_verdict": "valid",
+     "model_raw_score": 4.0,
+     "model_verdict": "valid",
+     "predicted_final_score": 4.0,
+     "final_exact": true,
+     "rubric_items": [
+      {
+       "id": "R1",
+       "met": true,
+       "student_evidence": "התדר הגדול(High) נעלם בגלל ה Low Pass Filter",
+       "verifies": true
+      }
+     ],
+     "top_evidence_null": true,
+     "uncertain": false,
+     "decision": "AUTO",
+     "validation_ok": true,
+     "validation_problems": [],
+     "evidence_failure": false,
+     "ungrounded_invalid": false,
+     "schema_failure": false,
+     "latency_s": 1.968,
+     "cache_hit": false,
+     "input_tokens": 1666,
+     "output_tokens": 59,
+     "strict_included": true,
+     "audit_flag": null,
+     "verdict_exact": true
+    },
+    {
+     "case_id": "e004_q1_r5",
+     "actual_instructor_score": 2.0,
+     "instructor_derived_verdict": "partially_valid",
+     "model_raw_score": 2.0,
+     "model_verdict": "partially_valid",
+     "predicted_final_score": 2.0,
+     "final_exact": true,
+     "rubric_items": [
+      {
+       "id": "R1",
+       "met": true,
+       "student_evidence": "הWAVELETS מטושטשת אופקית(מקבייל ציר x)",
+       "verifies": true
+      }
+     ],
+     "top_evidence_null": true,
+     "uncertain": false,
+     "decision": "AUTO",
+     "validation_ok": true,
+     "validation_problems": [],
+     "evidence_failure": false,
+     "ungrounded_invalid": false,
+     "schema_failure": false,
+     "latency_s": 2.25,
+     "cache_hit": false,
+     "input_tokens": 1729,
+     "output_tokens": 66,
+     "strict_included": true,
+     "audit_flag": null,
+     "verdict_exact": true
+    },
+    {
+     "case_id": "e004_q1_r6",
+     "actual_instructor_score": 2.0,
+     "instructor_derived_verdict": "partially_valid",
+     "model_raw_score": 0.0,
+     "model_verdict": "invalid",
+     "predicted_final_score": 0.0,
+     "final_exact": false,
+     "rubric_items": [
+      {
+       "id": "R1",
+       "met": false,
+       "student_evidence": "הWAVELETS מטושטשת אנכית",
+       "verifies": true
+      }
+     ],
+     "top_evidence_null": true,
+     "uncertain": false,
+     "decision": "AUTO",
+     "validation_ok": true,
+     "validation_problems": [],
+     "evidence_failure": false,
+     "ungrounded_invalid": false,
+     "schema_failure": false,
+     "latency_s": 2.203,
+     "cache_hit": false,
+     "input_tokens": 1727,
+     "output_tokens": 65,
+     "strict_included": true,
+     "audit_flag": null,
+     "verdict_exact": false
+    },
+    {
+     "case_id": "e004_q1_r8",
+     "actual_instructor_score": 2.0,
+     "instructor_derived_verdict": "partially_valid",
+     "model_raw_score": 4.0,
+     "model_verdict": "valid",
+     "predicted_final_score": 4.0,
+     "final_exact": false,
+     "rubric_items": [
+      {
+       "id": "R1",
+       "met": true,
+       "student_evidence": "ההבדל בין כהה לבין לבן גדל",
+       "verifies": true
+      }
+     ],
+     "top_evidence_null": true,
+     "uncertain": false,
+     "decision": "AUTO",
+     "validation_ok": true,
+     "validation_problems": [],
+     "evidence_failure": false,
+     "ungrounded_invalid": false,
+     "schema_failure": false,
+     "latency_s": 2.016,
+     "cache_hit": false,
+     "input_tokens": 1709,
+     "output_tokens": 58,
+     "strict_included": true,
+     "audit_flag": null,
+     "verdict_exact": false
+    },
+    {
+     "case_id": "e004_q2_r1",
+     "actual_instructor_score": 4.0,
+     "instructor_derived_verdict": "valid",
+     "model_raw_score": 4.0,
+     "model_verdict": "valid",
+     "predicted_final_score": 4.0,
+     "final_exact": true,
+     "rubric_items": [
+      {
+       "id": "R1",
+       "met": true,
+       "student_evidence": "בגלל ש [לא קריא] canny נקבל 0 או 255 וזה בלי טשטוש לכן נקבל יותר ב255",
+       "verifies": true
+      }
+     ],
+     "top_evidence_null": true,
+     "uncertain": false,
+     "decision": "AUTO",
+     "validation_ok": true,
+     "validation_problems": [],
+     "evidence_failure": false,
+     "ungrounded_invalid": false,
+     "schema_failure": false,
+     "latency_s": 2.64,
+     "cache_hit": false,
+     "input_tokens": 1714,
+     "output_tokens": 78,
+     "strict_included": true,
+     "audit_flag": null,
+     "verdict_exact": true
+    },
+    {
+     "case_id": "e004_q2_r2",
+     "actual_instructor_score": 4.0,
+     "instructor_derived_verdict": "valid",
+     "model_raw_score": 4.0,
+     "model_verdict": "valid",
+     "predicted_final_score": 4.0,
+     "final_exact": true,
+     "rubric_items": [
+      {
+       "id": "R1",
+       "met": true,
+       "student_evidence": "זה canny. אבל עם טשטוש ולכן נקבל פחות ב-255 ולכן c",
+       "verifies": true
+      }
+     ],
+     "top_evidence_null": true,
+     "uncertain": false,
+     "decision": "AUTO",
+     "validation_ok": true,
+     "validation_problems": [],
+     "evidence_failure": false,
+     "ungrounded_invalid": false,
+     "schema_failure": false,
+     "latency_s": 2.219,
+     "cache_hit": false,
+     "input_tokens": 1703,
+     "output_tokens": 65,
+     "strict_included": true,
+     "audit_flag": null,
+     "verdict_exact": true
+    },
+    {
+     "case_id": "e004_q2_r3",
+     "actual_instructor_score": 4.0,
+     "instructor_derived_verdict": "valid",
+     "model_raw_score": 4.0,
+     "model_verdict": "valid",
+     "predicted_final_score": 4.0,
+     "final_exact": true,
+     "rubric_items": [
+      {
+       "id": "R1",
+       "met": true,
+       "student_evidence": "זה בגלל שיווי היסטוגרמה",
+       "verifies": true
+      }
+     ],
+     "top_evidence_null": true,
+     "uncertain": false,
+     "decision": "AUTO",
+     "validation_ok": true,
+     "validation_problems": [],
+     "evidence_failure": false,
+     "ungrounded_invalid": false,
+     "schema_failure": false,
+     "latency_s": 1.875,
+     "cache_hit": false,
+     "input_tokens": 1732,
+     "output_tokens": 54,
+     "strict_included": true,
+     "audit_flag": null,
+     "verdict_exact": true
+    },
+    {
+     "case_id": "e004_q2_r6",
+     "actual_instructor_score": 4.0,
+     "instructor_derived_verdict": "valid",
+     "model_raw_score": 0.0,
+     "model_verdict": "invalid",
+     "predicted_final_score": 0.0,
+     "final_exact": false,
+     "rubric_items": [
+      {
+       "id": "R1",
+       "met": false,
+       "student_evidence": "הכפלת תמונה ב2 זה לקחת ההסטוגרמה ולהגדיל טווח שלה בציר x (עשינו את זה  [לא קריא] בהרצאה למדוד או לא)",
+       "verifies": true
+      }
+     ],
+     "top_evidence_null": true,
+     "uncertain": false,
+     "decision": "AUTO",
+     "validation_ok": true,
+     "validation_problems": [],
+     "evidence_failure": false,
+     "ungrounded_invalid": false,
+     "schema_failure": false,
+     "latency_s": 3.125,
+     "cache_hit": false,
+     "input_tokens": 1727,
+     "output_tokens": 94,
+     "strict_included": true,
+     "audit_flag": null,
+     "verdict_exact": false
+    },
+    {
+     "case_id": "e004_q2_r8",
+     "actual_instructor_score": 2.0,
+     "instructor_derived_verdict": "partially_valid",
+     "model_raw_score": 0.0,
+     "model_verdict": "invalid",
+     "predicted_final_score": 0.0,
+     "final_exact": false,
+     "rubric_items": [
+      {
+       "id": "R1",
+       "met": false,
+       "student_evidence": "המסיכה נותנת לנו Echo ואז",
+       "verifies": true
+      }
+     ],
+     "top_evidence_null": true,
+     "uncertain": false,
+     "decision": "AUTO",
+     "validation_ok": true,
+     "validation_problems": [],
+     "evidence_failure": false,
+     "ungrounded_invalid": false,
+     "schema_failure": false,
+     "latency_s": 2.047,
+     "cache_hit": false,
+     "input_tokens": 1714,
+     "output_tokens": 60,
+     "strict_included": false,
+     "audit_flag": "C: evidence/transcription issue (diagnostic only)",
+     "verdict_exact": false
+    }
+   ],
+   "layer_a_strict": {
+    "strict_cases": 11,
+    "scored": 11,
+    "verdict_exact_pct": 63.64,
+    "verdict_balanced_accuracy": 0.6071,
+    "harmful_verdict_upgrades": 1,
+    "harmful_verdict_downgrades": 3,
+    "verdict_confusion": {
+     "invalid": {
+      "invalid": 0,
+      "partially_valid": 0,
+      "valid": 0
+     },
+     "partially_valid": {
+      "invalid": 1,
+      "partially_valid": 2,
+      "valid": 1
+     },
+     "valid": {
+      "invalid": 2,
+      "partially_valid": 0,
+      "valid": 5
+     }
+    },
+    "verdict_per_class": {
+     "invalid": {
+      "support": 0,
+      "predicted": 3,
+      "precision": 0.0,
+      "recall": null,
+      "f1": 0.0
+     },
+     "partially_valid": {
+      "support": 4,
+      "predicted": 2,
+      "precision": 1.0,
+      "recall": 0.5,
+      "f1": 0.6667
+     },
+     "valid": {
+      "support": 7,
+      "predicted": 6,
+      "precision": 0.8333,
+      "recall": 0.7143,
+      "f1": 0.7692
+     }
+    },
+    "verdict_macro_f1": 0.7179,
+    "verdict_classes_with_support": 2,
+    "uncertainty_rate_pct": 0.0,
+    "auto_rate_pct": 100.0,
+    "review_rate_pct": 0.0,
+    "evidence_failure_rate_pct": 0.0,
+    "evidence_engagement_rate_pct": 100.0,
+    "schema_failure_rate_pct": 0.0
+   },
+   "layer_b_strict": {
+    "strict_cases": 11,
+    "final_exact": 7,
+    "final_exact_pct": 63.64,
+    "final_score_mae": 1.0909,
+    "harmful_overgrades": 1,
+    "harmful_undergrades": 3,
+    "confusion_by_actual_score": {
+     "4": {
+      "0": 2,
+      "4": 5
+     },
+     "2": {
+      "2": 2,
+      "0": 1,
+      "4": 1
+     }
+    },
+    "note": "population contains no actual-0 case: the two zero-score CALIBRATION cases have unresolved selection correctness and are outside the frozen derivable subset"
+   },
+   "usage": {
+    "latency_mean_s": 2.97,
+    "latency_median_s": 2.12,
+    "latency_max_s": 11.58,
+    "live_calls": 12,
+    "cache_hits": 0,
+    "input_tokens": 20575,
+    "output_tokens": 773,
+    "cloud_cost_usd": 0.0
+   },
+   "diagnostic_excluded": [
+    {
+     "case_id": "e004_q2_r8",
+     "actual_instructor_score": 2.0,
+     "instructor_derived_verdict": "partially_valid",
+     "model_raw_score": 0.0,
+     "model_verdict": "invalid",
+     "predicted_final_score": 0.0,
+     "final_exact": false,
+     "rubric_items": [
+      {
+       "id": "R1",
+       "met": false,
+       "student_evidence": "המסיכה נותנת לנו Echo ואז",
+       "verifies": true
+      }
+     ],
+     "top_evidence_null": true,
+     "uncertain": false,
+     "decision": "AUTO",
+     "validation_ok": true,
+     "validation_problems": [],
+     "evidence_failure": false,
+     "ungrounded_invalid": false,
+     "schema_failure": false,
+     "latency_s": 2.047,
+     "cache_hit": false,
+     "input_tokens": 1714,
+     "output_tokens": 60,
+     "strict_included": false,
+     "audit_flag": "C: evidence/transcription issue (diagnostic only)",
+     "verdict_exact": false
+    }
+   ]
+  },
+  "qwen3-vl:30b-a3b-instruct": {
+   "run_id": "calibration__calibration_verdict_v4__all__qwen3-vl-30b-a3b-instruct__5906717e2c",
+   "run_dir": "evaluation\\model_selection\\runs\\local_grade_primary\\grade_primary\\calibration__calibration_verdict_v4__all__qwen3-vl-30b-a3b-instruct__5906717e2c",
+   "rows": [
+    {
+     "case_id": "e004_q1_r1",
+     "actual_instructor_score": 4.0,
+     "instructor_derived_verdict": "valid",
+     "model_raw_score": 0.0,
+     "model_verdict": "invalid",
+     "predicted_final_score": 0.0,
+     "final_exact": false,
+     "rubric_items": [
+      {
+       "id": "R1",
+       "met": false,
+       "student_evidence": "הWAVEELETS מטושטשת בכל החלקים",
+       "verifies": true
+      }
+     ],
+     "top_evidence_null": true,
+     "uncertain": false,
+     "decision": "AUTO",
+     "validation_ok": true,
+     "validation_problems": [],
+     "evidence_failure": false,
+     "ungrounded_invalid": false,
+     "schema_failure": false,
+     "latency_s": 21.375,
+     "cache_hit": false,
+     "input_tokens": 1754,
+     "output_tokens": 46,
+     "strict_included": true,
+     "audit_flag": null,
+     "verdict_exact": false
+    },
+    {
+     "case_id": "e004_q1_r2",
+     "actual_instructor_score": 4.0,
+     "instructor_derived_verdict": "valid",
+     "model_raw_score": 2.0,
+     "model_verdict": "partially_valid",
+     "predicted_final_score": 2.0,
+     "final_exact": false,
+     "rubric_items": [
+      {
+       "id": "R1",
+       "met": true,
+       "student_evidence": "התדר הנמוך נעלם בגלל HighpassFilter",
+       "verifies": true
+      }
+     ],
+     "top_evidence_null": true,
+     "uncertain": false,
+     "decision": "AUTO",
+     "validation_ok": true,
+     "validation_problems": [],
+     "evidence_failure": false,
+     "ungrounded_invalid": false,
+     "schema_failure": false,
+     "latency_s": 3.109,
+     "cache_hit": false,
+     "input_tokens": 1662,
+     "output_tokens": 64,
+     "strict_included": true,
+     "audit_flag": null,
+     "verdict_exact": false
+    },
+    {
+     "case_id": "e004_q1_r3",
+     "actual_instructor_score": 2.0,
+     "instructor_derived_verdict": "partially_valid",
+     "model_raw_score": 0.0,
+     "model_verdict": "invalid",
+     "predicted_final_score": 0.0,
+     "final_exact": false,
+     "rubric_items": [
+      {
+       "id": "R1",
+       "met": false,
+       "student_evidence": "התמונה מחודדת יותר ושמרה על הצבעים",
+       "verifies": true
+      }
+     ],
+     "top_evidence_null": true,
+     "uncertain": false,
+     "decision": "AUTO",
+     "validation_ok": true,
+     "validation_problems": [],
+     "evidence_failure": false,
+     "ungrounded_invalid": false,
+     "schema_failure": false,
+     "latency_s": 2.688,
+     "cache_hit": false,
+     "input_tokens": 1738,
+     "output_tokens": 45,
+     "strict_included": true,
+     "audit_flag": null,
+     "verdict_exact": false
+    },
+    {
+     "case_id": "e004_q1_r4",
+     "actual_instructor_score": 4.0,
+     "instructor_derived_verdict": "valid",
+     "model_raw_score": 4.0,
+     "model_verdict": "valid",
+     "predicted_final_score": 4.0,
+     "final_exact": true,
+     "rubric_items": [
+      {
+       "id": "R1",
+       "met": true,
+       "student_evidence": "התדר הגדול(High) נעלם בגלל ה Low Pass Filter",
+       "verifies": true
+      }
+     ],
+     "top_evidence_null": true,
+     "uncertain": false,
+     "decision": "AUTO",
+     "validation_ok": true,
+     "validation_problems": [],
+     "evidence_failure": false,
+     "ungrounded_invalid": false,
+     "schema_failure": false,
+     "latency_s": 2.563,
+     "cache_hit": false,
+     "input_tokens": 1666,
+     "output_tokens": 46,
+     "strict_included": true,
+     "audit_flag": null,
+     "verdict_exact": true
+    },
+    {
+     "case_id": "e004_q1_r5",
+     "actual_instructor_score": 2.0,
+     "instructor_derived_verdict": "partially_valid",
+     "model_raw_score": 0.0,
+     "model_verdict": "invalid",
+     "predicted_final_score": 0.0,
+     "final_exact": false,
+     "rubric_items": [
+      {
+       "id": "R1",
+       "met": false,
+       "student_evidence": "הWAVELETS מטושטשת אופקית(מקבייל ציר x)",
+       "verifies": true
+      }
+     ],
+     "top_evidence_null": true,
+     "uncertain": false,
+     "decision": "AUTO",
+     "validation_ok": true,
+     "validation_problems": [],
+     "evidence_failure": false,
+     "ungrounded_invalid": false,
+     "schema_failure": false,
+     "latency_s": 2.828,
+     "cache_hit": false,
+     "input_tokens": 1729,
+     "output_tokens": 54,
+     "strict_included": true,
+     "audit_flag": null,
+     "verdict_exact": false
+    },
+    {
+     "case_id": "e004_q1_r6",
+     "actual_instructor_score": 2.0,
+     "instructor_derived_verdict": "partially_valid",
+     "model_raw_score": 2.0,
+     "model_verdict": "partially_valid",
+     "predicted_final_score": 2.0,
+     "final_exact": true,
+     "rubric_items": [
+      {
+       "id": "R1",
+       "met": true,
+       "student_evidence": "הWAVELETS מטושטשת אנכית (מקביל ציר y)",
+       "verifies": true
+      }
+     ],
+     "top_evidence_null": true,
+     "uncertain": false,
+     "decision": "AUTO",
+     "validation_ok": true,
+     "validation_problems": [],
+     "evidence_failure": false,
+     "ungrounded_invalid": false,
+     "schema_failure": false,
+     "latency_s": 2.688,
+     "cache_hit": false,
+     "input_tokens": 1727,
+     "output_tokens": 52,
+     "strict_included": true,
+     "audit_flag": null,
+     "verdict_exact": true
+    },
+    {
+     "case_id": "e004_q1_r8",
+     "actual_instructor_score": 2.0,
+     "instructor_derived_verdict": "partially_valid",
+     "model_raw_score": 2.0,
+     "model_verdict": "partially_valid",
+     "predicted_final_score": 2.0,
+     "final_exact": true,
+     "rubric_items": [
+      {
+       "id": "R1",
+       "met": true,
+       "student_evidence": "ההבדל בין כהה לבין לבן גדל",
+       "verifies": true
+      }
+     ],
+     "top_evidence_null": true,
+     "uncertain": false,
+     "decision": "AUTO",
+     "validation_ok": true,
+     "validation_problems": [],
+     "evidence_failure": false,
+     "ungrounded_invalid": false,
+     "schema_failure": false,
+     "latency_s": 2.593,
+     "cache_hit": false,
+     "input_tokens": 1709,
+     "output_tokens": 46,
+     "strict_included": true,
+     "audit_flag": null,
+     "verdict_exact": true
+    },
+    {
+     "case_id": "e004_q2_r1",
+     "actual_instructor_score": 4.0,
+     "instructor_derived_verdict": "valid",
+     "model_raw_score": 2.0,
+     "model_verdict": "partially_valid",
+     "predicted_final_score": 2.0,
+     "final_exact": false,
+     "rubric_items": [
+      {
+       "id": "R1",
+       "met": true,
+       "student_evidence": "בגלל ש [לא קריא] canny נקבל 0 או 255 וזה בלי טשטוש לכן נקבל יותר ב255",
+       "verifies": true
+      }
+     ],
+     "top_evidence_null": true,
+     "uncertain": false,
+     "decision": "AUTO",
+     "validation_ok": true,
+     "validation_problems": [],
+     "evidence_failure": false,
+     "ungrounded_invalid": false,
+     "schema_failure": false,
+     "latency_s": 3.157,
+     "cache_hit": false,
+     "input_tokens": 1714,
+     "output_tokens": 65,
+     "strict_included": true,
+     "audit_flag": null,
+     "verdict_exact": false
+    },
+    {
+     "case_id": "e004_q2_r2",
+     "actual_instructor_score": 4.0,
+     "instructor_derived_verdict": "valid",
+     "model_raw_score": 2.0,
+     "model_verdict": "partially_valid",
+     "predicted_final_score": 2.0,
+     "final_exact": false,
+     "rubric_items": [
+      {
+       "id": "R1",
+       "met": true,
+       "student_evidence": "נקבל פחות ב-255",
+       "verifies": true
+      }
+     ],
+     "top_evidence_null": true,
+     "uncertain": false,
+     "decision": "AUTO",
+     "validation_ok": true,
+     "validation_problems": [],
+     "evidence_failure": false,
+     "ungrounded_invalid": false,
+     "schema_failure": false,
+     "latency_s": 2.391,
+     "cache_hit": false,
+     "input_tokens": 1703,
+     "output_tokens": 40,
+     "strict_included": true,
+     "audit_flag": null,
+     "verdict_exact": false
+    },
+    {
+     "case_id": "e004_q2_r3",
+     "actual_instructor_score": 4.0,
+     "instructor_derived_verdict": "valid",
+     "model_raw_score": 2.0,
+     "model_verdict": "partially_valid",
+     "predicted_final_score": 2.0,
+     "final_exact": false,
+     "rubric_items": [
+      {
+       "id": "R1",
+       "met": true,
+       "student_evidence": "יש רווחים בין עמודים וגם יש עכשיו עמודים ב0 וגם 255 וזה בגלל שיווי היסטוגרמה",
+       "verifies": true
+      }
+     ],
+     "top_evidence_null": true,
+     "uncertain": false,
+     "decision": "AUTO",
+     "validation_ok": true,
+     "validation_problems": [],
+     "evidence_failure": false,
+     "ungrounded_invalid": false,
+     "schema_failure": false,
+     "latency_s": 3.094,
+     "cache_hit": false,
+     "input_tokens": 1732,
+     "output_tokens": 62,
+     "strict_included": true,
+     "audit_flag": null,
+     "verdict_exact": false
+    },
+    {
+     "case_id": "e004_q2_r6",
+     "actual_instructor_score": 4.0,
+     "instructor_derived_verdict": "valid",
+     "model_raw_score": 0.0,
+     "model_verdict": "invalid",
+     "predicted_final_score": 0.0,
+     "final_exact": false,
+     "rubric_items": [
+      {
+       "id": "R1",
+       "met": false,
+       "student_evidence": "הכפלת תמונה ב2 זה לקחת ההסטוגרמה ולהגדיל טווח שלה בציר x (עשינו את זה  [לא קריא] בהרצאה למדוד או לא)",
+       "verifies": true
+      }
+     ],
+     "top_evidence_null": true,
+     "uncertain": false,
+     "decision": "AUTO",
+     "validation_ok": true,
+     "validation_problems": [],
+     "evidence_failure": false,
+     "ungrounded_invalid": false,
+     "schema_failure": false,
+     "latency_s": 3.421,
+     "cache_hit": false,
+     "input_tokens": 1727,
+     "output_tokens": 75,
+     "strict_included": true,
+     "audit_flag": null,
+     "verdict_exact": false
+    },
+    {
+     "case_id": "e004_q2_r8",
+     "actual_instructor_score": 2.0,
+     "instructor_derived_verdict": "partially_valid",
+     "model_raw_score": 0.0,
+     "model_verdict": "invalid",
+     "predicted_final_score": 0.0,
+     "final_exact": false,
+     "rubric_items": [
+      {
+       "id": "R1",
+       "met": false,
+       "student_evidence": "המסיכה נותנת לנו Echo ואז זה יגרור להיסטוגרמה הזו",
+       "verifies": true
+      }
+     ],
+     "top_evidence_null": true,
+     "uncertain": false,
+     "decision": "AUTO",
+     "validation_ok": true,
+     "validation_problems": [],
+     "evidence_failure": false,
+     "ungrounded_invalid": false,
+     "schema_failure": false,
+     "latency_s": 2.625,
+     "cache_hit": false,
+     "input_tokens": 1714,
+     "output_tokens": 49,
+     "strict_included": false,
+     "audit_flag": "C: evidence/transcription issue (diagnostic only)",
+     "verdict_exact": false
+    }
+   ],
+   "layer_a_strict": {
+    "strict_cases": 11,
+    "scored": 11,
+    "verdict_exact_pct": 27.27,
+    "verdict_balanced_accuracy": 0.3214,
+    "harmful_verdict_upgrades": 0,
+    "harmful_verdict_downgrades": 8,
+    "verdict_confusion": {
+     "invalid": {
+      "invalid": 0,
+      "partially_valid": 0,
+      "valid": 0
+     },
+     "partially_valid": {
+      "invalid": 2,
+      "partially_valid": 2,
+      "valid": 0
+     },
+     "valid": {
+      "invalid": 2,
+      "partially_valid": 4,
+      "valid": 1
+     }
+    },
+    "verdict_per_class": {
+     "invalid": {
+      "support": 0,
+      "predicted": 4,
+      "precision": 0.0,
+      "recall": null,
+      "f1": 0.0
+     },
+     "partially_valid": {
+      "support": 4,
+      "predicted": 6,
+      "precision": 0.3333,
+      "recall": 0.5,
+      "f1": 0.4
+     },
+     "valid": {
+      "support": 7,
+      "predicted": 1,
+      "precision": 1.0,
+      "recall": 0.1429,
+      "f1": 0.25
+     }
+    },
+    "verdict_macro_f1": 0.325,
+    "verdict_classes_with_support": 2,
+    "uncertainty_rate_pct": 0.0,
+    "auto_rate_pct": 100.0,
+    "review_rate_pct": 0.0,
+    "evidence_failure_rate_pct": 0.0,
+    "evidence_engagement_rate_pct": 100.0,
+    "schema_failure_rate_pct": 0.0
+   },
+   "layer_b_strict": {
+    "strict_cases": 11,
+    "final_exact": 3,
+    "final_exact_pct": 27.27,
+    "final_score_mae": 1.8182,
+    "harmful_overgrades": 0,
+    "harmful_undergrades": 8,
+    "confusion_by_actual_score": {
+     "4": {
+      "0": 2,
+      "2": 4,
+      "4": 1
+     },
+     "2": {
+      "0": 2,
+      "2": 2
+     }
+    },
+    "note": "population contains no actual-0 case: the two zero-score CALIBRATION cases have unresolved selection correctness and are outside the frozen derivable subset"
+   },
+   "usage": {
+    "latency_mean_s": 4.38,
+    "latency_median_s": 2.76,
+    "latency_max_s": 21.38,
+    "live_calls": 12,
+    "cache_hits": 0,
+    "input_tokens": 20575,
+    "output_tokens": 644,
+    "cloud_cost_usd": 0.0
+   },
+   "diagnostic_excluded": [
+    {
+     "case_id": "e004_q2_r8",
+     "actual_instructor_score": 2.0,
+     "instructor_derived_verdict": "partially_valid",
+     "model_raw_score": 0.0,
+     "model_verdict": "invalid",
+     "predicted_final_score": 0.0,
+     "final_exact": false,
+     "rubric_items": [
+      {
+       "id": "R1",
+       "met": false,
+       "student_evidence": "המסיכה נותנת לנו Echo ואז זה יגרור להיסטוגרמה הזו",
+       "verifies": true
+      }
+     ],
+     "top_evidence_null": true,
+     "uncertain": false,
+     "decision": "AUTO",
+     "validation_ok": true,
+     "validation_problems": [],
+     "evidence_failure": false,
+     "ungrounded_invalid": false,
+     "schema_failure": false,
+     "latency_s": 2.625,
+     "cache_hit": false,
+     "input_tokens": 1714,
+     "output_tokens": 49,
+     "strict_included": false,
+     "audit_flag": "C: evidence/transcription issue (diagnostic only)",
+     "verdict_exact": false
+    }
+   ]
+  }
+ },
+ "comparison": {
+  "candidates": [
+   "qwen3-vl:8b-instruct",
+   "qwen3-vl:30b-a3b-instruct"
+  ],
+  "both_correct": [
+   "e004_q1_r4"
+  ],
+  "only_qwen3-vl:8b-instruct_correct": [
+   "e004_q1_r2",
+   "e004_q1_r3",
+   "e004_q1_r5",
+   "e004_q2_r1",
+   "e004_q2_r2",
+   "e004_q2_r3"
+  ],
+  "only_qwen3-vl:30b-a3b-instruct_correct": [
+   "e004_q1_r6",
+   "e004_q1_r8"
+  ],
+  "both_wrong": [
+   "e004_q1_r1",
+   "e004_q2_r6"
+  ],
+  "shared_harmful_downgrades": [
+   "e004_q1_r1",
+   "e004_q2_r6"
+  ]
+ }
+}
