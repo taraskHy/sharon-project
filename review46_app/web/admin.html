@@ -16,7 +16,14 @@
   table { border-collapse:collapse; width:100%; font-size:13px; }
   th, td { border-bottom:1px solid #e4e9ef; padding:5px 8px; text-align:left; }
   tr:hover { background:#f4f8fd; }
-  .he { direction:rtl; text-align:right; white-space:pre-wrap; }
+  /* same reusable RTL prose contract as the reviewer page: word-wrapping
+     only (never per-character), stored line breaks preserved, browser bidi
+     handles mixed Hebrew+English, and the column can never be squeezed. */
+  .he { direction:rtl; text-align:right; white-space:pre-wrap;
+        overflow-wrap:break-word; word-break:normal; width:100%; min-width:16rem; }
+  /* reviewer notes and adjudication text are mixed-direction user input:
+     per-paragraph auto direction via the browser's bidi, no string edits */
+  #detail li, #detail input[type=text] { unicode-bidi:plaintext; }
   .st-CONSENSUS { color:#1d7a46; font-weight:600; }
   .st-NEEDS_ADJUDICATION { color:#a12727; font-weight:600; }
   .st-ADJUDICATED { color:#2456a6; font-weight:600; }

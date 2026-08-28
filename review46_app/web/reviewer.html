@@ -16,7 +16,19 @@
   main { max-width:980px; margin:0 auto; padding:16px; }
   .card { background:var(--card); border:1px solid var(--line); border-radius:10px; padding:14px 16px; margin-bottom:12px; }
   .card h2 { font-size:13px; text-transform:uppercase; letter-spacing:.06em; color:var(--mut); margin:0 0 8px; }
-  .he { direction:rtl; text-align:right; font-size:16px; white-space:pre-wrap; }
+  /* Reusable RTL prose style for every Hebrew/mixed text panel.
+     - direction+text-align: proper RTL paragraphs; the BROWSER's bidi
+       algorithm keeps embedded English/math readable (strings are never
+       reversed or reordered in code).
+     - pre-wrap preserves the STORED line breaks exactly;
+     - overflow-wrap:break-word + word-break:normal wrap by WORDS — never
+       character-by-character (the per-character breaking rules are banned
+       by regression tests);
+     - min-width + minimum flex basis stop any flex/grid ancestor from
+       squeezing the prose column to a few pixels. */
+  .he { direction:rtl; text-align:right; font-size:16px;
+        white-space:pre-wrap; overflow-wrap:break-word; word-break:normal;
+        width:100%; min-width:16rem; flex:1 1 auto; }
   .transcript { font-size:19px; background:#fffbe8; border:1px solid #efe3ae; border-radius:8px; padding:10px 12px; }
   .crops img { max-width:100%; border:1px solid var(--line); border-radius:6px; margin:4px 0; display:block; }
   .row { display:flex; gap:10px; flex-wrap:wrap; align-items:center; }
@@ -95,7 +107,7 @@
           <option value="needs_source_page">needs source-page inspection</option>
         </select>
       </div>
-      <p><textarea id="note" rows="2" placeholder="optional note"></textarea></p>
+      <p><textarea id="note" rows="2" dir="auto" placeholder="optional note"></textarea></p>
       <div id="savebar">
         <button id="save" disabled>Save &amp; next <span class="kbd">Enter</span></button>
         <button id="skip">Skip <span class="kbd">s</span></button>
@@ -122,6 +134,18 @@ async function api(path, body) {
   return {status: r.status, ...j};
 }
 function el(id){ return document.getElementById(id); }
+// Stored text reaches the DOM UNMODIFIED (bidi/RTL is the browser's job).
+// A STRING passes through as-is — Object.values on a string would split it
+// into one-character entries, which is exactly the one-char-per-line bug
+// this guards against. Lists join on the stored line breaks; plain objects
+// (e.g. a {sub_item: text} map) join their values.
+function asText(v){
+  if (v == null) return "";
+  if (typeof v === "string") return v;
+  if (Array.isArray(v)) return v.join("\n");
+  if (typeof v === "object") return Object.values(v).join("\n");
+  return String(v);
+}
 function show(id){ for (const s of ["login","review","done"]) el(s).style.display = s===id?"":"none"; }
 function setProgress(p){
   if (!p) return;
@@ -145,11 +169,10 @@ function renderItem(it){
   el("issue").value = it.my_review?.issue || "none";
   el("note").value = it.my_review?.text || "";
   el("qmeta").textContent = it.provenance?.case_id ? `(${it.provenance.case_id})` : "";
-  el("question").textContent = it.question_text || "";
-  el("rubric").textContent = (it.rubric || []).join("\n");
-  const sol = it.official_solution || {};
-  el("solution").textContent = Object.values(sol).join("\n") || "(none)";
-  el("transcript").textContent = it.transcription || "(empty)";
+  el("question").textContent = asText(it.question_text);
+  el("rubric").textContent = asText(it.rubric);
+  el("solution").textContent = asText(it.official_solution) || "(none)";
+  el("transcript").textContent = asText(it.transcription) || "(empty)";
   const crops = el("crops"); crops.innerHTML = "";
   for (const url of it.images || []) {
     const img = document.createElement("img"); img.src = url; crops.appendChild(img);

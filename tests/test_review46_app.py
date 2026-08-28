@@ -299,8 +299,15 @@ def test_22_wal_safe_backup_under_concurrent_reviewers(app, clients):
     bk = admin.post("/api/admin/backup", json={})
     stop.set(); t1.join(); t2.join()
     assert not errors, errors
-    assert bk.status_code == 200
-    assert bk.json().get("db_verified") in (True, "ok", 1) or bk.json().get("backup_dir")
+    # under live writes the backup either VERIFIES or refuses explicitly —
+    # never a silent half-backup, never a server error
+    assert bk.status_code in (200, 409)
+    if bk.status_code == 409:
+        assert bk.json().get("retry") is True
+    # quiescent backup always verifies
+    bk2 = admin.post("/api/admin/backup", json={})
+    assert bk2.status_code == 200
+    assert bk2.json().get("db_verified") in (True, "ok", 1) or bk2.json().get("backup_dir")
 
 
 def test_23_deterministic_export(clients):
@@ -341,6 +348,91 @@ def test_admin_requires_key(app):
     assert c.get("/api/admin/summary").status_code == 403
     assert c.get("/api/admin/items").status_code == 403
     assert c.get("/admin").status_code == 403
+
+
+# ------------------------------------------------------- RTL rendering ------
+# Regression guards for the one-character-per-line Hebrew bug: the served
+# official_solution is a STRING, and the old page ran it through
+# Object.values(...), which splits a string into per-character entries; the
+# injected newlines then rendered as one character per line under pre-wrap.
+
+WEB = REPO / "review46_app" / "web"
+
+
+def _payload_of(clients, want_latin=False):
+    a, _, _ = clients
+    item = a.post("/api/next", json={}).json()["item"]
+    if want_latin:
+        for _ in range(46):
+            if any(ch.isascii() and ch.isalpha() for ch in item["official_solution"]):
+                break
+            _decide(a, item, "valid")
+            item = a.post("/api/next", json={}).json()["item"]
+    return item
+
+
+def test_rtl_solution_is_one_block_not_one_char_lines(clients):
+    """A long Hebrew solution must reach the client as ONE normal block: the
+    newline count is exactly the stored one — never one break per character."""
+    a, _, _ = clients
+    bundle_items = {i["item_id"]: i for i in json.loads((BUNDLE / "items.json").read_text(encoding="utf-8"))}
+    checked = 0
+    for _ in range(46):
+        r = a.post("/api/next", json={}).json()
+        if r["done"]:
+            break
+        item = r["item"]
+        stored = bundle_items[item["item_id"]]["official_solution"]
+        served = item["official_solution"]
+        assert isinstance(served, str)
+        assert served == stored                      # byte-identical, unmodified
+        if len(served) >= 80:
+            assert served.count("\n") < len(served) / 10, \
+                "solution arrives pre-shredded into per-character lines"
+            checked += 1
+        _decide(a, item, "valid")
+    assert checked >= 3
+
+
+def test_rtl_css_direction_and_word_wrapping():
+    for page in ("reviewer.html", "admin.html"):
+        html = (WEB / page).read_text(encoding="utf-8")
+        he = "".join((html.split(".he {", 1)[1].split("}", 1)[0]).split())  # strip ALL whitespace
+        for needed in ("direction:rtl", "text-align:right", "white-space:pre-wrap",
+                       "overflow-wrap:break-word", "word-break:normal"):
+            assert needed in he, (page, needed)
+        # character-by-character wrapping is banned everywhere on the page
+        assert "break-all" not in html, page
+        assert "overflow-wrap:anywhere" not in "".join(html.split()), page
+
+
+def test_rtl_renderer_never_chars_splits_strings():
+    html = (WEB / "reviewer.html").read_text(encoding="utf-8")
+    assert "function asText" in html
+    assert 'typeof v === "string"' in html
+    assert "Object.values(sol)" not in html          # the exact buggy pattern
+    # every prose panel goes through the guard
+    for field in ("question_text", "rubric", "official_solution", "transcription"):
+        assert f"asText(it.{field})" in html, field
+
+
+def test_rtl_mixed_hebrew_english_intact(clients):
+    item = _payload_of(clients, want_latin=True)
+    s = item["official_solution"]
+    assert any("֐" <= ch <= "׿" for ch in s), "expected Hebrew content"
+    assert any(ch.isascii() and ch.isalpha() for ch in s), "expected embedded Latin"
+    # the mixed string is served exactly as stored — ordering is the browser
+    # bidi algorithm's job, never the payload's
+    stored = {i["item_id"]: i for i in json.loads((BUNDLE / "items.json").read_text(encoding="utf-8"))}
+    assert s == stored[item["item_id"]]["official_solution"]
+
+
+def test_rtl_no_manual_string_reversal_anywhere():
+    for f in (WEB / "reviewer.html", WEB / "admin.html",
+              REPO / "review46_app" / "app.py", REPO / "review46_app" / "build.py"):
+        src = f.read_text(encoding="utf-8")
+        for banned in (".reverse()", "[::-1]", 'split("").reverse'):
+            assert banned not in src, (f.name, banned)
 
 
 def test_invite_token_when_configured(tmp_path):

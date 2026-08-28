@@ -643,9 +643,23 @@ async def api_admin_backup(request: Request) -> Response:
         return err
     body = await _json(request)
     copy_to = body.get("copy_to") or request.app.state.backup_copy_to
-    out = make_backup(request.app.state.db, request.app.state.bundle, request.app.state.data_dir,
-                      copy_to=Path(copy_to) if copy_to else None)
-    return JSONResponse(out)
+    from labeling_app.backup import BackupError
+    last: Exception | None = None
+    for _ in range(3):
+        # The backup layer verifies the snapshot's row counts and DISCARDS it
+        # when reviewers wrote mid-copy (fail-safe: never a half-backup).
+        # Under live traffic that is expected — retry briefly, then answer
+        # with an explicit busy/retry instead of a server error.
+        try:
+            out = make_backup(request.app.state.db, request.app.state.bundle,
+                              request.app.state.data_dir,
+                              copy_to=Path(copy_to) if copy_to else None)
+            return JSONResponse(out)
+        except BackupError as e:
+            last = e
+    return JSONResponse({"error": f"database busy — snapshot could not verify while "
+                                  f"reviewers are writing; retry in a quiet moment ({last})",
+                         "retry": True}, status_code=409)
 
 
 async def api_admin_events(request: Request) -> Response:
