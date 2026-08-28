@@ -1,7 +1,23 @@
 # local_grade_primary runs — the PRODUCTION grader selection
 
-Result root for the LOCAL grade_primary benchmark (frozen experiment:
-`evaluation/model_selection/experiments/LOCAL_GRADE_PRIMARY_FREEZE_2026-08-27.json`).
+Result root for the LOCAL grade_primary benchmark. Experiment records:
+
+- **ACTIVE** (output-contract phase, 2026-08-28):
+  `evaluation/model_selection/experiments/LOCAL_GRADE_CONTRACT_FREEZE_2026-08-28.json`
+  — prompt `grade-v4-charitable-local` (v4 semantics verbatim + mechanical
+  output contract), `grade-bench-v3` / `grade-validation-v2` (symmetric
+  zero-side grounding: an ungrounded invalid verdict on non-empty text
+  routes to REVIEW). Structural DEV smoke (2 cases, NO quality claim) →
+  CALIBRATION quality population (12 cases; strict metrics exclude the
+  audit-C case `e004_q2_r8`, whose instructor-derived target is preserved).
+  Candidates: `qwen3-vl:8b-instruct` (development candidate),
+  `qwen3-vl:30b-a3b-instruct`. `qwen3.8:27b-q4_K_M` was DROPPED by owner
+  decision 2026-08-28 and may not run again.
+- **COMPLETED** (FullDev phase, immutable history):
+  `evaluation/model_selection/experiments/LOCAL_GRADE_PRIMARY_FREEZE_2026-08-27.json`
+  — results in `FULLDEV_2026-08-28.md`, audit in
+  `FULLDEV_AUDIT_2026-08-28.{json,md}`, counterfactual structural replay
+  (NOT actual performance) in `REPLAY_STRUCTURAL_2026-08-28.{json,md}`.
 Runs are produced on the strong PC by `scripts/run_local_grade_primary.ps1`
 (preflight-gated, `-Execute` required, local backend only, cloud grading
 cost $0) through the standard bench runner, so every run directory carries:

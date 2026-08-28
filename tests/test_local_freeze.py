@@ -19,7 +19,8 @@ REPO = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(REPO))
 
 from scripts.local_grade_freeze import (FREEZE_PATH, HELD_OUT_WRITERS,  # noqa: E402
-                                        build_freeze, verify_freeze)
+                                        HISTORICAL_FREEZE_PATH, build_freeze,
+                                        verify_freeze)
 
 RUNNER = REPO / "scripts" / "run_local_grade_primary.ps1"
 pytestmark = pytest.mark.skipif(not FREEZE_PATH.exists(),
@@ -61,13 +62,40 @@ def test_no_held_out_writer_appears_anywhere(frozen):
 
 
 def test_prompt_and_schema_hashes_are_real(frozen):
-    from autograder.escalation import GradeResult, grade_system_for
-    assert frozen["prompt_version"] == "grade-v4-charitable"
+    from autograder.escalation import (GRADE_VALIDATION_VERSION, GradeResult,
+                                       grade_system_for)
+    assert frozen["prompt_version"] == "grade-v4-charitable-local"
     assert frozen["prompt_sha256"] == hashlib.sha256(
-        grade_system_for("grade-v4-charitable").encode("utf-8")).hexdigest()
+        grade_system_for("grade-v4-charitable-local").encode("utf-8")).hexdigest()
     schema = json.dumps(GradeResult.model_json_schema(), sort_keys=True)
     assert frozen["schema_sha256"] == hashlib.sha256(schema.encode("utf-8")).hexdigest()
     assert frozen["rag_policy"] == "RAG_DISABLED"
+    assert frozen["validation_version"] == GRADE_VALIDATION_VERSION
+
+
+def test_strict_metrics_exclude_only_audit_c_cases(frozen):
+    """e004_q2_r8 (decision C: evidence/transcription issue) runs for
+    diagnostics but never counts in strict quality denominators — and its
+    TARGET stays the instructor-derived one, never the C decision."""
+    sm = frozen["strict_metrics"]
+    cal = frozen["populations"]["calibration_verdict_v4"]
+    assert set(sm["calibration_strict_case_ids"]) | set(sm["excluded"]) == set(cal["case_ids"])
+    assert set(sm["excluded"]) == set(frozen["human_audit"]["evidence_review_required"])
+    assert "e004_q2_r8" in sm["excluded"]
+    assert len(sm["calibration_strict_case_ids"]) == 11
+    for reason in sm["excluded"].values():
+        assert "NOT" in reason and "instructor grade" in reason
+
+
+def test_the_completed_fulldev_freeze_is_immutable_history():
+    """The 2026-08-27 record is never 'refreshed' against live code; only its
+    self-consistency is checked."""
+    frozen = json.loads(HISTORICAL_FREEZE_PATH.read_text(encoding="utf-8"))
+    payload = json.dumps({k: v for k, v in frozen.items() if k != "experiment_sha256"},
+                         ensure_ascii=False, sort_keys=True)
+    assert frozen["experiment_sha256"] == hashlib.sha256(payload.encode("utf-8")).hexdigest()
+    assert frozen["prompt_version"] == "grade-v4-charitable"
+    assert frozen["adapter_version"] == "grade-bench-v2"
 
 
 def test_audit_decisions_come_from_the_saved_artifact_and_c_is_flagged(frozen):
@@ -167,7 +195,8 @@ def test_runner_defaults_to_zero_inference_and_gates_on_execute():
 
 def test_runner_cannot_reach_held_out_or_research_mode():
     src = RUNNER.read_text(encoding="utf-8")
-    assert '"--split", "dev"' in src, "split is hardcoded to dev"
+    # split is COMPUTED but restricted to dev | calibration; no other value exists
+    assert '{ "calibration" } else { "dev" }' in src, "split restricted to dev|calibration"
     for banned in ("held_out", "held-out", "final-eval", "confirm-held-out", "--research"):
         assert banned not in src.replace("HELD_OUT is not reachable", ""), banned
     assert '"--backend", "ollama"' in src, "backend is hardcoded local"
@@ -175,8 +204,10 @@ def test_runner_cannot_reach_held_out_or_research_mode():
 
 def test_runner_requires_candidate_and_smoke_before_fulldev():
     src = RUNNER.read_text(encoding="utf-8")
-    assert "-Smoke/-FullDev require an explicit -Candidate" in src
+    assert "-Smoke/-FullDev/-Calibration require an explicit -Candidate" in src
     assert "failure-free SMOKE run" in src
+    # calibration additionally requires the smoke to be of the SAME prompt version
+    assert "$PromptVersion -and $pv -ne $PromptVersion" in src
     assert "machine_profile" in src, "resource provenance is recorded per execution"
 
 

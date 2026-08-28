@@ -12,28 +12,37 @@ flag (which this script never passes).
 
 .MODES
   (none) / -Preflight   verify freeze + boundary + list installed models. ZERO inference.
-  -Smoke   -Candidate X [-Execute]   frozen 2-case DEV smoke for one candidate.
-  -FullDev -Candidate X [-Execute]   frozen 26-case derivable DEV population.
-                                     Requires a completed, failure-free smoke
-                                     run of the SAME candidate first.
+  -Smoke       -Candidate X [-Execute]  frozen 2-case DEV smoke for one candidate.
+  -FullDev     -Candidate X [-Execute]  frozen 26-case derivable DEV population.
+                                        Requires a completed, failure-free smoke
+                                        run of the SAME candidate first.
+  -Calibration -Candidate X [-Execute]  frozen 12-case CALIBRATION quality
+                                        population. Requires a completed,
+                                        failure-free smoke run of the SAME
+                                        candidate (and, when -PromptVersion is
+                                        given, the SAME prompt version) first.
+  -PromptVersion V   pin a registered grading prompt version (e.g.
+                     grade-v4-charitable-local); recorded in the run's config
+                     hash. Default: the adapter default.
 
 .EXAMPLES
   .\scripts\run_local_grade_primary.ps1
-  .\scripts\run_local_grade_primary.ps1 -Smoke   -Candidate qwen3-vl:8b-instruct           # plan only
-  .\scripts\run_local_grade_primary.ps1 -Smoke   -Candidate qwen3-vl:8b-instruct -Execute  # runs 2 cases
-  .\scripts\run_local_grade_primary.ps1 -FullDev -Candidate qwen3-vl:8b-instruct -Execute  # runs 26 cases
+  .\scripts\run_local_grade_primary.ps1 -Smoke -Candidate qwen3-vl:8b-instruct -PromptVersion grade-v4-charitable-local -Execute
+  .\scripts\run_local_grade_primary.ps1 -Calibration -Candidate qwen3-vl:8b-instruct -PromptVersion grade-v4-charitable-local -Execute
 
-HELD_OUT is not reachable from this script (split is hardcoded to dev; the
-final evaluation is a separate, explicitly confirmed owner-run command).
-No model is ever downloaded here; missing candidates are reported by
-preflight and must be pulled deliberately by the operator.
+HELD_OUT is not reachable from this script (split is restricted to dev and
+calibration; the final evaluation is a separate, explicitly confirmed
+owner-run command). No model is ever downloaded here; missing candidates are
+reported by preflight and must be pulled deliberately by the operator.
 #>
 [CmdletBinding()]
 param(
     [switch]$Preflight,
     [switch]$Smoke,
     [switch]$FullDev,
+    [switch]$Calibration,
     [string]$Candidate = "",
+    [string]$PromptVersion = "",
     [switch]$Execute,
     [string]$BaseUrl = "http://localhost:11434/v1"
 )
@@ -79,34 +88,52 @@ function Write-MachineProfile {
     return $profilePath
 }
 
-$mode = if ($Smoke) { "smoke" } elseif ($FullDev) { "fulldev" } else { "preflight" }
+$mode = if ($Smoke) { "smoke" } elseif ($FullDev) { "fulldev" } elseif ($Calibration) { "calibration" } else { "preflight" }
 
 if ($mode -eq "preflight") {
     Invoke-Preflight
     Write-Host ""
     Write-Host "Next steps (each requires -Execute; nothing runs by default):"
-    Write-Host "  .\scripts\run_local_grade_primary.ps1 -Smoke   -Candidate <model:tag> -Execute"
-    Write-Host "  .\scripts\run_local_grade_primary.ps1 -FullDev -Candidate <model:tag> -Execute"
+    Write-Host "  .\scripts\run_local_grade_primary.ps1 -Smoke       -Candidate <model:tag> -Execute"
+    Write-Host "  .\scripts\run_local_grade_primary.ps1 -FullDev     -Candidate <model:tag> -Execute"
+    Write-Host "  .\scripts\run_local_grade_primary.ps1 -Calibration -Candidate <model:tag> -Execute"
     exit 0
 }
 
 if (-not $Candidate) {
-    Write-Host "REFUSED: -Smoke/-FullDev require an explicit -Candidate <model:tag> (see candidates.toml [roles.grade_primary_local])." -ForegroundColor Red
+    Write-Host "REFUSED: -Smoke/-FullDev/-Calibration require an explicit -Candidate <model:tag> (see candidates.toml [roles.grade_primary_local])." -ForegroundColor Red
     exit 2
 }
 
-$subset = if ($mode -eq "smoke") { "smoke" } else { "dev_verdict" }
+# The active freeze pins the experiment's prompt version: default to it so a
+# bare -Smoke/-Calibration cannot silently run the adapter default instead.
+if (-not $PromptVersion) {
+    $freezePath = Join-Path $repo "evaluation\model_selection\experiments\LOCAL_GRADE_CONTRACT_FREEZE_2026-08-28.json"
+    if (Test-Path $freezePath) {
+        try { $PromptVersion = (Get-Content $freezePath -Raw | ConvertFrom-Json).prompt_version } catch {}
+    }
+}
+
+# split is RESTRICTED to dev | calibration; HELD_OUT stays unreachable here
+$split = if ($mode -eq "calibration") { "calibration" } else { "dev" }
+$subset = switch ($mode) {
+    "smoke"       { "smoke" }
+    "fulldev"     { "dev_verdict" }
+    "calibration" { "calibration_verdict_v4" }
+}
 $benchArgs = @("-m", "autograder", "bench", "run",
-    "--role", "grade_primary", "--split", "dev", "--subset", $subset,
+    "--role", "grade_primary", "--split", $split, "--subset", $subset,
     "--candidate", $Candidate, "--backend", "ollama", "--base-url", $BaseUrl,
     "--runs-root", $runsRoot,
     "--note", "local_grade_primary $mode (strong-PC)",
     "--i-understand-this-spends-money")   # live-run gate; a local run spends $0 in provider fees
+if ($PromptVersion) { $benchArgs += @("--prompt-version", $PromptVersion) }
 
 Write-Host "=== PLAN ($mode) ===" -ForegroundColor Cyan
 Write-Host "candidate : $Candidate"
 Write-Host "backend   : ollama @ $BaseUrl (local only; remote URLs refuse)"
-Write-Host "subset    : $subset (frozen; HELD_OUT unreachable)"
+Write-Host "split     : $split | subset: $subset (frozen; HELD_OUT unreachable)"
+if ($PromptVersion) { Write-Host "prompt    : $PromptVersion" }
 Write-Host "runs root : $runsRoot"
 Write-Host "command   : $py $($benchArgs -join ' ')"
 
@@ -118,28 +145,37 @@ if (-not $Execute) {
 
 Invoke-Preflight
 
-if ($mode -eq "fulldev") {
-    # FullDev requires a completed, failure-free smoke run of the SAME candidate.
-    $slug = ($Candidate -replace '[^A-Za-z0-9]+','-').ToLower()
+if ($mode -eq "fulldev" -or $mode -eq "calibration") {
+    # FullDev/Calibration require a completed, failure-free smoke run of the
+    # SAME candidate — and, when a prompt version is pinned, of the SAME
+    # prompt version (a smoke under another prompt proves nothing about this
+    # configuration).
     $smokeOk = $false
     Get-ChildItem -Path $runsRoot -Recurse -Filter "run.json" -ErrorAction SilentlyContinue | ForEach-Object {
         try {
             $r = Get-Content $_.FullName -Raw | ConvertFrom-Json
             # the candidate lives in run.json's config block (config_hash identity),
             # not at the top level
-            $cand = $null
-            if ($null -ne $r.config) { $cand = $r.config.candidate }
+            $cand = $null; $pv = $null
+            if ($null -ne $r.config) { $cand = $r.config.candidate; $pv = $r.config.prompt_version }
             if ($null -eq $cand -and $null -ne $r.spec) { $cand = $r.spec.candidate }
             if ($_.FullName -match "smoke" -and $cand -eq $Candidate) {
+                $pvOk = $true
+                if ($PromptVersion -and $pv -ne $PromptVersion) { $pvOk = $false }
+                # a dry-run plans cases without executing them — only a LIVE
+                # smoke counts (cases_done counts planned rows on dry runs)
+                $live = ($r.last_mode -eq "live")
                 $done = 0; $failed = 1
                 if ($null -ne $r.cases_done) { $done = [int]$r.cases_done }
                 if ($null -ne $r.cases_failed) { $failed = [int]$r.cases_failed }
-                if ($done -gt 0 -and $failed -eq 0) { $script:smokeOk = $true }
+                if ($pvOk -and $live -and $done -gt 0 -and $failed -eq 0) { $script:smokeOk = $true }
             }
         } catch {}
     }
     if (-not $smokeOk) {
-        Write-Host "REFUSED: no completed failure-free SMOKE run found for '$Candidate' under $runsRoot. Run -Smoke -Execute first." -ForegroundColor Red
+        $pvNote = ""
+        if ($PromptVersion) { $pvNote = " under prompt '$PromptVersion'" }
+        Write-Host "REFUSED: no completed failure-free SMOKE run found for '$Candidate'$pvNote in $runsRoot. Run -Smoke -Execute first." -ForegroundColor Red
         exit 3
     }
 }

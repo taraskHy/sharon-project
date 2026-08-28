@@ -1,0 +1,316 @@
+{
+ "artifact": "counterfactual_structural_replay",
+ "created_at": "2026-08-28",
+ "label": "counterfactual structural replay — NOT actual model performance",
+ "run_id": "dev__dev_verdict__all__qwen3-vl-8b-instruct__433146e4b1",
+ "method": {
+  "inference_calls": 0,
+  "cloud_calls": 0,
+  "matcher": "autograder.evidence.evidence_supported (production, unchanged)",
+  "note": "no historical output was mutated, repaired or re-scored as real; 'counterfactually valid' means only that a span the model itself produced inside the mis-placed field would have verified had it been returned in rubric_items[].student_evidence"
+ },
+ "summary": {
+  "evidence_failures": 25,
+  "counterfactually_valid_with_span_the_model_itself_isolated": 16,
+  "verbatim_span_present_anywhere_12_to_200_chars": 25,
+  "still_fail_without_new_copying": {
+   "paraphrase_only_no_isolated_quote": 8,
+   "wrong_source_span": 1
+  },
+  "content_class_counts": {
+   "clean_exact_quote": 5,
+   "exact_quote_wrapped_in_commentary": 11,
+   "only_paraphrase_prose": 8,
+   "wrong_source_text": 1
+  },
+  "over_200_as_submitted": 20,
+  "unknown_or_duplicate_rubric_ids_in_history": 0,
+  "historical_zero_verdicts": 1,
+  "historical_zero_verdicts_newly_routed_to_review": 1
+ },
+ "zero_verdict_replay": [
+  {
+   "case_id": "e002_q2_r4",
+   "historical_decision": "AUTO",
+   "grounded_under_v2": false,
+   "new_routing": "REVIEW"
+  }
+ ],
+ "cases": [
+  {
+   "case_id": "e002_q1_r2",
+   "content_class": "clean_exact_quote",
+   "whole_field_minus_prefix_verifies_and_fits": true,
+   "model_isolated_a_verified_quote": false,
+   "verified_fragment_example": null,
+   "verbatim_span_present_anywhere_12_to_200": true,
+   "over_200_as_submitted": false,
+   "counterfactually_valid_with_own_isolated_span": true,
+   "still_fail_reason_without_new_copying": null
+  },
+  {
+   "case_id": "e002_q1_r3",
+   "content_class": "exact_quote_wrapped_in_commentary",
+   "whole_field_minus_prefix_verifies_and_fits": false,
+   "model_isolated_a_verified_quote": true,
+   "verified_fragment_example": "העוצמה של הדרגות הגבוהות בפרמידה חזקה ביחס למקורי",
+   "verbatim_span_present_anywhere_12_to_200": true,
+   "over_200_as_submitted": true,
+   "counterfactually_valid_with_own_isolated_span": true,
+   "still_fail_reason_without_new_copying": null
+  },
+  {
+   "case_id": "e002_q1_r4",
+   "content_class": "clean_exact_quote",
+   "whole_field_minus_prefix_verifies_and_fits": true,
+   "model_isolated_a_verified_quote": false,
+   "verified_fragment_example": null,
+   "verbatim_span_present_anywhere_12_to_200": true,
+   "over_200_as_submitted": false,
+   "counterfactually_valid_with_own_isolated_span": true,
+   "still_fail_reason_without_new_copying": null
+  },
+  {
+   "case_id": "e002_q1_r5",
+   "content_class": "clean_exact_quote",
+   "whole_field_minus_prefix_verifies_and_fits": true,
+   "model_isolated_a_verified_quote": false,
+   "verified_fragment_example": null,
+   "verbatim_span_present_anywhere_12_to_200": true,
+   "over_200_as_submitted": false,
+   "counterfactually_valid_with_own_isolated_span": true,
+   "still_fail_reason_without_new_copying": null
+  },
+  {
+   "case_id": "e002_q1_r6",
+   "content_class": "clean_exact_quote",
+   "whole_field_minus_prefix_verifies_and_fits": true,
+   "model_isolated_a_verified_quote": false,
+   "verified_fragment_example": null,
+   "verbatim_span_present_anywhere_12_to_200": true,
+   "over_200_as_submitted": false,
+   "counterfactually_valid_with_own_isolated_span": true,
+   "still_fail_reason_without_new_copying": null
+  },
+  {
+   "case_id": "e002_q1_r7",
+   "content_class": "exact_quote_wrapped_in_commentary",
+   "whole_field_minus_prefix_verifies_and_fits": false,
+   "model_isolated_a_verified_quote": true,
+   "verified_fragment_example": "הדרגה 0 שלה בהירה משמעותית מהתמונה המקורית",
+   "verbatim_span_present_anywhere_12_to_200": true,
+   "over_200_as_submitted": true,
+   "counterfactually_valid_with_own_isolated_span": true,
+   "still_fail_reason_without_new_copying": null
+  },
+  {
+   "case_id": "e002_q1_r8",
+   "content_class": "exact_quote_wrapped_in_commentary",
+   "whole_field_minus_prefix_verifies_and_fits": false,
+   "model_isolated_a_verified_quote": true,
+   "verified_fragment_example": "מבהיר את התמונה",
+   "verbatim_span_present_anywhere_12_to_200": true,
+   "over_200_as_submitted": true,
+   "counterfactually_valid_with_own_isolated_span": true,
+   "still_fail_reason_without_new_copying": null
+  },
+  {
+   "case_id": "e002_q2_r1",
+   "content_class": "exact_quote_wrapped_in_commentary",
+   "whole_field_minus_prefix_verifies_and_fits": false,
+   "model_isolated_a_verified_quote": true,
+   "verified_fragment_example": "עבור גילוי שפות יהיה רוב התמונה ב0 ורק עבור שפות 255",
+   "verbatim_span_present_anywhere_12_to_200": true,
+   "over_200_as_submitted": true,
+   "counterfactually_valid_with_own_isolated_span": true,
+   "still_fail_reason_without_new_copying": null
+  },
+  {
+   "case_id": "e002_q2_r2",
+   "content_class": "only_paraphrase_prose",
+   "whole_field_minus_prefix_verifies_and_fits": false,
+   "model_isolated_a_verified_quote": false,
+   "verified_fragment_example": null,
+   "verbatim_span_present_anywhere_12_to_200": true,
+   "over_200_as_submitted": true,
+   "counterfactually_valid_with_own_isolated_span": false,
+   "still_fail_reason_without_new_copying": "paraphrase_only_no_isolated_quote"
+  },
+  {
+   "case_id": "e002_q2_r3",
+   "content_class": "only_paraphrase_prose",
+   "whole_field_minus_prefix_verifies_and_fits": false,
+   "model_isolated_a_verified_quote": false,
+   "verified_fragment_example": null,
+   "verbatim_span_present_anywhere_12_to_200": true,
+   "over_200_as_submitted": true,
+   "counterfactually_valid_with_own_isolated_span": false,
+   "still_fail_reason_without_new_copying": "paraphrase_only_no_isolated_quote"
+  },
+  {
+   "case_id": "e002_q2_r5",
+   "content_class": "wrong_source_text",
+   "whole_field_minus_prefix_verifies_and_fits": false,
+   "model_isolated_a_verified_quote": false,
+   "verified_fragment_example": null,
+   "verbatim_span_present_anywhere_12_to_200": true,
+   "over_200_as_submitted": true,
+   "counterfactually_valid_with_own_isolated_span": false,
+   "still_fail_reason_without_new_copying": "wrong_source_span"
+  },
+  {
+   "case_id": "e002_q2_r6",
+   "content_class": "exact_quote_wrapped_in_commentary",
+   "whole_field_minus_prefix_verifies_and_fits": false,
+   "model_isolated_a_verified_quote": true,
+   "verified_fragment_example": "המעכה זהה לסכימת תמונה זהה עם תנודה קלה",
+   "verbatim_span_present_anywhere_12_to_200": true,
+   "over_200_as_submitted": true,
+   "counterfactually_valid_with_own_isolated_span": true,
+   "still_fail_reason_without_new_copying": null
+  },
+  {
+   "case_id": "e002_q2_r7",
+   "content_class": "exact_quote_wrapped_in_commentary",
+   "whole_field_minus_prefix_verifies_and_fits": false,
+   "model_isolated_a_verified_quote": true,
+   "verified_fragment_example": "צורדת ההיסטוגרמה זהה",
+   "verbatim_span_present_anywhere_12_to_200": true,
+   "over_200_as_submitted": true,
+   "counterfactually_valid_with_own_isolated_span": true,
+   "still_fail_reason_without_new_copying": null
+  },
+  {
+   "case_id": "e002_q2_r8",
+   "content_class": "clean_exact_quote",
+   "whole_field_minus_prefix_verifies_and_fits": true,
+   "model_isolated_a_verified_quote": false,
+   "verified_fragment_example": null,
+   "verbatim_span_present_anywhere_12_to_200": true,
+   "over_200_as_submitted": false,
+   "counterfactually_valid_with_own_isolated_span": true,
+   "still_fail_reason_without_new_copying": null
+  },
+  {
+   "case_id": "e003_q1_r1",
+   "content_class": "exact_quote_wrapped_in_commentary",
+   "whole_field_minus_prefix_verifies_and_fits": false,
+   "model_isolated_a_verified_quote": true,
+   "verified_fragment_example": "ניתן לראות ברמות התדרים הגבוהים שיש שפות בכיוון התנועה(הטשטוש)",
+   "verbatim_span_present_anywhere_12_to_200": true,
+   "over_200_as_submitted": true,
+   "counterfactually_valid_with_own_isolated_span": true,
+   "still_fail_reason_without_new_copying": null
+  },
+  {
+   "case_id": "e003_q1_r4",
+   "content_class": "exact_quote_wrapped_in_commentary",
+   "whole_field_minus_prefix_verifies_and_fits": false,
+   "model_isolated_a_verified_quote": true,
+   "verified_fragment_example": "ניתן לראות שרק תדרים נמוכים נשמרו ולכן כל הרמות של התדרים הגבוהים מאופסות",
+   "verbatim_span_present_anywhere_12_to_200": true,
+   "over_200_as_submitted": true,
+   "counterfactually_valid_with_own_isolated_span": true,
+   "still_fail_reason_without_new_copying": null
+  },
+  {
+   "case_id": "e003_q1_r5",
+   "content_class": "exact_quote_wrapped_in_commentary",
+   "whole_field_minus_prefix_verifies_and_fits": false,
+   "model_isolated_a_verified_quote": true,
+   "verified_fragment_example": "הרעש והטשטוש שלו בכיוון ציר ה-x מובלט בתדרים הגבוהים",
+   "verbatim_span_present_anywhere_12_to_200": true,
+   "over_200_as_submitted": true,
+   "counterfactually_valid_with_own_isolated_span": true,
+   "still_fail_reason_without_new_copying": null
+  },
+  {
+   "case_id": "e003_q1_r6",
+   "content_class": "only_paraphrase_prose",
+   "whole_field_minus_prefix_verifies_and_fits": false,
+   "model_isolated_a_verified_quote": false,
+   "verified_fragment_example": null,
+   "verbatim_span_present_anywhere_12_to_200": true,
+   "over_200_as_submitted": true,
+   "counterfactually_valid_with_own_isolated_span": false,
+   "still_fail_reason_without_new_copying": "paraphrase_only_no_isolated_quote"
+  },
+  {
+   "case_id": "e003_q1_r7",
+   "content_class": "only_paraphrase_prose",
+   "whole_field_minus_prefix_verifies_and_fits": false,
+   "model_isolated_a_verified_quote": false,
+   "verified_fragment_example": null,
+   "verbatim_span_present_anywhere_12_to_200": true,
+   "over_200_as_submitted": true,
+   "counterfactually_valid_with_own_isolated_span": false,
+   "still_fail_reason_without_new_copying": "paraphrase_only_no_isolated_quote"
+  },
+  {
+   "case_id": "e003_q1_r8",
+   "content_class": "only_paraphrase_prose",
+   "whole_field_minus_prefix_verifies_and_fits": false,
+   "model_isolated_a_verified_quote": false,
+   "verified_fragment_example": null,
+   "verbatim_span_present_anywhere_12_to_200": true,
+   "over_200_as_submitted": true,
+   "counterfactually_valid_with_own_isolated_span": false,
+   "still_fail_reason_without_new_copying": "paraphrase_only_no_isolated_quote"
+  },
+  {
+   "case_id": "e003_q2_r1",
+   "content_class": "only_paraphrase_prose",
+   "whole_field_minus_prefix_verifies_and_fits": false,
+   "model_isolated_a_verified_quote": false,
+   "verified_fragment_example": null,
+   "verbatim_span_present_anywhere_12_to_200": true,
+   "over_200_as_submitted": true,
+   "counterfactually_valid_with_own_isolated_span": false,
+   "still_fail_reason_without_new_copying": "paraphrase_only_no_isolated_quote"
+  },
+  {
+   "case_id": "e003_q2_r2",
+   "content_class": "only_paraphrase_prose",
+   "whole_field_minus_prefix_verifies_and_fits": false,
+   "model_isolated_a_verified_quote": false,
+   "verified_fragment_example": null,
+   "verbatim_span_present_anywhere_12_to_200": true,
+   "over_200_as_submitted": true,
+   "counterfactually_valid_with_own_isolated_span": false,
+   "still_fail_reason_without_new_copying": "paraphrase_only_no_isolated_quote"
+  },
+  {
+   "case_id": "e003_q2_r7",
+   "content_class": "exact_quote_wrapped_in_commentary",
+   "whole_field_minus_prefix_verifies_and_fits": false,
+   "model_isolated_a_verified_quote": true,
+   "verified_fragment_example": "הוכפל מספר הפיקסלים בכל התמונה פי 2 והוכפל מספר הפיקסלים בכל ערך",
+   "verbatim_span_present_anywhere_12_to_200": true,
+   "over_200_as_submitted": true,
+   "counterfactually_valid_with_own_isolated_span": true,
+   "still_fail_reason_without_new_copying": null
+  },
+  {
+   "case_id": "e003_q2_r8",
+   "content_class": "exact_quote_wrapped_in_commentary",
+   "whole_field_minus_prefix_verifies_and_fits": false,
+   "model_isolated_a_verified_quote": true,
+   "verified_fragment_example": "ניתן לראות שמספר הפיקסלים בכל עוצמה הוזז ימינה באותו מרחק שהיה במקור.",
+   "verbatim_span_present_anywhere_12_to_200": true,
+   "over_200_as_submitted": true,
+   "counterfactually_valid_with_own_isolated_span": true,
+   "still_fail_reason_without_new_copying": null
+  },
+  {
+   "case_id": "e007_q1_r1",
+   "content_class": "only_paraphrase_prose",
+   "whole_field_minus_prefix_verifies_and_fits": false,
+   "model_isolated_a_verified_quote": false,
+   "verified_fragment_example": null,
+   "verbatim_span_present_anywhere_12_to_200": true,
+   "over_200_as_submitted": true,
+   "counterfactually_valid_with_own_isolated_span": false,
+   "still_fail_reason_without_new_copying": "paraphrase_only_no_isolated_quote"
+  }
+ ]
+}

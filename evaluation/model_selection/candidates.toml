@@ -71,11 +71,16 @@ vision = false
 backend = "ollama"
 candidates = [
     "qwen3-vl:8b-instruct",
-    "qwen3.8:27b-q4_K_M",
+    "qwen3-vl:30b-a3b-instruct",
 ]
-benchmark = "B3-local grade-primary (frozen: evaluation/model_selection/experiments/LOCAL_GRADE_PRIMARY_FREEZE_2026-08-27.json; grade-v4-charitable; local backend only; cloud cost $0)"
-note = "no winner until the LOCAL benchmark runs; cloud-grader results are baselines, not selectors. Installed models are DISCOVERED at runtime (scripts/local_grade_preflight.py) — never assumed, never downloaded, no machine paths here."
-prompt_version = "grade-v4-charitable"
+# DROPPED 2026-08-28 (owner decision after the FullDev two-layer report):
+#   qwen3.8:27b-q4_K_M — DEV verdict exact 9/26 (34.6%), 17 harmful
+#   downgrades, ~3x slower than the 8B. Removed from `candidates` so the
+#   runner refuses any rerun; its historical run directories under
+#   evaluation/model_selection/runs/local_grade_primary/ are preserved.
+benchmark = "B3-local grade-primary (output-contract phase: evaluation/model_selection/experiments/LOCAL_GRADE_CONTRACT_FREEZE_2026-08-28.json; grade-v4-charitable-local; local backend only; cloud cost $0. Completed FullDev phase: LOCAL_GRADE_PRIMARY_FREEZE_2026-08-27.json)"
+note = "no winner until the LOCAL benchmark runs; cloud-grader results are baselines, not selectors. Installed models are DISCOVERED at runtime (scripts/local_grade_preflight.py) — never assumed, never downloaded, no machine paths here. 8B = development candidate (NOT a production winner)."
+prompt_version = "grade-v4-charitable-local"
 decoding = { temperature = 0.0, max_tokens = 600, think = false, structured_mode = "json_schema" }
 
 # Candidate capability sheets — external facts recorded for planning, not
@@ -103,7 +108,24 @@ structured_output = "ollama native json_schema `format`"
 hebrew_text = "stronger reasoning tier; same family Hebrew handling"
 laptop_compatible = false
 strong_pc_compatible = true
-note = "the strong PC's standing aux-role model (RTX 2000 Ada 15.4 GB: 100% GPU residency verified 2026-07-13 for the 8B; the 27B may partially offload — measure, do not assume)"
+note = "DROPPED for GRADE_PRIMARY 2026-08-28 (owner decision: 9/26 verdict exact, 17 harmful downgrades, ~13.7s median). Kept here for the historical run record only; stays the standing aux-role model (mc/variant/policy)."
+
+# Capability sheet recorded 2026-08-28 from `ollama show qwen3-vl:30b-a3b-instruct`
+# (metadata only, zero inference, nothing downloaded). Same family and the
+# same Ollama structured-output path as the 8B, so it can use the identical
+# local structured grading route. Digest at registration: c871fc73fabc.
+[roles.grade_primary_local.candidate_info."qwen3-vl:30b-a3b-instruct"]
+quantization = "Q4_K_M"
+weights_gb = 19.0
+expected_ram_gb = 24
+expected_vram_gb = 15.4
+context_limit = 262144
+architecture = "qwen3vlmoe (31.1B total, ~3B active per token: A3B)"
+structured_output = "ollama native json_schema `format`"
+hebrew_text = "same qwen3-vl family as the 8B (26/26 schema-valid Hebrew grading outputs on 2026-08-28); larger tier unmeasured"
+laptop_compatible = false
+strong_pc_compatible = true
+note = "19 GB weights exceed the RTX 2000 Ada's 15.4 GB — partial CPU offload is EXPECTED on the strong PC; the MoE's ~3B active parameters should keep token rate workable, but MEASURE during smoke, do not assume. Status UNSELECTED; never auto-selected."
 
 [roles.grade_escalate_local]
 status = "UNSELECTED"

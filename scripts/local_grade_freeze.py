@@ -27,7 +27,14 @@ from pathlib import Path
 REPO = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(REPO))
 
+#: The ACTIVE experiment record — the output-contract phase (2026-08-28):
+#: structural DEV smoke + CALIBRATION quality under grade-v4-charitable-local.
 FREEZE_PATH = REPO / "evaluation" / "model_selection" / "experiments" / \
+    "LOCAL_GRADE_CONTRACT_FREEZE_2026-08-28.json"
+#: The COMPLETED FullDev phase (grade-v4-charitable, grade-bench-v2). Its
+#: record is immutable history; verify only its self-consistency, never
+#: "refresh" it against live code.
+HISTORICAL_FREEZE_PATH = REPO / "evaluation" / "model_selection" / "experiments" / \
     "LOCAL_GRADE_PRIMARY_FREEZE_2026-08-27.json"
 AUDIT_PATH = REPO / "evaluation" / "model_selection" / "runs" / "grade_primary" / \
     "CALIBRATION_AUDIT_2026-08-26.json"
@@ -56,13 +63,14 @@ def _git_head() -> str:
 def build_freeze() -> dict:
     """Assemble the freeze record from the repository's frozen artifacts."""
     from autograder.benchmark.manifests import load_manifest
+    from autograder.benchmark.registry import load_registry
     from autograder.benchmark.roles import GradeAdapter
-    from autograder.escalation import GradeResult, grade_system_for
+    from autograder.escalation import GRADE_VALIDATION_VERSION, GradeResult, grade_system_for
 
     manifest = load_manifest("grade_primary")
     ds_dir = REPO / "evaluation" / "model_selection" / "datasets" / "grade_primary"
 
-    prompt_version = "grade-v4-charitable"
+    prompt_version = "grade-v4-charitable-local"
     system = grade_system_for(prompt_version)
     schema = json.dumps(GradeResult.model_json_schema(), sort_keys=True)
 
@@ -97,22 +105,52 @@ def build_freeze() -> dict:
     audit_decisions = {c["case_id"]: c.get("human_decision") for c in audit["cases"]}
     evidence_review = sorted(cid for cid, d in audit_decisions.items() if d == "C")
 
+    # instructor-derived verdicts for the two smoke cases (structural smoke
+    # still records its targets, it just never makes a quality claim)
+    by_id = {c.case_id: c for c in manifest.cases}
+    smoke_verdicts = {c["case_id"]: by_id[c["case_id"]].label.get("explanation_verdict")
+                      for c in smoke["cases"]}
+
+    registry = load_registry()
+    local_candidates = list(registry.for_role("grade_primary_local").candidates)
+
+    cal_ids = [c["case_id"] for c in cal["cases"]]
+    audit_probe = _load(AUDIT_PATH)
+    c_decided = sorted(c["case_id"] for c in audit_probe["cases"]
+                       if c.get("human_decision") == "C")
+    strict_ids = [cid for cid in cal_ids if cid not in c_decided]
+
     doc = {
-        "experiment": "local_grade_primary",
-        "created_at": "2026-08-27",
-        "purpose": ("select the PRODUCTION local grading model on the frozen verdict "
-                    "benchmark; cloud-grader runs (grade-v3/v4, Sonnet/Gemini) are "
-                    "research baselines and do not select this model"),
+        "experiment": "local_grade_primary_output_contract",
+        "created_at": "2026-08-28",
+        "purpose": ("verify the LOCAL grader output contract structurally on the frozen "
+                    "two-case DEV smoke, then evaluate grading quality on the frozen "
+                    "CALIBRATION population. DEV was consumed for development by the "
+                    "completed FullDev phase and never again supports a quality claim; "
+                    "cloud-grader runs are research baselines and select nothing"),
         "git_commit": _git_head(),
         "target": "canonical explanation verdict via the production conversion "
                   "(reliability._verdict_from_score; imported by benchmark/verdicts.py)",
+        "ground_truth": ("actual instructor-assigned grades (final_labels.json, "
+                         "ground_truth_source=original_instructor_grade) + actual selection "
+                         "correctness + frozen production scoring policy. A/B/C/D human-audit "
+                         "decisions are diagnostic flags only and NEVER targets; no previous "
+                         "model output (Qwen/Gemini/Sonnet/Luna), model vote, or subjective "
+                         "ranking defines a target; no target reaches a model request"),
         "prompt_version": prompt_version,
         "prompt_sha256": hashlib.sha256(system.encode("utf-8")).hexdigest(),
         "schema_name": "GradeResult",
         "schema_sha256": hashlib.sha256(schema.encode("utf-8")).hexdigest(),
         "adapter_version": GradeAdapter.adapter_version,
+        "validation_version": GRADE_VALIDATION_VERSION,
         "max_tokens": GradeAdapter.default_max_tokens,
         "rag_policy": "RAG_DISABLED",
+        "candidates": local_candidates,
+        "candidates_note": ("qwen3.8:27b-q4_K_M was DROPPED by owner decision on 2026-08-28 "
+                            "after the FullDev report and may not run again; "
+                            "qwen3-vl:8b-instruct is a development candidate, not a winner; "
+                            "qwen3-vl:30b-a3b-instruct runs only if the structural smoke and "
+                            "the machine preflight pass"),
         "route_requirement": {
             "backend": "local only (ollama / local OpenAI-compatible); remote URLs "
                        "refused by cloudboundary.is_remote_route and the bench "
@@ -133,11 +171,29 @@ def build_freeze() -> dict:
             "smoke": {
                 "split": "DEV",
                 "case_ids": [c["case_id"] for c in smoke["cases"]],
+                "verdicts": smoke_verdicts,
                 "selection_sha256": smoke["selection_sha256"],
-                "note": "frozen pre-registered DEV smoke; first live execution of any candidate",
+                "note": ("frozen pre-registered DEV smoke — STRUCTURAL check only "
+                         "(schema, rubric_items population, exact evidence placement, "
+                         "invalid/zero routing, latency); NO quality claim is ever made "
+                         "from these two cases"),
             },
-            "dev_verdict": _population(dev, "DEV"),
-            "calibration_verdict_v4": _population(cal, "CALIBRATION"),
+            "dev_verdict": {**_population(dev, "DEV"),
+                            "note": ("COMPLETED population of the FullDev phase "
+                                     "(2026-08-27 freeze); retained for the record — this "
+                                     "experiment never reruns it and never claims quality "
+                                     "from DEV")},
+            "calibration_verdict_v4": {**_population(cal, "CALIBRATION"),
+                                       "note": "the QUALITY population of this experiment"},
+        },
+        "strict_metrics": {
+            "calibration_strict_case_ids": strict_ids,
+            "excluded": {cid: ("committed human-audit decision C: evidence/transcription "
+                               "issue — diagnostic row only; the actual instructor grade "
+                               "and the raw output are preserved, the target is NOT "
+                               "replaced by the C decision") for cid in c_decided},
+            "rule": ("strict model-quality denominators use calibration_strict_case_ids "
+                     "only; excluded cases still run for diagnostic completeness"),
         },
         "held_out": {
             "writers": list(HELD_OUT_WRITERS),
@@ -158,6 +214,14 @@ def build_freeze() -> dict:
                                       "repaired (scripts/calibration_audit_recompute.py); "
                                       "they still run, so the raw outputs exist either way"),
         },
+        "completed_history": {
+            "fulldev_freeze": "evaluation/model_selection/experiments/LOCAL_GRADE_PRIMARY_FREEZE_2026-08-27.json",
+            "fulldev_results": "evaluation/model_selection/runs/local_grade_primary/FULLDEV_2026-08-28.md",
+            "fulldev_audit": "evaluation/model_selection/runs/local_grade_primary/FULLDEV_AUDIT_2026-08-28.json",
+            "note": ("the FullDev phase ran grade-v4-charitable / grade-bench-v2 / "
+                     "grade-validation-v1 semantics; its artifacts are immutable and are "
+                     "never re-scored under this experiment's rules"),
+        },
         "runs_root": RUNS_ROOT_REL,
         "candidate_registry": "evaluation/model_selection/candidates.toml [roles.grade_primary_local]",
     }
@@ -176,9 +240,11 @@ def verify_freeze(freeze_path: Path = FREEZE_PATH) -> list[str]:
     frozen = _load(freeze_path)
     live = build_freeze()
     for key in ("prompt_version", "prompt_sha256", "schema_sha256", "adapter_version",
-                "max_tokens", "rag_policy"):
+                "validation_version", "max_tokens", "rag_policy", "candidates"):
         if frozen.get(key) != live.get(key):
             problems.append(f"{key}: frozen {frozen.get(key)!r} != live {live.get(key)!r}")
+    if frozen.get("strict_metrics") != live.get("strict_metrics"):
+        problems.append("strict_metrics changed (calibration strict ids / audit-C exclusions)")
     for key in ("inputs_sha256", "labels_sha256", "final_labels_sha256", "manifest_sha256"):
         if frozen["dataset"].get(key) != live["dataset"].get(key):
             problems.append(f"dataset.{key} changed since the freeze")
@@ -190,10 +256,10 @@ def verify_freeze(freeze_path: Path = FREEZE_PATH) -> list[str]:
             problems.append(f"populations.{pop}.selection_sha256 changed")
     if frozen["human_audit"]["decisions"] != live["human_audit"]["decisions"]:
         problems.append("human_audit.decisions differ from the saved audit artifact")
-    for cid in frozen["populations"]["dev_verdict"]["case_ids"] + \
-            frozen["populations"]["calibration_verdict_v4"]["case_ids"]:
-        if cid.split("_")[0] in HELD_OUT_WRITERS:
-            problems.append(f"HELD_OUT writer leaked into a frozen population: {cid}")
+    for pop in frozen["populations"].values():
+        for cid in pop["case_ids"]:
+            if cid.split("_")[0] in HELD_OUT_WRITERS:
+                problems.append(f"HELD_OUT writer leaked into a frozen population: {cid}")
     return problems
 
 
