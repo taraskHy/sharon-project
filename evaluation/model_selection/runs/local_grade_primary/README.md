@@ -2,6 +2,16 @@
 
 Result root for the LOCAL grade_primary benchmark. Experiment records:
 
+- **SEEN-46 diagnostic campaign** (2026-08-28):
+  `experiments/LOCAL_GRADE_PRIMARY_SEEN_46_CAMPAIGN_2026-08-28.json` — the
+  whole DEV (32) + CALIBRATION (14) splits, one candidate
+  (qwen3-vl:8b-instruct, grade-v4-charitable-local), model outputs FROZEN
+  (`SEEN46_MODEL_RUN_2026-08-28.*`, gate PASS, 46/46) and compared against a
+  blind independent human consensus via the `review46_app` website
+  (2 reviews/case + adjudication; instructor grade = reference source, not
+  infallible truth; every source preserved separately). Zero-leakage proof:
+  `SEEN46_LEAKAGE_VERIFICATION_2026-08-28.json`. HELD_OUT sealed.
+
 - **ACTIVE** (output-contract phase, 2026-08-28):
   `evaluation/model_selection/experiments/LOCAL_GRADE_CONTRACT_FREEZE_2026-08-28.json`
   — prompt `grade-v4-charitable-local` (v4 semantics verbatim + mechanical
