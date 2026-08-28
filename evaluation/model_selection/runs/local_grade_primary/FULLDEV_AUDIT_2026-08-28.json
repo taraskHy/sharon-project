@@ -1,0 +1,593 @@
+{
+ "artifact": "fulldev_zero_inference_audit",
+ "created_at": "2026-08-28",
+ "run_id": "dev__dev_verdict__all__qwen3-vl-8b-instruct__433146e4b1",
+ "candidate": "qwen3-vl:8b-instruct",
+ "method": {
+  "inference_calls": 0,
+  "cloud_calls": 0,
+  "held_out_calls": 0,
+  "spend_usd": 0.0,
+  "sources": [
+   "outputs.jsonl",
+   "scored.jsonl.json",
+   "frozen dataset (read-only)"
+  ],
+  "span_checks": "autograder.evidence.evidence_supported / normalize_for_evidence (the production matcher) + longest-common-substring in normalized space",
+  "classified_by": "Claude (owner-directed zero-inference audit, 2026-08-28); deterministic facts computed, categories are recorded judgement",
+  "ground_truth": "actual instructor grades only; A/B/C/D audit decisions used as flags only and never as targets; nothing relabelled"
+ },
+ "headline": {
+  "rubric_items_populated_in_any_output": 0,
+  "outputs_total": 26,
+  "evidence_failures": 25,
+  "failures_with_verbatim_span_inside_wrong_field": 25,
+  "evidence_length_violations": 20,
+  "category_counts": {
+   "RUBRIC_STRUCTURE_MISSING": 5,
+   "PARAPHRASED_INSTEAD_OF_EXACT_QUOTE": 19,
+   "WRONG_SOURCE_SPAN": 1
+  },
+  "verdict_error_tally": {
+   "model_too_generous": 2,
+   "rubric_instructor_practice_mismatch": 3,
+   "transcription_evidence_issue": 1,
+   "model_too_strict": 2
+  },
+  "validator_normalization_defects_found": 0,
+  "validator_change_justified": false
+ },
+ "evidence_failures": [
+  {
+   "case_id": "e002_q1_r2",
+   "category": "RUBRIC_STRUCTURE_MISSING",
+   "category_note": "the evidence field content IS an exact verbatim transcription span (only an 'R1: ' prefix added); the sole defect is structural — the span was never returned in rubric_items[].student_evidence, the one place the validator checks",
+   "raw_evidence_field": "R1: נשאר בתמונה רק התדרים הגבוהים",
+   "frozen_transcription": "נשאר בתמונה רק התדרים הגבוהים",
+   "validator_reasons": [
+    "credit awarded with no verified evidence span (no rubric item cites text that occurs in the transcription)"
+   ],
+   "rubric_items_returned": 0,
+   "verdict_correct": true,
+   "whole_field_minus_prefix_is_verbatim_span": true,
+   "verbatim_span_chars_inside_field": 29,
+   "deterministic_exact_span_could_have_been_quoted": true,
+   "span_evidence": "longest common contiguous substring with the transcription (production normalization) = 29 chars of 29"
+  },
+  {
+   "case_id": "e002_q1_r3",
+   "category": "PARAPHRASED_INSTEAD_OF_EXACT_QUOTE",
+   "category_note": "the evidence field is a prose justification (mostly English meta-commentary) wrapping quotes rather than an exact span; as submitted it can never verify, in any field",
+   "raw_evidence_field": "R1: The student's text states: \"העוצמה של הדרגות הגבוהות בפרמידה חזקה ביחס למקורי\" — this correctly identifies that high-frequency components (represented by 'הדרגות הגבוהות' in the pyramid) are emphasized relative to the original, which is the core idea of high-frequency emphasis sharpening. This matches the official solution's explanation that high frequencies are boosted while low frequencies remain unchanged. The student does not need to use the exact terminology of 'wavelet' or 'frequency bands' to earn full credit — the concept is present and specific to the question.",
+   "frozen_transcription": "העוצמה של הדרגות הגבוהות בפרמידה חזקה ביחס למקורי",
+   "validator_reasons": [
+    "evidence exceeds length limit",
+    "credit awarded with no verified evidence span (no rubric item cites text that occurs in the transcription)"
+   ],
+   "rubric_items_returned": 0,
+   "verdict_correct": true,
+   "whole_field_minus_prefix_is_verbatim_span": false,
+   "verbatim_span_chars_inside_field": 49,
+   "deterministic_exact_span_could_have_been_quoted": true,
+   "span_evidence": "longest common contiguous substring with the transcription (production normalization) = 49 chars of 49"
+  },
+  {
+   "case_id": "e002_q1_r4",
+   "category": "RUBRIC_STRUCTURE_MISSING",
+   "category_note": "the evidence field content IS an exact verbatim transcription span (only an 'R1: ' prefix added); the sole defect is structural — the span was never returned in rubric_items[].student_evidence, the one place the validator checks",
+   "raw_evidence_field": "R1: נשאר בתמונה רק התדרים הנמוכים",
+   "frozen_transcription": "נשאר בתמונה רק התדרים הנמוכים",
+   "validator_reasons": [
+    "credit awarded with no verified evidence span (no rubric item cites text that occurs in the transcription)"
+   ],
+   "rubric_items_returned": 0,
+   "verdict_correct": true,
+   "whole_field_minus_prefix_is_verbatim_span": true,
+   "verbatim_span_chars_inside_field": 29,
+   "deterministic_exact_span_could_have_been_quoted": true,
+   "span_evidence": "longest common contiguous substring with the transcription (production normalization) = 29 chars of 29"
+  },
+  {
+   "case_id": "e002_q1_r5",
+   "category": "RUBRIC_STRUCTURE_MISSING",
+   "category_note": "the evidence field content IS an exact verbatim transcription span (only an 'R1: ' prefix added); the sole defect is structural — the span was never returned in rubric_items[].student_evidence, the one place the validator checks",
+   "raw_evidence_field": "R1: מריחה בציר x עקב הקונבולוציה",
+   "frozen_transcription": "מריחה בציר x עקב הקונבולוציה",
+   "validator_reasons": [
+    "credit awarded with no verified evidence span (no rubric item cites text that occurs in the transcription)"
+   ],
+   "rubric_items_returned": 0,
+   "verdict_correct": false,
+   "whole_field_minus_prefix_is_verbatim_span": true,
+   "verbatim_span_chars_inside_field": 28,
+   "deterministic_exact_span_could_have_been_quoted": true,
+   "span_evidence": "longest common contiguous substring with the transcription (production normalization) = 28 chars of 28"
+  },
+  {
+   "case_id": "e002_q1_r6",
+   "category": "RUBRIC_STRUCTURE_MISSING",
+   "category_note": "the evidence field content IS an exact verbatim transcription span (only an 'R1: ' prefix added); the sole defect is structural — the span was never returned in rubric_items[].student_evidence, the one place the validator checks",
+   "raw_evidence_field": "R1: מריחה בציר y עקב הקונבולוציה",
+   "frozen_transcription": "מריחה בציר y עקב הקונבולוציה",
+   "validator_reasons": [
+    "credit awarded with no verified evidence span (no rubric item cites text that occurs in the transcription)"
+   ],
+   "rubric_items_returned": 0,
+   "verdict_correct": false,
+   "whole_field_minus_prefix_is_verbatim_span": true,
+   "verbatim_span_chars_inside_field": 28,
+   "deterministic_exact_span_could_have_been_quoted": true,
+   "span_evidence": "longest common contiguous substring with the transcription (production normalization) = 28 chars of 28"
+  },
+  {
+   "case_id": "e002_q1_r7",
+   "category": "PARAPHRASED_INSTEAD_OF_EXACT_QUOTE",
+   "category_note": "the evidence field is a prose justification (mostly English meta-commentary) wrapping quotes rather than an exact span; as submitted it can never verify, in any field",
+   "raw_evidence_field": "R1: The student states that 'הדרגה 0 שלה בהירה משמעותית מהתמונה המקורית' — which indicates that brightness is increased, but does not address the core point that histogram remains unchanged. The explanation is partially correct (brightness increases) but misses the key point about the histogram, which is required for full credit. Thus, it is partial.",
+   "frozen_transcription": "סה\"כ הפירמידה נראית תקינה. הדרגה 0 שלה בהירה משמעותית מהתמונה המקורית",
+   "validator_reasons": [
+    "evidence exceeds length limit",
+    "credit awarded with no verified evidence span (no rubric item cites text that occurs in the transcription)"
+   ],
+   "rubric_items_returned": 0,
+   "verdict_correct": false,
+   "whole_field_minus_prefix_is_verbatim_span": false,
+   "verbatim_span_chars_inside_field": 42,
+   "deterministic_exact_span_could_have_been_quoted": true,
+   "span_evidence": "longest common contiguous substring with the transcription (production normalization) = 42 chars of 69"
+  },
+  {
+   "case_id": "e002_q1_r8",
+   "category": "PARAPHRASED_INSTEAD_OF_EXACT_QUOTE",
+   "category_note": "the evidence field is a prose justification (mostly English meta-commentary) wrapping quotes rather than an exact span; as submitted it can never verify, in any field",
+   "raw_evidence_field": "R1: The student's text states: \"מבהיר את התמונה\" (brightens the image) and notes that \"האזורים הבהירים יותר נעשים יותר שינוי מהאזורים הכהים\" (bright areas change more than dark areas). This correctly identifies that the operation increases contrast, which aligns with the effect of multiplying pixel values by 2. However, the student does not explicitly identify which histogram (G) is the correct one, nor does the explanation fully establish the reasoning for why G is the correct histogram (e.g., no mention of stretching the histogram by a factor of 2 or the absence of zero-valued pixels). Thus, while the central idea is present, it is not fully established per the rubric's requirement to identify the correct histogram.",
+   "frozen_transcription": "בדומה לפעולה 7, מבהיר את התמונה אבל פה האיזורים הבהירים יותר נעשים יותר שינוי מהאזורים הכהים",
+   "validator_reasons": [
+    "evidence exceeds length limit",
+    "credit awarded with no verified evidence span (no rubric item cites text that occurs in the transcription)"
+   ],
+   "rubric_items_returned": 0,
+   "verdict_correct": true,
+   "whole_field_minus_prefix_is_verbatim_span": false,
+   "verbatim_span_chars_inside_field": 50,
+   "deterministic_exact_span_could_have_been_quoted": true,
+   "span_evidence": "longest common contiguous substring with the transcription (production normalization) = 50 chars of 92"
+  },
+  {
+   "case_id": "e002_q2_r1",
+   "category": "PARAPHRASED_INSTEAD_OF_EXACT_QUOTE",
+   "category_note": "the evidence field is a prose justification (mostly English meta-commentary) wrapping quotes rather than an exact span; as submitted it can never verify, in any field",
+   "raw_evidence_field": "R1: 'עבור גילוי שפות יהיה רוב התמונה ב0 ורק עבור שפות 255' — this correctly describes the binary output of the Canny edge detector, where non-edge pixels are 0 and edge pixels are 255, which is exactly what R1 requires: the student identifies the correct effect of the Canny detector on image pixel values.",
+   "frozen_transcription": "עבור גילוי שפות יהיה רוב התמונה ב0 ורק עבור שפות 255",
+   "validator_reasons": [
+    "evidence exceeds length limit",
+    "credit awarded with no verified evidence span (no rubric item cites text that occurs in the transcription)"
+   ],
+   "rubric_items_returned": 0,
+   "verdict_correct": true,
+   "whole_field_minus_prefix_is_verbatim_span": false,
+   "verbatim_span_chars_inside_field": 52,
+   "deterministic_exact_span_could_have_been_quoted": true,
+   "span_evidence": "longest common contiguous substring with the transcription (production normalization) = 52 chars of 52"
+  },
+  {
+   "case_id": "e002_q2_r2",
+   "category": "PARAPHRASED_INSTEAD_OF_EXACT_QUOTE",
+   "category_note": "the evidence field is a prose justification (mostly English meta-commentary) wrapping quotes rather than an exact span; as submitted it can never verify, in any field",
+   "raw_evidence_field": "R1: The student's text states: 'הטשטוש לפני מוביל לפחות שפות שמתגלות' — which correctly implies that blurring (Gaussian) causes some edges to disappear, making the Canny histogram have fewer pixels at 255, matching the official solution's reasoning. This directly supports the correct central idea for R1.",
+   "frozen_transcription": "בדומה לו, רק שהטשטוש לפני מוביל לפחות שפות שמתגלות",
+   "validator_reasons": [
+    "evidence exceeds length limit",
+    "credit awarded with no verified evidence span (no rubric item cites text that occurs in the transcription)"
+   ],
+   "rubric_items_returned": 0,
+   "verdict_correct": true,
+   "whole_field_minus_prefix_is_verbatim_span": false,
+   "verbatim_span_chars_inside_field": 36,
+   "deterministic_exact_span_could_have_been_quoted": true,
+   "span_evidence": "longest common contiguous substring with the transcription (production normalization) = 36 chars of 50"
+  },
+  {
+   "case_id": "e002_q2_r3",
+   "category": "PARAPHRASED_INSTEAD_OF_EXACT_QUOTE",
+   "category_note": "the evidence field is a prose justification (mostly English meta-commentary) wrapping quotes rather than an exact span; as submitted it can never verify, in any field",
+   "raw_evidence_field": "R1: The student's text 'פרעה אחידה של ההיסטוגרמה המקורית לאורך כל הטווח' correctly implies that histogram equalization spreads pixel values uniformly across the entire grayscale range — which is the central idea of histogram equalization. This matches the official solution's description that it attempts to make the histogram flat and use the full grayscale range. The student's wording is informal but meaningfully correct for the question.",
+   "frozen_transcription": "פרעה אחידה של ההיסטוגרמה המקורית לאורך כל הטווח",
+   "validator_reasons": [
+    "evidence exceeds length limit",
+    "credit awarded with no verified evidence span (no rubric item cites text that occurs in the transcription)"
+   ],
+   "rubric_items_returned": 0,
+   "verdict_correct": true,
+   "whole_field_minus_prefix_is_verbatim_span": false,
+   "verbatim_span_chars_inside_field": 47,
+   "deterministic_exact_span_could_have_been_quoted": true,
+   "span_evidence": "longest common contiguous substring with the transcription (production normalization) = 47 chars of 47"
+  },
+  {
+   "case_id": "e002_q2_r5",
+   "category": "WRONG_SOURCE_SPAN",
+   "category_note": "the central 'student quote' is official-solution content presented as student text, and the Hebrew quote misquotes the first word ('אחוזי' for 'אחיד')",
+   "raw_evidence_field": "R1: The student's text is partially correct in stating that 'Uniform Quantization divides the grayscale range into 20 equal bins,' but the phrase 'אחוזי מוביל לריווח אחיד בין הערכים שקיימים בכימוי' is unclear and contains grammatical errors. The student does not explicitly mention '20 bins' or 'equal intervals,' which are essential to the correct answer. The text is vague and does not fully establish the central idea required by R1.",
+   "frozen_transcription": "[לא קריא] אחיד מוביל לריווח אחיד בין הערכים שקיימים בכימוי",
+   "validator_reasons": [
+    "evidence exceeds length limit",
+    "credit awarded with no verified evidence span (no rubric item cites text that occurs in the transcription)"
+   ],
+   "rubric_items_returned": 0,
+   "verdict_correct": false,
+   "whole_field_minus_prefix_is_verbatim_span": false,
+   "verbatim_span_chars_inside_field": 44,
+   "deterministic_exact_span_could_have_been_quoted": true,
+   "span_evidence": "longest common contiguous substring with the transcription (production normalization) = 44 chars of 58"
+  },
+  {
+   "case_id": "e002_q2_r6",
+   "category": "PARAPHRASED_INSTEAD_OF_EXACT_QUOTE",
+   "category_note": "the evidence field is a prose justification (mostly English meta-commentary) wrapping quotes rather than an exact span; as submitted it can never verify, in any field",
+   "raw_evidence_field": "R1: The student states that the mask is 'המעכה זהה לסכימת תמונה זהה עם תנודה קלה' and that it 'תגרום להיסטוגרמה החדשה להיות קרובה להכפלה ב-2'. While the student correctly identifies that the mask produces an effect related to duplication (echo), they do not explicitly state that the output is a sum of the original image and a shifted version — which is the core mechanism of the echo mask. The phrase 'הכפלה ב-2' is imprecise and does not capture the pixel-wise summation required for the echo effect. Thus, the explanation contains relevant correct content but fails to fully establish the central answer.",
+   "frozen_transcription": "המעכה זהה לסכימת תמונה זהה עם תנודה קלה. מין תמונת echo כזאת תגרום להיסטוגרמה החדשה להיות קרובה להכפלה ב-2 [לא קריא]",
+   "validator_reasons": [
+    "evidence exceeds length limit",
+    "credit awarded with no verified evidence span (no rubric item cites text that occurs in the transcription)"
+   ],
+   "rubric_items_returned": 0,
+   "verdict_correct": false,
+   "whole_field_minus_prefix_is_verbatim_span": false,
+   "verbatim_span_chars_inside_field": 45,
+   "deterministic_exact_span_could_have_been_quoted": true,
+   "span_evidence": "longest common contiguous substring with the transcription (production normalization) = 45 chars of 116"
+  },
+  {
+   "case_id": "e002_q2_r7",
+   "category": "PARAPHRASED_INSTEAD_OF_EXACT_QUOTE",
+   "category_note": "the evidence field is a prose justification (mostly English meta-commentary) wrapping quotes rather than an exact span; as submitted it can never verify, in any field",
+   "raw_evidence_field": "R1: The student correctly states that the histogram is the same (\"צורדת ההיסטוגרמה זהה\") and that the pixel values are duplicated (\"הגדלים והכמויות הם פי 2, כי גודל התמונה הינו פי 2\") — which matches the official solution's claim that \"exactly the same gray levels\" appear but with pixel counts doubled. This directly addresses the core idea that concatenation with a horizontal flip does not change the histogram's shape but doubles the pixel count per gray level, which is the central correct idea for R1.",
+   "frozen_transcription": "צורדת ההיסטוגרמה זהה, אך הגדלים והכמויות הם פי 2, כי גודל התמונה הינו פי 2 עם אותה התפלגות",
+   "validator_reasons": [
+    "evidence exceeds length limit",
+    "credit awarded with no verified evidence span (no rubric item cites text that occurs in the transcription)"
+   ],
+   "rubric_items_returned": 0,
+   "verdict_correct": true,
+   "whole_field_minus_prefix_is_verbatim_span": false,
+   "verbatim_span_chars_inside_field": 49,
+   "deterministic_exact_span_could_have_been_quoted": true,
+   "span_evidence": "longest common contiguous substring with the transcription (production normalization) = 49 chars of 90"
+  },
+  {
+   "case_id": "e002_q2_r8",
+   "category": "RUBRIC_STRUCTURE_MISSING",
+   "category_note": "the evidence field content IS an exact verbatim transcription span (only an 'R1: ' prefix added); the sole defect is structural — the span was never returned in rubric_items[].student_evidence, the one place the validator checks",
+   "raw_evidence_field": "R1: כל ערך x בהיסטוגרמה ממופה ל2x בהיסטוגרמה החדשה",
+   "frozen_transcription": "כל ערך x בהיסטוגרמה ממופה ל2x בהיסטוגרמה החדשה",
+   "validator_reasons": [
+    "credit awarded with no verified evidence span (no rubric item cites text that occurs in the transcription)"
+   ],
+   "rubric_items_returned": 0,
+   "verdict_correct": true,
+   "whole_field_minus_prefix_is_verbatim_span": true,
+   "verbatim_span_chars_inside_field": 46,
+   "deterministic_exact_span_could_have_been_quoted": true,
+   "span_evidence": "longest common contiguous substring with the transcription (production normalization) = 46 chars of 46"
+  },
+  {
+   "case_id": "e003_q1_r1",
+   "category": "PARAPHRASED_INSTEAD_OF_EXACT_QUOTE",
+   "category_note": "the evidence field is a prose justification (mostly English meta-commentary) wrapping quotes rather than an exact span; as submitted it can never verify, in any field",
+   "raw_evidence_field": "R1: 'ניתן לראות ברמות התדרים הגבוהים שיש שפות בכיוון התנועה(הטשטוש)' — This correctly identifies that Motion Blur produces directional blurring (‘שפות בכיוון התנועה’) visible in high-frequency bands (‘ברמות התדרים הגבוהים’), which matches the official solution’s description of directional blur in 45-degree orientation. The student’s text directly addresses the core effect of Motion Blur as requested in the question.",
+   "frozen_transcription": "ניתן לראות ברמות התדרים הגבוהים שיש שפות בכיוון התנועה(הטשטוש)",
+   "validator_reasons": [
+    "evidence exceeds length limit",
+    "credit awarded with no verified evidence span (no rubric item cites text that occurs in the transcription)"
+   ],
+   "rubric_items_returned": 0,
+   "verdict_correct": true,
+   "whole_field_minus_prefix_is_verbatim_span": false,
+   "verbatim_span_chars_inside_field": 62,
+   "deterministic_exact_span_could_have_been_quoted": true,
+   "span_evidence": "longest common contiguous substring with the transcription (production normalization) = 62 chars of 62"
+  },
+  {
+   "case_id": "e003_q1_r4",
+   "category": "PARAPHRASED_INSTEAD_OF_EXACT_QUOTE",
+   "category_note": "the evidence field is a prose justification (mostly English meta-commentary) wrapping quotes rather than an exact span; as submitted it can never verify, in any field",
+   "raw_evidence_field": "R1: 'ניתן לראות שרק תדרים נמוכים נשמרו ולכן כל הרמות של התדרים הגבוהים מאופסות' — This directly communicates the core idea of a Low Pass Filter: it preserves low frequencies and attenuates (sets to zero) high frequencies. The student correctly identifies the effect on frequency components, which matches the official solution's description that 'only low frequencies remain' and 'high frequencies are zeroed'.",
+   "frozen_transcription": "ניתן לראות שרק תדרים נמוכים נשמרו ולכן כל הרמות של התדרים הגבוהים מאופסות",
+   "validator_reasons": [
+    "evidence exceeds length limit",
+    "credit awarded with no verified evidence span (no rubric item cites text that occurs in the transcription)"
+   ],
+   "rubric_items_returned": 0,
+   "verdict_correct": true,
+   "whole_field_minus_prefix_is_verbatim_span": false,
+   "verbatim_span_chars_inside_field": 73,
+   "deterministic_exact_span_could_have_been_quoted": true,
+   "span_evidence": "longest common contiguous substring with the transcription (production normalization) = 73 chars of 73"
+  },
+  {
+   "case_id": "e003_q1_r5",
+   "category": "PARAPHRASED_INSTEAD_OF_EXACT_QUOTE",
+   "category_note": "the evidence field is a prose justification (mostly English meta-commentary) wrapping quotes rather than an exact span; as submitted it can never verify, in any field",
+   "raw_evidence_field": "R1: The student's text states: \"הרעש והטשטוש שלו בכיוון ציר ה-x מובלט בתדרים הגבוהים\". This correctly identifies that the noise and blurring (caused by the Gaussian convolution) are directional (along the x-axis) and affect high frequencies — which aligns with the official solution's point that Gaussian convolution causes blurring along horizontal or vertical directions, thus affecting corresponding orientations. The student’s explanation, though brief and informal, correctly identifies the directional effect and its relation to frequency content, which is the central idea required by R1.",
+   "frozen_transcription": "הרעש והטשטוש שלו בכיוון ציר ה-x מובלט בתדרים הגבוהים",
+   "validator_reasons": [
+    "evidence exceeds length limit",
+    "credit awarded with no verified evidence span (no rubric item cites text that occurs in the transcription)"
+   ],
+   "rubric_items_returned": 0,
+   "verdict_correct": true,
+   "whole_field_minus_prefix_is_verbatim_span": false,
+   "verbatim_span_chars_inside_field": 52,
+   "deterministic_exact_span_could_have_been_quoted": true,
+   "span_evidence": "longest common contiguous substring with the transcription (production normalization) = 52 chars of 52"
+  },
+  {
+   "case_id": "e003_q1_r6",
+   "category": "PARAPHRASED_INSTEAD_OF_EXACT_QUOTE",
+   "category_note": "the evidence field is a prose justification (mostly English meta-commentary) wrapping quotes rather than an exact span; as submitted it can never verify, in any field",
+   "raw_evidence_field": "R1: The student's text states that 'הרעש והטשטוש שלו בכיוון ציר ה-y מובלט בתדרים הגבוהיים' — which correctly identifies that the noise and blurring along the y-axis (vertical direction) is emphasized at high frequencies. This aligns with the official solution's explanation that Gaussian convolution (in one dimension) causes blurring along the horizontal or vertical axis, and thus affects the corresponding orientations. The student’s statement, though brief and informal, correctly identifies the directional effect (y-axis) and its frequency-domain implication (high frequencies), which is the central correct idea required by R1.",
+   "frozen_transcription": "הרעש והטשטוש שלו בכיוון ציר ה-y מובלט בתדרים הגבוהיים",
+   "validator_reasons": [
+    "evidence exceeds length limit",
+    "credit awarded with no verified evidence span (no rubric item cites text that occurs in the transcription)"
+   ],
+   "rubric_items_returned": 0,
+   "verdict_correct": true,
+   "whole_field_minus_prefix_is_verbatim_span": false,
+   "verbatim_span_chars_inside_field": 53,
+   "deterministic_exact_span_could_have_been_quoted": true,
+   "span_evidence": "longest common contiguous substring with the transcription (production normalization) = 53 chars of 53"
+  },
+  {
+   "case_id": "e003_q1_r7",
+   "category": "PARAPHRASED_INSTEAD_OF_EXACT_QUOTE",
+   "category_note": "the evidence field is a prose justification (mostly English meta-commentary) wrapping quotes rather than an exact span; as submitted it can never verify, in any field",
+   "raw_evidence_field": "R1: The student's text 'הרמה העליונה שכוללת את DC בהירה יותר' suggests that brightness adjustment affects the image's intensity levels, which is partially correct. However, it does not address the core point of the rubric — that brightness adjustment does not change the histogram — and lacks specificity about the histogram being unaffected. Thus, it contains relevant correct content but does not fully establish the central answer.",
+   "frozen_transcription": "הרמה העליונה שכוללת את DC בהירה יותר",
+   "validator_reasons": [
+    "evidence exceeds length limit",
+    "credit awarded with no verified evidence span (no rubric item cites text that occurs in the transcription)"
+   ],
+   "rubric_items_returned": 0,
+   "verdict_correct": false,
+   "whole_field_minus_prefix_is_verbatim_span": false,
+   "verbatim_span_chars_inside_field": 36,
+   "deterministic_exact_span_could_have_been_quoted": true,
+   "span_evidence": "longest common contiguous substring with the transcription (production normalization) = 36 chars of 36"
+  },
+  {
+   "case_id": "e003_q1_r8",
+   "category": "PARAPHRASED_INSTEAD_OF_EXACT_QUOTE",
+   "category_note": "the evidence field is a prose justification (mostly English meta-commentary) wrapping quotes rather than an exact span; as submitted it can never verify, in any field",
+   "raw_evidence_field": "R1: The student's text states that 'ערכים בהירים יותר, נהיו יותר בהירים' — which correctly identifies that bright values become brighter, consistent with contrast stretching (which is what multiplying pixel values by 2 does). However, the explanation does not explicitly mention the histogram stretching or the specific histogram G that the official solution identifies as the correct one. It lacks the necessary specificity to fully establish the central answer as required by R1.",
+   "frozen_transcription": "ברמה העליונה שכוללת את DC ניתן לראות שערכים בהירים יותר, נהיו יותר בהירים",
+   "validator_reasons": [
+    "evidence exceeds length limit",
+    "credit awarded with no verified evidence span (no rubric item cites text that occurs in the transcription)"
+   ],
+   "rubric_items_returned": 0,
+   "verdict_correct": true,
+   "whole_field_minus_prefix_is_verbatim_span": false,
+   "verbatim_span_chars_inside_field": 35,
+   "deterministic_exact_span_could_have_been_quoted": true,
+   "span_evidence": "longest common contiguous substring with the transcription (production normalization) = 35 chars of 73"
+  },
+  {
+   "case_id": "e003_q2_r1",
+   "category": "PARAPHRASED_INSTEAD_OF_EXACT_QUOTE",
+   "category_note": "the evidence field is a prose justification (mostly English meta-commentary) wrapping quotes rather than an exact span; as submitted it can never verify, in any field",
+   "raw_evidence_field": "R1: The student's text states: 'כל פיקסלי השפות שנקלטו קיבלו  ערך 255 לעומת שאר הפיקסלים(הרוב)' — which correctly identifies that pixels identified as edges (שפות) are assigned value 255, while others are 0 (הרוב). This matches the official solution's description of Canny edge detection producing a binary image with 255 for edges and 0 elsewhere. The explanation is brief but fully establishes the central correct idea.",
+   "frozen_transcription": "כל פיקסלי השפות שנקלטו קיבלו  ערך 255 לעומת שאר הפיקסלים(הרוב)",
+   "validator_reasons": [
+    "evidence exceeds length limit",
+    "credit awarded with no verified evidence span (no rubric item cites text that occurs in the transcription)"
+   ],
+   "rubric_items_returned": 0,
+   "verdict_correct": true,
+   "whole_field_minus_prefix_is_verbatim_span": false,
+   "verbatim_span_chars_inside_field": 61,
+   "deterministic_exact_span_could_have_been_quoted": true,
+   "span_evidence": "longest common contiguous substring with the transcription (production normalization) = 61 chars of 61"
+  },
+  {
+   "case_id": "e003_q2_r2",
+   "category": "PARAPHRASED_INSTEAD_OF_EXACT_QUOTE",
+   "category_note": "the evidence field is a prose justification (mostly English meta-commentary) wrapping quotes rather than an exact span; as submitted it can never verify, in any field",
+   "raw_evidence_field": "R1: The student's text states: 'טשטוש הוריד רעש ולכן פחות פיקסלים נקלטו כשפה והערך 255 בהיסטוגרמה ירד'. This correctly identifies that blurring reduces noise and causes fewer pixels to be classified as edges, leading to a reduction in the number of pixels at value 255 in the histogram — which directly supports the official solution's reasoning that histogram C (with fewer pixels at 255) is appropriate. The explanation is brief but contains the central correct idea for the question.",
+   "frozen_transcription": "טשטוש הוריד רעש ולכן פחות פיקסלים נקלטו כשפה והערך 255 בהיסטוגרמה ירד",
+   "validator_reasons": [
+    "evidence exceeds length limit",
+    "credit awarded with no verified evidence span (no rubric item cites text that occurs in the transcription)"
+   ],
+   "rubric_items_returned": 0,
+   "verdict_correct": true,
+   "whole_field_minus_prefix_is_verbatim_span": false,
+   "verbatim_span_chars_inside_field": 69,
+   "deterministic_exact_span_could_have_been_quoted": true,
+   "span_evidence": "longest common contiguous substring with the transcription (production normalization) = 69 chars of 69"
+  },
+  {
+   "case_id": "e003_q2_r7",
+   "category": "PARAPHRASED_INSTEAD_OF_EXACT_QUOTE",
+   "category_note": "the evidence field is a prose justification (mostly English meta-commentary) wrapping quotes rather than an exact span; as submitted it can never verify, in any field",
+   "raw_evidence_field": "R1: The student states: \"הוכפל מספר הפיקסלים בכל התמונה פי 2 והוכפל מספר הפיקסלים בכל ערך\" — this correctly identifies that concatenating the original image with its horizontal flip doubles the number of pixels and thus doubles the pixel count per gray level value, which is the core idea needed to explain why the histogram remains unchanged (as per the official solution). The student’s text, though brief and informal, communicates the central correct idea.",
+   "frozen_transcription": "הוכפל מספר הפיקסלים בכל התמונה פי 2 והוכפל מספר הפיקסלים בכל ערך",
+   "validator_reasons": [
+    "evidence exceeds length limit",
+    "credit awarded with no verified evidence span (no rubric item cites text that occurs in the transcription)"
+   ],
+   "rubric_items_returned": 0,
+   "verdict_correct": true,
+   "whole_field_minus_prefix_is_verbatim_span": false,
+   "verbatim_span_chars_inside_field": 64,
+   "deterministic_exact_span_could_have_been_quoted": true,
+   "span_evidence": "longest common contiguous substring with the transcription (production normalization) = 64 chars of 64"
+  },
+  {
+   "case_id": "e003_q2_r8",
+   "category": "PARAPHRASED_INSTEAD_OF_EXACT_QUOTE",
+   "category_note": "the evidence field is a prose justification (mostly English meta-commentary) wrapping quotes rather than an exact span; as submitted it can never verify, in any field",
+   "raw_evidence_field": "R1: The student's text states: \"ניתן לראות שמספר הפיקסלים בכל עוצמה הוזז ימינה באותו מרחק שהיה במקור.\" This correctly describes the histogram stretching to the right by a factor of 2, which is the expected effect of multiplying pixel values by 2 (contrast enhancement). The student identifies the correct directional change (rightward shift) and implies the scaling factor (same distance as original), which matches the core concept of R1. No span from the official solution or course context is needed — the student’s own words carry the credited idea.",
+   "frozen_transcription": "ניתן לראות שמספר הפיקסלים בכל עוצמה הוזז ימינה באותו מרחק שהיה במקור.",
+   "validator_reasons": [
+    "evidence exceeds length limit",
+    "credit awarded with no verified evidence span (no rubric item cites text that occurs in the transcription)"
+   ],
+   "rubric_items_returned": 0,
+   "verdict_correct": true,
+   "whole_field_minus_prefix_is_verbatim_span": false,
+   "verbatim_span_chars_inside_field": 69,
+   "deterministic_exact_span_could_have_been_quoted": true,
+   "span_evidence": "longest common contiguous substring with the transcription (production normalization) = 69 chars of 69"
+  },
+  {
+   "case_id": "e007_q1_r1",
+   "category": "PARAPHRASED_INSTEAD_OF_EXACT_QUOTE",
+   "category_note": "the evidence field is a prose justification (mostly English meta-commentary) wrapping quotes rather than an exact span; as submitted it can never verify, in any field",
+   "raw_evidence_field": "R1: The student's text mentions 'שכבות של הגלים' and 'מתיחה', which suggests an awareness of frequency components and blurring effects. However, the explanation is vague and does not clearly identify Motion Blur as directional blur along 45 degrees or distinguish it from Gaussian blur. The student does not explicitly connect the observation to the correct answer (e.g., identifying the correct histogram or explaining why it corresponds to Motion Blur). Thus, while there is relevant correct content, the central answer is not fully established.",
+   "frozen_transcription": "ניתן לראות כי בשכבות של הגלים הם לא שומרים את אותה תוצאה עבור התמונה ניתן לראות שיש סוג של מתיחה",
+   "validator_reasons": [
+    "evidence exceeds length limit",
+    "credit awarded with no verified evidence span (no rubric item cites text that occurs in the transcription)"
+   ],
+   "rubric_items_returned": 0,
+   "verdict_correct": false,
+   "whole_field_minus_prefix_is_verbatim_span": false,
+   "verbatim_span_chars_inside_field": 14,
+   "deterministic_exact_span_could_have_been_quoted": true,
+   "span_evidence": "longest common contiguous substring with the transcription (production normalization) = 14 chars of 96"
+  }
+ ],
+ "verdict_errors": [
+  {
+   "case_id": "e002_q1_r5",
+   "direction": "harmful_upgrade",
+   "instructor_derived_verdict": "partially_valid",
+   "model_verdict": "valid",
+   "frozen_transcription": "מריחה בציר x עקב הקונבולוציה",
+   "model_score": 4.0,
+   "model_evidence_field": "R1: מריחה בציר x עקב הקונבולוציה",
+   "classification": "model_too_generous",
+   "rationale": "one-clause answer 'מריחה בציר x עקב הקונבולוציה' credited FULL; the instructor gave 2/4 (the operation also adds Gaussian noise, and the consequence for the decomposition is not established). Correct-direction but incomplete should have stayed partial. Note: the pack's official text for ops 5/6 covers only the convolution half of the operation.",
+   "relabelled": false
+  },
+  {
+   "case_id": "e002_q1_r6",
+   "direction": "harmful_upgrade",
+   "instructor_derived_verdict": "partially_valid",
+   "model_verdict": "valid",
+   "frozen_transcription": "מריחה בציר y עקב הקונבולוציה",
+   "model_score": 4.0,
+   "model_evidence_field": "R1: מריחה בציר y עקב הקונבולוציה",
+   "classification": "model_too_generous",
+   "rationale": "identical to e002_q1_r5 with the y axis.",
+   "relabelled": false
+  },
+  {
+   "case_id": "e002_q1_r7",
+   "direction": "harmful_downgrade",
+   "instructor_derived_verdict": "valid",
+   "model_verdict": "partially_valid",
+   "frozen_transcription": "סה\"כ הפירמידה נראית תקינה. הדרגה 0 שלה בהירה משמעותית מהתמונה המקורית",
+   "model_score": 2.0,
+   "model_evidence_field": "R1: The student states that 'הדרגה 0 שלה בהירה משמעותית מהתמונה המקורית' — which indicates that brightness is increased, but does not address the core point that histogram remains unchanged. The explanation is partially correct (brightness increases) but misses the key point about the histogram, which is required for full credit. Thus, it is partial.",
+   "classification": "rubric_instructor_practice_mismatch",
+   "rationale": "Q1 is the frequency-decomposition question, and the instructor accepted 'level 0 is significantly brighter' as full; but the pack's official text for op 7 is histogram-flavored ('does not change the histogram'), and the model faithfully demanded that clause. The official-solution mapping for q1 op 7 deserves an owner review (key provenance: model-parsed key).",
+   "relabelled": false
+  },
+  {
+   "case_id": "e002_q2_r4",
+   "direction": "harmful_downgrade",
+   "instructor_derived_verdict": "valid",
+   "model_verdict": "invalid",
+   "frozen_transcription": "[לא קריא] אופטימלי, מוביל ל[לא קריא] אופטימלים משמע כולם משומשים בכמות יחסית אחידה",
+   "model_score": 0.0,
+   "model_evidence_field": null,
+   "classification": "transcription_evidence_issue",
+   "rationale": "the frozen transcription carries two '[לא קריא]' (illegible) gaps; the legible remainder ('optimal … all bins used in relatively uniform quantity') was enough for the instructor's 4/4, but the model saw a damaged text and gave 0. SYSTEM FINDING: a 0-score output demands no evidence grounding, so this wrong zero was the run's ONLY AUTO decision — the sole auto-finalized result is a harmful downgrade.",
+   "relabelled": false
+  },
+  {
+   "case_id": "e002_q2_r5",
+   "direction": "harmful_downgrade",
+   "instructor_derived_verdict": "valid",
+   "model_verdict": "partially_valid",
+   "frozen_transcription": "[לא קריא] אחיד מוביל לריווח אחיד בין הערכים שקיימים בכימוי",
+   "model_score": 2.0,
+   "model_evidence_field": "R1: The student's text is partially correct in stating that 'Uniform Quantization divides the grayscale range into 20 equal bins,' but the phrase 'אחוזי מוביל לריווח אחיד בין הערכים שקיימים בכימוי' is unclear and contains grammatical errors. The student does not explicitly mention '20 bins' or 'equal intervals,' which are essential to the correct answer. The text is vague and does not fully establish the central idea required by R1.",
+   "classification": "model_too_strict",
+   "rationale": "the model demanded explicit '20 bins'/'equal intervals' terminology; the instructor credited the informal central idea 'אחיד מוביל לריווח אחיד' in full. Secondary flag: one '[לא קריא]' gap in the transcription.",
+   "relabelled": false
+  },
+  {
+   "case_id": "e002_q2_r6",
+   "direction": "harmful_downgrade",
+   "instructor_derived_verdict": "valid",
+   "model_verdict": "partially_valid",
+   "frozen_transcription": "המעכה זהה לסכימת תמונה זהה עם תנודה קלה. מין תמונת echo כזאת תגרום להיסטוגרמה החדשה להיות קרובה להכפלה ב-2 [לא קריא]",
+   "model_score": 2.0,
+   "model_evidence_field": "R1: The student states that the mask is 'המעכה זהה לסכימת תמונה זהה עם תנודה קלה' and that it 'תגרום להיסטוגרמה החדשה להיות קרובה להכפלה ב-2'. While the student correctly identifies that the mask produces an effect related to duplication (echo), they do not explicitly state that the output is a sum of the original image and a shifted version — which is the core mechanism of the echo mask. The phrase 'הכפלה ב-2' is imprecise and does not capture the pixel-wise summation required for the echo effect. Thus, the explanation contains relevant correct content but fails to fully establish the central answer.",
+   "classification": "model_too_strict",
+   "rationale": "the model claimed the student 'does not explicitly state that the output is a sum of the original image and a shifted version' — but the student wrote exactly that, informally: 'סכימת תמונה זהה עם תנודה קלה' (a Hebrew comprehension miss).",
+   "relabelled": false
+  },
+  {
+   "case_id": "e003_q1_r7",
+   "direction": "harmful_downgrade",
+   "instructor_derived_verdict": "valid",
+   "model_verdict": "partially_valid",
+   "frozen_transcription": "הרמה העליונה שכוללת את DC בהירה יותר",
+   "model_score": 2.0,
+   "model_evidence_field": "R1: The student's text 'הרמה העליונה שכוללת את DC בהירה יותר' suggests that brightness adjustment affects the image's intensity levels, which is partially correct. However, it does not address the core point of the rubric — that brightness adjustment does not change the histogram — and lacks specificity about the histogram being unaffected. Thus, it contains relevant correct content but does not fully establish the central answer.",
+   "classification": "rubric_instructor_practice_mismatch",
+   "rationale": "same shape as e002_q1_r7: instructor accepted 'the top level, which includes DC, is brighter'; the pack's histogram-flavored official text made the model demand a histogram clause.",
+   "relabelled": false
+  },
+  {
+   "case_id": "e007_q1_r1",
+   "direction": "harmful_downgrade",
+   "instructor_derived_verdict": "valid",
+   "model_verdict": "partially_valid",
+   "frozen_transcription": "ניתן לראות כי בשכבות של הגלים הם לא שומרים את אותה תוצאה עבור התמונה ניתן לראות שיש סוג של מתיחה",
+   "model_score": 2.0,
+   "model_evidence_field": "R1: The student's text mentions 'שכבות של הגלים' and 'מתיחה', which suggests an awareness of frequency components and blurring effects. However, the explanation is vague and does not clearly identify Motion Blur as directional blur along 45 degrees or distinguish it from Gaussian blur. The student does not explicitly connect the observation to the correct answer (e.g., identifying the correct histogram or explaining why it corresponds to Motion Blur). Thus, while there is relevant correct content, the central answer is not fully established.",
+   "classification": "rubric_instructor_practice_mismatch",
+   "rationale": "borderline, leaning genuinely ambiguous: instructor practice credited 'יש סוג של מתיחה' (a kind of stretching) as full for Motion Blur; judged against the literal official text (directional blur at 45°) the answer is loose. Instructor practice more lenient than the encoded solution.",
+   "relabelled": false
+  }
+ ],
+ "trivial_baseline": {
+  "baseline": "always-valid verdict on every derivable case",
+  "verdict_accuracy": {
+   "baseline_pct": 84.62,
+   "model_pct": 69.23,
+   "model_minus_baseline_pts": -15.39
+  },
+  "balanced_accuracy": {
+   "baseline": 0.5,
+   "model": 0.6137
+  },
+  "macro_f1_supported_classes": {
+   "baseline": 0.4583,
+   "model": 0.5818
+  },
+  "harmful_errors": {
+   "baseline": {
+    "upgrades": 4,
+    "downgrades": 0
+   },
+   "model": {
+    "upgrades": 2,
+    "downgrades": 6
+   }
+  },
+  "end_to_end_full_system": {
+   "baseline_exact_pct": 87.5,
+   "model_exact_pct": 75.0,
+   "baseline_mae": 0.25,
+   "model_mae": 0.5625
+  },
+  "honest_reading": "The 8B is WORSE than the trivial always-valid baseline on raw verdict accuracy (69.23% vs 84.62%), on end-to-end exact match (75.0% vs 87.5%), and on MAE (0.5625 vs 0.25). It beats the baseline only on balanced accuracy (0.6137 vs 0.5) and macro-F1 (0.5818 vs 0.4583), by recovering 2 of 4 partially_valid cases — at the cost of 6 harmful downgrades the baseline cannot make. 69.2% must not be read as strong: exceeding 50% is meaningless here, and the class-blind baseline beats it on every unbalanced metric."
+ }
+}

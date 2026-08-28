@@ -1,0 +1,11 @@
+{
+ "rows_before": 146,
+ "rows_after": 148,
+ "cost_before": 0.47169,
+ "run_cost": 0,
+ "cost_after": 0.47169,
+ "run_calls": 0,
+ "run_cache_hits": 0,
+ "by_model": {},
+ "by_task": {}
+}
