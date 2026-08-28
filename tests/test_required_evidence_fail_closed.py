@@ -11,8 +11,13 @@ span at all, and every one was AUTO.
 
 The rule now: under ``evidence_policy="required"``, credit must rest on at
 least one VERIFIED span, unless a credited item's spec explicitly opted out.
-Awarding nothing (score 0) demands no grounding — the grader is explaining an
-absence, not asserting merit.
+
+Since grade-validation-v2 (2026-08-28) the zero side is symmetric: a zero on
+NON-EMPTY text is an assertion of demerit and must also rest on a verified
+span (normally a ``met=false`` entry citing the wrong/contradictory claim) —
+the FullDev run's only AUTO decision was an ungrounded zero that undergraded
+a full-credit answer. A zero on BLANK text still demands no grounding: the
+grader is explaining an absence.
 
 Generic by construction: nothing here mentions a vendor.
 
@@ -99,13 +104,23 @@ def test_a_pack_with_no_rubric_items_cannot_be_held_to_the_rule():
     assert _decide(GradeResult(score=4.0), bare) == "AUTO"
 
 
-def test_awarding_nothing_needs_no_grounding():
-    """A zero is an explanation of absence, not an assertion of merit."""
-    g = GradeResult(score=0.0, rubric_items=[{"id": "R1", "met": False}])
-    assert _decide(g, _pack()) == "AUTO"
-    v = validate_evidence(credited=[], transcription=TRANSCRIPTION,
-                          policy="required", credit_awarded=False)
-    assert v.ok and v.ungrounded_credit is False
+def test_awarding_nothing_on_non_empty_text_needs_symmetric_grounding():
+    """grade-validation-v2: a zero on NON-EMPTY text asserts DEMERIT and is
+    grounded exactly like credit; a zero on blank text still explains an
+    absence and needs no grounding."""
+    ungrounded = GradeResult(score=0.0, rubric_items=[{"id": "R1", "met": False}])
+    assert _decide(ungrounded, _pack()) == "REVIEW"
+    grounded = GradeResult(score=0.0, rubric_items=[
+        {"id": "R1", "met": False, "student_evidence": SPAN}])
+    assert _decide(grounded, _pack()) == "AUTO"
+    # blank text: unchanged — the deterministic upstream path owns it
+    v = validate_grade(GradeResult(score=0.0), _pack(), selection_correct=None,
+                       selected=None, transcription="")
+    assert v.ok
+    # and the CREDIT-side helper semantics are untouched: score 0 asserts no merit
+    v2 = validate_evidence(credited=[], transcription=TRANSCRIPTION,
+                           policy="required", credit_awarded=False)
+    assert v2.ok and v2.ungrounded_credit is False
 
 
 # ------------------------------------------- 3. optional policy still permits

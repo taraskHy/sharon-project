@@ -304,4 +304,6 @@ def test_the_prompt_version_is_declared_consistently():
 
 
 def test_the_adapter_version_moved_with_the_scoring_semantics():
-    assert GradeAdapter.adapter_version == "grade-bench-v2"
+    # v3 (2026-08-28): grade-validation-v2 changed AUTO/REVIEW semantics
+    # (zero-side grounding) and GradeResult forbids extra fields
+    assert GradeAdapter.adapter_version == "grade-bench-v3"

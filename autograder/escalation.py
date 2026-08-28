@@ -25,9 +25,9 @@ import re
 from dataclasses import dataclass, field
 from typing import Literal, Optional
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, ConfigDict, Field
 
-from .evidence import CreditedItem, validate_evidence
+from .evidence import CreditedItem, validate_evidence, validate_invalid_grounding
 from .gradingpack import QuestionGradingPack
 from .signals import (OCR_UNRESOLVED as OCR_UNRESOLVED_, DecisionSignals, GradingSignals,
                       OCRSignals, grade_status_from, ocr_status_from)
@@ -276,19 +276,31 @@ def escalate_ocr(*, transcription: str, crop_png_b64: str | None, gateway=None,
 
 
 class RubricItemGrade(BaseModel):
-    """One rubric item's verdict WITH the span it rests on."""
+    """One rubric item's verdict WITH the span it rests on.
+
+    ``extra="forbid"`` (2026-08-28): a grader that invents fields is
+    malformed, not creatively helpful — under Ollama's json_schema decoding it
+    also constrains generation (additionalProperties: false), so the local
+    model cannot wander outside the contract in the first place.
+    """
+
+    model_config = ConfigDict(extra="forbid")
 
     id: str
     met: bool
     student_evidence: Optional[str] = Field(
         default=None,
-        description=("A SHORT span copied verbatim from the student transcription that "
-                     "supports met=true. null when the item is not met (or when the "
-                     "rubric declares this item needs no quoted span)."))
+        description=("A SHORT span copied verbatim from the student transcription: for "
+                     "met=true, the text the credit rests on; for a zero-quality "
+                     "(invalid) judgement, the span carrying the wrong, contradictory "
+                     "or irrelevant claim (normally with met=false). null when no "
+                     "quoted span is required."))
 
 
 class GradeResult(BaseModel):
     """Routine grader output — deliberately tiny."""
+
+    model_config = ConfigDict(extra="forbid")
 
     score: float
     rubric_items: list[RubricItemGrade] = Field(default_factory=list)
@@ -471,12 +483,60 @@ GRADE_SYSTEM_V4_CHARITABLE = (
     "are uncertain instead. Reply with ONLY the JSON object."
 )
 
+#: grade-v4-charitable-local (2026-08-28). The SAME charitable grading
+#: semantics as grade-v4-charitable — the v4 text is included verbatim below,
+#: unmodified — plus a mechanical OUTPUT CONTRACT for small LOCAL models.
+#:
+#: Why: the 2026-08-28 FullDev audit of qwen3-vl:8b-instruct found the model
+#: returned ``rubric_items: []`` in 26/26 outputs and wrote an "R1:"-prefixed
+#: quote-plus-essay into the free-text ``evidence`` field instead — in 25/25
+#: evidence failures a verbatim transcription span was PRESENT but in the
+#: wrong place, so every credit-awarding output failed the grounding gate.
+#: The contract states, mechanically, where each thing goes. It adds no
+#: grading rule, no benchmark content, no example answers.
+LOCAL_OUTPUT_CONTRACT = (
+    "OUTPUT CONTRACT (structured JSON, applied mechanically):\n"
+    "- Return ONLY the JSON object. No markdown, no surrounding text.\n"
+    "- `rubric_items` is the ONLY place a judgement may cite student text. "
+    "For every rubric item you judge, return one entry with `id`, `met` and "
+    "`student_evidence`. `id` must be one of the allowed rubric item ids "
+    "shown with the question; never invent an id and never repeat an id.\n"
+    "- Whenever `score` is above zero, `rubric_items` must NOT be empty: "
+    "every credited item needs an entry with met=true whose "
+    "`student_evidence` is ONE exact contiguous substring copied "
+    "character-for-character from the student transcription, at most 200 "
+    "characters. Copy it exactly: no paraphrase, no translation, no "
+    "correction, no added words, no quotation marks of your own, no "
+    "commentary around it.\n"
+    "- When `score` is zero and the transcription is not empty, ground the "
+    "negative judgement the same way: return the relevant rubric item with "
+    "met=false and `student_evidence` set to the exact substring that "
+    "carries the wrong, contradictory or irrelevant claim.\n"
+    "- `student_evidence` must come from the student transcription ONLY. "
+    "Text from the official solution, the rubric, the question, or any "
+    "course context is never student evidence.\n"
+    "- The top-level `evidence` field is NOT for grading text: leave it "
+    "null. Put no reasoning, justification, quotation or commentary there "
+    "or anywhere else — the JSON carries only the score, the rubric "
+    "entries, the copied spans and the `uncertain` flag.\n"
+    "- If your judgement deserves credit (or a grounded zero) but you "
+    "cannot copy an exact supporting substring, do NOT fabricate one: set "
+    "uncertain=true, still return the score your judgement supports, and "
+    "leave `student_evidence` null — the system routes the case to human "
+    "review.\n"
+    "The grading semantics above are unchanged: judge the meaning, not the "
+    "wording."
+)
+
+GRADE_SYSTEM_V4_CHARITABLE_LOCAL = GRADE_SYSTEM_V4_CHARITABLE + "\n\n" + LOCAL_OUTPUT_CONTRACT
+
 #: Every grading prompt version, by name. Historical versions stay verbatim so
 #: an old run's artifacts can still be reproduced from its recorded
 #: ``prompt_version``; nothing here is ever edited in place.
 GRADE_SYSTEM_BY_VERSION: dict[str, str] = {
     "grade-v3": GRADE_SYSTEM_V3,
     "grade-v4-charitable": GRADE_SYSTEM_V4_CHARITABLE,
+    "grade-v4-charitable-local": GRADE_SYSTEM_V4_CHARITABLE_LOCAL,
 }
 
 #: The version production and the benchmark both use right now.
@@ -565,6 +625,16 @@ class GradeValidation:
     invariants: Optional[dict] = None     # invariants.InvariantReport.as_dict()
 
 
+#: Shared validation semantics version, recorded in experiment freezes.
+#: v1 (2026-08-25): credit-side fail-closed grounding (ungrounded_credit).
+#: v2 (2026-08-28): symmetric zero-side grounding (an invalid verdict on
+#: non-empty text must cite a verified span or route to review), unknown /
+#: duplicate rubric ids checked over EVERY structured entry (not just the
+#: credited ones), and every non-empty cited span is verified whichever
+#: ``met`` flag it sits under.
+GRADE_VALIDATION_VERSION = "grade-validation-v2"
+
+
 def validate_grade(g: GradeResult, pack: QuestionGradingPack, *, selection_correct: bool | None,
                    selected: str | None, transcription: str | None = None) -> GradeValidation:
     """Deterministic validation of ONE grader output.
@@ -580,9 +650,21 @@ def validate_grade(g: GradeResult, pack: QuestionGradingPack, *, selection_corre
     if not (0 <= g.score <= pack.max_score):
         p.append(f"score {g.score} outside 0..{pack.max_score}")
     allowed = set(pack.rubric_item_ids())
-    bad = [r for r in g.met_ids() if r not in allowed]
+    # every structured entry and every legacy id — an un-met entry with an
+    # invented id is exactly as malformed as a credited one
+    all_ids = [i.id for i in g.rubric_items] + list(g.rubric_items_met)
+    bad = sorted({r for r in all_ids if r not in allowed})
     if allowed and bad:
         p.append(f"unknown rubric ids {bad}")
+    dupes = sorted({i for i in (x.id for x in g.rubric_items)
+                    if [x.id for x in g.rubric_items].count(i) > 1})
+    if dupes:
+        p.append(f"rubric ids listed more than once: {dupes}")
+    # legacy-credit vs structured met=false is an internal contradiction, not
+    # "one claim" — refuse instead of silently discarding either side
+    contra = sorted({i.id for i in g.rubric_items if not i.met} & set(g.rubric_items_met))
+    if contra:
+        p.append(f"rubric ids credited in the legacy field but met=false in rubric_items: {contra}")
     if g.uncertain:
         p.append("grader reported uncertainty")
     if g.evidence and len(g.evidence) > 220:
@@ -593,15 +675,69 @@ def validate_grade(g: GradeResult, pack: QuestionGradingPack, *, selection_corre
     if pack.grading_policy == "choice_only" and g.met_ids():
         p.append("rubric items on a choice_only question")
 
+    # An unknown evidence policy must FAIL CLOSED: every grounding rule below
+    # is keyed on the exact policy string, so a typo ("Required") would
+    # otherwise disable all of them silently (reviewer-confirmed, 2026-08-28).
+    if pack.evidence_policy not in ("required", "optional", "disabled"):
+        p.append(f"unknown evidence_policy {pack.evidence_policy!r} "
+                 "(expected required | optional | disabled) — failing closed")
+
+    # The PRODUCTION verdict decides which grounding rule applies. Branching
+    # on `score > 0` left an epsilon seam: any score in (0, 0.001*max] is
+    # still an 'invalid' verdict downstream but validated as credit
+    # (reviewer-confirmed). Lazy import — reliability imports this module.
+    from .reliability import _verdict_from_score
+    zero_credit = _verdict_from_score(g.score, pack.max_score) == "invalid"
+
     ev = validate_evidence(credited=g.credited(), transcription=transcription,
                            specs=pack.rubric_specs(), policy=pack.evidence_policy,
-                           # a positive score IS the assertion of merit that
-                           # `evidence_policy=required` demands be grounded
-                           credit_awarded=g.score > 0)
-    p.extend(ev.problems)
+                           # a non-invalid VERDICT is the assertion of merit
+                           # that `evidence_policy=required` demands be grounded
+                           credit_awarded=not zero_credit)
+    evidence_problems = list(ev.problems)
+    evd = ev.as_dict()
+
+    if pack.evidence_policy == "required" and pack.rubric_specs():
+        if not zero_credit:
+            # every cited span is verified, whichever `met` flag it sits under:
+            # a fabricated "negative" span is still a fabrication
+            from .evidence import evidence_supported
+            credited_ids = {c.id for c in g.credited()}
+            for item in g.rubric_items:
+                text = (item.student_evidence or "").strip()
+                if not text or item.id in credited_ids:
+                    continue
+                if transcription is not None and not evidence_supported(text, transcription):
+                    evidence_problems.append(
+                        f"rubric item {item.id} cites evidence absent from the "
+                        f"student transcription: {text[:60]!r}")
+                    evd["fabricated"] = sorted(set(evd["fabricated"]) | {item.id})
+        elif transcription is None:
+            # unavailable is NOT blank: a zero that cannot be verified must
+            # not auto-finalize (blank text is the empty-string case below)
+            evidence_problems.append(
+                "zero-quality verdict cannot be verified: no transcription available")
+            evd["ungrounded_invalid"] = True
+        elif transcription.strip():
+            # the symmetric zero-side rule
+            zg = validate_invalid_grounding(items=g.rubric_items,
+                                            transcription=transcription)
+            evidence_problems.extend(zg.problems)
+            evd["ungrounded_invalid"] = zg.ungrounded_invalid
+            evd["checked"] += zg.checked
+            evd["verified"] = sorted(set(evd["verified"]) | set(zg.verified))
+            evd["fabricated"] = sorted(set(evd["fabricated"]) | set(zg.fabricated))
+            if g.rubric_items_met:
+                evidence_problems.append(
+                    "zero-quality verdict credits legacy rubric ids "
+                    f"{sorted(set(g.rubric_items_met))} — internally contradictory")
+
+    p.extend(evidence_problems)
+    evd["problems"] = evidence_problems
+    evd["ok"] = not evidence_problems
     inv = check_question_invariants(g, pack)
     p.extend(inv.problems)
-    return GradeValidation(not p, p, ev.as_dict(), inv.as_dict())
+    return GradeValidation(not p, p, evd, inv.as_dict())
 
 
 @dataclass

@@ -381,7 +381,12 @@ def pack_from_inputs(p: dict):
 
 
 class GradeAdapter:
-    adapter_version = "grade-bench-v2"  # verdict target (scoring semantics)
+    #: v2: verdict target (scoring semantics). v3 (2026-08-28): shared
+    #: validation moved to grade-validation-v2 (zero-side grounding, full
+    #: structural id checks) and GradeResult forbids extra fields — decision
+    #: (AUTO/REVIEW) semantics of scored rows changed, so runs are not
+    #: comparable across the bump.
+    adapter_version = "grade-bench-v3"
     #: the DEFAULT prompt version; an experiment may pin an older one to
     #: reproduce or A/B against it. Both halves of the prompt are resolved from
     #: whatever this instance carries, so a run's recorded prompt_version fully
@@ -424,7 +429,15 @@ class GradeAdapter:
             row["decision"] = "REVIEW"
             return row
         pack = pack_from_inputs(case.inputs["pack"])
-        g = GradeResult(**output)
+        try:
+            g = GradeResult(**output)
+        except Exception as e:  # noqa: BLE001 — a persisted output the (now
+            # stricter, extra="forbid") schema rejects is a SCHEMA FAILURE row,
+            # never a scoring crash: historical outputs.jsonl rows must stay
+            # scoreable without taking the whole run's scoring down
+            row.update({"schema_failure": True, "decision": "REVIEW",
+                        "schema_error": f"{type(e).__name__}: {str(e)[:200]}"})
+            return row
         sel = case.inputs.get("selected")
         v = validate_grade(g, pack, selection_correct=lab.get("selection_correct"), selected=sel,
                            transcription=case.inputs["transcription"])
@@ -437,6 +450,7 @@ class GradeAdapter:
                     "validation_problems": list(v.problems),
                     "evidence_failure": bool(ev.get("fabricated") or ev.get("missing")
                                              or ev.get("ungrounded_credit")),
+                    "evidence_ungrounded_invalid": bool(ev.get("ungrounded_invalid")),
                     "evidence_fabricated": list(ev.get("fabricated") or []),
                     "evidence_missing": list(ev.get("missing") or []),
                     "evidence_ungrounded_credit": bool(ev.get("ungrounded_credit")),
@@ -511,6 +525,8 @@ class GradeAdapter:
             "review_rate_pct": _pct(sum(1 for r in scored if r["decision"] == "REVIEW"), n),
             "schema_failures": sum(1 for r in scored if r["schema_failure"]),
             "evidence_validation_failures": sum(1 for r in scored if r.get("evidence_failure")),
+            "ungrounded_invalid_verdicts": sum(1 for r in scored
+                                               if r.get("evidence_ungrounded_invalid")),
             "validation_failures": sum(1 for r in scored if r.get("validation_ok") is False),
             "usage": _usage_stats(raw_rows),
         }

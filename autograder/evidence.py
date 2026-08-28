@@ -32,6 +32,14 @@ from typing import Any, Iterable, Optional
 #: Evidence spans are quotes, not explanations — keep them short.
 MAX_EVIDENCE_CHARS = 200
 
+#: Typed reason: a zero-quality ("invalid") judgement on NON-EMPTY student
+#: text was returned without a grounded span. Mirrors the credit-side
+#: fail-closed rule: an ungrounded assertion of demerit is exactly as
+#: dangerous as an ungrounded assertion of merit — the 2026-08-28 FullDev
+#: audit's only AUTO decision was an ungrounded zero that undergraded a
+#: full-credit answer.
+UNGROUNDED_INVALID_VERDICT = "ungrounded_invalid_verdict"
+
 #: Bidi/format controls and zero-width joiners: pure protocol noise in RTL text.
 _INVISIBLE = re.compile(r"[​-‏‪-‮⁦-⁩﻿­]")
 #: Hebrew points/cantillation — present or absent depending on the transcriber.
@@ -57,11 +65,22 @@ def normalize_for_evidence(text: str) -> str:
     return s.casefold()
 
 
+#: A span shorter than this (after normalization) cannot ground a judgement:
+#: one- and two-character fragments occur in almost any text, so "verifying"
+#: them is vacuous (reviewer-confirmed, 2026-08-28). 3 keeps a real
+#: single-word Hebrew idea admissible. This TIGHTENS the matcher — the
+#: normalization itself is deliberately untouched. Residual, documented
+#: limitation: a short real word (a stopword) still verifies; the gate is
+#: anti-fabrication, not proof of semantic relevance.
+MIN_EVIDENCE_SPAN_CHARS = 3
+
+
 def evidence_supported(evidence: str, transcription: str) -> bool:
     """True when ``evidence`` occurs verbatim (modulo protocol differences)
-    in ``transcription``. Empty evidence is never 'supported'."""
+    in ``transcription``. Empty or shorter-than-``MIN_EVIDENCE_SPAN_CHARS``
+    evidence is never 'supported'."""
     e = normalize_for_evidence((evidence or "").strip(_QUOTE_EDGE))
-    if not e:
+    if len(e) < MIN_EVIDENCE_SPAN_CHARS:
         return False
     return e in normalize_for_evidence(transcription or "")
 
@@ -89,11 +108,15 @@ class EvidenceValidation:
     missing: list[str] = field(default_factory=list)
     #: credit was awarded with nothing verifiable behind it (fail-closed rule)
     ungrounded_credit: bool = False
+    #: a zero-quality (invalid) judgement on non-empty text with nothing
+    #: verifiable behind it (the symmetric fail-closed rule)
+    ungrounded_invalid: bool = False
 
     def as_dict(self) -> dict:
         return {"ok": self.ok, "checked": self.checked, "verified": list(self.verified),
                 "fabricated": list(self.fabricated), "missing": list(self.missing),
                 "ungrounded_credit": self.ungrounded_credit,
+                "ungrounded_invalid": self.ungrounded_invalid,
                 "problems": list(self.problems)}
 
 
@@ -170,6 +193,10 @@ def validate_evidence(*, credited: Iterable[CreditedItem], transcription: Option
                 f"transcription: {text[:60]!r}")
     # FAIL CLOSED: credit that rests on nothing verifiable is not AUTO-able.
     #
+    # The symmetric zero-side rule lives in validate_invalid_grounding below:
+    # this function only sees CREDITED items, and a zero-quality judgement
+    # typically credits nothing at all.
+    #
     # ...but only where grounding is EXPRESSIBLE. A pack with no rubric items
     # declares nothing to cite, so no grader could ever satisfy the rule and
     # every positive score would be permanently REVIEW — a demand the model
@@ -183,5 +210,68 @@ def validate_evidence(*, credited: Iterable[CreditedItem], transcription: Option
         v.problems.append(
             "credit awarded with no verified evidence span "
             "(no rubric item cites text that occurs in the transcription)")
+    v.ok = not v.problems
+    return v
+
+
+def validate_invalid_grounding(*, items: Iterable[Any], transcription: str,
+                               max_chars: int = MAX_EVIDENCE_CHARS) -> EvidenceValidation:
+    """The zero-side twin of the credit rule: a zero-quality ("invalid")
+    judgement on NON-EMPTY student text must be grounded before it can be
+    trusted unattended.
+
+    A negative judgement is grounded ONLY by a ``met=false`` entry whose
+    ``student_evidence`` is the exact span carrying the wrong, contradictory
+    or irrelevant claim, verified with the SAME production matcher as
+    credited evidence. A ``met=true`` entry on a zero-quality result is an
+    internal CONTRADICTION — the grader credits text while scoring it zero;
+    the 2026-08-28 harmful AUTO was exactly an undergraded full-credit answer
+    — so it is flagged and never counted as grounding. A judgement with no
+    verified negative span sets ``ungrounded_invalid`` and the case routes to
+    review instead of auto-finalizing a possibly wrong zero.
+
+    Deliberately NOT applied to blank/absent text: the caller skips this check
+    when the transcription is empty — grounding cannot be demanded from text
+    that does not exist, and blank answers are handled deterministically
+    upstream. Never called for uncertain=true results' routing either: those
+    already fail validation and go to review.
+    """
+    v = EvidenceValidation(True)
+    seen: set[str] = set()
+    contradictions: list[str] = []
+    for item in items:
+        iid = str(getattr(item, "id", None))
+        met = bool(getattr(item, "met", False))
+        text = (getattr(item, "student_evidence", None) or "").strip()
+        if met:
+            contradictions.append(iid)
+        if not text:
+            continue
+        if iid in seen:
+            continue                       # duplicates are reported by validate_grade
+        seen.add(iid)
+        if len(text) > max_chars + 20:
+            v.problems.append(f"rubric item {iid} evidence exceeds {max_chars} characters")
+        v.checked += 1
+        if not evidence_supported(text, transcription):
+            v.fabricated.append(iid)
+            v.problems.append(
+                f"rubric item {iid} cites evidence absent from the student "
+                f"transcription: {text[:60]!r}")
+        elif not met:
+            v.verified.append(iid)
+        # a VERIFIED span on a met=true entry is deliberately not 'verified'
+        # here: it grounds credit, not a zero — the contradiction is reported
+    if contradictions:
+        v.problems.append(
+            "zero-quality verdict credits rubric item(s) "
+            f"{sorted(set(contradictions))} (met=true) — internally contradictory")
+    if not v.verified:
+        v.ungrounded_invalid = True
+        # Wording note: travels into traces (no student text, no identity).
+        v.problems.append(
+            "zero-quality verdict on non-empty text with no grounded span "
+            "(no rubric item cites text that occurs in the transcription): "
+            + UNGROUNDED_INVALID_VERDICT)
     v.ok = not v.problems
     return v

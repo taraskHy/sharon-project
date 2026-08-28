@@ -82,10 +82,13 @@ def test_graderesult_specifically_closes_root_and_nested_objects():
     from autograder.escalation import GradeResult
 
     raw = GradeResult.model_json_schema()
-    before = schema_violations(raw)
-    assert any("additionalProperties" in v for v in before), (
-        "regression guard: pydantic is expected to emit an OPEN schema, which "
-        "is precisely why the transform must exist")
+    # Since 2026-08-28 GradeResult and RubricItemGrade declare extra="forbid",
+    # so pydantic already closes both objects at the SOURCE — the model itself
+    # rejects extra fields at parse time, and grammar-constrained decoding
+    # (Ollama json_schema) cannot generate them. The transform stays as
+    # defense-in-depth for the strict-mode extras (required lists, nullability).
+    assert raw.get("additionalProperties") is False
+    assert raw["$defs"]["RubricItemGrade"].get("additionalProperties") is False
 
     fixed = strict_json_schema(raw)
     assert fixed["additionalProperties"] is False                      # root

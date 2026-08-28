@@ -221,7 +221,7 @@ def test_both_halves_of_the_prompt_come_from_the_declared_version():
 def test_v3_is_preserved_verbatim_and_still_reproducible():
     assert grade_system_for("grade-v3") is GRADE_SYSTEM_V3
     assert GRADE_SYSTEM_V3 is not GRADE_SYSTEM_V4_CHARITABLE
-    assert set(GRADE_SYSTEM_BY_VERSION) == {"grade-v3", V4}
+    assert set(GRADE_SYSTEM_BY_VERSION) == {"grade-v3", V4, "grade-v4-charitable-local"}
     # the v3 user-block scale wording is preserved too
     v3_scale = explanation_scale(4.0, "grade-v3")
     assert "= valid: correct and sufficient reasoning" in v3_scale
