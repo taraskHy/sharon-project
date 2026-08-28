@@ -125,7 +125,12 @@ if ($mode -eq "fulldev") {
     Get-ChildItem -Path $runsRoot -Recurse -Filter "run.json" -ErrorAction SilentlyContinue | ForEach-Object {
         try {
             $r = Get-Content $_.FullName -Raw | ConvertFrom-Json
-            if ($_.FullName -match "smoke" -and $r.candidate -eq $Candidate) {
+            # the candidate lives in run.json's config block (config_hash identity),
+            # not at the top level
+            $cand = $null
+            if ($null -ne $r.config) { $cand = $r.config.candidate }
+            if ($null -eq $cand -and $null -ne $r.spec) { $cand = $r.spec.candidate }
+            if ($_.FullName -match "smoke" -and $cand -eq $Candidate) {
                 $done = 0; $failed = 1
                 if ($null -ne $r.cases_done) { $done = [int]$r.cases_done }
                 if ($null -ne $r.cases_failed) { $failed = [int]$r.cases_failed }

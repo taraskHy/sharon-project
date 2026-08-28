@@ -207,3 +207,37 @@ cannot see.
    explicitly-versioned decision.
 
 Nothing in this document has been applied to the dataset.
+
+## 9. Resolution and standing owner directive (2026-08-28)
+
+Decisions 1–2 were taken: the verdict target was adopted as a label-side
+dataset revision (manifest revisions of 2026-08-24/25), the 8-case
+`selection_correct` audit ran (`scripts/selection_audit_ui.py`), and all six
+DEV zero-score cases turned out to have a **wrong selection** — so they are
+EXCLUDED from verdict ground truth (not relabelled `invalid`) and the
+`invalid` class remains unmeasured in every split.
+
+The owner's standing directive for every grading evaluation:
+
+- **The actual instructor-assigned grade from the original graded test is
+  the only authoritative ground truth** (`final_labels.json`,
+  `ground_truth_source=original_instructor_grade`). Explanation-verdict
+  targets exist only where they are mathematically identifiable from
+  (instructor score, selection correctness, frozen production policy) —
+  DEV: 26 cases (22 valid, 4 partially_valid, 0 invalid).
+- **Blind A/B/C/D audit decisions, model-majority votes and previous
+  cloud-model predictions are never expected labels.** Audit decisions are
+  reported as flags only (rubric-practice mismatch / evidence-transcription
+  concern / ambiguity) and never silently alter an instructor grade.
+- Results are reported in **two separated layers**
+  (`autograder/benchmark/gradereport.py`, `bench grade-report`):
+  **A** — model explanation verdict vs instructor-derived verdict (the 26);
+  **B** — system predicted final score (model verdict + actual selection
+  correctness + frozen production policy) vs the actual instructor score
+  over the whole split, with exact match, absolute error, harmful
+  overgrades/undergrades and a confusion by actual score 0/2/4. The six
+  wrong-selection DEV cases appear only in Layer B's separate policy
+  sub-report (wrong selection -> deterministic zero -> a local grading call
+  is normally unnecessary) and never count toward explanation-model
+  accuracy. The report re-derives every target from the instructor score at
+  report time and refuses to run over labels that disagree.

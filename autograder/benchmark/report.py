@@ -65,8 +65,14 @@ def _headline(role: str, m: dict | None) -> dict[str, Any]:
                 "cost": (m.get("usage") or {}).get("reported_cost"),
                 "latency_median_s": (m.get("usage") or {}).get("latency_median_s")}
     if role in ("grade_primary", "grade_escalate"):
-        return {"exact_score_pct": m.get("exact_score_pct"), "mean_abs_error": m.get("mean_abs_score_error"),
-                "harmful_up": m.get("harmful_upgrades"), "harmful_down": m.get("harmful_downgrades"),
+        # Layer A headline numbers (adapter aggregate, grade-bench-v2 target:
+        # the canonical explanation verdict). Layer B — predicted final score
+        # vs the actual instructor score — lives in `bench grade-report`.
+        return {"verdict_cases": m.get("verdict_cases"),
+                "verdict_exact_pct": m.get("verdict_exact_pct"),
+                "macro_f1": m.get("verdict_macro_f1"),
+                "balanced_acc": m.get("verdict_balanced_accuracy"),
+                "harmful_up": m.get("harmful_verdict_upgrades"), "harmful_down": m.get("harmful_verdict_downgrades"),
                 "auto_pct": m.get("auto_rate_pct"), "review_pct": m.get("review_rate_pct"),
                 "evidence_failures": m.get("evidence_validation_failures"), "schema_failures": m.get("schema_failures"),
                 "cost": (m.get("usage") or {}).get("reported_cost")}

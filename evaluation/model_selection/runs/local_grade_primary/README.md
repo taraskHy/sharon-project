@@ -21,6 +21,36 @@ cost $0) through the standard bench runner, so every run directory carries:
 (RAM/VRAM/GPU/CPU, hashed hostname, git commit) next to the runs.
 
 Policy: never commit model weights or Ollama caches; result artifacts are
-committed after review per repository policy. The case decided **C** in the
-human audit (`e004_q2_r8`, evidence problem) still runs but is excluded from
-strict-accuracy denominators until repaired.
+committed after review per repository policy.
+
+## Ground truth (owner directive 2026-08-28)
+
+The authoritative evaluation target is the **actual instructor-assigned
+grade from the original graded test** (`final_labels.json`,
+`ground_truth_source=original_instructor_grade`). The owner's blind A/B/C/D
+audit decisions, model-majority votes and previous cloud-model (Gemini /
+Sonnet) predictions are **diagnostic metadata only** — they may flag a
+rubric-practice mismatch, an evidence/transcription concern or an ambiguity,
+but they never replace, modify or determine an expected label. (The frozen
+CALIBRATION strict-metrics policy for the C-decided `e004_q2_r8` lives in
+`scripts/calibration_audit_recompute.py` and is a separate artifact; the
+two-layer reports below exclude or relabel nothing on audit grounds.)
+
+Every executed run gets a **two-layer report**
+(`bench grade-report --run-dir <dir>` -> `two_layer_report.{json,md}`),
+which re-derives every target from the instructor score at report time and
+refuses on any disagreement:
+
+- **A. LOCAL GRADER QUALITY** — model canonical explanation verdict vs the
+  instructor-derived verdict, only over the mathematically derivable cases
+  (DEV: 26 = 22 valid + 4 partially_valid; `invalid` has no support and is
+  NOT MEASURED).
+- **B. END-TO-END TEST-GRADE AGREEMENT** — system predicted final score
+  (model verdict + actual selection correctness + frozen production policy)
+  vs the actual instructor score, over the whole split (DEV: 32). The six
+  audited wrong-selection DEV cases score a deterministic 0 through the
+  production selection gate and appear ONLY here (never in Layer A): their
+  zero was decided by the selection, so a final-score match on them proves
+  nothing about explanation judgement.
+
+The two layers are never combined.

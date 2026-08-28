@@ -6,6 +6,8 @@
     bench dry-run  --role R --split S --candidate SLUG [...]   plan + predicted cost, ZERO calls
     bench run      --role R --split S --candidate SLUG [...]   live run through ModelGateway (needs a credential)
     bench report   --run-dir DIR | --role R --split S [--historical]
+    bench grade-report --run-dir DIR                  two-layer grading report (verdict vs instructor-derived
+                                                      verdict; predicted final score vs actual instructor score)
     bench compare  --role R --split S [--component C]
     bench held-out-log
 
@@ -417,6 +419,30 @@ def cmd_bench_report(args) -> int:
     return 0
 
 
+def cmd_bench_grade_report(args) -> int:
+    """Two-layer grading report over one executed run: (A) model explanation
+    verdict vs the instructor-DERIVED verdict; (B) predicted final score vs
+    the ACTUAL instructor score. Targets are re-derived from the instructor
+    grades at report time; audit decisions surface as flags only."""
+    from .gradereport import GradeReportError, build_grade_report, render_markdown, write_grade_report
+    kwargs = dict(datasets_root=Path(args.datasets_root), bench_root=Path(args.bench_root))
+    try:
+        if args.no_write:
+            report = build_grade_report(Path(args.run_dir), **kwargs)
+        else:
+            report = write_grade_report(Path(args.run_dir), **kwargs)
+    except GradeReportError as e:
+        _log(f"REFUSED: {e}")
+        return 3
+    if args.json:
+        _emit(report, True)
+        return 0
+    print(render_markdown(report))
+    for p in report.get("written", []):
+        _log(f"written: {p}")
+    return 0
+
+
 def cmd_bench_compare(args) -> int:
     out = compare(args.role, args.split, Path(args.runs_root), args.component)
     if args.json:
@@ -574,6 +600,15 @@ def add_bench_commands(sub) -> None:
     p.add_argument("--run-dir", default=None)
     p.add_argument("--historical", action="store_true", help="ocr_primary: historical outputs re-scored on audited refs")
     p.set_defaults(func=cmd_bench_report)
+
+    p = bs.add_parser("grade-report",
+                      help="two-layer grading report for one executed run: (A) explanation verdict vs the "
+                           "instructor-derived verdict; (B) predicted final score vs the actual instructor "
+                           "score (targets from the original graded tests; audit decisions = flags only)")
+    common(p, needs_role=False)
+    p.add_argument("--run-dir", required=True, help="an executed grade_primary/grade_escalate run directory")
+    p.add_argument("--no-write", action="store_true", help="print only; do not write two_layer_report.{json,md}")
+    p.set_defaults(func=cmd_bench_grade_report)
 
     p = bs.add_parser("compare", help="candidates side by side (no winner chosen)"); common(p, needs_split=True)
     p.set_defaults(func=cmd_bench_compare)
