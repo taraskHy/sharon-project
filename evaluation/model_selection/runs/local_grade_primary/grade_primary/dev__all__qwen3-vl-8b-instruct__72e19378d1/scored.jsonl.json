@@ -1,0 +1,946 @@
+[
+ {
+  "case_id": "e002_q1_r1",
+  "split": "DEV",
+  "component": "ALL",
+  "schema_failure": false,
+  "decision": "AUTO",
+  "score": 2.0,
+  "transcription_complete": true,
+  "uncertain": false,
+  "validation_ok": true,
+  "validation_problems": [],
+  "evidence_failure": false,
+  "evidence_ungrounded_invalid": false,
+  "evidence_fabricated": [],
+  "evidence_missing": [],
+  "evidence_ungrounded_credit": false,
+  "evidence_verified": [
+   "R1"
+  ],
+  "met_ids": [
+   "R1"
+  ],
+  "predicted_verdict": "partially_valid",
+  "verdict_unavailable_reason": "zero_because_selection_wrong_explanation_never_scored",
+  "implied_final_score": 0.0,
+  "label_score": 0.0,
+  "final_exact": true,
+  "final_abs_error": 0.0,
+  "harmful_upgrade": false,
+  "harmful_downgrade": false,
+  "raw_score_abs_delta": 2.0
+ },
+ {
+  "case_id": "e002_q1_r2",
+  "split": "DEV",
+  "component": "ALL",
+  "schema_failure": false,
+  "decision": "AUTO",
+  "score": 4.0,
+  "transcription_complete": true,
+  "uncertain": false,
+  "validation_ok": true,
+  "validation_problems": [],
+  "evidence_failure": false,
+  "evidence_ungrounded_invalid": false,
+  "evidence_fabricated": [],
+  "evidence_missing": [],
+  "evidence_ungrounded_credit": false,
+  "evidence_verified": [
+   "R1"
+  ],
+  "met_ids": [
+   "R1"
+  ],
+  "predicted_verdict": "valid",
+  "label_verdict": "valid",
+  "verdict_exact": true,
+  "harmful_verdict_upgrade": false,
+  "harmful_verdict_downgrade": false,
+  "raw_score_abs_delta": 0.0
+ },
+ {
+  "case_id": "e002_q1_r3",
+  "split": "DEV",
+  "component": "ALL",
+  "schema_failure": false,
+  "decision": "AUTO",
+  "score": 4.0,
+  "transcription_complete": true,
+  "uncertain": false,
+  "validation_ok": true,
+  "validation_problems": [],
+  "evidence_failure": false,
+  "evidence_ungrounded_invalid": false,
+  "evidence_fabricated": [],
+  "evidence_missing": [],
+  "evidence_ungrounded_credit": false,
+  "evidence_verified": [
+   "R1"
+  ],
+  "met_ids": [
+   "R1"
+  ],
+  "predicted_verdict": "valid",
+  "label_verdict": "valid",
+  "verdict_exact": true,
+  "harmful_verdict_upgrade": false,
+  "harmful_verdict_downgrade": false,
+  "raw_score_abs_delta": 0.0
+ },
+ {
+  "case_id": "e002_q1_r4",
+  "split": "DEV",
+  "component": "ALL",
+  "schema_failure": false,
+  "decision": "AUTO",
+  "score": 4.0,
+  "transcription_complete": true,
+  "uncertain": false,
+  "validation_ok": true,
+  "validation_problems": [],
+  "evidence_failure": false,
+  "evidence_ungrounded_invalid": false,
+  "evidence_fabricated": [],
+  "evidence_missing": [],
+  "evidence_ungrounded_credit": false,
+  "evidence_verified": [
+   "R1"
+  ],
+  "met_ids": [
+   "R1"
+  ],
+  "predicted_verdict": "valid",
+  "label_verdict": "valid",
+  "verdict_exact": true,
+  "harmful_verdict_upgrade": false,
+  "harmful_verdict_downgrade": false,
+  "raw_score_abs_delta": 0.0
+ },
+ {
+  "case_id": "e002_q1_r5",
+  "split": "DEV",
+  "component": "ALL",
+  "schema_failure": false,
+  "decision": "AUTO",
+  "score": 4.0,
+  "transcription_complete": true,
+  "uncertain": false,
+  "validation_ok": true,
+  "validation_problems": [],
+  "evidence_failure": false,
+  "evidence_ungrounded_invalid": false,
+  "evidence_fabricated": [],
+  "evidence_missing": [],
+  "evidence_ungrounded_credit": false,
+  "evidence_verified": [
+   "R1"
+  ],
+  "met_ids": [
+   "R1"
+  ],
+  "predicted_verdict": "valid",
+  "label_verdict": "partially_valid",
+  "verdict_exact": false,
+  "harmful_verdict_upgrade": true,
+  "harmful_verdict_downgrade": false,
+  "raw_score_abs_delta": 2.0
+ },
+ {
+  "case_id": "e002_q1_r6",
+  "split": "DEV",
+  "component": "ALL",
+  "schema_failure": false,
+  "decision": "AUTO",
+  "score": 4.0,
+  "transcription_complete": true,
+  "uncertain": false,
+  "validation_ok": true,
+  "validation_problems": [],
+  "evidence_failure": false,
+  "evidence_ungrounded_invalid": false,
+  "evidence_fabricated": [],
+  "evidence_missing": [],
+  "evidence_ungrounded_credit": false,
+  "evidence_verified": [
+   "R1"
+  ],
+  "met_ids": [
+   "R1"
+  ],
+  "predicted_verdict": "valid",
+  "label_verdict": "partially_valid",
+  "verdict_exact": false,
+  "harmful_verdict_upgrade": true,
+  "harmful_verdict_downgrade": false,
+  "raw_score_abs_delta": 2.0
+ },
+ {
+  "case_id": "e002_q1_r7",
+  "split": "DEV",
+  "component": "ALL",
+  "schema_failure": false,
+  "decision": "REVIEW",
+  "score": 0.0,
+  "transcription_complete": true,
+  "uncertain": false,
+  "validation_ok": false,
+  "validation_problems": [
+   "rubric item R1 cites evidence absent from the student transcription: 'הגברת בהירות גורמת לגדלת ערכי התמונה, אך לא משנה את ההיסטוגר'",
+   "zero-quality verdict on non-empty text with no grounded span (no rubric item cites text that occurs in the transcription): ungrounded_invalid_verdict"
+  ],
+  "evidence_failure": true,
+  "evidence_ungrounded_invalid": true,
+  "evidence_fabricated": [
+   "R1"
+  ],
+  "evidence_missing": [],
+  "evidence_ungrounded_credit": false,
+  "evidence_verified": [],
+  "met_ids": [],
+  "predicted_verdict": "invalid",
+  "label_verdict": "valid",
+  "verdict_exact": false,
+  "harmful_verdict_upgrade": false,
+  "harmful_verdict_downgrade": true,
+  "raw_score_abs_delta": 4.0
+ },
+ {
+  "case_id": "e002_q1_r8",
+  "split": "DEV",
+  "component": "ALL",
+  "schema_failure": false,
+  "decision": "AUTO",
+  "score": 2.0,
+  "transcription_complete": true,
+  "uncertain": false,
+  "validation_ok": true,
+  "validation_problems": [],
+  "evidence_failure": false,
+  "evidence_ungrounded_invalid": false,
+  "evidence_fabricated": [],
+  "evidence_missing": [],
+  "evidence_ungrounded_credit": false,
+  "evidence_verified": [
+   "R1"
+  ],
+  "met_ids": [
+   "R1"
+  ],
+  "predicted_verdict": "partially_valid",
+  "label_verdict": "partially_valid",
+  "verdict_exact": true,
+  "harmful_verdict_upgrade": false,
+  "harmful_verdict_downgrade": false,
+  "raw_score_abs_delta": 0.0
+ },
+ {
+  "case_id": "e002_q2_r1",
+  "split": "DEV",
+  "component": "ALL",
+  "schema_failure": false,
+  "decision": "AUTO",
+  "score": 4.0,
+  "transcription_complete": true,
+  "uncertain": false,
+  "validation_ok": true,
+  "validation_problems": [],
+  "evidence_failure": false,
+  "evidence_ungrounded_invalid": false,
+  "evidence_fabricated": [],
+  "evidence_missing": [],
+  "evidence_ungrounded_credit": false,
+  "evidence_verified": [
+   "R1"
+  ],
+  "met_ids": [
+   "R1"
+  ],
+  "predicted_verdict": "valid",
+  "label_verdict": "valid",
+  "verdict_exact": true,
+  "harmful_verdict_upgrade": false,
+  "harmful_verdict_downgrade": false,
+  "raw_score_abs_delta": 0.0
+ },
+ {
+  "case_id": "e002_q2_r2",
+  "split": "DEV",
+  "component": "ALL",
+  "schema_failure": false,
+  "decision": "AUTO",
+  "score": 4.0,
+  "transcription_complete": true,
+  "uncertain": false,
+  "validation_ok": true,
+  "validation_problems": [],
+  "evidence_failure": false,
+  "evidence_ungrounded_invalid": false,
+  "evidence_fabricated": [],
+  "evidence_missing": [],
+  "evidence_ungrounded_credit": false,
+  "evidence_verified": [
+   "R1"
+  ],
+  "met_ids": [
+   "R1"
+  ],
+  "predicted_verdict": "valid",
+  "label_verdict": "valid",
+  "verdict_exact": true,
+  "harmful_verdict_upgrade": false,
+  "harmful_verdict_downgrade": false,
+  "raw_score_abs_delta": 0.0
+ },
+ {
+  "case_id": "e002_q2_r3",
+  "split": "DEV",
+  "component": "ALL",
+  "schema_failure": false,
+  "decision": "AUTO",
+  "score": 4.0,
+  "transcription_complete": true,
+  "uncertain": false,
+  "validation_ok": true,
+  "validation_problems": [],
+  "evidence_failure": false,
+  "evidence_ungrounded_invalid": false,
+  "evidence_fabricated": [],
+  "evidence_missing": [],
+  "evidence_ungrounded_credit": false,
+  "evidence_verified": [
+   "R1"
+  ],
+  "met_ids": [
+   "R1"
+  ],
+  "predicted_verdict": "valid",
+  "label_verdict": "valid",
+  "verdict_exact": true,
+  "harmful_verdict_upgrade": false,
+  "harmful_verdict_downgrade": false,
+  "raw_score_abs_delta": 0.0
+ },
+ {
+  "case_id": "e002_q2_r4",
+  "split": "DEV",
+  "component": "ALL",
+  "schema_failure": false,
+  "decision": "AUTO",
+  "score": 0.0,
+  "transcription_complete": true,
+  "uncertain": false,
+  "validation_ok": true,
+  "validation_problems": [],
+  "evidence_failure": false,
+  "evidence_ungrounded_invalid": false,
+  "evidence_fabricated": [],
+  "evidence_missing": [],
+  "evidence_ungrounded_credit": false,
+  "evidence_verified": [
+   "R1"
+  ],
+  "met_ids": [],
+  "predicted_verdict": "invalid",
+  "label_verdict": "valid",
+  "verdict_exact": false,
+  "harmful_verdict_upgrade": false,
+  "harmful_verdict_downgrade": true,
+  "raw_score_abs_delta": 4.0
+ },
+ {
+  "case_id": "e002_q2_r5",
+  "split": "DEV",
+  "component": "ALL",
+  "schema_failure": false,
+  "decision": "AUTO",
+  "score": 2.0,
+  "transcription_complete": true,
+  "uncertain": false,
+  "validation_ok": true,
+  "validation_problems": [],
+  "evidence_failure": false,
+  "evidence_ungrounded_invalid": false,
+  "evidence_fabricated": [],
+  "evidence_missing": [],
+  "evidence_ungrounded_credit": false,
+  "evidence_verified": [
+   "R1"
+  ],
+  "met_ids": [
+   "R1"
+  ],
+  "predicted_verdict": "partially_valid",
+  "label_verdict": "valid",
+  "verdict_exact": false,
+  "harmful_verdict_upgrade": false,
+  "harmful_verdict_downgrade": true,
+  "raw_score_abs_delta": 2.0
+ },
+ {
+  "case_id": "e002_q2_r6",
+  "split": "DEV",
+  "component": "ALL",
+  "schema_failure": false,
+  "decision": "AUTO",
+  "score": 2.0,
+  "transcription_complete": true,
+  "uncertain": false,
+  "validation_ok": true,
+  "validation_problems": [],
+  "evidence_failure": false,
+  "evidence_ungrounded_invalid": false,
+  "evidence_fabricated": [],
+  "evidence_missing": [],
+  "evidence_ungrounded_credit": false,
+  "evidence_verified": [
+   "R1"
+  ],
+  "met_ids": [
+   "R1"
+  ],
+  "predicted_verdict": "partially_valid",
+  "label_verdict": "valid",
+  "verdict_exact": false,
+  "harmful_verdict_upgrade": false,
+  "harmful_verdict_downgrade": true,
+  "raw_score_abs_delta": 2.0
+ },
+ {
+  "case_id": "e002_q2_r7",
+  "split": "DEV",
+  "component": "ALL",
+  "schema_failure": false,
+  "decision": "REVIEW",
+  "score": 4.0,
+  "transcription_complete": true,
+  "uncertain": false,
+  "validation_ok": false,
+  "validation_problems": [
+   "rubric item R1 cites evidence absent from the student transcription: 'שיקוף תמונה לא משנה היסטוגרמה. שרשור של התמונה המקורית עם תמ'",
+   "credit awarded with no verified evidence span (no rubric item cites text that occurs in the transcription)"
+  ],
+  "evidence_failure": true,
+  "evidence_ungrounded_invalid": false,
+  "evidence_fabricated": [
+   "R1"
+  ],
+  "evidence_missing": [],
+  "evidence_ungrounded_credit": true,
+  "evidence_verified": [],
+  "met_ids": [
+   "R1"
+  ],
+  "predicted_verdict": "valid",
+  "label_verdict": "valid",
+  "verdict_exact": true,
+  "harmful_verdict_upgrade": false,
+  "harmful_verdict_downgrade": false,
+  "raw_score_abs_delta": 0.0
+ },
+ {
+  "case_id": "e002_q2_r8",
+  "split": "DEV",
+  "component": "ALL",
+  "schema_failure": false,
+  "decision": "AUTO",
+  "score": 4.0,
+  "transcription_complete": true,
+  "uncertain": false,
+  "validation_ok": true,
+  "validation_problems": [],
+  "evidence_failure": false,
+  "evidence_ungrounded_invalid": false,
+  "evidence_fabricated": [],
+  "evidence_missing": [],
+  "evidence_ungrounded_credit": false,
+  "evidence_verified": [
+   "R1"
+  ],
+  "met_ids": [
+   "R1"
+  ],
+  "predicted_verdict": "valid",
+  "label_verdict": "valid",
+  "verdict_exact": true,
+  "harmful_verdict_upgrade": false,
+  "harmful_verdict_downgrade": false,
+  "raw_score_abs_delta": 0.0
+ },
+ {
+  "case_id": "e003_q1_r1",
+  "split": "DEV",
+  "component": "ALL",
+  "schema_failure": false,
+  "decision": "AUTO",
+  "score": 4.0,
+  "transcription_complete": true,
+  "uncertain": false,
+  "validation_ok": true,
+  "validation_problems": [],
+  "evidence_failure": false,
+  "evidence_ungrounded_invalid": false,
+  "evidence_fabricated": [],
+  "evidence_missing": [],
+  "evidence_ungrounded_credit": false,
+  "evidence_verified": [
+   "R1"
+  ],
+  "met_ids": [
+   "R1"
+  ],
+  "predicted_verdict": "valid",
+  "label_verdict": "valid",
+  "verdict_exact": true,
+  "harmful_verdict_upgrade": false,
+  "harmful_verdict_downgrade": false,
+  "raw_score_abs_delta": 0.0
+ },
+ {
+  "case_id": "e003_q1_r3",
+  "split": "DEV",
+  "component": "ALL",
+  "schema_failure": false,
+  "decision": "AUTO",
+  "score": 4.0,
+  "transcription_complete": true,
+  "uncertain": false,
+  "validation_ok": true,
+  "validation_problems": [],
+  "evidence_failure": false,
+  "evidence_ungrounded_invalid": false,
+  "evidence_fabricated": [],
+  "evidence_missing": [],
+  "evidence_ungrounded_credit": false,
+  "evidence_verified": [
+   "R1"
+  ],
+  "met_ids": [
+   "R1"
+  ],
+  "predicted_verdict": "valid",
+  "verdict_unavailable_reason": "zero_because_selection_wrong_explanation_never_scored",
+  "implied_final_score": 0.0,
+  "label_score": 0.0,
+  "final_exact": true,
+  "final_abs_error": 0.0,
+  "harmful_upgrade": false,
+  "harmful_downgrade": false,
+  "raw_score_abs_delta": 4.0
+ },
+ {
+  "case_id": "e003_q1_r4",
+  "split": "DEV",
+  "component": "ALL",
+  "schema_failure": false,
+  "decision": "AUTO",
+  "score": 4.0,
+  "transcription_complete": true,
+  "uncertain": false,
+  "validation_ok": true,
+  "validation_problems": [],
+  "evidence_failure": false,
+  "evidence_ungrounded_invalid": false,
+  "evidence_fabricated": [],
+  "evidence_missing": [],
+  "evidence_ungrounded_credit": false,
+  "evidence_verified": [
+   "R1"
+  ],
+  "met_ids": [
+   "R1"
+  ],
+  "predicted_verdict": "valid",
+  "label_verdict": "valid",
+  "verdict_exact": true,
+  "harmful_verdict_upgrade": false,
+  "harmful_verdict_downgrade": false,
+  "raw_score_abs_delta": 0.0
+ },
+ {
+  "case_id": "e003_q1_r5",
+  "split": "DEV",
+  "component": "ALL",
+  "schema_failure": false,
+  "decision": "AUTO",
+  "score": 4.0,
+  "transcription_complete": true,
+  "uncertain": false,
+  "validation_ok": true,
+  "validation_problems": [],
+  "evidence_failure": false,
+  "evidence_ungrounded_invalid": false,
+  "evidence_fabricated": [],
+  "evidence_missing": [],
+  "evidence_ungrounded_credit": false,
+  "evidence_verified": [
+   "R1"
+  ],
+  "met_ids": [
+   "R1"
+  ],
+  "predicted_verdict": "valid",
+  "label_verdict": "valid",
+  "verdict_exact": true,
+  "harmful_verdict_upgrade": false,
+  "harmful_verdict_downgrade": false,
+  "raw_score_abs_delta": 0.0
+ },
+ {
+  "case_id": "e003_q1_r6",
+  "split": "DEV",
+  "component": "ALL",
+  "schema_failure": false,
+  "decision": "AUTO",
+  "score": 2.0,
+  "transcription_complete": true,
+  "uncertain": false,
+  "validation_ok": true,
+  "validation_problems": [],
+  "evidence_failure": false,
+  "evidence_ungrounded_invalid": false,
+  "evidence_fabricated": [],
+  "evidence_missing": [],
+  "evidence_ungrounded_credit": false,
+  "evidence_verified": [
+   "R1"
+  ],
+  "met_ids": [
+   "R1"
+  ],
+  "predicted_verdict": "partially_valid",
+  "label_verdict": "valid",
+  "verdict_exact": false,
+  "harmful_verdict_upgrade": false,
+  "harmful_verdict_downgrade": true,
+  "raw_score_abs_delta": 2.0
+ },
+ {
+  "case_id": "e003_q1_r7",
+  "split": "DEV",
+  "component": "ALL",
+  "schema_failure": false,
+  "decision": "AUTO",
+  "score": 0.0,
+  "transcription_complete": true,
+  "uncertain": false,
+  "validation_ok": true,
+  "validation_problems": [],
+  "evidence_failure": false,
+  "evidence_ungrounded_invalid": false,
+  "evidence_fabricated": [],
+  "evidence_missing": [],
+  "evidence_ungrounded_credit": false,
+  "evidence_verified": [
+   "R1"
+  ],
+  "met_ids": [],
+  "predicted_verdict": "invalid",
+  "label_verdict": "valid",
+  "verdict_exact": false,
+  "harmful_verdict_upgrade": false,
+  "harmful_verdict_downgrade": true,
+  "raw_score_abs_delta": 4.0
+ },
+ {
+  "case_id": "e003_q1_r8",
+  "split": "DEV",
+  "component": "ALL",
+  "schema_failure": false,
+  "decision": "AUTO",
+  "score": 2.0,
+  "transcription_complete": true,
+  "uncertain": false,
+  "validation_ok": true,
+  "validation_problems": [],
+  "evidence_failure": false,
+  "evidence_ungrounded_invalid": false,
+  "evidence_fabricated": [],
+  "evidence_missing": [],
+  "evidence_ungrounded_credit": false,
+  "evidence_verified": [
+   "R1"
+  ],
+  "met_ids": [
+   "R1"
+  ],
+  "predicted_verdict": "partially_valid",
+  "label_verdict": "partially_valid",
+  "verdict_exact": true,
+  "harmful_verdict_upgrade": false,
+  "harmful_verdict_downgrade": false,
+  "raw_score_abs_delta": 0.0
+ },
+ {
+  "case_id": "e003_q2_r1",
+  "split": "DEV",
+  "component": "ALL",
+  "schema_failure": false,
+  "decision": "AUTO",
+  "score": 4.0,
+  "transcription_complete": true,
+  "uncertain": false,
+  "validation_ok": true,
+  "validation_problems": [],
+  "evidence_failure": false,
+  "evidence_ungrounded_invalid": false,
+  "evidence_fabricated": [],
+  "evidence_missing": [],
+  "evidence_ungrounded_credit": false,
+  "evidence_verified": [
+   "R1"
+  ],
+  "met_ids": [
+   "R1"
+  ],
+  "predicted_verdict": "valid",
+  "label_verdict": "valid",
+  "verdict_exact": true,
+  "harmful_verdict_upgrade": false,
+  "harmful_verdict_downgrade": false,
+  "raw_score_abs_delta": 0.0
+ },
+ {
+  "case_id": "e003_q2_r2",
+  "split": "DEV",
+  "component": "ALL",
+  "schema_failure": false,
+  "decision": "AUTO",
+  "score": 4.0,
+  "transcription_complete": true,
+  "uncertain": false,
+  "validation_ok": true,
+  "validation_problems": [],
+  "evidence_failure": false,
+  "evidence_ungrounded_invalid": false,
+  "evidence_fabricated": [],
+  "evidence_missing": [],
+  "evidence_ungrounded_credit": false,
+  "evidence_verified": [
+   "R1"
+  ],
+  "met_ids": [
+   "R1"
+  ],
+  "predicted_verdict": "valid",
+  "label_verdict": "valid",
+  "verdict_exact": true,
+  "harmful_verdict_upgrade": false,
+  "harmful_verdict_downgrade": false,
+  "raw_score_abs_delta": 0.0
+ },
+ {
+  "case_id": "e003_q2_r3",
+  "split": "DEV",
+  "component": "ALL",
+  "schema_failure": false,
+  "decision": "AUTO",
+  "score": 4.0,
+  "transcription_complete": true,
+  "uncertain": false,
+  "validation_ok": true,
+  "validation_problems": [],
+  "evidence_failure": false,
+  "evidence_ungrounded_invalid": false,
+  "evidence_fabricated": [],
+  "evidence_missing": [],
+  "evidence_ungrounded_credit": false,
+  "evidence_verified": [
+   "R1"
+  ],
+  "met_ids": [
+   "R1"
+  ],
+  "predicted_verdict": "valid",
+  "verdict_unavailable_reason": "zero_because_selection_wrong_explanation_never_scored",
+  "implied_final_score": 0.0,
+  "label_score": 0.0,
+  "final_exact": true,
+  "final_abs_error": 0.0,
+  "harmful_upgrade": false,
+  "harmful_downgrade": false,
+  "raw_score_abs_delta": 4.0
+ },
+ {
+  "case_id": "e003_q2_r4",
+  "split": "DEV",
+  "component": "ALL",
+  "schema_failure": false,
+  "decision": "AUTO",
+  "score": 0.0,
+  "transcription_complete": true,
+  "uncertain": false,
+  "validation_ok": true,
+  "validation_problems": [],
+  "evidence_failure": false,
+  "evidence_ungrounded_invalid": false,
+  "evidence_fabricated": [],
+  "evidence_missing": [],
+  "evidence_ungrounded_credit": false,
+  "evidence_verified": [
+   "R1"
+  ],
+  "met_ids": [],
+  "predicted_verdict": "invalid",
+  "verdict_unavailable_reason": "zero_because_selection_wrong_explanation_never_scored",
+  "implied_final_score": 0.0,
+  "label_score": 0.0,
+  "final_exact": true,
+  "final_abs_error": 0.0,
+  "harmful_upgrade": false,
+  "harmful_downgrade": false,
+  "raw_score_abs_delta": 0.0
+ },
+ {
+  "case_id": "e003_q2_r5",
+  "split": "DEV",
+  "component": "ALL",
+  "schema_failure": false,
+  "decision": "AUTO",
+  "score": 4.0,
+  "transcription_complete": true,
+  "uncertain": false,
+  "validation_ok": true,
+  "validation_problems": [],
+  "evidence_failure": false,
+  "evidence_ungrounded_invalid": false,
+  "evidence_fabricated": [],
+  "evidence_missing": [],
+  "evidence_ungrounded_credit": false,
+  "evidence_verified": [
+   "R1"
+  ],
+  "met_ids": [
+   "R1"
+  ],
+  "predicted_verdict": "valid",
+  "verdict_unavailable_reason": "zero_because_selection_wrong_explanation_never_scored",
+  "implied_final_score": 0.0,
+  "label_score": 0.0,
+  "final_exact": true,
+  "final_abs_error": 0.0,
+  "harmful_upgrade": false,
+  "harmful_downgrade": false,
+  "raw_score_abs_delta": 4.0
+ },
+ {
+  "case_id": "e003_q2_r6",
+  "split": "DEV",
+  "component": "ALL",
+  "schema_failure": false,
+  "decision": "AUTO",
+  "score": 2.0,
+  "transcription_complete": true,
+  "uncertain": false,
+  "validation_ok": true,
+  "validation_problems": [],
+  "evidence_failure": false,
+  "evidence_ungrounded_invalid": false,
+  "evidence_fabricated": [],
+  "evidence_missing": [],
+  "evidence_ungrounded_credit": false,
+  "evidence_verified": [
+   "R1"
+  ],
+  "met_ids": [
+   "R1"
+  ],
+  "predicted_verdict": "partially_valid",
+  "verdict_unavailable_reason": "zero_because_selection_wrong_explanation_never_scored",
+  "implied_final_score": 0.0,
+  "label_score": 0.0,
+  "final_exact": true,
+  "final_abs_error": 0.0,
+  "harmful_upgrade": false,
+  "harmful_downgrade": false,
+  "raw_score_abs_delta": 2.0
+ },
+ {
+  "case_id": "e003_q2_r7",
+  "split": "DEV",
+  "component": "ALL",
+  "schema_failure": false,
+  "decision": "AUTO",
+  "score": 4.0,
+  "transcription_complete": true,
+  "uncertain": false,
+  "validation_ok": true,
+  "validation_problems": [],
+  "evidence_failure": false,
+  "evidence_ungrounded_invalid": false,
+  "evidence_fabricated": [],
+  "evidence_missing": [],
+  "evidence_ungrounded_credit": false,
+  "evidence_verified": [
+   "R1"
+  ],
+  "met_ids": [
+   "R1"
+  ],
+  "predicted_verdict": "valid",
+  "label_verdict": "valid",
+  "verdict_exact": true,
+  "harmful_verdict_upgrade": false,
+  "harmful_verdict_downgrade": false,
+  "raw_score_abs_delta": 0.0
+ },
+ {
+  "case_id": "e003_q2_r8",
+  "split": "DEV",
+  "component": "ALL",
+  "schema_failure": false,
+  "decision": "AUTO",
+  "score": 4.0,
+  "transcription_complete": true,
+  "uncertain": false,
+  "validation_ok": true,
+  "validation_problems": [],
+  "evidence_failure": false,
+  "evidence_ungrounded_invalid": false,
+  "evidence_fabricated": [],
+  "evidence_missing": [],
+  "evidence_ungrounded_credit": false,
+  "evidence_verified": [
+   "R1"
+  ],
+  "met_ids": [
+   "R1"
+  ],
+  "predicted_verdict": "valid",
+  "label_verdict": "valid",
+  "verdict_exact": true,
+  "harmful_verdict_upgrade": false,
+  "harmful_verdict_downgrade": false,
+  "raw_score_abs_delta": 0.0
+ },
+ {
+  "case_id": "e007_q1_r1",
+  "split": "DEV",
+  "component": "ALL",
+  "schema_failure": false,
+  "decision": "AUTO",
+  "score": 2.0,
+  "transcription_complete": true,
+  "uncertain": false,
+  "validation_ok": true,
+  "validation_problems": [],
+  "evidence_failure": false,
+  "evidence_ungrounded_invalid": false,
+  "evidence_fabricated": [],
+  "evidence_missing": [],
+  "evidence_ungrounded_credit": false,
+  "evidence_verified": [
+   "R1"
+  ],
+  "met_ids": [
+   "R1"
+  ],
+  "predicted_verdict": "partially_valid",
+  "label_verdict": "valid",
+  "verdict_exact": false,
+  "harmful_verdict_upgrade": false,
+  "harmful_verdict_downgrade": true,
+  "raw_score_abs_delta": 2.0
+ }
+]

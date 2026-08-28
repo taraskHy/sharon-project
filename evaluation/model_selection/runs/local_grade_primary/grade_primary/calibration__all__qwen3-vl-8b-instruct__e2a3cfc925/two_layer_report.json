@@ -1,0 +1,539 @@
+{
+ "report": "two_layer_grade_report",
+ "created_from": "evaluation\\model_selection\\runs\\local_grade_primary\\grade_primary\\calibration__all__qwen3-vl-8b-instruct__e2a3cfc925",
+ "run_id": "calibration__all__qwen3-vl-8b-instruct__e2a3cfc925",
+ "candidate": "qwen3-vl:8b-instruct",
+ "role": "grade_primary",
+ "split": "CALIBRATION",
+ "subset": null,
+ "backend": "ollama",
+ "base_url": "http://localhost:11434/v1",
+ "prompt_version": "grade-v4-charitable-local",
+ "adapter_version": "grade-bench-v3",
+ "git_commit": "77a4c2b0aa3aeb7cdd917ad40b24d946c4fe8c45",
+ "dataset_hashes": {
+  "inputs_sha256": "61ea571e9413b20b4b1e2d6dc84e14688cdd2ff4a1a3e0751a2233cf4dbc050c",
+  "labels_sha256": "2281f063f33c5ddf37675766892ef3b47148254674768b85d4eee40e8523ccd9",
+  "manifest_sha256": "f3caddb961650a10a41a1bbf84ce048101b01977122bad04c1e9810ceb995585",
+  "final_labels_sha256": "3bdd38c3ec1787bb053447382e1cb545c3ea1f478d459b317b23cefd49999869"
+ },
+ "ground_truth_statement": "All benchmark targets in this report originate from the ACTUAL instructor-assigned grades on the original graded tests (final_labels.json, ground_truth_source=original_instructor_grade), inverted through the frozen production scoring policy. The owner's blind A/B/C/D audit decisions, model-majority votes and previous cloud-model predictions are NOT used as expected labels anywhere in this report; audit decisions appear only as diagnostic flags. Every target was re-derived from the instructor score at report time and matched the frozen label.",
+ "target_provenance": {
+  "verified_cases": 14,
+  "derivation": "reliability._verdict_from_score + grade._verdict_factor + grade._grade_sub_item (explanation_required, weight==0 branch)",
+  "instructor_score_source": "final_labels.json (ground_truth_source=original_instructor_grade)"
+ },
+ "layer_a_local_grader_quality": {
+  "target": "canonical explanation verdict, derived from the instructor grade (NOT from audit decisions, model votes or prior model predictions)",
+  "population_derivable": 12,
+  "class_support": {
+   "valid": 7,
+   "partially_valid": 5
+  },
+  "scored": 12,
+  "not_scored_schema_failure": 0,
+  "not_scored_not_in_run": 0,
+  "excluded_wrong_selection": 0,
+  "excluded_wrong_selection_note": "wrong-selection cases carry no explanation ground truth (their zero was decided by the selection, the explanation was never scored) and never count toward explanation-model accuracy",
+  "invalid_class_note": "`invalid` has zero authoritative support in this dataset; performance on invalid explanations is NOT MEASURED",
+  "verdict_exact_pct": 58.33,
+  "verdict_balanced_accuracy": 0.5571,
+  "harmful_verdict_upgrades": 1,
+  "harmful_verdict_downgrades": 4,
+  "verdict_confusion": {
+   "invalid": {
+    "invalid": 0,
+    "partially_valid": 0,
+    "valid": 0
+   },
+   "partially_valid": {
+    "invalid": 2,
+    "partially_valid": 2,
+    "valid": 1
+   },
+   "valid": {
+    "invalid": 2,
+    "partially_valid": 0,
+    "valid": 5
+   }
+  },
+  "verdict_per_class": {
+   "invalid": {
+    "support": 0,
+    "predicted": 4,
+    "precision": 0.0,
+    "recall": null,
+    "f1": 0.0
+   },
+   "partially_valid": {
+    "support": 5,
+    "predicted": 2,
+    "precision": 1.0,
+    "recall": 0.4,
+    "f1": 0.5714
+   },
+   "valid": {
+    "support": 7,
+    "predicted": 6,
+    "precision": 0.8333,
+    "recall": 0.7143,
+    "f1": 0.7692
+   }
+  },
+  "verdict_macro_f1": 0.6703,
+  "verdict_classes_with_support": 2,
+  "cases": [
+   {
+    "case_id": "e004_q1_r1",
+    "label_verdict": "valid",
+    "predicted_verdict": "invalid",
+    "verdict_exact": false
+   },
+   {
+    "case_id": "e004_q1_r2",
+    "label_verdict": "valid",
+    "predicted_verdict": "valid",
+    "verdict_exact": true
+   },
+   {
+    "case_id": "e004_q1_r3",
+    "label_verdict": "partially_valid",
+    "predicted_verdict": "partially_valid",
+    "verdict_exact": true
+   },
+   {
+    "case_id": "e004_q1_r4",
+    "label_verdict": "valid",
+    "predicted_verdict": "valid",
+    "verdict_exact": true
+   },
+   {
+    "case_id": "e004_q1_r5",
+    "label_verdict": "partially_valid",
+    "predicted_verdict": "partially_valid",
+    "verdict_exact": true
+   },
+   {
+    "case_id": "e004_q1_r6",
+    "label_verdict": "partially_valid",
+    "predicted_verdict": "invalid",
+    "verdict_exact": false
+   },
+   {
+    "case_id": "e004_q1_r8",
+    "label_verdict": "partially_valid",
+    "predicted_verdict": "valid",
+    "verdict_exact": false
+   },
+   {
+    "case_id": "e004_q2_r1",
+    "label_verdict": "valid",
+    "predicted_verdict": "valid",
+    "verdict_exact": true
+   },
+   {
+    "case_id": "e004_q2_r2",
+    "label_verdict": "valid",
+    "predicted_verdict": "valid",
+    "verdict_exact": true
+   },
+   {
+    "case_id": "e004_q2_r3",
+    "label_verdict": "valid",
+    "predicted_verdict": "valid",
+    "verdict_exact": true
+   },
+   {
+    "case_id": "e004_q2_r6",
+    "label_verdict": "valid",
+    "predicted_verdict": "invalid",
+    "verdict_exact": false
+   },
+   {
+    "case_id": "e004_q2_r8",
+    "label_verdict": "partially_valid",
+    "predicted_verdict": "invalid",
+    "verdict_exact": false
+   }
+  ]
+ },
+ "layer_b_end_to_end_test_grade_agreement": {
+  "target": "actual instructor-assigned final score from the original graded test",
+  "prediction": "model explanation verdict + actual selection correctness + frozen production scoring policy",
+  "population": 14,
+  "excluded_selection_unresolved": [
+   "e004_q2_r4",
+   "e004_q2_r5"
+  ],
+  "no_automated_score_schema_failure": [],
+  "not_in_run": [],
+  "full_system": {
+   "cases": 12,
+   "final_exact": 7,
+   "final_exact_pct": 58.33,
+   "final_score_mae": 1.1667,
+   "harmful_overgrades": 1,
+   "harmful_undergrades": 4
+  },
+  "model_scored_subpopulation": {
+   "cases": 12,
+   "final_exact": 7,
+   "final_exact_pct": 58.33,
+   "final_score_mae": 1.1667,
+   "harmful_overgrades": 1,
+   "harmful_undergrades": 4,
+   "note": "cases whose predicted score depends on the model's verdict (selection correct); this is where grading quality shows"
+  },
+  "wrong_selection_policy_report": {
+   "cases": [],
+   "predicted": "0.0 for every case, deterministically, through the production selection gate — before any explanation judgement",
+   "agreement": {
+    "cases": 0
+   },
+   "note": "wrong selection -> deterministic zero -> a local grading call should normally be avoided for these; a final-score match here proves nothing about explanation judgement, so these cases are reported separately and never enter Layer A"
+  },
+  "confusion_by_actual_score": {
+   "2": {
+    "2": 2,
+    "0": 2,
+    "4": 1
+   },
+   "4": {
+    "0": 2,
+    "4": 5
+   }
+  }
+ },
+ "audit_decisions": {
+  "policy": "audit decisions are diagnostic flags only (rubric-practice mismatch / evidence-transcription concern / ambiguity); they never replace, modify or determine an expected label, and no case in this report was excluded or relabelled because of one",
+  "flags_in_population": [
+   {
+    "case_id": "e004_q1_r1",
+    "decision": "B",
+    "meaning": "instructor practice is more lenient than the literal encoded rubric",
+    "flag": "rubric_practice_mismatch"
+   },
+   {
+    "case_id": "e004_q1_r3",
+    "decision": "B",
+    "meaning": "instructor practice is more lenient than the literal encoded rubric",
+    "flag": "rubric_practice_mismatch"
+   },
+   {
+    "case_id": "e004_q1_r5",
+    "decision": "A",
+    "meaning": "derived verdict is consistent with the rubric and instructor practice",
+    "flag": null
+   },
+   {
+    "case_id": "e004_q1_r6",
+    "decision": "A",
+    "meaning": "derived verdict is consistent with the rubric and instructor practice",
+    "flag": null
+   },
+   {
+    "case_id": "e004_q2_r6",
+    "decision": "A",
+    "meaning": "derived verdict is consistent with the rubric and instructor practice",
+    "flag": null
+   },
+   {
+    "case_id": "e004_q2_r8",
+    "decision": "C",
+    "meaning": "transcription/evidence/rubric artifact is incomplete or incorrect",
+    "flag": "evidence_transcription_concern"
+   }
+  ],
+  "decisions_outside_population": 0,
+  "source": "C:\\Users\\ethan\\OneDrive\\Desktop\\etgar\\cp_course\\sharon-project\\evaluation\\model_selection\\experiments\\LOCAL_GRADE_PRIMARY_FREEZE_2026-08-27.json"
+ },
+ "cases": [
+  {
+   "case_id": "e004_q1_r1",
+   "split": "CALIBRATION",
+   "actual_instructor_score": 4.0,
+   "max_points": 4.0,
+   "selection_state": "correct_implied_by_credit",
+   "explanation_target": "valid",
+   "explanation_target_derivable": true,
+   "transcription_complete": true,
+   "model_ran": true,
+   "model_schema_failure": false,
+   "model_verdict": "invalid",
+   "model_decision": "AUTO",
+   "predicted_final": 0.0,
+   "predicted_final_basis": "model_verdict_via_production_policy",
+   "layer_b_bucket": "model_scored",
+   "final_exact": false,
+   "final_abs_error": 4.0,
+   "harmful_overgrade": false,
+   "harmful_undergrade": true
+  },
+  {
+   "case_id": "e004_q1_r2",
+   "split": "CALIBRATION",
+   "actual_instructor_score": 4.0,
+   "max_points": 4.0,
+   "selection_state": "correct_implied_by_credit",
+   "explanation_target": "valid",
+   "explanation_target_derivable": true,
+   "transcription_complete": true,
+   "model_ran": true,
+   "model_schema_failure": false,
+   "model_verdict": "valid",
+   "model_decision": "AUTO",
+   "predicted_final": 4.0,
+   "predicted_final_basis": "model_verdict_via_production_policy",
+   "layer_b_bucket": "model_scored",
+   "final_exact": true,
+   "final_abs_error": 0.0,
+   "harmful_overgrade": false,
+   "harmful_undergrade": false
+  },
+  {
+   "case_id": "e004_q1_r3",
+   "split": "CALIBRATION",
+   "actual_instructor_score": 2.0,
+   "max_points": 4.0,
+   "selection_state": "correct_implied_by_credit",
+   "explanation_target": "partially_valid",
+   "explanation_target_derivable": true,
+   "transcription_complete": true,
+   "model_ran": true,
+   "model_schema_failure": false,
+   "model_verdict": "partially_valid",
+   "model_decision": "AUTO",
+   "predicted_final": 2.0,
+   "predicted_final_basis": "model_verdict_via_production_policy",
+   "layer_b_bucket": "model_scored",
+   "final_exact": true,
+   "final_abs_error": 0.0,
+   "harmful_overgrade": false,
+   "harmful_undergrade": false
+  },
+  {
+   "case_id": "e004_q1_r4",
+   "split": "CALIBRATION",
+   "actual_instructor_score": 4.0,
+   "max_points": 4.0,
+   "selection_state": "correct_implied_by_credit",
+   "explanation_target": "valid",
+   "explanation_target_derivable": true,
+   "transcription_complete": true,
+   "model_ran": true,
+   "model_schema_failure": false,
+   "model_verdict": "valid",
+   "model_decision": "AUTO",
+   "predicted_final": 4.0,
+   "predicted_final_basis": "model_verdict_via_production_policy",
+   "layer_b_bucket": "model_scored",
+   "final_exact": true,
+   "final_abs_error": 0.0,
+   "harmful_overgrade": false,
+   "harmful_undergrade": false
+  },
+  {
+   "case_id": "e004_q1_r5",
+   "split": "CALIBRATION",
+   "actual_instructor_score": 2.0,
+   "max_points": 4.0,
+   "selection_state": "correct_implied_by_credit",
+   "explanation_target": "partially_valid",
+   "explanation_target_derivable": true,
+   "transcription_complete": true,
+   "model_ran": true,
+   "model_schema_failure": false,
+   "model_verdict": "partially_valid",
+   "model_decision": "AUTO",
+   "predicted_final": 2.0,
+   "predicted_final_basis": "model_verdict_via_production_policy",
+   "layer_b_bucket": "model_scored",
+   "final_exact": true,
+   "final_abs_error": 0.0,
+   "harmful_overgrade": false,
+   "harmful_undergrade": false
+  },
+  {
+   "case_id": "e004_q1_r6",
+   "split": "CALIBRATION",
+   "actual_instructor_score": 2.0,
+   "max_points": 4.0,
+   "selection_state": "correct_implied_by_credit",
+   "explanation_target": "partially_valid",
+   "explanation_target_derivable": true,
+   "transcription_complete": true,
+   "model_ran": true,
+   "model_schema_failure": false,
+   "model_verdict": "invalid",
+   "model_decision": "AUTO",
+   "predicted_final": 0.0,
+   "predicted_final_basis": "model_verdict_via_production_policy",
+   "layer_b_bucket": "model_scored",
+   "final_exact": false,
+   "final_abs_error": 2.0,
+   "harmful_overgrade": false,
+   "harmful_undergrade": true
+  },
+  {
+   "case_id": "e004_q1_r8",
+   "split": "CALIBRATION",
+   "actual_instructor_score": 2.0,
+   "max_points": 4.0,
+   "selection_state": "correct_implied_by_credit",
+   "explanation_target": "partially_valid",
+   "explanation_target_derivable": true,
+   "transcription_complete": true,
+   "model_ran": true,
+   "model_schema_failure": false,
+   "model_verdict": "valid",
+   "model_decision": "AUTO",
+   "predicted_final": 4.0,
+   "predicted_final_basis": "model_verdict_via_production_policy",
+   "layer_b_bucket": "model_scored",
+   "final_exact": false,
+   "final_abs_error": 2.0,
+   "harmful_overgrade": true,
+   "harmful_undergrade": false
+  },
+  {
+   "case_id": "e004_q2_r1",
+   "split": "CALIBRATION",
+   "actual_instructor_score": 4.0,
+   "max_points": 4.0,
+   "selection_state": "correct_implied_by_credit",
+   "explanation_target": "valid",
+   "explanation_target_derivable": true,
+   "transcription_complete": true,
+   "model_ran": true,
+   "model_schema_failure": false,
+   "model_verdict": "valid",
+   "model_decision": "AUTO",
+   "predicted_final": 4.0,
+   "predicted_final_basis": "model_verdict_via_production_policy",
+   "layer_b_bucket": "model_scored",
+   "final_exact": true,
+   "final_abs_error": 0.0,
+   "harmful_overgrade": false,
+   "harmful_undergrade": false
+  },
+  {
+   "case_id": "e004_q2_r2",
+   "split": "CALIBRATION",
+   "actual_instructor_score": 4.0,
+   "max_points": 4.0,
+   "selection_state": "correct_implied_by_credit",
+   "explanation_target": "valid",
+   "explanation_target_derivable": true,
+   "transcription_complete": true,
+   "model_ran": true,
+   "model_schema_failure": false,
+   "model_verdict": "valid",
+   "model_decision": "AUTO",
+   "predicted_final": 4.0,
+   "predicted_final_basis": "model_verdict_via_production_policy",
+   "layer_b_bucket": "model_scored",
+   "final_exact": true,
+   "final_abs_error": 0.0,
+   "harmful_overgrade": false,
+   "harmful_undergrade": false
+  },
+  {
+   "case_id": "e004_q2_r3",
+   "split": "CALIBRATION",
+   "actual_instructor_score": 4.0,
+   "max_points": 4.0,
+   "selection_state": "correct_implied_by_credit",
+   "explanation_target": "valid",
+   "explanation_target_derivable": true,
+   "transcription_complete": true,
+   "model_ran": true,
+   "model_schema_failure": false,
+   "model_verdict": "valid",
+   "model_decision": "AUTO",
+   "predicted_final": 4.0,
+   "predicted_final_basis": "model_verdict_via_production_policy",
+   "layer_b_bucket": "model_scored",
+   "final_exact": true,
+   "final_abs_error": 0.0,
+   "harmful_overgrade": false,
+   "harmful_undergrade": false
+  },
+  {
+   "case_id": "e004_q2_r4",
+   "split": "CALIBRATION",
+   "actual_instructor_score": 0.0,
+   "max_points": 4.0,
+   "selection_state": "unresolved",
+   "explanation_target": null,
+   "explanation_target_derivable": false,
+   "transcription_complete": true,
+   "model_ran": true,
+   "model_schema_failure": false,
+   "model_verdict": "partially_valid",
+   "model_decision": "AUTO",
+   "predicted_final": null,
+   "predicted_final_basis": "zero_marked_option_recorded_but_exam_version_unconfirmed",
+   "layer_b_bucket": "excluded_selection_unresolved"
+  },
+  {
+   "case_id": "e004_q2_r5",
+   "split": "CALIBRATION",
+   "actual_instructor_score": 0.0,
+   "max_points": 4.0,
+   "selection_state": "unresolved",
+   "explanation_target": null,
+   "explanation_target_derivable": false,
+   "transcription_complete": true,
+   "model_ran": true,
+   "model_schema_failure": false,
+   "model_verdict": "partially_valid",
+   "model_decision": "AUTO",
+   "predicted_final": null,
+   "predicted_final_basis": "zero_marked_option_recorded_but_exam_version_unconfirmed",
+   "layer_b_bucket": "excluded_selection_unresolved"
+  },
+  {
+   "case_id": "e004_q2_r6",
+   "split": "CALIBRATION",
+   "actual_instructor_score": 4.0,
+   "max_points": 4.0,
+   "selection_state": "correct_implied_by_credit",
+   "explanation_target": "valid",
+   "explanation_target_derivable": true,
+   "transcription_complete": true,
+   "model_ran": true,
+   "model_schema_failure": false,
+   "model_verdict": "invalid",
+   "model_decision": "AUTO",
+   "predicted_final": 0.0,
+   "predicted_final_basis": "model_verdict_via_production_policy",
+   "layer_b_bucket": "model_scored",
+   "final_exact": false,
+   "final_abs_error": 4.0,
+   "harmful_overgrade": false,
+   "harmful_undergrade": true
+  },
+  {
+   "case_id": "e004_q2_r8",
+   "split": "CALIBRATION",
+   "actual_instructor_score": 2.0,
+   "max_points": 4.0,
+   "selection_state": "correct_implied_by_credit",
+   "explanation_target": "partially_valid",
+   "explanation_target_derivable": true,
+   "transcription_complete": true,
+   "model_ran": true,
+   "model_schema_failure": false,
+   "model_verdict": "invalid",
+   "model_decision": "AUTO",
+   "predicted_final": 0.0,
+   "predicted_final_basis": "model_verdict_via_production_policy",
+   "layer_b_bucket": "model_scored",
+   "final_exact": false,
+   "final_abs_error": 2.0,
+   "harmful_overgrade": false,
+   "harmful_undergrade": true
+  }
+ ],
+ "layers_note": "Layer A and Layer B answer different questions and are never combined."
+}

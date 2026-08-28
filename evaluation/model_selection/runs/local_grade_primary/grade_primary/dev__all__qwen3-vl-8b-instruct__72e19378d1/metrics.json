@@ -1,0 +1,77 @@
+{
+ "cases": 32,
+ "labels_available": true,
+ "labeled_excluded_transcription_incomplete": 0,
+ "auto_rate_pct": 93.75,
+ "review_rate_pct": 6.25,
+ "schema_failures": 0,
+ "evidence_validation_failures": 2,
+ "ungrounded_invalid_verdicts": 1,
+ "validation_failures": 2,
+ "usage": {
+  "calls_live": 30,
+  "cache_hits": 2,
+  "latency_mean_s": 2.408,
+  "latency_median_s": 2.296,
+  "input_tokens": 51439,
+  "output_tokens": 2057,
+  "reasoning_tokens": 0,
+  "total_tokens": 53496,
+  "reported_cost": 0.0
+ },
+ "verdict_cases": 26,
+ "verdict_cases_excluded_no_ground_truth": 6,
+ "verdict_exact_pct": 65.38,
+ "verdict_balanced_accuracy": 0.5909,
+ "harmful_verdict_upgrades": 2,
+ "harmful_verdict_downgrades": 7,
+ "verdict_confusion": {
+  "invalid": {
+   "invalid": 0,
+   "partially_valid": 0,
+   "valid": 0
+  },
+  "partially_valid": {
+   "invalid": 0,
+   "partially_valid": 2,
+   "valid": 2
+  },
+  "valid": {
+   "invalid": 3,
+   "partially_valid": 4,
+   "valid": 15
+  }
+ },
+ "verdict_per_class": {
+  "invalid": {
+   "support": 0,
+   "predicted": 3,
+   "precision": 0.0,
+   "recall": null,
+   "f1": 0.0
+  },
+  "partially_valid": {
+   "support": 4,
+   "predicted": 6,
+   "precision": 0.3333,
+   "recall": 0.5,
+   "f1": 0.4
+  },
+  "valid": {
+   "support": 22,
+   "predicted": 17,
+   "precision": 0.8824,
+   "recall": 0.6818,
+   "f1": 0.7692
+  }
+ },
+ "verdict_macro_f1": 0.5846,
+ "verdict_classes_with_support": 2,
+ "final_score_cases": 6,
+ "final_score_exact_pct": 100.0,
+ "final_score_mae": 0.0,
+ "harmful_upgrades": 0,
+ "harmful_downgrades": 0,
+ "cases_selected": 32,
+ "cases_with_result": 32
+}
