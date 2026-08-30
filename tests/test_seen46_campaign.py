@@ -120,6 +120,32 @@ def test_targets_are_instructor_derived_and_audits_are_flags(campaign):
     assert r8["actual_instructor_score"] == 2.0
 
 
+def test_swap_probe_spec_is_frozen_within_the_campaign(campaign):
+    """The neighbor-fit swap probe: diagnostic flags only, campaign cases
+    only, HELD_OUT structurally absent, self-consistent hash."""
+    import hashlib
+    spec_path = REPO / "evaluation" / "model_selection" / "experiments" / "SWAP_PROBE_2026-08-30.json"
+    if not spec_path.exists():
+        pytest.skip("swap probe not frozen in this checkout")
+    spec = json.loads(spec_path.read_text(encoding="utf-8"))
+    payload = json.dumps({k: v for k, v in spec.items() if k != "spec_sha256"},
+                         ensure_ascii=False, sort_keys=True)
+    assert spec["spec_sha256"] == hashlib.sha256(payload.encode()).hexdigest()
+    assert spec["campaign_sha256"] == campaign["campaign_sha256"]
+    ids = {c["case_id"] for c in campaign["cases"]}
+    for p in spec["pairs"]:
+        assert p["target_pack"] in ids and p["source_text"] in ids
+        # a pair stays inside ONE writer+question group (siblings only)
+        tw, tq, _ = p["target_pack"].split("_")
+        sw, sq, _ = p["source_text"].split("_")
+        assert (tw, tq) == (sw, sq)
+        assert p["target_pack"] != p["source_text"]
+    for w in FORBIDDEN_WRITERS:
+        assert w not in spec_path.read_text(encoding="utf-8")
+    assert "never credit" in spec["purpose"] or "never credits" in spec["purpose"]
+    assert spec["cross_pairs"] == len(spec["pairs"]) == 294
+
+
 def test_campaign_pins_the_frozen_grader_configuration(campaign):
     import hashlib as h
     from autograder.escalation import (GRADE_VALIDATION_VERSION, GradeResult,
