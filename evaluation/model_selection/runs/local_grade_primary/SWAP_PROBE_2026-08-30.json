@@ -1,0 +1,824 @@
+{
+ "artifact": "swap_probe_report",
+ "created_at": "2026-08-30 23:46:37",
+ "spec_sha256": "fc378c136384f61c46dd5f6859d4e59318b25ed8034808091300ae4deabce1f5",
+ "pairs_evaluated": 294,
+ "pairs_failed": 0,
+ "noise_floor": {
+  "cross_pairs_judged": 294,
+  "cross_pairs_fitting_a_foreign_slot": 86,
+  "foreign_fit_rate_pct": 29.3,
+  "meaning": "how often the grader accepts an answer in a slot it does NOT belong to; the false-positive ceiling for any swap detector built on it"
+ },
+ "swap_suspects": [
+  {
+   "slot": "e002_q1_r7",
+   "own_verdict": "invalid",
+   "texts_fitting_this_slot": [
+    "e002_q1_r2",
+    "e002_q1_r8"
+   ],
+   "instructor_score_of_slot": 4.0
+  },
+  {
+   "slot": "e003_q1_r7",
+   "own_verdict": "invalid",
+   "texts_fitting_this_slot": [
+    "e003_q1_r3",
+    "e003_q1_r8"
+   ],
+   "instructor_score_of_slot": 4.0
+  },
+  {
+   "slot": "e003_q2_r4",
+   "own_verdict": "invalid",
+   "texts_fitting_this_slot": [
+    "e003_q2_r5"
+   ],
+   "instructor_score_of_slot": 0.0
+  },
+  {
+   "slot": "e004_q1_r1",
+   "own_verdict": "invalid",
+   "texts_fitting_this_slot": [
+    "e004_q1_r4"
+   ],
+   "instructor_score_of_slot": 4.0
+  },
+  {
+   "slot": "e004_q1_r6",
+   "own_verdict": "invalid",
+   "texts_fitting_this_slot": [
+    "e004_q1_r5"
+   ],
+   "instructor_score_of_slot": 2.0
+  },
+  {
+   "slot": "e004_q2_r6",
+   "own_verdict": "invalid",
+   "texts_fitting_this_slot": [
+    "e004_q2_r8"
+   ],
+   "instructor_score_of_slot": 4.0
+  },
+  {
+   "slot": "e004_q2_r8",
+   "own_verdict": "invalid",
+   "texts_fitting_this_slot": [
+    "e004_q2_r6"
+   ],
+   "instructor_score_of_slot": 2.0
+  }
+ ],
+ "reciprocal_transposition_signatures": [
+  [
+   "e004_q2_r6",
+   "e004_q2_r8"
+  ]
+ ],
+ "policy": "flags only — nothing here credits a neighbor slot or changes any grade, frozen run, label, or review-campaign record",
+ "per_case": [
+  {
+   "case": "e002_q1_r1",
+   "own_verdict": "partially_valid",
+   "siblings": {
+    "e002_q1_r2": "invalid",
+    "e002_q1_r3": "invalid",
+    "e002_q1_r4": "valid",
+    "e002_q1_r5": "partially_valid",
+    "e002_q1_r6": "partially_valid",
+    "e002_q1_r7": "invalid",
+    "e002_q1_r8": "invalid"
+   },
+   "siblings_fitting_this_slot": [
+    "e002_q1_r4",
+    "e002_q1_r5",
+    "e002_q1_r6"
+   ]
+  },
+  {
+   "case": "e002_q1_r2",
+   "own_verdict": "valid",
+   "siblings": {
+    "e002_q1_r1": "invalid",
+    "e002_q1_r3": "valid",
+    "e002_q1_r4": "invalid",
+    "e002_q1_r5": "invalid",
+    "e002_q1_r6": "invalid",
+    "e002_q1_r7": "invalid",
+    "e002_q1_r8": "partially_valid"
+   },
+   "siblings_fitting_this_slot": [
+    "e002_q1_r3",
+    "e002_q1_r8"
+   ]
+  },
+  {
+   "case": "e002_q1_r3",
+   "own_verdict": "valid",
+   "siblings": {
+    "e002_q1_r1": "invalid",
+    "e002_q1_r2": "valid",
+    "e002_q1_r4": "invalid",
+    "e002_q1_r5": "invalid",
+    "e002_q1_r6": "invalid",
+    "e002_q1_r7": "invalid",
+    "e002_q1_r8": "partially_valid"
+   },
+   "siblings_fitting_this_slot": [
+    "e002_q1_r2",
+    "e002_q1_r8"
+   ]
+  },
+  {
+   "case": "e002_q1_r4",
+   "own_verdict": "valid",
+   "siblings": {
+    "e002_q1_r1": "invalid",
+    "e002_q1_r2": "invalid",
+    "e002_q1_r3": "partially_valid",
+    "e002_q1_r5": "invalid",
+    "e002_q1_r6": "invalid",
+    "e002_q1_r7": "invalid",
+    "e002_q1_r8": "invalid"
+   },
+   "siblings_fitting_this_slot": [
+    "e002_q1_r3"
+   ]
+  },
+  {
+   "case": "e002_q1_r5",
+   "own_verdict": "valid",
+   "siblings": {
+    "e002_q1_r1": "partially_valid",
+    "e002_q1_r2": "invalid",
+    "e002_q1_r3": "invalid",
+    "e002_q1_r4": "partially_valid",
+    "e002_q1_r6": "valid",
+    "e002_q1_r7": "invalid",
+    "e002_q1_r8": "invalid"
+   },
+   "siblings_fitting_this_slot": [
+    "e002_q1_r1",
+    "e002_q1_r4",
+    "e002_q1_r6"
+   ]
+  },
+  {
+   "case": "e002_q1_r6",
+   "own_verdict": "valid",
+   "siblings": {
+    "e002_q1_r1": "partially_valid",
+    "e002_q1_r2": "partially_valid",
+    "e002_q1_r3": "invalid",
+    "e002_q1_r4": "partially_valid",
+    "e002_q1_r5": "valid",
+    "e002_q1_r7": "invalid",
+    "e002_q1_r8": "invalid"
+   },
+   "siblings_fitting_this_slot": [
+    "e002_q1_r1",
+    "e002_q1_r2",
+    "e002_q1_r4",
+    "e002_q1_r5"
+   ]
+  },
+  {
+   "case": "e002_q1_r7",
+   "own_verdict": "invalid",
+   "siblings": {
+    "e002_q1_r1": "invalid",
+    "e002_q1_r2": "partially_valid",
+    "e002_q1_r3": "invalid",
+    "e002_q1_r4": "invalid",
+    "e002_q1_r5": "invalid",
+    "e002_q1_r6": "invalid",
+    "e002_q1_r8": "partially_valid"
+   },
+   "siblings_fitting_this_slot": [
+    "e002_q1_r2",
+    "e002_q1_r8"
+   ]
+  },
+  {
+   "case": "e002_q1_r8",
+   "own_verdict": "partially_valid",
+   "siblings": {
+    "e002_q1_r1": "invalid",
+    "e002_q1_r2": "partially_valid",
+    "e002_q1_r3": "invalid",
+    "e002_q1_r4": "invalid",
+    "e002_q1_r5": "partially_valid",
+    "e002_q1_r6": "invalid",
+    "e002_q1_r7": "invalid"
+   },
+   "siblings_fitting_this_slot": [
+    "e002_q1_r2",
+    "e002_q1_r5"
+   ]
+  },
+  {
+   "case": "e002_q2_r1",
+   "own_verdict": "valid",
+   "siblings": {
+    "e002_q2_r2": "partially_valid",
+    "e002_q2_r3": "invalid",
+    "e002_q2_r4": "invalid",
+    "e002_q2_r5": "invalid",
+    "e002_q2_r6": "invalid",
+    "e002_q2_r7": "invalid",
+    "e002_q2_r8": "invalid"
+   },
+   "siblings_fitting_this_slot": [
+    "e002_q2_r2"
+   ]
+  },
+  {
+   "case": "e002_q2_r2",
+   "own_verdict": "valid",
+   "siblings": {
+    "e002_q2_r1": "valid",
+    "e002_q2_r3": "partially_valid",
+    "e002_q2_r4": "invalid",
+    "e002_q2_r5": "invalid",
+    "e002_q2_r6": "invalid",
+    "e002_q2_r7": "invalid",
+    "e002_q2_r8": "invalid"
+   },
+   "siblings_fitting_this_slot": [
+    "e002_q2_r1",
+    "e002_q2_r3"
+   ]
+  },
+  {
+   "case": "e002_q2_r3",
+   "own_verdict": "valid",
+   "siblings": {
+    "e002_q2_r1": "partially_valid",
+    "e002_q2_r2": "invalid",
+    "e002_q2_r4": "partially_valid",
+    "e002_q2_r5": "invalid",
+    "e002_q2_r6": "invalid",
+    "e002_q2_r7": "invalid",
+    "e002_q2_r8": "invalid"
+   },
+   "siblings_fitting_this_slot": [
+    "e002_q2_r1",
+    "e002_q2_r4"
+   ]
+  },
+  {
+   "case": "e002_q2_r4",
+   "own_verdict": "invalid",
+   "siblings": {
+    "e002_q2_r1": "invalid",
+    "e002_q2_r2": "invalid",
+    "e002_q2_r3": "invalid",
+    "e002_q2_r5": "invalid",
+    "e002_q2_r6": "invalid",
+    "e002_q2_r7": "invalid",
+    "e002_q2_r8": "invalid"
+   },
+   "siblings_fitting_this_slot": []
+  },
+  {
+   "case": "e002_q2_r5",
+   "own_verdict": "partially_valid",
+   "siblings": {
+    "e002_q2_r1": "invalid",
+    "e002_q2_r2": "invalid",
+    "e002_q2_r3": "valid",
+    "e002_q2_r4": "invalid",
+    "e002_q2_r6": "invalid",
+    "e002_q2_r7": "invalid",
+    "e002_q2_r8": "invalid"
+   },
+   "siblings_fitting_this_slot": [
+    "e002_q2_r3"
+   ]
+  },
+  {
+   "case": "e002_q2_r6",
+   "own_verdict": "partially_valid",
+   "siblings": {
+    "e002_q2_r1": "invalid",
+    "e002_q2_r2": "invalid",
+    "e002_q2_r3": "invalid",
+    "e002_q2_r4": "invalid",
+    "e002_q2_r5": "invalid",
+    "e002_q2_r7": "invalid",
+    "e002_q2_r8": "invalid"
+   },
+   "siblings_fitting_this_slot": []
+  },
+  {
+   "case": "e002_q2_r7",
+   "own_verdict": "valid",
+   "siblings": {
+    "e002_q2_r1": "invalid",
+    "e002_q2_r2": "invalid",
+    "e002_q2_r3": "valid",
+    "e002_q2_r4": "invalid",
+    "e002_q2_r5": "invalid",
+    "e002_q2_r6": "partially_valid",
+    "e002_q2_r8": "partially_valid"
+   },
+   "siblings_fitting_this_slot": [
+    "e002_q2_r3",
+    "e002_q2_r6",
+    "e002_q2_r8"
+   ]
+  },
+  {
+   "case": "e002_q2_r8",
+   "own_verdict": "valid",
+   "siblings": {
+    "e002_q2_r1": "invalid",
+    "e002_q2_r2": "invalid",
+    "e002_q2_r3": "partially_valid",
+    "e002_q2_r4": "invalid",
+    "e002_q2_r5": "invalid",
+    "e002_q2_r6": "partially_valid",
+    "e002_q2_r7": "partially_valid"
+   },
+   "siblings_fitting_this_slot": [
+    "e002_q2_r3",
+    "e002_q2_r6",
+    "e002_q2_r7"
+   ]
+  },
+  {
+   "case": "e003_q1_r1",
+   "own_verdict": "valid",
+   "siblings": {
+    "e003_q1_r3": "partially_valid",
+    "e003_q1_r4": "valid",
+    "e003_q1_r5": "partially_valid",
+    "e003_q1_r6": "partially_valid",
+    "e003_q1_r7": "invalid",
+    "e003_q1_r8": "invalid"
+   },
+   "siblings_fitting_this_slot": [
+    "e003_q1_r3",
+    "e003_q1_r4",
+    "e003_q1_r5",
+    "e003_q1_r6"
+   ]
+  },
+  {
+   "case": "e003_q1_r3",
+   "own_verdict": "valid",
+   "siblings": {
+    "e003_q1_r1": "partially_valid",
+    "e003_q1_r4": "invalid",
+    "e003_q1_r5": "valid",
+    "e003_q1_r6": "valid",
+    "e003_q1_r7": "partially_valid",
+    "e003_q1_r8": "partially_valid"
+   },
+   "siblings_fitting_this_slot": [
+    "e003_q1_r1",
+    "e003_q1_r5",
+    "e003_q1_r6",
+    "e003_q1_r7",
+    "e003_q1_r8"
+   ]
+  },
+  {
+   "case": "e003_q1_r4",
+   "own_verdict": "valid",
+   "siblings": {
+    "e003_q1_r1": "partially_valid",
+    "e003_q1_r3": "partially_valid",
+    "e003_q1_r5": "valid",
+    "e003_q1_r6": "valid",
+    "e003_q1_r7": "partially_valid",
+    "e003_q1_r8": "partially_valid"
+   },
+   "siblings_fitting_this_slot": [
+    "e003_q1_r1",
+    "e003_q1_r3",
+    "e003_q1_r5",
+    "e003_q1_r6",
+    "e003_q1_r7",
+    "e003_q1_r8"
+   ]
+  },
+  {
+   "case": "e003_q1_r5",
+   "own_verdict": "valid",
+   "siblings": {
+    "e003_q1_r1": "partially_valid",
+    "e003_q1_r3": "partially_valid",
+    "e003_q1_r4": "invalid",
+    "e003_q1_r6": "partially_valid",
+    "e003_q1_r7": "invalid",
+    "e003_q1_r8": "invalid"
+   },
+   "siblings_fitting_this_slot": [
+    "e003_q1_r1",
+    "e003_q1_r3",
+    "e003_q1_r6"
+   ]
+  },
+  {
+   "case": "e003_q1_r6",
+   "own_verdict": "partially_valid",
+   "siblings": {
+    "e003_q1_r1": "partially_valid",
+    "e003_q1_r3": "partially_valid",
+    "e003_q1_r4": "invalid",
+    "e003_q1_r5": "valid",
+    "e003_q1_r7": "invalid",
+    "e003_q1_r8": "invalid"
+   },
+   "siblings_fitting_this_slot": [
+    "e003_q1_r1",
+    "e003_q1_r3",
+    "e003_q1_r5"
+   ]
+  },
+  {
+   "case": "e003_q1_r7",
+   "own_verdict": "invalid",
+   "siblings": {
+    "e003_q1_r1": "invalid",
+    "e003_q1_r3": "partially_valid",
+    "e003_q1_r4": "invalid",
+    "e003_q1_r5": "invalid",
+    "e003_q1_r6": "invalid",
+    "e003_q1_r8": "valid"
+   },
+   "siblings_fitting_this_slot": [
+    "e003_q1_r3",
+    "e003_q1_r8"
+   ]
+  },
+  {
+   "case": "e003_q1_r8",
+   "own_verdict": "partially_valid",
+   "siblings": {
+    "e003_q1_r1": "invalid",
+    "e003_q1_r3": "partially_valid",
+    "e003_q1_r4": "partially_valid",
+    "e003_q1_r5": "invalid",
+    "e003_q1_r6": "invalid",
+    "e003_q1_r7": "partially_valid"
+   },
+   "siblings_fitting_this_slot": [
+    "e003_q1_r3",
+    "e003_q1_r4",
+    "e003_q1_r7"
+   ]
+  },
+  {
+   "case": "e003_q2_r1",
+   "own_verdict": "valid",
+   "siblings": {
+    "e003_q2_r2": "partially_valid",
+    "e003_q2_r3": "invalid",
+    "e003_q2_r4": "invalid",
+    "e003_q2_r5": "invalid",
+    "e003_q2_r6": "invalid",
+    "e003_q2_r7": "invalid",
+    "e003_q2_r8": "invalid"
+   },
+   "siblings_fitting_this_slot": [
+    "e003_q2_r2"
+   ]
+  },
+  {
+   "case": "e003_q2_r2",
+   "own_verdict": "valid",
+   "siblings": {
+    "e003_q2_r1": "valid",
+    "e003_q2_r3": "invalid",
+    "e003_q2_r4": "partially_valid",
+    "e003_q2_r5": "invalid",
+    "e003_q2_r6": "invalid",
+    "e003_q2_r7": "invalid",
+    "e003_q2_r8": "partially_valid"
+   },
+   "siblings_fitting_this_slot": [
+    "e003_q2_r1",
+    "e003_q2_r4",
+    "e003_q2_r8"
+   ]
+  },
+  {
+   "case": "e003_q2_r3",
+   "own_verdict": "valid",
+   "siblings": {
+    "e003_q2_r1": "invalid",
+    "e003_q2_r2": "invalid",
+    "e003_q2_r4": "partially_valid",
+    "e003_q2_r5": "invalid",
+    "e003_q2_r6": "invalid",
+    "e003_q2_r7": "invalid",
+    "e003_q2_r8": "partially_valid"
+   },
+   "siblings_fitting_this_slot": [
+    "e003_q2_r4",
+    "e003_q2_r8"
+   ]
+  },
+  {
+   "case": "e003_q2_r4",
+   "own_verdict": "invalid",
+   "siblings": {
+    "e003_q2_r1": "invalid",
+    "e003_q2_r2": "invalid",
+    "e003_q2_r3": "invalid",
+    "e003_q2_r5": "partially_valid",
+    "e003_q2_r6": "invalid",
+    "e003_q2_r7": "invalid",
+    "e003_q2_r8": "invalid"
+   },
+   "siblings_fitting_this_slot": [
+    "e003_q2_r5"
+   ]
+  },
+  {
+   "case": "e003_q2_r5",
+   "own_verdict": "valid",
+   "siblings": {
+    "e003_q2_r1": "invalid",
+    "e003_q2_r2": "invalid",
+    "e003_q2_r3": "invalid",
+    "e003_q2_r4": "partially_valid",
+    "e003_q2_r6": "invalid",
+    "e003_q2_r7": "invalid",
+    "e003_q2_r8": "invalid"
+   },
+   "siblings_fitting_this_slot": [
+    "e003_q2_r4"
+   ]
+  },
+  {
+   "case": "e003_q2_r6",
+   "own_verdict": "partially_valid",
+   "siblings": {
+    "e003_q2_r1": "invalid",
+    "e003_q2_r2": "invalid",
+    "e003_q2_r3": "invalid",
+    "e003_q2_r4": "invalid",
+    "e003_q2_r5": "invalid",
+    "e003_q2_r7": "invalid",
+    "e003_q2_r8": "partially_valid"
+   },
+   "siblings_fitting_this_slot": [
+    "e003_q2_r8"
+   ]
+  },
+  {
+   "case": "e003_q2_r7",
+   "own_verdict": "valid",
+   "siblings": {
+    "e003_q2_r1": "invalid",
+    "e003_q2_r2": "invalid",
+    "e003_q2_r3": "valid",
+    "e003_q2_r4": "invalid",
+    "e003_q2_r5": "invalid",
+    "e003_q2_r6": "invalid",
+    "e003_q2_r8": "partially_valid"
+   },
+   "siblings_fitting_this_slot": [
+    "e003_q2_r3",
+    "e003_q2_r8"
+   ]
+  },
+  {
+   "case": "e003_q2_r8",
+   "own_verdict": "valid",
+   "siblings": {
+    "e003_q2_r1": "invalid",
+    "e003_q2_r2": "invalid",
+    "e003_q2_r3": "partially_valid",
+    "e003_q2_r4": "partially_valid",
+    "e003_q2_r5": "invalid",
+    "e003_q2_r6": "partially_valid",
+    "e003_q2_r7": "partially_valid"
+   },
+   "siblings_fitting_this_slot": [
+    "e003_q2_r3",
+    "e003_q2_r4",
+    "e003_q2_r6",
+    "e003_q2_r7"
+   ]
+  },
+  {
+   "case": "e004_q1_r1",
+   "own_verdict": "invalid",
+   "siblings": {
+    "e004_q1_r2": "invalid",
+    "e004_q1_r3": "invalid",
+    "e004_q1_r4": "partially_valid",
+    "e004_q1_r5": "invalid",
+    "e004_q1_r6": "invalid",
+    "e004_q1_r8": "invalid"
+   },
+   "siblings_fitting_this_slot": [
+    "e004_q1_r4"
+   ]
+  },
+  {
+   "case": "e004_q1_r2",
+   "own_verdict": "valid",
+   "siblings": {
+    "e004_q1_r1": "invalid",
+    "e004_q1_r3": "partially_valid",
+    "e004_q1_r4": "invalid",
+    "e004_q1_r5": "invalid",
+    "e004_q1_r6": "invalid",
+    "e004_q1_r8": "invalid"
+   },
+   "siblings_fitting_this_slot": [
+    "e004_q1_r3"
+   ]
+  },
+  {
+   "case": "e004_q1_r3",
+   "own_verdict": "partially_valid",
+   "siblings": {
+    "e004_q1_r1": "invalid",
+    "e004_q1_r2": "partially_valid",
+    "e004_q1_r4": "invalid",
+    "e004_q1_r5": "invalid",
+    "e004_q1_r6": "invalid",
+    "e004_q1_r8": "valid"
+   },
+   "siblings_fitting_this_slot": [
+    "e004_q1_r2",
+    "e004_q1_r8"
+   ]
+  },
+  {
+   "case": "e004_q1_r4",
+   "own_verdict": "valid",
+   "siblings": {
+    "e004_q1_r1": "invalid",
+    "e004_q1_r2": "invalid",
+    "e004_q1_r3": "invalid",
+    "e004_q1_r5": "invalid",
+    "e004_q1_r6": "invalid",
+    "e004_q1_r8": "invalid"
+   },
+   "siblings_fitting_this_slot": []
+  },
+  {
+   "case": "e004_q1_r5",
+   "own_verdict": "partially_valid",
+   "siblings": {
+    "e004_q1_r1": "invalid",
+    "e004_q1_r2": "invalid",
+    "e004_q1_r3": "invalid",
+    "e004_q1_r4": "invalid",
+    "e004_q1_r6": "partially_valid",
+    "e004_q1_r8": "invalid"
+   },
+   "siblings_fitting_this_slot": [
+    "e004_q1_r6"
+   ]
+  },
+  {
+   "case": "e004_q1_r6",
+   "own_verdict": "invalid",
+   "siblings": {
+    "e004_q1_r1": "invalid",
+    "e004_q1_r2": "invalid",
+    "e004_q1_r3": "invalid",
+    "e004_q1_r4": "invalid",
+    "e004_q1_r5": "partially_valid",
+    "e004_q1_r8": "invalid"
+   },
+   "siblings_fitting_this_slot": [
+    "e004_q1_r5"
+   ]
+  },
+  {
+   "case": "e004_q1_r8",
+   "own_verdict": "valid",
+   "siblings": {
+    "e004_q1_r1": "invalid",
+    "e004_q1_r2": "invalid",
+    "e004_q1_r3": "partially_valid",
+    "e004_q1_r4": "invalid",
+    "e004_q1_r5": "invalid",
+    "e004_q1_r6": "invalid"
+   },
+   "siblings_fitting_this_slot": [
+    "e004_q1_r3"
+   ]
+  },
+  {
+   "case": "e004_q2_r1",
+   "own_verdict": "valid",
+   "siblings": {
+    "e004_q2_r2": "partially_valid",
+    "e004_q2_r3": "invalid",
+    "e004_q2_r4": "invalid",
+    "e004_q2_r5": "invalid",
+    "e004_q2_r6": "invalid",
+    "e004_q2_r8": "invalid"
+   },
+   "siblings_fitting_this_slot": [
+    "e004_q2_r2"
+   ]
+  },
+  {
+   "case": "e004_q2_r2",
+   "own_verdict": "valid",
+   "siblings": {
+    "e004_q2_r1": "partially_valid",
+    "e004_q2_r3": "partially_valid",
+    "e004_q2_r4": "invalid",
+    "e004_q2_r5": "invalid",
+    "e004_q2_r6": "invalid",
+    "e004_q2_r8": "invalid"
+   },
+   "siblings_fitting_this_slot": [
+    "e004_q2_r1",
+    "e004_q2_r3"
+   ]
+  },
+  {
+   "case": "e004_q2_r3",
+   "own_verdict": "valid",
+   "siblings": {
+    "e004_q2_r1": "partially_valid",
+    "e004_q2_r2": "invalid",
+    "e004_q2_r4": "invalid",
+    "e004_q2_r5": "invalid",
+    "e004_q2_r6": "invalid",
+    "e004_q2_r8": "invalid"
+   },
+   "siblings_fitting_this_slot": [
+    "e004_q2_r1"
+   ]
+  },
+  {
+   "case": "e004_q2_r4",
+   "own_verdict": "partially_valid",
+   "siblings": {
+    "e004_q2_r1": "invalid",
+    "e004_q2_r2": "invalid",
+    "e004_q2_r3": "invalid",
+    "e004_q2_r5": "invalid",
+    "e004_q2_r6": "invalid",
+    "e004_q2_r8": "invalid"
+   },
+   "siblings_fitting_this_slot": []
+  },
+  {
+   "case": "e004_q2_r5",
+   "own_verdict": "partially_valid",
+   "siblings": {
+    "e004_q2_r1": "invalid",
+    "e004_q2_r2": "invalid",
+    "e004_q2_r3": "invalid",
+    "e004_q2_r4": "partially_valid",
+    "e004_q2_r6": "invalid",
+    "e004_q2_r8": "invalid"
+   },
+   "siblings_fitting_this_slot": [
+    "e004_q2_r4"
+   ]
+  },
+  {
+   "case": "e004_q2_r6",
+   "own_verdict": "invalid",
+   "siblings": {
+    "e004_q2_r1": "invalid",
+    "e004_q2_r2": "invalid",
+    "e004_q2_r3": "invalid",
+    "e004_q2_r4": "invalid",
+    "e004_q2_r5": "invalid",
+    "e004_q2_r8": "valid"
+   },
+   "siblings_fitting_this_slot": [
+    "e004_q2_r8"
+   ]
+  },
+  {
+   "case": "e004_q2_r8",
+   "own_verdict": "invalid",
+   "siblings": {
+    "e004_q2_r1": "invalid",
+    "e004_q2_r2": "invalid",
+    "e004_q2_r3": "invalid",
+    "e004_q2_r4": "invalid",
+    "e004_q2_r5": "invalid",
+    "e004_q2_r6": "valid"
+   },
+   "siblings_fitting_this_slot": [
+    "e004_q2_r6"
+   ]
+  },
+  {
+   "case": "e007_q1_r1",
+   "own_verdict": "partially_valid",
+   "siblings": {},
+   "siblings_fitting_this_slot": []
+  }
+ ]
+}
