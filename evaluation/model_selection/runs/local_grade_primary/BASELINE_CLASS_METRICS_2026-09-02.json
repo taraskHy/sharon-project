@@ -1,0 +1,47 @@
+{
+ "artifact": "baseline_class_metrics",
+ "created_at": "2026-09-02 01:19:58",
+ "reference_sha256": "ce78aed115633883dd94bd14035ddc3e3f38d02c2484bbd0a7f49c5dbc384306",
+ "arm": "baseline qwen3-vl:8b-instruct one-pass (44 frozen + 2 corrected outputs)",
+ "cases": 46,
+ "exact_agreement": 31,
+ "exact_agreement_pct": 67.4,
+ "per_class": {
+  "invalid": {
+   "support": 5,
+   "predicted": 6,
+   "tp": 1,
+   "recall": 0.2,
+   "recall_exact": "1/5",
+   "precision": 0.1667,
+   "precision_exact": "1/6",
+   "f1": 0.1818
+  },
+  "partially_valid": {
+   "support": 13,
+   "predicted": 12,
+   "tp": 6,
+   "recall": 0.4615,
+   "recall_exact": "6/13",
+   "precision": 0.5,
+   "precision_exact": "6/12",
+   "f1": 0.48
+  },
+  "valid": {
+   "support": 28,
+   "predicted": 28,
+   "tp": 24,
+   "recall": 0.8571,
+   "recall_exact": "24/28",
+   "precision": 0.8571,
+   "precision_exact": "24/28",
+   "f1": 0.8571
+  }
+ },
+ "macro_f1": 0.5063,
+ "balanced_accuracy": 0.5062,
+ "harmful_overgrades": 8,
+ "harmful_overgrade_rate": "8/46",
+ "harmful_undergrades": 7,
+ "harmful_undergrade_rate": "7/46"
+}

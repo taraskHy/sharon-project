@@ -1,0 +1,175 @@
+{
+ "experiment": "local_improvement_arms_2026-09-02",
+ "created_at": "2026-09-02 01:28:44",
+ "git_commit": "c89d86356bddb2d0694251d9a6d0631e9084651c",
+ "population": {
+  "case_ids_in_order": [
+   "e002_q1_r1",
+   "e002_q1_r2",
+   "e002_q1_r3",
+   "e002_q1_r4",
+   "e002_q1_r5",
+   "e002_q1_r6",
+   "e002_q1_r7",
+   "e002_q1_r8",
+   "e002_q2_r1",
+   "e002_q2_r2",
+   "e002_q2_r3",
+   "e002_q2_r4",
+   "e002_q2_r5",
+   "e002_q2_r6",
+   "e002_q2_r7",
+   "e002_q2_r8",
+   "e003_q1_r1",
+   "e003_q1_r3",
+   "e003_q1_r4",
+   "e003_q1_r5",
+   "e003_q1_r6",
+   "e003_q1_r7",
+   "e003_q1_r8",
+   "e003_q2_r1",
+   "e003_q2_r2",
+   "e003_q2_r3",
+   "e003_q2_r4",
+   "e003_q2_r5",
+   "e003_q2_r6",
+   "e003_q2_r7",
+   "e003_q2_r8",
+   "e004_q1_r1",
+   "e004_q1_r2",
+   "e004_q1_r3",
+   "e004_q1_r4",
+   "e004_q1_r5",
+   "e004_q1_r6",
+   "e004_q1_r8",
+   "e004_q2_r1",
+   "e004_q2_r2",
+   "e004_q2_r3",
+   "e004_q2_r4",
+   "e004_q2_r5",
+   "e004_q2_r6",
+   "e004_q2_r8",
+   "e007_q1_r1"
+  ],
+  "count": 46,
+  "reference_sha256": "ce78aed115633883dd94bd14035ddc3e3f38d02c2484bbd0a7f49c5dbc384306",
+  "reference_sources": {
+   "two_reviewer_consensus": 22,
+   "adjudicated_human_reference": 22,
+   "owner_adjudicated_after_source_repair": 2
+  },
+  "class_distribution": {
+   "invalid": 5,
+   "partially_valid": 13,
+   "valid": 28
+  }
+ },
+ "writer_folds": {
+  "e002": 16,
+  "e003": 15,
+  "e004": 14,
+  "e007_reported_separately": 1,
+  "rule_derivation_writers": [
+   "e002",
+   "e003"
+  ],
+  "held_writer_for_rule": "e004"
+ },
+ "rule_derivation_basis": {
+  "note": "combination rule derived ONLY from the e002/e003 baseline errors below, before any new output existed; e004 errors were not consulted",
+  "e002_e003_baseline_errors": {
+   "overgrades": [
+    "e002_q1_r5",
+    "e002_q1_r6",
+    "e003_q2_r1",
+    "e003_q2_r6"
+   ],
+   "undergrades": [
+    "e002_q1_r7",
+    "e002_q2_r4",
+    "e002_q2_r5",
+    "e003_q1_r6",
+    "e003_q1_r7"
+   ]
+  }
+ },
+ "arms": {
+  "baseline": {
+   "model": "qwen3-vl:8b-instruct",
+   "digest": "0533d74300e4",
+   "quantization": "Q4_K_M",
+   "outputs": "frozen (44 SEEN-46 + 2 corrected)"
+  },
+  "arm_a": {
+   "model": "qwen3-vl:8b-instruct-q8_0",
+   "digest": "eff3eb825b32",
+   "quantization": "Q8_0",
+   "size": "9.8GB",
+   "independence": "NOT independent - same qwen3vl 8.8B base, higher-precision quantization only",
+   "prompt_version": "grade-v4-charitable-local",
+   "max_local_evaluations": 46
+  },
+  "arm_b": {
+   "pass1": "frozen baseline outputs (never re-run)",
+   "pass2_model": "qwen3-vl:8b-instruct",
+   "pass2_prompt_version": "verify-v1-local",
+   "pass2_system_sha256": "f8bfc3f17513853d0553e47cd318f292479248fc4429c8b484a980f4c505dd4d",
+   "pass2_schema_sha256": "7a204ce10f33a779303cb0cff4861297dea92cd0438bd225f48aae43ec21ca91",
+   "pass2_visible": [
+    "question",
+    "rubric",
+    "official_solution",
+    "frozen transcription",
+    "pass-1 verdict",
+    "pass-1 rubric_items evidence"
+   ],
+   "pass2_forbidden": [
+    "human reference",
+    "instructor score",
+    "expected verdict",
+    "split",
+    "audit decision",
+    "historical model outcome"
+   ],
+   "pass2_modality": "text-only (verification concerns rubric application; the frozen transcription is the audited reading)",
+   "combination_rule": "ordered rules 0-6, module docstring; combine() in this file",
+   "max_local_evaluations": 46
+  }
+ },
+ "grade_prompt_sha256": "d8c799d1bdec0274623c89b9435eccdcdb4ba8f8f6c27bf7d87bd0b15ba87f2d",
+ "grade_schema_sha256": "2a19252fd83702a240865020141cd4c422b1312b4ed8c6c49c51ee7dce8d06c6",
+ "adapter_version": "grade-bench-v3",
+ "validation_version": "grade-validation-v2",
+ "combination_rule_sha256": "778b673ad3c2f6d72e341bc4e8b40889e4fc579a1ec58b395ccbed35eefbcb91",
+ "backend": {
+  "backend": "ollama",
+  "base_url": "http://localhost:11434/v1",
+  "temperature": 0.0,
+  "max_tokens": 600,
+  "cacheable": false,
+  "rag_policy": "RAG_DISABLED"
+ },
+ "leakage_scan_tokens": [
+  "final_human",
+  "human_reference",
+  "instructor_derived",
+  "label_verdict",
+  "explanation_verdict",
+  "selection_correct",
+  "adjudicated",
+  "HELD_OUT",
+  "reference_source",
+  "two_reviewer_consensus"
+ ],
+ "prohibitions": [
+  "no cloud/OpenRouter",
+  "no OCR",
+  "no RAG",
+  "no HELD_OUT",
+  "no 27B/30B",
+  "no prompt change to grade-v4-charitable-local",
+  "no target field in any request",
+  "failures preserved"
+ ],
+ "spec_sha256": "1c6264af6f82a034db523cd6851e30d615dcdde1c12985c4908901470e0f8277"
+}

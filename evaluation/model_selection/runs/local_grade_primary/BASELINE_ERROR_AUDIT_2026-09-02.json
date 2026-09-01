@@ -1,0 +1,821 @@
+{
+ "artifact": "baseline_error_audit",
+ "created_at": "2026-09-02 01:28:36",
+ "reference_sha256": "ce78aed115633883dd94bd14035ddc3e3f38d02c2484bbd0a7f49c5dbc384306",
+ "policy": [
+  "flags-only diagnostic: no target (human reference, instructor grade, frozen output) is altered or proposed for alteration",
+  "categories assigned by independent audit agents reading the actual Hebrew answers against rubric/official solution; adversarial review applied to the underlying reference freeze"
+ ],
+ "errors": [
+  {
+   "case_id": "e002_q1_r5",
+   "writer": "e002",
+   "question": "q1",
+   "direction": "overgrade",
+   "boundary": "partially_valid -> valid",
+   "final_human_verdict": "partially_valid",
+   "model_verdict": "valid",
+   "instructor_derived_verdict": "partially_valid",
+   "instructor_score": 2.0,
+   "reference_source": "adjudicated_human_reference",
+   "model_evidence": [
+    {
+     "id": "R1",
+     "met": true,
+     "student_evidence": "מריחה בציר x עקב הקונבולוציה"
+    }
+   ],
+   "model_justification": "grade-v4-charitable-local emits NO free-text justification by contract: rubric_items (met + exact student_evidence spans) + score + uncertain are the whole output",
+   "human_reviews": [
+    {
+     "reviewer": "Erik",
+     "verdict": "valid",
+     "confidence": "medium",
+     "issue": "rubric_official_solution",
+     "note": "בתשובה האמיתית הם שילבו בין פתרון 2 סעיפים (5 ו-6). האמירה היחידה שחסרה היא שהמסכה גאוסיאנית, אבל נראה שהייתה הבנה של הפעולה "
+    },
+    {
+     "reviewer": "Or Vaisman",
+     "verdict": "partially_valid",
+     "confidence": "medium",
+     "issue": "none",
+     "note": ""
+    }
+   ],
+   "adjudication_note": "",
+   "answer_length_chars": 28,
+   "model_evidence_length_chars": 28,
+   "failure_category": "failed_partial_vs_valid_boundary",
+   "secondary_categories": [
+    "rubric_ambiguity"
+   ],
+   "rationale": "The whole answer is one clause: \"מריחה בציר x עקב הקונבולוציה\". It states exactly the core of the official solution for operation 5 (\"טשטוש התמונה בכוון אופקי\") but omits everything else — the Gaussian 1-D mask identity, the noise, and the consequence that the vertical edges (\"השפות האנכיות\") are affected. Instructor (2.0), Or Vaisman, and the adjudicated reference all landed on partial; Erik (medium confidence) said valid and explicitly flagged issue=rubric_official_solution, noting the only missing statement is that the mask is Gaussian (\"האמירה היחידה שחסרה היא שהמסכה גאוסיאנית\"). This is a genuine full-vs-partial boundary on a terse but core-correct answer, and the model fell on the generous side of it; nothing was credited that is absent, so this is not model_too_generous. The generic rubric (\"8 פעולות ו-9 היסטוגרמות\") gives no full-vs-partial criteria, which is what leaves the boundary soft.",
+   "rubric_ambiguity": true,
+   "transcription_or_evidence_issue": false,
+   "adjudication_uncertainty": false,
+   "model_evidence_assessment": "The cited span \"מריחה בציר x עקב הקונבולוציה\" is the student's entire 28-char answer verbatim, so the evidence exists and genuinely supports the met=true finding for the directional-blur core claim. It does not, however, establish anything beyond that single claim, so it supports partial credit well and full credit only weakly — the evidence is real but overweighted."
+  },
+  {
+   "case_id": "e002_q1_r6",
+   "writer": "e002",
+   "question": "q1",
+   "direction": "overgrade",
+   "boundary": "partially_valid -> valid",
+   "final_human_verdict": "partially_valid",
+   "model_verdict": "valid",
+   "instructor_derived_verdict": "partially_valid",
+   "instructor_score": 2.0,
+   "reference_source": "adjudicated_human_reference",
+   "model_evidence": [
+    {
+     "id": "R1",
+     "met": true,
+     "student_evidence": "מריחה בציר y עקב הקונבולוציה"
+    }
+   ],
+   "model_justification": "grade-v4-charitable-local emits NO free-text justification by contract: rubric_items (met + exact student_evidence spans) + score + uncertain are the whole output",
+   "human_reviews": [
+    {
+     "reviewer": "Erik",
+     "verdict": "valid",
+     "confidence": "high",
+     "issue": "none",
+     "note": ""
+    },
+    {
+     "reviewer": "Or Vaisman",
+     "verdict": "invalid",
+     "confidence": "high",
+     "issue": "none",
+     "note": ""
+    }
+   ],
+   "adjudication_note": "",
+   "answer_length_chars": 28,
+   "model_evidence_length_chars": 28,
+   "failure_category": "failed_partial_vs_valid_boundary",
+   "secondary_categories": [
+    "rubric_ambiguity",
+    "adjudication_uncertainty"
+   ],
+   "rationale": "Structurally identical to e002_q1_r5, for operation 6: the full answer is \"מריחה בציר y עקב הקונבולוציה\", which correctly gives the vertical smear the official solution assigns to op 6 (\"טשטוש... אנכי (פעולה 6)\") but omits the Gaussian-mask identity and the affected-edges consequence. The model gave full credit for the same terse core claim it saw in r5; the adjudicated reference, matching the instructor's 2.0, is partial. That is a real partial-vs-full boundary miss, not credit for absent content. Flagging adjudication uncertainty as well: the blind reviewers split at the extremes with HIGH confidence on both sides (Erik valid/high, Or Vaisman invalid/high), and the adjudicator chose the midpoint verdict neither reviewer gave, with an empty note — the reference is anchored mainly by its agreement with the instructor's partial.",
+   "rubric_ambiguity": true,
+   "transcription_or_evidence_issue": false,
+   "adjudication_uncertainty": true,
+   "model_evidence_assessment": "The cited span \"מריחה בציר y עקב הקונבולוציה\" is the entire student answer verbatim; it exists and correctly matches the op-6 direction in the official solution, so met=true is grounded. As in r5, the span supports the core claim only and cannot by itself justify escalation from partial to full credit."
+  },
+  {
+   "case_id": "e002_q1_r7",
+   "writer": "e002",
+   "question": "q1",
+   "direction": "undergrade",
+   "boundary": "partially_valid -> invalid",
+   "final_human_verdict": "partially_valid",
+   "model_verdict": "invalid",
+   "instructor_derived_verdict": "valid",
+   "instructor_score": 4.0,
+   "reference_source": "adjudicated_human_reference",
+   "model_evidence": [
+    {
+     "id": "R1",
+     "met": false,
+     "student_evidence": "הגברת בהירות גורמת לגדלת ערכי התמונה, אך לא משנה את ההיסטוגרמה."
+    }
+   ],
+   "model_justification": "grade-v4-charitable-local emits NO free-text justification by contract: rubric_items (met + exact student_evidence spans) + score + uncertain are the whole output",
+   "human_reviews": [
+    {
+     "reviewer": "Erik",
+     "verdict": "valid",
+     "confidence": "medium",
+     "issue": "none",
+     "note": ""
+    },
+    {
+     "reviewer": "Or Vaisman",
+     "verdict": "invalid",
+     "confidence": "high",
+     "issue": "none",
+     "note": ""
+    }
+   ],
+   "adjudication_note": "",
+   "answer_length_chars": 69,
+   "model_evidence_length_chars": 63,
+   "failure_category": "failed_invalid_vs_partial_boundary",
+   "secondary_categories": [
+    "model_too_strict",
+    "adjudication_uncertainty",
+    "rubric_ambiguity"
+   ],
+   "rationale": "The student wrote \"סה\\\"כ הפירמידה נראית תקינה. הדרגה 0 שלה בהירה משמעותית מהתמונה המקורית\" — level 0 of the pyramid is significantly brighter, which plainly restates the first half of the official solution (\"הגברת בהירות גורמת לגדלת ערכי התמונה\"), while the discriminating second half (\"לא משנה את ההיסטוגרמה\") is absent. Whether the brightness observation alone earns partial credit is genuinely contested among humans (Or Vaisman: invalid/high; Erik: valid/medium; instructor: full 4.0; adjudicator: partial), so the model's 0.0 against the reference's partial is a no-credit-vs-partial boundary miss — but a strict-leaning one, since every grader except one gave at least partial for content that is plainly on the page. Two aggravators: (a) the official solution is histogram-framed while this writer's answer is pyramid-framed, so the provided solution underdetermines grading of this answer form (rubric_ambiguity); (b) the reference itself is thin — the adjudicated verdict partially_valid matches neither reviewer nor the instructor, with an empty adjudication note (adjudication_uncertainty).",
+   "rubric_ambiguity": true,
+   "transcription_or_evidence_issue": true,
+   "adjudication_uncertainty": true,
+   "model_evidence_assessment": "Broken evidence chain: the model's cited student_evidence \"הגברת בהירות גורמת לגדלת ערכי התמונה, אך לא משנה את ההיסטוגרמה.\" does NOT appear anywhere in the student's answer — it is the official_solution text copied verbatim into the evidence field. The model never quoted the actual answer text, whose \"בהירה משמעותית מהתמונה המקורית\" directly supports partial credit. The evidence neither exists in the student text nor supports the invalid verdict. (The frozen transcription itself looks clean — both reviewers marked issue=none — so the flag reflects the model-side evidence fabrication, not a garbled transcription.)"
+  },
+  {
+   "case_id": "e002_q2_r4",
+   "writer": "e002",
+   "question": "q2",
+   "direction": "undergrade",
+   "boundary": "partially_valid -> invalid",
+   "final_human_verdict": "partially_valid",
+   "model_verdict": "invalid",
+   "instructor_derived_verdict": "valid",
+   "instructor_score": 4.0,
+   "reference_source": "adjudicated_human_reference",
+   "model_evidence": [
+    {
+     "id": "R1",
+     "met": false,
+     "student_evidence": "אופטימלי, מוביל ל[לא קריא] אופטימלים משמע כולם משומשים בכמות יחסית אחידה"
+    }
+   ],
+   "model_justification": "grade-v4-charitable-local emits NO free-text justification by contract: rubric_items (met + exact student_evidence spans) + score + uncertain are the whole output",
+   "human_reviews": [
+    {
+     "reviewer": "Erik",
+     "verdict": "invalid",
+     "confidence": "low",
+     "issue": "none",
+     "note": "נראה לי הפוך מהשתובה, אבל בדירוג המקורי נתנו ניקוד מלא... "
+    },
+    {
+     "reviewer": "Or Vaisman",
+     "verdict": "partially_valid",
+     "confidence": "high",
+     "issue": "transcription_evidence",
+     "note": ""
+    }
+   ],
+   "adjudication_note": "",
+   "answer_length_chars": 82,
+   "model_evidence_length_chars": 72,
+   "failure_category": "transcription_evidence_issue",
+   "secondary_categories": [
+    "failed_invalid_vs_partial_boundary",
+    "adjudication_uncertainty"
+   ],
+   "rationale": "The frozen transcription reads \"[לא קריא] אופטימלי, מוביל ל[לא קריא] אופטימלים משמע כולם משומשים בכמות יחסית אחידה\" — two illegibility gaps sit exactly on the load-bearing tokens. The readable remainder \"כולם משומשים בכמות יחסית אחידה\" is genuinely two-faced: it can be read as the wrong 'uniform bins' answer (the UQ trap) or as the correct OQ consequence that dense regions get small bins so every bin carries similar pixel mass. Reviewer Or Vaisman voted partially_valid and explicitly flagged issue=transcription_evidence; Erik voted invalid at LOW confidence with the note \"נראה לי הפוך מהשתובה, אבל בדירוג המקורי נתנו ניקוד מלא\" (seems inverted, yet the instructor gave full credit, 4.0). With the decisive words garbled, the model's 0-credit read is best explained by the degraded evidence rather than a clean invalid-vs-partial judgment error; the adjudication (partially_valid, empty note, over a split low/high-confidence panel) is itself thin, but the transcription gaps are the root cause.",
+   "rubric_ambiguity": false,
+   "transcription_or_evidence_issue": true,
+   "adjudication_uncertainty": true,
+   "model_evidence_assessment": "The cited span exists in the student text (it is the transcription minus the leading \"[לא קריא]\") and is quoted faithfully, including an embedded \"[לא קריא]\" marker — i.e. the model graded over admittedly garbled evidence. The span does not decisively support met=false: the readable clause admits a partial-credit reading (uniform per-bin usage, consistent with OQ) that the not-met call cannot rule out given the gaps."
+  },
+  {
+   "case_id": "e002_q2_r5",
+   "writer": "e002",
+   "question": "q2",
+   "direction": "undergrade",
+   "boundary": "valid -> partially_valid",
+   "final_human_verdict": "valid",
+   "model_verdict": "partially_valid",
+   "instructor_derived_verdict": "valid",
+   "instructor_score": 4.0,
+   "reference_source": "adjudicated_human_reference",
+   "model_evidence": [
+    {
+     "id": "R1",
+     "met": true,
+     "student_evidence": "אחיד מוביל לריווח אחיד בין הערכים שקיימים בכימוי"
+    }
+   ],
+   "model_justification": "grade-v4-charitable-local emits NO free-text justification by contract: rubric_items (met + exact student_evidence spans) + score + uncertain are the whole output",
+   "human_reviews": [
+    {
+     "reviewer": "Erik",
+     "verdict": "valid",
+     "confidence": "high",
+     "issue": "none",
+     "note": ""
+    },
+    {
+     "reviewer": "Or Vaisman",
+     "verdict": "partially_valid",
+     "confidence": "high",
+     "issue": "none",
+     "note": ""
+    }
+   ],
+   "adjudication_note": "",
+   "answer_length_chars": 58,
+   "model_evidence_length_chars": 48,
+   "failure_category": "failed_partial_vs_valid_boundary",
+   "secondary_categories": [
+    "rubric_ambiguity",
+    "adjudication_uncertainty"
+   ],
+   "rationale": "Reference is valid (4.0, adjudicated; instructor also 4.0); model gave partially_valid (2.0). The student's readable text \"אחיד מוביל לריווח אחיד בין הערכים שקיימים בכימוי\" states precisely the core of the official solution's \"המרווחים האחידים\" point — uniform spacing between the quantized values. What is missing is only the explicit '20 BINS over the full gray range' framing. The model itself marked its sole rubric item R1 met=true yet still withheld half credit, so this is a full-vs-partial line call, not a failure to find the content. It is a real boundary, not plain over-strictness: one blind reviewer (Or Vaisman, HIGH confidence) made exactly the same partially_valid call as the model, against Erik's high-confidence valid. The generic rubric (\"8 פעולות ו-9 היסטוגרמות...\") gives no criterion for what separates full from partial credit, leaving the boundary underdetermined.",
+   "rubric_ambiguity": true,
+   "transcription_or_evidence_issue": false,
+   "adjudication_uncertainty": true,
+   "model_evidence_assessment": "The cited span \"אחיד מוביל לריווח אחיד בין הערכים שקיימים בכימוי\" exists verbatim in the transcription and fully supports met=true. The internal inconsistency is that the only rubric item was marked met yet the score was 2/4: the model's own evidence argues for full credit, and with no free-text justification by contract there is no articulated basis for the deduction. The single leading \"[לא קריא]\" token is minor and does not explain the miss."
+  },
+  {
+   "case_id": "e003_q1_r6",
+   "writer": "e003",
+   "question": "q1",
+   "direction": "undergrade",
+   "boundary": "valid -> partially_valid",
+   "final_human_verdict": "valid",
+   "model_verdict": "partially_valid",
+   "instructor_derived_verdict": "valid",
+   "instructor_score": 4.0,
+   "reference_source": "adjudicated_human_reference",
+   "model_evidence": [
+    {
+     "id": "R1",
+     "met": true,
+     "student_evidence": "הרעש והטשטוש שלו בכיוון ציר ה-y מובלט בתדרים הגבוהיים"
+    }
+   ],
+   "model_justification": "grade-v4-charitable-local emits NO free-text justification by contract: rubric_items (met + exact student_evidence spans) + score + uncertain are the whole output",
+   "human_reviews": [
+    {
+     "reviewer": "Erik",
+     "verdict": "valid",
+     "confidence": "high",
+     "issue": "none",
+     "note": ""
+    },
+    {
+     "reviewer": "Or Vaisman",
+     "verdict": "invalid",
+     "confidence": "high",
+     "issue": "none",
+     "note": ""
+    }
+   ],
+   "adjudication_note": "",
+   "answer_length_chars": 53,
+   "model_evidence_length_chars": 53,
+   "failure_category": "failed_partial_vs_valid_boundary",
+   "secondary_categories": [
+    "adjudication_uncertainty",
+    "rubric_ambiguity"
+   ],
+   "rationale": "Reference is valid (4.0, adjudicated; instructor 4.0); model gave partially_valid (2.0). The student's \"הרעש והטשטוש שלו בכיוון ציר ה-y\" names the correct op-6 blur direction (official: \"טשטוש... בכוון... אנכי\" for operation 6), and \"מובלט בתדרים הגבוהיים\" supplies the consequence — the effect concentrated in the high-frequency content — standing in for the official edges claim (\"השפות... יושפעו\") without literally saying edges. The model marked R1 met=true yet halved the score, i.e. it recognized the content but drew the full-vs-partial line one notch too low on a terse answer whose extra clause is a reasonable but non-literal match to the solution — a genuine boundary miss (compare e004_q1_r6, where direction alone earned only partially_valid: the high-frequency clause is exactly the delta that made this one valid). The reference carries real uncertainty — blind reviewers split maximally (Erik valid/HIGH vs Or Vaisman invalid/HIGH) and the adjudication note is empty — but instructor, Erik, and the adjudicator all converge on valid, so the boundary miss, not the reference, is the root cause.",
+   "rubric_ambiguity": true,
+   "transcription_or_evidence_issue": false,
+   "adjudication_uncertainty": true,
+   "model_evidence_assessment": "The cited span is the entire transcription, quoted verbatim, and supports met=true. As in e002_q2_r5, the model marked its only rubric item met yet scored 2/4, so its evidence actually supports the reference's valid verdict rather than the partial one it emitted; the deduction has no articulated basis under the no-justification contract."
+  },
+  {
+   "case_id": "e003_q1_r7",
+   "writer": "e003",
+   "question": "q1",
+   "direction": "undergrade",
+   "boundary": "valid -> invalid",
+   "final_human_verdict": "valid",
+   "model_verdict": "invalid",
+   "instructor_derived_verdict": "valid",
+   "instructor_score": 4.0,
+   "reference_source": "adjudicated_human_reference",
+   "model_evidence": [
+    {
+     "id": "R1",
+     "met": false,
+     "student_evidence": "הרמה העליונה שכוללת את DC בהירה יותר"
+    }
+   ],
+   "model_justification": "grade-v4-charitable-local emits NO free-text justification by contract: rubric_items (met + exact student_evidence spans) + score + uncertain are the whole output",
+   "human_reviews": [
+    {
+     "reviewer": "Erik",
+     "verdict": "valid",
+     "confidence": "medium",
+     "issue": "none",
+     "note": ""
+    },
+    {
+     "reviewer": "Or Vaisman",
+     "verdict": "partially_valid",
+     "confidence": "high",
+     "issue": "none",
+     "note": ""
+    }
+   ],
+   "adjudication_note": "",
+   "answer_length_chars": 36,
+   "model_evidence_length_chars": 36,
+   "failure_category": "model_too_strict",
+   "secondary_categories": [
+    "failed_invalid_vs_partial_boundary",
+    "adjudication_uncertainty"
+   ],
+   "rationale": "Question is brightness increase (הגברת בהירות); official solution: values grow (גדלת ערכי התמונה) with the representation otherwise unchanged. The student wrote \"הרמה העליונה שכוללת את DC בהירה יותר\" — the top level containing DC is brighter — which is exactly the value-increase effect expressed in the pyramid/wavelet representation this exam shows: brightness raises the DC/low-frequency component and nothing else. This is substantive, on-point content, credited by the instructor (valid, 4.0) and by both blind reviewers at >= partial (Erik valid, Or partially_valid); the adjudicated reference is valid. The model marked its only rubric item met=false and scored 0.0, refusing all credit for content plainly present and correct — two verdict steps below the reference. The genuine human disagreement was valid vs partial (completeness of the 'otherwise unchanged' half); no reader of the Hebrew put this at invalid, so the model's miss is not a close boundary call but excessive strictness.",
+   "rubric_ambiguity": false,
+   "transcription_or_evidence_issue": false,
+   "adjudication_uncertainty": true,
+   "model_evidence_assessment": "The cited span \"הרמה העליונה שכוללת את DC בהירה יותר\" exists verbatim — it is the entire student answer. However, it contradicts rather than supports the model's met=false/invalid verdict: the span itself states the official solution's core effect (brightness increase -> DC level brighter), so the evidence actually argues for credit. Flag adjudication_uncertainty is set only because reviewers split valid vs partially_valid with an empty adjudication note; under either human reading the model's invalid is still wrong."
+  },
+  {
+   "case_id": "e003_q2_r1",
+   "writer": "e003",
+   "question": "q2",
+   "direction": "overgrade",
+   "boundary": "partially_valid -> valid",
+   "final_human_verdict": "partially_valid",
+   "model_verdict": "valid",
+   "instructor_derived_verdict": "valid",
+   "instructor_score": 4.0,
+   "reference_source": "two_reviewer_consensus",
+   "model_evidence": [
+    {
+     "id": "R1",
+     "met": true,
+     "student_evidence": "כל פיקסלי השפות שנקלטו קיבלו  ערך 255 לעומת שאר הפיקסלים(הרוב)"
+    }
+   ],
+   "model_justification": "grade-v4-charitable-local emits NO free-text justification by contract: rubric_items (met + exact student_evidence spans) + score + uncertain are the whole output",
+   "human_reviews": [
+    {
+     "reviewer": "Erik",
+     "verdict": "partially_valid",
+     "confidence": "low",
+     "issue": "none",
+     "note": "כעיקרון חסרה התייחסות לכך ששאר הפיקסלים הם 0, אך בבדיקה המקורית נתנו ניקוד מלא. כנראה שזה פרט לא מהותי?"
+    },
+    {
+     "reviewer": "Or Vaisman",
+     "verdict": "partially_valid",
+     "confidence": "high",
+     "issue": "none",
+     "note": ""
+    }
+   ],
+   "adjudication_note": "",
+   "answer_length_chars": 62,
+   "model_evidence_length_chars": 62,
+   "failure_category": "failed_partial_vs_valid_boundary",
+   "secondary_categories": [
+    "rubric_ambiguity",
+    "adjudication_uncertainty"
+   ],
+   "rationale": "Canny question; official solution requires a binary image: 255 at detected edge pixels AND 0 everywhere else (וערכי 0 בכל השאר). The student wrote \"כל פיקסלי השפות שנקלטו קיבלו ערך 255 לעומת שאר הפיקסלים(הרוב)\" — edges get 255 versus the rest (the majority) — nailing the 255-edge half and implying a contrast, but never stating the rest are 0 / that the output is binary. Both blind reviewers gave partially_valid (consensus reference), while the instructor gave full credit, and Erik's note explicitly wavers: \"כנראה שזה פרט לא מהותי?\" (perhaps a non-essential detail?). This is a textbook full-vs-partial boundary: the model's charitable full credit is defensible (the instructor agreed), it simply landed on the wrong side of a genuinely close completeness line.",
+   "rubric_ambiguity": true,
+   "transcription_or_evidence_issue": false,
+   "adjudication_uncertainty": true,
+   "model_evidence_assessment": "The cited span is verbatim the whole student answer and genuinely supports met=true for the edges-get-255 element. It does not, however, contain the 'zeros elsewhere / binary' element, so it supports at most partial-to-full credit depending on where the completeness bar sits; the model's valid verdict overreads the span relative to the human consensus. Flags: rubric gives no per-item breakdown saying whether '0 elsewhere' is required (Erik's note questions exactly this, and the instructor credited fully), and the reference rests on a 2-0 consensus where one review is low-confidence and contradicts the instructor."
+  },
+  {
+   "case_id": "e003_q2_r6",
+   "writer": "e003",
+   "question": "q2",
+   "direction": "overgrade",
+   "boundary": "invalid -> partially_valid",
+   "final_human_verdict": "invalid",
+   "model_verdict": "partially_valid",
+   "instructor_derived_verdict": null,
+   "instructor_score": 0.0,
+   "reference_source": "two_reviewer_consensus",
+   "model_evidence": [
+    {
+     "id": "R1",
+     "met": true,
+     "student_evidence": "סכום המסכה הוא גדול מ-1, לכן טווח הערכים גדול מהטווח בהסטוגרמה המקורית ויותר פרוס"
+    }
+   ],
+   "model_justification": "grade-v4-charitable-local emits NO free-text justification by contract: rubric_items (met + exact student_evidence spans) + score + uncertain are the whole output",
+   "human_reviews": [
+    {
+     "reviewer": "Erik",
+     "verdict": "invalid",
+     "confidence": "medium",
+     "issue": "none",
+     "note": ""
+    },
+    {
+     "reviewer": "Or Vaisman",
+     "verdict": "invalid",
+     "confidence": "medium",
+     "issue": "none",
+     "note": ""
+    }
+   ],
+   "adjudication_note": "",
+   "answer_length_chars": 81,
+   "model_evidence_length_chars": 81,
+   "failure_category": "failed_invalid_vs_partial_boundary",
+   "secondary_categories": [
+    "model_too_generous"
+   ],
+   "rationale": "Mask [1 0 0 1] is the ECHO mask; official solution requires identifying the output as the pixel-wise sum of the original and a 3-pixel-shifted copy. The student instead argued from the mask sum: \"סכום המסכה הוא גדול מ-1, לכן טווח הערכים גדול... ויותר פרוס\" — mask sum > 1, so the value range grows and the histogram spreads. That misses the echo/shift essence entirely, and both blind reviewers independently said invalid (medium confidence each) with instructor score 0.0, making invalid the settled reference. Still, the model's partial credit is not fabricated generosity: mask sum 2 does roughly double the value range, so the credited claim is a true, weakly relevant histogram consequence in a histogram-matching question. The model erred on the real no-credit vs partial-credit line — crediting a tangential correct consequence where humans required the mechanism — rather than crediting plainly absent or false content.",
+   "rubric_ambiguity": false,
+   "transcription_or_evidence_issue": false,
+   "adjudication_uncertainty": false,
+   "model_evidence_assessment": "The cited span exists verbatim (it is the full answer). It only weakly supports met=true: the span states a range-expansion/spread consequence that is arithmetically true for a sum-2 mask, but it contains none of the required echo content (sum of original + shifted image) from the official solution, so it cannot carry the rubric item under the human standard. Both reviewers were unanimous, so no adjudication concern; transcription is clean."
+  },
+  {
+   "case_id": "e004_q1_r1",
+   "writer": "e004",
+   "question": "q1",
+   "direction": "undergrade",
+   "boundary": "valid -> invalid",
+   "final_human_verdict": "valid",
+   "model_verdict": "invalid",
+   "instructor_derived_verdict": "valid",
+   "instructor_score": 4.0,
+   "reference_source": "adjudicated_human_reference",
+   "model_evidence": [
+    {
+     "id": "R1",
+     "met": false,
+     "student_evidence": "הWAVEELETS מטושטשת בכל החלקים"
+    }
+   ],
+   "model_justification": "grade-v4-charitable-local emits NO free-text justification by contract: rubric_items (met + exact student_evidence spans) + score + uncertain are the whole output",
+   "human_reviews": [
+    {
+     "reviewer": "Erik",
+     "verdict": "valid",
+     "confidence": "medium",
+     "issue": "none",
+     "note": ""
+    },
+    {
+     "reviewer": "Or Vaisman",
+     "verdict": "invalid",
+     "confidence": "high",
+     "issue": "none",
+     "note": ""
+    }
+   ],
+   "adjudication_note": "",
+   "answer_length_chars": 29,
+   "model_evidence_length_chars": 29,
+   "failure_category": "adjudication_uncertainty",
+   "secondary_categories": [
+    "failed_invalid_vs_partial_boundary",
+    "transcription_evidence_issue"
+   ],
+   "rationale": "Motion Blur (op 1). The official solution demands a DIRECTIONAL smear (45 deg in image F, 'טשטוש בזווית 45 בכל רמות התדר') and explicitly says the non-directional two-way Gaussian reading 'לא התקבלה'. The transcription 'הWAVEELETS מטושטשת בכל החלקים' contains no directional element at all, so the model's invalid is text-defensible per the official solution; yet the final reference is valid. That reference is itself thin: blind reviewers split hard (Erik valid/medium vs Or invalid/HIGH) and the admin adjudication carries an empty note, apparently deferring to the instructor's 4.0. On the frozen text the honest verdict sits between the model's 0 and the reference's 4 — 'בכל החלקים' does echo the accepted 'בכל רמות התדר' element, arguably worth partial — so the two-step valid->invalid gap is driven more by a contested reference than by a clean model failure. Note also the transcription never records WHICH image the student matched, and the official solution makes the F-vs-B choice the decisive discriminator.",
+   "rubric_ambiguity": false,
+   "transcription_or_evidence_issue": true,
+   "adjudication_uncertainty": true,
+   "model_evidence_assessment": "The cited span 'הWAVEELETS מטושטשת בכל החלקים' is the entire transcription and exists verbatim. As support for met=false it is defensible but incomplete: the span indeed lacks the required directional/45-deg characterization, but its 'בכל החלקים' phrasing partially matches the accepted 'בכל רמות התדר' component, which the model's zero-credit verdict ignores."
+  },
+  {
+   "case_id": "e004_q1_r3",
+   "writer": "e004",
+   "question": "q1",
+   "direction": "overgrade",
+   "boundary": "invalid -> partially_valid",
+   "final_human_verdict": "invalid",
+   "model_verdict": "partially_valid",
+   "instructor_derived_verdict": "partially_valid",
+   "instructor_score": 2.0,
+   "reference_source": "two_reviewer_consensus",
+   "model_evidence": [
+    {
+     "id": "R1",
+     "met": true,
+     "student_evidence": "התמונה מחודדת יותר"
+    }
+   ],
+   "model_justification": "grade-v4-charitable-local emits NO free-text justification by contract: rubric_items (met + exact student_evidence spans) + score + uncertain are the whole output",
+   "human_reviews": [
+    {
+     "reviewer": "Erik",
+     "verdict": "invalid",
+     "confidence": "low",
+     "issue": "genuinely_ambiguous",
+     "note": "חסרה ההתייחסות לאפקט על תדרים גבוהים לעומת נמוכים. בכל זאת, בבדיקה המקורית קיבלו ניקוד חלקי..."
+    },
+    {
+     "reviewer": "Or Vaisman",
+     "verdict": "invalid",
+     "confidence": "medium",
+     "issue": "none",
+     "note": ""
+    }
+   ],
+   "adjudication_note": "",
+   "answer_length_chars": 70,
+   "model_evidence_length_chars": 18,
+   "failure_category": "failed_invalid_vs_partial_boundary",
+   "secondary_categories": [
+    "rubric_ambiguity",
+    "model_too_generous"
+   ],
+   "rationale": "High Frequency Emphasis (op 3). The official solution explicitly rejects effect-free restatements: answers like 'שפות יותר ברורות' without detailing the frequency change 'לא התקבלו'. The student wrote exactly that class of answer — 'התמונה מחודדת יותר ושמרה על הצבעים' — with zero low-vs-high-frequency content, and both blind reviewers voted invalid (consensus reference). The model credited R1 on 'התמונה מחודדת יותר' and issued partial. This is a genuine invalid-vs-partial boundary rather than plain over-generosity: the instructor himself gave 2.0 for this answer, and Erik voted invalid only at LOW confidence with issue=genuinely_ambiguous, noting 'בבדיקה המקורית קיבלו ניקוד חלקי'. So the criterion (official solution says reject; original grading gave partial) pulls in two directions, and the model landed on the wrong side of a close line. The '[לא קריא]' token sits in the secondary brightness remark and is unlikely to hide frequency content.",
+   "rubric_ambiguity": true,
+   "transcription_or_evidence_issue": false,
+   "adjudication_uncertainty": false,
+   "model_evidence_assessment": "The cited span 'התמונה מחודדת יותר' exists verbatim as the answer's opening clause, but it does not support met=true: it merely restates the operation's name-level effect, precisely the answer type the official solution lists as not accepted, and the uncited remainder ('שמרה על הצבעים', the brightness comparison to E) adds no frequency-domain content that could rescue the credit."
+  },
+  {
+   "case_id": "e004_q1_r6",
+   "writer": "e004",
+   "question": "q1",
+   "direction": "undergrade",
+   "boundary": "partially_valid -> invalid",
+   "final_human_verdict": "partially_valid",
+   "model_verdict": "invalid",
+   "instructor_derived_verdict": "partially_valid",
+   "instructor_score": 2.0,
+   "reference_source": "adjudicated_human_reference",
+   "model_evidence": [
+    {
+     "id": "R1",
+     "met": false,
+     "student_evidence": "הWAVELETS מטושטשת אנכית"
+    }
+   ],
+   "model_justification": "grade-v4-charitable-local emits NO free-text justification by contract: rubric_items (met + exact student_evidence spans) + score + uncertain are the whole output",
+   "human_reviews": [
+    {
+     "reviewer": "Erik",
+     "verdict": "valid",
+     "confidence": "medium",
+     "issue": "none",
+     "note": ""
+    },
+    {
+     "reviewer": "Or Vaisman",
+     "verdict": "invalid",
+     "confidence": "high",
+     "issue": "none",
+     "note": ""
+    }
+   ],
+   "adjudication_note": "",
+   "answer_length_chars": 37,
+   "model_evidence_length_chars": 23,
+   "failure_category": "model_too_strict",
+   "secondary_categories": [
+    "failed_invalid_vs_partial_boundary",
+    "adjudication_uncertainty"
+   ],
+   "rationale": "Gaussian noise + mask convolution (op 6). The official solution's stated outcome for op 6 is vertical blur ('טשטוש התמונה בכוון... אנכי (פעולה 6)'). The student wrote exactly that: 'הWAVELETS מטושטשת אנכית (מקביל ציר y)'. The model extracted this very span and still set met=false with score 0 — refusing credit for content plainly present and plainly matching the official answer's core claim; what is missing is only the consequence for horizontal edges, which is why instructor (2.0), admin adjudication (2.0), and the sibling calibration (e002_q1_r6, same 'מריחה בציר y' content, final partial) all place direction-only answers at partial, not zero. This is not a close judgment call on absence: the creditable claim is verbatim in the model's own evidence. The reference does carry some noise (Erik valid/medium vs Or invalid/high, empty adjudication note), but the adjudicated middle verdict is well anchored by the instructor score and the sibling case.",
+   "rubric_ambiguity": false,
+   "transcription_or_evidence_issue": false,
+   "adjudication_uncertainty": true,
+   "model_evidence_assessment": "The cited span 'הWAVELETS מטושטשת אנכית' exists verbatim (the model dropped the clarifier '(מקביל ציר y)'). The span contradicts rather than supports the model's met=false: it states the official op-6 outcome (vertical blur) almost word-for-word, so the evidence itself warrants at least partial credit."
+  },
+  {
+   "case_id": "e004_q1_r8",
+   "writer": "e004",
+   "question": "q1",
+   "direction": "overgrade",
+   "boundary": "partially_valid -> valid",
+   "final_human_verdict": "partially_valid",
+   "model_verdict": "valid",
+   "instructor_derived_verdict": "partially_valid",
+   "instructor_score": 2.0,
+   "reference_source": "adjudicated_human_reference",
+   "model_evidence": [
+    {
+     "id": "R1",
+     "met": true,
+     "student_evidence": "ההבדל בין כהה לבין לבן גדל"
+    }
+   ],
+   "model_justification": "grade-v4-charitable-local emits NO free-text justification by contract: rubric_items (met + exact student_evidence spans) + score + uncertain are the whole output",
+   "human_reviews": [
+    {
+     "reviewer": "Erik",
+     "verdict": "partially_valid",
+     "confidence": "medium",
+     "issue": "none",
+     "note": "יש התייחסות לקונטרסט, אין התייחסות לתמתיחת ההיסטוגרמה פי 2 בציר X"
+    },
+    {
+     "reviewer": "Or Vaisman",
+     "verdict": "invalid",
+     "confidence": "high",
+     "issue": "none",
+     "note": ""
+    }
+   ],
+   "adjudication_note": "",
+   "answer_length_chars": 26,
+   "model_evidence_length_chars": 26,
+   "failure_category": "failed_partial_vs_valid_boundary",
+   "secondary_categories": [
+    "adjudication_uncertainty"
+   ],
+   "rationale": "The student's entire answer is one qualitative sentence: \"ההבדל בין כהה לבין לבן גדל\" — a correct contrast-increase claim that the official solution itself endorses in passing (\"נכון זה שינוי קונטרסט\"). But full credit per the official solution requires the mechanism — \"מתיחת ההיסטוגרמה פי 2 בציר X\" — and identifying histogram G, both absent (exactly what reviewer Erik's note says). The model credited genuinely present, genuinely correct content but equated one correct qualitative observation with a complete answer (4/4 vs reference 2/4). This is a completeness miscalibration on the partial-vs-valid boundary, not crediting of absent/wrong content. Caveat on the reference side: the blind reviewers split (partially_valid/medium vs invalid/high) and the admin adjudication carries an empty note, so the reference is itself borderline between partial and invalid — though notably neither human was anywhere near 'valid', so the model's overgrade stands regardless.",
+   "rubric_ambiguity": false,
+   "transcription_or_evidence_issue": false,
+   "adjudication_uncertainty": true,
+   "model_evidence_assessment": "The cited span \"ההבדל בין כהה לבין לבן גדל\" exists verbatim — it is the whole 26-char answer. It genuinely supports partial credit (correct qualitative contrast effect) but does not support the 'valid' verdict: it contains neither the x2 X-axis histogram stretch nor the choice of histogram G required by the official solution."
+  },
+  {
+   "case_id": "e004_q2_r4",
+   "writer": "e004",
+   "question": "q2",
+   "direction": "overgrade",
+   "boundary": "invalid -> partially_valid",
+   "final_human_verdict": "invalid",
+   "model_verdict": "partially_valid",
+   "instructor_derived_verdict": null,
+   "instructor_score": 0.0,
+   "reference_source": "two_reviewer_consensus",
+   "model_evidence": [
+    {
+     "id": "R1",
+     "met": true,
+     "student_evidence": "נקבל בOptimal פחות עמודים מUniform"
+    }
+   ],
+   "model_justification": "grade-v4-charitable-local emits NO free-text justification by contract: rubric_items (met + exact student_evidence spans) + score + uncertain are the whole output",
+   "human_reviews": [
+    {
+     "reviewer": "Erik",
+     "verdict": "invalid",
+     "confidence": "medium",
+     "issue": "genuinely_ambiguous",
+     "note": ""
+    },
+    {
+     "reviewer": "Or Vaisman",
+     "verdict": "invalid",
+     "confidence": "medium",
+     "issue": "none",
+     "note": ""
+    }
+   ],
+   "adjudication_note": "",
+   "answer_length_chars": 84,
+   "model_evidence_length_chars": 34,
+   "failure_category": "failed_invalid_vs_partial_boundary",
+   "secondary_categories": [
+    "model_too_generous"
+   ],
+   "rationale": "The model's sole credited span, \"נקבל בOptimal פחות עמודים מUniform\", is factually wrong: both quantizations use exactly 20 BINs; Optimal Quantization makes them non-uniform by pixel density (\"20 BINS לא אחידים על פי צפיפות הפיקסלים\"), not fewer. The only fragment that even gestures at the density concept is the garbled second line \"עמודים לא צפופם הרבה\", which the model did not cite. Still, the case is a genuine no-credit-vs-partial boundary rather than a plain hallucinated credit: the answer is a near-miss attempt at the bin-density idea, both reviewers landed invalid only at medium confidence, and Erik explicitly flagged the item 'genuinely_ambiguous'. The model resolved a real boundary on the wrong side, anchored on the clearly wrong 'fewer bars' claim.",
+   "rubric_ambiguity": false,
+   "transcription_or_evidence_issue": false,
+   "adjudication_uncertainty": false,
+   "model_evidence_assessment": "The cited span exists verbatim in the transcription, but its content contradicts the official solution (fewer bars vs 20 non-uniform bins), so it does not support meeting R1. The line that comes closest to the required density concept (\"עמודים לא צפופם הרבה\") was left uncited. Garble like \"Qnatization\"/\"צפופם\" reads as faithful transcription of student misspellings, not transcription failure."
+  },
+  {
+   "case_id": "e004_q2_r5",
+   "writer": "e004",
+   "question": "q2",
+   "direction": "overgrade",
+   "boundary": "invalid -> partially_valid",
+   "final_human_verdict": "invalid",
+   "model_verdict": "partially_valid",
+   "instructor_derived_verdict": null,
+   "instructor_score": 0.0,
+   "reference_source": "two_reviewer_consensus",
+   "model_evidence": [
+    {
+     "id": "R1",
+     "met": true,
+     "student_evidence": "אותו דבר אבל זה Unoform ולכן נקבל יותר"
+    }
+   ],
+   "model_justification": "grade-v4-charitable-local emits NO free-text justification by contract: rubric_items (met + exact student_evidence spans) + score + uncertain are the whole output",
+   "human_reviews": [
+    {
+     "reviewer": "Erik",
+     "verdict": "invalid",
+     "confidence": "medium",
+     "issue": "none",
+     "note": ""
+    },
+    {
+     "reviewer": "Or Vaisman",
+     "verdict": "invalid",
+     "confidence": "medium",
+     "issue": "none",
+     "note": ""
+    }
+   ],
+   "adjudication_note": "",
+   "answer_length_chars": 45,
+   "model_evidence_length_chars": 38,
+   "failure_category": "model_too_generous",
+   "secondary_categories": [],
+   "rationale": "The student's answer, \"אותו דבר אבל זה Unoform ולכן נקבל יותר עמודים\", contains no creditable content: 'Uniform' merely restates the operation named in the question, 'אותו דבר' points back at the previous (also invalid) answer, and the one substantive claim — 'we get more bars' — is plainly wrong, since both quantizations have a fixed 20 BINs and the official solution's required concept is equal-width bins across the gray range visible in D (\"20 BINS בגודל אחיד\"). Unlike r4 there is no gesture at the actual mechanism anywhere in the text, and both blind reviewers said invalid with no ambiguity flags. Awarding 2/4 credited content that is plainly wrong/absent; this is not a close boundary call.",
+   "rubric_ambiguity": false,
+   "transcription_or_evidence_issue": false,
+   "adjudication_uncertainty": false,
+   "model_evidence_assessment": "The cited span exists verbatim (the first transcription line), but it does not support the verdict: it restates the operation name and asserts an incorrect 'more bars' outcome, matching nothing in the official solution's uniform-bin-width concept. \"Unoform\" is the student's own spelling; the transcription looks complete (the line break \"יותר\\nעמודים\" is mid-sentence layout, not loss)."
+  }
+ ],
+ "totals": {
+  "errors": 15,
+  "overgrades": 8,
+  "undergrades": 7
+ },
+ "clusters": {
+  "by_verdict_boundary": {
+   "invalid -> partially_valid": 4,
+   "partially_valid -> invalid": 3,
+   "partially_valid -> valid": 4,
+   "valid -> invalid": 2,
+   "valid -> partially_valid": 2
+  },
+  "by_boundary_family": {
+   "partial_vs_valid": 6,
+   "invalid_vs_partial": 7,
+   "valid_vs_invalid_two_step": 2
+  },
+  "by_writer": {
+   "e002": {
+    "errors": 5,
+    "cases": 16,
+    "error_rate_pct": 31.2
+   },
+   "e003": {
+    "errors": 4,
+    "cases": 15,
+    "error_rate_pct": 26.7
+   },
+   "e004": {
+    "errors": 6,
+    "cases": 14,
+    "error_rate_pct": 42.9
+   },
+   "e007": {
+    "errors": 0,
+    "cases": 1,
+    "error_rate_pct": 0.0
+   }
+  },
+  "by_question": {
+   "q1": 9,
+   "q2": 6
+  },
+  "by_reference_source": {
+   "adjudicated_human_reference": 10,
+   "two_reviewer_consensus": 5
+  },
+  "by_failure_category": {
+   "adjudication_uncertainty": 1,
+   "failed_invalid_vs_partial_boundary": 4,
+   "failed_partial_vs_valid_boundary": 6,
+   "model_too_generous": 1,
+   "model_too_strict": 2,
+   "transcription_evidence_issue": 1
+  },
+  "by_answer_length": {
+   "under_40_chars": {
+    "<40": 6,
+    ">=40": 9
+   },
+   "note": "the 4 partial->valid overgrades on terse core-correct answers are all 26-37 chars; invalid->partial overgrades run longer (45-84 chars)"
+  },
+  "by_model_evidence_length": {
+   "median_error_evidence_chars": 36
+  },
+  "flags": {
+   "rubric_ambiguity": 7,
+   "transcription_or_evidence_issue": 3,
+   "adjudication_uncertainty": 10
+  }
+ },
+ "findings": [
+  "errors are BOUNDARY-dominated: 10/15 primary categories are the two verdict boundaries (6 partial-vs-valid, 4 invalid-vs-partial); pure too_generous/too_strict misreads are only 3/15",
+  "errors concentrate where humans also disagreed: 10/15 sit on adjudicated_human_reference cases and 10/15 carry an adjudication-uncertainty flag; 0/15 on the owner-repaired cases",
+  "rubric ambiguity flagged on 7/15 (generic rubric gives no full-vs-partial criterion for terse core-correct answers)",
+  "short terse answers (<40 chars) drive the partial->valid overgrades; the model over-credits a single correct core claim",
+  "writer e004 has the highest error rate (6/14 = 42.9%) vs e002 31.3%, e003 26.7%",
+  "q1 carries 9/15 errors (39.1% error rate) vs q2 6/15 (26.1%)",
+  "one model-side evidence defect found (e002_q1_r7: cited span is official-solution text, not student text - the validator already caught it: REVIEW)"
+ ]
+}

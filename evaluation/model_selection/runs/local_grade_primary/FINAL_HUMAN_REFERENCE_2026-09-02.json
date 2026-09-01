@@ -1,0 +1,2082 @@
+{
+ "artifact": "final_human_reference_freeze",
+ "campaign": "seen46_2026-08-28",
+ "created_at": "2026-09-02 01:19:58",
+ "policy": [
+  "FROZEN: never edited, never re-derived silently; a later correction requires an explicit owner-confirmed revision record",
+  "sources stay distinct forever - never collapsed into one label",
+  "instructor grade preserved separately; it is a reference, not the target of this freeze",
+  "SEEN development data only (DEV+CALIBRATION); the invalid class is now MEASURED on seen data; it remains UNMEASURED on untouched HELD_OUT"
+ ],
+ "cases": [
+  {
+   "case_id": "e002_q1_r1",
+   "writer": "e002",
+   "question": "q1",
+   "final_verdict": "partially_valid",
+   "reference_source": "adjudicated_human_reference",
+   "independent_blind_reviews": [
+    {
+     "reviewer": "Erik",
+     "verdict": "partially_valid",
+     "confidence": "medium",
+     "issue": "none",
+     "note": "על תשובה דומה לפני זה קבלו ניקוד מלא...",
+     "revision": 1,
+     "updated_at": "2026-08-31 00:23:12"
+    },
+    {
+     "reviewer": "Or Vaisman",
+     "verdict": "invalid",
+     "confidence": "high",
+     "issue": "none",
+     "note": "",
+     "revision": 1,
+     "updated_at": "2026-09-01 16:12:50"
+    }
+   ],
+   "stale_historical_reviews": [],
+   "adjudication_record": {
+    "verdict": "partially_valid",
+    "score": 2.0,
+    "adjudicator": "admin",
+    "note": "",
+    "kind": "adjudicated_human_reference",
+    "at": "2026-09-02 00:42:36"
+   },
+   "original_instructor": {
+    "score": 0.0,
+    "derived_verdict": null,
+    "ground_truth_source": "original_instructor_grade"
+   },
+   "baseline_model_output": {
+    "verdict": "partially_valid",
+    "score": 2.0,
+    "decision": "AUTO",
+    "output_source": "frozen_seen46_run:dev__all__qwen3-vl-8b-instruct__72e19378d1"
+   }
+  },
+  {
+   "case_id": "e002_q1_r2",
+   "writer": "e002",
+   "question": "q1",
+   "final_verdict": "valid",
+   "reference_source": "two_reviewer_consensus",
+   "independent_blind_reviews": [
+    {
+     "reviewer": "Erik",
+     "verdict": "valid",
+     "confidence": "high",
+     "issue": "none",
+     "note": "",
+     "revision": 1,
+     "updated_at": "2026-08-31 00:21:25"
+    },
+    {
+     "reviewer": "Or Vaisman",
+     "verdict": "valid",
+     "confidence": "high",
+     "issue": "none",
+     "note": "",
+     "revision": 1,
+     "updated_at": "2026-09-01 16:11:56"
+    }
+   ],
+   "stale_historical_reviews": [],
+   "adjudication_record": null,
+   "original_instructor": {
+    "score": 4.0,
+    "derived_verdict": "valid",
+    "ground_truth_source": "original_instructor_grade"
+   },
+   "baseline_model_output": {
+    "verdict": "valid",
+    "score": 4.0,
+    "decision": "AUTO",
+    "output_source": "frozen_seen46_run:dev__all__qwen3-vl-8b-instruct__72e19378d1"
+   }
+  },
+  {
+   "case_id": "e002_q1_r3",
+   "writer": "e002",
+   "question": "q1",
+   "final_verdict": "valid",
+   "reference_source": "two_reviewer_consensus",
+   "independent_blind_reviews": [
+    {
+     "reviewer": "Erik",
+     "verdict": "valid",
+     "confidence": "medium",
+     "issue": "none",
+     "note": "",
+     "revision": 1,
+     "updated_at": "2026-08-31 00:05:34"
+    },
+    {
+     "reviewer": "Or Vaisman",
+     "verdict": "valid",
+     "confidence": "high",
+     "issue": "none",
+     "note": "",
+     "revision": 1,
+     "updated_at": "2026-09-01 16:04:35"
+    }
+   ],
+   "stale_historical_reviews": [],
+   "adjudication_record": null,
+   "original_instructor": {
+    "score": 4.0,
+    "derived_verdict": "valid",
+    "ground_truth_source": "original_instructor_grade"
+   },
+   "baseline_model_output": {
+    "verdict": "valid",
+    "score": 4.0,
+    "decision": "AUTO",
+    "output_source": "frozen_seen46_run:dev__all__qwen3-vl-8b-instruct__72e19378d1"
+   }
+  },
+  {
+   "case_id": "e002_q1_r4",
+   "writer": "e002",
+   "question": "q1",
+   "final_verdict": "valid",
+   "reference_source": "two_reviewer_consensus",
+   "independent_blind_reviews": [
+    {
+     "reviewer": "Erik",
+     "verdict": "valid",
+     "confidence": "high",
+     "issue": "none",
+     "note": "",
+     "revision": 1,
+     "updated_at": "2026-08-30 23:43:10"
+    },
+    {
+     "reviewer": "Or Vaisman",
+     "verdict": "valid",
+     "confidence": "high",
+     "issue": "none",
+     "note": "",
+     "revision": 1,
+     "updated_at": "2026-09-01 00:30:27"
+    }
+   ],
+   "stale_historical_reviews": [],
+   "adjudication_record": null,
+   "original_instructor": {
+    "score": 4.0,
+    "derived_verdict": "valid",
+    "ground_truth_source": "original_instructor_grade"
+   },
+   "baseline_model_output": {
+    "verdict": "valid",
+    "score": 4.0,
+    "decision": "AUTO",
+    "output_source": "frozen_seen46_run:dev__all__qwen3-vl-8b-instruct__72e19378d1"
+   }
+  },
+  {
+   "case_id": "e002_q1_r5",
+   "writer": "e002",
+   "question": "q1",
+   "final_verdict": "partially_valid",
+   "reference_source": "adjudicated_human_reference",
+   "independent_blind_reviews": [
+    {
+     "reviewer": "Erik",
+     "verdict": "valid",
+     "confidence": "medium",
+     "issue": "rubric_official_solution",
+     "note": "בתשובה האמיתית הם שילבו בין פתרון 2 סעיפים (5 ו-6). האמירה היחידה שחסרה היא שהמסכה גאוסיאנית, אבל נראה שהייתה הבנה של הפעולה ",
+     "revision": 1,
+     "updated_at": "2026-08-28 15:21:38"
+    },
+    {
+     "reviewer": "Or Vaisman",
+     "verdict": "partially_valid",
+     "confidence": "medium",
+     "issue": "none",
+     "note": "",
+     "revision": 1,
+     "updated_at": "2026-09-01 00:21:05"
+    }
+   ],
+   "stale_historical_reviews": [],
+   "adjudication_record": {
+    "verdict": "partially_valid",
+    "score": 2.0,
+    "adjudicator": "admin",
+    "note": "",
+    "kind": "adjudicated_human_reference",
+    "at": "2026-09-02 00:43:10"
+   },
+   "original_instructor": {
+    "score": 2.0,
+    "derived_verdict": "partially_valid",
+    "ground_truth_source": "original_instructor_grade"
+   },
+   "baseline_model_output": {
+    "verdict": "valid",
+    "score": 4.0,
+    "decision": "AUTO",
+    "output_source": "frozen_seen46_run:dev__all__qwen3-vl-8b-instruct__72e19378d1"
+   }
+  },
+  {
+   "case_id": "e002_q1_r6",
+   "writer": "e002",
+   "question": "q1",
+   "final_verdict": "partially_valid",
+   "reference_source": "adjudicated_human_reference",
+   "independent_blind_reviews": [
+    {
+     "reviewer": "Erik",
+     "verdict": "valid",
+     "confidence": "high",
+     "issue": "none",
+     "note": "",
+     "revision": 1,
+     "updated_at": "2026-08-31 00:17:54"
+    },
+    {
+     "reviewer": "Or Vaisman",
+     "verdict": "invalid",
+     "confidence": "high",
+     "issue": "none",
+     "note": "",
+     "revision": 1,
+     "updated_at": "2026-09-01 16:10:17"
+    }
+   ],
+   "stale_historical_reviews": [],
+   "adjudication_record": {
+    "verdict": "partially_valid",
+    "score": 2.0,
+    "adjudicator": "admin",
+    "note": "",
+    "kind": "adjudicated_human_reference",
+    "at": "2026-09-02 00:43:29"
+   },
+   "original_instructor": {
+    "score": 2.0,
+    "derived_verdict": "partially_valid",
+    "ground_truth_source": "original_instructor_grade"
+   },
+   "baseline_model_output": {
+    "verdict": "valid",
+    "score": 4.0,
+    "decision": "AUTO",
+    "output_source": "frozen_seen46_run:dev__all__qwen3-vl-8b-instruct__72e19378d1"
+   }
+  },
+  {
+   "case_id": "e002_q1_r7",
+   "writer": "e002",
+   "question": "q1",
+   "final_verdict": "partially_valid",
+   "reference_source": "adjudicated_human_reference",
+   "independent_blind_reviews": [
+    {
+     "reviewer": "Erik",
+     "verdict": "valid",
+     "confidence": "medium",
+     "issue": "none",
+     "note": "",
+     "revision": 1,
+     "updated_at": "2026-08-30 23:40:38"
+    },
+    {
+     "reviewer": "Or Vaisman",
+     "verdict": "invalid",
+     "confidence": "high",
+     "issue": "none",
+     "note": "",
+     "revision": 1,
+     "updated_at": "2026-09-01 00:29:04"
+    }
+   ],
+   "stale_historical_reviews": [],
+   "adjudication_record": {
+    "verdict": "partially_valid",
+    "score": 2.0,
+    "adjudicator": "admin",
+    "note": "",
+    "kind": "adjudicated_human_reference",
+    "at": "2026-09-02 00:46:15"
+   },
+   "original_instructor": {
+    "score": 4.0,
+    "derived_verdict": "valid",
+    "ground_truth_source": "original_instructor_grade"
+   },
+   "baseline_model_output": {
+    "verdict": "invalid",
+    "score": 0.0,
+    "decision": "REVIEW",
+    "output_source": "frozen_seen46_run:dev__all__qwen3-vl-8b-instruct__72e19378d1"
+   }
+  },
+  {
+   "case_id": "e002_q1_r8",
+   "writer": "e002",
+   "question": "q1",
+   "final_verdict": "partially_valid",
+   "reference_source": "adjudicated_human_reference",
+   "independent_blind_reviews": [
+    {
+     "reviewer": "Erik",
+     "verdict": "partially_valid",
+     "confidence": "medium",
+     "issue": "none",
+     "note": "",
+     "revision": 1,
+     "updated_at": "2026-08-30 23:25:15"
+    },
+    {
+     "reviewer": "Or Vaisman",
+     "verdict": "invalid",
+     "confidence": "medium",
+     "issue": "none",
+     "note": "",
+     "revision": 1,
+     "updated_at": "2026-09-01 00:24:21"
+    }
+   ],
+   "stale_historical_reviews": [],
+   "adjudication_record": {
+    "verdict": "partially_valid",
+    "score": 2.0,
+    "adjudicator": "admin",
+    "note": "",
+    "kind": "adjudicated_human_reference",
+    "at": "2026-09-02 00:44:51"
+   },
+   "original_instructor": {
+    "score": 2.0,
+    "derived_verdict": "partially_valid",
+    "ground_truth_source": "original_instructor_grade"
+   },
+   "baseline_model_output": {
+    "verdict": "partially_valid",
+    "score": 2.0,
+    "decision": "AUTO",
+    "output_source": "frozen_seen46_run:dev__all__qwen3-vl-8b-instruct__72e19378d1"
+   }
+  },
+  {
+   "case_id": "e002_q2_r1",
+   "writer": "e002",
+   "question": "q2",
+   "final_verdict": "valid",
+   "reference_source": "two_reviewer_consensus",
+   "independent_blind_reviews": [
+    {
+     "reviewer": "Erik",
+     "verdict": "valid",
+     "confidence": "high",
+     "issue": "none",
+     "note": "",
+     "revision": 1,
+     "updated_at": "2026-08-30 23:28:09"
+    },
+    {
+     "reviewer": "Or Vaisman",
+     "verdict": "valid",
+     "confidence": "high",
+     "issue": "none",
+     "note": "",
+     "revision": 1,
+     "updated_at": "2026-09-01 00:25:25"
+    }
+   ],
+   "stale_historical_reviews": [],
+   "adjudication_record": null,
+   "original_instructor": {
+    "score": 4.0,
+    "derived_verdict": "valid",
+    "ground_truth_source": "original_instructor_grade"
+   },
+   "baseline_model_output": {
+    "verdict": "valid",
+    "score": 4.0,
+    "decision": "AUTO",
+    "output_source": "frozen_seen46_run:dev__all__qwen3-vl-8b-instruct__72e19378d1"
+   }
+  },
+  {
+   "case_id": "e002_q2_r2",
+   "writer": "e002",
+   "question": "q2",
+   "final_verdict": "valid",
+   "reference_source": "adjudicated_human_reference",
+   "independent_blind_reviews": [
+    {
+     "reviewer": "Erik",
+     "verdict": "valid",
+     "confidence": "medium",
+     "issue": "none",
+     "note": "",
+     "revision": 1,
+     "updated_at": "2026-08-31 00:13:11"
+    },
+    {
+     "reviewer": "Or Vaisman",
+     "verdict": "invalid",
+     "confidence": "medium",
+     "issue": "none",
+     "note": "",
+     "revision": 1,
+     "updated_at": "2026-09-01 16:08:50"
+    }
+   ],
+   "stale_historical_reviews": [],
+   "adjudication_record": {
+    "verdict": "valid",
+    "score": 4.0,
+    "adjudicator": "admin",
+    "note": "",
+    "kind": "adjudicated_human_reference",
+    "at": "2026-09-02 00:45:37"
+   },
+   "original_instructor": {
+    "score": 4.0,
+    "derived_verdict": "valid",
+    "ground_truth_source": "original_instructor_grade"
+   },
+   "baseline_model_output": {
+    "verdict": "valid",
+    "score": 4.0,
+    "decision": "AUTO",
+    "output_source": "frozen_seen46_run:dev__all__qwen3-vl-8b-instruct__72e19378d1"
+   }
+  },
+  {
+   "case_id": "e002_q2_r3",
+   "writer": "e002",
+   "question": "q2",
+   "final_verdict": "valid",
+   "reference_source": "two_reviewer_consensus",
+   "independent_blind_reviews": [
+    {
+     "reviewer": "Erik",
+     "verdict": "valid",
+     "confidence": "medium",
+     "issue": "none",
+     "note": "",
+     "revision": 1,
+     "updated_at": "2026-08-30 23:42:29"
+    },
+    {
+     "reviewer": "Or Vaisman",
+     "verdict": "valid",
+     "confidence": "high",
+     "issue": "none",
+     "note": "",
+     "revision": 1,
+     "updated_at": "2026-09-01 00:30:17"
+    }
+   ],
+   "stale_historical_reviews": [],
+   "adjudication_record": null,
+   "original_instructor": {
+    "score": 4.0,
+    "derived_verdict": "valid",
+    "ground_truth_source": "original_instructor_grade"
+   },
+   "baseline_model_output": {
+    "verdict": "valid",
+    "score": 4.0,
+    "decision": "AUTO",
+    "output_source": "frozen_seen46_run:dev__all__qwen3-vl-8b-instruct__72e19378d1"
+   }
+  },
+  {
+   "case_id": "e002_q2_r4",
+   "writer": "e002",
+   "question": "q2",
+   "final_verdict": "partially_valid",
+   "reference_source": "adjudicated_human_reference",
+   "independent_blind_reviews": [
+    {
+     "reviewer": "Erik",
+     "verdict": "invalid",
+     "confidence": "low",
+     "issue": "none",
+     "note": "נראה לי הפוך מהשתובה, אבל בדירוג המקורי נתנו ניקוד מלא... ",
+     "revision": 1,
+     "updated_at": "2026-08-31 00:05:05"
+    },
+    {
+     "reviewer": "Or Vaisman",
+     "verdict": "partially_valid",
+     "confidence": "high",
+     "issue": "transcription_evidence",
+     "note": "",
+     "revision": 1,
+     "updated_at": "2026-09-01 16:03:50"
+    }
+   ],
+   "stale_historical_reviews": [],
+   "adjudication_record": {
+    "verdict": "partially_valid",
+    "score": 2.0,
+    "adjudicator": "admin",
+    "note": "",
+    "kind": "adjudicated_human_reference",
+    "at": "2026-09-02 00:52:21"
+   },
+   "original_instructor": {
+    "score": 4.0,
+    "derived_verdict": "valid",
+    "ground_truth_source": "original_instructor_grade"
+   },
+   "baseline_model_output": {
+    "verdict": "invalid",
+    "score": 0.0,
+    "decision": "AUTO",
+    "output_source": "frozen_seen46_run:dev__all__qwen3-vl-8b-instruct__72e19378d1"
+   }
+  },
+  {
+   "case_id": "e002_q2_r5",
+   "writer": "e002",
+   "question": "q2",
+   "final_verdict": "valid",
+   "reference_source": "adjudicated_human_reference",
+   "independent_blind_reviews": [
+    {
+     "reviewer": "Erik",
+     "verdict": "valid",
+     "confidence": "high",
+     "issue": "none",
+     "note": "",
+     "revision": 1,
+     "updated_at": "2026-08-31 00:21:18"
+    },
+    {
+     "reviewer": "Or Vaisman",
+     "verdict": "partially_valid",
+     "confidence": "high",
+     "issue": "none",
+     "note": "",
+     "revision": 1,
+     "updated_at": "2026-09-01 16:11:48"
+    }
+   ],
+   "stale_historical_reviews": [],
+   "adjudication_record": {
+    "verdict": "valid",
+    "score": 4.0,
+    "adjudicator": "admin",
+    "note": "",
+    "kind": "adjudicated_human_reference",
+    "at": "2026-09-02 00:47:22"
+   },
+   "original_instructor": {
+    "score": 4.0,
+    "derived_verdict": "valid",
+    "ground_truth_source": "original_instructor_grade"
+   },
+   "baseline_model_output": {
+    "verdict": "partially_valid",
+    "score": 2.0,
+    "decision": "AUTO",
+    "output_source": "frozen_seen46_run:dev__all__qwen3-vl-8b-instruct__72e19378d1"
+   }
+  },
+  {
+   "case_id": "e002_q2_r6",
+   "writer": "e002",
+   "question": "q2",
+   "final_verdict": "partially_valid",
+   "reference_source": "two_reviewer_consensus",
+   "independent_blind_reviews": [
+    {
+     "reviewer": "Erik",
+     "verdict": "partially_valid",
+     "confidence": "medium",
+     "issue": "none",
+     "note": "הזזה ב3 ולא הכפלה ב2, השאר נכון",
+     "revision": 1,
+     "updated_at": "2026-08-31 00:14:43"
+    },
+    {
+     "reviewer": "Or Vaisman",
+     "verdict": "partially_valid",
+     "confidence": "medium",
+     "issue": "none",
+     "note": "",
+     "revision": 1,
+     "updated_at": "2026-09-01 16:09:17"
+    }
+   ],
+   "stale_historical_reviews": [],
+   "adjudication_record": null,
+   "original_instructor": {
+    "score": 4.0,
+    "derived_verdict": "valid",
+    "ground_truth_source": "original_instructor_grade"
+   },
+   "baseline_model_output": {
+    "verdict": "partially_valid",
+    "score": 2.0,
+    "decision": "AUTO",
+    "output_source": "frozen_seen46_run:dev__all__qwen3-vl-8b-instruct__72e19378d1"
+   }
+  },
+  {
+   "case_id": "e002_q2_r7",
+   "writer": "e002",
+   "question": "q2",
+   "final_verdict": "valid",
+   "reference_source": "adjudicated_human_reference",
+   "independent_blind_reviews": [
+    {
+     "reviewer": "Erik",
+     "verdict": "valid",
+     "confidence": "high",
+     "issue": "none",
+     "note": "",
+     "revision": 1,
+     "updated_at": "2026-08-30 23:35:10"
+    },
+    {
+     "reviewer": "Or Vaisman",
+     "verdict": "partially_valid",
+     "confidence": "high",
+     "issue": "transcription_evidence",
+     "note": "",
+     "revision": 1,
+     "updated_at": "2026-09-01 00:27:00"
+    }
+   ],
+   "stale_historical_reviews": [],
+   "adjudication_record": {
+    "verdict": "valid",
+    "score": 4.0,
+    "adjudicator": "admin",
+    "note": "",
+    "kind": "adjudicated_human_reference",
+    "at": "2026-09-02 00:47:40"
+   },
+   "original_instructor": {
+    "score": 4.0,
+    "derived_verdict": "valid",
+    "ground_truth_source": "original_instructor_grade"
+   },
+   "baseline_model_output": {
+    "verdict": "valid",
+    "score": 4.0,
+    "decision": "REVIEW",
+    "output_source": "frozen_seen46_run:dev__all__qwen3-vl-8b-instruct__72e19378d1"
+   }
+  },
+  {
+   "case_id": "e002_q2_r8",
+   "writer": "e002",
+   "question": "q2",
+   "final_verdict": "valid",
+   "reference_source": "adjudicated_human_reference",
+   "independent_blind_reviews": [
+    {
+     "reviewer": "Erik",
+     "verdict": "valid",
+     "confidence": "medium",
+     "issue": "none",
+     "note": "",
+     "revision": 1,
+     "updated_at": "2026-08-30 23:58:27"
+    },
+    {
+     "reviewer": "Or Vaisman",
+     "verdict": "partially_valid",
+     "confidence": "medium",
+     "issue": "none",
+     "note": "",
+     "revision": 1,
+     "updated_at": "2026-09-01 16:03:19"
+    }
+   ],
+   "stale_historical_reviews": [],
+   "adjudication_record": {
+    "verdict": "valid",
+    "score": 4.0,
+    "adjudicator": "admin",
+    "note": "",
+    "kind": "adjudicated_human_reference",
+    "at": "2026-09-02 00:47:53"
+   },
+   "original_instructor": {
+    "score": 4.0,
+    "derived_verdict": "valid",
+    "ground_truth_source": "original_instructor_grade"
+   },
+   "baseline_model_output": {
+    "verdict": "valid",
+    "score": 4.0,
+    "decision": "AUTO",
+    "output_source": "frozen_seen46_run:dev__all__qwen3-vl-8b-instruct__72e19378d1"
+   }
+  },
+  {
+   "case_id": "e003_q1_r1",
+   "writer": "e003",
+   "question": "q1",
+   "final_verdict": "valid",
+   "reference_source": "adjudicated_human_reference",
+   "independent_blind_reviews": [
+    {
+     "reviewer": "Erik",
+     "verdict": "valid",
+     "confidence": "medium",
+     "issue": "none",
+     "note": "",
+     "revision": 1,
+     "updated_at": "2026-08-31 00:11:32"
+    },
+    {
+     "reviewer": "Or Vaisman",
+     "verdict": "partially_valid",
+     "confidence": "medium",
+     "issue": "none",
+     "note": "",
+     "revision": 1,
+     "updated_at": "2026-09-01 16:08:18"
+    }
+   ],
+   "stale_historical_reviews": [],
+   "adjudication_record": {
+    "verdict": "valid",
+    "score": 4.0,
+    "adjudicator": "admin",
+    "note": "",
+    "kind": "adjudicated_human_reference",
+    "at": "2026-09-02 00:48:27"
+   },
+   "original_instructor": {
+    "score": 4.0,
+    "derived_verdict": "valid",
+    "ground_truth_source": "original_instructor_grade"
+   },
+   "baseline_model_output": {
+    "verdict": "valid",
+    "score": 4.0,
+    "decision": "AUTO",
+    "output_source": "frozen_seen46_run:dev__all__qwen3-vl-8b-instruct__72e19378d1"
+   }
+  },
+  {
+   "case_id": "e003_q1_r3",
+   "writer": "e003",
+   "question": "q1",
+   "final_verdict": "valid",
+   "reference_source": "two_reviewer_consensus",
+   "independent_blind_reviews": [
+    {
+     "reviewer": "Erik",
+     "verdict": "valid",
+     "confidence": "medium",
+     "issue": "none",
+     "note": "נימוק נכון אבל תשובה לא נכונה",
+     "revision": 1,
+     "updated_at": "2026-08-30 23:56:19"
+    },
+    {
+     "reviewer": "Or Vaisman",
+     "verdict": "valid",
+     "confidence": "medium",
+     "issue": "none",
+     "note": "",
+     "revision": 1,
+     "updated_at": "2026-09-01 16:02:27"
+    }
+   ],
+   "stale_historical_reviews": [],
+   "adjudication_record": null,
+   "original_instructor": {
+    "score": 0.0,
+    "derived_verdict": null,
+    "ground_truth_source": "original_instructor_grade"
+   },
+   "baseline_model_output": {
+    "verdict": "valid",
+    "score": 4.0,
+    "decision": "AUTO",
+    "output_source": "frozen_seen46_run:dev__all__qwen3-vl-8b-instruct__72e19378d1"
+   }
+  },
+  {
+   "case_id": "e003_q1_r4",
+   "writer": "e003",
+   "question": "q1",
+   "final_verdict": "valid",
+   "reference_source": "two_reviewer_consensus",
+   "independent_blind_reviews": [
+    {
+     "reviewer": "Erik",
+     "verdict": "valid",
+     "confidence": "high",
+     "issue": "none",
+     "note": "",
+     "revision": 1,
+     "updated_at": "2026-08-31 00:15:08"
+    },
+    {
+     "reviewer": "Or Vaisman",
+     "verdict": "valid",
+     "confidence": "high",
+     "issue": "none",
+     "note": "",
+     "revision": 1,
+     "updated_at": "2026-09-01 16:09:31"
+    }
+   ],
+   "stale_historical_reviews": [],
+   "adjudication_record": null,
+   "original_instructor": {
+    "score": 4.0,
+    "derived_verdict": "valid",
+    "ground_truth_source": "original_instructor_grade"
+   },
+   "baseline_model_output": {
+    "verdict": "valid",
+    "score": 4.0,
+    "decision": "AUTO",
+    "output_source": "frozen_seen46_run:dev__all__qwen3-vl-8b-instruct__72e19378d1"
+   }
+  },
+  {
+   "case_id": "e003_q1_r5",
+   "writer": "e003",
+   "question": "q1",
+   "final_verdict": "valid",
+   "reference_source": "two_reviewer_consensus",
+   "independent_blind_reviews": [
+    {
+     "reviewer": "Erik",
+     "verdict": "valid",
+     "confidence": "medium",
+     "issue": "none",
+     "note": "",
+     "revision": 1,
+     "updated_at": "2026-08-30 23:46:39"
+    },
+    {
+     "reviewer": "Or Vaisman",
+     "verdict": "valid",
+     "confidence": "high",
+     "issue": "none",
+     "note": "",
+     "revision": 1,
+     "updated_at": "2026-09-01 00:31:24"
+    }
+   ],
+   "stale_historical_reviews": [],
+   "adjudication_record": null,
+   "original_instructor": {
+    "score": 4.0,
+    "derived_verdict": "valid",
+    "ground_truth_source": "original_instructor_grade"
+   },
+   "baseline_model_output": {
+    "verdict": "valid",
+    "score": 4.0,
+    "decision": "AUTO",
+    "output_source": "frozen_seen46_run:dev__all__qwen3-vl-8b-instruct__72e19378d1"
+   }
+  },
+  {
+   "case_id": "e003_q1_r6",
+   "writer": "e003",
+   "question": "q1",
+   "final_verdict": "valid",
+   "reference_source": "adjudicated_human_reference",
+   "independent_blind_reviews": [
+    {
+     "reviewer": "Erik",
+     "verdict": "valid",
+     "confidence": "high",
+     "issue": "none",
+     "note": "",
+     "revision": 1,
+     "updated_at": "2026-08-30 23:27:08"
+    },
+    {
+     "reviewer": "Or Vaisman",
+     "verdict": "invalid",
+     "confidence": "high",
+     "issue": "none",
+     "note": "",
+     "revision": 1,
+     "updated_at": "2026-09-01 00:24:48"
+    }
+   ],
+   "stale_historical_reviews": [],
+   "adjudication_record": {
+    "verdict": "valid",
+    "score": 4.0,
+    "adjudicator": "admin",
+    "note": "",
+    "kind": "adjudicated_human_reference",
+    "at": "2026-09-02 00:48:52"
+   },
+   "original_instructor": {
+    "score": 4.0,
+    "derived_verdict": "valid",
+    "ground_truth_source": "original_instructor_grade"
+   },
+   "baseline_model_output": {
+    "verdict": "partially_valid",
+    "score": 2.0,
+    "decision": "AUTO",
+    "output_source": "frozen_seen46_run:dev__all__qwen3-vl-8b-instruct__72e19378d1"
+   }
+  },
+  {
+   "case_id": "e003_q1_r7",
+   "writer": "e003",
+   "question": "q1",
+   "final_verdict": "valid",
+   "reference_source": "adjudicated_human_reference",
+   "independent_blind_reviews": [
+    {
+     "reviewer": "Erik",
+     "verdict": "valid",
+     "confidence": "medium",
+     "issue": "none",
+     "note": "",
+     "revision": 1,
+     "updated_at": "2026-08-31 00:08:52"
+    },
+    {
+     "reviewer": "Or Vaisman",
+     "verdict": "partially_valid",
+     "confidence": "high",
+     "issue": "none",
+     "note": "",
+     "revision": 1,
+     "updated_at": "2026-09-01 16:07:39"
+    }
+   ],
+   "stale_historical_reviews": [],
+   "adjudication_record": {
+    "verdict": "valid",
+    "score": 4.0,
+    "adjudicator": "admin",
+    "note": "",
+    "kind": "adjudicated_human_reference",
+    "at": "2026-09-02 00:49:05"
+   },
+   "original_instructor": {
+    "score": 4.0,
+    "derived_verdict": "valid",
+    "ground_truth_source": "original_instructor_grade"
+   },
+   "baseline_model_output": {
+    "verdict": "invalid",
+    "score": 0.0,
+    "decision": "AUTO",
+    "output_source": "frozen_seen46_run:dev__all__qwen3-vl-8b-instruct__72e19378d1"
+   }
+  },
+  {
+   "case_id": "e003_q1_r8",
+   "writer": "e003",
+   "question": "q1",
+   "final_verdict": "partially_valid",
+   "reference_source": "two_reviewer_consensus",
+   "independent_blind_reviews": [
+    {
+     "reviewer": "Erik",
+     "verdict": "partially_valid",
+     "confidence": "medium",
+     "issue": "none",
+     "note": "מופיע: הגדלת קונטרסט (בהקיפין)\nלא מופיע: מתיחת ההיסטוגרמה פי 2 בציר X",
+     "revision": 1,
+     "updated_at": "2026-08-31 00:10:26"
+    },
+    {
+     "reviewer": "Or Vaisman",
+     "verdict": "partially_valid",
+     "confidence": "high",
+     "issue": "none",
+     "note": "",
+     "revision": 1,
+     "updated_at": "2026-09-01 16:07:54"
+    }
+   ],
+   "stale_historical_reviews": [],
+   "adjudication_record": null,
+   "original_instructor": {
+    "score": 2.0,
+    "derived_verdict": "partially_valid",
+    "ground_truth_source": "original_instructor_grade"
+   },
+   "baseline_model_output": {
+    "verdict": "partially_valid",
+    "score": 2.0,
+    "decision": "AUTO",
+    "output_source": "frozen_seen46_run:dev__all__qwen3-vl-8b-instruct__72e19378d1"
+   }
+  },
+  {
+   "case_id": "e003_q2_r1",
+   "writer": "e003",
+   "question": "q2",
+   "final_verdict": "partially_valid",
+   "reference_source": "two_reviewer_consensus",
+   "independent_blind_reviews": [
+    {
+     "reviewer": "Erik",
+     "verdict": "partially_valid",
+     "confidence": "low",
+     "issue": "none",
+     "note": "כעיקרון חסרה התייחסות לכך ששאר הפיקסלים הם 0, אך בבדיקה המקורית נתנו ניקוד מלא. כנראה שזה פרט לא מהותי?",
+     "revision": 1,
+     "updated_at": "2026-08-28 15:27:42"
+    },
+    {
+     "reviewer": "Or Vaisman",
+     "verdict": "partially_valid",
+     "confidence": "high",
+     "issue": "none",
+     "note": "",
+     "revision": 1,
+     "updated_at": "2026-09-01 00:22:05"
+    }
+   ],
+   "stale_historical_reviews": [],
+   "adjudication_record": null,
+   "original_instructor": {
+    "score": 4.0,
+    "derived_verdict": "valid",
+    "ground_truth_source": "original_instructor_grade"
+   },
+   "baseline_model_output": {
+    "verdict": "valid",
+    "score": 4.0,
+    "decision": "AUTO",
+    "output_source": "frozen_seen46_run:dev__all__qwen3-vl-8b-instruct__72e19378d1"
+   }
+  },
+  {
+   "case_id": "e003_q2_r2",
+   "writer": "e003",
+   "question": "q2",
+   "final_verdict": "valid",
+   "reference_source": "two_reviewer_consensus",
+   "independent_blind_reviews": [
+    {
+     "reviewer": "Erik",
+     "verdict": "valid",
+     "confidence": "high",
+     "issue": "none",
+     "note": "",
+     "revision": 1,
+     "updated_at": "2026-08-30 23:51:42"
+    },
+    {
+     "reviewer": "Or Vaisman",
+     "verdict": "valid",
+     "confidence": "high",
+     "issue": "none",
+     "note": "",
+     "revision": 1,
+     "updated_at": "2026-09-01 00:33:30"
+    }
+   ],
+   "stale_historical_reviews": [],
+   "adjudication_record": null,
+   "original_instructor": {
+    "score": 4.0,
+    "derived_verdict": "valid",
+    "ground_truth_source": "original_instructor_grade"
+   },
+   "baseline_model_output": {
+    "verdict": "valid",
+    "score": 4.0,
+    "decision": "AUTO",
+    "output_source": "frozen_seen46_run:dev__all__qwen3-vl-8b-instruct__72e19378d1"
+   }
+  },
+  {
+   "case_id": "e003_q2_r3",
+   "writer": "e003",
+   "question": "q2",
+   "final_verdict": "valid",
+   "reference_source": "adjudicated_human_reference",
+   "independent_blind_reviews": [
+    {
+     "reviewer": "Erik",
+     "verdict": "valid",
+     "confidence": "high",
+     "issue": "none",
+     "note": "בתשובה המקורית הסטודנט טעה אבל הנימוק נכון\n",
+     "revision": 1,
+     "updated_at": "2026-08-30 23:54:49"
+    },
+    {
+     "reviewer": "Or Vaisman",
+     "verdict": "partially_valid",
+     "confidence": "medium",
+     "issue": "none",
+     "note": "",
+     "revision": 1,
+     "updated_at": "2026-09-01 15:52:32"
+    }
+   ],
+   "stale_historical_reviews": [],
+   "adjudication_record": {
+    "verdict": "valid",
+    "score": 4.0,
+    "adjudicator": "admin",
+    "note": "",
+    "kind": "adjudicated_human_reference",
+    "at": "2026-09-02 00:49:26"
+   },
+   "original_instructor": {
+    "score": 0.0,
+    "derived_verdict": null,
+    "ground_truth_source": "original_instructor_grade"
+   },
+   "baseline_model_output": {
+    "verdict": "valid",
+    "score": 4.0,
+    "decision": "AUTO",
+    "output_source": "frozen_seen46_run:dev__all__qwen3-vl-8b-instruct__72e19378d1"
+   }
+  },
+  {
+   "case_id": "e003_q2_r4",
+   "writer": "e003",
+   "question": "q2",
+   "final_verdict": "invalid",
+   "reference_source": "adjudicated_human_reference",
+   "independent_blind_reviews": [
+    {
+     "reviewer": "Erik",
+     "verdict": "invalid",
+     "confidence": "medium",
+     "issue": "none",
+     "note": "אין קשר בין התשובה של הסטודנט לתשובה הרשמית",
+     "revision": 1,
+     "updated_at": "2026-08-30 23:45:45"
+    },
+    {
+     "reviewer": "Or Vaisman",
+     "verdict": "partially_valid",
+     "confidence": "high",
+     "issue": "none",
+     "note": "",
+     "revision": 1,
+     "updated_at": "2026-09-01 00:31:03"
+    }
+   ],
+   "stale_historical_reviews": [],
+   "adjudication_record": {
+    "verdict": "invalid",
+    "score": 0.0,
+    "adjudicator": "admin",
+    "note": "",
+    "kind": "adjudicated_human_reference",
+    "at": "2026-09-02 00:49:51"
+   },
+   "original_instructor": {
+    "score": 0.0,
+    "derived_verdict": null,
+    "ground_truth_source": "original_instructor_grade"
+   },
+   "baseline_model_output": {
+    "verdict": "invalid",
+    "score": 0.0,
+    "decision": "AUTO",
+    "output_source": "frozen_seen46_run:dev__all__qwen3-vl-8b-instruct__72e19378d1"
+   }
+  },
+  {
+   "case_id": "e003_q2_r5",
+   "writer": "e003",
+   "question": "q2",
+   "final_verdict": "valid",
+   "reference_source": "adjudicated_human_reference",
+   "independent_blind_reviews": [
+    {
+     "reviewer": "Erik",
+     "verdict": "partially_valid",
+     "confidence": "low",
+     "issue": "genuinely_ambiguous",
+     "note": "התנסחות לא נכונה, אבל יש מצב שהסטודנט הבין את העיקרון...",
+     "revision": 1,
+     "updated_at": "2026-08-30 23:34:28"
+    },
+    {
+     "reviewer": "Or Vaisman",
+     "verdict": "valid",
+     "confidence": "high",
+     "issue": "none",
+     "note": "",
+     "revision": 1,
+     "updated_at": "2026-09-01 00:26:23"
+    }
+   ],
+   "stale_historical_reviews": [],
+   "adjudication_record": {
+    "verdict": "valid",
+    "score": 4.0,
+    "adjudicator": "admin",
+    "note": "",
+    "kind": "adjudicated_human_reference",
+    "at": "2026-09-02 00:50:04"
+   },
+   "original_instructor": {
+    "score": 0.0,
+    "derived_verdict": null,
+    "ground_truth_source": "original_instructor_grade"
+   },
+   "baseline_model_output": {
+    "verdict": "valid",
+    "score": 4.0,
+    "decision": "AUTO",
+    "output_source": "frozen_seen46_run:dev__all__qwen3-vl-8b-instruct__72e19378d1"
+   }
+  },
+  {
+   "case_id": "e003_q2_r6",
+   "writer": "e003",
+   "question": "q2",
+   "final_verdict": "invalid",
+   "reference_source": "two_reviewer_consensus",
+   "independent_blind_reviews": [
+    {
+     "reviewer": "Erik",
+     "verdict": "invalid",
+     "confidence": "medium",
+     "issue": "none",
+     "note": "",
+     "revision": 1,
+     "updated_at": "2026-08-31 00:19:30"
+    },
+    {
+     "reviewer": "Or Vaisman",
+     "verdict": "invalid",
+     "confidence": "medium",
+     "issue": "none",
+     "note": "",
+     "revision": 1,
+     "updated_at": "2026-09-01 16:10:33"
+    }
+   ],
+   "stale_historical_reviews": [],
+   "adjudication_record": null,
+   "original_instructor": {
+    "score": 0.0,
+    "derived_verdict": null,
+    "ground_truth_source": "original_instructor_grade"
+   },
+   "baseline_model_output": {
+    "verdict": "partially_valid",
+    "score": 2.0,
+    "decision": "AUTO",
+    "output_source": "frozen_seen46_run:dev__all__qwen3-vl-8b-instruct__72e19378d1"
+   }
+  },
+  {
+   "case_id": "e003_q2_r7",
+   "writer": "e003",
+   "question": "q2",
+   "final_verdict": "valid",
+   "reference_source": "two_reviewer_consensus",
+   "independent_blind_reviews": [
+    {
+     "reviewer": "Erik",
+     "verdict": "valid",
+     "confidence": "medium",
+     "issue": "none",
+     "note": "\n ",
+     "revision": 1,
+     "updated_at": "2026-08-31 00:07:44"
+    },
+    {
+     "reviewer": "Or Vaisman",
+     "verdict": "valid",
+     "confidence": "medium",
+     "issue": "none",
+     "note": "",
+     "revision": 1,
+     "updated_at": "2026-09-01 16:07:27"
+    }
+   ],
+   "stale_historical_reviews": [],
+   "adjudication_record": null,
+   "original_instructor": {
+    "score": 4.0,
+    "derived_verdict": "valid",
+    "ground_truth_source": "original_instructor_grade"
+   },
+   "baseline_model_output": {
+    "verdict": "valid",
+    "score": 4.0,
+    "decision": "AUTO",
+    "output_source": "frozen_seen46_run:dev__all__qwen3-vl-8b-instruct__72e19378d1"
+   }
+  },
+  {
+   "case_id": "e003_q2_r8",
+   "writer": "e003",
+   "question": "q2",
+   "final_verdict": "valid",
+   "reference_source": "adjudicated_human_reference",
+   "independent_blind_reviews": [
+    {
+     "reviewer": "Erik",
+     "verdict": "valid",
+     "confidence": "medium",
+     "issue": "none",
+     "note": "",
+     "revision": 1,
+     "updated_at": "2026-08-31 00:20:37"
+    },
+    {
+     "reviewer": "Or Vaisman",
+     "verdict": "invalid",
+     "confidence": "medium",
+     "issue": "none",
+     "note": "",
+     "revision": 1,
+     "updated_at": "2026-09-01 16:11:36"
+    }
+   ],
+   "stale_historical_reviews": [],
+   "adjudication_record": {
+    "verdict": "valid",
+    "score": 4.0,
+    "adjudicator": "admin",
+    "note": "",
+    "kind": "adjudicated_human_reference",
+    "at": "2026-09-02 00:50:15"
+   },
+   "original_instructor": {
+    "score": 4.0,
+    "derived_verdict": "valid",
+    "ground_truth_source": "original_instructor_grade"
+   },
+   "baseline_model_output": {
+    "verdict": "valid",
+    "score": 4.0,
+    "decision": "AUTO",
+    "output_source": "frozen_seen46_run:dev__all__qwen3-vl-8b-instruct__72e19378d1"
+   }
+  },
+  {
+   "case_id": "e004_q1_r1",
+   "writer": "e004",
+   "question": "q1",
+   "final_verdict": "valid",
+   "reference_source": "adjudicated_human_reference",
+   "independent_blind_reviews": [
+    {
+     "reviewer": "Erik",
+     "verdict": "valid",
+     "confidence": "medium",
+     "issue": "none",
+     "note": "",
+     "revision": 1,
+     "updated_at": "2026-08-30 23:48:09"
+    },
+    {
+     "reviewer": "Or Vaisman",
+     "verdict": "invalid",
+     "confidence": "high",
+     "issue": "none",
+     "note": "",
+     "revision": 1,
+     "updated_at": "2026-09-01 00:31:43"
+    }
+   ],
+   "stale_historical_reviews": [],
+   "adjudication_record": {
+    "verdict": "valid",
+    "score": 4.0,
+    "adjudicator": "admin",
+    "note": "",
+    "kind": "adjudicated_human_reference",
+    "at": "2026-09-02 00:50:25"
+   },
+   "original_instructor": {
+    "score": 4.0,
+    "derived_verdict": "valid",
+    "ground_truth_source": "original_instructor_grade"
+   },
+   "baseline_model_output": {
+    "verdict": "invalid",
+    "score": 0.0,
+    "decision": "AUTO",
+    "output_source": "frozen_seen46_run:calibration__all__qwen3-vl-8b-instruct__e2a3cfc925"
+   }
+  },
+  {
+   "case_id": "e004_q1_r2",
+   "writer": "e004",
+   "question": "q1",
+   "final_verdict": "valid",
+   "reference_source": "two_reviewer_consensus",
+   "independent_blind_reviews": [
+    {
+     "reviewer": "Erik",
+     "verdict": "valid",
+     "confidence": "high",
+     "issue": "none",
+     "note": "",
+     "revision": 1,
+     "updated_at": "2026-08-31 00:12:01"
+    },
+    {
+     "reviewer": "Or Vaisman",
+     "verdict": "valid",
+     "confidence": "high",
+     "issue": "none",
+     "note": "",
+     "revision": 1,
+     "updated_at": "2026-09-01 16:08:35"
+    }
+   ],
+   "stale_historical_reviews": [],
+   "adjudication_record": null,
+   "original_instructor": {
+    "score": 4.0,
+    "derived_verdict": "valid",
+    "ground_truth_source": "original_instructor_grade"
+   },
+   "baseline_model_output": {
+    "verdict": "valid",
+    "score": 4.0,
+    "decision": "AUTO",
+    "output_source": "frozen_seen46_run:calibration__all__qwen3-vl-8b-instruct__e2a3cfc925"
+   }
+  },
+  {
+   "case_id": "e004_q1_r3",
+   "writer": "e004",
+   "question": "q1",
+   "final_verdict": "invalid",
+   "reference_source": "two_reviewer_consensus",
+   "independent_blind_reviews": [
+    {
+     "reviewer": "Erik",
+     "verdict": "invalid",
+     "confidence": "low",
+     "issue": "genuinely_ambiguous",
+     "note": "חסרה ההתייחסות לאפקט על תדרים גבוהים לעומת נמוכים. בכל זאת, בבדיקה המקורית קיבלו ניקוד חלקי...",
+     "revision": 1,
+     "updated_at": "2026-08-28 16:43:33"
+    },
+    {
+     "reviewer": "Or Vaisman",
+     "verdict": "invalid",
+     "confidence": "medium",
+     "issue": "none",
+     "note": "",
+     "revision": 1,
+     "updated_at": "2026-09-01 00:23:06"
+    }
+   ],
+   "stale_historical_reviews": [],
+   "adjudication_record": null,
+   "original_instructor": {
+    "score": 2.0,
+    "derived_verdict": "partially_valid",
+    "ground_truth_source": "original_instructor_grade"
+   },
+   "baseline_model_output": {
+    "verdict": "partially_valid",
+    "score": 2.0,
+    "decision": "AUTO",
+    "output_source": "frozen_seen46_run:calibration__all__qwen3-vl-8b-instruct__e2a3cfc925"
+   }
+  },
+  {
+   "case_id": "e004_q1_r4",
+   "writer": "e004",
+   "question": "q1",
+   "final_verdict": "valid",
+   "reference_source": "two_reviewer_consensus",
+   "independent_blind_reviews": [
+    {
+     "reviewer": "Erik",
+     "verdict": "valid",
+     "confidence": "high",
+     "issue": "none",
+     "note": "",
+     "revision": 1,
+     "updated_at": "2026-08-31 00:21:35"
+    },
+    {
+     "reviewer": "Or Vaisman",
+     "verdict": "valid",
+     "confidence": "high",
+     "issue": "none",
+     "note": "",
+     "revision": 1,
+     "updated_at": "2026-09-01 16:12:13"
+    }
+   ],
+   "stale_historical_reviews": [],
+   "adjudication_record": null,
+   "original_instructor": {
+    "score": 4.0,
+    "derived_verdict": "valid",
+    "ground_truth_source": "original_instructor_grade"
+   },
+   "baseline_model_output": {
+    "verdict": "valid",
+    "score": 4.0,
+    "decision": "AUTO",
+    "output_source": "frozen_seen46_run:calibration__all__qwen3-vl-8b-instruct__e2a3cfc925"
+   }
+  },
+  {
+   "case_id": "e004_q1_r5",
+   "writer": "e004",
+   "question": "q1",
+   "final_verdict": "partially_valid",
+   "reference_source": "adjudicated_human_reference",
+   "independent_blind_reviews": [
+    {
+     "reviewer": "Erik",
+     "verdict": "valid",
+     "confidence": "medium",
+     "issue": "rubric_official_solution",
+     "note": "",
+     "revision": 1,
+     "updated_at": "2026-08-28 15:22:49"
+    },
+    {
+     "reviewer": "Or Vaisman",
+     "verdict": "partially_valid",
+     "confidence": "medium",
+     "issue": "none",
+     "note": "",
+     "revision": 1,
+     "updated_at": "2026-09-01 00:21:38"
+    }
+   ],
+   "stale_historical_reviews": [],
+   "adjudication_record": {
+    "verdict": "partially_valid",
+    "score": 2.0,
+    "adjudicator": "admin",
+    "note": "",
+    "kind": "adjudicated_human_reference",
+    "at": "2026-09-02 00:50:46"
+   },
+   "original_instructor": {
+    "score": 2.0,
+    "derived_verdict": "partially_valid",
+    "ground_truth_source": "original_instructor_grade"
+   },
+   "baseline_model_output": {
+    "verdict": "partially_valid",
+    "score": 2.0,
+    "decision": "AUTO",
+    "output_source": "frozen_seen46_run:calibration__all__qwen3-vl-8b-instruct__e2a3cfc925"
+   }
+  },
+  {
+   "case_id": "e004_q1_r6",
+   "writer": "e004",
+   "question": "q1",
+   "final_verdict": "partially_valid",
+   "reference_source": "adjudicated_human_reference",
+   "independent_blind_reviews": [
+    {
+     "reviewer": "Erik",
+     "verdict": "valid",
+     "confidence": "medium",
+     "issue": "none",
+     "note": "",
+     "revision": 1,
+     "updated_at": "2026-08-31 00:15:59"
+    },
+    {
+     "reviewer": "Or Vaisman",
+     "verdict": "invalid",
+     "confidence": "high",
+     "issue": "none",
+     "note": "",
+     "revision": 1,
+     "updated_at": "2026-09-01 16:09:46"
+    }
+   ],
+   "stale_historical_reviews": [],
+   "adjudication_record": {
+    "verdict": "partially_valid",
+    "score": 2.0,
+    "adjudicator": "admin",
+    "note": "",
+    "kind": "adjudicated_human_reference",
+    "at": "2026-09-02 00:51:28"
+   },
+   "original_instructor": {
+    "score": 2.0,
+    "derived_verdict": "partially_valid",
+    "ground_truth_source": "original_instructor_grade"
+   },
+   "baseline_model_output": {
+    "verdict": "invalid",
+    "score": 0.0,
+    "decision": "AUTO",
+    "output_source": "frozen_seen46_run:calibration__all__qwen3-vl-8b-instruct__e2a3cfc925"
+   }
+  },
+  {
+   "case_id": "e004_q1_r8",
+   "writer": "e004",
+   "question": "q1",
+   "final_verdict": "partially_valid",
+   "reference_source": "adjudicated_human_reference",
+   "independent_blind_reviews": [
+    {
+     "reviewer": "Erik",
+     "verdict": "partially_valid",
+     "confidence": "medium",
+     "issue": "none",
+     "note": "יש התייחסות לקונטרסט, אין התייחסות לתמתיחת ההיסטוגרמה פי 2 בציר X",
+     "revision": 1,
+     "updated_at": "2026-08-30 23:39:27"
+    },
+    {
+     "reviewer": "Or Vaisman",
+     "verdict": "invalid",
+     "confidence": "high",
+     "issue": "none",
+     "note": "",
+     "revision": 1,
+     "updated_at": "2026-09-01 00:28:52"
+    }
+   ],
+   "stale_historical_reviews": [],
+   "adjudication_record": {
+    "verdict": "partially_valid",
+    "score": 2.0,
+    "adjudicator": "admin",
+    "note": "",
+    "kind": "adjudicated_human_reference",
+    "at": "2026-09-02 00:51:40"
+   },
+   "original_instructor": {
+    "score": 2.0,
+    "derived_verdict": "partially_valid",
+    "ground_truth_source": "original_instructor_grade"
+   },
+   "baseline_model_output": {
+    "verdict": "valid",
+    "score": 4.0,
+    "decision": "AUTO",
+    "output_source": "frozen_seen46_run:calibration__all__qwen3-vl-8b-instruct__e2a3cfc925"
+   }
+  },
+  {
+   "case_id": "e004_q2_r1",
+   "writer": "e004",
+   "question": "q2",
+   "final_verdict": "valid",
+   "reference_source": "two_reviewer_consensus",
+   "independent_blind_reviews": [
+    {
+     "reviewer": "Erik",
+     "verdict": "valid",
+     "confidence": "high",
+     "issue": "none",
+     "note": "",
+     "revision": 1,
+     "updated_at": "2026-08-30 23:49:15"
+    },
+    {
+     "reviewer": "Or Vaisman",
+     "verdict": "valid",
+     "confidence": "high",
+     "issue": "none",
+     "note": "היי",
+     "revision": 1,
+     "updated_at": "2026-09-01 00:32:04"
+    }
+   ],
+   "stale_historical_reviews": [],
+   "adjudication_record": null,
+   "original_instructor": {
+    "score": 4.0,
+    "derived_verdict": "valid",
+    "ground_truth_source": "original_instructor_grade"
+   },
+   "baseline_model_output": {
+    "verdict": "valid",
+    "score": 4.0,
+    "decision": "AUTO",
+    "output_source": "frozen_seen46_run:calibration__all__qwen3-vl-8b-instruct__e2a3cfc925"
+   }
+  },
+  {
+   "case_id": "e004_q2_r2",
+   "writer": "e004",
+   "question": "q2",
+   "final_verdict": "valid",
+   "reference_source": "two_reviewer_consensus",
+   "independent_blind_reviews": [
+    {
+     "reviewer": "Erik",
+     "verdict": "valid",
+     "confidence": "high",
+     "issue": "none",
+     "note": "",
+     "revision": 1,
+     "updated_at": "2026-08-30 23:57:38"
+    },
+    {
+     "reviewer": "Or Vaisman",
+     "verdict": "valid",
+     "confidence": "high",
+     "issue": "none",
+     "note": "",
+     "revision": 1,
+     "updated_at": "2026-09-01 16:02:52"
+    }
+   ],
+   "stale_historical_reviews": [],
+   "adjudication_record": {
+    "verdict": "valid",
+    "score": 4.0,
+    "adjudicator": "admin",
+    "note": "",
+    "kind": "adjudicated_human_reference",
+    "at": "2026-09-02 00:51:50"
+   },
+   "original_instructor": {
+    "score": 4.0,
+    "derived_verdict": "valid",
+    "ground_truth_source": "original_instructor_grade"
+   },
+   "baseline_model_output": {
+    "verdict": "valid",
+    "score": 4.0,
+    "decision": "AUTO",
+    "output_source": "frozen_seen46_run:calibration__all__qwen3-vl-8b-instruct__e2a3cfc925"
+   },
+   "redundant_confirming_adjudication": true
+  },
+  {
+   "case_id": "e004_q2_r3",
+   "writer": "e004",
+   "question": "q2",
+   "final_verdict": "valid",
+   "reference_source": "adjudicated_human_reference",
+   "independent_blind_reviews": [
+    {
+     "reviewer": "Erik",
+     "verdict": "valid",
+     "confidence": "high",
+     "issue": "none",
+     "note": "",
+     "revision": 1,
+     "updated_at": "2026-08-31 00:19:59"
+    },
+    {
+     "reviewer": "Or Vaisman",
+     "verdict": "invalid",
+     "confidence": "medium",
+     "issue": "transcription_evidence",
+     "note": "",
+     "revision": 1,
+     "updated_at": "2026-09-01 16:11:07"
+    }
+   ],
+   "stale_historical_reviews": [],
+   "adjudication_record": {
+    "verdict": "valid",
+    "score": 4.0,
+    "adjudicator": "admin",
+    "note": "",
+    "kind": "adjudicated_human_reference",
+    "at": "2026-09-02 00:52:03"
+   },
+   "original_instructor": {
+    "score": 4.0,
+    "derived_verdict": "valid",
+    "ground_truth_source": "original_instructor_grade"
+   },
+   "baseline_model_output": {
+    "verdict": "valid",
+    "score": 4.0,
+    "decision": "AUTO",
+    "output_source": "frozen_seen46_run:calibration__all__qwen3-vl-8b-instruct__e2a3cfc925"
+   }
+  },
+  {
+   "case_id": "e004_q2_r4",
+   "writer": "e004",
+   "question": "q2",
+   "final_verdict": "invalid",
+   "reference_source": "two_reviewer_consensus",
+   "independent_blind_reviews": [
+    {
+     "reviewer": "Erik",
+     "verdict": "invalid",
+     "confidence": "medium",
+     "issue": "genuinely_ambiguous",
+     "note": "",
+     "revision": 1,
+     "updated_at": "2026-08-30 23:31:56"
+    },
+    {
+     "reviewer": "Or Vaisman",
+     "verdict": "invalid",
+     "confidence": "medium",
+     "issue": "none",
+     "note": "",
+     "revision": 1,
+     "updated_at": "2026-09-01 00:25:59"
+    }
+   ],
+   "stale_historical_reviews": [],
+   "adjudication_record": null,
+   "original_instructor": {
+    "score": 0.0,
+    "derived_verdict": null,
+    "ground_truth_source": "original_instructor_grade"
+   },
+   "baseline_model_output": {
+    "verdict": "partially_valid",
+    "score": 2.0,
+    "decision": "AUTO",
+    "output_source": "frozen_seen46_run:calibration__all__qwen3-vl-8b-instruct__e2a3cfc925"
+   }
+  },
+  {
+   "case_id": "e004_q2_r5",
+   "writer": "e004",
+   "question": "q2",
+   "final_verdict": "invalid",
+   "reference_source": "two_reviewer_consensus",
+   "independent_blind_reviews": [
+    {
+     "reviewer": "Erik",
+     "verdict": "invalid",
+     "confidence": "medium",
+     "issue": "none",
+     "note": "",
+     "revision": 1,
+     "updated_at": "2026-08-30 23:50:51"
+    },
+    {
+     "reviewer": "Or Vaisman",
+     "verdict": "invalid",
+     "confidence": "medium",
+     "issue": "none",
+     "note": "",
+     "revision": 1,
+     "updated_at": "2026-09-01 00:33:15"
+    }
+   ],
+   "stale_historical_reviews": [],
+   "adjudication_record": null,
+   "original_instructor": {
+    "score": 0.0,
+    "derived_verdict": null,
+    "ground_truth_source": "original_instructor_grade"
+   },
+   "baseline_model_output": {
+    "verdict": "partially_valid",
+    "score": 2.0,
+    "decision": "AUTO",
+    "output_source": "frozen_seen46_run:calibration__all__qwen3-vl-8b-instruct__e2a3cfc925"
+   }
+  },
+  {
+   "case_id": "e004_q2_r6",
+   "writer": "e004",
+   "question": "q2",
+   "final_verdict": "valid",
+   "reference_source": "owner_adjudicated_after_source_repair",
+   "independent_blind_reviews": [],
+   "stale_historical_reviews": [
+    {
+     "reviewer": "Erik",
+     "verdict": "invalid",
+     "confidence": "high",
+     "issue": "none",
+     "note": "הסטודנט החליף בין הפתרונות של שתי השאלות, מבחינת המודל שלנו הפתרון לא נכון",
+     "revision": 1,
+     "updated_at": "2026-08-30 23:18:45"
+    },
+    {
+     "reviewer": "Or Vaisman",
+     "verdict": "invalid",
+     "confidence": "high",
+     "issue": "none",
+     "note": "",
+     "revision": 1,
+     "updated_at": "2026-09-01 00:23:45"
+    }
+   ],
+   "adjudication_record": {
+    "verdict": "valid",
+    "score": 4.0,
+    "adjudicator": "admin",
+    "note": "",
+    "kind": "owner_adjudicated_after_source_repair",
+    "at": "2026-09-02 00:40:35"
+   },
+   "original_instructor": {
+    "score": 4.0,
+    "derived_verdict": "valid",
+    "ground_truth_source": "original_instructor_grade"
+   },
+   "baseline_model_output": {
+    "verdict": "valid",
+    "score": 4.0,
+    "decision": "AUTO",
+    "output_source": "corrected_rerun_2026-09-02"
+   },
+   "corrected_provenance": {
+    "dataset_revision": "confirmed_row_transposition (owner-confirmed 2026-09-01)",
+    "superseded_model_output": "registered invalid_due_to_confirmed_source_transposition (STALE_MODEL_OUTPUTS_2026-09-01.json), preserved",
+    "corrected_model_output": "CORRECTED_RERUN_2026-09-02.jsonl"
+   }
+  },
+  {
+   "case_id": "e004_q2_r8",
+   "writer": "e004",
+   "question": "q2",
+   "final_verdict": "valid",
+   "reference_source": "owner_adjudicated_after_source_repair",
+   "independent_blind_reviews": [],
+   "stale_historical_reviews": [
+    {
+     "reviewer": "Erik",
+     "verdict": "invalid",
+     "confidence": "high",
+     "issue": "none",
+     "note": "הסטודנא החליף בין השאלות",
+     "revision": 1,
+     "updated_at": "2026-08-30 23:43:40"
+    },
+    {
+     "reviewer": "Or Vaisman",
+     "verdict": "invalid",
+     "confidence": "medium",
+     "issue": "none",
+     "note": "",
+     "revision": 1,
+     "updated_at": "2026-09-01 00:30:44"
+    }
+   ],
+   "adjudication_record": {
+    "verdict": "valid",
+    "score": 4.0,
+    "adjudicator": "admin",
+    "note": "",
+    "kind": "owner_adjudicated_after_source_repair",
+    "at": "2026-09-02 00:40:56"
+   },
+   "original_instructor": {
+    "score": 2.0,
+    "derived_verdict": "partially_valid",
+    "ground_truth_source": "original_instructor_grade"
+   },
+   "baseline_model_output": {
+    "verdict": "valid",
+    "score": 4.0,
+    "decision": "AUTO",
+    "output_source": "corrected_rerun_2026-09-02"
+   },
+   "corrected_provenance": {
+    "dataset_revision": "confirmed_row_transposition (owner-confirmed 2026-09-01)",
+    "superseded_model_output": "registered invalid_due_to_confirmed_source_transposition (STALE_MODEL_OUTPUTS_2026-09-01.json), preserved",
+    "corrected_model_output": "CORRECTED_RERUN_2026-09-02.jsonl"
+   }
+  },
+  {
+   "case_id": "e007_q1_r1",
+   "writer": "e007",
+   "question": "q1",
+   "final_verdict": "partially_valid",
+   "reference_source": "two_reviewer_consensus",
+   "independent_blind_reviews": [
+    {
+     "reviewer": "Erik",
+     "verdict": "partially_valid",
+     "confidence": "low",
+     "issue": "rubric_official_solution",
+     "note": "",
+     "revision": 1,
+     "updated_at": "2026-08-31 00:17:43"
+    },
+    {
+     "reviewer": "Or Vaisman",
+     "verdict": "partially_valid",
+     "confidence": "high",
+     "issue": "none",
+     "note": "",
+     "revision": 1,
+     "updated_at": "2026-09-01 16:10:07"
+    }
+   ],
+   "stale_historical_reviews": [],
+   "adjudication_record": null,
+   "original_instructor": {
+    "score": 4.0,
+    "derived_verdict": "valid",
+    "ground_truth_source": "original_instructor_grade"
+   },
+   "baseline_model_output": {
+    "verdict": "partially_valid",
+    "score": 2.0,
+    "decision": "AUTO",
+    "output_source": "frozen_seen46_run:dev__all__qwen3-vl-8b-instruct__72e19378d1"
+   }
+  }
+ ],
+ "class_distribution": {
+  "invalid": 5,
+  "partially_valid": 13,
+  "valid": 28
+ },
+ "invalid_class_cases": [
+  {
+   "case_id": "e003_q2_r4",
+   "reference_source": "adjudicated_human_reference"
+  },
+  {
+   "case_id": "e003_q2_r6",
+   "reference_source": "two_reviewer_consensus"
+  },
+  {
+   "case_id": "e004_q1_r3",
+   "reference_source": "two_reviewer_consensus"
+  },
+  {
+   "case_id": "e004_q2_r4",
+   "reference_source": "two_reviewer_consensus"
+  },
+  {
+   "case_id": "e004_q2_r5",
+   "reference_source": "two_reviewer_consensus"
+  }
+ ],
+ "by_source": {
+  "two_reviewer_consensus": 22,
+  "adjudicated_human_reference": 22,
+  "owner_adjudicated_after_source_repair": 2
+ },
+ "redundant_final_analysis": {
+  "case_id": "e004_q2_r2",
+  "situation": "both blind reviewers agreed 'valid'; a final (adjudicated, verdict 'valid') was ALSO recorded at 2026-09-02 00:51:50 — redundant",
+  "consensus_verdict": "valid",
+  "final_verdict_in_db": "valid",
+  "effective_reference_verdict": "valid",
+  "reference_source_used": "two_reviewer_consensus",
+  "reopen_effect": "provenance-only cleanup: the DB final row would be deleted; the reference verdict stays 'valid' from two-reviewer consensus; the source classification here is ALREADY two_reviewer_consensus, so no verdict, no source count, and no metric in any A/B/C/D block changes. Numeric change: none.",
+  "action_taken": "none - owner decides; never deleted automatically"
+ },
+ "reference_sha256": "ce78aed115633883dd94bd14035ddc3e3f38d02c2484bbd0a7f49c5dbc384306"
+}
