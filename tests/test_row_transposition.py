@@ -121,9 +121,10 @@ def test_stale_review_is_blinded_and_never_counted_as_consensus(tmp_path):
     assert len(d["stale_reviews"]) == 2
     assert all(s["reason"] == "stale_due_to_confirmed_source_mapping_change"
                for s in d["stale_reviews"])
-    # the reviewer's fresh look is blind to their own old decision
+    # the reviewer's look is blind to their own old decision — and the case is
+    # parked for the owner (decision 2026-09-02: reviewers are never re-asked)
     mine = a.get(f"/api/items/{iid}").json()["item"]["my_review"]
-    assert mine == {"stale": True, "message": mine["message"]}
+    assert mine == {"stale": True, "parked": True, "message": mine["message"]}
     assert "verdict" not in mine and "confidence" not in mine
     # comparisons run, with the parked case excluded and listed
     cmp_ = admin.get("/api/admin/compare?partial=1").json()

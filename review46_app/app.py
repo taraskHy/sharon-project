@@ -125,13 +125,15 @@ def _blind_item_view(request: Request, item_id: str, reviewer: str) -> dict | No
     mine = db.get_label(item_id, reviewer)
     if mine is not None and mine.get("evidence_stale"):
         # The evidence behind this case was CORRECTED after the reviewer's
-        # decision (owner-confirmed source repair). The fresh look must be
-        # blind to their own old decision too: only the fact of staleness and
-        # the revision (needed to save) are exposed — never the old verdict,
-        # confidence, issue or note.
-        payload["my_review"] = {"stale": True,
-                                "message": "the evidence for this case was corrected — "
-                                           "please review it fresh"}
+        # decision (owner-confirmed source repair). Owner decision 2026-09-02:
+        # reviewers are NOT asked to redo these — the owner records the
+        # repaired reference directly. Only the fact of staleness and the
+        # revision are exposed — never the old verdict, confidence, issue or
+        # note.
+        payload["my_review"] = {"stale": True, "parked": True,
+                                "message": "the evidence behind this case was corrected after "
+                                           "your review — no action needed from you; the case "
+                                           "is being resolved outside the review queue"}
     else:
         payload["my_review"] = _review_view(mine, float(payload.get("max_score") or 4.0))
     payload["label_revision"] = mine["revision"] if mine else 0
@@ -190,6 +192,17 @@ async def api_next(request: Request) -> Response:
     body = await _json(request)
     db: LabelDB = request.app.state.db
     item_id = db.claim_next(r, include_skipped=bool(body.get("include_skipped")))
+    if item_id is not None and _owner_parked(request, item_id):
+        # Owner decision 2026-09-02: cases whose reviews went stale under the
+        # confirmed source repair are CLOSED for re-review — the owner records
+        # the repaired reference directly. The reviewer's queue ends here
+        # rather than serving a parked case. (In this campaign, parked cases
+        # are the only thing left in any reviewer's queue, so ending the queue
+        # cannot shadow other pending work.)
+        db.release_claim(item_id, r)
+        return JSONResponse({"item": None, "done": True, "progress": db.progress(r),
+                             "message": "all remaining cases are being resolved by the owner — "
+                                        "nothing left for you. Thank you!"})
     if item_id is None:
         return JSONResponse({"item": None, "done": True, "progress": db.progress(r)})
     return JSONResponse({"item": _blind_item_view(request, item_id, r), "done": False,
@@ -215,6 +228,10 @@ async def api_decision(request: Request) -> Response:
     it = bundle.item(item_id)
     if it is None:
         return JSONResponse({"error": "unknown item"}, status_code=404)
+    if _owner_parked(request, item_id):
+        return JSONResponse({"error": "this case is closed for review — it is being resolved "
+                                      "by the owner after a confirmed evidence correction",
+                             "parked": True}, status_code=409)
     body = await _json(request)
     verdict = str(body.get("verdict") or "")
     confidence = str(body.get("confidence") or "")
@@ -261,6 +278,10 @@ async def _skip_or_flag(request: Request, status: str) -> Response:
     item_id = request.path_params["item_id"]
     if request.app.state.bundle.item(item_id) is None:
         return JSONResponse({"error": "unknown item"}, status_code=404)
+    if _owner_parked(request, item_id):
+        return JSONResponse({"error": "this case is closed for review — it is being resolved "
+                                      "by the owner after a confirmed evidence correction",
+                             "parked": True}, status_code=409)
     body = await _json(request)
     db: LabelDB = request.app.state.db
     try:
@@ -308,6 +329,15 @@ async def api_health(request: Request) -> Response:
 
 # ------------------------------------------------------- consensus math -----
 
+def _owner_parked(request: Request, item_id: str) -> bool:
+    """True for a case whose reviews went stale under an owner-confirmed
+    source repair and which has no resolution yet. Owner decision 2026-09-02:
+    such cases never re-enter any reviewer's queue — the owner assigns the
+    repaired reference verdict directly (stored as
+    owner_adjudicated_after_source_repair, distinct from consensus)."""
+    return _case_consensus(request, item_id)["state"] == "STALE_PENDING_RE_REVIEW"
+
+
 def _fresh_saved(overview: dict) -> list[dict]:
     return [l for l in overview["labels"]
             if l["status"] == "saved" and not l.get("evidence_stale")]
@@ -345,11 +375,20 @@ def _case_consensus(request: Request, item_id: str) -> dict[str, Any]:
         adjudicated = {"verdict": note.get("verdict") or score_to_verdict(f["score"], max_score),
                        "score": f["score"], "adjudicator": f.get("adjudicator"),
                        "note": note.get("text") or f.get("note"),
+                       "kind": note.get("kind") or "adjudicated_human_reference",
                        "contributing": note.get("contributing"),
                        "at": f.get("finalized_at") or f.get("created_at")}
-        state = "ADJUDICATED"
+        state = ("OWNER_ADJUDICATED_AFTER_REPAIR"
+                 if adjudicated["kind"] == "owner_adjudicated_after_source_repair"
+                 else "ADJUDICATED")
     human_reference = (adjudicated["verdict"] if adjudicated
                        else consensus if state == "CONSENSUS" else None)
+    # the PROVENANCE of the human reference — never conflated: an owner
+    # verdict assigned after the source repair is NOT two-reviewer consensus
+    human_reference_source = None
+    if human_reference:
+        human_reference_source = (
+            adjudicated["kind"] if adjudicated else "independent_two_reviewer_consensus")
     return {"item_id": item_id, "state": state, "reviews": reviews,
             "n_fresh_saved": len(saved), "flagged": [l["grader"] for l in flagged],
             "stale_reviews": [{"reviewer": l["grader"],
@@ -358,6 +397,7 @@ def _case_consensus(request: Request, item_id: str) -> dict[str, Any]:
                                **(_review_view(l, max_score) or {})} for l in stale],
             "consensus_verdict": consensus, "adjudicated": adjudicated,
             "human_reference_verdict": human_reference,
+            "human_reference_source": human_reference_source,
             "item_revision": ov["revision"], "max_score": max_score}
 
 
@@ -368,15 +408,20 @@ def _all_consensus(request: Request) -> list[dict]:
 def _campaign_complete(rows: list[dict]) -> bool:
     """Every case has two fresh independent reviews, or an explicit
     adjudicated resolution (the 'marked unresolved' path is an adjudication)."""
-    return all(r["n_fresh_saved"] >= 2 or r["state"] == "ADJUDICATED" for r in rows)
+    return all(r["n_fresh_saved"] >= 2
+               or r["state"] in ("ADJUDICATED", "OWNER_ADJUDICATED_AFTER_REPAIR")
+               for r in rows)
 
 
 def _analysis_ready(rows: list[dict]) -> bool:
     """Comparative analysis may run when every case is either consensus-ready
-    (2 fresh reviews / adjudicated) or explicitly parked as
-    STALE_PENDING_RE_REVIEW after an owner-confirmed evidence repair — parked
-    cases are EXCLUDED from the numbers and listed, never silently used."""
-    return all(r["n_fresh_saved"] >= 2 or r["state"] in ("ADJUDICATED", "STALE_PENDING_RE_REVIEW")
+    (2 fresh reviews / adjudicated), resolved by the owner's repaired
+    reference, or explicitly parked as STALE_PENDING_RE_REVIEW after an
+    owner-confirmed evidence repair — parked cases are EXCLUDED from the
+    numbers and listed, never silently used."""
+    return all(r["n_fresh_saved"] >= 2
+               or r["state"] in ("ADJUDICATED", "OWNER_ADJUDICATED_AFTER_REPAIR",
+                                 "STALE_PENDING_RE_REVIEW")
                for r in rows)
 
 
@@ -408,6 +453,9 @@ async def api_admin_summary(request: Request) -> Response:
                                "rate_pct": round(100 * agree / len(two), 1) if two else None},
         "needs_adjudication": sorted(r["item_id"] for r in rows if r["state"] == "NEEDS_ADJUDICATION"),
         "adjudicated": sum(1 for r in rows if r["state"] == "ADJUDICATED"),
+        "owner_adjudicated_after_repair": sorted(
+            request.app.state.bundle.id_map.get(r["item_id"], r["item_id"])
+            for r in rows if r["state"] == "OWNER_ADJUDICATED_AFTER_REPAIR"),
         "confidence_counts": conf, "issue_counts": issues,
         "reviewers": [{"name": g, **db.progress(g)} for g in db.graders()],
         "claims_active": _active_claims(db),
@@ -419,6 +467,11 @@ async def api_admin_summary(request: Request) -> Response:
         "stale_pending_re_review": sorted(request.app.state.bundle.id_map.get(r["item_id"],
                                                                               r["item_id"])
                                           for r in rows if r["state"] == "STALE_PENDING_RE_REVIEW"),
+        # cases waiting for the OWNER to assign the repaired reference verdict
+        # (reviewers never see these again — the queue is owner-only)
+        "owner_adjudication_queue": sorted(request.app.state.bundle.id_map.get(r["item_id"],
+                                                                               r["item_id"])
+                                           for r in rows if r["state"] == "STALE_PENDING_RE_REVIEW"),
         "comparisons": ("available at /api/admin/compare once every case has two "
                         "independent reviews, an adjudication, or is parked stale"),
     }
@@ -510,10 +563,21 @@ async def api_admin_adjudicate(request: Request) -> Response:
         return JSONResponse({"error": f"verdict must be one of {VERDICTS}"}, status_code=400)
     max_score = float(it.get("max_score") or 4.0)
     cons = _case_consensus(request, item_id)
-    note = json.dumps({"verdict": verdict, "text": str(body.get("note") or ""),
-                       "contributing": [{"reviewer": r["reviewer"], "verdict": r.get("verdict"),
-                                         "revision": r.get("revision")} for r in cons["reviews"]]},
-                      ensure_ascii=False, sort_keys=True)
+    contributing = [{"reviewer": r["reviewer"], "verdict": r.get("verdict"),
+                     "revision": r.get("revision")} for r in cons["reviews"]]
+    payload_note: dict = {"verdict": verdict, "text": str(body.get("note") or ""),
+                          "contributing": contributing}
+    if cons["stale_reviews"] and cons["n_fresh_saved"] < 2:
+        # No current independent reviews stand behind this case (its reviews
+        # went stale under the owner-confirmed source repair): the verdict is
+        # the OWNER'S repaired reference — a distinct source, never presented
+        # as two-reviewer consensus. The stale decisions ride along as
+        # historical context only.
+        payload_note["kind"] = "owner_adjudicated_after_source_repair"
+        payload_note["stale_historical_reviews"] = [
+            {"reviewer": s["reviewer"], "verdict": s.get("verdict"),
+             "reason": s["reason"]} for s in cons["stale_reviews"]]
+    note = json.dumps(payload_note, ensure_ascii=False, sort_keys=True)
     db: LabelDB = request.app.state.db
     try:
         final = db.set_final(item_id, score=verdict_to_score(verdict, max_score), rubric=[],
@@ -578,7 +642,15 @@ def _comparisons(request: Request, rows: list[dict]) -> dict[str, Any]:
                 "balanced_accuracy": round(sum(recalls) / len(recalls), 4) if recalls else None,
                 "macro_f1": round(sum(f1s) / len(f1s), 4) if f1s else None}
 
-    human = {r["item_id"]: r["human_reference_verdict"] for r in rows if r["human_reference_verdict"]}
+    # the CONSENSUS-track human reference only: two-reviewer consensus and
+    # ordinary disagreement adjudications. The owner's repaired references
+    # (owner_adjudicated_after_source_repair) are a DIFFERENT source and are
+    # reported in their own block, never inside the consensus metrics.
+    human = {r["item_id"]: r["human_reference_verdict"] for r in rows
+             if r["human_reference_verdict"]
+             and r["human_reference_source"] != "owner_adjudicated_after_source_repair"}
+    owner_refs = [r for r in rows
+                  if r["human_reference_source"] == "owner_adjudicated_after_source_repair"]
     # model outputs marked stale (owner-confirmed evidence repair) are NEVER
     # compared; they stay visible historically in the admin item view
     model = {i: p["verdict"] for i, p in prop.items() if p.get("verdict") and not p.get("stale")}
@@ -604,14 +676,59 @@ def _comparisons(request: Request, rows: list[dict]) -> dict[str, Any]:
             else:
                 three["all_disagree"] += 1
     bundle: Bundle = request.app.state.bundle
+
+    # ---- the owner's repaired references, reported in their OWN block ----
+    # (owner decision 2026-09-02: the historical reviews stay stale, no
+    # re-review is requested; the owner's verdict after the confirmed source
+    # repair is a distinct source — never mixed into consensus metrics)
+    owner_block = []
+    for r in owner_refs:
+        i = r["item_id"]
+        owner_block.append({
+            "case_id": bundle.id_map.get(i, i),
+            "owner_reference_verdict": r["human_reference_verdict"],
+            "adjudicator": (r["adjudicated"] or {}).get("adjudicator"),
+            "instructor_derived_verdict": instr.get(i),
+            "agrees_with_instructor": (instr.get(i) == r["human_reference_verdict"]
+                                       if i in instr else None),
+            "stale_historical_reviews": [
+                {"reviewer": s["reviewer"], "verdict": s.get("verdict"), "stale": True}
+                for s in r["stale_reviews"]],
+            "stale_model_output_excluded": bool((prop.get(i) or {}).get("stale")),
+        })
+
+    # ---- combined diagnostic over EVERY case with a human-side reference ----
+    # sources stay visibly separate; the model side stays consensus-track only
+    # (the repaired cases' model outputs are invalid until owner-gated reruns)
+    combined_human = dict(human)
+    combined_human.update({r["item_id"]: r["human_reference_verdict"] for r in owner_refs})
+    by_source: dict[str, int] = {}
+    for r in rows:
+        if r["human_reference_verdict"]:
+            by_source[r["human_reference_source"]] = by_source.get(r["human_reference_source"], 0) + 1
+    ih_all = [(combined_human[i], instr[i]) for i in combined_human if i in instr]
+
     out = {
         "A_model_vs_human_consensus": block(mh, "human", "model"),
         "B_instructor_vs_human_consensus": block(ih, "human", "instructor"),
         "C_model_vs_instructor": block(mi, "instructor", "model"),
         "D_three_way": three,
         "human_reference_cases": len(human),
+        "owner_adjudicated_after_source_repair": {
+            "cases": owner_block,
+            "note": "owner-assigned reference verdicts recorded once after the "
+                    "confirmed source transposition repair; NOT two-reviewer "
+                    "consensus and never counted in A/B/D or kappa",
+        },
+        "combined_diagnostic_all_sources": {
+            "human_reference_by_source": by_source,
+            "instructor_vs_human_all_sources": block(ih_all, "human", "instructor"),
+            "note": "combined view only — mixes consensus-track and "
+                    "owner-repaired references (counts above); the per-source "
+                    "blocks are the citable numbers",
+        },
         "cases_without_derivable_instructor_verdict": sum(
-            1 for i in human if i not in instr),
+            1 for i in combined_human if i not in instr),
         "excluded_stale_model_outputs": sorted(bundle.id_map.get(i, i) for i, p in prop.items()
                                                if p.get("stale")),
         "excluded_stale_pending_re_review": sorted(bundle.id_map.get(r["item_id"], r["item_id"])
@@ -621,7 +738,9 @@ def _comparisons(request: Request, rows: list[dict]) -> dict[str, Any]:
                     "seen exams only — no generalization claim; HELD_OUT remains sealed",
                     "instructor-side comparisons cover derivable cases only",
                     "cases repaired by the confirmed source transposition are excluded "
-                    "until fresh reviews and corrected model reruns exist"],
+                    "from consensus metrics; their owner-assigned references are "
+                    "reported separately and their model outputs stay invalid until "
+                    "owner-gated corrected reruns exist"],
     }
     out["headline"] = {"model_vs_human_pct": out["A_model_vs_human_consensus"]["agreement_pct"],
                        "instructor_vs_human_pct": out["B_instructor_vs_human_consensus"]["agreement_pct"],
@@ -675,8 +794,10 @@ def _export_payload(request: Request) -> dict:
             "original_instructor_reference": ref.get(i),
             "local_model_proposal": prop.get(i),
             "independent_human_reviews": r["reviews"],
+            "stale_historical_reviews": r["stale_reviews"],
             "adjudicated_human_reference": r["adjudicated"],
             "human_reference_verdict": r["human_reference_verdict"],
+            "human_reference_source": r["human_reference_source"],
         })
     return {"campaign": CAMPAIGN, "schema_version": 1,
             "campaign_complete": _campaign_complete(rows), "cases": cases}

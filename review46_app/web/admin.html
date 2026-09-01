@@ -27,6 +27,14 @@
   .st-CONSENSUS { color:#1d7a46; font-weight:600; }
   .st-NEEDS_ADJUDICATION { color:#a12727; font-weight:600; }
   .st-ADJUDICATED { color:#2456a6; font-weight:600; }
+  .st-STALE_PENDING_RE_REVIEW { color:#b45309; font-weight:600; }
+  .st-OWNER_ADJUDICATED_AFTER_REPAIR { color:#6d28d9; font-weight:600; }
+  .ownerq { background:#fff7ed; border:1px solid #fdba74; }
+  .stalebox { background:#f8f8f8; border:1px dashed #cbd5df; border-radius:6px;
+              padding:6px 10px; color:#5b6b7b; }
+  .banner { background:#fff7ed; border:1px solid #fdba74; border-radius:8px;
+            padding:8px 10px; margin:8px 0; }
+  #detail img { max-width:100%; border:1px solid #dde3ea; border-radius:6px; margin:4px 0; display:block; }
   button { font:inherit; padding:6px 10px; border-radius:7px; border:1px solid #cfd7e0; background:#fff; cursor:pointer; }
   #detail { position:fixed; right:0; top:0; bottom:0; width:min(660px,92vw); background:#fff;
             border-left:1px solid #cfd7e0; overflow:auto; padding:14px; display:none; z-index:9; }
@@ -44,12 +52,14 @@
 </header>
 <main>
   <div class="card"><div id="stats" class="grid"></div></div>
+  <div class="card ownerq" id="ownerq" style="display:none"></div>
   <div class="card"><h3 style="margin:4px 0">Reviewers</h3><div id="reviewers"></div></div>
   <div class="card">
     <h3 style="margin:4px 0">Cases</h3>
     <label>filter state: <select id="statef" onchange="renderItems()">
       <option value="">all</option><option>PENDING</option><option>ONE_REVIEW</option>
       <option>CONSENSUS</option><option>NEEDS_ADJUDICATION</option><option>ADJUDICATED</option>
+      <option>STALE_PENDING_RE_REVIEW</option><option>OWNER_ADJUDICATED_AFTER_REPAIR</option>
     </select></label>
     <table id="items"><thead><tr><th>case</th><th>state</th><th>reviews</th><th>human ref</th>
       <th>instructor (derived)</th><th>model</th><th>flags</th><th></th></tr></thead><tbody></tbody></table>
@@ -66,6 +76,15 @@ async function api(path, body){
   return {status:r.status, ...(await r.json().catch(()=>({})))};
 }
 function el(id){ return document.getElementById(id); }
+// same guard as reviewer.html: a string passes through UNTOUCHED
+// (Object.values on a string yields one entry per character)
+function asText(v){
+  if (v == null) return "";
+  if (typeof v === "string") return v;
+  if (Array.isArray(v)) return v.join("\n");
+  if (typeof v === "object") return Object.values(v).join("\n");
+  return String(v);
+}
 
 async function load(){
   const s = await api("/api/admin/summary");
@@ -78,6 +97,8 @@ async function load(){
     ["reviewer agreement", s.reviewer_agreement.rate_pct === null ? "-" : s.reviewer_agreement.rate_pct + "%"],
     ["needs adjudication", s.needs_adjudication.length],
     ["adjudicated", s.adjudicated],
+    ["owner queue (repair)", (s.owner_adjudication_queue||[]).length],
+    ["owner-adjudicated (repair)", (s.owner_adjudicated_after_repair||[]).length],
     ["active claims", s.claims_active ?? "-"],
     ["mean review time", s.mean_review_time_s ? s.mean_review_time_s + "s" : "-"],
     ["confidence h/m/l", `${s.confidence_counts.high}/${s.confidence_counts.medium}/${s.confidence_counts.low}`],
@@ -96,7 +117,23 @@ async function load(){
     `<span style="margin-right:14px"><b>${r.name}</b> saved ${r.my_saved ?? 0}, skipped ${r.my_skipped ?? 0}</span>`).join("") || "<span class=mut>none yet</span>";
   const it = await api("/api/admin/items");
   items = it.items || [];
+  renderOwnerQueue();
   renderItems();
+}
+
+function renderOwnerQueue(){
+  const q = items.filter(o => o.state === "STALE_PENDING_RE_REVIEW");
+  const box = el("ownerq");
+  if (!q.length) { box.style.display = "none"; return; }
+  box.style.display = "block";
+  box.innerHTML = `<h3 style="margin:4px 0">Owner adjudication queue — ${q.length} case(s)</h3>
+    <p class="mut" style="margin:4px 0">These cases were repaired by the confirmed source
+    transposition. Their historical reviews are preserved as stale and reviewers will
+    <b>not</b> be asked again. Open each case, check the corrected evidence, and assign the
+    repaired reference verdict once — it is stored as
+    <code>owner_adjudicated_after_source_repair</code>, separate from two-reviewer consensus.</p>
+    ${q.map(o => `<button style="margin-right:8px" onclick="openDetail('${o.item_id}')">
+      ${o.case_id} — adjudicate</button>`).join("")}`;
 }
 
 function renderItems(){
@@ -121,13 +158,29 @@ async function openDetail(id){
   const rev = (d.reviews||[]).map(r =>
     `<li><b>${r.reviewer}</b>: ${r.verdict ?? r.status} (conf ${r.confidence ?? "-"}, issue ${r.issue ?? "-"})
      ${r.text ? " — " + r.text : ""}${r.flag_reason ? " — FLAG: " + r.flag_reason : ""}</li>`).join("");
+  const staleRev = (d.stale_reviews||[]).map(r =>
+    `<li><b>${r.reviewer}</b>: ${r.verdict ?? "-"} (conf ${r.confidence ?? "-"})
+     — <i>stale: superseded by the confirmed source repair; preserved, never counted</i></li>`).join("");
   const mp = d.model_proposal || {}, ir = d.instructor_reference || {};
+  const banner = d.state === "STALE_PENDING_RE_REVIEW" ? `
+    <div class="banner"><b>Owner adjudication.</b> The evidence below is the CORRECTED
+    (post-repair) source for this case. Assign the repaired reference verdict once — it is
+    stored as <code>owner_adjudicated_after_source_repair</code>, never as two-reviewer
+    consensus. The historical reviews stay preserved as stale.</div>` : "";
   el("detail").innerHTML = `
     <button onclick="el('detail').style.display='none'">close</button>
     <h3>${d.case_id} <span class="st-${d.state}">${d.state}</span></h3>
-    <p class="he">${(c.question_text||"")}</p>
-    <p class="he" style="background:#fffbe8;padding:6px">${c.transcription||""}</p>
-    <h4>Independent reviews</h4><ul>${rev || "<li class=mut>none</li>"}</ul>
+    ${banner}
+    <p class="he">${asText(c.question_text)}</p>
+    <h4>Corrected evidence (crops)</h4>
+    ${(c.images||[]).map(u => `<img src="${u}" alt="evidence crop">`).join("") || "<p class=mut>no crops</p>"}
+    ${(c.provenance && c.provenance.page_url) ? `<p><a href="${c.provenance.page_url}" target="_blank">open full source page</a></p>` : ""}
+    <h4>Transcription (post-repair)</h4>
+    <p class="he" style="background:#fffbe8;padding:6px">${asText(c.transcription)}</p>
+    <h4>Official solution</h4>
+    <p class="he">${asText(c.official_solution)}</p>
+    <h4>Independent reviews (fresh)</h4><ul>${rev || "<li class=mut>none</li>"}</ul>
+    ${staleRev ? `<h4>Historical reviews (stale)</h4><div class="stalebox"><ul>${staleRev}</ul></div>` : ""}
     <h4>Original instructor (reference)</h4>
     <pre>${JSON.stringify(ir, null, 1)}</pre>
     <h4>Local model proposal (frozen)</h4>

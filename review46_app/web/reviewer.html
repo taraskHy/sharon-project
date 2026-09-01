@@ -119,7 +119,7 @@
 
   <div id="done" class="card" style="display:none">
     <h2>All done</h2>
-    <p>No more cases need your review right now. Thank you! You can close this tab —
+    <p id="donemsg">No more cases need your review right now. Thank you! You can close this tab —
        your decisions are saved.</p>
   </div>
 </main>
@@ -180,7 +180,9 @@ function renderItem(it){
   el("pagelink").innerHTML = it.provenance?.page_url
     ? `<a href="${it.provenance.page_url}" target="_blank">open full source page (instructor ink masked)</a>`
     : `<span class="hint">no source page available for this case</span>`;
-  el("msg").textContent = it.my_review?.stale
+  el("msg").textContent = it.my_review?.parked
+    ? (it.my_review.message || "This case is being resolved outside the review queue — no action needed.")
+    : it.my_review?.stale
     ? "Note: the evidence for this case was corrected — please review it fresh."
     : "";
   paintDecision();
@@ -191,7 +193,10 @@ function renderItem(it){
 async function next(includeSkipped){
   const r = await api("/api/next", {include_skipped: !!includeSkipped});
   setProgress(r.progress);
-  if (r.done) { show("done"); return; }
+  if (r.done) {
+    if (r.message) el("donemsg").textContent = r.message;
+    show("done"); return;
+  }
   renderItem(r.item);
 }
 
