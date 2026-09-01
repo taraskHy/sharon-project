@@ -77,6 +77,18 @@ def _model_proposals(campaign: dict, id_of: dict[str, str]) -> dict:
             }
     missing = sorted(set(id_of.values()) - set(out))
     assert not missing, f"model proposal missing for {len(missing)} item(s)"
+    # Outputs generated BEFORE an owner-confirmed evidence revision (e.g. the
+    # 2026-09-01 row transposition) are preserved historically but marked
+    # invalid: they graded evidence that is no longer the case's evidence.
+    # They are excluded from every current comparison until corrected reruns
+    # exist (reruns are owner-gated and NOT part of a bundle build).
+    man = json.loads((DATASET / "manifest.json").read_text(encoding="utf-8"))
+    remapped = {cid for rev in man.get("revisions", [])
+                if rev.get("kind") == "confirmed_row_transposition" and rev.get("owner_confirmed")
+                for cid in rev.get("cases_changed", [])}
+    for oid, p in out.items():
+        if p["case_id"] in remapped:
+            p["stale"] = "invalid_due_to_confirmed_source_transposition"
     return out
 
 

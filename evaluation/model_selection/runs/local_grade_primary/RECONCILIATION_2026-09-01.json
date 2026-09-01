@@ -1,0 +1,293 @@
+{
+ "artifact": "seen46_reconciliation",
+ "created_at": "2026-09-01 23:39:06",
+ "population": {
+  "campaign": 46,
+  "current": 44,
+  "stale_pending_re_review": [
+   "e004_q2_r6",
+   "e004_q2_r8"
+  ],
+  "consensus": 22,
+  "needs_adjudication": 22
+ },
+ "reviewer_agreement": {
+  "cases": 44,
+  "agreements": 22,
+  "rate_pct": 50.0,
+  "cohens_kappa": 0.2461,
+  "expected_agreement_pe": 0.3368,
+  "reviewer_confusion": {
+   "invalid": {
+    "invalid": 4,
+    "partially_valid": 2,
+    "valid": 0
+   },
+   "partially_valid": {
+    "invalid": 3,
+    "partially_valid": 4,
+    "valid": 1
+   },
+   "valid": {
+    "invalid": 8,
+    "partially_valid": 8,
+    "valid": 14
+   }
+  },
+  "both_agree_by_class": {
+   "invalid": 4,
+   "partially_valid": 4,
+   "valid": 14
+  },
+  "by_writer": {
+   "e002": {
+    "agree": 6,
+    "n": 16,
+    "pct": 37.5
+   },
+   "e003": {
+    "agree": 8,
+    "n": 15,
+    "pct": 53.3
+   },
+   "e004": {
+    "agree": 7,
+    "n": 12,
+    "pct": 58.3
+   },
+   "e007": {
+    "agree": 1,
+    "n": 1,
+    "pct": 100.0
+   }
+  },
+  "by_question": {
+   "e002_q1": {
+    "agree": 3,
+    "n": 8,
+    "pct": 37.5
+   },
+   "e002_q2": {
+    "agree": 3,
+    "n": 8,
+    "pct": 37.5
+   },
+   "e003_q1": {
+    "agree": 4,
+    "n": 7,
+    "pct": 57.1
+   },
+   "e003_q2": {
+    "agree": 4,
+    "n": 8,
+    "pct": 50.0
+   },
+   "e004_q1": {
+    "agree": 3,
+    "n": 7,
+    "pct": 42.9
+   },
+   "e004_q2": {
+    "agree": 4,
+    "n": 5,
+    "pct": 80.0
+   },
+   "e007_q1": {
+    "agree": 1,
+    "n": 1,
+    "pct": 100.0
+   }
+  },
+  "confidence_distribution": {
+   "medium": 40,
+   "high": 43,
+   "low": 5
+  },
+  "issue_distribution": {
+   "none": 79,
+   "rubric_official_solution": 3,
+   "transcription_evidence": 3,
+   "genuinely_ambiguous": 3
+  }
+ },
+ "adjudication_queue": {
+  "reviewer_disagreements": [
+   "e002_q1_r1",
+   "e002_q1_r5",
+   "e002_q1_r6",
+   "e002_q1_r7",
+   "e002_q1_r8",
+   "e002_q2_r2",
+   "e002_q2_r4",
+   "e002_q2_r5",
+   "e002_q2_r7",
+   "e002_q2_r8",
+   "e003_q1_r1",
+   "e003_q1_r6",
+   "e003_q1_r7",
+   "e003_q2_r3",
+   "e003_q2_r4",
+   "e003_q2_r5",
+   "e003_q2_r8",
+   "e004_q1_r1",
+   "e004_q1_r5",
+   "e004_q1_r6",
+   "e004_q1_r8",
+   "e004_q2_r3"
+  ],
+  "low_confidence_disagreements": [
+   "e002_q2_r4",
+   "e003_q2_r5"
+  ],
+  "issue_flags": {
+   "transcription_evidence": [
+    "e002_q2_r4",
+    "e002_q2_r7",
+    "e004_q2_r3"
+   ],
+   "rubric_official_solution": [
+    "e002_q1_r5",
+    "e004_q1_r5",
+    "e007_q1_r1"
+   ],
+   "genuinely_ambiguous": [
+    "e003_q2_r5",
+    "e004_q1_r3",
+    "e004_q2_r4"
+   ],
+   "needs_source_page": []
+  },
+  "repaired_awaiting_fresh_reviews": [
+   "e004_q2_r6",
+   "e004_q2_r8"
+  ]
+ },
+ "comparisons": {
+  "A_model_vs_human_consensus": {
+   "cases": 22,
+   "agreement": 17,
+   "agreement_pct": 77.3,
+   "model_higher_than_human": 5,
+   "model_lower_than_human": 0,
+   "confusion": {
+    "valid": {
+     "valid": 14
+    },
+    "partially_valid": {
+     "partially_valid": 3,
+     "valid": 1
+    },
+    "invalid": {
+     "partially_valid": 4
+    }
+   },
+   "balanced_accuracy": 0.5833,
+   "macro_f1": 0.5037
+  },
+  "B_instructor_vs_human_consensus": {
+   "cases": 18,
+   "agreement": 14,
+   "agreement_pct": 77.8,
+   "instructor_higher_than_human": 4,
+   "instructor_lower_than_human": 0,
+   "confusion": {
+    "valid": {
+     "valid": 13
+    },
+    "partially_valid": {
+     "valid": 3,
+     "partially_valid": 1
+    },
+    "invalid": {
+     "partially_valid": 1
+    }
+   },
+   "balanced_accuracy": 0.4167,
+   "macro_f1": 0.41
+  },
+  "C_model_vs_instructor": {
+   "cases": 36,
+   "agreement": 24,
+   "agreement_pct": 66.7,
+   "model_higher_than_instructor": 3,
+   "model_lower_than_instructor": 9,
+   "confusion": {
+    "partially_valid": {
+     "valid": 3,
+     "partially_valid": 4,
+     "invalid": 1
+    },
+    "valid": {
+     "valid": 20,
+     "partially_valid": 4,
+     "invalid": 4
+    }
+   },
+   "balanced_accuracy": 0.6071,
+   "macro_f1": 0.4281
+  },
+  "D_three_way": {
+   "all_agree": 14,
+   "human_model_agree_only": 2,
+   "human_instructor_agree_only": 0,
+   "model_instructor_agree_only": 2,
+   "all_disagree": 0
+  },
+  "excluded_stale_model_outputs": [
+   "e004_q2_r6",
+   "e004_q2_r8"
+  ],
+  "excluded_stale_pending_re_review": [
+   "e004_q2_r6",
+   "e004_q2_r8"
+  ],
+  "caveats": [
+   "no source is declared universally correct from majority",
+   "seen exams only — no generalization claim; HELD_OUT remains sealed",
+   "instructor-side comparisons cover derivable cases only",
+   "cases repaired by the confirmed source transposition are excluded until fresh reviews and corrected model reruns exist"
+  ]
+ },
+ "B_extras": {
+  "instructor_more_lenient": 4,
+  "instructor_more_strict": 0,
+  "cases_compared": 18,
+  "numeric_mae_on_derivable_consensus_cases": 0.4444,
+  "note": "MAE computed over the 18 derivable-consensus cases (instructor verdict uniquely derivable AND blind-human consensus exists); over the 20 selection-not-wrong consensus cases it is 0.40"
+ },
+ "A_extras": {
+  "model_vs_human_by_writer": {
+   "e002": {
+    "agree": 6,
+    "n": 6,
+    "pct": 100.0
+   },
+   "e003": {
+    "agree": 6,
+    "n": 8,
+    "pct": 75.0
+   },
+   "e004": {
+    "agree": 4,
+    "n": 7,
+    "pct": 57.1
+   },
+   "e007": {
+    "agree": 1,
+    "n": 1,
+    "pct": 100.0
+   }
+  }
+ },
+ "style_analysis": {
+  "cases_with_all_three_sources": 18,
+  "model_sides_with_instructor_when_humans_disagree_with_instructor": 2,
+  "model_sides_with_humans_when_humans_disagree_with_instructor": 2,
+  "model_sides_with_neither": 0,
+  "humans_disagree_with_instructor_cases": 4
+ },
+ "notes": [
+  "human consensus currently exists for the agreement cases only; the disagreement cases await the owner's adjudication and every comparison will be recomputed once adjudicated references exist",
+  "no source is declared universally correct; no generalization claim; HELD_OUT remains sealed"
+ ]
+}

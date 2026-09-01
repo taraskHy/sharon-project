@@ -123,7 +123,17 @@ def _blind_item_view(request: Request, item_id: str, reviewer: str) -> dict | No
     if payload is None:
         return None
     mine = db.get_label(item_id, reviewer)
-    payload["my_review"] = _review_view(mine, float(payload.get("max_score") or 4.0))
+    if mine is not None and mine.get("evidence_stale"):
+        # The evidence behind this case was CORRECTED after the reviewer's
+        # decision (owner-confirmed source repair). The fresh look must be
+        # blind to their own old decision too: only the fact of staleness and
+        # the revision (needed to save) are exposed — never the old verdict,
+        # confidence, issue or note.
+        payload["my_review"] = {"stale": True,
+                                "message": "the evidence for this case was corrected — "
+                                           "please review it fresh"}
+    else:
+        payload["my_review"] = _review_view(mine, float(payload.get("max_score") or 4.0))
     payload["label_revision"] = mine["revision"] if mine else 0
     return payload
 
@@ -322,9 +332,12 @@ def _case_consensus(request: Request, item_id: str) -> dict[str, Any]:
             state = "NEEDS_ADJUDICATION"
     elif len(verdicts) == 1:
         state = "ONE_REVIEW"
+    stale = [l for l in ov["labels"] if l["status"] == "saved" and l.get("evidence_stale")]
     flagged = [l for l in ov["labels"] if l["status"] == "flagged"]
     if flagged and state in ("PENDING", "ONE_REVIEW"):
         state = "NEEDS_ADJUDICATION"
+    if stale and len(saved) < 2:
+        state = "STALE_PENDING_RE_REVIEW"
     adjudicated = None
     if ov.get("final"):
         f = ov["final"]
@@ -339,6 +352,10 @@ def _case_consensus(request: Request, item_id: str) -> dict[str, Any]:
                        else consensus if state == "CONSENSUS" else None)
     return {"item_id": item_id, "state": state, "reviews": reviews,
             "n_fresh_saved": len(saved), "flagged": [l["grader"] for l in flagged],
+            "stale_reviews": [{"reviewer": l["grader"],
+                               "reason": "stale_due_to_confirmed_source_mapping_change",
+                               "revision": l["revision"], "updated_at": l.get("updated_at"),
+                               **(_review_view(l, max_score) or {})} for l in stale],
             "consensus_verdict": consensus, "adjudicated": adjudicated,
             "human_reference_verdict": human_reference,
             "item_revision": ov["revision"], "max_score": max_score}
@@ -352,6 +369,15 @@ def _campaign_complete(rows: list[dict]) -> bool:
     """Every case has two fresh independent reviews, or an explicit
     adjudicated resolution (the 'marked unresolved' path is an adjudication)."""
     return all(r["n_fresh_saved"] >= 2 or r["state"] == "ADJUDICATED" for r in rows)
+
+
+def _analysis_ready(rows: list[dict]) -> bool:
+    """Comparative analysis may run when every case is either consensus-ready
+    (2 fresh reviews / adjudicated) or explicitly parked as
+    STALE_PENDING_RE_REVIEW after an owner-confirmed evidence repair — parked
+    cases are EXCLUDED from the numbers and listed, never silently used."""
+    return all(r["n_fresh_saved"] >= 2 or r["state"] in ("ADJUDICATED", "STALE_PENDING_RE_REVIEW")
+               for r in rows)
 
 
 # --------------------------------------------------------------- admin ------
@@ -387,10 +413,16 @@ async def api_admin_summary(request: Request) -> Response:
         "claims_active": _active_claims(db),
         "mean_review_time_s": _mean_review_time(db),
         "campaign_complete": _campaign_complete(rows),
+        "analysis_ready": _analysis_ready(rows),
+        "human_consensus_cases": sum(1 for r in rows if r["human_reference_verdict"]),
+        "stale_reviews": sum(len(r["stale_reviews"]) for r in rows),
+        "stale_pending_re_review": sorted(request.app.state.bundle.id_map.get(r["item_id"],
+                                                                              r["item_id"])
+                                          for r in rows if r["state"] == "STALE_PENDING_RE_REVIEW"),
         "comparisons": ("available at /api/admin/compare once every case has two "
-                        "independent reviews or an adjudication"),
+                        "independent reviews, an adjudication, or is parked stale"),
     }
-    if summary["campaign_complete"]:
+    if summary["analysis_ready"]:
         summary["comparison_preview"] = _comparisons(request, rows)["headline"]
     return JSONResponse(summary)
 
@@ -547,7 +579,9 @@ def _comparisons(request: Request, rows: list[dict]) -> dict[str, Any]:
                 "macro_f1": round(sum(f1s) / len(f1s), 4) if f1s else None}
 
     human = {r["item_id"]: r["human_reference_verdict"] for r in rows if r["human_reference_verdict"]}
-    model = {i: p["verdict"] for i, p in prop.items() if p.get("verdict")}
+    # model outputs marked stale (owner-confirmed evidence repair) are NEVER
+    # compared; they stay visible historically in the admin item view
+    model = {i: p["verdict"] for i, p in prop.items() if p.get("verdict") and not p.get("stale")}
     instr = {i: v["instructor_derived_verdict"] for i, v in ref.items()
              if v.get("instructor_derived_verdict")}
 
@@ -569,6 +603,7 @@ def _comparisons(request: Request, rows: list[dict]) -> dict[str, Any]:
                 three["model_instructor_agree_only"] += 1
             else:
                 three["all_disagree"] += 1
+    bundle: Bundle = request.app.state.bundle
     out = {
         "A_model_vs_human_consensus": block(mh, "human", "model"),
         "B_instructor_vs_human_consensus": block(ih, "human", "instructor"),
@@ -577,9 +612,16 @@ def _comparisons(request: Request, rows: list[dict]) -> dict[str, Any]:
         "human_reference_cases": len(human),
         "cases_without_derivable_instructor_verdict": sum(
             1 for i in human if i not in instr),
+        "excluded_stale_model_outputs": sorted(bundle.id_map.get(i, i) for i, p in prop.items()
+                                               if p.get("stale")),
+        "excluded_stale_pending_re_review": sorted(bundle.id_map.get(r["item_id"], r["item_id"])
+                                                   for r in rows
+                                                   if r["state"] == "STALE_PENDING_RE_REVIEW"),
         "caveats": ["no source is declared universally correct from majority",
                     "seen exams only — no generalization claim; HELD_OUT remains sealed",
-                    "instructor-side comparisons cover derivable cases only"],
+                    "instructor-side comparisons cover derivable cases only",
+                    "cases repaired by the confirmed source transposition are excluded "
+                    "until fresh reviews and corrected model reruns exist"],
     }
     out["headline"] = {"model_vs_human_pct": out["A_model_vs_human_consensus"]["agreement_pct"],
                        "instructor_vs_human_pct": out["B_instructor_vs_human_consensus"]["agreement_pct"],
@@ -591,16 +633,18 @@ async def api_admin_compare(request: Request) -> Response:
     if (err := _need_admin(request)):
         return err
     rows = _all_consensus(request)
-    if not _campaign_complete(rows) and not request.query_params.get("partial"):
+    if not _analysis_ready(rows) and not request.query_params.get("partial"):
         return JSONResponse({
             "campaign_complete": False,
             "error": "comparative metrics are withheld until every case has two independent "
-                     "reviews or an adjudicated resolution (pass ?partial=1 for an "
+                     "reviews, an adjudicated resolution, or is explicitly parked stale "
+                     "after an owner-confirmed evidence repair (pass ?partial=1 for an "
                      "explicitly-partial preview over consensus-complete cases only)"},
             status_code=409)
     out = _comparisons(request, rows)
     out["campaign_complete"] = _campaign_complete(rows)
-    out["partial"] = not out["campaign_complete"]
+    out["analysis_ready"] = _analysis_ready(rows)
+    out["partial"] = not out["analysis_ready"]
     return JSONResponse(out)
 
 

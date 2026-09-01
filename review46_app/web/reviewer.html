@@ -180,7 +180,9 @@ function renderItem(it){
   el("pagelink").innerHTML = it.provenance?.page_url
     ? `<a href="${it.provenance.page_url}" target="_blank">open full source page (instructor ink masked)</a>`
     : `<span class="hint">no source page available for this case</span>`;
-  el("msg").textContent = "";
+  el("msg").textContent = it.my_review?.stale
+    ? "Note: the evidence for this case was corrected — please review it fresh."
+    : "";
   paintDecision();
   show("review");
   window.scrollTo(0, 0);

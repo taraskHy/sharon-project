@@ -1,0 +1,108 @@
+{
+ "artifact": "stale_model_outputs",
+ "created_at": "2026-09-01 23:38:03",
+ "reason": "invalid_due_to_confirmed_source_transposition",
+ "revision": "confirmed_row_transposition 2026-09-01 (e004_q2_r6 <-> e004_q2_r8)",
+ "policy": "outputs preserved historically in their run dirs, NEVER edited or deleted; excluded from every current human-consensus comparison until corrected reruns exist (reruns are owner-gated and NOT executed in this task)",
+ "affected_outputs": [
+  {
+   "run_id": "calibration__calibration_verdict__all__anthropic-claude-sonnet-5__a163501062",
+   "run_dir": "evaluation/model_selection/runs/grade_primary/calibration__calibration_verdict__all__anthropic-claude-sonnet-5__a163501062",
+   "case_id": "e004_q2_r6",
+   "candidate": "anthropic/claude-sonnet-5",
+   "prompt_version": "grade-v3"
+  },
+  {
+   "run_id": "calibration__calibration_verdict__all__anthropic-claude-sonnet-5__a163501062",
+   "run_dir": "evaluation/model_selection/runs/grade_primary/calibration__calibration_verdict__all__anthropic-claude-sonnet-5__a163501062",
+   "case_id": "e004_q2_r8",
+   "candidate": "anthropic/claude-sonnet-5",
+   "prompt_version": "grade-v3"
+  },
+  {
+   "run_id": "calibration__calibration_verdict__all__google-gemini-3.7-flash__0868fe8923",
+   "run_dir": "evaluation/model_selection/runs/grade_primary/calibration__calibration_verdict__all__google-gemini-3.7-flash__0868fe8923",
+   "case_id": "e004_q2_r6",
+   "candidate": "google/gemini-3.7-flash",
+   "prompt_version": "grade-v3"
+  },
+  {
+   "run_id": "calibration__calibration_verdict__all__google-gemini-3.7-flash__0868fe8923",
+   "run_dir": "evaluation/model_selection/runs/grade_primary/calibration__calibration_verdict__all__google-gemini-3.7-flash__0868fe8923",
+   "case_id": "e004_q2_r8",
+   "candidate": "google/gemini-3.7-flash",
+   "prompt_version": "grade-v3"
+  },
+  {
+   "run_id": "calibration__calibration_verdict_v4__all__anthropic-claude-sonnet-5__a410eb2419",
+   "run_dir": "evaluation/model_selection/runs/grade_primary/calibration__calibration_verdict_v4__all__anthropic-claude-sonnet-5__a410eb2419",
+   "case_id": "e004_q2_r6",
+   "candidate": "anthropic/claude-sonnet-5",
+   "prompt_version": "grade-v4-charitable"
+  },
+  {
+   "run_id": "calibration__calibration_verdict_v4__all__anthropic-claude-sonnet-5__a410eb2419",
+   "run_dir": "evaluation/model_selection/runs/grade_primary/calibration__calibration_verdict_v4__all__anthropic-claude-sonnet-5__a410eb2419",
+   "case_id": "e004_q2_r8",
+   "candidate": "anthropic/claude-sonnet-5",
+   "prompt_version": "grade-v4-charitable"
+  },
+  {
+   "run_id": "calibration__calibration_verdict_v4__all__google-gemini-3.7-flash__9d4e07e8dc",
+   "run_dir": "evaluation/model_selection/runs/grade_primary/calibration__calibration_verdict_v4__all__google-gemini-3.7-flash__9d4e07e8dc",
+   "case_id": "e004_q2_r6",
+   "candidate": "google/gemini-3.7-flash",
+   "prompt_version": "grade-v4-charitable"
+  },
+  {
+   "run_id": "calibration__calibration_verdict_v4__all__google-gemini-3.7-flash__9d4e07e8dc",
+   "run_dir": "evaluation/model_selection/runs/grade_primary/calibration__calibration_verdict_v4__all__google-gemini-3.7-flash__9d4e07e8dc",
+   "case_id": "e004_q2_r8",
+   "candidate": "google/gemini-3.7-flash",
+   "prompt_version": "grade-v4-charitable"
+  },
+  {
+   "run_id": "calibration__all__qwen3-vl-8b-instruct__e2a3cfc925",
+   "run_dir": "evaluation/model_selection/runs/local_grade_primary/grade_primary/calibration__all__qwen3-vl-8b-instruct__e2a3cfc925",
+   "case_id": "e004_q2_r6",
+   "candidate": "qwen3-vl:8b-instruct",
+   "prompt_version": "grade-v4-charitable-local"
+  },
+  {
+   "run_id": "calibration__all__qwen3-vl-8b-instruct__e2a3cfc925",
+   "run_dir": "evaluation/model_selection/runs/local_grade_primary/grade_primary/calibration__all__qwen3-vl-8b-instruct__e2a3cfc925",
+   "case_id": "e004_q2_r8",
+   "candidate": "qwen3-vl:8b-instruct",
+   "prompt_version": "grade-v4-charitable-local"
+  },
+  {
+   "run_id": "calibration__calibration_verdict_v4__all__qwen3-vl-30b-a3b-instruct__5906717e2c",
+   "run_dir": "evaluation/model_selection/runs/local_grade_primary/grade_primary/calibration__calibration_verdict_v4__all__qwen3-vl-30b-a3b-instruct__5906717e2c",
+   "case_id": "e004_q2_r6",
+   "candidate": "qwen3-vl:30b-a3b-instruct",
+   "prompt_version": "grade-v4-charitable-local"
+  },
+  {
+   "run_id": "calibration__calibration_verdict_v4__all__qwen3-vl-30b-a3b-instruct__5906717e2c",
+   "run_dir": "evaluation/model_selection/runs/local_grade_primary/grade_primary/calibration__calibration_verdict_v4__all__qwen3-vl-30b-a3b-instruct__5906717e2c",
+   "case_id": "e004_q2_r8",
+   "candidate": "qwen3-vl:30b-a3b-instruct",
+   "prompt_version": "grade-v4-charitable-local"
+  },
+  {
+   "run_id": "calibration__calibration_verdict_v4__all__qwen3-vl-8b-instruct__0a865643c3",
+   "run_dir": "evaluation/model_selection/runs/local_grade_primary/grade_primary/calibration__calibration_verdict_v4__all__qwen3-vl-8b-instruct__0a865643c3",
+   "case_id": "e004_q2_r6",
+   "candidate": "qwen3-vl:8b-instruct",
+   "prompt_version": "grade-v4-charitable-local"
+  },
+  {
+   "run_id": "calibration__calibration_verdict_v4__all__qwen3-vl-8b-instruct__0a865643c3",
+   "run_dir": "evaluation/model_selection/runs/local_grade_primary/grade_primary/calibration__calibration_verdict_v4__all__qwen3-vl-8b-instruct__0a865643c3",
+   "case_id": "e004_q2_r8",
+   "candidate": "qwen3-vl:8b-instruct",
+   "prompt_version": "grade-v4-charitable-local"
+  }
+ ],
+ "count": 14
+}
