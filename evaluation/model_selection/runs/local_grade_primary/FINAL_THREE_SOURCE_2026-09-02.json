@@ -1,0 +1,455 @@
+{
+ "artifact": "final_three_source_analysis",
+ "created_at": "2026-09-02 01:01:58",
+ "policy": [
+  "instructor grade = reference, not infallible truth; humans are not infallible either; no source is declared universally correct",
+  "seen exams only (DEV+CALIBRATION) - no generalization claim; HELD_OUT sealed",
+  "the repaired cases' human reference is the owner's post-repair verdict, NEVER two-reviewer consensus; their superseded model outputs are preserved and excluded"
+ ],
+ "final_human_reference": {
+  "cases": 46,
+  "by_source": {
+   "adjudicated_human_reference": 22,
+   "independent_two_reviewer_consensus": 22,
+   "owner_adjudicated_after_source_repair": 2
+  },
+  "redundant_confirming_adjudications": [
+   "e004_q2_r2"
+  ],
+  "per_case": {
+   "e002_q1_r1": {
+    "verdict": "partially_valid",
+    "source": "adjudicated_human_reference"
+   },
+   "e002_q1_r2": {
+    "verdict": "valid",
+    "source": "independent_two_reviewer_consensus"
+   },
+   "e002_q1_r3": {
+    "verdict": "valid",
+    "source": "independent_two_reviewer_consensus"
+   },
+   "e002_q1_r4": {
+    "verdict": "valid",
+    "source": "independent_two_reviewer_consensus"
+   },
+   "e002_q1_r5": {
+    "verdict": "partially_valid",
+    "source": "adjudicated_human_reference"
+   },
+   "e002_q1_r6": {
+    "verdict": "partially_valid",
+    "source": "adjudicated_human_reference"
+   },
+   "e002_q1_r7": {
+    "verdict": "partially_valid",
+    "source": "adjudicated_human_reference"
+   },
+   "e002_q1_r8": {
+    "verdict": "partially_valid",
+    "source": "adjudicated_human_reference"
+   },
+   "e002_q2_r1": {
+    "verdict": "valid",
+    "source": "independent_two_reviewer_consensus"
+   },
+   "e002_q2_r2": {
+    "verdict": "valid",
+    "source": "adjudicated_human_reference"
+   },
+   "e002_q2_r3": {
+    "verdict": "valid",
+    "source": "independent_two_reviewer_consensus"
+   },
+   "e002_q2_r4": {
+    "verdict": "partially_valid",
+    "source": "adjudicated_human_reference"
+   },
+   "e002_q2_r5": {
+    "verdict": "valid",
+    "source": "adjudicated_human_reference"
+   },
+   "e002_q2_r6": {
+    "verdict": "partially_valid",
+    "source": "independent_two_reviewer_consensus"
+   },
+   "e002_q2_r7": {
+    "verdict": "valid",
+    "source": "adjudicated_human_reference"
+   },
+   "e002_q2_r8": {
+    "verdict": "valid",
+    "source": "adjudicated_human_reference"
+   },
+   "e003_q1_r1": {
+    "verdict": "valid",
+    "source": "adjudicated_human_reference"
+   },
+   "e003_q1_r3": {
+    "verdict": "valid",
+    "source": "independent_two_reviewer_consensus"
+   },
+   "e003_q1_r4": {
+    "verdict": "valid",
+    "source": "independent_two_reviewer_consensus"
+   },
+   "e003_q1_r5": {
+    "verdict": "valid",
+    "source": "independent_two_reviewer_consensus"
+   },
+   "e003_q1_r6": {
+    "verdict": "valid",
+    "source": "adjudicated_human_reference"
+   },
+   "e003_q1_r7": {
+    "verdict": "valid",
+    "source": "adjudicated_human_reference"
+   },
+   "e003_q1_r8": {
+    "verdict": "partially_valid",
+    "source": "independent_two_reviewer_consensus"
+   },
+   "e003_q2_r1": {
+    "verdict": "partially_valid",
+    "source": "independent_two_reviewer_consensus"
+   },
+   "e003_q2_r2": {
+    "verdict": "valid",
+    "source": "independent_two_reviewer_consensus"
+   },
+   "e003_q2_r3": {
+    "verdict": "valid",
+    "source": "adjudicated_human_reference"
+   },
+   "e003_q2_r4": {
+    "verdict": "invalid",
+    "source": "adjudicated_human_reference"
+   },
+   "e003_q2_r5": {
+    "verdict": "valid",
+    "source": "adjudicated_human_reference"
+   },
+   "e003_q2_r6": {
+    "verdict": "invalid",
+    "source": "independent_two_reviewer_consensus"
+   },
+   "e003_q2_r7": {
+    "verdict": "valid",
+    "source": "independent_two_reviewer_consensus"
+   },
+   "e003_q2_r8": {
+    "verdict": "valid",
+    "source": "adjudicated_human_reference"
+   },
+   "e004_q1_r1": {
+    "verdict": "valid",
+    "source": "adjudicated_human_reference"
+   },
+   "e004_q1_r2": {
+    "verdict": "valid",
+    "source": "independent_two_reviewer_consensus"
+   },
+   "e004_q1_r3": {
+    "verdict": "invalid",
+    "source": "independent_two_reviewer_consensus"
+   },
+   "e004_q1_r4": {
+    "verdict": "valid",
+    "source": "independent_two_reviewer_consensus"
+   },
+   "e004_q1_r5": {
+    "verdict": "partially_valid",
+    "source": "adjudicated_human_reference"
+   },
+   "e004_q1_r6": {
+    "verdict": "partially_valid",
+    "source": "adjudicated_human_reference"
+   },
+   "e004_q1_r8": {
+    "verdict": "partially_valid",
+    "source": "adjudicated_human_reference"
+   },
+   "e004_q2_r1": {
+    "verdict": "valid",
+    "source": "independent_two_reviewer_consensus"
+   },
+   "e004_q2_r2": {
+    "verdict": "valid",
+    "source": "independent_two_reviewer_consensus",
+    "redundant_confirming_adjudication": true
+   },
+   "e004_q2_r3": {
+    "verdict": "valid",
+    "source": "adjudicated_human_reference"
+   },
+   "e004_q2_r4": {
+    "verdict": "invalid",
+    "source": "independent_two_reviewer_consensus"
+   },
+   "e004_q2_r5": {
+    "verdict": "invalid",
+    "source": "independent_two_reviewer_consensus"
+   },
+   "e004_q2_r6": {
+    "verdict": "valid",
+    "source": "owner_adjudicated_after_source_repair"
+   },
+   "e004_q2_r8": {
+    "verdict": "valid",
+    "source": "owner_adjudicated_after_source_repair"
+   },
+   "e007_q1_r1": {
+    "verdict": "partially_valid",
+    "source": "independent_two_reviewer_consensus"
+   }
+  }
+ },
+ "model_output_sources": {
+  "frozen_seen46_run": 44,
+  "corrected_rerun_2026-09-02": 2
+ },
+ "reviewer_agreement_before_adjudication": {
+  "cases_with_two_fresh_reviews": 44,
+  "agreements": 22,
+  "agreement_pct": 50.0,
+  "cohens_kappa": 0.2461,
+  "note": "the 44 unaffected cases only; the repaired cases' stale reviews are preserved but never counted"
+ },
+ "A_model_vs_final_human_reference": {
+  "cases": 46,
+  "exact_agreement": 31,
+  "exact_agreement_pct": 67.4,
+  "harmful_overgrades__model_higher_than_human": 8,
+  "harmful_undergrades__model_lower_than_human": 7,
+  "confusion_matrix__rows_reference_cols_prediction": {
+   "partially_valid": {
+    "partially_valid": 6,
+    "valid": 4,
+    "invalid": 3
+   },
+   "valid": {
+    "valid": 24,
+    "partially_valid": 2,
+    "invalid": 2
+   },
+   "invalid": {
+    "invalid": 1,
+    "partially_valid": 4
+   }
+  },
+  "balanced_accuracy": 0.5062,
+  "macro_f1": 0.5063,
+  "per_writer": {
+   "e002": {
+    "cases": 16,
+    "agree": 11,
+    "agree_pct": 68.8
+   },
+   "e003": {
+    "cases": 15,
+    "agree": 11,
+    "agree_pct": 73.3
+   },
+   "e004": {
+    "cases": 14,
+    "agree": 8,
+    "agree_pct": 57.1
+   },
+   "e007": {
+    "cases": 1,
+    "agree": 1,
+    "agree_pct": 100.0
+   }
+  },
+  "per_question": {
+   "q1": {
+    "cases": 23,
+    "agree": 14,
+    "agree_pct": 60.9
+   },
+   "q2": {
+    "cases": 23,
+    "agree": 17,
+    "agree_pct": 73.9
+   }
+  }
+ },
+ "B_instructor_vs_final_human_reference": {
+  "cases": 38,
+  "exact_agreement": 31,
+  "exact_agreement_pct": 81.6,
+  "harmful_overgrades__instructor_higher_than_human": 6,
+  "harmful_undergrades__instructor_lower_than_human": 1,
+  "confusion_matrix__rows_reference_cols_prediction": {
+   "valid": {
+    "valid": 24,
+    "partially_valid": 1
+   },
+   "partially_valid": {
+    "partially_valid": 7,
+    "valid": 5
+   },
+   "invalid": {
+    "partially_valid": 1
+   }
+  },
+  "balanced_accuracy": 0.5144,
+  "macro_f1": 0.5185,
+  "derivable_instructor_verdicts": 38,
+  "cases_without_derivable_instructor_verdict": 8,
+  "instructor_more_lenient_than_human": 6,
+  "instructor_stricter_than_human": 1,
+  "per_writer": {
+   "e002": {
+    "cases": 15,
+    "agree": 12,
+    "agree_pct": 80.0
+   },
+   "e003": {
+    "cases": 10,
+    "agree": 9,
+    "agree_pct": 90.0
+   },
+   "e004": {
+    "cases": 12,
+    "agree": 10,
+    "agree_pct": 83.3
+   },
+   "e007": {
+    "cases": 1,
+    "agree": 0,
+    "agree_pct": 0.0
+   }
+  },
+  "per_question": {
+   "q1": {
+    "cases": 21,
+    "agree": 18,
+    "agree_pct": 85.7
+   },
+   "q2": {
+    "cases": 17,
+    "agree": 13,
+    "agree_pct": 76.5
+   }
+  }
+ },
+ "C_model_vs_original_instructor": {
+  "cases": 38,
+  "exact_agreement": 25,
+  "exact_agreement_pct": 65.8,
+  "harmful_overgrades__model_higher_than_instructor": 4,
+  "harmful_undergrades__model_lower_than_instructor": 9,
+  "confusion_matrix__rows_reference_cols_prediction": {
+   "partially_valid": {
+    "valid": 4,
+    "partially_valid": 4,
+    "invalid": 1
+   },
+   "valid": {
+    "valid": 21,
+    "partially_valid": 4,
+    "invalid": 4
+   }
+  },
+  "balanced_accuracy": 0.5843,
+  "macro_f1": 0.4161,
+  "per_writer": {
+   "e002": {
+    "cases": 15,
+    "agree": 9,
+    "agree_pct": 60.0
+   },
+   "e003": {
+    "cases": 10,
+    "agree": 8,
+    "agree_pct": 80.0
+   },
+   "e004": {
+    "cases": 12,
+    "agree": 8,
+    "agree_pct": 66.7
+   },
+   "e007": {
+    "cases": 1,
+    "agree": 0,
+    "agree_pct": 0.0
+   }
+  },
+  "per_question": {
+   "q1": {
+    "cases": 21,
+    "agree": 12,
+    "agree_pct": 57.1
+   },
+   "q2": {
+    "cases": 17,
+    "agree": 13,
+    "agree_pct": 76.5
+   }
+  }
+ },
+ "D_three_way_agreement": {
+  "all_agree": 23,
+  "human_model_agree_only": 3,
+  "human_instructor_agree_only": 8,
+  "model_instructor_agree_only": 2,
+  "all_disagree": 2,
+  "cases": 38
+ },
+ "model_evidence_validation": {
+  "outputs": 46,
+  "auto": 44,
+  "auto_rate_pct": 95.7,
+  "validation_ok": 44,
+  "evidence_failures": 2,
+  "ungrounded_invalid": 1,
+  "schema_failures": 0,
+  "uncertain": 0
+ },
+ "repaired_cases_detail": {
+  "e004_q2_r6": {
+   "human_reference": {
+    "verdict": "valid",
+    "source": "owner_adjudicated_after_source_repair"
+   },
+   "model_corrected": {
+    "predicted_verdict": "valid",
+    "score": 4.0,
+    "decision": "AUTO",
+    "evidence_failure": false,
+    "cache_hit": false,
+    "latency_s": 8.594
+   },
+   "instructor_derived_verdict": "valid",
+   "instructor_score": 4.0
+  },
+  "e004_q2_r8": {
+   "human_reference": {
+    "verdict": "valid",
+    "source": "owner_adjudicated_after_source_repair"
+   },
+   "model_corrected": {
+    "predicted_verdict": "valid",
+    "score": 4.0,
+    "decision": "AUTO",
+    "evidence_failure": false,
+    "cache_hit": false,
+    "latency_s": 2.297
+   },
+   "instructor_derived_verdict": "partially_valid",
+   "instructor_score": 2.0
+  }
+ },
+ "confirmations": {
+  "new_local_model_calls": 2,
+  "cloud_calls": 0,
+  "ocr_calls": 0,
+  "rag_calls": 0,
+  "held_out_calls_or_exposure": 0,
+  "instructor_grades_modified": 0,
+  "human_reviews_modified": 0,
+  "historical_model_outputs_modified": 0,
+  "prompt_modified": 0
+ }
+}
