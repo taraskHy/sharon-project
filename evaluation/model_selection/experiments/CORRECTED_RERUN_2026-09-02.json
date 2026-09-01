@@ -1,0 +1,59 @@
+{
+ "experiment": "corrected_rerun_2026-09-02",
+ "purpose": "owner-authorized rerun of the production grader on ONLY the two cases repaired by the confirmed row transposition; the historical outputs stay preserved as invalid_due_to_confirmed_source_transposition",
+ "created_at": "2026-09-02 00:59:40",
+ "cases": [
+  "e004_q2_r6",
+  "e004_q2_r8"
+ ],
+ "max_local_evaluations": 2,
+ "candidate": "qwen3-vl:8b-instruct",
+ "prompt_version": "grade-v4-charitable-local",
+ "prompt_sha256": "d8c799d1bdec0274623c89b9435eccdcdb4ba8f8f6c27bf7d87bd0b15ba87f2d",
+ "schema_sha256": "2a19252fd83702a240865020141cd4c422b1312b4ed8c6c49c51ee7dce8d06c6",
+ "adapter_version": "grade-bench-v3",
+ "validation_version": "grade-validation-v2",
+ "dataset_hashes": {
+  "inputs_sha256": "5d738497b1f5113ca868180f3df4e6781d1c4927c7667c95a356411facd0ac9b",
+  "labels_sha256": "575c262f0f778b1896e8416429c73ce1e236fde26159ae842b82f4038c5a4a3c",
+  "manifest_sha256": "e9058177255ac298f2d125a051f71029419cfbdd5de3ab1a4f3c13128b7c4b3d",
+  "final_labels_sha256": "3bdd38c3ec1787bb053447382e1cb545c3ea1f478d459b317b23cefd49999869"
+ },
+ "dataset_revision": "confirmed_row_transposition (owner-confirmed, 2026-09-01)",
+ "campaign_sha256": "64159ba08f28d2bc1a3a4d64ef10e2f56c119fb2fa774de39de386adaa03832f",
+ "stale_registry_sha256": "8b0a1ee9148c4a68ce832ca447ec7f4b86ae817a71607c430e3ea741116de161",
+ "superseded_outputs": [
+  {
+   "run_id": "calibration__all__qwen3-vl-8b-instruct__e2a3cfc925",
+   "run_dir": "evaluation/model_selection/runs/local_grade_primary/grade_primary/calibration__all__qwen3-vl-8b-instruct__e2a3cfc925",
+   "case_id": "e004_q2_r6",
+   "candidate": "qwen3-vl:8b-instruct",
+   "prompt_version": "grade-v4-charitable-local"
+  },
+  {
+   "run_id": "calibration__all__qwen3-vl-8b-instruct__e2a3cfc925",
+   "run_dir": "evaluation/model_selection/runs/local_grade_primary/grade_primary/calibration__all__qwen3-vl-8b-instruct__e2a3cfc925",
+   "case_id": "e004_q2_r8",
+   "candidate": "qwen3-vl:8b-instruct",
+   "prompt_version": "grade-v4-charitable-local"
+  }
+ ],
+ "backend": {
+  "backend": "ollama",
+  "base_url": "http://localhost:11434/v1",
+  "temperature": 0.0,
+  "max_tokens": 600,
+  "rag_policy": "RAG_DISABLED",
+  "cacheable": false,
+  "cache_bypass_reason": "the swap probe cached the same (pack, transcription) combinations as diagnostic flags; official outputs must come from fresh live calls"
+ },
+ "prohibitions": [
+  "no other case is evaluated",
+  "no cloud call",
+  "no OCR call",
+  "no RAG retrieval",
+  "no HELD_OUT access",
+  "no change to instructor grades, human reviews, historical model outputs, or the prompt"
+ ],
+ "spec_sha256": "80e1ea190c98f5beccc16cb4532a73626f342dd463465ad26dc3e4e40906387f"
+}
