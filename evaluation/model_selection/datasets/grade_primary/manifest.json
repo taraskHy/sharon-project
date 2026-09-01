@@ -3,8 +3,8 @@
  "status": "FROZEN",
  "frozen_at": "2026-08-22 05:28:41",
  "cases": 67,
- "inputs_sha256": "61ea571e9413b20b4b1e2d6dc84e14688cdd2ff4a1a3e0751a2233cf4dbc050c",
- "labels_sha256": "2281f063f33c5ddf37675766892ef3b47148254674768b85d4eee40e8523ccd9",
+ "inputs_sha256": "5d738497b1f5113ca868180f3df4e6781d1c4927c7667c95a356411facd0ac9b",
+ "labels_sha256": "575c262f0f778b1896e8416429c73ce1e236fde26159ae842b82f4038c5a4a3c",
  "split_assignment": {
   "DEV": [
    "e002",
@@ -306,6 +306,57 @@
    "grading_policy_version": "explanation_gate_w0_v1",
    "selection_audit_sha256": "c0c6f6e47faf21d0c8d3f3c8fa055d859c3188de9a6628464e6cf02b265c4a60",
    "model_involved": false
+  },
+  {
+   "at": "2026-09-01 23:35:24",
+   "kind": "confirmed_row_transposition",
+   "why": "owner source-page inspection (2026-09-01) confirmed the row-attached evidence of e004_q2_r6 and e004_q2_r8 is transposed; corroborated by the answer texts and the SWAP_PROBE_2026-08-30 reciprocal signature. The source mapping is repaired; grades, packs, logical sub-item identity and the original instructor scores are untouched",
+   "owner_confirmed": true,
+   "authority": "original exam page (test/004_58.pdf, question 2 rows 6/8)",
+   "cases_changed": [
+    "e004_q2_r6",
+    "e004_q2_r8"
+   ],
+   "mapping_before": {
+    "e004_q2_r6": {
+     "transcription_sha256": "84b022ae7736b6dbdb61cab19d9635cf14d559b1f9077fe0b194803bb154cb63",
+     "evidence_images": [
+      "hebrew_bench_v2/crops/hl_e004_q2_r6__l1.png",
+      "hebrew_bench_v2/crops/hl_e004_q2_r6__l2.png"
+     ]
+    },
+    "e004_q2_r8": {
+     "transcription_sha256": "719a5349790e5690067aebde0d76c5e91a582f84d29d706c91c7a26c9a7a698d",
+     "evidence_images": [
+      "hebrew_bench_v2/crops/hl_e004_q2_r8__l1.png",
+      "hebrew_bench_v2/crops/hl_e004_q2_r8__l2.png"
+     ]
+    }
+   },
+   "mapping_after": {
+    "e004_q2_r6": {
+     "transcription_sha256": "719a5349790e5690067aebde0d76c5e91a582f84d29d706c91c7a26c9a7a698d",
+     "evidence_images": [
+      "hebrew_bench_v2/crops/hl_e004_q2_r8__l1.png",
+      "hebrew_bench_v2/crops/hl_e004_q2_r8__l2.png"
+     ]
+    },
+    "e004_q2_r8": {
+     "transcription_sha256": "84b022ae7736b6dbdb61cab19d9635cf14d559b1f9077fe0b194803bb154cb63",
+     "evidence_images": [
+      "hebrew_bench_v2/crops/hl_e004_q2_r6__l1.png",
+      "hebrew_bench_v2/crops/hl_e004_q2_r6__l2.png"
+     ]
+    }
+   },
+   "previous_inputs_sha256": "61ea571e9413b20b4b1e2d6dc84e14688cdd2ff4a1a3e0751a2233cf4dbc050c",
+   "inputs_sha256": "5d738497b1f5113ca868180f3df4e6781d1c4927c7667c95a356411facd0ac9b",
+   "inputs_changed": true,
+   "previous_labels_sha256": "2281f063f33c5ddf37675766892ef3b47148254674768b85d4eee40e8523ccd9",
+   "labels_sha256": "575c262f0f778b1896e8416429c73ce1e236fde26159ae842b82f4038c5a4a3c",
+   "rows_updated": 2,
+   "model_involved": false,
+   "note": "model outputs and human reviews recorded against the pre-repair evidence are preserved historically and marked stale/invalid downstream (review bundle fingerprints; STALE_MODEL_OUTPUTS artifact); any run or bundle made against the previous hashes is a different evidence version"
   }
  ]
 }

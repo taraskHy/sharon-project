@@ -139,13 +139,49 @@ def _unapply_input(row: dict, label: dict, store: dict[str, dict]) -> dict:
     return {**row, "transcription": "\n".join(kept)}
 
 
+def transposition_revisions(dataset: Path = DATASET) -> list[dict]:
+    return [r for r in (manifest(dataset).get("revisions") or [])
+            if r.get("kind") == "confirmed_row_transposition" and r.get("owner_confirmed")]
+
+
+def pre_transposition_live(dataset: Path = DATASET) -> tuple[list[dict], list[dict]]:
+    """Today's dataset with every owner-confirmed row transposition UN-applied
+    (the swap is self-inverse): the exact state the evidence-repair layers
+    historically produced, byte-provable against the transposition revision's
+    recorded previous hashes."""
+    d = Path(dataset)
+    inputs = [dict(r) for r in rows(d / "cases_inputs.jsonl")]
+    labels = [dict(r) for r in rows(d / "cases_labels.jsonl")]
+    from scripts.row_transposition_repair import replay_swaps
+    replay_swaps(inputs, labels, d)
+    return inputs, labels
+
+
+def chain_end(revs: list[dict], start: str, which: str) -> str:
+    """Follow ``previous_<which>_sha256 -> <which>_sha256`` links from
+    ``start`` through any later recorded revisions; the returned hash is where
+    the chain ends (today's value when the chain is unbroken)."""
+    cur = start
+    for r in revs:
+        if r.get(f"previous_{which}_sha256") == cur and r.get(f"{which}_sha256") != cur:
+            cur = r[f"{which}_sha256"]
+    return cur
+
+
 def pre_repair_rows(dataset: Path = DATASET) -> tuple[list[dict], list[dict]]:
-    """(inputs, labels) as they were immediately before the manual repair."""
+    """(inputs, labels) as they were immediately before the manual repair.
+
+    Revisions AFTER the repair are undone first — including the 2026-09-01
+    owner-confirmed row transposition (a self-inverse swap, so 'undo' is one
+    more application via ``replay_swaps``)."""
     d = Path(dataset)
     store = repair_store(d)
-    labels = rows(d / "cases_labels.jsonl")
+    labels = [dict(r) for r in rows(d / "cases_labels.jsonl")]
+    inputs = [dict(r) for r in rows(d / "cases_inputs.jsonl")]
+    from scripts.row_transposition_repair import replay_swaps
+    replay_swaps(inputs, labels, d)
     by_case = {r["case_id"]: r for r in labels}
-    inputs = [_unapply_input(r, by_case[r["case_id"]], store) for r in rows(d / "cases_inputs.jsonl")]
+    inputs = [_unapply_input(r, by_case[r["case_id"]], store) for r in inputs]
     return inputs, [_unapply_label(r) for r in labels]
 
 

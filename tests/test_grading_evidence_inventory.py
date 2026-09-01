@@ -114,7 +114,10 @@ def test_frozen_dataset_is_the_builder_output_plus_the_manual_repair_layer():
     differ — in exactly the ways apply_repairs records."""
     cells = audited_cells()
     store = repair_store()
-    labels = _rows(DATASET / "cases_labels.jsonl")
+    # compare against the pre-transposition state: the 2026-09-01 owner-
+    # confirmed row swap postdates the builder+repair layers (self-inverse)
+    from prerepair import pre_transposition_live
+    _, labels = pre_transposition_live(DATASET)
     assert len(labels) == 67
     for row in labels:
         base = evidence_label_fields(cells[row["case_id"]])

@@ -245,9 +245,30 @@ def verify_freeze(freeze_path: Path = FREEZE_PATH) -> list[str]:
             problems.append(f"{key}: frozen {frozen.get(key)!r} != live {live.get(key)!r}")
     if frozen.get("strict_metrics") != live.get("strict_metrics"):
         problems.append("strict_metrics changed (calibration strict ids / audit-C exclusions)")
-    for key in ("inputs_sha256", "labels_sha256", "final_labels_sha256", "manifest_sha256"):
-        if frozen["dataset"].get(key) != live["dataset"].get(key):
-            problems.append(f"dataset.{key} changed since the freeze")
+    if any(frozen["dataset"].get(k) != live["dataset"].get(k)
+           for k in ("inputs_sha256", "labels_sha256", "final_labels_sha256", "manifest_sha256")):
+        # A post-freeze dataset move is acceptable ONLY when the manifest's
+        # revision chain explains the walk from the frozen hashes to the live
+        # ones with recorded, owner-confirmed repairs (e.g. the 2026-09-01
+        # confirmed_row_transposition). Anything unexplained is drift.
+        ds = REPO / "evaluation" / "model_selection" / "datasets" / "grade_primary"
+        man = json.loads((ds / "manifest.json").read_text(encoding="utf-8"))
+        cur_i = frozen["dataset"].get("inputs_sha256")
+        cur_l = frozen["dataset"].get("labels_sha256")
+        explained = []
+        for rev in man.get("revisions", []):
+            if (rev.get("previous_inputs_sha256") == cur_i
+                    and rev.get("previous_labels_sha256") == cur_l
+                    and rev.get("owner_confirmed") is True):
+                cur_i, cur_l = rev["inputs_sha256"], rev["labels_sha256"]
+                explained.append(rev["kind"])
+        if (cur_i, cur_l) != (live["dataset"].get("inputs_sha256"),
+                              live["dataset"].get("labels_sha256")):
+            problems.append("dataset hashes changed since the freeze with NO owner-confirmed "
+                            "revision chain explaining the walk")
+        # final_labels must never move at all (instructor grades are immutable)
+        if frozen["dataset"].get("final_labels_sha256") != live["dataset"].get("final_labels_sha256"):
+            problems.append("final_labels_sha256 changed — instructor grades must never move")
     for pop in ("smoke", "dev_verdict", "calibration_verdict_v4"):
         f, l = frozen["populations"][pop], live["populations"][pop]
         if f["case_ids"] != l["case_ids"]:

@@ -206,7 +206,27 @@ def verify_campaign() -> list[str]:
         if frozen.get(key) != live.get(key):
             problems.append(f"{key}: frozen {frozen.get(key)!r} != live {live.get(key)!r}")
     if frozen["dataset"] != live["dataset"]:
-        problems.append("dataset hashes changed since the campaign freeze")
+        # A dataset that moved AFTER the campaign is acceptable ONLY when the
+        # manifest's revision chain explains the walk from the frozen hashes to
+        # the current ones with recorded, owner-confirmed repairs (e.g. the
+        # 2026-09-01 confirmed_row_transposition). Anything else is drift.
+        ds = REPO / "evaluation" / "model_selection" / "datasets" / "grade_primary"
+        man = json.loads((ds / "manifest.json").read_text(encoding="utf-8"))
+        cur_i, cur_l = frozen["dataset"]["inputs_sha256"], frozen["dataset"]["labels_sha256"]
+        explained: list[str] = []
+        for rev in man.get("revisions", []):
+            if (rev.get("previous_inputs_sha256") == cur_i
+                    and rev.get("previous_labels_sha256") == cur_l
+                    and rev.get("owner_confirmed") is True):
+                cur_i, cur_l = rev["inputs_sha256"], rev["labels_sha256"]
+                explained.append(rev["kind"])
+        if (cur_i, cur_l) == (live["dataset"]["inputs_sha256"], live["dataset"]["labels_sha256"]):
+            print(f"note: dataset moved past the campaign freeze via recorded owner-confirmed "
+                  f"revision(s) {explained}; model outputs for the revised cases are stale "
+                  "(see STALE_MODEL_OUTPUTS artifacts)")
+        else:
+            problems.append("dataset hashes changed since the campaign freeze with NO "
+                            "owner-confirmed revision chain explaining the walk")
     if [c["case_id"] for c in frozen["cases"]] != [c["case_id"] for c in live["cases"]]:
         problems.append("case list/order changed")
     for c in frozen["cases"]:

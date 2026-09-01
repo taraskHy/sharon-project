@@ -631,7 +631,11 @@ def test_live_manifest_records_the_evidence_version_transition():
     assert len(manual) == 1, "the repair was applied exactly once"
     rev = manual[0]
     assert rev["inputs_changed"] is True
-    assert rev["previous_inputs_sha256"] != rev["inputs_sha256"] == man["inputs_sha256"]
+    assert rev["previous_inputs_sha256"] != rev["inputs_sha256"]
+    # inputs moved again later (the 2026-09-01 owner-confirmed transposition);
+    # the recorded chain from this revision must reach today's file
+    from prerepair import chain_end
+    assert chain_end(revs, rev["inputs_sha256"], "inputs") == man["inputs_sha256"]
     assert rev["previous_labels_sha256"] != rev["labels_sha256"]
     # the labels file has moved on since (the effective-evidence layer), so this
     # revision's output is the NEXT revision's input, not today's file
@@ -698,10 +702,15 @@ def test_the_live_dataset_is_the_pre_repair_dataset_plus_the_owners_decisions(tm
     out = apply_repairs(d, evaluation_root=EVAL_ROOT, now=when)
     assert out["written"] is True and len(out["lines_repaired"]) == 9
 
-    assert (d / "cases_inputs.jsonl").read_bytes() == (REAL_DATASET / "cases_inputs.jsonl").read_bytes(), \
+    # the rebuild lands on the pre-transposition state (the 2026-09-01 swap is
+    # a LATER owner-confirmed revision); compare against today's dataset with
+    # the self-inverse swap un-applied
+    from prerepair import body as _body, pre_transposition_live
+    pt_inputs, pt_labels = pre_transposition_live(REAL_DATASET)
+    assert (d / "cases_inputs.jsonl").read_bytes() == _body(pt_inputs), \
         "the model input rebuilds byte for byte from the owner's own records"
 
-    store, live = repair_store(), _label_map(REAL_DATASET)
+    store, live = repair_store(), {r["case_id"]: r for r in pt_labels}
     substituted = []
     for row in _rows(d / "cases_labels.jsonl"):
         for e in row["evidence_lines"]:
@@ -720,7 +729,9 @@ def test_the_live_dataset_is_the_pre_repair_dataset_plus_the_owners_decisions(tm
     assert sorted(substituted) == repaired_line_ids(), "nothing else needed adjusting"
 
     rebuilt = json.loads((d / "manifest.json").read_text(encoding="utf-8"))
-    assert rebuilt["inputs_sha256"] == live_man["inputs_sha256"]
+    from prerepair import chain_end
+    assert chain_end(live_man["revisions"], rebuilt["inputs_sha256"], "inputs") \
+        == live_man["inputs_sha256"], "the recorded chain reaches today's inputs"
     assert rebuilt["revisions"][0] == live_man["revisions"][0], "the historical revision is untouched"
     # The live dataset reached this state in TWO recorded steps (the repair, then
     # the effective-evidence layer); a one-pass rebuild records them as one. The
@@ -912,7 +923,9 @@ def test_the_effective_evidence_revision_is_recorded_and_the_chain_is_unbroken()
     # is the prefix and must stay unbroken regardless of what came after
     eff = revs[2]
     assert eff["inputs_changed"] is False, "the grading model's text input did not change"
-    assert eff["previous_inputs_sha256"] == eff["inputs_sha256"] == man["inputs_sha256"]
+    assert eff["previous_inputs_sha256"] == eff["inputs_sha256"]
+    from prerepair import chain_end
+    assert chain_end(revs, eff["inputs_sha256"], "inputs") == man["inputs_sha256"]
     assert eff["previous_labels_sha256"] != eff["labels_sha256"]
     if len(revs) == 3:
         assert eff["labels_sha256"] == man["labels_sha256"]
@@ -952,8 +965,15 @@ def test_applying_the_effective_layer_to_the_pre_repair_dataset_reaches_the_live
     copy_repair_store(d)
     out = apply_repairs(d, evaluation_root=EVAL_ROOT)
     assert out["written"] is True and len(out["lines_repaired"]) == 9
-    assert (d / "cases_inputs.jsonl").read_bytes() == (REAL_DATASET / "cases_inputs.jsonl").read_bytes()
-    live = _label_map(REAL_DATASET)
+    # the forward walk lands on the state BEFORE the 2026-09-01 owner-confirmed
+    # row transposition; compare against today's dataset with that (self-
+    # inverse) swap un-applied — provably the genuine historical state
+    from prerepair import body as _body, pre_transposition_live, transposition_revisions
+    pt_inputs, pt_labels = pre_transposition_live(REAL_DATASET)
+    assert (d / "cases_inputs.jsonl").read_bytes() == _body(pt_inputs)
+    for rev in transposition_revisions(REAL_DATASET):
+        assert out["inputs_sha256"] == rev["previous_inputs_sha256"]
+    live = {r["case_id"]: r for r in pt_labels}
     for row in _rows(d / "cases_labels.jsonl"):
         want = live[row["case_id"]]
         assert row["lines_transcribed"] == want["lines_transcribed"]

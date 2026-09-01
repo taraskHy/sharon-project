@@ -117,7 +117,17 @@ def test_every_row_carries_its_label_provenance(frozen):
 
 
 def test_the_manifest_hashes_match_the_live_dataset(manifest, frozen):
-    assert frozen["manifest_hashes"] == dict(manifest.hashes)
+    if frozen["manifest_hashes"] == dict(manifest.hashes):
+        return
+    # the dataset moved after the subset froze; that is acceptable ONLY when
+    # the manifest's owner-confirmed revision chain explains the walk from the
+    # frozen hashes to the live ones (e.g. the 2026-09-01 row transposition)
+    from prerepair import chain_end, manifest as live_manifest
+    revs = [r for r in live_manifest()["revisions"] if r.get("owner_confirmed")]
+    assert chain_end(revs, frozen["manifest_hashes"]["inputs_sha256"], "inputs") \
+        == manifest.hashes["inputs_sha256"]
+    assert chain_end(revs, frozen["manifest_hashes"]["labels_sha256"], "labels") \
+        == manifest.hashes["labels_sha256"]
 
 
 # ------------------------------------------------------------- the guards ----
