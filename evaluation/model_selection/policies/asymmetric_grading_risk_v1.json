@@ -1,0 +1,46 @@
+{
+ "policy_name": "asymmetric_grading_risk_v1",
+ "schema_version": 1,
+ "created_at": "2026-09-02 02:24:48",
+ "git_commit": "cfe7a02a0145fd46fd6396cf8af0628d38bbd84b",
+ "cost_matrix": {
+  "invalid": {
+   "invalid": 0,
+   "partially_valid": 3,
+   "valid": 12
+  },
+  "partially_valid": {
+   "invalid": 1,
+   "partially_valid": 0,
+   "valid": 5
+  },
+  "valid": {
+   "invalid": 3,
+   "partially_valid": 1,
+   "valid": 0
+  }
+ },
+ "matrix_orientation": "rows = ACTUAL (human reference), cols = PREDICTED (model)",
+ "rationale": {
+  "invalid->valid (12)": "catastrophic false full-credit: an invalid explanation is awarded full credit; awarded points are difficult to retract, and the error is invisible to the student (no appeal comes)",
+  "partially_valid->valid (5)": "serious overgrade: full credit for a partially valid answer; also hard to retract, but the magnitude of the unearned award is smaller",
+  "invalid->partially_valid (3)": "moderate overgrade: partial credit for an invalid answer; unearned award, smaller magnitude",
+  "valid->invalid (3)": "serious undergrade: a fully valid answer stripped to zero; correctable through review/appeal, but a real, measured harm to the student and to trust in the system",
+  "partially_valid->invalid (1)": "mild conservative error: adjacent undergrade, the most appeal-correctable mistake",
+  "valid->partially_valid (1)": "mild conservative error: adjacent undergrade, the most appeal-correctable mistake",
+  "correct (0)": "no cost"
+ },
+ "required_orderings": [
+  "loss(invalid, valid) > loss(partially_valid, valid)",
+  "loss(partially_valid, valid) > loss(partially_valid, invalid)",
+  "every undergrade cost is nonzero (undergrading is an error, not a free action)"
+ ],
+ "separation_of_layers": "the semantic grader (grade-v4-charitable-local) is UNCHANGED; this matrix and any AUTO/REVIEW routing built on it are a separate downstream risk layer — asymmetry is never implemented by telling the model to be stricter",
+ "anti_gaming_statement": "matrix values were set from the owner's stated harm ordering BEFORE computing any arm's weighted loss and are not tuned to make any particular model win; robustness to nearby values is measured by the pre-registered sensitivity grid, never by editing this file",
+ "frozen_before_held_out": "FROZEN before any HELD_OUT run; HELD_OUT remains sealed and untouched by the entire asymmetric-risk analysis",
+ "normalization": {
+  "denominator": "cases x max off-diagonal cost (12)",
+  "note": "normalized loss = total / (n_cases * 12); 0 = perfect, 1 = every case at the catastrophic cell"
+ },
+ "policy_sha256": "11e65e79e0f36cf6d1b4c12b1c2f8898b97244b402731091f894f462a000ebdd"
+}

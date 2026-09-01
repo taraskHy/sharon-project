@@ -1,0 +1,984 @@
+{
+ "artifact": "production_policy_replay",
+ "created_at": "2026-09-02 02:26:16",
+ "provenance": {
+  "git_commit": "cfe7a02a0145fd46fd6396cf8af0628d38bbd84b",
+  "policy_name": "asymmetric_grading_risk_v1",
+  "policy_sha256": "11e65e79e0f36cf6d1b4c12b1c2f8898b97244b402731091f894f462a000ebdd",
+  "reference_sha256": "ce78aed115633883dd94bd14035ddc3e3f38d02c2484bbd0a7f49c5dbc384306",
+  "model_run_files_sha256": {
+   "baseline_dev_scored": "e6db6ab3a8fdb135228b760711fb743193ca0d359d28d7a56f96d0358375f2b5",
+   "baseline_calibration_scored": "2df474847aa2f1f6107fcea5f57bcc102c0ff826bf9c81018e9e30a8dcd13382",
+   "corrected_rerun": "feb6d7febb3a3457351fb4ee862b52d59ecd1cb145814bfb430c484a35e6128f",
+   "arm_a": "60a871a37d11a3527ac5e496b0426218c7a65ce86acc011f28f0f907fbac4bea",
+   "arm_b": "4bab0dee665cba3b48b614fcf0fce01c54f701a32d94ada2d81c215fd9953e2d"
+  },
+  "case_coverage": 46,
+  "held_out_cases": 0,
+  "stale_outputs_excluded": "the 14 rows registered in STALE_MODEL_OUTPUTS_2026-09-01.json; corrected r6/r8 rows used instead",
+  "new_inference_calls": 0,
+  "cloud_calls": 0,
+  "ocr_calls": 0,
+  "rag_calls": 0
+ },
+ "scope_note": "explanation-case automation ONLY: this 46-case reference contains no OCR-quality or deterministic-MC population, so NO full-exam automation claim is made",
+ "non_stale_note": "all replayed outputs are current (stale r6/r8 outputs structurally excluded; corrected reruns used); owner-repaired cases are listed per policy when they reach AUTO",
+ "policies": {
+  "AUTO_ALL": "every structurally valid model verdict is applied (the arm's own validator decision)",
+  "AUTO_VALID_ONLY": "AUTO iff verdict=valid AND schema/evidence valid AND not uncertain AND transcription complete AND no active human-flagged evidence/source/rubric issue AND non-stale",
+  "AUTO_VALID_AND_PARTIAL": "same structure, verdict in {valid, partially_valid}",
+  "HUMAN_DISPUTE_AWARE_B": "AUTO_VALID_ONLY + wide human disagreement -> REVIEW",
+  "HUMAN_DISPUTE_AWARE_C": "AUTO_VALID_AND_PARTIAL + wide human disagreement -> REVIEW"
+ },
+ "replay": {
+  "baseline_8b_one_pass": {
+   "AUTO_ALL": {
+    "auto": 44,
+    "review": 2,
+    "auto_coverage_pct": 95.7,
+    "review_rate_pct": 4.3,
+    "correct_auto": 30,
+    "auto_precision_pct": 68.2,
+    "auto_total_weighted_loss": 42,
+    "auto_mean_weighted_loss": 0.9545,
+    "auto_false_full_invalid_to_valid": 0,
+    "auto_partial_to_valid": 4,
+    "auto_invalid_to_partial": 4,
+    "auto_undergrades": 6,
+    "auto_undergrade_cases": [
+     "e002_q2_r4",
+     "e002_q2_r5",
+     "e003_q1_r6",
+     "e003_q1_r7",
+     "e004_q1_r1",
+     "e004_q1_r6"
+    ],
+    "auto_overgrades": 8,
+    "auto_overgrade_cases": [
+     "e002_q1_r5",
+     "e002_q1_r6",
+     "e003_q2_r1",
+     "e003_q2_r6",
+     "e004_q1_r3",
+     "e004_q1_r8",
+     "e004_q2_r4",
+     "e004_q2_r5"
+    ],
+    "review_reasons": {
+     "model_validator_review": 2
+    },
+    "review_cases": {
+     "e002_q1_r7": "model_validator_review",
+     "e002_q2_r7": "model_validator_review"
+    },
+    "owner_repaired_in_auto": [
+     "e004_q2_r6",
+     "e004_q2_r8"
+    ],
+    "est_review_per_100_explanation_cases": 4.3,
+    "appeal_aware": {
+     "auto_undergrade_count": 6,
+     "expected_appeal_candidates_upper_bound": 6,
+     "note": "upper bound = every automatically undergraded student appeals; no measured appeal rate exists, so no probability is fabricated",
+     "undergrade_verdict_step_deficit": 8,
+     "auto_overgrade_count": 8,
+     "overgrade_verdict_step_excess": 8,
+     "step_unit_note": "verdict steps (invalid<->partially_valid<->valid), NOT exam points: point mapping varies per question and is not invented here"
+    }
+   },
+   "AUTO_VALID_ONLY": {
+    "auto": 25,
+    "review": 21,
+    "auto_coverage_pct": 54.3,
+    "review_rate_pct": 45.7,
+    "correct_auto": 22,
+    "auto_precision_pct": 88.0,
+    "auto_total_weighted_loss": 15,
+    "auto_mean_weighted_loss": 0.6,
+    "auto_false_full_invalid_to_valid": 0,
+    "auto_partial_to_valid": 3,
+    "auto_invalid_to_partial": 0,
+    "auto_undergrades": 0,
+    "auto_undergrade_cases": [],
+    "auto_overgrades": 3,
+    "auto_overgrade_cases": [
+     "e002_q1_r6",
+     "e003_q2_r1",
+     "e004_q1_r8"
+    ],
+    "review_reasons": {
+     "active_evidence_source_issue": 5,
+     "model_validator_review": 2,
+     "verdict_not_in_auto_set": 14
+    },
+    "review_cases": {
+     "e002_q1_r1": "verdict_not_in_auto_set",
+     "e002_q1_r5": "active_evidence_source_issue",
+     "e002_q1_r7": "model_validator_review",
+     "e002_q1_r8": "verdict_not_in_auto_set",
+     "e002_q2_r4": "active_evidence_source_issue",
+     "e002_q2_r5": "verdict_not_in_auto_set",
+     "e002_q2_r6": "verdict_not_in_auto_set",
+     "e002_q2_r7": "model_validator_review",
+     "e003_q1_r6": "verdict_not_in_auto_set",
+     "e003_q1_r7": "verdict_not_in_auto_set",
+     "e003_q1_r8": "verdict_not_in_auto_set",
+     "e003_q2_r4": "verdict_not_in_auto_set",
+     "e003_q2_r6": "verdict_not_in_auto_set",
+     "e004_q1_r1": "verdict_not_in_auto_set",
+     "e004_q1_r3": "verdict_not_in_auto_set",
+     "e004_q1_r5": "active_evidence_source_issue",
+     "e004_q1_r6": "verdict_not_in_auto_set",
+     "e004_q2_r3": "active_evidence_source_issue",
+     "e004_q2_r4": "verdict_not_in_auto_set",
+     "e004_q2_r5": "verdict_not_in_auto_set",
+     "e007_q1_r1": "active_evidence_source_issue"
+    },
+    "owner_repaired_in_auto": [
+     "e004_q2_r6",
+     "e004_q2_r8"
+    ],
+    "est_review_per_100_explanation_cases": 45.7,
+    "appeal_aware": {
+     "auto_undergrade_count": 0,
+     "expected_appeal_candidates_upper_bound": 0,
+     "note": "upper bound = every automatically undergraded student appeals; no measured appeal rate exists, so no probability is fabricated",
+     "undergrade_verdict_step_deficit": 0,
+     "auto_overgrade_count": 3,
+     "overgrade_verdict_step_excess": 3,
+     "step_unit_note": "verdict steps (invalid<->partially_valid<->valid), NOT exam points: point mapping varies per question and is not invented here"
+    }
+   },
+   "AUTO_VALID_AND_PARTIAL": {
+    "auto": 35,
+    "review": 11,
+    "auto_coverage_pct": 76.1,
+    "review_rate_pct": 23.9,
+    "correct_auto": 26,
+    "auto_precision_pct": 74.3,
+    "auto_total_weighted_loss": 29,
+    "auto_mean_weighted_loss": 0.8286,
+    "auto_false_full_invalid_to_valid": 0,
+    "auto_partial_to_valid": 3,
+    "auto_invalid_to_partial": 4,
+    "auto_undergrades": 2,
+    "auto_undergrade_cases": [
+     "e002_q2_r5",
+     "e003_q1_r6"
+    ],
+    "auto_overgrades": 7,
+    "auto_overgrade_cases": [
+     "e002_q1_r6",
+     "e003_q2_r1",
+     "e003_q2_r6",
+     "e004_q1_r3",
+     "e004_q1_r8",
+     "e004_q2_r4",
+     "e004_q2_r5"
+    ],
+    "review_reasons": {
+     "active_evidence_source_issue": 5,
+     "model_validator_review": 2,
+     "verdict_not_in_auto_set": 4
+    },
+    "review_cases": {
+     "e002_q1_r5": "active_evidence_source_issue",
+     "e002_q1_r7": "model_validator_review",
+     "e002_q2_r4": "active_evidence_source_issue",
+     "e002_q2_r7": "model_validator_review",
+     "e003_q1_r7": "verdict_not_in_auto_set",
+     "e003_q2_r4": "verdict_not_in_auto_set",
+     "e004_q1_r1": "verdict_not_in_auto_set",
+     "e004_q1_r5": "active_evidence_source_issue",
+     "e004_q1_r6": "verdict_not_in_auto_set",
+     "e004_q2_r3": "active_evidence_source_issue",
+     "e007_q1_r1": "active_evidence_source_issue"
+    },
+    "owner_repaired_in_auto": [
+     "e004_q2_r6",
+     "e004_q2_r8"
+    ],
+    "est_review_per_100_explanation_cases": 23.9,
+    "appeal_aware": {
+     "auto_undergrade_count": 2,
+     "expected_appeal_candidates_upper_bound": 2,
+     "note": "upper bound = every automatically undergraded student appeals; no measured appeal rate exists, so no probability is fabricated",
+     "undergrade_verdict_step_deficit": 2,
+     "auto_overgrade_count": 7,
+     "overgrade_verdict_step_excess": 7,
+     "step_unit_note": "verdict steps (invalid<->partially_valid<->valid), NOT exam points: point mapping varies per question and is not invented here"
+    }
+   },
+   "HUMAN_DISPUTE_AWARE_B": {
+    "auto": 22,
+    "review": 24,
+    "auto_coverage_pct": 47.8,
+    "review_rate_pct": 52.2,
+    "correct_auto": 20,
+    "auto_precision_pct": 90.9,
+    "auto_total_weighted_loss": 10,
+    "auto_mean_weighted_loss": 0.4545,
+    "auto_false_full_invalid_to_valid": 0,
+    "auto_partial_to_valid": 2,
+    "auto_invalid_to_partial": 0,
+    "auto_undergrades": 0,
+    "auto_undergrade_cases": [],
+    "auto_overgrades": 2,
+    "auto_overgrade_cases": [
+     "e003_q2_r1",
+     "e004_q1_r8"
+    ],
+    "review_reasons": {
+     "active_evidence_source_issue": 5,
+     "model_validator_review": 2,
+     "verdict_not_in_auto_set": 14,
+     "wide_human_disagreement": 3
+    },
+    "review_cases": {
+     "e002_q1_r1": "verdict_not_in_auto_set",
+     "e002_q1_r5": "active_evidence_source_issue",
+     "e002_q1_r6": "wide_human_disagreement",
+     "e002_q1_r7": "model_validator_review",
+     "e002_q1_r8": "verdict_not_in_auto_set",
+     "e002_q2_r2": "wide_human_disagreement",
+     "e002_q2_r4": "active_evidence_source_issue",
+     "e002_q2_r5": "verdict_not_in_auto_set",
+     "e002_q2_r6": "verdict_not_in_auto_set",
+     "e002_q2_r7": "model_validator_review",
+     "e003_q1_r6": "verdict_not_in_auto_set",
+     "e003_q1_r7": "verdict_not_in_auto_set",
+     "e003_q1_r8": "verdict_not_in_auto_set",
+     "e003_q2_r4": "verdict_not_in_auto_set",
+     "e003_q2_r6": "verdict_not_in_auto_set",
+     "e003_q2_r8": "wide_human_disagreement",
+     "e004_q1_r1": "verdict_not_in_auto_set",
+     "e004_q1_r3": "verdict_not_in_auto_set",
+     "e004_q1_r5": "active_evidence_source_issue",
+     "e004_q1_r6": "verdict_not_in_auto_set",
+     "e004_q2_r3": "active_evidence_source_issue",
+     "e004_q2_r4": "verdict_not_in_auto_set",
+     "e004_q2_r5": "verdict_not_in_auto_set",
+     "e007_q1_r1": "active_evidence_source_issue"
+    },
+    "owner_repaired_in_auto": [
+     "e004_q2_r6",
+     "e004_q2_r8"
+    ],
+    "est_review_per_100_explanation_cases": 52.2,
+    "appeal_aware": {
+     "auto_undergrade_count": 0,
+     "expected_appeal_candidates_upper_bound": 0,
+     "note": "upper bound = every automatically undergraded student appeals; no measured appeal rate exists, so no probability is fabricated",
+     "undergrade_verdict_step_deficit": 0,
+     "auto_overgrade_count": 2,
+     "overgrade_verdict_step_excess": 2,
+     "step_unit_note": "verdict steps (invalid<->partially_valid<->valid), NOT exam points: point mapping varies per question and is not invented here"
+    }
+   },
+   "HUMAN_DISPUTE_AWARE_C": {
+    "auto": 31,
+    "review": 15,
+    "auto_coverage_pct": 67.4,
+    "review_rate_pct": 32.6,
+    "correct_auto": 24,
+    "auto_precision_pct": 77.4,
+    "auto_total_weighted_loss": 23,
+    "auto_mean_weighted_loss": 0.7419,
+    "auto_false_full_invalid_to_valid": 0,
+    "auto_partial_to_valid": 2,
+    "auto_invalid_to_partial": 4,
+    "auto_undergrades": 1,
+    "auto_undergrade_cases": [
+     "e002_q2_r5"
+    ],
+    "auto_overgrades": 6,
+    "auto_overgrade_cases": [
+     "e003_q2_r1",
+     "e003_q2_r6",
+     "e004_q1_r3",
+     "e004_q1_r8",
+     "e004_q2_r4",
+     "e004_q2_r5"
+    ],
+    "review_reasons": {
+     "active_evidence_source_issue": 5,
+     "model_validator_review": 2,
+     "verdict_not_in_auto_set": 4,
+     "wide_human_disagreement": 4
+    },
+    "review_cases": {
+     "e002_q1_r5": "active_evidence_source_issue",
+     "e002_q1_r6": "wide_human_disagreement",
+     "e002_q1_r7": "model_validator_review",
+     "e002_q2_r2": "wide_human_disagreement",
+     "e002_q2_r4": "active_evidence_source_issue",
+     "e002_q2_r7": "model_validator_review",
+     "e003_q1_r6": "wide_human_disagreement",
+     "e003_q1_r7": "verdict_not_in_auto_set",
+     "e003_q2_r4": "verdict_not_in_auto_set",
+     "e003_q2_r8": "wide_human_disagreement",
+     "e004_q1_r1": "verdict_not_in_auto_set",
+     "e004_q1_r5": "active_evidence_source_issue",
+     "e004_q1_r6": "verdict_not_in_auto_set",
+     "e004_q2_r3": "active_evidence_source_issue",
+     "e007_q1_r1": "active_evidence_source_issue"
+    },
+    "owner_repaired_in_auto": [
+     "e004_q2_r6",
+     "e004_q2_r8"
+    ],
+    "est_review_per_100_explanation_cases": 32.6,
+    "appeal_aware": {
+     "auto_undergrade_count": 1,
+     "expected_appeal_candidates_upper_bound": 1,
+     "note": "upper bound = every automatically undergraded student appeals; no measured appeal rate exists, so no probability is fabricated",
+     "undergrade_verdict_step_deficit": 1,
+     "auto_overgrade_count": 6,
+     "overgrade_verdict_step_excess": 6,
+     "step_unit_note": "verdict steps (invalid<->partially_valid<->valid), NOT exam points: point mapping varies per question and is not invented here"
+    }
+   }
+  },
+  "arm_a_q8_0": {
+   "AUTO_ALL": {
+    "auto": 40,
+    "review": 6,
+    "auto_coverage_pct": 87.0,
+    "review_rate_pct": 13.0,
+    "correct_auto": 26,
+    "auto_precision_pct": 65.0,
+    "auto_total_weighted_loss": 34,
+    "auto_mean_weighted_loss": 0.85,
+    "auto_false_full_invalid_to_valid": 0,
+    "auto_partial_to_valid": 3,
+    "auto_invalid_to_partial": 3,
+    "auto_undergrades": 8,
+    "auto_undergrade_cases": [
+     "e002_q2_r2",
+     "e003_q1_r5",
+     "e003_q1_r6",
+     "e003_q1_r7",
+     "e003_q2_r5",
+     "e004_q1_r1",
+     "e004_q1_r6",
+     "e004_q2_r6"
+    ],
+    "auto_overgrades": 6,
+    "auto_overgrade_cases": [
+     "e002_q1_r5",
+     "e003_q2_r1",
+     "e003_q2_r6",
+     "e004_q1_r3",
+     "e004_q1_r8",
+     "e004_q2_r4"
+    ],
+    "review_reasons": {
+     "model_validator_review": 6
+    },
+    "review_cases": {
+     "e002_q1_r7": "model_validator_review",
+     "e002_q2_r4": "model_validator_review",
+     "e002_q2_r5": "model_validator_review",
+     "e003_q2_r4": "model_validator_review",
+     "e004_q1_r5": "model_validator_review",
+     "e004_q2_r5": "model_validator_review"
+    },
+    "owner_repaired_in_auto": [
+     "e004_q2_r6",
+     "e004_q2_r8"
+    ],
+    "est_review_per_100_explanation_cases": 13.0,
+    "appeal_aware": {
+     "auto_undergrade_count": 8,
+     "expected_appeal_candidates_upper_bound": 8,
+     "note": "upper bound = every automatically undergraded student appeals; no measured appeal rate exists, so no probability is fabricated",
+     "undergrade_verdict_step_deficit": 9,
+     "auto_overgrade_count": 6,
+     "overgrade_verdict_step_excess": 6,
+     "step_unit_note": "verdict steps (invalid<->partially_valid<->valid), NOT exam points: point mapping varies per question and is not invented here"
+    }
+   },
+   "AUTO_VALID_ONLY": {
+    "auto": 20,
+    "review": 26,
+    "auto_coverage_pct": 43.5,
+    "review_rate_pct": 56.5,
+    "correct_auto": 18,
+    "auto_precision_pct": 90.0,
+    "auto_total_weighted_loss": 10,
+    "auto_mean_weighted_loss": 0.5,
+    "auto_false_full_invalid_to_valid": 0,
+    "auto_partial_to_valid": 2,
+    "auto_invalid_to_partial": 0,
+    "auto_undergrades": 0,
+    "auto_undergrade_cases": [],
+    "auto_overgrades": 2,
+    "auto_overgrade_cases": [
+     "e003_q2_r1",
+     "e004_q1_r8"
+    ],
+    "review_reasons": {
+     "active_evidence_source_issue": 4,
+     "model_validator_review": 6,
+     "verdict_not_in_auto_set": 16
+    },
+    "review_cases": {
+     "e002_q1_r1": "verdict_not_in_auto_set",
+     "e002_q1_r5": "active_evidence_source_issue",
+     "e002_q1_r6": "verdict_not_in_auto_set",
+     "e002_q1_r7": "model_validator_review",
+     "e002_q1_r8": "verdict_not_in_auto_set",
+     "e002_q2_r2": "verdict_not_in_auto_set",
+     "e002_q2_r4": "model_validator_review",
+     "e002_q2_r5": "model_validator_review",
+     "e002_q2_r6": "verdict_not_in_auto_set",
+     "e002_q2_r7": "active_evidence_source_issue",
+     "e003_q1_r5": "verdict_not_in_auto_set",
+     "e003_q1_r6": "verdict_not_in_auto_set",
+     "e003_q1_r7": "verdict_not_in_auto_set",
+     "e003_q1_r8": "verdict_not_in_auto_set",
+     "e003_q2_r4": "model_validator_review",
+     "e003_q2_r5": "verdict_not_in_auto_set",
+     "e003_q2_r6": "verdict_not_in_auto_set",
+     "e004_q1_r1": "verdict_not_in_auto_set",
+     "e004_q1_r3": "verdict_not_in_auto_set",
+     "e004_q1_r5": "model_validator_review",
+     "e004_q1_r6": "verdict_not_in_auto_set",
+     "e004_q2_r3": "active_evidence_source_issue",
+     "e004_q2_r4": "verdict_not_in_auto_set",
+     "e004_q2_r5": "model_validator_review",
+     "e004_q2_r6": "verdict_not_in_auto_set",
+     "e007_q1_r1": "active_evidence_source_issue"
+    },
+    "owner_repaired_in_auto": [
+     "e004_q2_r8"
+    ],
+    "est_review_per_100_explanation_cases": 56.5,
+    "appeal_aware": {
+     "auto_undergrade_count": 0,
+     "expected_appeal_candidates_upper_bound": 0,
+     "note": "upper bound = every automatically undergraded student appeals; no measured appeal rate exists, so no probability is fabricated",
+     "undergrade_verdict_step_deficit": 0,
+     "auto_overgrade_count": 2,
+     "overgrade_verdict_step_excess": 2,
+     "step_unit_note": "verdict steps (invalid<->partially_valid<->valid), NOT exam points: point mapping varies per question and is not invented here"
+    }
+   },
+   "AUTO_VALID_AND_PARTIAL": {
+    "auto": 34,
+    "review": 12,
+    "auto_coverage_pct": 73.9,
+    "review_rate_pct": 26.1,
+    "correct_auto": 23,
+    "auto_precision_pct": 67.6,
+    "auto_total_weighted_loss": 25,
+    "auto_mean_weighted_loss": 0.7353,
+    "auto_false_full_invalid_to_valid": 0,
+    "auto_partial_to_valid": 2,
+    "auto_invalid_to_partial": 3,
+    "auto_undergrades": 6,
+    "auto_undergrade_cases": [
+     "e002_q2_r2",
+     "e003_q1_r5",
+     "e003_q1_r6",
+     "e003_q1_r7",
+     "e003_q2_r5",
+     "e004_q2_r6"
+    ],
+    "auto_overgrades": 5,
+    "auto_overgrade_cases": [
+     "e003_q2_r1",
+     "e003_q2_r6",
+     "e004_q1_r3",
+     "e004_q1_r8",
+     "e004_q2_r4"
+    ],
+    "review_reasons": {
+     "active_evidence_source_issue": 4,
+     "model_validator_review": 6,
+     "verdict_not_in_auto_set": 2
+    },
+    "review_cases": {
+     "e002_q1_r5": "active_evidence_source_issue",
+     "e002_q1_r7": "model_validator_review",
+     "e002_q2_r4": "model_validator_review",
+     "e002_q2_r5": "model_validator_review",
+     "e002_q2_r7": "active_evidence_source_issue",
+     "e003_q2_r4": "model_validator_review",
+     "e004_q1_r1": "verdict_not_in_auto_set",
+     "e004_q1_r5": "model_validator_review",
+     "e004_q1_r6": "verdict_not_in_auto_set",
+     "e004_q2_r3": "active_evidence_source_issue",
+     "e004_q2_r5": "model_validator_review",
+     "e007_q1_r1": "active_evidence_source_issue"
+    },
+    "owner_repaired_in_auto": [
+     "e004_q2_r6",
+     "e004_q2_r8"
+    ],
+    "est_review_per_100_explanation_cases": 26.1,
+    "appeal_aware": {
+     "auto_undergrade_count": 6,
+     "expected_appeal_candidates_upper_bound": 6,
+     "note": "upper bound = every automatically undergraded student appeals; no measured appeal rate exists, so no probability is fabricated",
+     "undergrade_verdict_step_deficit": 6,
+     "auto_overgrade_count": 5,
+     "overgrade_verdict_step_excess": 5,
+     "step_unit_note": "verdict steps (invalid<->partially_valid<->valid), NOT exam points: point mapping varies per question and is not invented here"
+    }
+   },
+   "HUMAN_DISPUTE_AWARE_B": {
+    "auto": 19,
+    "review": 27,
+    "auto_coverage_pct": 41.3,
+    "review_rate_pct": 58.7,
+    "correct_auto": 17,
+    "auto_precision_pct": 89.5,
+    "auto_total_weighted_loss": 10,
+    "auto_mean_weighted_loss": 0.5263,
+    "auto_false_full_invalid_to_valid": 0,
+    "auto_partial_to_valid": 2,
+    "auto_invalid_to_partial": 0,
+    "auto_undergrades": 0,
+    "auto_undergrade_cases": [],
+    "auto_overgrades": 2,
+    "auto_overgrade_cases": [
+     "e003_q2_r1",
+     "e004_q1_r8"
+    ],
+    "review_reasons": {
+     "active_evidence_source_issue": 4,
+     "model_validator_review": 6,
+     "verdict_not_in_auto_set": 16,
+     "wide_human_disagreement": 1
+    },
+    "review_cases": {
+     "e002_q1_r1": "verdict_not_in_auto_set",
+     "e002_q1_r5": "active_evidence_source_issue",
+     "e002_q1_r6": "verdict_not_in_auto_set",
+     "e002_q1_r7": "model_validator_review",
+     "e002_q1_r8": "verdict_not_in_auto_set",
+     "e002_q2_r2": "verdict_not_in_auto_set",
+     "e002_q2_r4": "model_validator_review",
+     "e002_q2_r5": "model_validator_review",
+     "e002_q2_r6": "verdict_not_in_auto_set",
+     "e002_q2_r7": "active_evidence_source_issue",
+     "e003_q1_r5": "verdict_not_in_auto_set",
+     "e003_q1_r6": "verdict_not_in_auto_set",
+     "e003_q1_r7": "verdict_not_in_auto_set",
+     "e003_q1_r8": "verdict_not_in_auto_set",
+     "e003_q2_r4": "model_validator_review",
+     "e003_q2_r5": "verdict_not_in_auto_set",
+     "e003_q2_r6": "verdict_not_in_auto_set",
+     "e003_q2_r8": "wide_human_disagreement",
+     "e004_q1_r1": "verdict_not_in_auto_set",
+     "e004_q1_r3": "verdict_not_in_auto_set",
+     "e004_q1_r5": "model_validator_review",
+     "e004_q1_r6": "verdict_not_in_auto_set",
+     "e004_q2_r3": "active_evidence_source_issue",
+     "e004_q2_r4": "verdict_not_in_auto_set",
+     "e004_q2_r5": "model_validator_review",
+     "e004_q2_r6": "verdict_not_in_auto_set",
+     "e007_q1_r1": "active_evidence_source_issue"
+    },
+    "owner_repaired_in_auto": [
+     "e004_q2_r8"
+    ],
+    "est_review_per_100_explanation_cases": 58.7,
+    "appeal_aware": {
+     "auto_undergrade_count": 0,
+     "expected_appeal_candidates_upper_bound": 0,
+     "note": "upper bound = every automatically undergraded student appeals; no measured appeal rate exists, so no probability is fabricated",
+     "undergrade_verdict_step_deficit": 0,
+     "auto_overgrade_count": 2,
+     "overgrade_verdict_step_excess": 2,
+     "step_unit_note": "verdict steps (invalid<->partially_valid<->valid), NOT exam points: point mapping varies per question and is not invented here"
+    }
+   },
+   "HUMAN_DISPUTE_AWARE_C": {
+    "auto": 30,
+    "review": 16,
+    "auto_coverage_pct": 65.2,
+    "review_rate_pct": 34.8,
+    "correct_auto": 21,
+    "auto_precision_pct": 70.0,
+    "auto_total_weighted_loss": 23,
+    "auto_mean_weighted_loss": 0.7667,
+    "auto_false_full_invalid_to_valid": 0,
+    "auto_partial_to_valid": 2,
+    "auto_invalid_to_partial": 3,
+    "auto_undergrades": 4,
+    "auto_undergrade_cases": [
+     "e003_q1_r5",
+     "e003_q1_r7",
+     "e003_q2_r5",
+     "e004_q2_r6"
+    ],
+    "auto_overgrades": 5,
+    "auto_overgrade_cases": [
+     "e003_q2_r1",
+     "e003_q2_r6",
+     "e004_q1_r3",
+     "e004_q1_r8",
+     "e004_q2_r4"
+    ],
+    "review_reasons": {
+     "active_evidence_source_issue": 4,
+     "model_validator_review": 6,
+     "verdict_not_in_auto_set": 2,
+     "wide_human_disagreement": 4
+    },
+    "review_cases": {
+     "e002_q1_r5": "active_evidence_source_issue",
+     "e002_q1_r6": "wide_human_disagreement",
+     "e002_q1_r7": "model_validator_review",
+     "e002_q2_r2": "wide_human_disagreement",
+     "e002_q2_r4": "model_validator_review",
+     "e002_q2_r5": "model_validator_review",
+     "e002_q2_r7": "active_evidence_source_issue",
+     "e003_q1_r6": "wide_human_disagreement",
+     "e003_q2_r4": "model_validator_review",
+     "e003_q2_r8": "wide_human_disagreement",
+     "e004_q1_r1": "verdict_not_in_auto_set",
+     "e004_q1_r5": "model_validator_review",
+     "e004_q1_r6": "verdict_not_in_auto_set",
+     "e004_q2_r3": "active_evidence_source_issue",
+     "e004_q2_r5": "model_validator_review",
+     "e007_q1_r1": "active_evidence_source_issue"
+    },
+    "owner_repaired_in_auto": [
+     "e004_q2_r6",
+     "e004_q2_r8"
+    ],
+    "est_review_per_100_explanation_cases": 34.8,
+    "appeal_aware": {
+     "auto_undergrade_count": 4,
+     "expected_appeal_candidates_upper_bound": 4,
+     "note": "upper bound = every automatically undergraded student appeals; no measured appeal rate exists, so no probability is fabricated",
+     "undergrade_verdict_step_deficit": 4,
+     "auto_overgrade_count": 5,
+     "overgrade_verdict_step_excess": 5,
+     "step_unit_note": "verdict steps (invalid<->partially_valid<->valid), NOT exam points: point mapping varies per question and is not invented here"
+    }
+   }
+  },
+  "arm_b_two_pass": {
+   "AUTO_ALL": {
+    "auto": 36,
+    "review": 10,
+    "auto_coverage_pct": 78.3,
+    "review_rate_pct": 21.7,
+    "correct_auto": 24,
+    "auto_precision_pct": 66.7,
+    "auto_total_weighted_loss": 32,
+    "auto_mean_weighted_loss": 0.8889,
+    "auto_false_full_invalid_to_valid": 0,
+    "auto_partial_to_valid": 2,
+    "auto_invalid_to_partial": 4,
+    "auto_undergrades": 6,
+    "auto_undergrade_cases": [
+     "e002_q2_r4",
+     "e002_q2_r5",
+     "e003_q1_r6",
+     "e003_q1_r7",
+     "e004_q1_r1",
+     "e004_q1_r6"
+    ],
+    "auto_overgrades": 6,
+    "auto_overgrade_cases": [
+     "e002_q1_r5",
+     "e003_q2_r1",
+     "e003_q2_r6",
+     "e004_q1_r3",
+     "e004_q2_r4",
+     "e004_q2_r5"
+    ],
+    "review_reasons": {
+     "model_validator_review": 10
+    },
+    "review_cases": {
+     "e002_q1_r6": "model_validator_review",
+     "e002_q1_r7": "model_validator_review",
+     "e002_q2_r2": "model_validator_review",
+     "e002_q2_r7": "model_validator_review",
+     "e004_q1_r8": "model_validator_review",
+     "e004_q2_r1": "model_validator_review",
+     "e004_q2_r2": "model_validator_review",
+     "e004_q2_r6": "model_validator_review",
+     "e004_q2_r8": "model_validator_review",
+     "e007_q1_r1": "model_validator_review"
+    },
+    "owner_repaired_in_auto": [],
+    "est_review_per_100_explanation_cases": 21.7,
+    "appeal_aware": {
+     "auto_undergrade_count": 6,
+     "expected_appeal_candidates_upper_bound": 6,
+     "note": "upper bound = every automatically undergraded student appeals; no measured appeal rate exists, so no probability is fabricated",
+     "undergrade_verdict_step_deficit": 8,
+     "auto_overgrade_count": 6,
+     "overgrade_verdict_step_excess": 6,
+     "step_unit_note": "verdict steps (invalid<->partially_valid<->valid), NOT exam points: point mapping varies per question and is not invented here"
+    }
+   },
+   "AUTO_VALID_ONLY": {
+    "auto": 18,
+    "review": 28,
+    "auto_coverage_pct": 39.1,
+    "review_rate_pct": 60.9,
+    "correct_auto": 17,
+    "auto_precision_pct": 94.4,
+    "auto_total_weighted_loss": 5,
+    "auto_mean_weighted_loss": 0.2778,
+    "auto_false_full_invalid_to_valid": 0,
+    "auto_partial_to_valid": 1,
+    "auto_invalid_to_partial": 0,
+    "auto_undergrades": 0,
+    "auto_undergrade_cases": [],
+    "auto_overgrades": 1,
+    "auto_overgrade_cases": [
+     "e003_q2_r1"
+    ],
+    "review_reasons": {
+     "active_evidence_source_issue": 4,
+     "model_validator_review": 10,
+     "verdict_not_in_auto_set": 14
+    },
+    "review_cases": {
+     "e002_q1_r1": "verdict_not_in_auto_set",
+     "e002_q1_r5": "active_evidence_source_issue",
+     "e002_q1_r6": "model_validator_review",
+     "e002_q1_r7": "model_validator_review",
+     "e002_q1_r8": "verdict_not_in_auto_set",
+     "e002_q2_r2": "model_validator_review",
+     "e002_q2_r4": "active_evidence_source_issue",
+     "e002_q2_r5": "verdict_not_in_auto_set",
+     "e002_q2_r6": "verdict_not_in_auto_set",
+     "e002_q2_r7": "model_validator_review",
+     "e003_q1_r6": "verdict_not_in_auto_set",
+     "e003_q1_r7": "verdict_not_in_auto_set",
+     "e003_q1_r8": "verdict_not_in_auto_set",
+     "e003_q2_r4": "verdict_not_in_auto_set",
+     "e003_q2_r6": "verdict_not_in_auto_set",
+     "e004_q1_r1": "verdict_not_in_auto_set",
+     "e004_q1_r3": "verdict_not_in_auto_set",
+     "e004_q1_r5": "active_evidence_source_issue",
+     "e004_q1_r6": "verdict_not_in_auto_set",
+     "e004_q1_r8": "model_validator_review",
+     "e004_q2_r1": "model_validator_review",
+     "e004_q2_r2": "model_validator_review",
+     "e004_q2_r3": "active_evidence_source_issue",
+     "e004_q2_r4": "verdict_not_in_auto_set",
+     "e004_q2_r5": "verdict_not_in_auto_set",
+     "e004_q2_r6": "model_validator_review",
+     "e004_q2_r8": "model_validator_review",
+     "e007_q1_r1": "model_validator_review"
+    },
+    "owner_repaired_in_auto": [],
+    "est_review_per_100_explanation_cases": 60.9,
+    "appeal_aware": {
+     "auto_undergrade_count": 0,
+     "expected_appeal_candidates_upper_bound": 0,
+     "note": "upper bound = every automatically undergraded student appeals; no measured appeal rate exists, so no probability is fabricated",
+     "undergrade_verdict_step_deficit": 0,
+     "auto_overgrade_count": 1,
+     "overgrade_verdict_step_excess": 1,
+     "step_unit_note": "verdict steps (invalid<->partially_valid<->valid), NOT exam points: point mapping varies per question and is not invented here"
+    }
+   },
+   "AUTO_VALID_AND_PARTIAL": {
+    "auto": 28,
+    "review": 18,
+    "auto_coverage_pct": 60.9,
+    "review_rate_pct": 39.1,
+    "correct_auto": 21,
+    "auto_precision_pct": 75.0,
+    "auto_total_weighted_loss": 19,
+    "auto_mean_weighted_loss": 0.6786,
+    "auto_false_full_invalid_to_valid": 0,
+    "auto_partial_to_valid": 1,
+    "auto_invalid_to_partial": 4,
+    "auto_undergrades": 2,
+    "auto_undergrade_cases": [
+     "e002_q2_r5",
+     "e003_q1_r6"
+    ],
+    "auto_overgrades": 5,
+    "auto_overgrade_cases": [
+     "e003_q2_r1",
+     "e003_q2_r6",
+     "e004_q1_r3",
+     "e004_q2_r4",
+     "e004_q2_r5"
+    ],
+    "review_reasons": {
+     "active_evidence_source_issue": 4,
+     "model_validator_review": 10,
+     "verdict_not_in_auto_set": 4
+    },
+    "review_cases": {
+     "e002_q1_r5": "active_evidence_source_issue",
+     "e002_q1_r6": "model_validator_review",
+     "e002_q1_r7": "model_validator_review",
+     "e002_q2_r2": "model_validator_review",
+     "e002_q2_r4": "active_evidence_source_issue",
+     "e002_q2_r7": "model_validator_review",
+     "e003_q1_r7": "verdict_not_in_auto_set",
+     "e003_q2_r4": "verdict_not_in_auto_set",
+     "e004_q1_r1": "verdict_not_in_auto_set",
+     "e004_q1_r5": "active_evidence_source_issue",
+     "e004_q1_r6": "verdict_not_in_auto_set",
+     "e004_q1_r8": "model_validator_review",
+     "e004_q2_r1": "model_validator_review",
+     "e004_q2_r2": "model_validator_review",
+     "e004_q2_r3": "active_evidence_source_issue",
+     "e004_q2_r6": "model_validator_review",
+     "e004_q2_r8": "model_validator_review",
+     "e007_q1_r1": "model_validator_review"
+    },
+    "owner_repaired_in_auto": [],
+    "est_review_per_100_explanation_cases": 39.1,
+    "appeal_aware": {
+     "auto_undergrade_count": 2,
+     "expected_appeal_candidates_upper_bound": 2,
+     "note": "upper bound = every automatically undergraded student appeals; no measured appeal rate exists, so no probability is fabricated",
+     "undergrade_verdict_step_deficit": 2,
+     "auto_overgrade_count": 5,
+     "overgrade_verdict_step_excess": 5,
+     "step_unit_note": "verdict steps (invalid<->partially_valid<->valid), NOT exam points: point mapping varies per question and is not invented here"
+    }
+   },
+   "HUMAN_DISPUTE_AWARE_B": {
+    "auto": 17,
+    "review": 29,
+    "auto_coverage_pct": 37.0,
+    "review_rate_pct": 63.0,
+    "correct_auto": 16,
+    "auto_precision_pct": 94.1,
+    "auto_total_weighted_loss": 5,
+    "auto_mean_weighted_loss": 0.2941,
+    "auto_false_full_invalid_to_valid": 0,
+    "auto_partial_to_valid": 1,
+    "auto_invalid_to_partial": 0,
+    "auto_undergrades": 0,
+    "auto_undergrade_cases": [],
+    "auto_overgrades": 1,
+    "auto_overgrade_cases": [
+     "e003_q2_r1"
+    ],
+    "review_reasons": {
+     "active_evidence_source_issue": 4,
+     "model_validator_review": 10,
+     "verdict_not_in_auto_set": 14,
+     "wide_human_disagreement": 1
+    },
+    "review_cases": {
+     "e002_q1_r1": "verdict_not_in_auto_set",
+     "e002_q1_r5": "active_evidence_source_issue",
+     "e002_q1_r6": "model_validator_review",
+     "e002_q1_r7": "model_validator_review",
+     "e002_q1_r8": "verdict_not_in_auto_set",
+     "e002_q2_r2": "model_validator_review",
+     "e002_q2_r4": "active_evidence_source_issue",
+     "e002_q2_r5": "verdict_not_in_auto_set",
+     "e002_q2_r6": "verdict_not_in_auto_set",
+     "e002_q2_r7": "model_validator_review",
+     "e003_q1_r6": "verdict_not_in_auto_set",
+     "e003_q1_r7": "verdict_not_in_auto_set",
+     "e003_q1_r8": "verdict_not_in_auto_set",
+     "e003_q2_r4": "verdict_not_in_auto_set",
+     "e003_q2_r6": "verdict_not_in_auto_set",
+     "e003_q2_r8": "wide_human_disagreement",
+     "e004_q1_r1": "verdict_not_in_auto_set",
+     "e004_q1_r3": "verdict_not_in_auto_set",
+     "e004_q1_r5": "active_evidence_source_issue",
+     "e004_q1_r6": "verdict_not_in_auto_set",
+     "e004_q1_r8": "model_validator_review",
+     "e004_q2_r1": "model_validator_review",
+     "e004_q2_r2": "model_validator_review",
+     "e004_q2_r3": "active_evidence_source_issue",
+     "e004_q2_r4": "verdict_not_in_auto_set",
+     "e004_q2_r5": "verdict_not_in_auto_set",
+     "e004_q2_r6": "model_validator_review",
+     "e004_q2_r8": "model_validator_review",
+     "e007_q1_r1": "model_validator_review"
+    },
+    "owner_repaired_in_auto": [],
+    "est_review_per_100_explanation_cases": 63.0,
+    "appeal_aware": {
+     "auto_undergrade_count": 0,
+     "expected_appeal_candidates_upper_bound": 0,
+     "note": "upper bound = every automatically undergraded student appeals; no measured appeal rate exists, so no probability is fabricated",
+     "undergrade_verdict_step_deficit": 0,
+     "auto_overgrade_count": 1,
+     "overgrade_verdict_step_excess": 1,
+     "step_unit_note": "verdict steps (invalid<->partially_valid<->valid), NOT exam points: point mapping varies per question and is not invented here"
+    }
+   },
+   "HUMAN_DISPUTE_AWARE_C": {
+    "auto": 26,
+    "review": 20,
+    "auto_coverage_pct": 56.5,
+    "review_rate_pct": 43.5,
+    "correct_auto": 20,
+    "auto_precision_pct": 76.9,
+    "auto_total_weighted_loss": 18,
+    "auto_mean_weighted_loss": 0.6923,
+    "auto_false_full_invalid_to_valid": 0,
+    "auto_partial_to_valid": 1,
+    "auto_invalid_to_partial": 4,
+    "auto_undergrades": 1,
+    "auto_undergrade_cases": [
+     "e002_q2_r5"
+    ],
+    "auto_overgrades": 5,
+    "auto_overgrade_cases": [
+     "e003_q2_r1",
+     "e003_q2_r6",
+     "e004_q1_r3",
+     "e004_q2_r4",
+     "e004_q2_r5"
+    ],
+    "review_reasons": {
+     "active_evidence_source_issue": 4,
+     "model_validator_review": 10,
+     "verdict_not_in_auto_set": 4,
+     "wide_human_disagreement": 2
+    },
+    "review_cases": {
+     "e002_q1_r5": "active_evidence_source_issue",
+     "e002_q1_r6": "model_validator_review",
+     "e002_q1_r7": "model_validator_review",
+     "e002_q2_r2": "model_validator_review",
+     "e002_q2_r4": "active_evidence_source_issue",
+     "e002_q2_r7": "model_validator_review",
+     "e003_q1_r6": "wide_human_disagreement",
+     "e003_q1_r7": "verdict_not_in_auto_set",
+     "e003_q2_r4": "verdict_not_in_auto_set",
+     "e003_q2_r8": "wide_human_disagreement",
+     "e004_q1_r1": "verdict_not_in_auto_set",
+     "e004_q1_r5": "active_evidence_source_issue",
+     "e004_q1_r6": "verdict_not_in_auto_set",
+     "e004_q1_r8": "model_validator_review",
+     "e004_q2_r1": "model_validator_review",
+     "e004_q2_r2": "model_validator_review",
+     "e004_q2_r3": "active_evidence_source_issue",
+     "e004_q2_r6": "model_validator_review",
+     "e004_q2_r8": "model_validator_review",
+     "e007_q1_r1": "model_validator_review"
+    },
+    "owner_repaired_in_auto": [],
+    "est_review_per_100_explanation_cases": 43.5,
+    "appeal_aware": {
+     "auto_undergrade_count": 1,
+     "expected_appeal_candidates_upper_bound": 1,
+     "note": "upper bound = every automatically undergraded student appeals; no measured appeal rate exists, so no probability is fabricated",
+     "undergrade_verdict_step_deficit": 1,
+     "auto_overgrade_count": 5,
+     "overgrade_verdict_step_excess": 5,
+     "step_unit_note": "verdict steps (invalid<->partially_valid<->valid), NOT exam points: point mapping varies per question and is not invented here"
+    }
+   }
+  }
+ },
+ "content_sha256": "db7aa08f48da9464f793ef25b83a59112d46513c150e5f08a6bc80c1e71c374a"
+}

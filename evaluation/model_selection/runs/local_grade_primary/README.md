@@ -12,6 +12,23 @@ Result root for the LOCAL grade_primary benchmark. Experiment records:
   infallible truth; every source preserved separately). Zero-leakage proof:
   `SEEN46_LEAKAGE_VERIFICATION_2026-08-28.json`. HELD_OUT sealed.
 
+- **Asymmetric-risk evaluation** (2026-09-02, zero-inference):
+  frozen cost policy `evaluation/model_selection/policies/`
+  `asymmetric_grading_risk_v1.json` (invalid->valid = 12 dominates; undergrades
+  nonzero; semantic grading and risk policy are separate layers). Analyses over
+  the frozen 46-case reference + the three completed arms:
+  `ASYMMETRIC_RISK_SOURCE_VERIFICATION_2026-09-02.md` (Phase-0 verification),
+  `ASYMMETRIC_RISK_STRICT_2026-09-02.{json,md}` (weighted risk + constant
+  baselines — no arm materially beats `always_partially_valid`),
+  `ASYMMETRIC_RISK_DISAGREEMENT_AWARE_2026-09-02.{json,md}` (reviewer-history
+  weighting; wide disagreements + active evidence issues excluded and listed),
+  `ASYMMETRIC_RISK_SENSITIVITY_2026-09-02.{json,md}` (72-matrix grid; model
+  ranking NOT stable), `PRODUCTION_POLICY_REPLAY_2026-09-02.{json,md}`
+  (AUTO/REVIEW policy replay incl. HUMAN_DISPUTE_AWARE; false-full = 0
+  everywhere), `ASYMMETRIC_RISK_SUMMARY_2026-09-02.md` (release gates 5/9 pass;
+  recommendation NOT deployed). Tooling `scripts/asymmetric_risk.py`, tests
+  `tests/test_asymmetric_risk.py`. No inference/cloud/OCR/RAG/HELD_OUT.
+
 - **ACTIVE** (output-contract phase, 2026-08-28):
   `evaluation/model_selection/experiments/LOCAL_GRADE_CONTRACT_FREEZE_2026-08-28.json`
   — prompt `grade-v4-charitable-local` (v4 semantics verbatim + mechanical
