@@ -51,8 +51,55 @@ def _derivable_supported_verdict(c: BenchCase) -> bool:
             and c.label.get("explanation_verdict") in ("valid", "partially_valid"))
 
 
+_SEEN46_CAMPAIGN = (REPO_ROOT / "evaluation" / "model_selection" / "experiments"
+                    / "OCR_VALIDATION_CAMPAIGN_2026-09-02.json")
+_SEEN46_CROPS: set[str] | None = None
+
+
+def _seen46_campaign_crops() -> set[str]:
+    """Crop basenames frozen in the OCR validation campaign (self-hash
+    verified on every load). The subset selection stays a pure function of
+    frozen artifacts: the campaign freeze + the frozen manifest."""
+    global _SEEN46_CROPS
+    if _SEEN46_CROPS is None:
+        if not _SEEN46_CAMPAIGN.exists():
+            raise SubsetError(f"campaign freeze missing: {_SEEN46_CAMPAIGN}")
+        doc = json.loads(_SEEN46_CAMPAIGN.read_text(encoding="utf-8"))
+        payload = json.dumps({k: v for k, v in doc.items()
+                              if k != "experiment_sha256"},
+                             ensure_ascii=False, sort_keys=True)
+        if hashlib.sha256(payload.encode()).hexdigest() != doc.get("experiment_sha256"):
+            raise SubsetError("campaign freeze failed its self-hash check")
+        _SEEN46_CROPS = {rel.split("/")[-1] for c in doc["cases"]
+                         for rel in c["evidence_crops"]}
+    return _SEEN46_CROPS
+
+
+def _seen46_evidence_crop(c: BenchCase) -> bool:
+    """This bench item's crop is one of the frozen SEEN-46 evidence crops.
+    (The one human-repaired crop lives in the grade dataset's repair store,
+    not in hebrew_bench_v2, so it can never match a bench item — documented
+    in the campaign freeze.)"""
+    return str(c.inputs.get("image", "")).split("/")[-1] in _seen46_campaign_crops()
+
+
 #: (role, subset name) -> (split, why, predicate)
 SUBSET_RULES: dict[tuple[str, str], tuple[str, str, Callable[[BenchCase], bool]]] = {
+    # The OCR-validation population: every ocr_primary bench item whose crop
+    # is SEEN-46 grading evidence (campaign freeze 2026-09-02). Split-scoped
+    # because writers straddle DEV (e002/e003/e007) and CALIBRATION (e004).
+    ("ocr_primary", "seen46_ocr_dev"): (
+        "DEV",
+        "every DEV ocr_primary item whose crop is frozen SEEN-46 grading "
+        "evidence (OCR_VALIDATION_CAMPAIGN_2026-09-02)",
+        _seen46_evidence_crop,
+    ),
+    ("ocr_primary", "seen46_ocr_calibration"): (
+        "CALIBRATION",
+        "every CALIBRATION ocr_primary item whose crop is frozen SEEN-46 "
+        "grading evidence (OCR_VALIDATION_CAMPAIGN_2026-09-02)",
+        _seen46_evidence_crop,
+    ),
     # Same POPULATION as calibration_verdict, recorded as a separate experiment
     # for the grade-v4-charitable prompt. The v3 freeze is never edited: two
     # prompts are two experiments, and their identical selection_sha256 is the
@@ -108,6 +155,25 @@ def _case_row(c: BenchCase) -> dict[str, Any]:
     }
 
 
+def _ocr_case_row(c: BenchCase) -> dict[str, Any]:
+    """OCR items carry no grade-side fields; the row records identity and
+    reference PROVENANCE only — never the reference text itself."""
+    return {
+        "case_id": c.case_id,
+        "split": c.split,
+        "component": c.component,
+        "writer": c.meta.get("writer"),
+        "category": c.meta.get("category"),
+        "tier": c.meta.get("tier"),
+        "hard": c.label.get("hard"),
+        "image": c.inputs.get("image"),
+        "reference_status": c.label.get("reference_status"),
+        "provenance_class": c.label.get("provenance_class"),
+        "provenance_valid": c.label.get("provenance_valid"),
+        "verdict": None,     # OCR subsets have no verdict target
+    }
+
+
 def propose_subset(role: str, name: str, manifest: BenchmarkManifest) -> dict[str, Any]:
     """Deterministic, model-blind selection. Pure function of the manifest."""
     key = (role, name)
@@ -118,7 +184,8 @@ def propose_subset(role: str, name: str, manifest: BenchmarkManifest) -> dict[st
     chosen = sorted((c for c in manifest.by_split(split) if pred(c)), key=lambda c: c.case_id)
     excluded = sorted((c.case_id, c.label.get("explanation_verdict_reason"))
                       for c in manifest.by_split(split) if not pred(c))
-    cases = [_case_row(c) for c in chosen]
+    row_builder = _ocr_case_row if role.startswith("ocr") else _case_row
+    cases = [row_builder(c) for c in chosen]
     dist: dict[str, int] = {}
     for r in cases:
         dist[r["verdict"]] = dist.get(r["verdict"], 0) + 1

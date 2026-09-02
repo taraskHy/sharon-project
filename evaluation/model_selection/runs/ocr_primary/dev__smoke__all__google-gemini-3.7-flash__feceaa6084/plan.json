@@ -1,0 +1,75 @@
+{
+ "run_id": "dev__smoke__all__google-gemini-3.7-flash__feceaa6084",
+ "mode": "dry_run",
+ "cases": 8,
+ "skipped_resume": 0,
+ "predicted_cost_total": 0.009707,
+ "pricing_table_available": true,
+ "rows": [
+  {
+   "case_id": "hl_e003_q1_r1__l1",
+   "split": "DEV",
+   "component": "ALL",
+   "predicted_cost": 0.0012166875,
+   "text_chars": 613,
+   "images": 1
+  },
+  {
+   "case_id": "hc_e002_q1_r1",
+   "split": "DEV",
+   "component": "ALL",
+   "predicted_cost": 0.0012181875,
+   "text_chars": 629,
+   "images": 1
+  },
+  {
+   "case_id": "hc_e002_q1_r7",
+   "split": "DEV",
+   "component": "ALL",
+   "predicted_cost": 0.0012181875,
+   "text_chars": 629,
+   "images": 1
+  },
+  {
+   "case_id": "hc_e002_q2_r1",
+   "split": "DEV",
+   "component": "ALL",
+   "predicted_cost": 0.0012181875,
+   "text_chars": 629,
+   "images": 1
+  },
+  {
+   "case_id": "hc_e002_q2_r6",
+   "split": "DEV",
+   "component": "ALL",
+   "predicted_cost": 0.0012181875,
+   "text_chars": 629,
+   "images": 1
+  },
+  {
+   "case_id": "pr_docA_p1_b1",
+   "split": "DEV",
+   "component": "ALL",
+   "predicted_cost": 0.00121565625,
+   "text_chars": 601,
+   "images": 1
+  },
+  {
+   "case_id": "pr_docA_p2_b3",
+   "split": "DEV",
+   "component": "ALL",
+   "predicted_cost": 0.00121434375,
+   "text_chars": 587,
+   "images": 1
+  },
+  {
+   "case_id": "assoc_docB_p2_b1",
+   "split": "DEV",
+   "component": "ALL",
+   "predicted_cost": 0.001188,
+   "text_chars": 306,
+   "images": 1
+  }
+ ],
+ "leakage_check": "passed"
+}

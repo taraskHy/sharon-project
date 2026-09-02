@@ -129,9 +129,21 @@ def test_research_mode_is_an_explicit_bypass_and_bad_modes_are_refused():
 # --------------------------------------------------------------------------
 
 
-def test_the_approved_prompt_registry_is_exactly_the_two_ocr_contracts():
-    assert approved_cloud_ocr_systems() == frozenset({EXPLANATION_OCR_SYSTEM,
-                                                      OCR_VERIFY_INDEPENDENT_SYSTEM})
+def test_the_approved_prompt_registry_is_exactly_the_known_ocr_contracts():
+    """The two production OCR contracts + the six frozen m2-strict-v1 bench
+    transcription prompts (registered 2026-09-02 for the pre-registered OCR
+    validation campaign). Nothing else — and never the legacy fidelity-verdict
+    prompt, which sees the primary reading."""
+    from autograder.benchmark.roles import _load_historical_prompts
+    from autograder.escalation import OCR_VERIFY_SYSTEM
+    bench = _load_historical_prompts()
+    assert set(bench) == {"handwritten_line", "handwritten_cell", "printed_rtl",
+                          "mixed_he_en", "formula_printed",
+                          "option_row_association"}
+    assert approved_cloud_ocr_systems() == frozenset(
+        {EXPLANATION_OCR_SYSTEM, OCR_VERIFY_INDEPENDENT_SYSTEM}
+        | set(bench.values()))
+    assert OCR_VERIFY_SYSTEM not in approved_cloud_ocr_systems()
 
 
 def test_an_ocr_task_name_cannot_smuggle_the_grading_prompt():

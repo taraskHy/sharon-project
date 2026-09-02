@@ -1,0 +1,179 @@
+{
+ "run_id": "calibration__seen46_ocr_calibration__all__google-gemini-3.7-flash__35819d025d",
+ "mode": "dry_run",
+ "cases": 21,
+ "skipped_resume": 0,
+ "predicted_cost_total": 0.02555,
+ "pricing_table_available": true,
+ "rows": [
+  {
+   "case_id": "hl_e004_q1_r1__l1",
+   "split": "CALIBRATION",
+   "component": "ALL",
+   "predicted_cost": 0.0012166875,
+   "text_chars": 612,
+   "images": 1
+  },
+  {
+   "case_id": "hl_e004_q1_r2__l1",
+   "split": "CALIBRATION",
+   "component": "ALL",
+   "predicted_cost": 0.0012166875,
+   "text_chars": 612,
+   "images": 1
+  },
+  {
+   "case_id": "hl_e004_q1_r3__l1",
+   "split": "CALIBRATION",
+   "component": "ALL",
+   "predicted_cost": 0.0012166875,
+   "text_chars": 612,
+   "images": 1
+  },
+  {
+   "case_id": "hl_e004_q1_r3__l2",
+   "split": "CALIBRATION",
+   "component": "ALL",
+   "predicted_cost": 0.0012166875,
+   "text_chars": 612,
+   "images": 1
+  },
+  {
+   "case_id": "hl_e004_q1_r4__l1",
+   "split": "CALIBRATION",
+   "component": "ALL",
+   "predicted_cost": 0.0012166875,
+   "text_chars": 612,
+   "images": 1
+  },
+  {
+   "case_id": "hl_e004_q1_r5__l1",
+   "split": "CALIBRATION",
+   "component": "ALL",
+   "predicted_cost": 0.0012166875,
+   "text_chars": 612,
+   "images": 1
+  },
+  {
+   "case_id": "hl_e004_q1_r6__l1",
+   "split": "CALIBRATION",
+   "component": "ALL",
+   "predicted_cost": 0.0012166875,
+   "text_chars": 612,
+   "images": 1
+  },
+  {
+   "case_id": "hl_e004_q1_r6__l2",
+   "split": "CALIBRATION",
+   "component": "ALL",
+   "predicted_cost": 0.0012166875,
+   "text_chars": 612,
+   "images": 1
+  },
+  {
+   "case_id": "hl_e004_q1_r8__l1",
+   "split": "CALIBRATION",
+   "component": "ALL",
+   "predicted_cost": 0.0012166875,
+   "text_chars": 612,
+   "images": 1
+  },
+  {
+   "case_id": "hl_e004_q2_r1__l1",
+   "split": "CALIBRATION",
+   "component": "ALL",
+   "predicted_cost": 0.0012166875,
+   "text_chars": 612,
+   "images": 1
+  },
+  {
+   "case_id": "hl_e004_q2_r1__l2",
+   "split": "CALIBRATION",
+   "component": "ALL",
+   "predicted_cost": 0.0012166875,
+   "text_chars": 612,
+   "images": 1
+  },
+  {
+   "case_id": "hl_e004_q2_r2__l1",
+   "split": "CALIBRATION",
+   "component": "ALL",
+   "predicted_cost": 0.0012166875,
+   "text_chars": 612,
+   "images": 1
+  },
+  {
+   "case_id": "hl_e004_q2_r3__l1",
+   "split": "CALIBRATION",
+   "component": "ALL",
+   "predicted_cost": 0.0012166875,
+   "text_chars": 612,
+   "images": 1
+  },
+  {
+   "case_id": "hl_e004_q2_r4__l1",
+   "split": "CALIBRATION",
+   "component": "ALL",
+   "predicted_cost": 0.0012166875,
+   "text_chars": 612,
+   "images": 1
+  },
+  {
+   "case_id": "hl_e004_q2_r4__l2",
+   "split": "CALIBRATION",
+   "component": "ALL",
+   "predicted_cost": 0.0012166875,
+   "text_chars": 612,
+   "images": 1
+  },
+  {
+   "case_id": "hl_e004_q2_r5__l1",
+   "split": "CALIBRATION",
+   "component": "ALL",
+   "predicted_cost": 0.0012166875,
+   "text_chars": 612,
+   "images": 1
+  },
+  {
+   "case_id": "hl_e004_q2_r5__l2",
+   "split": "CALIBRATION",
+   "component": "ALL",
+   "predicted_cost": 0.0012166875,
+   "text_chars": 611,
+   "images": 1
+  },
+  {
+   "case_id": "hl_e004_q2_r6__l1",
+   "split": "CALIBRATION",
+   "component": "ALL",
+   "predicted_cost": 0.0012166875,
+   "text_chars": 612,
+   "images": 1
+  },
+  {
+   "case_id": "hl_e004_q2_r6__l2",
+   "split": "CALIBRATION",
+   "component": "ALL",
+   "predicted_cost": 0.0012166875,
+   "text_chars": 612,
+   "images": 1
+  },
+  {
+   "case_id": "hl_e004_q2_r8__l1",
+   "split": "CALIBRATION",
+   "component": "ALL",
+   "predicted_cost": 0.0012166875,
+   "text_chars": 612,
+   "images": 1
+  },
+  {
+   "case_id": "hl_e004_q2_r8__l2",
+   "split": "CALIBRATION",
+   "component": "ALL",
+   "predicted_cost": 0.0012166875,
+   "text_chars": 612,
+   "images": 1
+  }
+ ],
+ "leakage_check": "passed"
+}

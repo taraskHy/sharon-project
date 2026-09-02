@@ -88,9 +88,13 @@ def approved_cloud_ocr_systems() -> frozenset[str]:
     """The registered OCR system prompts that may accompany a remote OCR
     request. Imported lazily (prompts/escalation import gateway helpers).
 
-    The registry is intentionally tiny: the lazy explanation transcriber and
-    the INDEPENDENT verify transcriber (image -> its own exact reading;
-    agreement is computed locally). The legacy fidelity-verdict prompt
+    The registry is intentionally tiny: the lazy explanation transcriber, the
+    INDEPENDENT verify transcriber (image -> its own exact reading; agreement
+    is computed locally), and — since 2026-09-02, for the pre-registered OCR
+    validation campaign — the six frozen m2-strict-v1 bench transcription
+    prompts, recovered byte-identically from the historical script (pure
+    exact-transcription instructions; the payload tripwires and the task
+    allowlist still apply unchanged). The legacy fidelity-verdict prompt
     (escalation.OCR_VERIFY_SYSTEM) is deliberately NOT registered: it shows
     the verifier the primary reading, and survives only for the historical B2
     research benchmark under research mode. A new cloud OCR prompt must be
@@ -99,7 +103,13 @@ def approved_cloud_ocr_systems() -> frozenset[str]:
     from .escalation import OCR_VERIFY_INDEPENDENT_SYSTEM
     from .prompts import EXPLANATION_OCR_SYSTEM
 
-    return frozenset({EXPLANATION_OCR_SYSTEM, OCR_VERIFY_INDEPENDENT_SYSTEM})
+    registered = {EXPLANATION_OCR_SYSTEM, OCR_VERIFY_INDEPENDENT_SYSTEM}
+    try:
+        from .benchmark.roles import _load_historical_prompts
+        registered |= set(_load_historical_prompts().values())
+    except Exception:  # noqa: BLE001 — fail closed: recovery failure just
+        pass           # leaves the bench prompts unregistered
+    return frozenset(registered)
 
 
 def forbidden_cloud_markers() -> tuple[str, ...]:

@@ -1,0 +1,588 @@
+{
+ "role": "ocr_primary",
+ "name": "seen46_ocr_dev",
+ "split": "DEV",
+ "why": "every DEV ocr_primary item whose crop is frozen SEEN-46 grading evidence (OCR_VALIDATION_CAMPAIGN_2026-09-02)",
+ "rules_version": "subset-rules-v1 (2026-08-25; a frozen full case list is a pure function of the frozen dataset and the declared predicate)",
+ "manifest_hashes": {
+  "items_sha256": "25463e91b95db8eecfc306644dd0839f65e42910d4161f6991383b6f4a524a8b",
+  "references_sha256": "4a93e826e6e94777d445e64ae2c3f5ed10def46aa021ff763a45a9807fb913b5",
+  "audit_sha256": "eace95fc6dc684c88f1fea2142414a68ad8f421257ac012faf6bcfc9ae07f50c",
+  "audit_manifest_sha256": "65ac16385979480945938f45f0d3e5e3255afa7bcb41c4ea7afe2ff2ebcc405f"
+ },
+ "cases": [
+  {
+   "case_id": "hc_e002_q1_r1",
+   "split": "DEV",
+   "component": "ALL",
+   "writer": "e002",
+   "category": "handwritten_cell",
+   "tier": "owner",
+   "hard": false,
+   "image": "crops/hc_e002_q1_r1.png",
+   "reference_status": "confirmed",
+   "provenance_class": "audited_confirmed",
+   "provenance_valid": true,
+   "verdict": null
+  },
+  {
+   "case_id": "hc_e002_q1_r2",
+   "split": "DEV",
+   "component": "ALL",
+   "writer": "e002",
+   "category": "handwritten_cell",
+   "tier": "owner",
+   "hard": false,
+   "image": "crops/hc_e002_q1_r2.png",
+   "reference_status": "confirmed",
+   "provenance_class": "audited_confirmed",
+   "provenance_valid": true,
+   "verdict": null
+  },
+  {
+   "case_id": "hc_e002_q1_r3",
+   "split": "DEV",
+   "component": "ALL",
+   "writer": "e002",
+   "category": "handwritten_cell",
+   "tier": "owner",
+   "hard": false,
+   "image": "crops/hc_e002_q1_r3.png",
+   "reference_status": "confirmed",
+   "provenance_class": "audited_confirmed",
+   "provenance_valid": true,
+   "verdict": null
+  },
+  {
+   "case_id": "hc_e002_q1_r4",
+   "split": "DEV",
+   "component": "ALL",
+   "writer": "e002",
+   "category": "handwritten_cell",
+   "tier": "owner",
+   "hard": false,
+   "image": "crops/hc_e002_q1_r4.png",
+   "reference_status": "confirmed",
+   "provenance_class": "audited_confirmed",
+   "provenance_valid": true,
+   "verdict": null
+  },
+  {
+   "case_id": "hc_e002_q1_r5",
+   "split": "DEV",
+   "component": "ALL",
+   "writer": "e002",
+   "category": "handwritten_cell",
+   "tier": "owner",
+   "hard": false,
+   "image": "crops/hc_e002_q1_r5.png",
+   "reference_status": "confirmed",
+   "provenance_class": "audited_confirmed",
+   "provenance_valid": true,
+   "verdict": null
+  },
+  {
+   "case_id": "hc_e002_q1_r6",
+   "split": "DEV",
+   "component": "ALL",
+   "writer": "e002",
+   "category": "handwritten_cell",
+   "tier": "owner",
+   "hard": false,
+   "image": "crops/hc_e002_q1_r6.png",
+   "reference_status": "confirmed",
+   "provenance_class": "audited_confirmed",
+   "provenance_valid": true,
+   "verdict": null
+  },
+  {
+   "case_id": "hc_e002_q1_r7",
+   "split": "DEV",
+   "component": "ALL",
+   "writer": "e002",
+   "category": "handwritten_cell",
+   "tier": "owner",
+   "hard": false,
+   "image": "crops/hc_e002_q1_r7.png",
+   "reference_status": "confirmed",
+   "provenance_class": "audited_confirmed",
+   "provenance_valid": true,
+   "verdict": null
+  },
+  {
+   "case_id": "hc_e002_q1_r8",
+   "split": "DEV",
+   "component": "ALL",
+   "writer": "e002",
+   "category": "handwritten_cell",
+   "tier": "owner",
+   "hard": false,
+   "image": "crops/hc_e002_q1_r8.png",
+   "reference_status": "confirmed",
+   "provenance_class": "audited_confirmed",
+   "provenance_valid": true,
+   "verdict": null
+  },
+  {
+   "case_id": "hc_e002_q2_r1",
+   "split": "DEV",
+   "component": "ALL",
+   "writer": "e002",
+   "category": "handwritten_cell",
+   "tier": "owner",
+   "hard": true,
+   "image": "crops/hc_e002_q2_r1.png",
+   "reference_status": "corrected",
+   "provenance_class": "audited_corrected",
+   "provenance_valid": true,
+   "verdict": null
+  },
+  {
+   "case_id": "hc_e002_q2_r2",
+   "split": "DEV",
+   "component": "ALL",
+   "writer": "e002",
+   "category": "handwritten_cell",
+   "tier": "owner",
+   "hard": false,
+   "image": "crops/hc_e002_q2_r2.png",
+   "reference_status": "confirmed",
+   "provenance_class": "audited_confirmed",
+   "provenance_valid": true,
+   "verdict": null
+  },
+  {
+   "case_id": "hc_e002_q2_r3",
+   "split": "DEV",
+   "component": "ALL",
+   "writer": "e002",
+   "category": "handwritten_cell",
+   "tier": "owner",
+   "hard": false,
+   "image": "crops/hc_e002_q2_r3.png",
+   "reference_status": "corrected",
+   "provenance_class": "audited_corrected",
+   "provenance_valid": true,
+   "verdict": null
+  },
+  {
+   "case_id": "hc_e002_q2_r4",
+   "split": "DEV",
+   "component": "ALL",
+   "writer": "e002",
+   "category": "handwritten_cell",
+   "tier": "owner",
+   "hard": true,
+   "image": "crops/hc_e002_q2_r4.png",
+   "reference_status": "corrected",
+   "provenance_class": "audited_corrected",
+   "provenance_valid": true,
+   "verdict": null
+  },
+  {
+   "case_id": "hc_e002_q2_r5",
+   "split": "DEV",
+   "component": "ALL",
+   "writer": "e002",
+   "category": "handwritten_cell",
+   "tier": "owner",
+   "hard": true,
+   "image": "crops/hc_e002_q2_r5.png",
+   "reference_status": "confirmed",
+   "provenance_class": "audited_confirmed",
+   "provenance_valid": true,
+   "verdict": null
+  },
+  {
+   "case_id": "hc_e002_q2_r6",
+   "split": "DEV",
+   "component": "ALL",
+   "writer": "e002",
+   "category": "handwritten_cell",
+   "tier": "owner",
+   "hard": true,
+   "image": "crops/hc_e002_q2_r6.png",
+   "reference_status": "confirmed",
+   "provenance_class": "audited_confirmed",
+   "provenance_valid": true,
+   "verdict": null
+  },
+  {
+   "case_id": "hc_e002_q2_r7",
+   "split": "DEV",
+   "component": "ALL",
+   "writer": "e002",
+   "category": "handwritten_cell",
+   "tier": "owner",
+   "hard": true,
+   "image": "crops/hc_e002_q2_r7.png",
+   "reference_status": "corrected",
+   "provenance_class": "audited_corrected",
+   "provenance_valid": true,
+   "verdict": null
+  },
+  {
+   "case_id": "hc_e002_q2_r8",
+   "split": "DEV",
+   "component": "ALL",
+   "writer": "e002",
+   "category": "handwritten_cell",
+   "tier": "owner",
+   "hard": false,
+   "image": "crops/hc_e002_q2_r8.png",
+   "reference_status": "confirmed",
+   "provenance_class": "audited_confirmed",
+   "provenance_valid": true,
+   "verdict": null
+  },
+  {
+   "case_id": "hl_e003_q1_r1__l1",
+   "split": "DEV",
+   "component": "ALL",
+   "writer": "e003",
+   "category": "handwritten_line",
+   "tier": "owner",
+   "hard": false,
+   "image": "crops/hl_e003_q1_r1__l1.png",
+   "reference_status": "confirmed",
+   "provenance_class": "audited_confirmed",
+   "provenance_valid": true,
+   "verdict": null
+  },
+  {
+   "case_id": "hl_e003_q1_r3__l1",
+   "split": "DEV",
+   "component": "ALL",
+   "writer": "e003",
+   "category": "handwritten_line",
+   "tier": "owner",
+   "hard": false,
+   "image": "crops/hl_e003_q1_r3__l1.png",
+   "reference_status": "confirmed",
+   "provenance_class": "audited_confirmed",
+   "provenance_valid": true,
+   "verdict": null
+  },
+  {
+   "case_id": "hl_e003_q1_r4__l1",
+   "split": "DEV",
+   "component": "ALL",
+   "writer": "e003",
+   "category": "handwritten_line",
+   "tier": "owner",
+   "hard": false,
+   "image": "crops/hl_e003_q1_r4__l1.png",
+   "reference_status": "confirmed",
+   "provenance_class": "audited_confirmed",
+   "provenance_valid": true,
+   "verdict": null
+  },
+  {
+   "case_id": "hl_e003_q1_r5__l1",
+   "split": "DEV",
+   "component": "ALL",
+   "writer": "e003",
+   "category": "handwritten_line",
+   "tier": "owner",
+   "hard": false,
+   "image": "crops/hl_e003_q1_r5__l1.png",
+   "reference_status": "confirmed",
+   "provenance_class": "audited_confirmed",
+   "provenance_valid": true,
+   "verdict": null
+  },
+  {
+   "case_id": "hl_e003_q1_r6__l1",
+   "split": "DEV",
+   "component": "ALL",
+   "writer": "e003",
+   "category": "handwritten_line",
+   "tier": "owner",
+   "hard": false,
+   "image": "crops/hl_e003_q1_r6__l1.png",
+   "reference_status": "corrected",
+   "provenance_class": "audited_corrected",
+   "provenance_valid": true,
+   "verdict": null
+  },
+  {
+   "case_id": "hl_e003_q1_r7__l1",
+   "split": "DEV",
+   "component": "ALL",
+   "writer": "e003",
+   "category": "handwritten_line",
+   "tier": "owner",
+   "hard": false,
+   "image": "crops/hl_e003_q1_r7__l1.png",
+   "reference_status": "corrected",
+   "provenance_class": "audited_corrected",
+   "provenance_valid": true,
+   "verdict": null
+  },
+  {
+   "case_id": "hl_e003_q1_r8__l1",
+   "split": "DEV",
+   "component": "ALL",
+   "writer": "e003",
+   "category": "handwritten_line",
+   "tier": "owner",
+   "hard": false,
+   "image": "crops/hl_e003_q1_r8__l1.png",
+   "reference_status": "corrected",
+   "provenance_class": "audited_corrected",
+   "provenance_valid": true,
+   "verdict": null
+  },
+  {
+   "case_id": "hl_e003_q2_r1__l1",
+   "split": "DEV",
+   "component": "ALL",
+   "writer": "e003",
+   "category": "handwritten_line",
+   "tier": "owner",
+   "hard": false,
+   "image": "crops/hl_e003_q2_r1__l1.png",
+   "reference_status": "confirmed",
+   "provenance_class": "audited_confirmed",
+   "provenance_valid": true,
+   "verdict": null
+  },
+  {
+   "case_id": "hl_e003_q2_r2__l1",
+   "split": "DEV",
+   "component": "ALL",
+   "writer": "e003",
+   "category": "handwritten_line",
+   "tier": "owner",
+   "hard": false,
+   "image": "crops/hl_e003_q2_r2__l1.png",
+   "reference_status": "corrected",
+   "provenance_class": "audited_corrected",
+   "provenance_valid": true,
+   "verdict": null
+  },
+  {
+   "case_id": "hl_e003_q2_r3__l1",
+   "split": "DEV",
+   "component": "ALL",
+   "writer": "e003",
+   "category": "handwritten_line",
+   "tier": "owner",
+   "hard": false,
+   "image": "crops/hl_e003_q2_r3__l1.png",
+   "reference_status": "confirmed",
+   "provenance_class": "audited_confirmed",
+   "provenance_valid": true,
+   "verdict": null
+  },
+  {
+   "case_id": "hl_e003_q2_r4__l1",
+   "split": "DEV",
+   "component": "ALL",
+   "writer": "e003",
+   "category": "handwritten_line",
+   "tier": "owner",
+   "hard": false,
+   "image": "crops/hl_e003_q2_r4__l1.png",
+   "reference_status": "confirmed",
+   "provenance_class": "audited_confirmed",
+   "provenance_valid": true,
+   "verdict": null
+  },
+  {
+   "case_id": "hl_e003_q2_r5__l1",
+   "split": "DEV",
+   "component": "ALL",
+   "writer": "e003",
+   "category": "handwritten_line",
+   "tier": "owner",
+   "hard": false,
+   "image": "crops/hl_e003_q2_r5__l1.png",
+   "reference_status": "confirmed",
+   "provenance_class": "audited_confirmed",
+   "provenance_valid": true,
+   "verdict": null
+  },
+  {
+   "case_id": "hl_e003_q2_r6__l1",
+   "split": "DEV",
+   "component": "ALL",
+   "writer": "e003",
+   "category": "handwritten_line",
+   "tier": "owner",
+   "hard": false,
+   "image": "crops/hl_e003_q2_r6__l1.png",
+   "reference_status": "confirmed",
+   "provenance_class": "audited_confirmed",
+   "provenance_valid": true,
+   "verdict": null
+  },
+  {
+   "case_id": "hl_e003_q2_r7__l1",
+   "split": "DEV",
+   "component": "ALL",
+   "writer": "e003",
+   "category": "handwritten_line",
+   "tier": "owner",
+   "hard": false,
+   "image": "crops/hl_e003_q2_r7__l1.png",
+   "reference_status": "confirmed",
+   "provenance_class": "audited_confirmed",
+   "provenance_valid": true,
+   "verdict": null
+  },
+  {
+   "case_id": "hl_e003_q2_r8__l1",
+   "split": "DEV",
+   "component": "ALL",
+   "writer": "e003",
+   "category": "handwritten_line",
+   "tier": "owner",
+   "hard": false,
+   "image": "crops/hl_e003_q2_r8__l1.png",
+   "reference_status": "confirmed",
+   "provenance_class": "audited_confirmed",
+   "provenance_valid": true,
+   "verdict": null
+  },
+  {
+   "case_id": "hl_e007_q1_r1__l1",
+   "split": "DEV",
+   "component": "ALL",
+   "writer": "e007",
+   "category": "handwritten_line",
+   "tier": "owner",
+   "hard": true,
+   "image": "crops/hl_e007_q1_r1__l1.png",
+   "reference_status": "corrected",
+   "provenance_class": "audited_corrected",
+   "provenance_valid": true,
+   "verdict": null
+  }
+ ],
+ "case_count": 32,
+ "class_distribution": {
+  "null": 32
+ },
+ "excluded": [
+  {
+   "case_id": "assoc_docB_p2_b1",
+   "reason": null
+  },
+  {
+   "case_id": "assoc_docB_p2_b12",
+   "reason": null
+  },
+  {
+   "case_id": "assoc_docB_p2_b3",
+   "reason": null
+  },
+  {
+   "case_id": "assoc_docB_p2_b5",
+   "reason": null
+  },
+  {
+   "case_id": "assoc_docB_p2_b7",
+   "reason": null
+  },
+  {
+   "case_id": "hl_e003_q1_r2__l2",
+   "reason": null
+  },
+  {
+   "case_id": "pr_docA_p1_b0",
+   "reason": null
+  },
+  {
+   "case_id": "pr_docA_p1_b1",
+   "reason": null
+  },
+  {
+   "case_id": "pr_docA_p1_b2",
+   "reason": null
+  },
+  {
+   "case_id": "pr_docA_p2_b0",
+   "reason": null
+  },
+  {
+   "case_id": "pr_docA_p2_b1",
+   "reason": null
+  },
+  {
+   "case_id": "pr_docA_p2_b3",
+   "reason": null
+  },
+  {
+   "case_id": "pr_docA_p2_b4",
+   "reason": null
+  },
+  {
+   "case_id": "pr_docA_p3_b0",
+   "reason": null
+  },
+  {
+   "case_id": "pr_docA_p3_b3",
+   "reason": null
+  },
+  {
+   "case_id": "pr_docA_p3_b6",
+   "reason": null
+  },
+  {
+   "case_id": "pr_docA_p3_b8",
+   "reason": null
+  },
+  {
+   "case_id": "pr_docA_p3_b9",
+   "reason": null
+  },
+  {
+   "case_id": "pr_docA_p4_b0",
+   "reason": null
+  },
+  {
+   "case_id": "pr_docA_p5_b0",
+   "reason": null
+  },
+  {
+   "case_id": "pr_docA_p5_b8",
+   "reason": null
+  },
+  {
+   "case_id": "pr_docA_p5_b9",
+   "reason": null
+  },
+  {
+   "case_id": "pr_docA_p6_b1",
+   "reason": null
+  },
+  {
+   "case_id": "pr_docA_p6_b9",
+   "reason": null
+  },
+  {
+   "case_id": "pr_docA_p8_b0",
+   "reason": null
+  },
+  {
+   "case_id": "pr_docB_p1_b1",
+   "reason": null
+  },
+  {
+   "case_id": "pr_docB_p2_b14",
+   "reason": null
+  },
+  {
+   "case_id": "pr_docB_p2_b7",
+   "reason": null
+  }
+ ],
+ "selection_sha256": "98c8d117e6747adcdc0e0a41ed91f1c5cdd7fd72d0ecffab9695483e873fd0a5",
+ "frozen_at": "2026-09-02 10:42:16",
+ "git_commit": "9a160fa4da744aea1d1f99f88f3fb0275281b6b5",
+ "prompt_version": "m2-strict-v1",
+ "adapter_version": "ocr-primary-bench-v1",
+ "candidate_configs": {},
+ "_policy": "Pre-registered evaluation population. Frozen BEFORE any model output for these cases exists; never widened, narrowed or reshuffled afterwards. Model-visible inputs remain ONLY the manifest's inputs for these case ids."
+}
