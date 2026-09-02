@@ -1,0 +1,193 @@
+{
+ "artifact": "ocr_prompt_v2_budget_gate_stop_REAFFIRMED",
+ "created_at": "2026-09-03 02:32:38",
+ "relationship_to_prior_stop": "companion to OCR_PROMPT_V2_BUDGET_STOP_2026-09-03.json; that stop STANDS and is re-derived independently here",
+ "outcome": "STOPPED BEFORE PROVIDER REQUESTS - PREDICTED COST GATE FAILED (second, independent confirmation)",
+ "provider_requests_made": 0,
+ "additional_spend_usd": 0.0,
+ "git_commit": "4e731ba62f75daad41af132ef8558370b138d958",
+ "experiment": "OCR_PROMPT_V2_NEUTRAL_FRAMING_GEMINI_SEEN32",
+ "experiment_sha256_prefix_expected_by_brief": "05185839e204ca61",
+ "experiment_sha256_recomputed": "05185839e204ca6131201983d29d2c0c273445070b56276f280b71426920f679",
+ "self_hashes_reverified": {
+  "experiment": "PASS (indent=1, sort_keys=True, ensure_ascii=False convention)",
+  "prompt_freeze": "PASS",
+  "prior_stop_artifact": "PASS (indent=1, no sort_keys convention)",
+  "note": "three distinct self-hash conventions coexist in this repo; each artifact verifies under its own generator convention. Flagged as a consistency wart, not a defect."
+ },
+ "gate": {
+  "authorized_max_predicted_usd": 0.08,
+  "dry_run_predicted_usd_today": 0.150003,
+  "identical_to_prior_session": true,
+  "exceeds_by_usd": 0.070003,
+  "exceeds_by_factor": 1.88,
+  "verdict": "FAIL",
+  "live_pricing_unchanged": "input $0.75/M, output $3.75/M - the prediction is not a pricing-drift artifact"
+ },
+ "predictor_semantics_decomposed": {
+  "formula": "32 x (1250 input tok x $0.75/M + 1000 output tok x $3.75/M) = $0.150003",
+  "meaning": "a WORST-CASE bound assuming every one of the 32 responses fills max_tokens=1000",
+  "the_briefs_0_045": "the control arm measured ACTUAL, not a prediction - the brief 'predicted cost approximately $0.045' compares two different quantities",
+  "is_the_predictor_defective": "NO. It is a defensible conservative bound. There is no estimator bug to fix, so there is no route to passing the gate other than the owner moving the ceiling."
+ },
+ "NEW_FINDING_actual_ceiling_also_blocks": {
+  "why_it_matters": "the brief sets BOTH a predicted ceiling ($0.08) and an actual-spend ceiling ($0.08, stop immediately). Raising only the predicted ceiling is NOT sufficient.",
+  "token_model_source": "control ledger (authoritative): 30 calls, 19320 in / 8117 out, $0.044929 - reconstructs to the reported cost exactly",
+  "per_usable_row": {
+   "input_tokens": 1384,
+   "output_tokens": 512
+  },
+  "per_failed_row": {
+   "input_tokens": 151,
+   "output_tokens": 109
+  },
+  "neutral_arm_has_zero_cache_hits": "the v2 prompt hash differs from v1, so all 32 are fresh billable calls (the control got 2 free replays)",
+  "projected_actual_by_k_usable": {
+   "12": 0.04594,
+   "14": 0.05081,
+   "16": 0.05568,
+   "18": 0.06055,
+   "20": 0.06542,
+   "22": 0.0703,
+   "24": 0.07517,
+   "26": 0.08004,
+   "28": 0.08491,
+   "30": 0.08978,
+   "32": 0.09466
+  },
+  "first_k_breaching_0_08": 26,
+  "consequence": "in exactly the scenario the experiment is designed to detect - the neutral prompt WORKING - the run would abort around crop 26 of 32 on the actual-spend ceiling, leaving a truncated arm that the pre-registered drop rule (stated against 32) cannot evaluate. Success is self-defeating under the current ceilings.",
+  "ceilings_that_would_let_the_experiment_complete": {
+   "predicted_usd": 0.16,
+   "actual_usd": 0.12
+  }
+ },
+ "NEW_FINDING_phase2_refinement": {
+  "prior_audit_said": "0 of 32 crops carry red annotation (max red fraction 0.0) - therefore removing the red-ink phrasing cannot pull annotation text in",
+  "reproduced": "CONFIRMED - 0/32 crops have any red-dominant ink pixel; 32/32 crop sha256 match the freeze",
+  "but_the_prior_audit_only_checked_one_direction": "it asked whether annotation could be pulled IN. It did not ask whether legitimate content could be pushed OUT.",
+  "what_this_session_found": {
+   "crops_are_RGB_and_do_carry_colour": "chroma up to 215; 19/32 crops have two substantial ink colours (>=10% of ink pixels each), including ALL 16 handwritten_cell crops",
+   "what_the_colours_are": "visual inspection of hl_e003_q1_r7, hl_e007_q1_r1, hc_e002_q1_r2 confirms: student handwriting is BLUE ballpoint throughout; the non-blue dark pixels are PRINTED FORM STRUCTURE (table borders, dashed rules) and adjacent-row bleed-through. No instructor annotation of any colour is present.",
+   "v1_clause_status": "Ignore any red instructor ink is a NO-OP on this population - no red exists",
+   "v2_clause_status": "Ignore any marks written in a different colour of ink from the main handwriting is LIVE on 19/32 crops",
+   "risk_direction": "BENIGN but not inert: the only different-coloured marks are printed rules the reference already excludes, so on cell crops the clause plausibly HELPS. The residual risk is content omission, not annotation inclusion.",
+   "honest_interpretation_constraint": "the experiment swaps an inert clause for an active one. It therefore measures v1-framing-package -> v2-framing-package, NOT exam-framing-removed-all-else-equal. Any result must be reported in those terms.",
+   "metric_to_watch_if_it_runs": "omission_rate / total_line_loss on the 16 handwritten_cell crops, alongside annotation_inclusion_error (which remains at its floor since no annotation exists to include)"
+  }
+ },
+ "phases_completed_this_session_zero_cost": {
+  "phase0_control_reproduction": "PASS - reproduced from raw outputs.jsonl / scored.jsonl.json / usage.json / case_matrix, not from Markdown",
+  "phase0_values": {
+   "gemini_intended": 32,
+   "gemini_usable": 14,
+   "gemini_hard_failures": 18,
+   "gemini_provider_content_filter": 10,
+   "gemini_other_http_failure": 0,
+   "gemini_successful_cer": 0.1155,
+   "gemini_failure_aware_cer": 0.613,
+   "gemini_critical_errors": "2/14",
+   "gemini_mean_latency_s": 8.66,
+   "sonnet_intended": 32,
+   "sonnet_usable": 27,
+   "sonnet_model_text_refusals": 4,
+   "sonnet_successful_cer": 0.4718,
+   "sonnet_failure_aware_cer": 0.5544,
+   "sonnet_critical_errors": "9/27",
+   "sonnet_mean_latency_s": 4.03,
+   "paired_cost_usd": 0.12703875,
+   "fallback": "NOT USEFUL - withdrawal present in decision_revised",
+   "held_out": 0,
+   "references_unchanged": true,
+   "active_grades_unchanged": true
+  },
+  "phase0_two_figures_reconciled": {
+   "gemini_mean_latency": "8.66s is over all 14 usable rows; the 2 cache-hit rows carry latency_s == 0, so a truthiness filter wrongly yields 10.10s over 12. Corrected.",
+   "sonnet_critical_errors": "9/27 counts the digit / sign-operator / negation family. The broader critical_flags list (adding LATIN_TOKEN_CHANGED, VARIABLE_SUBSTITUTION) gives 12/27. The brief 9 is the digit/sign/negation definition."
+  },
+  "phase1_one_variable_diff": "PASS - recomputed from LIVE code (load_ocr_prompts), not from the committed artifact. Exactly one differing line per category (index 0); everything from Rules: onward byte-identical; all contract clauses preserved; nothing instructs including grading marks.",
+  "phase2_annotation_audit": "PASS with the refinement recorded above",
+  "phase3_credential_and_route": "OPENROUTER_API_KEY present and non-empty (presence only; never printed, hashed or persisted). Route: google/gemini-3.7-flash, json_schema, max_tokens 1000, temperature 0.0, reasoning effort low, adapter ocr-primary-bench-v1.",
+  "phase5_dry_run": {
+   "provider_calls_made": 0,
+   "cases_selected": 32,
+   "skipped_resume": 0,
+   "run_id": "dev__seen46_ocr_dev__all__google-gemini-3.7-flash__61dd6641fb",
+   "config_hash_identical_to_freeze": true,
+   "prompt_version": "ocr-neutral-v2",
+   "prompt_sha256": "59f7cac180fd85ceda7d97eb40bb4c5aafb1ad9800c346de3f515d98101e20bf",
+   "cache_separation": "run id differs from the control c4ae61f634; v2 prompt hashes differ from v1 so no control response can be replayed"
+  },
+  "phase15_tests": {
+   "targeted": "66 passed",
+   "full_suite": "1760 passed, 45 skipped",
+   "provider_calls_during_tests": 0
+  }
+ },
+ "population_reverified": {
+  "n": 32,
+  "handwritten": 32,
+  "line_crops": 16,
+  "cell_crops": 16,
+  "splits": [
+   "DEV"
+  ],
+  "CALIBRATION": 0,
+  "HELD_OUT": 0,
+  "by_writer": {
+   "e002": 16,
+   "e003": 15,
+   "e007": 1
+  },
+  "case_order_identical_to_control": true,
+  "crop_sha256_mismatches": 0,
+  "reference_hash_source": "manifest references_sha256 4a93e826e6e94777d445e64ae2c3f5ed10def46aa021ff763a45a9807fb913b5 unchanged"
+ },
+ "state": {
+  "ledger_rows": 766,
+  "ledger_unchanged": true,
+  "outputs_written": false,
+  "working_tree_delta": "one append-only dry_run history entry in run.json"
+ },
+ "decision_required_from_owner": {
+  "the_conflict": "the brief expects a ~$0.045 prediction and gates at $0.08; the harness predicts $0.150003. Both statements are in the same authorization. The gate language is explicit and forecloses the historical-actual argument, so the run does not proceed on model judgement.",
+  "options": [
+   {
+    "option": "A - raise BOTH ceilings (predicted $0.16, actual $0.12) and run the 32-crop arm as frozen",
+    "effect": "the experiment can complete and the pre-registered drop rule applies as written",
+    "expected_actual_usd": {
+     "if_no_improvement_k14": 0.05081,
+     "if_full_success_k32": 0.09466
+    }
+   },
+   {
+    "option": "B - hold at $0.08 and do not run",
+    "effect": "the question stays open; no spend"
+   },
+   {
+    "option": "C - raise predicted only to $0.16, keep actual at $0.08",
+    "effect": "NOT RECOMMENDED - aborts around crop 26 precisely when the treatment works, yielding an arm the drop rule cannot evaluate"
+   },
+   {
+    "option": "D - 16-crop half within the current ceiling",
+    "effect": "halves power against a 10-event baseline; the drop rule is stated against 32 and would not apply unchanged"
+   }
+  ]
+ },
+ "no_prompt_tuning": "the treatment prompt is frozen at 2e70fb1 and has NOT been modified in this session.",
+ "confirmations": {
+  "new_ocr_requests": 0,
+  "sonnet_calls": 0,
+  "luna_calls": 0,
+  "grading_calls": 0,
+  "local_grading_calls": 0,
+  "ocr_verification_calls": 0,
+  "rag_calls": 0,
+  "held_out_calls_or_exposure": 0,
+  "audited_references_modified": 0,
+  "active_grades_changed": 0,
+  "additional_spend_usd": 0.0,
+  "api_key_exposure": 0
+ },
+ "content_sha256": "e344a85694564cf86da4dadc61ccf0695da640ee6ee8ccbf132b6f146a003271"
+}
