@@ -8,9 +8,13 @@ resolution chain and the call site; this module goes one layer further and
 asserts on the **serialized HTTP body**, because a plan artifact that says 1000
 while the request says 600 is exactly the failure mode that shipped.
 
-Every test here runs the real runner, the real gateway and the real
-``OpenRouterBackend`` against an ``httpx.MockTransport``. No network, no
-provider spend.
+Scope, stated precisely after an adversarial review corrected an earlier
+overclaim in this docstring: most tests here drive the real *adapter -> route ->
+OpenRouterBackend -> wire* path against an ``httpx.MockTransport``, and pin the
+runner's call-site expression by source inspection.
+``test_gateway_forwards_the_route_cap_to_the_wire`` additionally goes through a
+real ``ModelGateway``. ``run_benchmark`` itself is not executed by any test in
+this file. No network, no provider spend.
 """
 from __future__ import annotations
 
@@ -205,3 +209,98 @@ def test_the_serialized_payload_carries_one_image_and_only_the_schema_text(regis
     for banned in ("rubric", "official", "solution", "score", "grade", "verdict",
                    "accepted answer", "instructor", "policy"):
         assert banned not in only.lower(), f"schema text carries {banned!r}"
+
+
+# ---------------------------------------------------------------------------
+# Gaps closed after adversarial review (2026-09-02). The tests above drive the
+# adapter -> backend -> wire path directly; an independent verifier pointed out
+# that neither the runner nor the ModelGateway was ever executed, so "end to
+# end" was overclaimed, and that `extra_generation` is merged into the payload
+# AFTER max_tokens and could silently replace it.
+# ---------------------------------------------------------------------------
+
+def test_gateway_forwards_the_route_cap_to_the_wire(tmp_path, registry):
+    """Through the REAL ModelGateway, not just the backend."""
+    from autograder.benchmark.roles import BenchTranscription
+    from autograder.gateway import ModelGateway
+
+    route = _route(registry)
+    seen: dict = {}
+
+    def handler(request: httpx.Request) -> httpx.Response:
+        seen["body"] = json.loads(request.content.decode())
+        return httpx.Response(200, json={
+            "choices": [{"message": {"content": '{"transcription": "x"}'}, "finish_reason": "stop"}],
+            "usage": {"prompt_tokens": 1, "completion_tokens": 1, "total_tokens": 2, "cost": 0.0}})
+
+    gw = ModelGateway(
+        {route.task: route},
+        backend_factory=lambda cfg: OpenRouterBackend(cfg, transport=httpx.MockTransport(handler)),
+        execution_mode="research",
+        research_auth=__import__("autograder.cloudboundary", fromlist=["x"]).research_authorization(
+            "test:e2e", tasks=[route.task], models=[route.model]))
+    gw.call(task=route.task,
+            system=__import__("autograder.benchmark.roles", fromlist=["x"])
+            ._load_historical_prompts()["handwritten_cell"],
+            content_blocks=[{"type": "image", "source": {"type": "base64",
+                                                         "media_type": "image/png", "data": "x"}}],
+            output_model=BenchTranscription, max_tokens=route.max_tokens,
+            meta={"job_id": "t"})
+    assert seen["body"]["max_tokens"] == EXPECTED_MAX_TOKENS
+    assert seen["body"]["reasoning"] == {"effort": "low"}
+
+
+def test_extra_generation_cannot_silently_replace_the_resolved_cap(registry):
+    """`payload.update(extra_generation)` runs after max_tokens is set. A config
+    that names max_tokens there must fail closed, not quietly win."""
+    import dataclasses
+
+    from autograder.backends import BackendError
+    from autograder.benchmark.roles import BenchTranscription
+
+    route = _route(registry)
+    cfg = dataclasses.replace(route.to_backend_config(),
+                              extra_generation={"max_tokens": 42})
+    backend = OpenRouterBackend(cfg, transport=httpx.MockTransport(
+        lambda r: httpx.Response(200, json={})))
+    with pytest.raises(BackendError, match="extra_generation may not override"):
+        backend.parse(system="s", content_blocks=[{"type": "image", "source": {
+            "type": "base64", "media_type": "image/png", "data": "x"}}],
+            output_model=BenchTranscription, max_tokens=EXPECTED_MAX_TOKENS)
+
+
+def test_benign_extra_generation_still_works(registry):
+    """The guard must not break the keys routes legitimately set."""
+    import dataclasses
+
+    from autograder.benchmark.roles import BenchTranscription
+
+    route = _route(registry)
+    cfg = dataclasses.replace(route.to_backend_config(),
+                              extra_generation={"top_p": 0.9})
+    seen: dict = {}
+
+    def handler(request: httpx.Request) -> httpx.Response:
+        seen["body"] = json.loads(request.content.decode())
+        return httpx.Response(200, json={
+            "choices": [{"message": {"content": '{"transcription": "x"}'}, "finish_reason": "stop"}],
+            "usage": {"prompt_tokens": 1, "completion_tokens": 1, "total_tokens": 2, "cost": 0.0}})
+
+    OpenRouterBackend(cfg, transport=httpx.MockTransport(handler)).parse(
+        system="s", content_blocks=[{"type": "image", "source": {
+            "type": "base64", "media_type": "image/png", "data": "x"}}],
+        output_model=BenchTranscription, max_tokens=EXPECTED_MAX_TOKENS)
+    assert seen["body"]["max_tokens"] == EXPECTED_MAX_TOKENS
+    assert seen["body"]["top_p"] == 0.9
+
+
+def test_length_is_checked_before_content_filter():
+    """Mechanism behind a Stage-1c finding: a completion carries exactly one
+    finish_reason, and the backend tests `length` first. A response truncated by
+    the cap can therefore never surface as content_filter — so raising the cap
+    can UNMASK content_filter on a case that previously reported truncation."""
+    import inspect
+
+    from autograder.backends import openai_compat
+    src = inspect.getsource(openai_compat.OpenAICompatBackend.parse)
+    assert src.index('finish == "length"') < src.index('finish == "content_filter"')

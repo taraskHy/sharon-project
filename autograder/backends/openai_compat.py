@@ -65,6 +65,12 @@ def _to_openai_blocks(blocks: list[dict]) -> list[dict]:
     return out
 
 
+#: Payload keys the caller has already resolved. ``extra_generation`` is merged
+#: last and must not be able to silently replace any of them — most importantly
+#: ``max_tokens``, which is budget-gated and hashed into the run identity.
+_RESERVED_PAYLOAD_KEYS = frozenset({"model", "messages", "max_tokens", "response_format"})
+
+
 class OpenAICompatBackend(VisionBackend):
     def __init__(self, config: BackendConfig, transport: httpx.BaseTransport | None = None):
         if not config.base_url:
@@ -231,6 +237,18 @@ class OpenAICompatBackend(VisionBackend):
         }
         if self.config.temperature is not None:
             payload["temperature"] = self.config.temperature
+        # extra_generation is merged LAST, so it could silently overwrite a key
+        # the caller already resolved — including max_tokens, the budgeted output
+        # cap. That is the same class of defect as the 2026-09-02 route/adapter
+        # max_tokens bug (a run recording one cap and sending another), so it
+        # fails closed instead: a route that wants a different cap sets it on the
+        # route, where it lands in the config hash and the cost prediction.
+        clashes = _RESERVED_PAYLOAD_KEYS & set(self.config.extra_generation)
+        if clashes:
+            raise BackendError(
+                f"extra_generation may not override {sorted(clashes)}: these are "
+                "resolved from the route and recorded in the run's config hash. "
+                "Set them on the route instead.")
         payload.update(self.config.extra_generation)
         if self.config.structured_mode == "json_schema":
             payload["response_format"] = {

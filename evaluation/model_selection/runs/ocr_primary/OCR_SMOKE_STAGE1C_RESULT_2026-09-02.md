@@ -94,13 +94,13 @@ All 8 payloads checked offline before any network access, at the wire level:
 
 ## 8. All eight Gemini Stage-1c outputs
 
-**`hl_e003_q1_r1__l1`** — handwritten, handwritten_line, crop `a8703841a8bd…`, sent max_tokens 1000
+**`hl_e003_q1_r1__l1`** — handwritten, handwritten_line, crop `a8703841a8bd…`, cap sent 1000 (route recorded 1000)
 
 - REF: `ניתן לראות ברמות התדרים הגבוהים שיש שפות בכיוון התנועה(הטשטוש)`
 - OCR: **NO OUTPUT** — the backend refused this request (content_filter) (`content_filter_refusal`)
 - critical: LINE_LOST_NO_OUTPUT
 
-**`hc_e002_q1_r1`** — handwritten, handwritten_cell, crop `f23d427da6e0…`, sent max_tokens 1000
+**`hc_e002_q1_r1`** — handwritten, handwritten_cell, crop `f23d427da6e0…`, cap sent 1000 (route recorded 1000)
 
 - REF: `יש טשטוש בכל התדרים`
 - OCR: `אשר יש לטשטש בכל התדרים`
@@ -109,7 +109,7 @@ All 8 payloads checked offline before any network access, at the wire level:
 - critical: none
 - ⚠️ **HUMAN REVIEW NEEDED** — CER 0.3158 with a plausible-looking but different reading ('אשר יש לטשטש' vs 'יש טשטוש') — meaning may have flipped
 
-**`hc_e002_q1_r7`** — handwritten, handwritten_cell, crop `7cd8b22b872c…`, sent max_tokens 1000
+**`hc_e002_q1_r7`** — handwritten, handwritten_cell, crop `7cd8b22b872c…`, cap sent 1000 (route recorded 1000)
 
 - REF: `סה"כ הפירמידה נראית תקינה. הדרגה 0 שלה בהירה משמעותית מהתמונה המקורית`
 - OCR: `סה"כ הפירמידה נראית תקינה, הדרגאס
@@ -118,19 +118,19 @@ All 8 payloads checked offline before any network access, at the wire level:
 - tokens in/out/reasoning 1386/485/444 · latency 6.672s
 - critical: DIGIT_CHANGED(ref=0,ocr=-)
 
-**`hc_e002_q2_r1`** — handwritten, handwritten_cell, crop `cc2e23b6c8ac…`, sent max_tokens 1000
+**`hc_e002_q2_r1`** — handwritten, handwritten_cell, crop `cc2e23b6c8ac…`, cap sent 1000 (route recorded 1000)
 
 - REF: `עבור גילוי שפות יהיה רוב התמונה ב0 ורק עבור שפות 255`
 - OCR: **NO OUTPUT** — the backend refused this request (content_filter) (`content_filter_refusal`)
 - critical: LINE_LOST_NO_OUTPUT
 
-**`hc_e002_q2_r6`** — handwritten, handwritten_cell, crop `ebbbff9c23ba…`, sent max_tokens 1000
+**`hc_e002_q2_r6`** — handwritten, handwritten_cell, crop `ebbbff9c23ba…`, cap sent 1000 (route recorded 1000)
 
 - REF: `המעכה זהה לסכימת תמונה זהה עם תנודה קלה. מין תמונת echo כזאת תגרום להיסטוגרמה החדשה להיות קרובה להכפלה ב-2 [לא קריא]`
 - OCR: **NO OUTPUT** — the backend refused this request (content_filter) (`content_filter_refusal`)
 - critical: LINE_LOST_NO_OUTPUT
 
-**`pr_docA_p1_b1`** — printed, formula_printed, crop `5d759b357831…`, sent max_tokens 1000
+**`pr_docA_p1_b1`** — printed, formula_printed, crop `5d759b357831…`, cap sent 1000 (route recorded 1000)
 
 - REF: `203.3730
  203.6730 / 
@@ -142,7 +142,7 @@ All 8 payloads checked offline before any network access, at the wire level:
 - tokens in/out/reasoning 1433/49/0 · latency 3.39s
 - critical: none
 
-**`pr_docA_p2_b3`** — printed, mixed_he_en, crop `ed3c5ef5b4cb…`, sent max_tokens 1000
+**`pr_docA_p2_b3`** — printed, mixed_he_en, crop `ed3c5ef5b4cb…`, cap sent 1000 (route recorded 1000)
 
 - REF: `לאחר הפעולה בונים פרמידת WAVELETS של תמונת התוצאה. בעמוד הבא נתונות 
 תמונות התוצאה ממוספרות  )
@@ -154,7 +154,7 @@ A-I
 - tokens in/out/reasoning 1365/395/342 · latency 6.062s
 - critical: none
 
-**`assoc_docB_p2_b1`** — printed, option_row_association, crop `971600121151…`, sent max_tokens 1000
+**`assoc_docB_p2_b1`** — printed, option_row_association, crop `971600121151…`, cap sent 1000 (route recorded 1000)
 
 - REF: `0.55
 ()ד0.51
@@ -249,7 +249,7 @@ These considerations were specified by the owner BEFORE this arm ran, in the tas
 - ✅ `C7_stable_structured_output` — 0 schema failures
 - ✅ `C8_acceptable_latency_and_cost` — mean 2.719s, $0.00088833/crop
 
-Unchanged and confirmed. On the full 5-case handwritten denominator its mean CER is 0.9487 — it refused 4 of 5 handwritten crops with an unreadable marker against readable audited references, and fabricated the fifth as fluent Hebrew on an unrelated subject. It is perfectly reliable (8/8 schema-valid) and the cheapest arm at $0.00089/crop, and neither fact matters: a transcriber that refuses handwriting or invents it cannot carry this pipeline.
+Unchanged and confirmed. On the full 5-case handwritten denominator its mean CER is 0.9487 — it refused 4 of 5 handwritten crops with an unreadable marker against readable audited references, and fabricated the fifth as fluent Hebrew on an unrelated subject. It is perfectly reliable (8/8 schema-valid) and the cheapest arm at $0.00089/crop, and neither fact matters: a transcriber that refuses handwriting or invents it cannot carry this pipeline. CORRECTED: its 5/5 coverage is 1/5 usable transcriptions - four of five handwritten responses are a bare '[unreadable]'. The DROP is if anything better supported than before.
 
 **`anthropic/claude-sonnet-5` → MAYBE** (7/8 criteria)
 
@@ -262,7 +262,7 @@ Unchanged and confirmed. On the full 5-case handwritten denominator its mean CER
 - ✅ `C7_stable_structured_output` — 0 schema failures
 - ✅ `C8_acceptable_latency_and_cost` — mean 4.383s, $0.00246075/crop
 
-The only arm with complete coverage on every view: 8/8 schema-valid, zero line loss, zero fabrication, and a handwritten mean CER of 0.6188 measured on all 5 handwritten crops. That number is also the problem — 62% character error is not usable transcription, and it refused 2 of 5. It is the reliability floor of this comparison rather than a candidate that has earned production. It remains plausible only because it is the one model whose handwriting number is not an artifact of which cases survived.
+The only arm with complete coverage on every view: 8/8 schema-valid, zero line loss, zero fabrication, and a handwritten mean CER of 0.6188 measured on all 5 handwritten crops. That number is also the problem — 62% character error is not usable transcription, and it refused 2 of 5. It is the reliability floor of this comparison rather than a candidate that has earned production. It remains plausible only because it is the one model whose handwriting number is not an artifact of which cases survived. CORRECTED: its 5/5 coverage is 3/5 usable transcriptions - two responses are the bare string '[unreadable]'. Still the most complete arm, but the gap to Gemini's 2/5 is one case, not three.
 
 **`google/gemini-3.7-flash` → MAYBE** (5/8 criteria)
 
@@ -275,15 +275,15 @@ The only arm with complete coverage on every view: 8/8 schema-valid, zero line l
 - ✅ `C7_stable_structured_output` — 0 schema failures
 - ✅ `C8_acceptable_latency_and_cost` — mean 7.6s, $0.00219975/crop
 
-Stage-1c did what it was for — it proved the route fix and removed truncation entirely (zero truncation errors, versus two in Stage-1b) — and then uncovered a different, more serious problem. Three of eight requests, ALL handwritten, were refused outright by the provider's content filter before inference. On the two handwritten crops it did return, Gemini is far the best model here (mean CER 0.1799 vs Sonnet's 0.6188, and one printed case exact), with zero refusal markers and zero fabrication. But on the intended 5-case denominator, scoring the three refusals as total loss, its bound is 0.6720 — WORSE than Sonnet's measured 0.6188. Across Stage-1b and Stage-1c it has never produced more than 2 of 5 handwritten observations in a single arm, for two unrelated reasons. Its quality ceiling is the highest measured; its delivered coverage is the lowest.
+Stage-1c did what it was for — it proved the route fix and removed truncation entirely (zero truncation errors, versus two in Stage-1b) — and then uncovered a different, more serious problem. Three of eight requests, ALL handwritten, were refused outright by the provider's content filter before inference. On the two handwritten crops it did return, Gemini is far the best model here (mean CER 0.1799 vs Sonnet's 0.6188, and one printed case exact), with zero refusal markers and zero fabrication. But on the intended 5-case denominator, scoring the three refusals as total loss, its bound is 0.6720 — WORSE than Sonnet's measured 0.6188. Across Stage-1b and Stage-1c it has never produced more than 2 of 5 handwritten observations in a single arm, for two unrelated reasons. Its quality ceiling is the highest measured; its delivered coverage is the lowest. CORRECTED after adversarial verification: the three losses are completion-side content_filter finish_reasons, not pre-inference rejections, and they are NOT independent of the cap change - the harness reports truncation before content_filter, so two of the three could not have shown content_filter at 600. On usable transcriptions the coverage gap narrows to 2/5 against Sonnet's 3/5 (Luna: 1/5), and on the two cases both models answered Gemini leads 0.1799 to 0.7279.
 
 ## 15. Advancement decision and the next stage (not executed)
 
 **B — Gemini and Sonnet both remain plausible; a bounded larger seen-only comparison is warranted**
 
-No candidate is declared production-ready, and eight samples could not do that. The larger seen-only stage is now the RIGHT next experiment for a reason Stage-1c created rather than settled: the decisive unknown is no longer transcription quality but Gemini's content-filter refusal rate. Three refusals in eight requests is either a ~37% operational failure rate — which would disqualify the model regardless of how well it reads the crops it accepts — or small-sample noise. Eight cases cannot tell those apart; 32 can, for about eight cents. Sonnet travels as the reliability control because it is the only arm whose handwriting number rests on a complete denominator.
+No candidate is declared production-ready, and eight samples could not do that. The larger seen-only stage is the right next experiment, but Stage-1c changed what it must answer. The decisive unknown is Gemini's content-filter rate on handwriting - 3 of 5 handwritten crops, 60%, not the blended 37% - and whether that rate is intrinsic or an artifact of the raised cap, which this arm cannot separate because the harness reports truncation before content_filter and two of the three losses had previously truncated. 32 crops bound the rate far tighter than 8, for about eight cents. Sonnet travels as the reliability control, with the caveat that its 5/5 coverage is 3/5 once bare [unreadable] markers are excluded.
 
-- *Why not A:* Gemini does not clearly survive: it fails C2 (3 lost lines) and C4 (5/8 coverage), and its failure-aware handwritten bound is worse than Sonnet's measured value.
+- *Why not A:* Gemini does not clearly survive: 3 handwritten losses, 5/8 coverage, and its failure-aware bound is worse than Sonnet's measured value. But that ordering holds under only that one treatment of the missing data - on the cases both models answered Gemini wins decisively - so this is 'not shown', not 'shown worse'.
 - *Why not C:* The prompt is not implicated. Gemini read two handwritten crops at CER 0.18 and 0.04 and a printed one exactly, under the unchanged m2-strict-v1 prompt, so 'no model is acceptable, change the prompt' is not what the evidence says.
 
 **OCR_SEEN32_DEV_GEMINI_VS_SONNET** — RECOMMENDED, NOT EXECUTED — requires explicit owner authorization
@@ -291,9 +291,9 @@ No candidate is declared production-ready, and eight samples could not do that. 
 - population: the frozen 32-case seen DEV OCR subset (evaluation/model_selection/subsets/ocr_primary__seen46_ocr_dev.json, selection 98c8d117e6747adc), unchanged
 - candidates: google/gemini-3.7-flash (reasoning=low, max_tokens=1000), anthropic/claude-sonnet-5 (as run in Stage-1); at most 64 requests
 - predicted cost: gemini $0.088, sonnet $0.0787, upper bound $0.17
-- primary question: is Gemini's content-filter refusal rate a stable property (~37%) or small-sample noise? 32 crops bound it far tighter than 8.
+- primary question: what is Gemini's content-filter rate on handwritten crops (3/5 here), and is it stable? 32 crops bound it far tighter than 8. Secondary and unresolvable here: whether the rate is intrinsic or was unmasked by raising the cap.
 - secondary: a handwriting comparison on a denominator large enough that neither model's number depends on which cases survived
-- **decision rule, stated in advance:** If Gemini's refusal rate stays above ~15% it is DROPPED on operational grounds however good its accepted transcriptions are, because a pipeline cannot silently lose one crop in six. If refusals fall below ~5% and its handwritten CER on the full denominator stays under ~0.15, it ADVANCES alone and Sonnet is dropped. Anything between is reported, not resolved.
+- **decision rule, stated in advance:** If Gemini's HANDWRITTEN content-filter rate stays above ~15% it is DROPPED on operational grounds however good its accepted transcriptions are, because a pipeline cannot silently lose one crop in six. If it falls below ~5% and its handwritten CER on the full denominator stays under ~0.15, it ADVANCES alone. Anything between is reported, not resolved.
 - explicitly excluded: the 21-case CALIBRATION subset, all 53 seen crops, OCR verification, any grading, RAG, HELD_OUT, any prompt change, any new model
 
 ## 16. Cost projections
@@ -332,7 +332,97 @@ Only Stage-1c sent what it recorded. Stage-1's Luna and Sonnet arms recorded 400
 
 Two further identity caveats worth stating plainly: Stage-1b and Stage-1c **share config hash `45297cdd83`** — the route is identical and only the runner's behaviour differed, so the arms are separable by runs-root and git commit, not by recorded identity. And each `run.json` records a single representative `prompt_sha256` (the first case's `handwritten_line` prompt), not a per-case map; all six frozen category prompts are hashed in the pre-registration.
 
+### Usable transcriptions, not just responses
+
+| Model | responses | **usable transcriptions** | note |
+|---|---|---|---|
+| `openai/gpt-5.6-luna-pro` | 5/5 | **1/5** | 4 of 5 responses are a bare `[unreadable]` |
+| `anthropic/claude-sonnet-5` | 5/5 | **3/5** | 2 of 5 responses are a bare `[unreadable]` |
+| `google/gemini-3.7-flash` | 2/5 | **2/5** | 3 lost to content_filter; both answers are real transcriptions |
+
+A bare `[unreadable]` is a schema-valid *response* but not a transcription. Counting it as coverage flatters a model that capitulates over one the provider blocked. On usable output the gap between Gemini and Sonnet is one case, not three — and Luna collapses to 1 of 5.
+
+### Head-to-head on the cases both models answered
+
+On `hc_e002_q1_r1`, `hc_e002_q1_r7` — the only unbiased comparison available — **Gemini 0.1799 vs Sonnet 0.7279**. Gemini wins decisively where the comparison is like-for-like. The failure-aware bound is the one treatment of the missing data that favours Sonnet; it is reported because it is the conservative reading, not because it is the only one.
+
 ## 18-19. Corrections found by independent verification
+
+9 independent agents (4 recomputations, 4 adversarial refutation attempts, 1 synthesis), read-only and offline, 0 provider calls. Two of the four refutation attempts came back REFUTED and forced real changes below.
+
+**C1_content_filter_mischaracterised**
+
+- *i_said:* 3 of 8 requests were refused by the provider's content filter BEFORE inference
+- *actually:* these were responses whose finish_reason was content_filter, not pre-inference request rejections like Stage-1's HTTP 400s. They consumed no tokens and cost nothing, but they are a completion-side outcome.
+- *severity:* major - the Stage-1 HTTP 400 arm WAS a pre-inference rejection, and conflating the two makes Gemini's two failure modes look more alike than they are
+
+**C2_content_filter_is_not_independent_of_the_cap**
+
+- *i_said:* a NEW failure mode, unrelated to the max_tokens fix
+- *actually:* not supportable. autograder/backends/openai_compat.py tests finish_reason == 'length' BEFORE finish_reason == 'content_filter', and a completion carries exactly one finish_reason. At the 600 cap the two handwritten cases that truncated (582 and 585 output tokens) could NOT have surfaced content_filter - it was structurally unobservable on them. Raising the cap to 1000 is therefore a plausible NECESSARY CONDITION for observing content_filter on exactly those cases, and max_tokens is the only variable differing between the arms (identical config hash, prompt, schema, temperature).
+- *the_uncomfortable_case:* hl_e003_q1_r1__l1 SUCCEEDED at cap 600 in Stage-1b with CER 0.0 - a perfect read - and returned content_filter at cap 1000 on the identical image at temperature 0. That one is not explained by unmasking.
+- *severity:* critical - the causal claim is withdrawn; cap and content_filter are entangled and this arm cannot separate them
+
+**C3_failing_sets_overlap**
+
+- *i_said:* the failing set changed
+- *actually:* `{"stage1b_failures": ["hc_e002_q1_r1", "hc_e002_q2_r1", "hc_e002_q2_r6"], "stage1c_failures": ["hc_e002_q2_r1", "hc_e002_q2_r6", "hl_e003_q1_r1__l1"], "intersection": ["hc_e002_q2_r1", "hc_e002_q2_r6"], "note": "2 of 3 overlap - the same two crops fail in both arms under different reported reasons, which is itself evidence they are hard for this model"}`
+- *severity:* major
+
+**C4_coverage_was_not_apples_to_apples**
+
+- *i_said:* Sonnet produced 5 of 5 and Gemini 2 of 5
+- *actually:* true of RESPONSES, not of transcriptions. Two of Sonnet's five handwritten responses are the bare string '[unreadable]' (CER 1.0) and four of Luna's are. Usable transcriptions: Luna 1/5, Sonnet 3/5, Gemini 2/5. The failure-aware bound charges Gemini for provider unavailability while charging Sonnet nothing for model capitulation that yields equally no text.
+- *usable_coverage:* `{"openai/gpt-5.6-luna-pro": "1/5", "anthropic/claude-sonnet-5": "3/5", "google/gemini-3.7-flash": "2/5"}`
+- *severity:* major - the single most misleading line in the earlier report
+
+**C5_ordering_is_fragile**
+
+- *i_said:* Gemini's bound 0.6720 is worse than Sonnet's 0.6188, reversing the ordering
+- *actually:* arithmetically correct, but it is one treatment of the missing data among several and the only one that favours Sonnet. On the cases BOTH models answered, Gemini wins decisively.
+- *head_to_head_on_cases_both_answered:* `{"case_ids": ["hc_e002_q1_r1", "hc_e002_q1_r7"], "gemini_mean_cer": 0.1799, "sonnet_mean_cer": 0.7279}`
+- *imputation_is_demonstrably_pessimistic_here:* `{"note": "the CER=1.0 imputation is charged to cases Gemini has actually read before", "stage1b_cer_on_cases_stage1c_lost": {"hl_e003_q1_r1__l1": 0.0}}`
+- *severity:* major - the conclusion 'Stage-1c does not SHOW Gemini better' survives, but the reasoning offered for it did not
+
+**C6_missingness_is_non_random**
+
+- *finding:* both manifest hard=True cases are among the losses, and Gemini has produced no output for them across BOTH arms under two different mechanisms. The surviving-cases mean of 0.1799 is therefore optimistic - which strengthens the conclusion rather than weakening it. Surfaced by a verifier, not by me.
+- *severity:* supporting
+
+**C7_boundary_claim_overstated**
+
+- *i_said:* no grading content, reference text or credential could have reached the provider; every request carried exactly one image block plus one schema text block
+- *actually:*
+    - the OpenRouter API key reaches the provider in the Authorization header on every request, by design; check_cloud_call structurally cannot see headers. 'No credential reached the provider' is literally inverted - what is true is that no credential appeared in the payload.
+    - the wire body also carries the system message and a SECOND copy of the JSON schema in response_format, so 'one image + one text block' describes the content array only.
+    - the boundary counted 0 text blocks (it inspects adapter-level blocks) while the wire carried 1, and no block-count limit was armed for this run - so the boundary did not ENFORCE the shape I attributed to it; the offline wire check did.
+    - there were at least 9 provider requests, not 8: the 8 chat POSTs plus an authenticated GET /api/v1/key preflight that never passes check_cloud_call.
+- *what_survives:* zero grading markers, zero secret patterns and zero audited-reference text in all 8 serialized bodies; the system prompt is one of the six registered frozen prompts; leakage_check ran on 8/8
+- *severity:* major (wording), not a leak
+
+**C8_propagation_proof_scope**
+
+- *i_said:* the live run corroborates the wire value; the offline test is end-to-end
+- *actually:* the live run cannot distinguish 1000 from 600 - the highest output_tokens observed was 491 and Stage-1b's cap bit at 582/585, so every Stage-1c completion fits under 600. 'Zero truncations' is also computed over 5 cases, not 8. And the offline test drove adapter -> backend -> wire, NOT the runner or the gateway. Both corrected: a ModelGateway-level test was added, the docstring no longer claims the runner, and the live evidence is downgraded to 'consistent with'. The OFFLINE proof stands.
+- *severity:* critical (as a proof claim); no change to the underlying fact
+
+**C9_remaining_hole_closed**
+
+- *finding:* payload.update(extra_generation) runs AFTER max_tokens is set, so a route could silently override the budgeted cap - the same class of defect just fixed
+- *action:* openai_compat now fails closed on reserved-key clashes, with tests
+
+**C10_refusal_rate_should_not_be_blended**
+
+- *i_said:* ~37% refusal rate
+- *actually:* 3/8 = 37.5% blended, but every loss was handwritten: 3 of 5 handwritten = 60%, 0 of 3 printed = 0%. The blended figure understates the rate on the only content type that matters here.
+- *severity:* minor but decision-relevant
+
+**C11_field_was_misleadingly_named**
+
+- *i_said:* per_case.serialized_max_tokens
+- *actually:* that field was the RECORDED route value, never a captured wire value - nothing in the codebase captures a serialized cap per case. For Luna and Sonnet it therefore read 400 while the wire carried 600. Renamed to route_max_tokens_recorded, with max_tokens_actually_sent alongside.
+- *severity:* critical - a field name asserted evidence that did not exist
+
 
 Eight independent agents recomputed every metric from the raw outputs and tried to refute each headline claim. Three real defects surfaced, all now fixed:
 
