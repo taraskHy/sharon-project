@@ -1,0 +1,346 @@
+{
+ "artifact": "ocr_stage1_stage1b_reproduction_readonly",
+ "created_at": "2026-09-02 13:42:29",
+ "provider_requests_made": 0,
+ "git_commit": "d548cc409f5f47704cc50e5c0bf29470bdc822b5",
+ "git_branch": "initial-prototype",
+ "worktree_clean": true,
+ "purpose": "verify the historical Stage-1 / Stage-1b state from machine-readable run data before any Stage-1c provider call",
+ "checks": [
+  {
+   "check": "stage1.luna.observations",
+   "expected": 8,
+   "actual": 8,
+   "source_artifact": "evaluation\\model_selection\\runs\\ocr_primary\\dev__smoke__all__openai-gpt-5.6-luna-pro__c6f10f3603\\outputs.jsonl",
+   "verdict": "PASS"
+  },
+  {
+   "check": "stage1.luna.parsed_transcriptions",
+   "expected": 8,
+   "actual": 8,
+   "source_artifact": "evaluation\\model_selection\\runs\\ocr_primary\\dev__smoke__all__openai-gpt-5.6-luna-pro__c6f10f3603\\outputs.jsonl",
+   "verdict": "PASS"
+  },
+  {
+   "check": "stage1.sonnet.observations",
+   "expected": 8,
+   "actual": 8,
+   "source_artifact": "evaluation\\model_selection\\runs\\ocr_primary\\dev__smoke__all__anthropic-claude-sonnet-5__0481873207\\outputs.jsonl",
+   "verdict": "PASS"
+  },
+  {
+   "check": "stage1.sonnet.parsed_transcriptions",
+   "expected": 8,
+   "actual": 8,
+   "source_artifact": "evaluation\\model_selection\\runs\\ocr_primary\\dev__smoke__all__anthropic-claude-sonnet-5__0481873207\\outputs.jsonl",
+   "verdict": "PASS"
+  },
+  {
+   "check": "stage1.gemini.observations",
+   "expected": 8,
+   "actual": 8,
+   "source_artifact": "evaluation\\model_selection\\runs\\ocr_primary\\dev__smoke__all__google-gemini-3.7-flash__feceaa6084\\outputs.jsonl",
+   "verdict": "PASS"
+  },
+  {
+   "check": "stage1.gemini.pre_inference_http_400",
+   "expected": 8,
+   "actual": 8,
+   "source_artifact": "evaluation\\model_selection\\runs\\ocr_primary\\dev__smoke__all__google-gemini-3.7-flash__feceaa6084\\outputs.jsonl",
+   "verdict": "PASS"
+  },
+  {
+   "check": "stage1.gemini.zero_tokens_consumed",
+   "expected": true,
+   "actual": true,
+   "source_artifact": "evaluation\\model_selection\\runs\\ocr_primary\\dev__smoke__all__google-gemini-3.7-flash__feceaa6084\\outputs.jsonl",
+   "verdict": "PASS"
+  },
+  {
+   "check": "stage1b.gemini.attempted",
+   "expected": 8,
+   "actual": 8,
+   "source_artifact": "evaluation\\model_selection\\runs\\ocr_primary\\dev__smoke__all__google-gemini-3.7-flash__45297cdd83\\outputs.jsonl",
+   "verdict": "PASS"
+  },
+  {
+   "check": "stage1b.gemini.successful_parsed",
+   "expected": 5,
+   "actual": 5,
+   "source_artifact": "evaluation\\model_selection\\runs\\ocr_primary\\dev__smoke__all__google-gemini-3.7-flash__45297cdd83\\outputs.jsonl",
+   "verdict": "PASS"
+  },
+  {
+   "check": "stage1b.gemini.failed_or_truncated",
+   "expected": 3,
+   "actual": 3,
+   "source_artifact": "evaluation\\model_selection\\runs\\ocr_primary\\dev__smoke__all__google-gemini-3.7-flash__45297cdd83\\outputs.jsonl",
+   "verdict": "PASS"
+  },
+  {
+   "check": "stage1b.gemini.explicit_truncation_at_600",
+   "expected": 2,
+   "actual": 2,
+   "source_artifact": "evaluation\\model_selection\\runs\\ocr_primary\\dev__smoke__all__google-gemini-3.7-flash__45297cdd83\\outputs.jsonl",
+   "verdict": "PASS"
+  },
+  {
+   "check": "stage1b.gemini.schema_validation_failure",
+   "expected": 1,
+   "actual": 1,
+   "source_artifact": "evaluation\\model_selection\\runs\\ocr_primary\\dev__smoke__all__google-gemini-3.7-flash__45297cdd83\\outputs.jsonl",
+   "verdict": "PASS"
+  },
+  {
+   "check": "stage1b.recorded_route_max_tokens",
+   "expected": 1000,
+   "actual": 1000,
+   "source_artifact": "evaluation\\model_selection\\runs\\ocr_primary\\dev__smoke__all__google-gemini-3.7-flash__45297cdd83\\run.json",
+   "verdict": "PASS"
+  },
+  {
+   "check": "stage1b.ACTUAL_payload_max_tokens_from_provider_error",
+   "expected": 600,
+   "actual": 600,
+   "source_artifact": "evaluation\\model_selection\\runs\\ocr_primary\\dev__smoke__all__google-gemini-3.7-flash__45297cdd83\\outputs.jsonl",
+   "verdict": "PASS"
+  },
+  {
+   "check": "stage1b.recorded_vs_actual_disagree",
+   "expected": true,
+   "actual": true,
+   "source_artifact": "run.json vs provider error text",
+   "verdict": "PASS"
+  },
+  {
+   "check": "stage1b.reasoning_effort",
+   "expected": {
+    "effort": "low"
+   },
+   "actual": {
+    "effort": "low"
+   },
+   "source_artifact": "evaluation\\model_selection\\runs\\ocr_primary\\dev__smoke__all__google-gemini-3.7-flash__45297cdd83\\run.json",
+   "verdict": "PASS"
+  },
+  {
+   "check": "stage1.reasoning_effort_was_none",
+   "expected": {
+    "effort": "none"
+   },
+   "actual": {
+    "effort": "none"
+   },
+   "source_artifact": "evaluation\\model_selection\\runs\\ocr_primary\\dev__smoke__all__google-gemini-3.7-flash__feceaa6084\\run.json",
+   "verdict": "PASS"
+  },
+  {
+   "check": "all_arms.task_is_ocr_primary_only",
+   "expected": "{'ocr_primary'}",
+   "actual": "{'ocr_primary'}",
+   "source_artifact": "outputs.jsonl x4",
+   "verdict": "PASS"
+  },
+  {
+   "check": "all_arms.split_DEV_only__HELD_OUT_zero",
+   "expected": "{'DEV'}",
+   "actual": "{'DEV'}",
+   "source_artifact": "outputs.jsonl x4",
+   "verdict": "PASS"
+  },
+  {
+   "check": "all_arms.identical_ordered_case_set",
+   "expected": 1,
+   "actual": 1,
+   "source_artifact": "outputs.jsonl x4",
+   "verdict": "PASS"
+  },
+  {
+   "check": "all_arms.order_matches_baseline",
+   "expected": [
+    "hl_e003_q1_r1__l1",
+    "hc_e002_q1_r1",
+    "hc_e002_q1_r7",
+    "hc_e002_q2_r1",
+    "hc_e002_q2_r6",
+    "pr_docA_p1_b1",
+    "pr_docA_p2_b3",
+    "assoc_docB_p2_b1"
+   ],
+   "actual": [
+    "hl_e003_q1_r1__l1",
+    "hc_e002_q1_r1",
+    "hc_e002_q1_r7",
+    "hc_e002_q2_r1",
+    "hc_e002_q2_r6",
+    "pr_docA_p1_b1",
+    "pr_docA_p2_b3",
+    "assoc_docB_p2_b1"
+   ],
+   "source_artifact": "baseline artifact",
+   "verdict": "PASS"
+  },
+  {
+   "check": "all_arms.models_are_the_declared_ones",
+   "expected": "{'anthropic/claude-sonnet-5', 'google/gemini-3.7-flash', 'openai/gpt-5.6-luna-pro'}",
+   "actual": "{'anthropic/claude-sonnet-5', 'google/gemini-3.7-flash', 'openai/gpt-5.6-luna-pro'}",
+   "source_artifact": "outputs.jsonl x4",
+   "verdict": "PASS"
+  },
+  {
+   "check": "ledger.rows_since_baseline",
+   "expected": 32,
+   "actual": 32,
+   "source_artifact": "evaluation\\model_selection\\state\\gateway_ledger\\usage.jsonl",
+   "verdict": "PASS"
+  },
+  {
+   "check": "ledger.only_ocr_primary",
+   "expected": "{'ocr_primary'}",
+   "actual": "{'ocr_primary'}",
+   "source_artifact": "evaluation\\model_selection\\state\\gateway_ledger\\usage.jsonl",
+   "verdict": "PASS"
+  },
+  {
+   "check": "ledger.grading_calls",
+   "expected": 0,
+   "actual": 0,
+   "source_artifact": "evaluation\\model_selection\\state\\gateway_ledger\\usage.jsonl",
+   "verdict": "PASS"
+  },
+  {
+   "check": "ledger.stage1_delta_usd",
+   "expected": 0.0267926,
+   "actual": 0.0267926,
+   "source_artifact": "evaluation\\model_selection\\state\\gateway_ledger\\usage.jsonl",
+   "verdict": "PASS"
+  },
+  {
+   "check": "ledger.stage1b_delta_usd",
+   "expected": 0.01488075,
+   "actual": 0.01488075,
+   "source_artifact": "evaluation\\model_selection\\state\\gateway_ledger\\usage.jsonl",
+   "verdict": "PASS"
+  },
+  {
+   "check": "frozen.audited_references_unchanged",
+   "expected": true,
+   "actual": true,
+   "source_artifact": "frozen manifest",
+   "verdict": "PASS"
+  },
+  {
+   "check": "frozen.crop_hashes_unchanged",
+   "expected": true,
+   "actual": true,
+   "source_artifact": "frozen crops",
+   "verdict": "PASS"
+  },
+  {
+   "check": "frozen.manifest_hashes_unchanged",
+   "expected": {
+    "items_sha256": "25463e91b95db8eecfc306644dd0839f65e42910d4161f6991383b6f4a524a8b",
+    "references_sha256": "4a93e826e6e94777d445e64ae2c3f5ed10def46aa021ff763a45a9807fb913b5",
+    "audit_sha256": "eace95fc6dc684c88f1fea2142414a68ad8f421257ac012faf6bcfc9ae07f50c",
+    "audit_manifest_sha256": "65ac16385979480945938f45f0d3e5e3255afa7bcb41c4ea7afe2ff2ebcc405f"
+   },
+   "actual": {
+    "items_sha256": "25463e91b95db8eecfc306644dd0839f65e42910d4161f6991383b6f4a524a8b",
+    "references_sha256": "4a93e826e6e94777d445e64ae2c3f5ed10def46aa021ff763a45a9807fb913b5",
+    "audit_sha256": "eace95fc6dc684c88f1fea2142414a68ad8f421257ac012faf6bcfc9ae07f50c",
+    "audit_manifest_sha256": "65ac16385979480945938f45f0d3e5e3255afa7bcb41c4ea7afe2ff2ebcc405f"
+   },
+   "source_artifact": "frozen manifest",
+   "verdict": "PASS"
+  },
+  {
+   "check": "frozen.smoke_selection_sha256",
+   "expected": "cc5c9f1ff9911a6821bc49c00131b17770d9a5574baa3e41eb47ecb9d5ef73ec",
+   "actual": "cc5c9f1ff9911a6821bc49c00131b17770d9a5574baa3e41eb47ecb9d5ef73ec",
+   "source_artifact": "evaluation/model_selection/smoke/ocr_primary_smoke.json",
+   "verdict": "PASS"
+  },
+  {
+   "check": "frozen.m2_strict_v1_prompt_hashes_unchanged",
+   "expected": {
+    "formula_printed": "28d034e2a0f1b77f03b0d4754a9bf187806518048a4ad290fa37a8e0ba5e01c9",
+    "handwritten_cell": "d40280acf305b40f7b4ba74d115f76d4d7268156ba5acce0d7f1ce60ba67a137",
+    "handwritten_line": "8c6981a00d467dbbb92c2495a52e1e050dab68de43a43ce977323bc0c2718172",
+    "mixed_he_en": "3c422f061047cad9aa49ce9320f336f36ce96b220e5c5b2fa05526a9f706d4a7",
+    "option_row_association": "71f6a9af322ccb27ce2bf2f7df091ac5fb00f85a8fdf8cbd700fed2962e99cdc",
+    "printed_rtl": "fb6874a4c84b15b5497e9498f561c7992f56a6b2ac12b20abd8ecde62cde2e40"
+   },
+   "actual": {
+    "formula_printed": "28d034e2a0f1b77f03b0d4754a9bf187806518048a4ad290fa37a8e0ba5e01c9",
+    "handwritten_cell": "d40280acf305b40f7b4ba74d115f76d4d7268156ba5acce0d7f1ce60ba67a137",
+    "handwritten_line": "8c6981a00d467dbbb92c2495a52e1e050dab68de43a43ce977323bc0c2718172",
+    "mixed_he_en": "3c422f061047cad9aa49ce9320f336f36ce96b220e5c5b2fa05526a9f706d4a7",
+    "option_row_association": "71f6a9af322ccb27ce2bf2f7df091ac5fb00f85a8fdf8cbd700fed2962e99cdc",
+    "printed_rtl": "fb6874a4c84b15b5497e9498f561c7992f56a6b2ac12b20abd8ecde62cde2e40"
+   },
+   "source_artifact": "autograder/benchmark/roles.py historical prompts",
+   "verdict": "PASS"
+  },
+  {
+   "check": "frozen.prompt_version",
+   "expected": "m2-strict-v1",
+   "actual": "m2-strict-v1",
+   "source_artifact": "OcrPrimaryAdapter",
+   "verdict": "PASS"
+  },
+  {
+   "check": "frozen.adapter_version",
+   "expected": "ocr-primary-bench-v1",
+   "actual": "ocr-primary-bench-v1",
+   "source_artifact": "OcrPrimaryAdapter",
+   "verdict": "PASS"
+  },
+  {
+   "check": "fix.runner_sends_route_max_tokens",
+   "expected": true,
+   "actual": true,
+   "source_artifact": "autograder/benchmark/runner.py",
+   "verdict": "PASS"
+  },
+  {
+   "check": "fix.runner_no_longer_sends_request_max_tokens",
+   "expected": true,
+   "actual": true,
+   "source_artifact": "autograder/benchmark/runner.py",
+   "verdict": "PASS"
+  },
+  {
+   "check": "fix.regression_test_present",
+   "expected": true,
+   "actual": true,
+   "source_artifact": "tests/",
+   "verdict": "PASS"
+  },
+  {
+   "check": "fix.boundary_two_layer_present",
+   "expected": true,
+   "actual": true,
+   "source_artifact": "autograder/cloudboundary.py",
+   "verdict": "PASS"
+  },
+  {
+   "check": "recompute.luna.frozen_mean_cer",
+   "expected": 0.7715,
+   "actual": 0.7715,
+   "source_artifact": "outputs.jsonl",
+   "verdict": "PASS"
+  },
+  {
+   "check": "recompute.sonnet.frozen_mean_cer",
+   "expected": 0.4878,
+   "actual": 0.4878,
+   "source_artifact": "outputs.jsonl",
+   "verdict": "PASS"
+  }
+ ],
+ "checks_total": 40,
+ "checks_passed": 40,
+ "checks_failed": 0,
+ "historical_state_reproduces": true,
+ "content_sha256": "2879532f130fd1462914384cedd10db22ed1b8c6ebd4295b03b00431099e3ac6"
+}

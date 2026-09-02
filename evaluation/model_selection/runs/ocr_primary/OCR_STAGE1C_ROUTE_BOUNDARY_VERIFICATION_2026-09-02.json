@@ -1,0 +1,339 @@
+{
+ "artifact": "ocr_stage1c_route_and_boundary_verification",
+ "created_at": "2026-09-02 13:45:19",
+ "provider_requests_made": 0,
+ "network": "none — httpx.MockTransport; the real OpenRouterBackend was driven offline",
+ "git_commit": "d548cc409f5f47704cc50e5c0bf29470bdc822b5",
+ "max_tokens_trace": {
+  "1_candidates_toml": 1000,
+  "2_resolved_route": 1000,
+  "3_adapter_request_default": 600,
+  "4_runner_passes": "route.max_tokens (fixed; was request.max_tokens)",
+  "5_gateway_forwards": "backend.parse(max_tokens=...)",
+  "6_SERIALIZED_openrouter_payload": 1000,
+  "verdict": "PASS",
+  "note": "the adapter Request still carries 600; that value is now unused by the runner. The wire value is what this artifact asserts."
+ },
+ "boundary_verification": {
+  "research_authorization_campaign": "bench:ocr_primary:dev:smoke",
+  "authorized_tasks": [
+   "ocr_primary"
+  ],
+  "authorized_models": [
+   "google/gemini-3.7-flash"
+  ],
+  "all_payloads_allowed_under_research": true,
+  "all_payloads_allowed_under_production": true,
+  "registered_ocr_prompt": true,
+  "grading_tripwire_hits_total": 0,
+  "banned_substring_hits_total": 0,
+  "audited_reference_in_any_wire_payload": 0,
+  "runner_leakage_check": [
+   "passed"
+  ],
+  "wire_image_blocks_per_request": [
+   1
+  ],
+  "wire_text_blocks_per_request": [
+   1
+  ],
+  "wire_text_block_is_only_the_schema": true,
+  "credential_note": "the Authorization header is set by the backend at transport time and is never part of the recorded payload; no key value is stored in this artifact"
+ },
+ "frozen_inputs": {
+  "smoke_selection_sha256": "cc5c9f1ff9911a6821bc49c00131b17770d9a5574baa3e41eb47ecb9d5ef73ec",
+  "manifest_hashes": {
+   "items_sha256": "25463e91b95db8eecfc306644dd0839f65e42910d4161f6991383b6f4a524a8b",
+   "references_sha256": "4a93e826e6e94777d445e64ae2c3f5ed10def46aa021ff763a45a9807fb913b5",
+   "audit_sha256": "eace95fc6dc684c88f1fea2142414a68ad8f421257ac012faf6bcfc9ae07f50c",
+   "audit_manifest_sha256": "65ac16385979480945938f45f0d3e5e3255afa7bcb41c4ea7afe2ff2ebcc405f"
+  },
+  "prompt_version": "m2-strict-v1",
+  "adapter_version": "ocr-primary-bench-v1",
+  "schema_sha256": "003ee19969c8c443d62d75a0b2ff8eaeaa052fb3b40f3c609c3c8feb178d3679"
+ },
+ "all_payloads_pass": true,
+ "payloads": [
+  {
+   "case_id": "hl_e003_q1_r1__l1",
+   "category": "handwritten_line",
+   "writer": "e003",
+   "split": "DEV",
+   "image": "crops/hl_e003_q1_r1__l1.png",
+   "crop_sha256": "a8703841a8bd44b65a085935d75ab434a554131bcdb49031ebd58d217e1c4757",
+   "reference_sha256": "635929b4b3b8f1d72cac29ab17e6346b3aaa7e883dfe33b56317de6d94fe9ce3",
+   "configured_max_tokens_candidates_toml": 1000,
+   "resolved_route_max_tokens": 1000,
+   "adapter_request_max_tokens": 600,
+   "SERIALIZED_wire_max_tokens": 1000,
+   "wire_model": "google/gemini-3.7-flash",
+   "wire_reasoning": {
+    "effort": "low"
+   },
+   "wire_temperature": 0.0,
+   "wire_response_format": "json_schema",
+   "wire_block_kinds": [
+    "image_url",
+    "text"
+   ],
+   "wire_text_blocks": 1,
+   "wire_text_is_schema_instruction": true,
+   "system_prompt_sha256": "8c6981a00d467dbbb92c2495a52e1e050dab68de43a43ce977323bc0c2718172",
+   "system_prompt_registered": true,
+   "grading_tripwire_hits": [],
+   "banned_substring_hits": [],
+   "audited_reference_in_wire_payload": false,
+   "runner_leakage_check": "passed",
+   "research_mode_boundary": "ALLOWED",
+   "production_mode_boundary": "ALLOWED",
+   "auth_header_present_and_not_recorded": true,
+   "PASS": true
+  },
+  {
+   "case_id": "hc_e002_q1_r1",
+   "category": "handwritten_cell",
+   "writer": "e002",
+   "split": "DEV",
+   "image": "crops/hc_e002_q1_r1.png",
+   "crop_sha256": "f23d427da6e04dbb384d88418a4657adff24ecaba9b252dbb34259adf824fda7",
+   "reference_sha256": "2f906246081ff11463426c4fda09d9337be6b868d3b62c93293a35adbac24d7f",
+   "configured_max_tokens_candidates_toml": 1000,
+   "resolved_route_max_tokens": 1000,
+   "adapter_request_max_tokens": 600,
+   "SERIALIZED_wire_max_tokens": 1000,
+   "wire_model": "google/gemini-3.7-flash",
+   "wire_reasoning": {
+    "effort": "low"
+   },
+   "wire_temperature": 0.0,
+   "wire_response_format": "json_schema",
+   "wire_block_kinds": [
+    "image_url",
+    "text"
+   ],
+   "wire_text_blocks": 1,
+   "wire_text_is_schema_instruction": true,
+   "system_prompt_sha256": "d40280acf305b40f7b4ba74d115f76d4d7268156ba5acce0d7f1ce60ba67a137",
+   "system_prompt_registered": true,
+   "grading_tripwire_hits": [],
+   "banned_substring_hits": [],
+   "audited_reference_in_wire_payload": false,
+   "runner_leakage_check": "passed",
+   "research_mode_boundary": "ALLOWED",
+   "production_mode_boundary": "ALLOWED",
+   "auth_header_present_and_not_recorded": true,
+   "PASS": true
+  },
+  {
+   "case_id": "hc_e002_q1_r7",
+   "category": "handwritten_cell",
+   "writer": "e002",
+   "split": "DEV",
+   "image": "crops/hc_e002_q1_r7.png",
+   "crop_sha256": "7cd8b22b872c3e283c6a3cdb9240abeaa6b20e8ee8bc9c419badcb21d4e2fad7",
+   "reference_sha256": "09902986740b9cca66b2626ea4f0896da35be142cb8c2b65d5688ac224c27890",
+   "configured_max_tokens_candidates_toml": 1000,
+   "resolved_route_max_tokens": 1000,
+   "adapter_request_max_tokens": 600,
+   "SERIALIZED_wire_max_tokens": 1000,
+   "wire_model": "google/gemini-3.7-flash",
+   "wire_reasoning": {
+    "effort": "low"
+   },
+   "wire_temperature": 0.0,
+   "wire_response_format": "json_schema",
+   "wire_block_kinds": [
+    "image_url",
+    "text"
+   ],
+   "wire_text_blocks": 1,
+   "wire_text_is_schema_instruction": true,
+   "system_prompt_sha256": "d40280acf305b40f7b4ba74d115f76d4d7268156ba5acce0d7f1ce60ba67a137",
+   "system_prompt_registered": true,
+   "grading_tripwire_hits": [],
+   "banned_substring_hits": [],
+   "audited_reference_in_wire_payload": false,
+   "runner_leakage_check": "passed",
+   "research_mode_boundary": "ALLOWED",
+   "production_mode_boundary": "ALLOWED",
+   "auth_header_present_and_not_recorded": true,
+   "PASS": true
+  },
+  {
+   "case_id": "hc_e002_q2_r1",
+   "category": "handwritten_cell",
+   "writer": "e002",
+   "split": "DEV",
+   "image": "crops/hc_e002_q2_r1.png",
+   "crop_sha256": "cc2e23b6c8acfa9b54c6d7a6a6a4bf68d172e0259a323c923a02673c19a317ba",
+   "reference_sha256": "1756823bf17385c37bb3abb0fe2fd75565c786f6729ae0fe5b484fc972ec6e38",
+   "configured_max_tokens_candidates_toml": 1000,
+   "resolved_route_max_tokens": 1000,
+   "adapter_request_max_tokens": 600,
+   "SERIALIZED_wire_max_tokens": 1000,
+   "wire_model": "google/gemini-3.7-flash",
+   "wire_reasoning": {
+    "effort": "low"
+   },
+   "wire_temperature": 0.0,
+   "wire_response_format": "json_schema",
+   "wire_block_kinds": [
+    "image_url",
+    "text"
+   ],
+   "wire_text_blocks": 1,
+   "wire_text_is_schema_instruction": true,
+   "system_prompt_sha256": "d40280acf305b40f7b4ba74d115f76d4d7268156ba5acce0d7f1ce60ba67a137",
+   "system_prompt_registered": true,
+   "grading_tripwire_hits": [],
+   "banned_substring_hits": [],
+   "audited_reference_in_wire_payload": false,
+   "runner_leakage_check": "passed",
+   "research_mode_boundary": "ALLOWED",
+   "production_mode_boundary": "ALLOWED",
+   "auth_header_present_and_not_recorded": true,
+   "PASS": true
+  },
+  {
+   "case_id": "hc_e002_q2_r6",
+   "category": "handwritten_cell",
+   "writer": "e002",
+   "split": "DEV",
+   "image": "crops/hc_e002_q2_r6.png",
+   "crop_sha256": "ebbbff9c23ba3b0b6a1c11bfa73c8526df63cc6222c3baeeb9e833538f79833a",
+   "reference_sha256": "fb8c4ea9a0f82637e88e9db9165f4f5b04a60aa62ea34441b3966242b88e3101",
+   "configured_max_tokens_candidates_toml": 1000,
+   "resolved_route_max_tokens": 1000,
+   "adapter_request_max_tokens": 600,
+   "SERIALIZED_wire_max_tokens": 1000,
+   "wire_model": "google/gemini-3.7-flash",
+   "wire_reasoning": {
+    "effort": "low"
+   },
+   "wire_temperature": 0.0,
+   "wire_response_format": "json_schema",
+   "wire_block_kinds": [
+    "image_url",
+    "text"
+   ],
+   "wire_text_blocks": 1,
+   "wire_text_is_schema_instruction": true,
+   "system_prompt_sha256": "d40280acf305b40f7b4ba74d115f76d4d7268156ba5acce0d7f1ce60ba67a137",
+   "system_prompt_registered": true,
+   "grading_tripwire_hits": [],
+   "banned_substring_hits": [],
+   "audited_reference_in_wire_payload": false,
+   "runner_leakage_check": "passed",
+   "research_mode_boundary": "ALLOWED",
+   "production_mode_boundary": "ALLOWED",
+   "auth_header_present_and_not_recorded": true,
+   "PASS": true
+  },
+  {
+   "case_id": "pr_docA_p1_b1",
+   "category": "formula_printed",
+   "writer": null,
+   "split": "DEV",
+   "image": "crops/pr_docA_p1_b1.png",
+   "crop_sha256": "5d759b3578312dc61a0f20a7f63228288b5917f47c398488a3f08a3037d7c5aa",
+   "reference_sha256": "d643591de21b3c72a1aafecae3c6a7d1d4727e46a6636370eb05a82a34cca489",
+   "configured_max_tokens_candidates_toml": 1000,
+   "resolved_route_max_tokens": 1000,
+   "adapter_request_max_tokens": 600,
+   "SERIALIZED_wire_max_tokens": 1000,
+   "wire_model": "google/gemini-3.7-flash",
+   "wire_reasoning": {
+    "effort": "low"
+   },
+   "wire_temperature": 0.0,
+   "wire_response_format": "json_schema",
+   "wire_block_kinds": [
+    "image_url",
+    "text"
+   ],
+   "wire_text_blocks": 1,
+   "wire_text_is_schema_instruction": true,
+   "system_prompt_sha256": "28d034e2a0f1b77f03b0d4754a9bf187806518048a4ad290fa37a8e0ba5e01c9",
+   "system_prompt_registered": true,
+   "grading_tripwire_hits": [],
+   "banned_substring_hits": [],
+   "audited_reference_in_wire_payload": false,
+   "runner_leakage_check": "passed",
+   "research_mode_boundary": "ALLOWED",
+   "production_mode_boundary": "ALLOWED",
+   "auth_header_present_and_not_recorded": true,
+   "PASS": true
+  },
+  {
+   "case_id": "pr_docA_p2_b3",
+   "category": "mixed_he_en",
+   "writer": null,
+   "split": "DEV",
+   "image": "crops/pr_docA_p2_b3.png",
+   "crop_sha256": "ed3c5ef5b4cb26a664a76b3709056bbbf26e90bb0f213c2fadb04de105791124",
+   "reference_sha256": "8ca7ce723be337c52f4ba55d24599976f87f2d93b16a813c8eeb324e8f840028",
+   "configured_max_tokens_candidates_toml": 1000,
+   "resolved_route_max_tokens": 1000,
+   "adapter_request_max_tokens": 600,
+   "SERIALIZED_wire_max_tokens": 1000,
+   "wire_model": "google/gemini-3.7-flash",
+   "wire_reasoning": {
+    "effort": "low"
+   },
+   "wire_temperature": 0.0,
+   "wire_response_format": "json_schema",
+   "wire_block_kinds": [
+    "image_url",
+    "text"
+   ],
+   "wire_text_blocks": 1,
+   "wire_text_is_schema_instruction": true,
+   "system_prompt_sha256": "3c422f061047cad9aa49ce9320f336f36ce96b220e5c5b2fa05526a9f706d4a7",
+   "system_prompt_registered": true,
+   "grading_tripwire_hits": [],
+   "banned_substring_hits": [],
+   "audited_reference_in_wire_payload": false,
+   "runner_leakage_check": "passed",
+   "research_mode_boundary": "ALLOWED",
+   "production_mode_boundary": "ALLOWED",
+   "auth_header_present_and_not_recorded": true,
+   "PASS": true
+  },
+  {
+   "case_id": "assoc_docB_p2_b1",
+   "category": "option_row_association",
+   "writer": null,
+   "split": "DEV",
+   "image": "crops/assoc_docB_p2_b1.png",
+   "crop_sha256": "971600121151bc5ba804bdcaa5a243de07c6f52c62c275d378c5d9a7a0b900b4",
+   "reference_sha256": "ce52194d71d82f64d3e9a1cbbce79606c4d00fc3ede55ca7e0837accf65f4826",
+   "configured_max_tokens_candidates_toml": 1000,
+   "resolved_route_max_tokens": 1000,
+   "adapter_request_max_tokens": 600,
+   "SERIALIZED_wire_max_tokens": 1000,
+   "wire_model": "google/gemini-3.7-flash",
+   "wire_reasoning": {
+    "effort": "low"
+   },
+   "wire_temperature": 0.0,
+   "wire_response_format": "json_schema",
+   "wire_block_kinds": [
+    "image_url",
+    "text"
+   ],
+   "wire_text_blocks": 1,
+   "wire_text_is_schema_instruction": true,
+   "system_prompt_sha256": "71f6a9af322ccb27ce2bf2f7df091ac5fb00f85a8fdf8cbd700fed2962e99cdc",
+   "system_prompt_registered": true,
+   "grading_tripwire_hits": [],
+   "banned_substring_hits": [],
+   "audited_reference_in_wire_payload": false,
+   "runner_leakage_check": "passed",
+   "research_mode_boundary": "ALLOWED",
+   "production_mode_boundary": "ALLOWED",
+   "auth_header_present_and_not_recorded": true,
+   "PASS": true
+  }
+ ],
+ "content_sha256": "2add981387823bb22f842b1c215c6badbcf5a07231b3f6477923d999a0f9cf46"
+}
