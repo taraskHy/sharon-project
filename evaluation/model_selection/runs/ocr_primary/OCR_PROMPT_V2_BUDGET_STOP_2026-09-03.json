@@ -1,0 +1,75 @@
+{
+ "artifact": "ocr_prompt_v2_budget_gate_stop",
+ "created_at": "2026-09-03 00:02:53",
+ "outcome": "STOPPED BEFORE PROVIDER REQUESTS — PREDICTED COST GATE FAILED",
+ "provider_requests_made": 0,
+ "additional_spend_usd": 0.0,
+ "git_commit": "2e70fb143aa3d881d1081d1a1b67d094f344b597",
+ "experiment": "OCR_PROMPT_V2_NEUTRAL_FRAMING_GEMINI_SEEN32",
+ "experiment_sha256": "05185839e204ca6131201983d29d2c0c273445070b56276f280b71426920f679",
+ "prompt_freeze_sha256": "fe6a2b2f9534f1e5a507fff0254fe488adbe7c3114d25e439e752c5ff450998e",
+ "gate": {
+  "authorized_max_predicted_usd": 0.08,
+  "dry_run_predicted_usd": 0.150003,
+  "exceeds_by_usd": 0.070003,
+  "exceeds_by_factor": 1.88,
+  "verdict": "FAIL",
+  "rule_applied": "the authorization states: 'If current dry-run pricing predicts more than $0.08: STOP before provider requests' and 'Do not use historically lower actual cost as justification for exceeding the predicted-cost gate.' The second sentence forecloses the only argument for proceeding."
+ },
+ "why_the_estimate_and_the_gate_disagree": {
+  "the_briefs_figure": "~$0.045, which is the control arm's measured ACTUAL cost and is what the pre-registration recorded as estimated_total_usd",
+  "the_gate_figure": "$0.150003, the dry-run PREDICTION, which is a worst case assuming every one of the 32 responses fills max_tokens=1000",
+  "already_documented": "the pre-registration itself recorded worst_case_predicted_usd = 0.15, so the $0.08 ceiling was set below a worst case that was already on record. This is a ceiling/estimate mismatch, not a surprise.",
+  "control_calibration": {
+   "control_predicted": 0.149916,
+   "control_actual": 0.04492875,
+   "actual_over_predicted": 0.2997
+  },
+  "implied_actual_for_this_arm": 0.044955,
+  "important_caveat": "that implied actual is NOT a safe planning number here. The control's ratio is low precisely because 10 crops were content-filtered and cost nothing. If the neutral prompt WORKS, more crops produce output and the bill goes UP — success is the expensive outcome, so the historical ratio understates this arm specifically."
+ },
+ "everything_verified_and_ready": {
+  "phase0_control_reproduction": "34/34 checks PASS from raw artifacts",
+  "phase1_one_variable_diff": "PASS — only line 0 differs in both categories; 16/16 contract clauses preserved",
+  "phase2_annotation_audit": "0 of 32 crops carry red annotation (max red fraction 0.0)",
+  "phase3_credential_and_pricing": "auth OK; slug live; reasoning low supported and mandatory; local pricing == live 0.75/3.75",
+  "phase4_payloads": "32/32 verified on the wire — 1 image + 1 schema block, max_tokens 1000, reasoning low, all neutral-v2, all registered, 0 tripwires, 0 leakage, allowed under research AND production",
+  "phase5_dry_run": {
+   "mode": "dry_run",
+   "cases": 32,
+   "skipped_resume": 0,
+   "leakage_check": "passed",
+   "route_max_tokens": 1000,
+   "route_reasoning": {
+    "effort": "low"
+   },
+   "prompt_version": "ocr-neutral-v2",
+   "prompt_sha256": "59f7cac180fd85ceda7d97eb40bb4c5aafb1ad9800c346de3f515d98101e20bf"
+  },
+  "cache_separation": "the run resolved a NEW run id and wrote no outputs; the v2 prompt hashes differ from v1 so exact-request cache keys differ and no control response can be silently reused"
+ },
+ "state": {
+  "ledger_rows": 766,
+  "ledger_unchanged": true,
+  "outputs_written": false,
+  "run_dir": "evaluation\\model_selection\\runs_promptv2\\ocr_primary\\dev__seen46_ocr_dev__all__google-gemini-3.7-flash__61dd6641fb"
+ },
+ "options_for_the_owner": [
+  {
+   "option": "raise the predicted ceiling for this experiment to $0.16",
+   "predicted": 0.150003,
+   "expected_actual": 0.044955,
+   "note": "runs the experiment as designed; expected actual is higher than the control's if the prompt works, because output that is produced is output that is billed"
+  },
+  {
+   "option": "keep $0.08 and do not run",
+   "note": "the question stays open: whether the exam framing drives Gemini's content filter"
+  },
+  {
+   "option": "run a 16-crop half now (~$0.075 predicted)",
+   "note": "fits the current ceiling but halves the power on a 10-event baseline; the pre-registered drop rule is stated against 32 and would not apply unchanged"
+  }
+ ],
+ "no_prompt_tuning": "the treatment prompt is frozen and committed at 2e70fb1 and has NOT been modified. Nothing about it changes while this waits.",
+ "content_sha256": "175a6cf113bf4ffa0989cd49c9808ac69b9a2b5087e00d95f4774e5badeccdaf"
+}

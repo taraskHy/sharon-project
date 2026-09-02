@@ -1,0 +1,762 @@
+{
+ "artifact": "ocr_prompt_v2_payload_verification",
+ "created_at": "2026-09-03 00:01:27",
+ "provider_calls": 0,
+ "git_commit": "2e70fb143aa3d881d1081d1a1b67d094f344b597",
+ "payloads": 32,
+ "all_pass": true,
+ "route": {
+  "task": "ocr_primary",
+  "backend": "openrouter",
+  "model": "google/gemini-3.7-flash",
+  "structured_mode": "json_schema",
+  "max_tokens": 1000,
+  "temperature": 0.0,
+  "reasoning": {
+   "effort": "low"
+  },
+  "extra_generation": {},
+  "prompt_version": "ocr-neutral-v2"
+ },
+ "route_sha256": "8fa54bc83dc8e654416a4338f6ae39e7105533b1297fe230497869ce812347e7",
+ "summary": {
+  "images_per_request": [
+   1
+  ],
+  "texts_per_request": [
+   1
+  ],
+  "wire_max_tokens": [
+   1000
+  ],
+  "wire_reasoning": [
+   "{\"effort\": \"low\"}"
+  ],
+  "distinct_system_prompts": [
+   "59f7cac180fd85ce",
+   "8db9abe7a9804a98"
+  ],
+  "all_neutral_v2": true,
+  "all_differ_from_control": true,
+  "all_registered": true,
+  "tripwire_hits": 0,
+  "banned_hits": 0,
+  "reference_leaks": 0,
+  "boundary_research": [
+   "ALLOWED"
+  ],
+  "boundary_production": [
+   "ALLOWED"
+  ],
+  "leakage": [
+   "passed"
+  ]
+ },
+ "per_payload": [
+  {
+   "case_id": "hl_e003_q1_r1__l1",
+   "category": "handwritten_line",
+   "images": 1,
+   "texts": 1,
+   "wire_max_tokens": 1000,
+   "wire_reasoning": {
+    "effort": "low"
+   },
+   "system_sha256": "59f7cac180fd85ceda7d97eb40bb4c5aafb1ad9800c346de3f515d98101e20bf",
+   "control_system_sha256": "8c6981a00d467dbbb92c2495a52e1e050dab68de43a43ce977323bc0c2718172",
+   "system_is_neutral_v2": true,
+   "differs_from_control_prompt": true,
+   "system_registered": true,
+   "tripwire": [],
+   "banned": [],
+   "reference_leak": false,
+   "leakage": "passed",
+   "research": "ALLOWED",
+   "production": "ALLOWED",
+   "PASS": true
+  },
+  {
+   "case_id": "hl_e003_q1_r3__l1",
+   "category": "handwritten_line",
+   "images": 1,
+   "texts": 1,
+   "wire_max_tokens": 1000,
+   "wire_reasoning": {
+    "effort": "low"
+   },
+   "system_sha256": "59f7cac180fd85ceda7d97eb40bb4c5aafb1ad9800c346de3f515d98101e20bf",
+   "control_system_sha256": "8c6981a00d467dbbb92c2495a52e1e050dab68de43a43ce977323bc0c2718172",
+   "system_is_neutral_v2": true,
+   "differs_from_control_prompt": true,
+   "system_registered": true,
+   "tripwire": [],
+   "banned": [],
+   "reference_leak": false,
+   "leakage": "passed",
+   "research": "ALLOWED",
+   "production": "ALLOWED",
+   "PASS": true
+  },
+  {
+   "case_id": "hl_e003_q1_r4__l1",
+   "category": "handwritten_line",
+   "images": 1,
+   "texts": 1,
+   "wire_max_tokens": 1000,
+   "wire_reasoning": {
+    "effort": "low"
+   },
+   "system_sha256": "59f7cac180fd85ceda7d97eb40bb4c5aafb1ad9800c346de3f515d98101e20bf",
+   "control_system_sha256": "8c6981a00d467dbbb92c2495a52e1e050dab68de43a43ce977323bc0c2718172",
+   "system_is_neutral_v2": true,
+   "differs_from_control_prompt": true,
+   "system_registered": true,
+   "tripwire": [],
+   "banned": [],
+   "reference_leak": false,
+   "leakage": "passed",
+   "research": "ALLOWED",
+   "production": "ALLOWED",
+   "PASS": true
+  },
+  {
+   "case_id": "hl_e003_q1_r5__l1",
+   "category": "handwritten_line",
+   "images": 1,
+   "texts": 1,
+   "wire_max_tokens": 1000,
+   "wire_reasoning": {
+    "effort": "low"
+   },
+   "system_sha256": "59f7cac180fd85ceda7d97eb40bb4c5aafb1ad9800c346de3f515d98101e20bf",
+   "control_system_sha256": "8c6981a00d467dbbb92c2495a52e1e050dab68de43a43ce977323bc0c2718172",
+   "system_is_neutral_v2": true,
+   "differs_from_control_prompt": true,
+   "system_registered": true,
+   "tripwire": [],
+   "banned": [],
+   "reference_leak": false,
+   "leakage": "passed",
+   "research": "ALLOWED",
+   "production": "ALLOWED",
+   "PASS": true
+  },
+  {
+   "case_id": "hl_e003_q1_r6__l1",
+   "category": "handwritten_line",
+   "images": 1,
+   "texts": 1,
+   "wire_max_tokens": 1000,
+   "wire_reasoning": {
+    "effort": "low"
+   },
+   "system_sha256": "59f7cac180fd85ceda7d97eb40bb4c5aafb1ad9800c346de3f515d98101e20bf",
+   "control_system_sha256": "8c6981a00d467dbbb92c2495a52e1e050dab68de43a43ce977323bc0c2718172",
+   "system_is_neutral_v2": true,
+   "differs_from_control_prompt": true,
+   "system_registered": true,
+   "tripwire": [],
+   "banned": [],
+   "reference_leak": false,
+   "leakage": "passed",
+   "research": "ALLOWED",
+   "production": "ALLOWED",
+   "PASS": true
+  },
+  {
+   "case_id": "hl_e003_q1_r7__l1",
+   "category": "handwritten_line",
+   "images": 1,
+   "texts": 1,
+   "wire_max_tokens": 1000,
+   "wire_reasoning": {
+    "effort": "low"
+   },
+   "system_sha256": "59f7cac180fd85ceda7d97eb40bb4c5aafb1ad9800c346de3f515d98101e20bf",
+   "control_system_sha256": "8c6981a00d467dbbb92c2495a52e1e050dab68de43a43ce977323bc0c2718172",
+   "system_is_neutral_v2": true,
+   "differs_from_control_prompt": true,
+   "system_registered": true,
+   "tripwire": [],
+   "banned": [],
+   "reference_leak": false,
+   "leakage": "passed",
+   "research": "ALLOWED",
+   "production": "ALLOWED",
+   "PASS": true
+  },
+  {
+   "case_id": "hl_e003_q1_r8__l1",
+   "category": "handwritten_line",
+   "images": 1,
+   "texts": 1,
+   "wire_max_tokens": 1000,
+   "wire_reasoning": {
+    "effort": "low"
+   },
+   "system_sha256": "59f7cac180fd85ceda7d97eb40bb4c5aafb1ad9800c346de3f515d98101e20bf",
+   "control_system_sha256": "8c6981a00d467dbbb92c2495a52e1e050dab68de43a43ce977323bc0c2718172",
+   "system_is_neutral_v2": true,
+   "differs_from_control_prompt": true,
+   "system_registered": true,
+   "tripwire": [],
+   "banned": [],
+   "reference_leak": false,
+   "leakage": "passed",
+   "research": "ALLOWED",
+   "production": "ALLOWED",
+   "PASS": true
+  },
+  {
+   "case_id": "hl_e003_q2_r1__l1",
+   "category": "handwritten_line",
+   "images": 1,
+   "texts": 1,
+   "wire_max_tokens": 1000,
+   "wire_reasoning": {
+    "effort": "low"
+   },
+   "system_sha256": "59f7cac180fd85ceda7d97eb40bb4c5aafb1ad9800c346de3f515d98101e20bf",
+   "control_system_sha256": "8c6981a00d467dbbb92c2495a52e1e050dab68de43a43ce977323bc0c2718172",
+   "system_is_neutral_v2": true,
+   "differs_from_control_prompt": true,
+   "system_registered": true,
+   "tripwire": [],
+   "banned": [],
+   "reference_leak": false,
+   "leakage": "passed",
+   "research": "ALLOWED",
+   "production": "ALLOWED",
+   "PASS": true
+  },
+  {
+   "case_id": "hl_e003_q2_r2__l1",
+   "category": "handwritten_line",
+   "images": 1,
+   "texts": 1,
+   "wire_max_tokens": 1000,
+   "wire_reasoning": {
+    "effort": "low"
+   },
+   "system_sha256": "59f7cac180fd85ceda7d97eb40bb4c5aafb1ad9800c346de3f515d98101e20bf",
+   "control_system_sha256": "8c6981a00d467dbbb92c2495a52e1e050dab68de43a43ce977323bc0c2718172",
+   "system_is_neutral_v2": true,
+   "differs_from_control_prompt": true,
+   "system_registered": true,
+   "tripwire": [],
+   "banned": [],
+   "reference_leak": false,
+   "leakage": "passed",
+   "research": "ALLOWED",
+   "production": "ALLOWED",
+   "PASS": true
+  },
+  {
+   "case_id": "hl_e003_q2_r3__l1",
+   "category": "handwritten_line",
+   "images": 1,
+   "texts": 1,
+   "wire_max_tokens": 1000,
+   "wire_reasoning": {
+    "effort": "low"
+   },
+   "system_sha256": "59f7cac180fd85ceda7d97eb40bb4c5aafb1ad9800c346de3f515d98101e20bf",
+   "control_system_sha256": "8c6981a00d467dbbb92c2495a52e1e050dab68de43a43ce977323bc0c2718172",
+   "system_is_neutral_v2": true,
+   "differs_from_control_prompt": true,
+   "system_registered": true,
+   "tripwire": [],
+   "banned": [],
+   "reference_leak": false,
+   "leakage": "passed",
+   "research": "ALLOWED",
+   "production": "ALLOWED",
+   "PASS": true
+  },
+  {
+   "case_id": "hl_e003_q2_r4__l1",
+   "category": "handwritten_line",
+   "images": 1,
+   "texts": 1,
+   "wire_max_tokens": 1000,
+   "wire_reasoning": {
+    "effort": "low"
+   },
+   "system_sha256": "59f7cac180fd85ceda7d97eb40bb4c5aafb1ad9800c346de3f515d98101e20bf",
+   "control_system_sha256": "8c6981a00d467dbbb92c2495a52e1e050dab68de43a43ce977323bc0c2718172",
+   "system_is_neutral_v2": true,
+   "differs_from_control_prompt": true,
+   "system_registered": true,
+   "tripwire": [],
+   "banned": [],
+   "reference_leak": false,
+   "leakage": "passed",
+   "research": "ALLOWED",
+   "production": "ALLOWED",
+   "PASS": true
+  },
+  {
+   "case_id": "hl_e003_q2_r5__l1",
+   "category": "handwritten_line",
+   "images": 1,
+   "texts": 1,
+   "wire_max_tokens": 1000,
+   "wire_reasoning": {
+    "effort": "low"
+   },
+   "system_sha256": "59f7cac180fd85ceda7d97eb40bb4c5aafb1ad9800c346de3f515d98101e20bf",
+   "control_system_sha256": "8c6981a00d467dbbb92c2495a52e1e050dab68de43a43ce977323bc0c2718172",
+   "system_is_neutral_v2": true,
+   "differs_from_control_prompt": true,
+   "system_registered": true,
+   "tripwire": [],
+   "banned": [],
+   "reference_leak": false,
+   "leakage": "passed",
+   "research": "ALLOWED",
+   "production": "ALLOWED",
+   "PASS": true
+  },
+  {
+   "case_id": "hl_e003_q2_r6__l1",
+   "category": "handwritten_line",
+   "images": 1,
+   "texts": 1,
+   "wire_max_tokens": 1000,
+   "wire_reasoning": {
+    "effort": "low"
+   },
+   "system_sha256": "59f7cac180fd85ceda7d97eb40bb4c5aafb1ad9800c346de3f515d98101e20bf",
+   "control_system_sha256": "8c6981a00d467dbbb92c2495a52e1e050dab68de43a43ce977323bc0c2718172",
+   "system_is_neutral_v2": true,
+   "differs_from_control_prompt": true,
+   "system_registered": true,
+   "tripwire": [],
+   "banned": [],
+   "reference_leak": false,
+   "leakage": "passed",
+   "research": "ALLOWED",
+   "production": "ALLOWED",
+   "PASS": true
+  },
+  {
+   "case_id": "hl_e003_q2_r7__l1",
+   "category": "handwritten_line",
+   "images": 1,
+   "texts": 1,
+   "wire_max_tokens": 1000,
+   "wire_reasoning": {
+    "effort": "low"
+   },
+   "system_sha256": "59f7cac180fd85ceda7d97eb40bb4c5aafb1ad9800c346de3f515d98101e20bf",
+   "control_system_sha256": "8c6981a00d467dbbb92c2495a52e1e050dab68de43a43ce977323bc0c2718172",
+   "system_is_neutral_v2": true,
+   "differs_from_control_prompt": true,
+   "system_registered": true,
+   "tripwire": [],
+   "banned": [],
+   "reference_leak": false,
+   "leakage": "passed",
+   "research": "ALLOWED",
+   "production": "ALLOWED",
+   "PASS": true
+  },
+  {
+   "case_id": "hl_e003_q2_r8__l1",
+   "category": "handwritten_line",
+   "images": 1,
+   "texts": 1,
+   "wire_max_tokens": 1000,
+   "wire_reasoning": {
+    "effort": "low"
+   },
+   "system_sha256": "59f7cac180fd85ceda7d97eb40bb4c5aafb1ad9800c346de3f515d98101e20bf",
+   "control_system_sha256": "8c6981a00d467dbbb92c2495a52e1e050dab68de43a43ce977323bc0c2718172",
+   "system_is_neutral_v2": true,
+   "differs_from_control_prompt": true,
+   "system_registered": true,
+   "tripwire": [],
+   "banned": [],
+   "reference_leak": false,
+   "leakage": "passed",
+   "research": "ALLOWED",
+   "production": "ALLOWED",
+   "PASS": true
+  },
+  {
+   "case_id": "hl_e007_q1_r1__l1",
+   "category": "handwritten_line",
+   "images": 1,
+   "texts": 1,
+   "wire_max_tokens": 1000,
+   "wire_reasoning": {
+    "effort": "low"
+   },
+   "system_sha256": "59f7cac180fd85ceda7d97eb40bb4c5aafb1ad9800c346de3f515d98101e20bf",
+   "control_system_sha256": "8c6981a00d467dbbb92c2495a52e1e050dab68de43a43ce977323bc0c2718172",
+   "system_is_neutral_v2": true,
+   "differs_from_control_prompt": true,
+   "system_registered": true,
+   "tripwire": [],
+   "banned": [],
+   "reference_leak": false,
+   "leakage": "passed",
+   "research": "ALLOWED",
+   "production": "ALLOWED",
+   "PASS": true
+  },
+  {
+   "case_id": "hc_e002_q1_r1",
+   "category": "handwritten_cell",
+   "images": 1,
+   "texts": 1,
+   "wire_max_tokens": 1000,
+   "wire_reasoning": {
+    "effort": "low"
+   },
+   "system_sha256": "8db9abe7a9804a982c8cdf905c56eb86849ee68770fccbf8be4b7eebe1365505",
+   "control_system_sha256": "d40280acf305b40f7b4ba74d115f76d4d7268156ba5acce0d7f1ce60ba67a137",
+   "system_is_neutral_v2": true,
+   "differs_from_control_prompt": true,
+   "system_registered": true,
+   "tripwire": [],
+   "banned": [],
+   "reference_leak": false,
+   "leakage": "passed",
+   "research": "ALLOWED",
+   "production": "ALLOWED",
+   "PASS": true
+  },
+  {
+   "case_id": "hc_e002_q1_r2",
+   "category": "handwritten_cell",
+   "images": 1,
+   "texts": 1,
+   "wire_max_tokens": 1000,
+   "wire_reasoning": {
+    "effort": "low"
+   },
+   "system_sha256": "8db9abe7a9804a982c8cdf905c56eb86849ee68770fccbf8be4b7eebe1365505",
+   "control_system_sha256": "d40280acf305b40f7b4ba74d115f76d4d7268156ba5acce0d7f1ce60ba67a137",
+   "system_is_neutral_v2": true,
+   "differs_from_control_prompt": true,
+   "system_registered": true,
+   "tripwire": [],
+   "banned": [],
+   "reference_leak": false,
+   "leakage": "passed",
+   "research": "ALLOWED",
+   "production": "ALLOWED",
+   "PASS": true
+  },
+  {
+   "case_id": "hc_e002_q1_r3",
+   "category": "handwritten_cell",
+   "images": 1,
+   "texts": 1,
+   "wire_max_tokens": 1000,
+   "wire_reasoning": {
+    "effort": "low"
+   },
+   "system_sha256": "8db9abe7a9804a982c8cdf905c56eb86849ee68770fccbf8be4b7eebe1365505",
+   "control_system_sha256": "d40280acf305b40f7b4ba74d115f76d4d7268156ba5acce0d7f1ce60ba67a137",
+   "system_is_neutral_v2": true,
+   "differs_from_control_prompt": true,
+   "system_registered": true,
+   "tripwire": [],
+   "banned": [],
+   "reference_leak": false,
+   "leakage": "passed",
+   "research": "ALLOWED",
+   "production": "ALLOWED",
+   "PASS": true
+  },
+  {
+   "case_id": "hc_e002_q1_r4",
+   "category": "handwritten_cell",
+   "images": 1,
+   "texts": 1,
+   "wire_max_tokens": 1000,
+   "wire_reasoning": {
+    "effort": "low"
+   },
+   "system_sha256": "8db9abe7a9804a982c8cdf905c56eb86849ee68770fccbf8be4b7eebe1365505",
+   "control_system_sha256": "d40280acf305b40f7b4ba74d115f76d4d7268156ba5acce0d7f1ce60ba67a137",
+   "system_is_neutral_v2": true,
+   "differs_from_control_prompt": true,
+   "system_registered": true,
+   "tripwire": [],
+   "banned": [],
+   "reference_leak": false,
+   "leakage": "passed",
+   "research": "ALLOWED",
+   "production": "ALLOWED",
+   "PASS": true
+  },
+  {
+   "case_id": "hc_e002_q1_r5",
+   "category": "handwritten_cell",
+   "images": 1,
+   "texts": 1,
+   "wire_max_tokens": 1000,
+   "wire_reasoning": {
+    "effort": "low"
+   },
+   "system_sha256": "8db9abe7a9804a982c8cdf905c56eb86849ee68770fccbf8be4b7eebe1365505",
+   "control_system_sha256": "d40280acf305b40f7b4ba74d115f76d4d7268156ba5acce0d7f1ce60ba67a137",
+   "system_is_neutral_v2": true,
+   "differs_from_control_prompt": true,
+   "system_registered": true,
+   "tripwire": [],
+   "banned": [],
+   "reference_leak": false,
+   "leakage": "passed",
+   "research": "ALLOWED",
+   "production": "ALLOWED",
+   "PASS": true
+  },
+  {
+   "case_id": "hc_e002_q1_r6",
+   "category": "handwritten_cell",
+   "images": 1,
+   "texts": 1,
+   "wire_max_tokens": 1000,
+   "wire_reasoning": {
+    "effort": "low"
+   },
+   "system_sha256": "8db9abe7a9804a982c8cdf905c56eb86849ee68770fccbf8be4b7eebe1365505",
+   "control_system_sha256": "d40280acf305b40f7b4ba74d115f76d4d7268156ba5acce0d7f1ce60ba67a137",
+   "system_is_neutral_v2": true,
+   "differs_from_control_prompt": true,
+   "system_registered": true,
+   "tripwire": [],
+   "banned": [],
+   "reference_leak": false,
+   "leakage": "passed",
+   "research": "ALLOWED",
+   "production": "ALLOWED",
+   "PASS": true
+  },
+  {
+   "case_id": "hc_e002_q1_r7",
+   "category": "handwritten_cell",
+   "images": 1,
+   "texts": 1,
+   "wire_max_tokens": 1000,
+   "wire_reasoning": {
+    "effort": "low"
+   },
+   "system_sha256": "8db9abe7a9804a982c8cdf905c56eb86849ee68770fccbf8be4b7eebe1365505",
+   "control_system_sha256": "d40280acf305b40f7b4ba74d115f76d4d7268156ba5acce0d7f1ce60ba67a137",
+   "system_is_neutral_v2": true,
+   "differs_from_control_prompt": true,
+   "system_registered": true,
+   "tripwire": [],
+   "banned": [],
+   "reference_leak": false,
+   "leakage": "passed",
+   "research": "ALLOWED",
+   "production": "ALLOWED",
+   "PASS": true
+  },
+  {
+   "case_id": "hc_e002_q1_r8",
+   "category": "handwritten_cell",
+   "images": 1,
+   "texts": 1,
+   "wire_max_tokens": 1000,
+   "wire_reasoning": {
+    "effort": "low"
+   },
+   "system_sha256": "8db9abe7a9804a982c8cdf905c56eb86849ee68770fccbf8be4b7eebe1365505",
+   "control_system_sha256": "d40280acf305b40f7b4ba74d115f76d4d7268156ba5acce0d7f1ce60ba67a137",
+   "system_is_neutral_v2": true,
+   "differs_from_control_prompt": true,
+   "system_registered": true,
+   "tripwire": [],
+   "banned": [],
+   "reference_leak": false,
+   "leakage": "passed",
+   "research": "ALLOWED",
+   "production": "ALLOWED",
+   "PASS": true
+  },
+  {
+   "case_id": "hc_e002_q2_r1",
+   "category": "handwritten_cell",
+   "images": 1,
+   "texts": 1,
+   "wire_max_tokens": 1000,
+   "wire_reasoning": {
+    "effort": "low"
+   },
+   "system_sha256": "8db9abe7a9804a982c8cdf905c56eb86849ee68770fccbf8be4b7eebe1365505",
+   "control_system_sha256": "d40280acf305b40f7b4ba74d115f76d4d7268156ba5acce0d7f1ce60ba67a137",
+   "system_is_neutral_v2": true,
+   "differs_from_control_prompt": true,
+   "system_registered": true,
+   "tripwire": [],
+   "banned": [],
+   "reference_leak": false,
+   "leakage": "passed",
+   "research": "ALLOWED",
+   "production": "ALLOWED",
+   "PASS": true
+  },
+  {
+   "case_id": "hc_e002_q2_r2",
+   "category": "handwritten_cell",
+   "images": 1,
+   "texts": 1,
+   "wire_max_tokens": 1000,
+   "wire_reasoning": {
+    "effort": "low"
+   },
+   "system_sha256": "8db9abe7a9804a982c8cdf905c56eb86849ee68770fccbf8be4b7eebe1365505",
+   "control_system_sha256": "d40280acf305b40f7b4ba74d115f76d4d7268156ba5acce0d7f1ce60ba67a137",
+   "system_is_neutral_v2": true,
+   "differs_from_control_prompt": true,
+   "system_registered": true,
+   "tripwire": [],
+   "banned": [],
+   "reference_leak": false,
+   "leakage": "passed",
+   "research": "ALLOWED",
+   "production": "ALLOWED",
+   "PASS": true
+  },
+  {
+   "case_id": "hc_e002_q2_r3",
+   "category": "handwritten_cell",
+   "images": 1,
+   "texts": 1,
+   "wire_max_tokens": 1000,
+   "wire_reasoning": {
+    "effort": "low"
+   },
+   "system_sha256": "8db9abe7a9804a982c8cdf905c56eb86849ee68770fccbf8be4b7eebe1365505",
+   "control_system_sha256": "d40280acf305b40f7b4ba74d115f76d4d7268156ba5acce0d7f1ce60ba67a137",
+   "system_is_neutral_v2": true,
+   "differs_from_control_prompt": true,
+   "system_registered": true,
+   "tripwire": [],
+   "banned": [],
+   "reference_leak": false,
+   "leakage": "passed",
+   "research": "ALLOWED",
+   "production": "ALLOWED",
+   "PASS": true
+  },
+  {
+   "case_id": "hc_e002_q2_r4",
+   "category": "handwritten_cell",
+   "images": 1,
+   "texts": 1,
+   "wire_max_tokens": 1000,
+   "wire_reasoning": {
+    "effort": "low"
+   },
+   "system_sha256": "8db9abe7a9804a982c8cdf905c56eb86849ee68770fccbf8be4b7eebe1365505",
+   "control_system_sha256": "d40280acf305b40f7b4ba74d115f76d4d7268156ba5acce0d7f1ce60ba67a137",
+   "system_is_neutral_v2": true,
+   "differs_from_control_prompt": true,
+   "system_registered": true,
+   "tripwire": [],
+   "banned": [],
+   "reference_leak": false,
+   "leakage": "passed",
+   "research": "ALLOWED",
+   "production": "ALLOWED",
+   "PASS": true
+  },
+  {
+   "case_id": "hc_e002_q2_r5",
+   "category": "handwritten_cell",
+   "images": 1,
+   "texts": 1,
+   "wire_max_tokens": 1000,
+   "wire_reasoning": {
+    "effort": "low"
+   },
+   "system_sha256": "8db9abe7a9804a982c8cdf905c56eb86849ee68770fccbf8be4b7eebe1365505",
+   "control_system_sha256": "d40280acf305b40f7b4ba74d115f76d4d7268156ba5acce0d7f1ce60ba67a137",
+   "system_is_neutral_v2": true,
+   "differs_from_control_prompt": true,
+   "system_registered": true,
+   "tripwire": [],
+   "banned": [],
+   "reference_leak": false,
+   "leakage": "passed",
+   "research": "ALLOWED",
+   "production": "ALLOWED",
+   "PASS": true
+  },
+  {
+   "case_id": "hc_e002_q2_r6",
+   "category": "handwritten_cell",
+   "images": 1,
+   "texts": 1,
+   "wire_max_tokens": 1000,
+   "wire_reasoning": {
+    "effort": "low"
+   },
+   "system_sha256": "8db9abe7a9804a982c8cdf905c56eb86849ee68770fccbf8be4b7eebe1365505",
+   "control_system_sha256": "d40280acf305b40f7b4ba74d115f76d4d7268156ba5acce0d7f1ce60ba67a137",
+   "system_is_neutral_v2": true,
+   "differs_from_control_prompt": true,
+   "system_registered": true,
+   "tripwire": [],
+   "banned": [],
+   "reference_leak": false,
+   "leakage": "passed",
+   "research": "ALLOWED",
+   "production": "ALLOWED",
+   "PASS": true
+  },
+  {
+   "case_id": "hc_e002_q2_r7",
+   "category": "handwritten_cell",
+   "images": 1,
+   "texts": 1,
+   "wire_max_tokens": 1000,
+   "wire_reasoning": {
+    "effort": "low"
+   },
+   "system_sha256": "8db9abe7a9804a982c8cdf905c56eb86849ee68770fccbf8be4b7eebe1365505",
+   "control_system_sha256": "d40280acf305b40f7b4ba74d115f76d4d7268156ba5acce0d7f1ce60ba67a137",
+   "system_is_neutral_v2": true,
+   "differs_from_control_prompt": true,
+   "system_registered": true,
+   "tripwire": [],
+   "banned": [],
+   "reference_leak": false,
+   "leakage": "passed",
+   "research": "ALLOWED",
+   "production": "ALLOWED",
+   "PASS": true
+  },
+  {
+   "case_id": "hc_e002_q2_r8",
+   "category": "handwritten_cell",
+   "images": 1,
+   "texts": 1,
+   "wire_max_tokens": 1000,
+   "wire_reasoning": {
+    "effort": "low"
+   },
+   "system_sha256": "8db9abe7a9804a982c8cdf905c56eb86849ee68770fccbf8be4b7eebe1365505",
+   "control_system_sha256": "d40280acf305b40f7b4ba74d115f76d4d7268156ba5acce0d7f1ce60ba67a137",
+   "system_is_neutral_v2": true,
+   "differs_from_control_prompt": true,
+   "system_registered": true,
+   "tripwire": [],
+   "banned": [],
+   "reference_leak": false,
+   "leakage": "passed",
+   "research": "ALLOWED",
+   "production": "ALLOWED",
+   "PASS": true
+  }
+ ],
+ "content_sha256": "36348d7fa3003bafbe57e4fa4d1eda6e20d649dc2acb5551570e9a60be6fdb95"
+}
