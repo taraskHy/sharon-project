@@ -16,7 +16,10 @@ not mutually exclusive: a row can be provider-completed AND a model-text
 refusal AND not a usable transcription, and that combination is exactly the
 case a single boolean hides.
 
-    provider_request_attempted      a request was issued for this crop at all
+    provider_request_attempted      a request was actually issued (False for a
+                                    cache replay, which produced a row without
+                                    contacting the provider)
+    served_from_cache               this row is an exact-request cache replay
     provider_http_response_received an HTTP response body arrived at all
     provider_request_completed      the provider returned CONTENT for us to use
                                     (a body arrived AND it was not a provider-side
@@ -54,6 +57,7 @@ REFERENCE_UNREADABLE_MARKERS: tuple[str, ...] = ("[לא קריא]", "לא קרי
 
 OUTCOME_FIELDS: tuple[str, ...] = (
     "provider_request_attempted",
+    "served_from_cache",
     "provider_http_response_received",
     "provider_request_completed",
     "provider_content_filter_failure",
@@ -106,15 +110,19 @@ def classify_row(row: dict, reference: str | None = None) -> dict[str, Any]:
     # all. A content_filter finish received a body and completed nothing — the
     # distinction Stage-1c's "Refusals = 0" line blurred.
     completed = body_received and not (content_filter or http_other)
+    # a cache replay completed nothing at the provider, though it did yield text
 
     ref_readable = reference_is_readable(reference)
     refusal = bool(text is not None and is_bare_marker(text) and ref_readable)
     usable = bool(text is not None and text.strip() != "" and not is_bare_marker(text))
 
+    # A cache replay produced this row without issuing a request. Reporting it
+    # as "attempted" contradicts this module's own contract and quietly inflates
+    # the provider-request count, so it is read from the row.
+    cache_hit = bool(row.get("cache_hit"))
     return {
-        # a row exists only because a request was issued; recorded explicitly so
-        # the intended denominator is visible in the data, not just inferred
-        "provider_request_attempted": True,
+        "provider_request_attempted": not cache_hit,
+        "served_from_cache": cache_hit,
         "provider_http_response_received": body_received,
         "provider_request_completed": completed,
         "provider_content_filter_failure": content_filter,

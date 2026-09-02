@@ -254,3 +254,21 @@ def test_replay_reports_a_full_denominator(manifest):
     assert r["intended_crops"] == len(cases)
     assert r["primary_used"] + r["fallback_used"] + r["unresolved"] == len(cases)
     assert r["policy_id"] == POLICY_ID
+
+
+def test_a_cache_replay_is_not_a_provider_request(manifest):
+    """Found by independent verification: classify_row hardcoded
+    provider_request_attempted=True, contradicting its own docstring and
+    inflating the provider-request count on cached rows. The paired 32-crop
+    Gemini arm has exactly 2 such rows."""
+    t = _tax(Path("evaluation/model_selection/runs_seen32/ocr_primary/"
+                  "dev__seen46_ocr_dev__all__google-gemini-3.7-flash__c4ae61f634"), manifest)
+    cached = [c for c, v in t.items() if v["served_from_cache"]]
+    assert len(cached) == 2, cached
+    for c in cached:
+        assert t[c]["provider_request_attempted"] is False
+        assert t[c]["usable_transcription_returned"] is True, "both cache hits were successes"
+    s = summarize(t)
+    assert s["provider_request_attempted"] == 30, "62 real requests across both arms, 30 here"
+    assert s["served_from_cache"] == 2
+    assert s["usable_transcription_returned"] == 14, "coverage is unchanged by the fix"
