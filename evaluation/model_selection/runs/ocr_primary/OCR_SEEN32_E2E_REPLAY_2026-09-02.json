@@ -1,0 +1,650 @@
+{
+ "artifact": "ocr_seen32_e2e_persisted_replay",
+ "created_at": "2026-09-02 15:34:05",
+ "provider_calls": 0,
+ "grader_calls": 0,
+ "git_commit": "8c1aa329a28068d34f523c3927b1a3d83edb780f",
+ "purpose": "identify integration gaps between OCR, the local grader and the risk engine",
+ "method": "join the 32 OCR crops to persisted grader/risk artifacts by derived grading case id; never synthesise a grader output where none exists",
+ "unit_mismatch_warning": "The 32 OCR crops and the persisted grader runs address DIFFERENT units. A crop is one handwritten line or answer cell; a grader case is a whole question response. Several crops map to the same grading case id, and the persisted grader runs were produced from the frozen hebrew_bench_v2 evidence, NOT from these new OCR transcriptions. So a 'FULL_E2E_EVIDENCE' row means the persisted artifacts exist end to end for that unit — it does NOT mean this OCR output was fed to that grader run. Nothing here was re-graded, and no grader output was synthesised.",
+ "stage_counts": {
+  "FULL_E2E_EVIDENCE": 29,
+  "STOPS_AT_OCR_no_usable_transcription": 3
+ },
+ "distinct_grading_cases_touched": 32,
+ "crops_per_grading_case": {
+  "1": 32
+ },
+ "ocr_coverage": {
+  "resolved": 29,
+  "unresolved": 3,
+  "needs_human_review": 18
+ },
+ "integration_gaps": [
+  "OCR crops and grader cases are different units; there is no persisted mapping table that says which crops compose a grading case's evidence. The join here is derived from the id convention and is therefore a convention, not a contract.",
+  "No persisted grader run consumes these new OCR transcriptions — the grading corpus was built from the frozen hebrew_bench_v2 evidence. An end-to-end run on NEW OCR output has never been executed.",
+  "The risk engine has persisted decisions only for the shadow replay population, which is the seen-46 grading set, not this crop set."
+ ],
+ "per_case": [
+  {
+   "crop_id": "hl_e003_q1_r1__l1",
+   "grading_case_id": "e003_q1_r1",
+   "ocr_resolved": true,
+   "ocr_source_model": "anthropic/claude-sonnet-5",
+   "ocr_fallback_used": true,
+   "ocr_needs_review": true,
+   "persisted_grader_runs": 5,
+   "persisted_grader_sources": [
+    "ARM_A_Q8_2026-09-02.jsonl",
+    "ARM_B_VERIFY_2026-09-02.jsonl",
+    "SHADOW_REPLAY_2026-09-02.jsonl"
+   ],
+   "persisted_risk_decisions": 3,
+   "risk_actions": [
+    "AUTO"
+   ],
+   "stage_reached": "FULL_E2E_EVIDENCE"
+  },
+  {
+   "crop_id": "hl_e003_q1_r3__l1",
+   "grading_case_id": "e003_q1_r3",
+   "ocr_resolved": true,
+   "ocr_source_model": "anthropic/claude-sonnet-5",
+   "ocr_fallback_used": true,
+   "ocr_needs_review": true,
+   "persisted_grader_runs": 5,
+   "persisted_grader_sources": [
+    "ARM_A_Q8_2026-09-02.jsonl",
+    "ARM_B_VERIFY_2026-09-02.jsonl",
+    "SHADOW_REPLAY_2026-09-02.jsonl"
+   ],
+   "persisted_risk_decisions": 3,
+   "risk_actions": [
+    "AUTO"
+   ],
+   "stage_reached": "FULL_E2E_EVIDENCE"
+  },
+  {
+   "crop_id": "hl_e003_q1_r4__l1",
+   "grading_case_id": "e003_q1_r4",
+   "ocr_resolved": true,
+   "ocr_source_model": "google/gemini-3.7-flash",
+   "ocr_fallback_used": false,
+   "ocr_needs_review": false,
+   "persisted_grader_runs": 5,
+   "persisted_grader_sources": [
+    "ARM_A_Q8_2026-09-02.jsonl",
+    "ARM_B_VERIFY_2026-09-02.jsonl",
+    "SHADOW_REPLAY_2026-09-02.jsonl"
+   ],
+   "persisted_risk_decisions": 3,
+   "risk_actions": [
+    "AUTO"
+   ],
+   "stage_reached": "FULL_E2E_EVIDENCE"
+  },
+  {
+   "crop_id": "hl_e003_q1_r5__l1",
+   "grading_case_id": "e003_q1_r5",
+   "ocr_resolved": true,
+   "ocr_source_model": "anthropic/claude-sonnet-5",
+   "ocr_fallback_used": true,
+   "ocr_needs_review": true,
+   "persisted_grader_runs": 5,
+   "persisted_grader_sources": [
+    "ARM_A_Q8_2026-09-02.jsonl",
+    "ARM_B_VERIFY_2026-09-02.jsonl",
+    "SHADOW_REPLAY_2026-09-02.jsonl"
+   ],
+   "persisted_risk_decisions": 3,
+   "risk_actions": [
+    "AUTO"
+   ],
+   "stage_reached": "FULL_E2E_EVIDENCE"
+  },
+  {
+   "crop_id": "hl_e003_q1_r6__l1",
+   "grading_case_id": "e003_q1_r6",
+   "ocr_resolved": true,
+   "ocr_source_model": "google/gemini-3.7-flash",
+   "ocr_fallback_used": false,
+   "ocr_needs_review": false,
+   "persisted_grader_runs": 5,
+   "persisted_grader_sources": [
+    "ARM_A_Q8_2026-09-02.jsonl",
+    "ARM_B_VERIFY_2026-09-02.jsonl",
+    "SHADOW_REPLAY_2026-09-02.jsonl"
+   ],
+   "persisted_risk_decisions": 3,
+   "risk_actions": [
+    "AUTO",
+    "REVIEW"
+   ],
+   "stage_reached": "FULL_E2E_EVIDENCE"
+  },
+  {
+   "crop_id": "hl_e003_q1_r7__l1",
+   "grading_case_id": "e003_q1_r7",
+   "ocr_resolved": true,
+   "ocr_source_model": "google/gemini-3.7-flash",
+   "ocr_fallback_used": false,
+   "ocr_needs_review": false,
+   "persisted_grader_runs": 5,
+   "persisted_grader_sources": [
+    "ARM_A_Q8_2026-09-02.jsonl",
+    "ARM_B_VERIFY_2026-09-02.jsonl",
+    "SHADOW_REPLAY_2026-09-02.jsonl"
+   ],
+   "persisted_risk_decisions": 3,
+   "risk_actions": [
+    "AUTO",
+    "REVIEW"
+   ],
+   "stage_reached": "FULL_E2E_EVIDENCE"
+  },
+  {
+   "crop_id": "hl_e003_q1_r8__l1",
+   "grading_case_id": "e003_q1_r8",
+   "ocr_resolved": true,
+   "ocr_source_model": "google/gemini-3.7-flash",
+   "ocr_fallback_used": false,
+   "ocr_needs_review": false,
+   "persisted_grader_runs": 5,
+   "persisted_grader_sources": [
+    "ARM_A_Q8_2026-09-02.jsonl",
+    "ARM_B_VERIFY_2026-09-02.jsonl",
+    "SHADOW_REPLAY_2026-09-02.jsonl"
+   ],
+   "persisted_risk_decisions": 3,
+   "risk_actions": [
+    "AUTO",
+    "REVIEW"
+   ],
+   "stage_reached": "FULL_E2E_EVIDENCE"
+  },
+  {
+   "crop_id": "hl_e003_q2_r1__l1",
+   "grading_case_id": "e003_q2_r1",
+   "ocr_resolved": true,
+   "ocr_source_model": "google/gemini-3.7-flash",
+   "ocr_fallback_used": false,
+   "ocr_needs_review": false,
+   "persisted_grader_runs": 5,
+   "persisted_grader_sources": [
+    "ARM_A_Q8_2026-09-02.jsonl",
+    "ARM_B_VERIFY_2026-09-02.jsonl",
+    "SHADOW_REPLAY_2026-09-02.jsonl"
+   ],
+   "persisted_risk_decisions": 3,
+   "risk_actions": [
+    "AUTO"
+   ],
+   "stage_reached": "FULL_E2E_EVIDENCE"
+  },
+  {
+   "crop_id": "hl_e003_q2_r2__l1",
+   "grading_case_id": "e003_q2_r2",
+   "ocr_resolved": true,
+   "ocr_source_model": "google/gemini-3.7-flash",
+   "ocr_fallback_used": false,
+   "ocr_needs_review": false,
+   "persisted_grader_runs": 5,
+   "persisted_grader_sources": [
+    "ARM_A_Q8_2026-09-02.jsonl",
+    "ARM_B_VERIFY_2026-09-02.jsonl",
+    "SHADOW_REPLAY_2026-09-02.jsonl"
+   ],
+   "persisted_risk_decisions": 3,
+   "risk_actions": [
+    "AUTO"
+   ],
+   "stage_reached": "FULL_E2E_EVIDENCE"
+  },
+  {
+   "crop_id": "hl_e003_q2_r3__l1",
+   "grading_case_id": "e003_q2_r3",
+   "ocr_resolved": true,
+   "ocr_source_model": "google/gemini-3.7-flash",
+   "ocr_fallback_used": false,
+   "ocr_needs_review": false,
+   "persisted_grader_runs": 5,
+   "persisted_grader_sources": [
+    "ARM_A_Q8_2026-09-02.jsonl",
+    "ARM_B_VERIFY_2026-09-02.jsonl",
+    "SHADOW_REPLAY_2026-09-02.jsonl"
+   ],
+   "persisted_risk_decisions": 3,
+   "risk_actions": [
+    "AUTO"
+   ],
+   "stage_reached": "FULL_E2E_EVIDENCE"
+  },
+  {
+   "crop_id": "hl_e003_q2_r4__l1",
+   "grading_case_id": "e003_q2_r4",
+   "ocr_resolved": true,
+   "ocr_source_model": "anthropic/claude-sonnet-5",
+   "ocr_fallback_used": true,
+   "ocr_needs_review": true,
+   "persisted_grader_runs": 5,
+   "persisted_grader_sources": [
+    "ARM_A_Q8_2026-09-02.jsonl",
+    "ARM_B_VERIFY_2026-09-02.jsonl",
+    "SHADOW_REPLAY_2026-09-02.jsonl"
+   ],
+   "persisted_risk_decisions": 3,
+   "risk_actions": [
+    "AUTO",
+    "REVIEW"
+   ],
+   "stage_reached": "FULL_E2E_EVIDENCE"
+  },
+  {
+   "crop_id": "hl_e003_q2_r5__l1",
+   "grading_case_id": "e003_q2_r5",
+   "ocr_resolved": true,
+   "ocr_source_model": "anthropic/claude-sonnet-5",
+   "ocr_fallback_used": true,
+   "ocr_needs_review": true,
+   "persisted_grader_runs": 5,
+   "persisted_grader_sources": [
+    "ARM_A_Q8_2026-09-02.jsonl",
+    "ARM_B_VERIFY_2026-09-02.jsonl",
+    "SHADOW_REPLAY_2026-09-02.jsonl"
+   ],
+   "persisted_risk_decisions": 3,
+   "risk_actions": [
+    "AUTO"
+   ],
+   "stage_reached": "FULL_E2E_EVIDENCE"
+  },
+  {
+   "crop_id": "hl_e003_q2_r6__l1",
+   "grading_case_id": "e003_q2_r6",
+   "ocr_resolved": true,
+   "ocr_source_model": "google/gemini-3.7-flash",
+   "ocr_fallback_used": false,
+   "ocr_needs_review": false,
+   "persisted_grader_runs": 5,
+   "persisted_grader_sources": [
+    "ARM_A_Q8_2026-09-02.jsonl",
+    "ARM_B_VERIFY_2026-09-02.jsonl",
+    "SHADOW_REPLAY_2026-09-02.jsonl"
+   ],
+   "persisted_risk_decisions": 3,
+   "risk_actions": [
+    "AUTO",
+    "REVIEW"
+   ],
+   "stage_reached": "FULL_E2E_EVIDENCE"
+  },
+  {
+   "crop_id": "hl_e003_q2_r7__l1",
+   "grading_case_id": "e003_q2_r7",
+   "ocr_resolved": true,
+   "ocr_source_model": "anthropic/claude-sonnet-5",
+   "ocr_fallback_used": true,
+   "ocr_needs_review": true,
+   "persisted_grader_runs": 5,
+   "persisted_grader_sources": [
+    "ARM_A_Q8_2026-09-02.jsonl",
+    "ARM_B_VERIFY_2026-09-02.jsonl",
+    "SHADOW_REPLAY_2026-09-02.jsonl"
+   ],
+   "persisted_risk_decisions": 3,
+   "risk_actions": [
+    "AUTO"
+   ],
+   "stage_reached": "FULL_E2E_EVIDENCE"
+  },
+  {
+   "crop_id": "hl_e003_q2_r8__l1",
+   "grading_case_id": "e003_q2_r8",
+   "ocr_resolved": true,
+   "ocr_source_model": "google/gemini-3.7-flash",
+   "ocr_fallback_used": false,
+   "ocr_needs_review": false,
+   "persisted_grader_runs": 5,
+   "persisted_grader_sources": [
+    "ARM_A_Q8_2026-09-02.jsonl",
+    "ARM_B_VERIFY_2026-09-02.jsonl",
+    "SHADOW_REPLAY_2026-09-02.jsonl"
+   ],
+   "persisted_risk_decisions": 3,
+   "risk_actions": [
+    "AUTO"
+   ],
+   "stage_reached": "FULL_E2E_EVIDENCE"
+  },
+  {
+   "crop_id": "hl_e007_q1_r1__l1",
+   "grading_case_id": "e007_q1_r1",
+   "ocr_resolved": true,
+   "ocr_source_model": "anthropic/claude-sonnet-5",
+   "ocr_fallback_used": true,
+   "ocr_needs_review": true,
+   "persisted_grader_runs": 5,
+   "persisted_grader_sources": [
+    "ARM_A_Q8_2026-09-02.jsonl",
+    "ARM_B_VERIFY_2026-09-02.jsonl",
+    "SHADOW_REPLAY_2026-09-02.jsonl"
+   ],
+   "persisted_risk_decisions": 3,
+   "risk_actions": [
+    "AUTO",
+    "REVIEW"
+   ],
+   "stage_reached": "FULL_E2E_EVIDENCE"
+  },
+  {
+   "crop_id": "hc_e002_q1_r1",
+   "grading_case_id": "e002_q1_r1",
+   "ocr_resolved": true,
+   "ocr_source_model": "google/gemini-3.7-flash",
+   "ocr_fallback_used": false,
+   "ocr_needs_review": false,
+   "persisted_grader_runs": 5,
+   "persisted_grader_sources": [
+    "ARM_A_Q8_2026-09-02.jsonl",
+    "ARM_B_VERIFY_2026-09-02.jsonl",
+    "SHADOW_REPLAY_2026-09-02.jsonl"
+   ],
+   "persisted_risk_decisions": 3,
+   "risk_actions": [
+    "AUTO",
+    "REVIEW"
+   ],
+   "stage_reached": "FULL_E2E_EVIDENCE"
+  },
+  {
+   "crop_id": "hc_e002_q1_r2",
+   "grading_case_id": "e002_q1_r2",
+   "ocr_resolved": true,
+   "ocr_source_model": "anthropic/claude-sonnet-5",
+   "ocr_fallback_used": true,
+   "ocr_needs_review": true,
+   "persisted_grader_runs": 5,
+   "persisted_grader_sources": [
+    "ARM_A_Q8_2026-09-02.jsonl",
+    "ARM_B_VERIFY_2026-09-02.jsonl",
+    "SHADOW_REPLAY_2026-09-02.jsonl"
+   ],
+   "persisted_risk_decisions": 3,
+   "risk_actions": [
+    "AUTO"
+   ],
+   "stage_reached": "FULL_E2E_EVIDENCE"
+  },
+  {
+   "crop_id": "hc_e002_q1_r3",
+   "grading_case_id": "e002_q1_r3",
+   "ocr_resolved": true,
+   "ocr_source_model": "anthropic/claude-sonnet-5",
+   "ocr_fallback_used": true,
+   "ocr_needs_review": true,
+   "persisted_grader_runs": 5,
+   "persisted_grader_sources": [
+    "ARM_A_Q8_2026-09-02.jsonl",
+    "ARM_B_VERIFY_2026-09-02.jsonl",
+    "SHADOW_REPLAY_2026-09-02.jsonl"
+   ],
+   "persisted_risk_decisions": 3,
+   "risk_actions": [
+    "AUTO"
+   ],
+   "stage_reached": "FULL_E2E_EVIDENCE"
+  },
+  {
+   "crop_id": "hc_e002_q1_r4",
+   "grading_case_id": "e002_q1_r4",
+   "ocr_resolved": true,
+   "ocr_source_model": "google/gemini-3.7-flash",
+   "ocr_fallback_used": false,
+   "ocr_needs_review": false,
+   "persisted_grader_runs": 5,
+   "persisted_grader_sources": [
+    "ARM_A_Q8_2026-09-02.jsonl",
+    "ARM_B_VERIFY_2026-09-02.jsonl",
+    "SHADOW_REPLAY_2026-09-02.jsonl"
+   ],
+   "persisted_risk_decisions": 3,
+   "risk_actions": [
+    "AUTO"
+   ],
+   "stage_reached": "FULL_E2E_EVIDENCE"
+  },
+  {
+   "crop_id": "hc_e002_q1_r5",
+   "grading_case_id": "e002_q1_r5",
+   "ocr_resolved": true,
+   "ocr_source_model": "anthropic/claude-sonnet-5",
+   "ocr_fallback_used": true,
+   "ocr_needs_review": true,
+   "persisted_grader_runs": 5,
+   "persisted_grader_sources": [
+    "ARM_A_Q8_2026-09-02.jsonl",
+    "ARM_B_VERIFY_2026-09-02.jsonl",
+    "SHADOW_REPLAY_2026-09-02.jsonl"
+   ],
+   "persisted_risk_decisions": 3,
+   "risk_actions": [
+    "AUTO"
+   ],
+   "stage_reached": "FULL_E2E_EVIDENCE"
+  },
+  {
+   "crop_id": "hc_e002_q1_r6",
+   "grading_case_id": "e002_q1_r6",
+   "ocr_resolved": true,
+   "ocr_source_model": "anthropic/claude-sonnet-5",
+   "ocr_fallback_used": true,
+   "ocr_needs_review": true,
+   "persisted_grader_runs": 5,
+   "persisted_grader_sources": [
+    "ARM_A_Q8_2026-09-02.jsonl",
+    "ARM_B_VERIFY_2026-09-02.jsonl",
+    "SHADOW_REPLAY_2026-09-02.jsonl"
+   ],
+   "persisted_risk_decisions": 3,
+   "risk_actions": [
+    "AUTO"
+   ],
+   "stage_reached": "FULL_E2E_EVIDENCE"
+  },
+  {
+   "crop_id": "hc_e002_q1_r7",
+   "grading_case_id": "e002_q1_r7",
+   "ocr_resolved": true,
+   "ocr_source_model": "google/gemini-3.7-flash",
+   "ocr_fallback_used": false,
+   "ocr_needs_review": false,
+   "persisted_grader_runs": 5,
+   "persisted_grader_sources": [
+    "ARM_A_Q8_2026-09-02.jsonl",
+    "ARM_B_VERIFY_2026-09-02.jsonl",
+    "SHADOW_REPLAY_2026-09-02.jsonl"
+   ],
+   "persisted_risk_decisions": 3,
+   "risk_actions": [
+    "REVIEW"
+   ],
+   "stage_reached": "FULL_E2E_EVIDENCE"
+  },
+  {
+   "crop_id": "hc_e002_q1_r8",
+   "grading_case_id": "e002_q1_r8",
+   "ocr_resolved": true,
+   "ocr_source_model": "google/gemini-3.7-flash",
+   "ocr_fallback_used": false,
+   "ocr_needs_review": false,
+   "persisted_grader_runs": 5,
+   "persisted_grader_sources": [
+    "ARM_A_Q8_2026-09-02.jsonl",
+    "ARM_B_VERIFY_2026-09-02.jsonl",
+    "SHADOW_REPLAY_2026-09-02.jsonl"
+   ],
+   "persisted_risk_decisions": 3,
+   "risk_actions": [
+    "AUTO",
+    "REVIEW"
+   ],
+   "stage_reached": "FULL_E2E_EVIDENCE"
+  },
+  {
+   "crop_id": "hc_e002_q2_r1",
+   "grading_case_id": "e002_q2_r1",
+   "ocr_resolved": false,
+   "ocr_source_model": null,
+   "ocr_fallback_used": false,
+   "ocr_needs_review": true,
+   "persisted_grader_runs": 5,
+   "persisted_grader_sources": [
+    "ARM_A_Q8_2026-09-02.jsonl",
+    "ARM_B_VERIFY_2026-09-02.jsonl",
+    "SHADOW_REPLAY_2026-09-02.jsonl"
+   ],
+   "persisted_risk_decisions": 3,
+   "risk_actions": [
+    "AUTO"
+   ],
+   "stage_reached": "STOPS_AT_OCR_no_usable_transcription"
+  },
+  {
+   "crop_id": "hc_e002_q2_r2",
+   "grading_case_id": "e002_q2_r2",
+   "ocr_resolved": false,
+   "ocr_source_model": null,
+   "ocr_fallback_used": false,
+   "ocr_needs_review": true,
+   "persisted_grader_runs": 5,
+   "persisted_grader_sources": [
+    "ARM_A_Q8_2026-09-02.jsonl",
+    "ARM_B_VERIFY_2026-09-02.jsonl",
+    "SHADOW_REPLAY_2026-09-02.jsonl"
+   ],
+   "persisted_risk_decisions": 3,
+   "risk_actions": [
+    "AUTO"
+   ],
+   "stage_reached": "STOPS_AT_OCR_no_usable_transcription"
+  },
+  {
+   "crop_id": "hc_e002_q2_r3",
+   "grading_case_id": "e002_q2_r3",
+   "ocr_resolved": true,
+   "ocr_source_model": "anthropic/claude-sonnet-5",
+   "ocr_fallback_used": true,
+   "ocr_needs_review": true,
+   "persisted_grader_runs": 5,
+   "persisted_grader_sources": [
+    "ARM_A_Q8_2026-09-02.jsonl",
+    "ARM_B_VERIFY_2026-09-02.jsonl",
+    "SHADOW_REPLAY_2026-09-02.jsonl"
+   ],
+   "persisted_risk_decisions": 3,
+   "risk_actions": [
+    "AUTO"
+   ],
+   "stage_reached": "FULL_E2E_EVIDENCE"
+  },
+  {
+   "crop_id": "hc_e002_q2_r4",
+   "grading_case_id": "e002_q2_r4",
+   "ocr_resolved": false,
+   "ocr_source_model": null,
+   "ocr_fallback_used": false,
+   "ocr_needs_review": true,
+   "persisted_grader_runs": 5,
+   "persisted_grader_sources": [
+    "ARM_A_Q8_2026-09-02.jsonl",
+    "ARM_B_VERIFY_2026-09-02.jsonl",
+    "SHADOW_REPLAY_2026-09-02.jsonl"
+   ],
+   "persisted_risk_decisions": 3,
+   "risk_actions": [
+    "AUTO",
+    "REVIEW"
+   ],
+   "stage_reached": "STOPS_AT_OCR_no_usable_transcription"
+  },
+  {
+   "crop_id": "hc_e002_q2_r5",
+   "grading_case_id": "e002_q2_r5",
+   "ocr_resolved": true,
+   "ocr_source_model": "google/gemini-3.7-flash",
+   "ocr_fallback_used": false,
+   "ocr_needs_review": false,
+   "persisted_grader_runs": 5,
+   "persisted_grader_sources": [
+    "ARM_A_Q8_2026-09-02.jsonl",
+    "ARM_B_VERIFY_2026-09-02.jsonl",
+    "SHADOW_REPLAY_2026-09-02.jsonl"
+   ],
+   "persisted_risk_decisions": 3,
+   "risk_actions": [
+    "AUTO",
+    "REVIEW"
+   ],
+   "stage_reached": "FULL_E2E_EVIDENCE"
+  },
+  {
+   "crop_id": "hc_e002_q2_r6",
+   "grading_case_id": "e002_q2_r6",
+   "ocr_resolved": true,
+   "ocr_source_model": "anthropic/claude-sonnet-5",
+   "ocr_fallback_used": true,
+   "ocr_needs_review": true,
+   "persisted_grader_runs": 5,
+   "persisted_grader_sources": [
+    "ARM_A_Q8_2026-09-02.jsonl",
+    "ARM_B_VERIFY_2026-09-02.jsonl",
+    "SHADOW_REPLAY_2026-09-02.jsonl"
+   ],
+   "persisted_risk_decisions": 3,
+   "risk_actions": [
+    "AUTO",
+    "REVIEW"
+   ],
+   "stage_reached": "FULL_E2E_EVIDENCE"
+  },
+  {
+   "crop_id": "hc_e002_q2_r7",
+   "grading_case_id": "e002_q2_r7",
+   "ocr_resolved": true,
+   "ocr_source_model": "anthropic/claude-sonnet-5",
+   "ocr_fallback_used": true,
+   "ocr_needs_review": true,
+   "persisted_grader_runs": 5,
+   "persisted_grader_sources": [
+    "ARM_A_Q8_2026-09-02.jsonl",
+    "ARM_B_VERIFY_2026-09-02.jsonl",
+    "SHADOW_REPLAY_2026-09-02.jsonl"
+   ],
+   "persisted_risk_decisions": 3,
+   "risk_actions": [
+    "REVIEW"
+   ],
+   "stage_reached": "FULL_E2E_EVIDENCE"
+  },
+  {
+   "crop_id": "hc_e002_q2_r8",
+   "grading_case_id": "e002_q2_r8",
+   "ocr_resolved": true,
+   "ocr_source_model": "anthropic/claude-sonnet-5",
+   "ocr_fallback_used": true,
+   "ocr_needs_review": true,
+   "persisted_grader_runs": 5,
+   "persisted_grader_sources": [
+    "ARM_A_Q8_2026-09-02.jsonl",
+    "ARM_B_VERIFY_2026-09-02.jsonl",
+    "SHADOW_REPLAY_2026-09-02.jsonl"
+   ],
+   "persisted_risk_decisions": 3,
+   "risk_actions": [
+    "AUTO"
+   ],
+   "stage_reached": "FULL_E2E_EVIDENCE"
+  }
+ ],
+ "content_sha256": "eb1d2fda1ecf535af6a9ca80ba62764ba03e8cba7bbd0365bc1cdbb07e120793"
+}

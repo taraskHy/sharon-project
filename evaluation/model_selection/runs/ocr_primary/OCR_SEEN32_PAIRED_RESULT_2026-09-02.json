@@ -4645,6 +4645,24 @@
    "failure_aware_wer": 0.5711,
    "critical_error_cases": 9,
    "WARNING": "NOT DEPLOYABLE - HIDDEN-REFERENCE ORACLE. Upper bound for context only; never a routing recommendation."
+  },
+  "_critical_error_accounting": {
+   "problem": "the per-strategy critical_error_cases counts are computed over each strategy's OWN usable set, so they have different denominators and must not be compared directly. The original column also used a broad flag set (digit, sign/operator, Latin token, single-letter variable, negation), which inflates the count for verbose outputs.",
+   "semantic_only_among_usable": {
+    "gemini_only": 2,
+    "sonnet_only": 9,
+    "gemini_then_sonnet": 6,
+    "definition": "digit / sign-operator / negation mismatch only, counted among that strategy's usable outputs",
+    "warning": "denominators are 14 / 27 / 29 - NOT comparable as raw counts"
+   },
+   "failure_aware_all_32": {
+    "gemini_only": 20,
+    "sonnet_only": 14,
+    "gemini_then_sonnet": 9,
+    "definition": "semantic error OR total line loss, over all 32 intended crops - the same denominator for every strategy",
+    "reading": "this is the comparable view and it REVERSES the impression the raw column gave: Gemini-only is the WORST strategy (20/32 crops either lost or semantically wrong), not the safest. A silently lost line is a failure too."
+   },
+   "correction": "the earlier table reported 2 / 12 / 9 and invited exactly the wrong reading"
   }
  },
  "sonnet_as_fallback": {
@@ -4742,7 +4760,13 @@
   "account_limit_remaining": 19.34859908,
   "ceiling_usd": 0.4,
   "within_ceiling": true,
-  "project_cumulative_usd": 0.65140129
+  "project_cumulative_usd": 0.65140129,
+  "nonbillable_breakdown": {
+   "nonbillable_rows": 18,
+   "real_provider_failures": 16,
+   "cache_hits_billed_nothing": 2,
+   "correction": "an earlier line called all 18 'non-billable failures'; 2 of them are cache replays, which are successes that cost nothing"
+  }
  },
  "cost_projections": {
   "assumptions": "cost per ATTEMPTED crop (32 attempts per arm), same crop mix - all handwritten - one pass, no retries. Gemini's rate benefits from 10 free content-filter rows, so its cost-per-USABLE transcription is the fairer planning number and is given too.",
@@ -4784,15 +4808,18 @@
   },
   "paired_per_crop": 0.00396996,
   "prospective_fallback_composite": {
-   "measured_total_usd": 0.08341781,
-   "per_crop": 0.00260681,
-   "note": "gemini on all 32 plus sonnet on the 15 fallback-triggered crops",
+   "measured_total_usd": 0.09069875,
+   "per_crop": 0.0028343359375,
+   "sonnet_called_on": 18,
+   "sonnet_resolved": 15,
+   "basis": "Gemini on all 32 plus Sonnet on the 18 crops that TRIGGERED the fallback, priced at each crop's actual ledger cost. Sonnet is invoked on all 18 triggers even though it only resolves 15 of them — the 3 it also fails still cost money.",
+   "corrected_from": "an earlier figure of $0.08341781 priced Sonnet on the 15 RESOLVED crops at the arm average, understating both the count and the per-crop cost",
    "projections": {
-    "all_53_seen": 0.138161,
-    "per_100_crops": 0.260681,
-    "100_exams_at_5": 1.303403,
-    "100_exams_at_10": 2.606807,
-    "100_exams_at_15": 3.91021
+    "all_53_seen": 0.1502198046875,
+    "per_100_crops": 0.28343359375,
+    "100_exams_at_5": 1.41716796875,
+    "100_exams_at_10": 2.8343359375,
+    "100_exams_at_15": 4.25150390625
    }
   },
   "grading_cost": {
@@ -4800,5 +4827,43 @@
    "local_grading_cloud_usd": 0.0
   }
  },
- "content_sha256": "79d94986a67bfee41c604afc4109be1a635c0220d808099394f72ae38d9e0d6c"
+ "content_sha256": "f1e76413546ef345329c87d0d268133895be6455298bc443c2180b14c68313e9",
+ "request_accounting_precision": {
+  "attempts_recorded": 64,
+  "actual_provider_requests": 62,
+  "cache_replays": 2,
+  "note": "2 Gemini crops (hc_e002_q1_r1, hc_e002_q1_r7) were served from the exact-request cache under an identical route fingerprint from Stage-1c, so no request reached the provider for them. 64 is the attempt count and the authorized budget unit; 62 is what was sent.",
+  "gemini_usable_including_cache": "14/32",
+  "gemini_usable_from_fresh_calls_only": "12/30",
+  "why_it_matters": "both cached rows were successes, so the fresh-call usable rate (40.0%) is slightly LOWER than the headline 43.75%. The hard-failure conclusion is unaffected and if anything marginally strengthened."
+ },
+ "exact_match_definition": {
+  "raw_string_equality": {
+   "google/gemini-3.7-flash": 4,
+   "anthropic/claude-sonnet-5": null
+  },
+  "note": "the stratified blocks count exact match by RAW string equality against the frozen reference. Counting by normalized CER == 0.0 — the same normalization the CER column uses — gives 7 for Gemini. Both are defensible; the raw count is the stricter one and is what the tables report. Flagged because the two numbers appear in one artifact."
+ },
+ "token_accounting_note": "the per-case token sums in the stratified blocks come from each row's recorded usage and total 16607 in / 6148 out for Gemini; the LEDGER records 19320 / 8117 for the same arm. The ledger is authoritative for billing and is what the cost figures use. The gap is the cached rows plus rows whose usage was not echoed into the output record.",
+ "verification_corrections": {
+  "source": "independent read-only recomputation agents, zero provider calls",
+  "material": [
+   "prospective fallback composite cost was understated ($0.08341781 -> $0.09069875): Sonnet is called on all 18 fallback triggers, not just the 15 it resolves, and per-crop actual cost differs from the arm average",
+   "'64 provider requests' is 64 ATTEMPTS / 62 actual requests / 2 cache replays",
+   "'18 non-billable failures' is 16 failures + 2 cache hits",
+   "the routing critical-error column mixed denominators and a broad flag set; on a consistent failure-aware basis over all 32 crops it is Gemini-only 20, Sonnet-only 14, composite 9 - reversing the ranking the original column implied"
+  ],
+  "minor": [
+   "Gemini's 14/32 usable includes 2 cached Stage-1c successes; fresh-call rate is 12/30",
+   "exact-match is reported by raw string equality (4); by normalized CER==0 it is 7",
+   "stratified token sums differ from the ledger; the ledger is authoritative for cost"
+  ],
+  "unchanged": [
+   "all outcome counts",
+   "all CER/WER figures",
+   "the fallback decisions",
+   "the reliability bounds",
+   "every classification and the decision"
+  ]
+ }
 }

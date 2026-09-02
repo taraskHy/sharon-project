@@ -1,0 +1,164 @@
+{
+ "artifact": "ocr_deterministic_performance",
+ "created_at": "2026-09-02 15:38:09",
+ "provider_calls": 0,
+ "note": "deterministic overhead only; no provider inference benchmarked",
+ "method": "the real 32 paired rows replicated to synthetic batches of 100/1000/10000, 5 repetitions each; timings are wall-clock on this machine and are indicative",
+ "benchmarks": {
+  "ocr_artifact_parsing_and_classification": [
+   {
+    "batch": 100,
+    "mean_s": 0.000154,
+    "p95_s": 0.000186,
+    "per_item_us": 1.54,
+    "throughput_per_s": 648256.2
+   },
+   {
+    "batch": 1000,
+    "mean_s": 0.001616,
+    "p95_s": 0.002306,
+    "per_item_us": 1.62,
+    "throughput_per_s": 618965.1
+   },
+   {
+    "batch": 10000,
+    "mean_s": 0.01448,
+    "p95_s": 0.015147,
+    "per_item_us": 1.45,
+    "throughput_per_s": 690584.8
+   }
+  ],
+  "cer_wer_metric_computation": [
+   {
+    "batch": 100,
+    "mean_s": 0.034739,
+    "p95_s": 0.036494,
+    "per_item_us": 347.39,
+    "throughput_per_s": 2878.6
+   },
+   {
+    "batch": 1000,
+    "mean_s": 0.359341,
+    "p95_s": 0.370871,
+    "per_item_us": 359.34,
+    "throughput_per_s": 2782.9
+   },
+   {
+    "batch": 10000,
+    "mean_s": 4.628364,
+    "p95_s": 5.331445,
+    "per_item_us": 462.84,
+    "throughput_per_s": 2160.6
+   }
+  ],
+  "fallback_routing_decision": [
+   {
+    "batch": 100,
+    "mean_s": 0.000344,
+    "p95_s": 0.000445,
+    "per_item_us": 3.44,
+    "throughput_per_s": 290461.3
+   },
+   {
+    "batch": 1000,
+    "mean_s": 0.00133,
+    "p95_s": 0.001459,
+    "per_item_us": 1.33,
+    "throughput_per_s": 751857.1
+   },
+   {
+    "batch": 10000,
+    "mean_s": 0.011059,
+    "p95_s": 0.011353,
+    "per_item_us": 1.11,
+    "throughput_per_s": 904276.9
+   }
+  ],
+  "result_composition_full_replay": [
+   {
+    "batch": 100,
+    "mean_s": 0.000504,
+    "p95_s": 0.000592,
+    "per_item_us": 5.04,
+    "throughput_per_s": 198578.2
+   },
+   {
+    "batch": 1000,
+    "mean_s": 0.002163,
+    "p95_s": 0.0022,
+    "per_item_us": 2.16,
+    "throughput_per_s": 462299.5
+   },
+   {
+    "batch": 10000,
+    "mean_s": 0.019213,
+    "p95_s": 0.019764,
+    "per_item_us": 1.92,
+    "throughput_per_s": 520480.9
+   }
+  ],
+  "admin_aggregation_summarize": [
+   {
+    "batch": 100,
+    "mean_s": 0.000236,
+    "p95_s": 0.000482,
+    "per_item_us": 2.36,
+    "throughput_per_s": 422976.1
+   },
+   {
+    "batch": 1000,
+    "mean_s": 0.000717,
+    "p95_s": 0.000737,
+    "per_item_us": 0.72,
+    "throughput_per_s": 1394933.6
+   },
+   {
+    "batch": 10000,
+    "mean_s": 0.011085,
+    "p95_s": 0.01448,
+    "per_item_us": 1.11,
+    "throughput_per_s": 902146.0
+   }
+  ],
+  "export_generation_json": [
+   {
+    "batch": 100,
+    "mean_s": 0.000164,
+    "p95_s": 0.000202,
+    "per_item_us": 1.64,
+    "throughput_per_s": 609681.7
+   },
+   {
+    "batch": 1000,
+    "mean_s": 0.001147,
+    "p95_s": 0.0014,
+    "per_item_us": 1.15,
+    "throughput_per_s": 871854.8
+   },
+   {
+    "batch": 10000,
+    "mean_s": 0.01466,
+    "p95_s": 0.019597,
+    "per_item_us": 1.47,
+    "throughput_per_s": 682142.2
+   }
+  ]
+ },
+ "event_sizes_bytes": {
+  "one_outputs_jsonl_row_bytes": 435,
+  "one_classified_outcome_bytes": 566,
+  "one_fallback_decision_bytes": 249,
+  "gemini_outputs_jsonl_bytes": 16591,
+  "paired_result_artifact_bytes": 151296
+ },
+ "estimated_storage_growth": {
+  "1000_crops_mb": 1.25,
+  "10000_crops_mb": 12.5,
+  "100000_crops_mb": 125.0
+ },
+ "peak_memory_10000_compose_bytes": {
+  "current": 1472,
+  "peak": 41256
+ },
+ "headline": "every deterministic stage is microseconds per crop; none of them is a throughput concern next to provider latency of 4-9 s/crop"
+}

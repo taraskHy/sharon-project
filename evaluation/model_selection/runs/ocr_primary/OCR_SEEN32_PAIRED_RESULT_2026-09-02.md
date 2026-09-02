@@ -11,7 +11,7 @@ Experiment `OCR_SEEN32_DEV_PAIRED_GEMINI_VS_SONNET` (`c2e9cc8f6188a496…`). **6
 
 > Fabrication is semantic and human-assigned; none was adjudicated on this run, so the column is 0 by *absence of adjudication*, not by proof.
 
-**The two models fail in opposite directions.** Gemini reads well and often refuses to read at all; Sonnet almost always answers and reads worse. On 32 handwritten crops Gemini produced no usable transcription for **18 of 32 (56%)**, while Sonnet produced usable text for 27 of 32 — but Sonnet's usable text carries a critical digit/sign/negation error in **12 of 27** cases against Gemini's **2 of 14**.
+**The two models fail in opposite directions.** Gemini reads well and often refuses to read at all; Sonnet almost always answers and reads worse. On 32 handwritten crops Gemini produced no usable transcription for **18 of 32 (56%)**, while Sonnet produced usable text for 27 of 32 — but Sonnet's usable text carries a semantic (digit/sign/negation) error in **9 of 27** cases against Gemini's **2 of 14**. On the comparable failure-aware basis — a semantic error *or* a lost line, over all 32 crops — it is Gemini 20, Sonnet 14, composite 9.
 
 ## 1. Pre-registration verification
 
@@ -139,6 +139,17 @@ Policy `gemini_then_sonnet_hard_failure_fallback_v1`, frozen before any output e
 
 **NOT DEPLOYABLE - HIDDEN-REFERENCE ORACLE. Upper bound for context only; never a routing recommendation.**
 
+#### Critical errors across strategies — read the failure-aware row
+
+| Accounting | Gemini only | Sonnet only | Gemini → Sonnet |
+|---|---|---|---|
+| semantic errors among that strategy's usable outputs | 2 (of 14) | 9 (of 27) | 6 (of 29) |
+| **failure-aware over all 32** (semantic error **or** lost line) | **20** | **14** | **9** |
+
+the per-strategy critical_error_cases counts are computed over each strategy's OWN usable set, so they have different denominators and must not be compared directly. The original column also used a broad flag set (digit, sign/operator, Latin token, single-letter variable, negation), which inflates the count for verbose outputs.
+
+**this is the comparable view and it REVERSES the impression the raw column gave: Gemini-only is the WORST strategy (20/32 crops either lost or semantically wrong), not the safest. A silently lost line is a failure too.** the earlier table reported 2 / 12 / 9 and invited exactly the wrong reading.
+
 The oracle matches the prospective policy exactly, which means Gemini's transcription had the lower CER on every case where both models produced usable text. The deployable policy is already doing as well as hindsight could on this data — a real, if narrow, result.
 
 ## 9. Is Sonnet actually a useful fallback?
@@ -172,7 +183,7 @@ This is the counterweight to Sonnet's coverage advantage: **44% of Sonnet's usab
 - Gemini **$0.04492875** (32 attempts, 14 usable, 10 free content-filter rows)
 - Sonnet **$0.08211** (32 attempts, 27 usable)
 - paired total **$0.12703875**, $0.003970/crop
-- prospective composite **$0.08341781** (Gemini on 32 + Sonnet on the 15 triggered crops) = $0.002607/crop
+- prospective composite **$0.09069875** (Gemini on 32 + Sonnet on the 15 triggered crops) = $0.002834/crop
 
 cost per ATTEMPTED crop (32 attempts per arm), same crop mix - all handwritten - one pass, no retries. Gemini's rate benefits from 10 free content-filter rows, so its cost-per-USABLE transcription is the fairer planning number and is given too.
 
@@ -180,7 +191,7 @@ cost per ATTEMPTED crop (32 attempts per arm), same crop mix - all handwritten -
 |---|---|---|---|---|---|---|
 | Gemini (per attempt) | $0.001404 | $0.0744 | $0.1404 | $0.7020 | $1.4040 | $2.1060 |
 | Sonnet (per attempt) | $0.002566 | $0.1360 | $0.2566 | $1.2830 | $2.5659 | $3.8489 |
-| **Composite fallback** | $0.002607 | $0.1382 | $0.2607 | $1.3034 | $2.6068 | $3.9102 |
+| **Composite fallback** | $0.002834 | $0.1502 | $0.2834 | $1.4172 | $2.8343 | $4.2515 |
 
 Gemini's cost per **usable** transcription is $0.003209 versus $0.001404 per attempt — the gap is the 10 free content-filter rows, and the per-usable figure is the honest planning number.
 
