@@ -1,9 +1,9 @@
 {
  "artifact": "prospective_policy_replay",
- "created_at": "2026-09-02 03:02:14",
+ "created_at": "2026-09-02 10:38:40",
  "scope_note": "explanation-case automation only; the deployable table uses ONLY decision-time-observable inputs, the retrospective table is an ORACLE-ASSISTED UPPER BOUND computed with post-review human data that would NOT exist at decision time on a new exam",
  "provenance": {
-  "git_commit": "30c2a69521c9dafa7a2fcc4690d55fc7c5287222",
+  "git_commit": "9a160fa4da744aea1d1f99f88f3fb0275281b6b5",
   "reference_sha256": "ce78aed115633883dd94bd14035ddc3e3f38d02c2484bbd0a7f49c5dbc384306",
   "matrix_name": "asymmetric_grading_risk_v1",
   "matrix_sha256": "605536c54e24c528d1e699a50d3ab3aa470b2daa165037dbb41129de23943ee0",
@@ -146,7 +146,9 @@
    "review": 19,
    "auto_coverage_pct": 58.7,
    "review_rate_pct": 41.3,
+   "correct_auto": 23,
    "auto_precision_pct": 85.2,
+   "auto_precision_definition": "correct_auto / auto — the AUTO subset ONLY. Semantic-layer confusion cells (e.g. 24 valid->valid over all 46) include REVIEW-routed cases and must never be used as this numerator",
    "auto_total_weighted_loss": 20,
    "auto_mean_weighted_loss": 0.7407,
    "auto_error_cells": {
@@ -216,7 +218,9 @@
    "review": 7,
    "auto_coverage_pct": 84.8,
    "review_rate_pct": 15.2,
+   "correct_auto": 29,
    "auto_precision_pct": 74.4,
+   "auto_precision_definition": "correct_auto / auto — the AUTO subset ONLY. Semantic-layer confusion cells (e.g. 24 valid->valid over all 46) include REVIEW-routed cases and must never be used as this numerator",
    "auto_total_weighted_loss": 34,
    "auto_mean_weighted_loss": 0.8718,
    "auto_error_cells": {
@@ -292,7 +296,9 @@
    "review": 2,
    "auto_coverage_pct": 95.7,
    "review_rate_pct": 4.3,
+   "correct_auto": 30,
    "auto_precision_pct": 68.2,
+   "auto_precision_definition": "correct_auto / auto — the AUTO subset ONLY. Semantic-layer confusion cells (e.g. 24 valid->valid over all 46) include REVIEW-routed cases and must never be used as this numerator",
    "auto_total_weighted_loss": 42,
    "auto_mean_weighted_loss": 0.9545,
    "auto_error_cells": {
@@ -373,7 +379,9 @@
    "review": 24,
    "auto_coverage_pct": 47.8,
    "review_rate_pct": 52.2,
+   "correct_auto": 20,
    "auto_precision_pct": 90.9,
+   "auto_precision_definition": "correct_auto / auto — the AUTO subset ONLY. Semantic-layer confusion cells (e.g. 24 valid->valid over all 46) include REVIEW-routed cases and must never be used as this numerator",
    "auto_total_weighted_loss": 10,
    "auto_mean_weighted_loss": 0.4545,
    "auto_error_cells": {
@@ -443,7 +451,9 @@
    "review": 15,
    "auto_coverage_pct": 67.4,
    "review_rate_pct": 32.6,
+   "correct_auto": 24,
    "auto_precision_pct": 77.4,
+   "auto_precision_definition": "correct_auto / auto — the AUTO subset ONLY. Semantic-layer confusion cells (e.g. 24 valid->valid over all 46) include REVIEW-routed cases and must never be used as this numerator",
    "auto_total_weighted_loss": 23,
    "auto_mean_weighted_loss": 0.7419,
    "auto_error_cells": {
@@ -527,5 +537,5 @@
   "formula": "smallest n with (1-bound)^n <= alpha  <=>  n >= ln(alpha)/ln(1-bound), alpha = 0.05",
   "note": "threshold choice belongs to the owner; none is chosen here"
  },
- "content_sha256": "9ef025c292fa3688a092c53a288331f09ba8f7745f3e7777a954f431b95fd595"
+ "content_sha256": "0929e5e104b7db6b5ad75e89c28260e4c3b507966d1f96193d6d39954e38e09c"
 }

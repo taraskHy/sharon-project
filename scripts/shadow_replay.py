@@ -157,12 +157,21 @@ def policy_metrics(decisions: dict[str, "riskengine.RiskDecision"],
             cells[f"{a}->{p}"] += 1
     under = [c for c in auto_ids if RANK[pred[c]] < RANK[href[c]]]
     over = [c for c in auto_ids if RANK[pred[c]] > RANK[href[c]]]
+    # internal coherence: every AUTO case is exactly one of correct /
+    # overgrade / undergrade — a mixed-denominator aggregate cannot pass this
+    assert correct + len(over) + len(under) == len(auto_ids), \
+        "AUTO partition broken: correct+over+under must equal AUTO"
     return {
         "auto": len(auto_ids), "review": len(review),
         "auto_coverage_pct": round(100 * len(auto_ids) / 46, 1),
         "review_rate_pct": round(100 * len(review) / 46, 1),
+        "correct_auto": correct,
         "auto_precision_pct": (round(100 * correct / len(auto_ids), 1)
                                if auto_ids else None),
+        "auto_precision_definition": "correct_auto / auto — the AUTO subset "
+            "ONLY. Semantic-layer confusion cells (e.g. 24 valid->valid over "
+            "all 46) include REVIEW-routed cases and must never be used as "
+            "this numerator",
         "auto_total_weighted_loss": loss,
         "auto_mean_weighted_loss": (round(loss / len(auto_ids), 4)
                                     if auto_ids else None),
@@ -351,13 +360,16 @@ def main() -> int:
           "(typed, fail-closed). 46 seen explanation cases; baseline Q4 8B "
           "outputs; no inference.", "",
           "## PROSPECTIVE_DEPLOYABLE (genuinely deployable)", "",
-          "| policy | AUTO | cov% | REVIEW | prec% | AUTO risk | mean | "
-          "iv->v | pv->v | iv->pv | under | step+ | step- | rev/100 |",
-          "|---|---|---|---|---|---|---|---|---|---|---|---|---|---|"]
+          "AUTO precision = correct_auto / AUTO (the AUTO subset only; "
+          "REVIEW-routed cases are in neither numerator nor denominator).", "",
+          "| policy | AUTO | cov% | REVIEW | correct | prec% | AUTO risk | "
+          "mean | iv->v | pv->v | iv->pv | under | step+ | step- | rev/100 |",
+          "|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|"]
     for pol in PROSPECTIVE_POLICIES:
         m = prospective_results[pol]
         md.append(f"| {pol} | {m['auto']} | {m['auto_coverage_pct']} | "
-                  f"{m['review']} | {m['auto_precision_pct']} | "
+                  f"{m['review']} | {m['correct_auto']} | "
+                  f"{m['auto_precision_pct']} | "
                   f"{m['auto_total_weighted_loss']} | "
                   f"{m['auto_mean_weighted_loss']} | "
                   f"{m['invalid_to_valid_auto']} | {m['partial_to_valid_auto']} "
@@ -369,12 +381,13 @@ def main() -> int:
            "does not exist before review on a new case. They bound what a "
            "future prospective dispute-predictor could add; they are NOT "
            "candidate production policies.", "",
-           "| policy | AUTO | cov% | REVIEW | prec% | AUTO risk | pv->v | "
-           "under |", "|---|---|---|---|---|---|---|---|"]
+           "| policy | AUTO | cov% | REVIEW | correct | prec% | AUTO risk | "
+           "pv->v | under |", "|---|---|---|---|---|---|---|---|---|"]
     for pol in RETROSPECTIVE_POLICIES:
         m = retro_results[pol]
         md.append(f"| {pol} | {m['auto']} | {m['auto_coverage_pct']} | "
-                  f"{m['review']} | {m['auto_precision_pct']} | "
+                  f"{m['review']} | {m['correct_auto']} | "
+                  f"{m['auto_precision_pct']} | "
                   f"{m['auto_total_weighted_loss']} | "
                   f"{m['partial_to_valid_auto']} | {m['auto_undergrades']} |")
     ru = prospective_results["prospective_valid_only_v1"][

@@ -203,6 +203,64 @@ def test_prospective_replay_artifact_matches_the_shadow_events():
 
 
 @needs_artifacts
+def test_precision_recomputes_from_case_rows_for_every_policy():
+    """Regression for the 2026-09-02 morning-report denominator mix-up
+    (24/27 = 88.9% instead of 23/27 = 85.2%): every aggregate must equal its
+    per-case recomputation, and the AUTO partition must be exact."""
+    doc = json.loads(REPLAY_JSON.read_text(encoding="utf-8"))
+    events = re_.ShadowLog(SHADOW_JSONL).events()
+    for pol, m in doc["deployable_prospective"].items():
+        evs = [e for e in events if e["decision"]["policy_id"] == pol]
+        auto = [e for e in evs if e["decision"]["action"] == "AUTO"]
+        correct = sum(1 for e in auto
+                      if e["offline_evaluation"]["reference_verdict"]
+                      == e["decision"]["semantic_verdict"])
+        over = sum(1 for e in auto
+                   if e["offline_evaluation"]["strict_weighted_loss"] > 0
+                   and e["decision"]["semantic_verdict"] != "invalid"
+                   and e["offline_evaluation"]["reference_verdict"]
+                   != e["decision"]["semantic_verdict"])
+        assert m["correct_auto"] == correct
+        assert m["auto_precision_pct"] == round(100 * correct / len(auto), 1)
+        assert correct + m["auto_overgrades"] + m["auto_undergrades"] == m["auto"]
+        assert m["auto"] + m["review"] == 46
+        # the pv->valid column counts AUTO cases ONLY (never reviewed ones)
+        pv_auto = sum(1 for e in auto
+                      if e["offline_evaluation"]["severe_partial_to_valid"])
+        assert m["partial_to_valid_auto"] == pv_auto
+        assert "AUTO subset" in m["auto_precision_definition"]
+    # the known-correct valid-only row, pinned exactly
+    vo = doc["deployable_prospective"]["prospective_valid_only_v1"]
+    assert (vo["auto"], vo["review"], vo["correct_auto"],
+            vo["auto_precision_pct"], vo["auto_total_weighted_loss"],
+            vo["partial_to_valid_auto"], vo["invalid_to_valid_auto"],
+            vo["auto_undergrades"]) == (27, 19, 23, 85.2, 20, 4, 0, 0)
+
+
+@needs_artifacts
+def test_md_table_rows_match_the_json_exactly():
+    """The human-facing MD table is machine-checked against the JSON so a
+    transcription error can never ship silently."""
+    doc = json.loads(REPLAY_JSON.read_text(encoding="utf-8"))
+    md = (RUNS / f"PROSPECTIVE_POLICY_REPLAY_{DATE}.md").read_text(encoding="utf-8")
+    for pol, m in doc["deployable_prospective"].items():
+        row = next(l for l in md.splitlines() if l.startswith(f"| {pol} "))
+        cells = [c.strip() for c in row.strip("|").split("|")]
+        assert cells[1] == str(m["auto"])
+        assert cells[3] == str(m["review"])
+        assert cells[4] == str(m["correct_auto"])
+        assert cells[5] == str(m["auto_precision_pct"])
+        assert cells[6] == str(m["auto_total_weighted_loss"])
+        assert cells[9] == str(m["partial_to_valid_auto"])
+    for pol, m in doc["oracle_retrospective_upper_bound_NOT_DEPLOYABLE"].items():
+        row = next(l for l in md.splitlines() if l.startswith(f"| {pol} "))
+        cells = [c.strip() for c in row.strip("|").split("|")]
+        assert cells[1] == str(m["auto"])
+        assert cells[4] == str(m["correct_auto"])
+        assert cells[5] == str(m["auto_precision_pct"])
+
+
+@needs_artifacts
 def test_rare_event_bounds_in_the_artifact_are_exact():
     doc = json.loads(REPLAY_JSON.read_text(encoding="utf-8"))
     for pol, m in doc["deployable_prospective"].items():
