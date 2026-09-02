@@ -33,9 +33,15 @@ Admin surface (key-protected; the ONLY place comparisons exist):
     GET  /api/admin/export       deterministic campaign results
     POST /api/admin/backup       WAL-safe online backup
     GET  /api/admin/events
+    GET  /api/admin/shadow       read-only shadow risk-policy diagnostics
+                                 (committed artifacts; SHADOW proposes only —
+                                 no grade applied, no REVIEW suppressed;
+                                 oracle-assisted tables carry an explicit
+                                 NOT-DEPLOYABLE warning)
 """
 from __future__ import annotations
 
+import hashlib
 import json
 import os
 import secrets
@@ -833,10 +839,82 @@ async def api_admin_events(request: Request) -> Response:
     return JSONResponse({"events": request.app.state.db.events(int(request.query_params.get("limit", "200")))})
 
 
+async def api_admin_shadow(request: Request) -> Response:
+    """ADMIN-ONLY shadow risk-policy diagnostics (read-only).
+
+    Serves the committed shadow-replay artifacts. Never shown to blind
+    reviewers; never modifies any review decision; SHADOW is a proposal
+    layer — no grade is applied by anything surfaced here."""
+    if (err := _need_admin(request)):
+        return err
+    shadow_dir = request.app.state.shadow_dir
+    if not shadow_dir:
+        return JSONResponse({"error": "shadow diagnostics not configured"},
+                            status_code=404)
+    shadow_dir = Path(shadow_dir)
+    replays = sorted(shadow_dir.glob("PROSPECTIVE_POLICY_REPLAY_*.json"))
+    if not replays:
+        return JSONResponse({"error": "no shadow replay artifact present"},
+                            status_code=404)
+    doc = json.loads(replays[-1].read_text(encoding="utf-8"))
+    payload = json.dumps({k: v for k, v in doc.items() if k != "content_sha256"},
+                         ensure_ascii=False, sort_keys=True)
+    if hashlib.sha256(payload.encode()).hexdigest() != doc.get("content_sha256"):
+        return JSONResponse({"error": "shadow replay artifact failed its "
+                                      "content-hash check; refusing to serve"},
+                            status_code=409)
+    out = {
+        "policy_mode": "shadow",
+        "artifact": replays[-1].name,
+        "engine_version": doc["provenance"]["engine_version"],
+        "matrix_name": doc["provenance"]["matrix_name"],
+        "matrix_sha256": doc["provenance"]["matrix_sha256"],
+        "policy_hashes": doc["provenance"]["policy_hashes"],
+        "policy_taxonomy": doc["policy_taxonomy"],
+        "deployable_prospective": doc["deployable_prospective"],
+        "oracle_retrospective_upper_bound":
+            doc["oracle_retrospective_upper_bound_NOT_DEPLOYABLE"],
+        "oracle_warning": "the retrospective table is ORACLE-ASSISTED: it "
+                          "consumes post-review human-disagreement data that "
+                          "does not exist at decision time on a new case. "
+                          "It is an analysis upper bound, NOT deployable.",
+        "shadow_note": "SHADOW proposes only; no active grade is changed and "
+                       "no REVIEW is suppressed.",
+    }
+    case_id = request.query_params.get("case_id")
+    if case_id:
+        events = []
+        for jl in sorted(shadow_dir.glob("SHADOW_REPLAY_*.jsonl")):
+            for line in jl.read_text(encoding="utf-8").splitlines():
+                if not line.strip():
+                    continue
+                ev = json.loads(line)
+                if ev.get("case_id") == case_id:
+                    events.append({
+                        "policy_id": ev["decision"]["policy_id"],
+                        "policy_scope": ev["decision"]["policy_scope"],
+                        "raw_model_verdict": ev["decision"]["semantic_verdict"],
+                        "prospective_action": ev["decision"]["action"],
+                        "reason": ev["decision"]["reason"],
+                        "schema_ok": ev["decision"]["schema_ok"],
+                        "evidence_ok": ev["decision"]["evidence_ok"],
+                        "uncertain": ev["decision"]["uncertain"],
+                        "severe_flags": {
+                            k: v for k, v in
+                            (ev.get("offline_evaluation") or {}).items()
+                            if k.startswith("severe_")},
+                        "offline_evaluation_admin_only":
+                            ev.get("offline_evaluation"),
+                    })
+        out["case_events"] = events
+    return JSONResponse(out)
+
+
 # -------------------------------------------------------------- factory -----
 
 def create_app(*, data_dir: Path, bundle_dir: Path | None = None, admin_key: str | None = None,
-               invite_token: str | None = None, backup_copy_to: Path | None = None) -> Starlette:
+               invite_token: str | None = None, backup_copy_to: Path | None = None,
+               shadow_artifacts_dir: Path | None = None) -> Starlette:
     data_dir = Path(data_dir)
     data_dir.mkdir(parents=True, exist_ok=True)
     bundle = Bundle(bundle_dir or (data_dir / "bundle"))
@@ -885,6 +963,7 @@ def create_app(*, data_dir: Path, bundle_dir: Path | None = None, admin_key: str
         Route("/api/admin/export", api_admin_export),
         Route("/api/admin/backup", api_admin_backup, methods=["POST"]),
         Route("/api/admin/events", api_admin_events),
+        Route("/api/admin/shadow", api_admin_shadow),
     ]
     app = Starlette(routes=routes)
     app.state.db = db
@@ -895,6 +974,8 @@ def create_app(*, data_dir: Path, bundle_dir: Path | None = None, admin_key: str
     app.state.backup_copy_to = str(backup_copy_to) if backup_copy_to else os.environ.get("REVIEW46_BACKUP_COPY_TO")
     app.state.instructor_reference = json.loads((priv / "instructor_reference.json").read_text(encoding="utf-8"))
     app.state.model_proposals = json.loads((priv / "model_proposals.json").read_text(encoding="utf-8"))
+    app.state.shadow_dir = (str(shadow_artifacts_dir) if shadow_artifacts_dir
+                            else (os.environ.get("REVIEW46_SHADOW_DIR") or None))
     return app
 
 

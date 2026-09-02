@@ -53,6 +53,7 @@
 <main>
   <div class="card"><div id="stats" class="grid"></div></div>
   <div class="card ownerq" id="ownerq" style="display:none"></div>
+  <div class="card" id="shadowbox" style="display:none"></div>
   <div class="card"><h3 style="margin:4px 0">Reviewers</h3><div id="reviewers"></div></div>
   <div class="card">
     <h3 style="margin:4px 0">Cases</h3>
@@ -119,6 +120,32 @@ async function load(){
   items = it.items || [];
   renderOwnerQueue();
   renderItems();
+  loadShadow();
+}
+
+async function loadShadow(){
+  const box = el("shadowbox");
+  const s = await api("/api/admin/shadow");
+  if (s.status >= 400) { box.style.display = "none"; return; }
+  box.style.display = "block";
+  const row = (id, m, scope) => `<tr><td>${id}</td><td>${scope}</td>
+    <td>${m.auto} (${m.auto_coverage_pct}%)</td><td>${m.review}</td>
+    <td>${m.auto_precision_pct ?? "-"}%</td><td>${m.auto_total_weighted_loss}</td>
+    <td>${m.invalid_to_valid_auto}</td><td>${m.partial_to_valid_auto}</td>
+    <td>${m.auto_undergrades}</td></tr>`;
+  const dep = Object.entries(s.deployable_prospective || {})
+    .map(([k, m]) => row(k, m, "PROSPECTIVE")).join("");
+  const orc = Object.entries(s.oracle_retrospective_upper_bound || {})
+    .map(([k, m]) => row(k, m, "RETROSPECTIVE — NOT DEPLOYABLE")).join("");
+  box.innerHTML = `<h3 style="margin:4px 0">Shadow risk-policy diagnostics
+      <span class="mut">(mode: ${s.policy_mode}; ${s.engine_version};
+      matrix ${s.matrix_name})</span></h3>
+    <p class="mut" style="margin:4px 0">${s.shadow_note}</p>
+    <table><thead><tr><th>policy</th><th>scope</th><th>AUTO (cov)</th>
+      <th>REVIEW</th><th>prec</th><th>AUTO risk</th><th>inv→val</th>
+      <th>pv→val</th><th>auto under</th></tr></thead>
+    <tbody>${dep}${orc}</tbody></table>
+    <p class="mut" style="margin:6px 0 0"><b>⚠ ${s.oracle_warning}</b></p>`;
 }
 
 function renderOwnerQueue(){
