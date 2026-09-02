@@ -1,0 +1,342 @@
+{
+ "artifact": "ocr_stage1c_final_verification_record",
+ "created_at": "2026-09-02 14:40:13",
+ "provider_requests_made": 0,
+ "git_commit": "9b19ecb2777b39e172bffa6290ae853882beccf6",
+ "adversarial_workflow": {
+  "status": "RESOLVED AND CLOSED",
+  "resolved_in_commit": "9b19ecb",
+  "agents": 9,
+  "errors": 0,
+  "provider_calls": 0,
+  "outcome": "all numeric claims reproduced to 4 decimals; 2 of 4 adversarial refutation attempts came back REFUTED and forced 11 recorded corrections, including one withdrawn causal claim and one misleadingly-named field",
+  "confirmed_defects_fixed": [
+   "score() labelled every no-output case a schema_failure (classify_no_output + 15 tests)",
+   "payload.update(extra_generation) could silently replace the budgeted max_tokens (now fails closed on reserved keys, with tests)",
+   "the propagation proof never exercised the gateway (ModelGateway-level test added)"
+  ],
+  "invalidation_check": {
+   "case_denominator": "NOT invalidated — 8 intended, 5 completed, verified independently",
+   "provider_failure_classification": "CORRECTED, not invalidated — reclassified from schema_failure to provider content_filter",
+   "max_tokens_propagation": "NOT invalidated — offline wire proof stands; the LIVE corroboration was overstated and is downgraded",
+   "stage1c_costs": "NOT invalidated — $0.01099875 confirmed in exact Decimal arithmetic",
+   "request_safety": "NOT invalidated — 0 grading markers, 0 secrets, 0 reference text in all 8 serialized bodies; wording of the claim was corrected"
+  },
+  "verdict": "NO INVALIDATION — the 32-crop experiment is not blocked by verification"
+ },
+ "premise_correction_for_this_task": {
+  "brief_says": "3 provider-content-filter failures BEFORE inference",
+  "established_fact": "they are COMPLETION-side content_filter finish_reasons, not pre-inference rejections. Stage-1's HTTP 400 arm was pre-inference; Stage-1c's was not. They consumed no tokens and cost nothing, but the provider did return a response.",
+  "why_it_matters": "the two Gemini failure modes are different in kind, and the Stage-1c losses are entangled with the max_tokens change: openai_compat tests finish_reason=='length' before =='content_filter', so cases truncated at the old 600 cap could not have shown content_filter at all"
+ },
+ "phase1_reproduction": {
+  "checks": [
+   {
+    "check": "stage1c.intended_requests",
+    "expected": 8,
+    "actual": 8,
+    "verdict": "PASS",
+    "note": ""
+   },
+   {
+    "check": "stage1c.provider_request_completed",
+    "expected": 5,
+    "actual": 5,
+    "verdict": "PASS",
+    "note": ""
+   },
+   {
+    "check": "stage1c.provider_content_filter_failure",
+    "expected": 3,
+    "actual": 3,
+    "verdict": "PASS",
+    "note": ""
+   },
+   {
+    "check": "stage1c.truncation",
+    "expected": 0,
+    "actual": 0,
+    "verdict": "PASS",
+    "note": ""
+   },
+   {
+    "check": "stage1c.json_parse_failure",
+    "expected": 0,
+    "actual": 0,
+    "verdict": "PASS",
+    "note": ""
+   },
+   {
+    "check": "stage1c.schema_failure",
+    "expected": 0,
+    "actual": 0,
+    "verdict": "PASS",
+    "note": ""
+   },
+   {
+    "check": "stage1c.provider_other_http_failure",
+    "expected": 0,
+    "actual": 0,
+    "verdict": "PASS",
+    "note": ""
+   },
+   {
+    "check": "stage1c.usable_transcription_returned",
+    "expected": 5,
+    "actual": 5,
+    "verdict": "PASS",
+    "note": ""
+   },
+   {
+    "check": "stage1c.model_text_refusal",
+    "expected": 0,
+    "actual": 0,
+    "verdict": "PASS",
+    "note": ""
+   },
+   {
+    "check": "stage1c.reasoning_effort",
+    "expected": {
+     "effort": "low"
+    },
+    "actual": {
+     "effort": "low"
+    },
+    "verdict": "PASS",
+    "note": ""
+   },
+   {
+    "check": "stage1c.route_max_tokens",
+    "expected": 1000,
+    "actual": 1000,
+    "verdict": "PASS",
+    "note": ""
+   },
+   {
+    "check": "stage1c.task",
+    "expected": "ocr_primary",
+    "actual": "ocr_primary",
+    "verdict": "PASS",
+    "note": ""
+   },
+   {
+    "check": "stage1c.tasks_in_rows",
+    "expected": "{'ocr_primary'}",
+    "actual": "{'ocr_primary'}",
+    "verdict": "PASS",
+    "note": ""
+   },
+   {
+    "check": "stage1c.splits_DEV_only_HELD_OUT_zero",
+    "expected": "{'DEV'}",
+    "actual": "{'DEV'}",
+    "verdict": "PASS",
+    "note": ""
+   },
+   {
+    "check": "stage1c.handwritten.intended",
+    "expected": 5,
+    "actual": 5,
+    "verdict": "PASS",
+    "note": ""
+   },
+   {
+    "check": "stage1c.handwritten.usable_transcription",
+    "expected": 2,
+    "actual": 2,
+    "verdict": "PASS",
+    "note": ""
+   },
+   {
+    "check": "stage1c.handwritten.provider_filter_failure",
+    "expected": 3,
+    "actual": 3,
+    "verdict": "PASS",
+    "note": ""
+   },
+   {
+    "check": "stage1c.printed.usable_transcription",
+    "expected": 3,
+    "actual": 3,
+    "verdict": "PASS",
+    "note": ""
+   },
+   {
+    "check": "stage1c.ledger_rows",
+    "expected": 8,
+    "actual": 8,
+    "verdict": "PASS",
+    "note": ""
+   },
+   {
+    "check": "stage1c.ledger_delta_usd",
+    "expected": 0.01099875,
+    "actual": 0.01099875,
+    "verdict": "PASS",
+    "note": ""
+   },
+   {
+    "check": "stage1c.ledger_grading_calls",
+    "expected": 0,
+    "actual": 0,
+    "verdict": "PASS",
+    "note": ""
+   },
+   {
+    "check": "stage1c.ledger_billable",
+    "expected": 5,
+    "actual": 5,
+    "verdict": "PASS",
+    "note": ""
+   },
+   {
+    "check": "stage1c.ledger_nonbillable",
+    "expected": 3,
+    "actual": 3,
+    "verdict": "PASS",
+    "note": ""
+   },
+   {
+    "check": "stage1c.audited_references_unchanged",
+    "expected": true,
+    "actual": true,
+    "verdict": "PASS",
+    "note": ""
+   },
+   {
+    "check": "stage1c.crop_hashes_unchanged",
+    "expected": true,
+    "actual": true,
+    "verdict": "PASS",
+    "note": ""
+   }
+  ],
+  "total": 25,
+  "passed": 25,
+  "failed": 0,
+  "reproduces": true
+ },
+ "handwritten_headline_stated_correctly": {
+  "intended": 5,
+  "usable_transcription": 2,
+  "provider_filter_failure": 3,
+  "coverage": "2/5",
+  "conditional_mean_cer_over_the_2_usable": 0.1799,
+  "publication_rule": "the 2-case conditional CER is never published without '2/5' beside it"
+ },
+ "outcome_taxonomy_per_case": {
+  "hl_e003_q1_r1__l1": {
+   "provider_http_response_received": true,
+   "provider_request_completed": false,
+   "provider_content_filter_failure": true,
+   "provider_other_http_failure": false,
+   "model_text_refusal": false,
+   "usable_transcription_returned": false,
+   "fabrication_detected": null,
+   "truncation": false,
+   "json_parse_failure": false,
+   "schema_failure": false,
+   "total_line_loss": true,
+   "failure_detail": "the backend refused this request (content_filter)"
+  },
+  "hc_e002_q1_r1": {
+   "provider_http_response_received": true,
+   "provider_request_completed": true,
+   "provider_content_filter_failure": false,
+   "provider_other_http_failure": false,
+   "model_text_refusal": false,
+   "usable_transcription_returned": true,
+   "fabrication_detected": null,
+   "truncation": false,
+   "json_parse_failure": false,
+   "schema_failure": false,
+   "total_line_loss": false,
+   "failure_detail": null
+  },
+  "hc_e002_q1_r7": {
+   "provider_http_response_received": true,
+   "provider_request_completed": true,
+   "provider_content_filter_failure": false,
+   "provider_other_http_failure": false,
+   "model_text_refusal": false,
+   "usable_transcription_returned": true,
+   "fabrication_detected": null,
+   "truncation": false,
+   "json_parse_failure": false,
+   "schema_failure": false,
+   "total_line_loss": false,
+   "failure_detail": null
+  },
+  "hc_e002_q2_r1": {
+   "provider_http_response_received": true,
+   "provider_request_completed": false,
+   "provider_content_filter_failure": true,
+   "provider_other_http_failure": false,
+   "model_text_refusal": false,
+   "usable_transcription_returned": false,
+   "fabrication_detected": null,
+   "truncation": false,
+   "json_parse_failure": false,
+   "schema_failure": false,
+   "total_line_loss": true,
+   "failure_detail": "the backend refused this request (content_filter)"
+  },
+  "hc_e002_q2_r6": {
+   "provider_http_response_received": true,
+   "provider_request_completed": false,
+   "provider_content_filter_failure": true,
+   "provider_other_http_failure": false,
+   "model_text_refusal": false,
+   "usable_transcription_returned": false,
+   "fabrication_detected": null,
+   "truncation": false,
+   "json_parse_failure": false,
+   "schema_failure": false,
+   "total_line_loss": true,
+   "failure_detail": "the backend refused this request (content_filter)"
+  },
+  "pr_docA_p1_b1": {
+   "provider_http_response_received": true,
+   "provider_request_completed": true,
+   "provider_content_filter_failure": false,
+   "provider_other_http_failure": false,
+   "model_text_refusal": false,
+   "usable_transcription_returned": true,
+   "fabrication_detected": null,
+   "truncation": false,
+   "json_parse_failure": false,
+   "schema_failure": false,
+   "total_line_loss": false,
+   "failure_detail": null
+  },
+  "pr_docA_p2_b3": {
+   "provider_http_response_received": true,
+   "provider_request_completed": true,
+   "provider_content_filter_failure": false,
+   "provider_other_http_failure": false,
+   "model_text_refusal": false,
+   "usable_transcription_returned": true,
+   "fabrication_detected": null,
+   "truncation": false,
+   "json_parse_failure": false,
+   "schema_failure": false,
+   "total_line_loss": false,
+   "failure_detail": null
+  },
+  "assoc_docB_p2_b1": {
+   "provider_http_response_received": true,
+   "provider_request_completed": true,
+   "provider_content_filter_failure": false,
+   "provider_other_http_failure": false,
+   "model_text_refusal": false,
+   "usable_transcription_returned": true,
+   "fabrication_detected": null,
+   "truncation": false,
+   "json_parse_failure": false,
+   "schema_failure": false,
+   "total_line_loss": false,
+   "failure_detail": null
+  }
+ },
+ "content_sha256": "8b34968ed26f140bb2e97623c8656d9f073543c83b35bf28a30fecd9a8a9b546"
+}
