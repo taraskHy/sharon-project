@@ -4663,6 +4663,60 @@
     "reading": "this is the comparable view and it REVERSES the impression the raw column gave: Gemini-only is the WORST strategy (20/32 crops either lost or semantically wrong), not the safest. A silently lost line is a failure too."
    },
    "correction": "the earlier table reported 2 / 12 / 9 and invited exactly the wrong reading"
+  },
+  "_composite_refutation": {
+   "claim_refuted": "the prospective Gemini→Sonnet fallback is the best DEPLOYABLE strategy measured (29/32 coverage, failure-aware CER 0.3560)",
+   "arithmetic_confirmed": "every number reproduces to 4 decimals: coverage 29/32 vs 14/32 vs 27/32, failure-aware CER 0.3560 / 0.6130 / 0.5544. The arithmetic is sound; the conclusion drawn from it is not.",
+   "1_the_fallback_contributes_nothing": {
+    "composite_vs_sonnet_only_all_32": {
+     "composite": 0.356,
+     "sonnet_only": 0.5544,
+     "gap": 0.1984
+    },
+    "on_the_18_fallback_crops": {
+     "composite": 0.543,
+     "sonnet_only": 0.543,
+     "gap": 0.0
+    },
+    "on_the_14_gemini_primary_crops": {
+     "composite": 0.1155,
+     "sonnet_only": 0.5689,
+     "gap": 0.4534
+    },
+    "composite_text_identical_to_sonnet_on_all_18_fallback_crops": true,
+    "reading": "100% of the composite's advantage over Sonnet-only arises on the 14 crops GEMINI handled. Exactly 0.0000 of it arises on the 18 crops where the fallback actually fires — there the composite IS Sonnet, byte for byte. The composite looks good because Gemini reads well, not because the fallback rescues anything."
+   },
+   "2_review_aware_accounting_erases_the_difference": {
+    "principle": "failure-aware CER charges a DETECTED, human-routed loss the maximum 1.0 penalty. But a detected loss is not a wrong answer — it is a crop a human reads. Scoring only the crops that would reach a grade UNREVIEWED:",
+    "gemini_only": {
+     "unreviewed_cer": 0.1155,
+     "unreviewed_crops": 14,
+     "human_reviews": 18
+    },
+    "composite": {
+     "unreviewed_cer": 0.1155,
+     "unreviewed_crops": 14,
+     "human_reviews": 18
+    },
+    "sonnet_only": {
+     "unreviewed_cer": 0.4718,
+     "unreviewed_crops": 27,
+     "human_reviews": 5
+    },
+    "reading": "Gemini-only and the composite are EXACTLY identical under review-aware accounting — same unreviewed quality, same unreviewed crops, same review workload. Everything the fallback adds is text a human has to check anyway."
+   },
+   "3_the_review_workload_claim_was_wrong": {
+    "reported": "composite human review = 3",
+    "actual": "18 — the policy flags all 15 fallback rows needs_review, plus 3 unresolved. Identical to Gemini-only's 18. My table counted only the unresolved rows and so understated the composite's workload sixfold."
+   },
+   "4_the_composite_is_the_most_expensive": {
+    "gemini_only_usd": 0.04492875,
+    "sonnet_only_usd": 0.08211,
+    "composite_usd": 0.09069875,
+    "reading": "the composite costs roughly twice Gemini-only and more than either arm alone"
+   },
+   "CONCLUSION": "The Gemini→Sonnet fallback is STRICTLY DOMINATED by Gemini alone on this evidence: identical unreviewed quality (0.1155), identical review workload (18 of 32), roughly double the cost, and it converts 15 detectable failures into plausible text that a reviewer must now adjudicate rather than simply transcribe. There is no dimension on which it wins. I recommended it; that recommendation is withdrawn.",
+   "what_this_does_not_say": "Gemini-only is not good. It reads 14 of 32 crops and sends 18 to a human. The finding is narrower and firmer: adding Sonnet as a fallback buys nothing measurable and costs money, detectability and reviewer effort."
   }
  },
  "sonnet_as_fallback": {
@@ -4971,7 +5025,7 @@
    "local_grading_cloud_usd": 0.0
   }
  },
- "content_sha256": "19dc1b104d4c0dff3428626822913092a480d087995131bdd1cb1ee47385b597",
+ "content_sha256": "68488d429f65161415277599c084ad24752b11b53a3c5bafe5175db1b80f63ad",
  "request_accounting_precision": {
   "attempts_recorded": 64,
   "actual_provider_requests": 62,
@@ -4996,7 +5050,8 @@
    "'64 provider requests' is 64 ATTEMPTS / 62 actual requests / 2 cache replays",
    "'18 non-billable failures' is 16 failures + 2 cache hits",
    "the routing critical-error column mixed denominators and a broad flag set; on a consistent failure-aware basis over all 32 crops it is Gemini-only 20, Sonnet-only 14, composite 9 - reversing the ranking the original column implied",
-   "the 'Sonnet is a genuinely useful fallback' conclusion was REFUTED: 0/15 rescues meet even a 10% CER bar, mean word recovery is 20%, 4 of 15 recover zero reference words, and the fallback converts detectable failures into undetectable ones"
+   "the 'Sonnet is a genuinely useful fallback' conclusion was REFUTED: 0/15 rescues meet even a 10% CER bar, mean word recovery is 20%, 4 of 15 recover zero reference words, and the fallback converts detectable failures into undetectable ones",
+   "the composite fallback is STRICTLY DOMINATED by Gemini-only: the fallback contributes exactly 0.0000 of the composite's metric advantage, review-aware quality and review workload are identical (0.1155, 18 reviews), and it costs twice as much. Recommendation withdrawn."
   ],
   "minor": [
    "Gemini's 14/32 usable includes 2 cached Stage-1c successes; fresh-call rate is 12/30",
@@ -5010,5 +5065,11 @@
    "the reliability bounds",
    "every classification and the decision"
   ]
+ },
+ "decision_revised": {
+  "gemini": "DROP as the sole OCR route (18/32 hard failures, band 5+); its transcription quality when it answers is the best measured (0.1155) and its failures are loud and machine-detectable",
+  "sonnet": "MAYBE, and only as a higher-coverage / lower-quality alternative, not as a fallback: 27/32 coverage at CER 0.4718 with 9 semantic errors among its usable outputs",
+  "composite": "NOT USEFUL — strictly dominated by Gemini-only. Withdrawn as a recommendation.",
+  "overall": "no OCR configuration measured is suitable for unreviewed use. Between deployable options, Gemini-only is the honest baseline: it reads less, and it knows when it has not."
  }
 }

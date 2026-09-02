@@ -183,6 +183,38 @@ For scale: on the 12 crops both models read, Gemini's CER is 0.0947 against Sonn
 
 **Revised answer.** Does Sonnet rescue the difficult cases? It recovers COVERAGE on 15 of 18, and it does NOT recover the answer: mean word recovery 20%, four rescues recover nothing, none reaches even a lenient accuracy bar. As a route to a human reviewer it is useful. As a route to an automated grade it is worse than the failure it replaces, because the failure was visible.
 
+## 9b. The composite is strictly dominated — recommendation withdrawn
+
+every number reproduces to 4 decimals: coverage 29/32 vs 14/32 vs 27/32, failure-aware CER 0.3560 / 0.6130 / 0.5544. The arithmetic is sound; the conclusion drawn from it is not.
+
+**Where the composite's advantage actually comes from.**
+
+| Slice | Composite | Sonnet only | Gap |
+|---|---|---|---|
+| all 32 crops | 0.356 | 0.5544 | **0.1984** |
+| the 18 crops where the fallback FIRES | 0.543 | 0.543 | **0.0** |
+| the 14 crops Gemini handled | 0.1155 | 0.5689 | **0.4534** |
+
+100% of the composite's advantage over Sonnet-only arises on the 14 crops GEMINI handled. Exactly 0.0000 of it arises on the 18 crops where the fallback actually fires — there the composite IS Sonnet, byte for byte. The composite looks good because Gemini reads well, not because the fallback rescues anything.
+
+**Review-aware accounting erases the difference entirely.** Failure-aware CER charges a detected, human-routed loss the full 1.0 penalty — but a detected loss is not a wrong answer, it is a crop a human reads. Scoring only what would reach a grade unreviewed:
+
+| Strategy | Unreviewed CER | Unreviewed crops | Human reviews |
+|---|---|---|---|
+| Gemini only | 0.1155 | 14 | 18 |
+| Gemini → Sonnet | 0.1155 | 14 | 18 |
+| Sonnet only | 0.4718 | 27 | 5 |
+
+Gemini-only and the composite are EXACTLY identical under review-aware accounting — same unreviewed quality, same unreviewed crops, same review workload. Everything the fallback adds is text a human has to check anyway.
+
+**A correction to my own table:** 18 — the policy flags all 15 fallback rows needs_review, plus 3 unresolved. Identical to Gemini-only's 18. My table counted only the unresolved rows and so understated the composite's workload sixfold.
+
+And the composite is the most expensive of the three: Gemini-only $0.04492875, Sonnet-only $0.08211, composite $0.09069875.
+
+### The Gemini→Sonnet fallback is STRICTLY DOMINATED by Gemini alone on this evidence: identical unreviewed quality (0.1155), identical review workload (18 of 32), roughly double the cost, and it converts 15 detectable failures into plausible text that a reviewer must now adjudicate rather than simply transcribe. There is no dimension on which it wins. I recommended it; that recommendation is withdrawn.
+
+Gemini-only is not good. It reads 14 of 32 crops and sends 18 to a human. The finding is narrower and firmer: adding Sonnet as a fallback buys nothing measurable and costs money, detectability and reviewer effort.
+
 ## 10. Critical-error audit
 
 | Model | digit | sign/operator | negation | cases with any / usable |
@@ -198,7 +230,7 @@ This is the counterweight to Sonnet's coverage advantage: **44% of Sonnet's usab
 
 **`anthropic/claude-sonnet-5` → MAYBE.** The only arm with acceptable operational coverage (27/32, zero provider failures, zero truncation, zero parse failures) and the only one that handled all 16 line crops. But CER 0.4718 is not usable transcription in any strict sense, and 12 of its 27 usable outputs carry a critical digit/sign/negation error. It is a viable *fallback* and a viable *coverage floor*; it is not a solution.
 
-**Composite → PROMISING ONLY AS A ROUTE TO A HUMAN.** The prospective Gemini→Sonnet policy reaches 29/32 coverage with a failure-aware CER of 0.3560 — arithmetically better than either model alone — at a measured $0.0907 for 32 crops. But the refutation above changes what that number means: 15 of its 29 covered crops are fallback rows that recover about a fifth of the student's words, four of them recovering none, replacing failures that were loud and machine-detectable. As a mechanism for getting a human the best available text, it is the best configuration measured. As a step toward an automated grade it is **worse than Gemini alone**, because Gemini alone at least knows when it has failed. The `needs_review` flag on every fallback row is now load-bearing, not bookkeeping.
+**Composite → NOT USEFUL (strictly dominated).** The prospective Gemini→Sonnet policy reaches 29/32 coverage and a failure-aware CER of 0.3560, and both figures are real. Neither survives contact with what they mean. The fallback contributes **exactly 0.0000** of the composite's advantage — its output is byte-identical to Sonnet-only on all 18 crops where it fires. Under review-aware accounting it is **identical to Gemini-only** (0.1155 unreviewed CER, 14 unreviewed crops, 18 human reviews) at roughly double the cost, and it converts 15 loud, machine-detectable failures into plausible text a reviewer must now adjudicate. It wins on no dimension. **I recommended it earlier in this report; that recommendation is withdrawn.**
 
 ## 12. Cost and projections
 

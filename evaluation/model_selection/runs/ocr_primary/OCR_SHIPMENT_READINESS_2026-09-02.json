@@ -282,7 +282,7 @@
     "No end-to-end run has ever fed NEW OCR output into the grader; the grading corpus was built from frozen evidence. The OCR->grader integration is untested on live OCR.",
     "OCR digit/sign/negation errors are undetectable in production (no reference exists there) and can silently change an answer's meaning."
    ],
-   "estimated_review_workload": "on this evidence, with the Gemini->Sonnet policy: 3 of 32 crops unresolved (9%) plus 15 fallback rows flagged for review (47%) = 18 of 32 crops touched by a human, ~56%. That is not a labour saving yet.",
+   "estimated_review_workload": "18 of 32 crops (56%) reach a human under EITHER Gemini-only or the composite — they are identical on this measure. Sonnet-only reduces reviews to 5 of 32 but at CER 0.4718 unreviewed, which trades a review burden for silent error.",
    "ocr_cost_per_100_exams": {
     "at_5_crops": 1.4172,
     "at_10_crops": 2.8343,
@@ -467,11 +467,15 @@
    "RED": 4
   }
  },
- "content_sha256": "99406decd25e8b507afb41208bf83b3fbe05c145ecc8ff20bfcb0b4f9974941f",
+ "content_sha256": "82693d59ff6706071779ea30ceff76feb8c35058460ab491b6ec76982a073b2c",
  "fallback_safety_inversion": {
   "finding": "the fallback converts DETECTABLE failures into UNDETECTABLE ones. All 18 Gemini triggers are loud, machine-visible events — a content_filter finish reason, a JSON parse error, a length truncation. Any pipeline can route those to a human with certainty. The fallback replaces them with fluent Hebrew that recovers ~20% of the answer and carries no signal at all that it is wrong.",
   "why_it_matters_here": "this is release blocker #1 restated: in production there is no reference, so nothing distinguishes a good transcription from one that recovered zero of the reference's words.",
   "consequence_for_the_metric": "the composite's failure-aware CER of 0.3560 is arithmetically correct and misleading as a SAFETY signal: it rewards replacing a known null with unknown-quality text. A failure-aware score cannot see the difference between 'we know we failed' and 'we do not know we failed'.",
   "what_saves_it": "only that the policy flags every fallback row needs_review. That flag is now load-bearing, not a formality — the composite is defensible ONLY if every fallback row is actually read by a human."
+ },
+ "composite_fallback_withdrawn": {
+  "finding": "The Gemini→Sonnet fallback is STRICTLY DOMINATED by Gemini alone on this evidence: identical unreviewed quality (0.1155), identical review workload (18 of 32), roughly double the cost, and it converts 15 detectable failures into plausible text that a reviewer must now adjudicate rather than simply transcribe. There is no dimension on which it wins. I recommended it; that recommendation is withdrawn.",
+  "consequence": "the human-in-the-loop pilot should use Gemini-only with every hard failure routed to a human, not the Gemini→Sonnet composite. Same quality, same workload, half the cost, and every failure stays visible."
  }
 }
