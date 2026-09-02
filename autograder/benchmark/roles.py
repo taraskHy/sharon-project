@@ -169,6 +169,35 @@ def _textmetrics() -> _TextMetrics:
 # OCR_VERIFY (B2)
 # ----------------------------------------------------------------------------
 
+#: Failure taxonomy for a case that produced no parsed output.
+#:
+#: ``score()`` has always received the error string and ignored it, labelling
+#: EVERY no-output case ``schema_failure``. That conflates two unrelated things:
+#: a model that answered with unparseable JSON, and a provider that refused the
+#: request before the model ever ran. The OCR Stage-1c arm made the cost of the
+#: conflation concrete — its metrics.json reported ``schema_failures: 3`` when
+#: all three losses were provider content-filter refusals and the model's
+#: structured output had been valid every time it was allowed to answer. A
+#: reader would have concluded the candidate could not hold a schema.
+#:
+#: Scored metrics (CER/WER/usable rates) are unaffected: a case with no output
+#: is unscored either way. Only the failure LABEL changes, so adapter_version is
+#: deliberately not bumped — bumping it would change every config hash and break
+#: comparability with the frozen Stage-1/1b runs for a naming correction.
+_SCHEMA_ERROR_MARKERS = ("validation", "invalid json", "schema")
+
+
+def classify_no_output(error: str | None) -> tuple[bool, bool]:
+    """(schema_failure, provider_failure) for a case that produced no output."""
+    if not error:
+        # no error text at all: the model answered and the answer did not parse
+        return True, False
+    low = str(error).lower()
+    if any(m in low for m in _SCHEMA_ERROR_MARKERS):
+        return True, False
+    return False, True
+
+
 class OcrVerifyAdapter:
     role = "ocr_verify"
     task = "ocr_verify"
@@ -317,17 +346,21 @@ class OcrPrimaryAdapter:
         ra = _textmetrics()
         ref = case.label.get("reference")
         hyp = (output or {}).get("transcription")
+        sf, pf = classify_no_output(error) if output is None else (False, False)
         row = {"case_id": case.case_id, "split": case.split, "category": case.meta.get("category"),
                "tier": case.meta.get("tier"), "hard": case.label.get("hard"),
                "reference_status": case.label.get("reference_status"),
-               "schema_failure": output is None, "cer": None, "usable_25": None, "usable_50": None,
+               "schema_failure": sf, "provider_failure": pf, "no_output": output is None,
+               "failure_detail": (str(error)[:200] if output is None and error else None),
+               "cer": None, "usable_25": None, "usable_50": None,
                "number_sign_error": None, "scored": False}
         if not case.label.get("provenance_valid"):
             # never score against an inadmissible reference (no silent fallback)
             row["skip_reason"] = f"invalid_reference_source:{case.label.get('provenance_class')}"
             return row
         if ref is None or hyp is None:
-            row["skip_reason"] = "no_reference" if ref is None else "schema_failure"
+            row["skip_reason"] = ("no_reference" if ref is None
+                                  else "provider_failure" if pf else "schema_failure")
             return row
         g, h = ra.normalize(ref), ra.normalize(hyp)
         cer = (ra.lev(g, h) / len(g)) if g else (0.0 if not h else 1.0)
@@ -354,6 +387,8 @@ class OcrPrimaryAdapter:
             "by_category": by_cat,
             "hard_items": _block([r for r in ok if r.get("hard")]),
             "schema_failures": sum(1 for r in scored if r["schema_failure"]),
+            "provider_failures": sum(1 for r in scored if r.get("provider_failure")),
+            "no_output_cases": sum(1 for r in scored if r.get("no_output")),
             "unscored_no_reference": sum(1 for r in scored if r.get("skip_reason") == "no_reference"),
             "refused_invalid_reference": sum(1 for r in scored if str(r.get("skip_reason", "")).startswith("invalid_reference_source")),
             "usage": _usage_stats(raw_rows),
