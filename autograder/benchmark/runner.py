@@ -748,8 +748,19 @@ def run_benchmark(spec: RunSpec, *, gateway=None, registry: CandidateRegistry | 
         row: dict[str, Any] = {"case_id": case.case_id, "split": case.split, "component": case.component,
                                "attempt": attempt, "ts": ts(), "model": candidate, "task": route.task}
         try:
+            # max_tokens comes from the ROUTE, not from the adapter's Request.
+            # build_route already seeds the chain with the adapter's own
+            # default and then lets models.toml, a declared candidate override
+            # and an explicit --max-tokens win in that order, so route.max_tokens
+            # IS the resolved value; the Request only ever carries the adapter
+            # default. Passing request.max_tokens here silently discarded every
+            # configured value: the OCR Stage-1b arm recorded max_tokens=1000 in
+            # its config hash while the provider was sent 600, and three of its
+            # eight cases were lost to truncation that the configured cap was
+            # chosen specifically to prevent. A run must send the configuration
+            # it records.
             res = gw.call(task=route.task, system=request.system, content_blocks=request.content_blocks,
-                          output_model=request.output_model, max_tokens=request.max_tokens,
+                          output_model=request.output_model, max_tokens=route.max_tokens,
                           meta={"job_id": run_id, "exam_id": case.case_id, "stage": "benchmark",
                                 "question_id": case.meta.get("question_id")})
         except Exception as e:  # noqa: BLE001 — classified below, never retried silently

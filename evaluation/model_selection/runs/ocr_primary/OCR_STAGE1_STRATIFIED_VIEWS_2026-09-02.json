@@ -1,7 +1,7 @@
 {
  "artifact": "ocr_stage1_stratified_views",
- "created_at": "2026-09-02 12:54:02",
- "git_commit": "d51c685a8a2367658d600f75ea198607d75c0727",
+ "created_at": "2026-09-02 13:11:25",
+ "git_commit": "bab4630d4f360b7c17b70ed94c0efe187f1cf596",
  "provider_calls_made": 0,
  "note": "Stage-1 rescored. No new provider request: these are the preserved Stage-1 outputs read through explicit denominators.",
  "models": {
@@ -1567,5 +1567,5 @@
    "assoc_docB_p2_b1_parsed": {}
   }
  },
- "content_sha256": "230d337294ff4d892f8feda9d35a963604af215011e385d486e109d086d3b527"
+ "content_sha256": "f01b545f581174dbf0827326dad5bd002f81a47876c2bed29afebb3a75b2520b"
 }

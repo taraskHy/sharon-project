@@ -1,0 +1,3162 @@
+{
+ "artifact": "ocr_stage1b_gemini_result_and_three_candidate_comparison",
+ "created_at": "2026-09-02 13:03:01",
+ "git_commit": "bab4630d4f360b7c17b70ed94c0efe187f1cf596",
+ "experiment": "OCR_SMOKE_STAGE1B_GEMINI_REASONING_LOW",
+ "experiment_sha256": "4de29894cc25b0cc53c5268d2a2cee385151ddb094862d5d95f6eb0c6e7a1626",
+ "new_provider_requests": 8,
+ "arms": {
+  "openai/gpt-5.6-luna-pro": {
+   "stage": "stage1",
+   "run_id": "dev__smoke__all__openai-gpt-5.6-luna-pro__c6f10f3603",
+   "decoding": {
+    "reasoning": {
+     "effort": "none"
+    },
+    "max_tokens_recorded": 400
+   },
+   "per_case": [
+    {
+     "case_id": "hl_e003_q1_r1__l1",
+     "handwritten": true,
+     "category": "handwritten_line",
+     "writer": "e003",
+     "reference": "ניתן לראות ברמות התדרים הגבוהים שיש שפות בכיוון התנועה(הטשטוש)",
+     "ocr_text": "[?]",
+     "ok": true,
+     "error": null,
+     "failure_class": null,
+     "exact_frozen": false,
+     "cer": 1.0,
+     "wer": 1.0,
+     "omission_rate": 1.0,
+     "hallucination_rate": 0.0,
+     "digit_sign_error": false,
+     "line_lost": false,
+     "word_subs": 0,
+     "word_dels": 10,
+     "word_ins": 0,
+     "unreadable_marker": true,
+     "critical_flags": [
+      "UNREADABLE_OUTPUT_ON_READABLE_REFERENCE"
+     ],
+     "latency_s": 3.265,
+     "input_tokens": 3827,
+     "output_tokens": 113,
+     "reasoning_tokens": 0,
+     "cache_hit": false
+    },
+    {
+     "case_id": "hc_e002_q1_r1",
+     "handwritten": true,
+     "category": "handwritten_cell",
+     "writer": "e002",
+     "reference": "יש טשטוש בכל התדרים",
+     "ocr_text": "[unreadable]",
+     "ok": true,
+     "error": null,
+     "failure_class": null,
+     "exact_frozen": false,
+     "cer": 1.0,
+     "wer": 1.0,
+     "omission_rate": 0.75,
+     "hallucination_rate": 0.0,
+     "digit_sign_error": false,
+     "line_lost": false,
+     "word_subs": 1,
+     "word_dels": 3,
+     "word_ins": 0,
+     "unreadable_marker": true,
+     "critical_flags": [
+      "LATIN_TOKEN_CHANGED(ref=[],ocr=['unreadable'])",
+      "UNREADABLE_OUTPUT_ON_READABLE_REFERENCE"
+     ],
+     "latency_s": 2.547,
+     "input_tokens": 3949,
+     "output_tokens": 72,
+     "reasoning_tokens": 0,
+     "cache_hit": false
+    },
+    {
+     "case_id": "hc_e002_q1_r7",
+     "handwritten": true,
+     "category": "handwritten_cell",
+     "writer": "e002",
+     "reference": "סה\"כ הפירמידה נראית תקינה. הדרגה 0 שלה בהירה משמעותית מהתמונה המקורית",
+     "ocr_text": "[unreadable]",
+     "ok": true,
+     "error": null,
+     "failure_class": null,
+     "exact_frozen": false,
+     "cer": 1.0,
+     "wer": 1.0,
+     "omission_rate": 0.9167,
+     "hallucination_rate": 0.0,
+     "digit_sign_error": true,
+     "line_lost": false,
+     "word_subs": 1,
+     "word_dels": 11,
+     "word_ins": 0,
+     "unreadable_marker": true,
+     "critical_flags": [
+      "DIGIT_CHANGED(ref=0,ocr=-)",
+      "LATIN_TOKEN_CHANGED(ref=[],ocr=['unreadable'])",
+      "UNREADABLE_OUTPUT_ON_READABLE_REFERENCE"
+     ],
+     "latency_s": 2.891,
+     "input_tokens": 3961,
+     "output_tokens": 84,
+     "reasoning_tokens": 0,
+     "cache_hit": false
+    },
+    {
+     "case_id": "hc_e002_q2_r1",
+     "handwritten": true,
+     "category": "handwritten_cell",
+     "writer": "e002",
+     "reference": "עבור גילוי שפות יהיה רוב התמונה ב0 ורק עבור שפות 255",
+     "ocr_text": "[unreadable]",
+     "ok": true,
+     "error": null,
+     "failure_class": null,
+     "exact_frozen": false,
+     "cer": 1.0,
+     "wer": 1.0,
+     "omission_rate": 0.9091,
+     "hallucination_rate": 0.0,
+     "digit_sign_error": true,
+     "line_lost": false,
+     "word_subs": 1,
+     "word_dels": 10,
+     "word_ins": 0,
+     "unreadable_marker": true,
+     "critical_flags": [
+      "DIGIT_CHANGED(ref=0255,ocr=-)",
+      "LATIN_TOKEN_CHANGED(ref=[],ocr=['unreadable'])",
+      "UNREADABLE_OUTPUT_ON_READABLE_REFERENCE"
+     ],
+     "latency_s": 2.594,
+     "input_tokens": 3978,
+     "output_tokens": 101,
+     "reasoning_tokens": 0,
+     "cache_hit": false
+    },
+    {
+     "case_id": "hc_e002_q2_r6",
+     "handwritten": true,
+     "category": "handwritten_cell",
+     "writer": "e002",
+     "reference": "המעכה זהה לסכימת תמונה זהה עם תנודה קלה. מין תמונת echo כזאת תגרום להיסטוגרמה החדשה להיות קרובה להכפלה ב-2 [לא קריא]",
+     "ocr_text": "מבחינה למעשה להלכה יש להבחין בין שני סוגים של מצוות, מצוות שבין אדם לחבירו ומצוות שבין אדם למקום",
+     "ok": true,
+     "error": null,
+     "failure_class": null,
+     "exact_frozen": false,
+     "cer": 0.7434,
+     "wer": 1.0,
+     "omission_rate": 0.1818,
+     "hallucination_rate": 0.0,
+     "digit_sign_error": true,
+     "line_lost": false,
+     "word_subs": 18,
+     "word_dels": 4,
+     "word_ins": 0,
+     "unreadable_marker": false,
+     "critical_flags": [
+      "DIGIT_CHANGED(ref=2,ocr=-)",
+      "SIGN_OPERATOR_CHANGED(ref=-,ocr=-)",
+      "LATIN_TOKEN_CHANGED(ref=['echo'],ocr=[])",
+      "NEGATION_OMITTED(לא)"
+     ],
+     "latency_s": 2.672,
+     "input_tokens": 4048,
+     "output_tokens": 171,
+     "reasoning_tokens": 0,
+     "cache_hit": false
+    },
+    {
+     "case_id": "pr_docA_p1_b1",
+     "handwritten": false,
+     "category": "formula_printed",
+     "writer": null,
+     "reference": "203.3730\n 203.6730 / \n  סמסטר א' מועד א' תשפ\"ו \n2025-2026",
+     "ocr_text": "סמסטר א' מועד א' תשפ\"ו 203.6730 / 203.3730\n2025-2026",
+     "ok": true,
+     "error": null,
+     "failure_class": null,
+     "exact_frozen": false,
+     "cer": 0.72,
+     "wer": 0.7692,
+     "omission_rate": 0.3846,
+     "hallucination_rate": 0.3846,
+     "digit_sign_error": true,
+     "line_lost": false,
+     "word_subs": 0,
+     "word_dels": 5,
+     "word_ins": 5,
+     "unreadable_marker": false,
+     "critical_flags": [
+      "DIGIT_CHANGED(ref=2033730203673020252026,ocr=2036730203373020252026)"
+     ],
+     "latency_s": 2.437,
+     "input_tokens": 3401,
+     "output_tokens": 147,
+     "reasoning_tokens": 0,
+     "cache_hit": false
+    },
+    {
+     "case_id": "pr_docA_p2_b3",
+     "handwritten": false,
+     "category": "mixed_he_en",
+     "writer": null,
+     "reference": "לאחר הפעולה בונים פרמידת WAVELETS של תמונת התוצאה. בעמוד הבא נתונות \nתמונות התוצאה ממוספרות  )\nA-I\n(.",
+     "ocr_text": "לאחר הפעולה בונים פרמידת WAVELETS של תמונת התוצאה. בעמוד הבא נתונות תמונות התוצאה ממוספרות (A-I).",
+     "ok": true,
+     "error": null,
+     "failure_class": null,
+     "exact_frozen": false,
+     "cer": 0.0,
+     "wer": 0.0,
+     "omission_rate": 0.0,
+     "hallucination_rate": 0.0,
+     "digit_sign_error": false,
+     "line_lost": false,
+     "word_subs": 0,
+     "word_dels": 0,
+     "word_ins": 0,
+     "unreadable_marker": false,
+     "critical_flags": [],
+     "latency_s": 2.468,
+     "input_tokens": 3509,
+     "output_tokens": 164,
+     "reasoning_tokens": 0,
+     "cache_hit": false
+    },
+    {
+     "case_id": "assoc_docB_p2_b1",
+     "handwritten": false,
+     "category": "option_row_association",
+     "writer": null,
+     "reference": "0.55\n()ד0.51\n()ג0.47\n()ב0.39\n()א",
+     "ocr_text": "א: 0.39; ב: 0.47; ג: 0.51; ד: 0.55",
+     "ok": true,
+     "error": null,
+     "failure_class": null,
+     "exact_frozen": false,
+     "cer": 0.7083,
+     "wer": 1.2222,
+     "omission_rate": 0.0,
+     "hallucination_rate": 0.25,
+     "digit_sign_error": true,
+     "line_lost": false,
+     "word_subs": 8,
+     "word_dels": 0,
+     "word_ins": 3,
+     "unreadable_marker": false,
+     "critical_flags": [
+      "DIGIT_CHANGED(ref=055051047039,ocr=039047051055)"
+     ],
+     "latency_s": 2.875,
+     "input_tokens": 2920,
+     "output_tokens": 138,
+     "reasoning_tokens": 0,
+     "cache_hit": false
+    }
+   ],
+   "views": {
+    "frozen": {
+     "cases": 8,
+     "scored": 8,
+     "unscored_provider_failure": 0,
+     "exact_match": 0,
+     "mean_cer": 0.7715,
+     "median_cer": 0.8717,
+     "mean_wer": 0.8739,
+     "median_wer": 1.0,
+     "mean_omission_rate": 0.5178,
+     "mean_hallucination_rate": 0.0793,
+     "line_loss": 0,
+     "digit_sign_errors": 5,
+     "case_ids": [
+      "hl_e003_q1_r1__l1",
+      "hc_e002_q1_r1",
+      "hc_e002_q1_r7",
+      "hc_e002_q2_r1",
+      "hc_e002_q2_r6",
+      "pr_docA_p1_b1",
+      "pr_docA_p2_b3",
+      "assoc_docB_p2_b1"
+     ],
+     "view": "frozen",
+     "reference_basis": "frozen reference bytes",
+     "per_case": [
+      {
+       "case_id": "hl_e003_q1_r1__l1",
+       "reference_used": "ניתן לראות ברמות התדרים הגבוהים שיש שפות בכיוון התנועה(הטשטוש)",
+       "hypothesis": "[?]",
+       "exact_match": false,
+       "scored": true,
+       "line_lost": false,
+       "cer": 1.0,
+       "wer": 1.0,
+       "omission_rate": 1.0,
+       "hallucination_rate": 0.0,
+       "digit_sign_error": false
+      },
+      {
+       "case_id": "hc_e002_q1_r1",
+       "reference_used": "יש טשטוש בכל התדרים",
+       "hypothesis": "[unreadable]",
+       "exact_match": false,
+       "scored": true,
+       "line_lost": false,
+       "cer": 1.0,
+       "wer": 1.0,
+       "omission_rate": 0.75,
+       "hallucination_rate": 0.0,
+       "digit_sign_error": false
+      },
+      {
+       "case_id": "hc_e002_q1_r7",
+       "reference_used": "סה\"כ הפירמידה נראית תקינה. הדרגה 0 שלה בהירה משמעותית מהתמונה המקורית",
+       "hypothesis": "[unreadable]",
+       "exact_match": false,
+       "scored": true,
+       "line_lost": false,
+       "cer": 1.0,
+       "wer": 1.0,
+       "omission_rate": 0.9167,
+       "hallucination_rate": 0.0,
+       "digit_sign_error": true
+      },
+      {
+       "case_id": "hc_e002_q2_r1",
+       "reference_used": "עבור גילוי שפות יהיה רוב התמונה ב0 ורק עבור שפות 255",
+       "hypothesis": "[unreadable]",
+       "exact_match": false,
+       "scored": true,
+       "line_lost": false,
+       "cer": 1.0,
+       "wer": 1.0,
+       "omission_rate": 0.9091,
+       "hallucination_rate": 0.0,
+       "digit_sign_error": true
+      },
+      {
+       "case_id": "hc_e002_q2_r6",
+       "reference_used": "המעכה זהה לסכימת תמונה זהה עם תנודה קלה. מין תמונת echo כזאת תגרום להיסטוגרמה החדשה להיות קרובה להכפלה ב-2 [לא קריא]",
+       "hypothesis": "מבחינה למעשה להלכה יש להבחין בין שני סוגים של מצוות, מצוות שבין אדם לחבירו ומצוות שבין אדם למקום",
+       "exact_match": false,
+       "scored": true,
+       "line_lost": false,
+       "cer": 0.7434,
+       "wer": 1.0,
+       "omission_rate": 0.1818,
+       "hallucination_rate": 0.0,
+       "digit_sign_error": true
+      },
+      {
+       "case_id": "pr_docA_p1_b1",
+       "reference_used": "203.3730\n 203.6730 / \n  סמסטר א' מועד א' תשפ\"ו \n2025-2026",
+       "hypothesis": "סמסטר א' מועד א' תשפ\"ו 203.6730 / 203.3730\n2025-2026",
+       "exact_match": false,
+       "scored": true,
+       "line_lost": false,
+       "cer": 0.72,
+       "wer": 0.7692,
+       "omission_rate": 0.3846,
+       "hallucination_rate": 0.3846,
+       "digit_sign_error": true
+      },
+      {
+       "case_id": "pr_docA_p2_b3",
+       "reference_used": "לאחר הפעולה בונים פרמידת WAVELETS של תמונת התוצאה. בעמוד הבא נתונות \nתמונות התוצאה ממוספרות  )\nA-I\n(.",
+       "hypothesis": "לאחר הפעולה בונים פרמידת WAVELETS של תמונת התוצאה. בעמוד הבא נתונות תמונות התוצאה ממוספרות (A-I).",
+       "exact_match": false,
+       "scored": true,
+       "line_lost": false,
+       "cer": 0.0,
+       "wer": 0.0,
+       "omission_rate": 0.0,
+       "hallucination_rate": 0.0,
+       "digit_sign_error": false
+      },
+      {
+       "case_id": "assoc_docB_p2_b1",
+       "reference_used": "0.55\n()ד0.51\n()ג0.47\n()ב0.39\n()א",
+       "hypothesis": "א: 0.39; ב: 0.47; ג: 0.51; ד: 0.55",
+       "exact_match": false,
+       "scored": true,
+       "line_lost": false,
+       "cer": 0.7083,
+       "wer": 1.2222,
+       "omission_rate": 0.0,
+       "hallucination_rate": 0.25,
+       "digit_sign_error": true
+      }
+     ]
+    },
+    "logical_order": {
+     "cases": 8,
+     "scored": 8,
+     "unscored_provider_failure": 0,
+     "exact_match": 0,
+     "mean_cer": 0.6829,
+     "median_cer": 0.8717,
+     "mean_wer": 0.7211,
+     "median_wer": 1.0,
+     "mean_omission_rate": 0.5178,
+     "mean_hallucination_rate": 0.0481,
+     "line_loss": 0,
+     "digit_sign_errors": 4,
+     "case_ids": [
+      "hl_e003_q1_r1__l1",
+      "hc_e002_q1_r1",
+      "hc_e002_q1_r7",
+      "hc_e002_q2_r1",
+      "hc_e002_q2_r6",
+      "pr_docA_p1_b1",
+      "pr_docA_p2_b3",
+      "assoc_docB_p2_b1"
+     ],
+     "view": "logical_order",
+     "reference_basis": "audited logical order where a record exists, frozen otherwise",
+     "per_case": [
+      {
+       "case_id": "hl_e003_q1_r1__l1",
+       "reference_used": "ניתן לראות ברמות התדרים הגבוהים שיש שפות בכיוון התנועה(הטשטוש)",
+       "hypothesis": "[?]",
+       "exact_match": false,
+       "scored": true,
+       "line_lost": false,
+       "cer": 1.0,
+       "wer": 1.0,
+       "omission_rate": 1.0,
+       "hallucination_rate": 0.0,
+       "digit_sign_error": false
+      },
+      {
+       "case_id": "hc_e002_q1_r1",
+       "reference_used": "יש טשטוש בכל התדרים",
+       "hypothesis": "[unreadable]",
+       "exact_match": false,
+       "scored": true,
+       "line_lost": false,
+       "cer": 1.0,
+       "wer": 1.0,
+       "omission_rate": 0.75,
+       "hallucination_rate": 0.0,
+       "digit_sign_error": false
+      },
+      {
+       "case_id": "hc_e002_q1_r7",
+       "reference_used": "סה\"כ הפירמידה נראית תקינה. הדרגה 0 שלה בהירה משמעותית מהתמונה המקורית",
+       "hypothesis": "[unreadable]",
+       "exact_match": false,
+       "scored": true,
+       "line_lost": false,
+       "cer": 1.0,
+       "wer": 1.0,
+       "omission_rate": 0.9167,
+       "hallucination_rate": 0.0,
+       "digit_sign_error": true
+      },
+      {
+       "case_id": "hc_e002_q2_r1",
+       "reference_used": "עבור גילוי שפות יהיה רוב התמונה ב0 ורק עבור שפות 255",
+       "hypothesis": "[unreadable]",
+       "exact_match": false,
+       "scored": true,
+       "line_lost": false,
+       "cer": 1.0,
+       "wer": 1.0,
+       "omission_rate": 0.9091,
+       "hallucination_rate": 0.0,
+       "digit_sign_error": true
+      },
+      {
+       "case_id": "hc_e002_q2_r6",
+       "reference_used": "המעכה זהה לסכימת תמונה זהה עם תנודה קלה. מין תמונת echo כזאת תגרום להיסטוגרמה החדשה להיות קרובה להכפלה ב-2 [לא קריא]",
+       "hypothesis": "מבחינה למעשה להלכה יש להבחין בין שני סוגים של מצוות, מצוות שבין אדם לחבירו ומצוות שבין אדם למקום",
+       "exact_match": false,
+       "scored": true,
+       "line_lost": false,
+       "cer": 0.7434,
+       "wer": 1.0,
+       "omission_rate": 0.1818,
+       "hallucination_rate": 0.0,
+       "digit_sign_error": true
+      },
+      {
+       "case_id": "pr_docA_p1_b1",
+       "reference_used": "203.3730\n 203.6730 / \n  סמסטר א' מועד א' תשפ\"ו \n2025-2026",
+       "hypothesis": "סמסטר א' מועד א' תשפ\"ו 203.6730 / 203.3730\n2025-2026",
+       "exact_match": false,
+       "scored": true,
+       "line_lost": false,
+       "cer": 0.72,
+       "wer": 0.7692,
+       "omission_rate": 0.3846,
+       "hallucination_rate": 0.3846,
+       "digit_sign_error": true
+      },
+      {
+       "case_id": "pr_docA_p2_b3",
+       "reference_used": "לאחר הפעולה בונים פרמידת WAVELETS של תמונת התוצאה. בעמוד הבא נתונות \nתמונות התוצאה ממוספרות  )\nA-I\n(.",
+       "hypothesis": "לאחר הפעולה בונים פרמידת WAVELETS של תמונת התוצאה. בעמוד הבא נתונות תמונות התוצאה ממוספרות (A-I).",
+       "exact_match": false,
+       "scored": true,
+       "line_lost": false,
+       "cer": 0.0,
+       "wer": 0.0,
+       "omission_rate": 0.0,
+       "hallucination_rate": 0.0,
+       "digit_sign_error": false
+      },
+      {
+       "case_id": "assoc_docB_p2_b1",
+       "reference_used": "(א) 0.39; (ב) 0.47; (ג) 0.51; (ד) 0.55",
+       "hypothesis": "א: 0.39; ב: 0.47; ג: 0.51; ד: 0.55",
+       "exact_match": false,
+       "scored": true,
+       "line_lost": false,
+       "cer": 0.0,
+       "wer": 0.0,
+       "omission_rate": 0.0,
+       "hallucination_rate": 0.0,
+       "digit_sign_error": false
+      }
+     ]
+    },
+    "handwritten": {
+     "cases": 5,
+     "scored": 5,
+     "unscored_provider_failure": 0,
+     "exact_match": 0,
+     "mean_cer": 0.9487,
+     "median_cer": 1.0,
+     "mean_wer": 1.0,
+     "median_wer": 1.0,
+     "mean_omission_rate": 0.7515,
+     "mean_hallucination_rate": 0.0,
+     "line_loss": 0,
+     "digit_sign_errors": 3,
+     "case_ids": [
+      "hl_e003_q1_r1__l1",
+      "hc_e002_q1_r1",
+      "hc_e002_q1_r7",
+      "hc_e002_q2_r1",
+      "hc_e002_q2_r6"
+     ],
+     "view": "handwritten",
+     "reference_basis": "frozen reference bytes",
+     "per_case": [
+      {
+       "case_id": "hl_e003_q1_r1__l1",
+       "reference_used": "ניתן לראות ברמות התדרים הגבוהים שיש שפות בכיוון התנועה(הטשטוש)",
+       "hypothesis": "[?]",
+       "exact_match": false,
+       "scored": true,
+       "line_lost": false,
+       "cer": 1.0,
+       "wer": 1.0,
+       "omission_rate": 1.0,
+       "hallucination_rate": 0.0,
+       "digit_sign_error": false
+      },
+      {
+       "case_id": "hc_e002_q1_r1",
+       "reference_used": "יש טשטוש בכל התדרים",
+       "hypothesis": "[unreadable]",
+       "exact_match": false,
+       "scored": true,
+       "line_lost": false,
+       "cer": 1.0,
+       "wer": 1.0,
+       "omission_rate": 0.75,
+       "hallucination_rate": 0.0,
+       "digit_sign_error": false
+      },
+      {
+       "case_id": "hc_e002_q1_r7",
+       "reference_used": "סה\"כ הפירמידה נראית תקינה. הדרגה 0 שלה בהירה משמעותית מהתמונה המקורית",
+       "hypothesis": "[unreadable]",
+       "exact_match": false,
+       "scored": true,
+       "line_lost": false,
+       "cer": 1.0,
+       "wer": 1.0,
+       "omission_rate": 0.9167,
+       "hallucination_rate": 0.0,
+       "digit_sign_error": true
+      },
+      {
+       "case_id": "hc_e002_q2_r1",
+       "reference_used": "עבור גילוי שפות יהיה רוב התמונה ב0 ורק עבור שפות 255",
+       "hypothesis": "[unreadable]",
+       "exact_match": false,
+       "scored": true,
+       "line_lost": false,
+       "cer": 1.0,
+       "wer": 1.0,
+       "omission_rate": 0.9091,
+       "hallucination_rate": 0.0,
+       "digit_sign_error": true
+      },
+      {
+       "case_id": "hc_e002_q2_r6",
+       "reference_used": "המעכה זהה לסכימת תמונה זהה עם תנודה קלה. מין תמונת echo כזאת תגרום להיסטוגרמה החדשה להיות קרובה להכפלה ב-2 [לא קריא]",
+       "hypothesis": "מבחינה למעשה להלכה יש להבחין בין שני סוגים של מצוות, מצוות שבין אדם לחבירו ומצוות שבין אדם למקום",
+       "exact_match": false,
+       "scored": true,
+       "line_lost": false,
+       "cer": 0.7434,
+       "wer": 1.0,
+       "omission_rate": 0.1818,
+       "hallucination_rate": 0.0,
+       "digit_sign_error": true
+      }
+     ]
+    },
+    "printed": {
+     "cases": 3,
+     "scored": 3,
+     "unscored_provider_failure": 0,
+     "exact_match": 0,
+     "mean_cer": 0.4761,
+     "median_cer": 0.7083,
+     "mean_wer": 0.6638,
+     "median_wer": 0.7692,
+     "mean_omission_rate": 0.1282,
+     "mean_hallucination_rate": 0.2115,
+     "line_loss": 0,
+     "digit_sign_errors": 2,
+     "case_ids": [
+      "pr_docA_p1_b1",
+      "pr_docA_p2_b3",
+      "assoc_docB_p2_b1"
+     ],
+     "view": "printed",
+     "reference_basis": "frozen reference bytes",
+     "per_case": [
+      {
+       "case_id": "pr_docA_p1_b1",
+       "reference_used": "203.3730\n 203.6730 / \n  סמסטר א' מועד א' תשפ\"ו \n2025-2026",
+       "hypothesis": "סמסטר א' מועד א' תשפ\"ו 203.6730 / 203.3730\n2025-2026",
+       "exact_match": false,
+       "scored": true,
+       "line_lost": false,
+       "cer": 0.72,
+       "wer": 0.7692,
+       "omission_rate": 0.3846,
+       "hallucination_rate": 0.3846,
+       "digit_sign_error": true
+      },
+      {
+       "case_id": "pr_docA_p2_b3",
+       "reference_used": "לאחר הפעולה בונים פרמידת WAVELETS של תמונת התוצאה. בעמוד הבא נתונות \nתמונות התוצאה ממוספרות  )\nA-I\n(.",
+       "hypothesis": "לאחר הפעולה בונים פרמידת WAVELETS של תמונת התוצאה. בעמוד הבא נתונות תמונות התוצאה ממוספרות (A-I).",
+       "exact_match": false,
+       "scored": true,
+       "line_lost": false,
+       "cer": 0.0,
+       "wer": 0.0,
+       "omission_rate": 0.0,
+       "hallucination_rate": 0.0,
+       "digit_sign_error": false
+      },
+      {
+       "case_id": "assoc_docB_p2_b1",
+       "reference_used": "0.55\n()ד0.51\n()ג0.47\n()ב0.39\n()א",
+       "hypothesis": "א: 0.39; ב: 0.47; ג: 0.51; ד: 0.55",
+       "exact_match": false,
+       "scored": true,
+       "line_lost": false,
+       "cer": 0.7083,
+       "wer": 1.2222,
+       "omission_rate": 0.0,
+       "hallucination_rate": 0.25,
+       "digit_sign_error": true
+      }
+     ]
+    },
+    "by_category": {
+     "formula_printed": {
+      "cases": 1,
+      "scored": 1,
+      "unscored_provider_failure": 0,
+      "exact_match": 0,
+      "mean_cer": 0.72,
+      "median_cer": 0.72,
+      "mean_wer": 0.7692,
+      "median_wer": 0.7692,
+      "mean_omission_rate": 0.3846,
+      "mean_hallucination_rate": 0.3846,
+      "line_loss": 0,
+      "digit_sign_errors": 1,
+      "case_ids": [
+       "pr_docA_p1_b1"
+      ]
+     },
+     "handwritten_cell": {
+      "cases": 4,
+      "scored": 4,
+      "unscored_provider_failure": 0,
+      "exact_match": 0,
+      "mean_cer": 0.9358,
+      "median_cer": 1.0,
+      "mean_wer": 1.0,
+      "median_wer": 1.0,
+      "mean_omission_rate": 0.6894,
+      "mean_hallucination_rate": 0.0,
+      "line_loss": 0,
+      "digit_sign_errors": 3,
+      "case_ids": [
+       "hc_e002_q1_r1",
+       "hc_e002_q1_r7",
+       "hc_e002_q2_r1",
+       "hc_e002_q2_r6"
+      ]
+     },
+     "handwritten_line": {
+      "cases": 1,
+      "scored": 1,
+      "unscored_provider_failure": 0,
+      "exact_match": 0,
+      "mean_cer": 1.0,
+      "median_cer": 1.0,
+      "mean_wer": 1.0,
+      "median_wer": 1.0,
+      "mean_omission_rate": 1.0,
+      "mean_hallucination_rate": 0.0,
+      "line_loss": 0,
+      "digit_sign_errors": 0,
+      "case_ids": [
+       "hl_e003_q1_r1__l1"
+      ]
+     },
+     "mixed_he_en": {
+      "cases": 1,
+      "scored": 1,
+      "unscored_provider_failure": 0,
+      "exact_match": 0,
+      "mean_cer": 0.0,
+      "median_cer": 0.0,
+      "mean_wer": 0.0,
+      "median_wer": 0.0,
+      "mean_omission_rate": 0.0,
+      "mean_hallucination_rate": 0.0,
+      "line_loss": 0,
+      "digit_sign_errors": 0,
+      "case_ids": [
+       "pr_docA_p2_b3"
+      ]
+     },
+     "option_row_association": {
+      "cases": 1,
+      "scored": 1,
+      "unscored_provider_failure": 0,
+      "exact_match": 0,
+      "mean_cer": 0.7083,
+      "median_cer": 0.7083,
+      "mean_wer": 1.2222,
+      "median_wer": 1.2222,
+      "mean_omission_rate": 0.0,
+      "mean_hallucination_rate": 0.25,
+      "line_loss": 0,
+      "digit_sign_errors": 1,
+      "case_ids": [
+       "assoc_docB_p2_b1"
+      ]
+     }
+    },
+    "denominators": {
+     "frozen": 8,
+     "logical_order": 8,
+     "handwritten": 5,
+     "printed": 3
+    },
+    "policy": "the frozen view is the reproducible metric and the one comparable to Stage-1; logical_order is a DIAGNOSTIC and never replaces it; handwritten is the product-relevant view and is never merged with printed."
+   },
+   "writer_metrics": {
+    "metrics_version": "ocr-writer-metrics-v1",
+    "overall": {
+     "cases": 8,
+     "scored": 8,
+     "line_loss": 0,
+     "line_loss_rate": 0.0,
+     "mean_cer": 0.7715,
+     "median_cer": 0.8717,
+     "max_cer": 1.0,
+     "mean_wer": 0.8739,
+     "mean_omission_rate": 0.5178,
+     "mean_hallucination_rate": 0.0793,
+     "digit_sign_errors": 5,
+     "cer_le_5pct": 1,
+     "cer_le_5pct_rate": 0.125
+    },
+    "per_writer": {
+     "e002": {
+      "cases": 4,
+      "scored": 4,
+      "line_loss": 0,
+      "line_loss_rate": 0.0,
+      "mean_cer": 0.9358,
+      "median_cer": 1.0,
+      "max_cer": 1.0,
+      "mean_wer": 1.0,
+      "mean_omission_rate": 0.6894,
+      "mean_hallucination_rate": 0.0,
+      "digit_sign_errors": 3,
+      "cer_le_5pct": 0,
+      "cer_le_5pct_rate": 0.0
+     },
+     "e003": {
+      "cases": 1,
+      "scored": 1,
+      "line_loss": 0,
+      "line_loss_rate": 0.0,
+      "mean_cer": 1.0,
+      "median_cer": 1.0,
+      "max_cer": 1.0,
+      "mean_wer": 1.0,
+      "mean_omission_rate": 1.0,
+      "mean_hallucination_rate": 0.0,
+      "digit_sign_errors": 0,
+      "cer_le_5pct": 0,
+      "cer_le_5pct_rate": 0.0
+     },
+     "no_writer": {
+      "cases": 3,
+      "scored": 3,
+      "line_loss": 0,
+      "line_loss_rate": 0.0,
+      "mean_cer": 0.4761,
+      "median_cer": 0.7083,
+      "max_cer": 0.72,
+      "mean_wer": 0.6638,
+      "mean_omission_rate": 0.1282,
+      "mean_hallucination_rate": 0.2115,
+      "digit_sign_errors": 2,
+      "cer_le_5pct": 1,
+      "cer_le_5pct_rate": 0.3333
+     }
+    },
+    "worst_writer_by_mean_cer": "e003",
+    "proposed_gate": "per-writer CER <= 5% (every writer, not the mean of means) AND zero harmful verdict flips — the flip metric needs the frozen local grader and is owner-gated separately",
+    "refused_invalid_reference": [],
+    "per_case": [
+     {
+      "case_id": "assoc_docB_p2_b1",
+      "writer": "no_writer",
+      "scored": true,
+      "line_lost": false,
+      "cer": 0.7083,
+      "wer": 1.2222,
+      "omission_rate": 0.0,
+      "hallucination_rate": 0.25,
+      "digit_sign_error": true
+     },
+     {
+      "case_id": "hc_e002_q1_r1",
+      "writer": "e002",
+      "scored": true,
+      "line_lost": false,
+      "cer": 1.0,
+      "wer": 1.0,
+      "omission_rate": 0.75,
+      "hallucination_rate": 0.0,
+      "digit_sign_error": false
+     },
+     {
+      "case_id": "hc_e002_q1_r7",
+      "writer": "e002",
+      "scored": true,
+      "line_lost": false,
+      "cer": 1.0,
+      "wer": 1.0,
+      "omission_rate": 0.9167,
+      "hallucination_rate": 0.0,
+      "digit_sign_error": true
+     },
+     {
+      "case_id": "hc_e002_q2_r1",
+      "writer": "e002",
+      "scored": true,
+      "line_lost": false,
+      "cer": 1.0,
+      "wer": 1.0,
+      "omission_rate": 0.9091,
+      "hallucination_rate": 0.0,
+      "digit_sign_error": true
+     },
+     {
+      "case_id": "hc_e002_q2_r6",
+      "writer": "e002",
+      "scored": true,
+      "line_lost": false,
+      "cer": 0.7434,
+      "wer": 1.0,
+      "omission_rate": 0.1818,
+      "hallucination_rate": 0.0,
+      "digit_sign_error": true
+     },
+     {
+      "case_id": "hl_e003_q1_r1__l1",
+      "writer": "e003",
+      "scored": true,
+      "line_lost": false,
+      "cer": 1.0,
+      "wer": 1.0,
+      "omission_rate": 1.0,
+      "hallucination_rate": 0.0,
+      "digit_sign_error": false
+     },
+     {
+      "case_id": "pr_docA_p1_b1",
+      "writer": "no_writer",
+      "scored": true,
+      "line_lost": false,
+      "cer": 0.72,
+      "wer": 0.7692,
+      "omission_rate": 0.3846,
+      "hallucination_rate": 0.3846,
+      "digit_sign_error": true
+     },
+     {
+      "case_id": "pr_docA_p2_b3",
+      "writer": "no_writer",
+      "scored": true,
+      "line_lost": false,
+      "cer": 0.0,
+      "wer": 0.0,
+      "omission_rate": 0.0,
+      "hallucination_rate": 0.0,
+      "digit_sign_error": false
+     }
+    ]
+   },
+   "assoc_association_exact": true,
+   "reliability": {
+    "requests": 8,
+    "scored": 8,
+    "provider_or_schema_failures": 0,
+    "failure_classes": {},
+    "schema_failures": 0,
+    "cache_hits": 0
+   },
+   "behaviour": {
+    "refusals_unreadable_on_readable_ref": 4,
+    "unreadable_marker_rate": 0.5,
+    "line_loss": 0,
+    "digit_sign_errors": 5,
+    "critical_error_cases": 7,
+    "handwritten_critical_error_cases": 5
+   },
+   "latency": {
+    "mean_s": 2.719,
+    "median_s": 2.633,
+    "p95_s": 3.265,
+    "total_s": 21.749
+   },
+   "tokens": {
+    "input": 29593,
+    "output": 990,
+    "reasoning": 0
+   }
+  },
+  "anthropic/claude-sonnet-5": {
+   "stage": "stage1",
+   "run_id": "dev__smoke__all__anthropic-claude-sonnet-5__0481873207",
+   "decoding": {
+    "reasoning": {
+     "effort": "none"
+    },
+    "max_tokens_recorded": 400
+   },
+   "per_case": [
+    {
+     "case_id": "hl_e003_q1_r1__l1",
+     "handwritten": true,
+     "category": "handwritten_line",
+     "writer": "e003",
+     "reference": "ניתן לראות ברמות התדרים הגבוהים שיש שפות בכיוון התנועה(הטשטוש)",
+     "ocr_text": "ניתן לראות בראות התפרים הגבוהים שיש שפת גבול הנתונה (הלטוש)",
+     "ok": true,
+     "error": null,
+     "failure_class": null,
+     "exact_frozen": false,
+     "cer": 0.2131,
+     "wer": 0.6,
+     "omission_rate": 0.0,
+     "hallucination_rate": 0.0,
+     "digit_sign_error": false,
+     "line_lost": false,
+     "word_subs": 6,
+     "word_dels": 0,
+     "word_ins": 0,
+     "unreadable_marker": false,
+     "critical_flags": [],
+     "latency_s": 5.016,
+     "input_tokens": 1002,
+     "output_tokens": 51,
+     "reasoning_tokens": 0,
+     "cache_hit": false
+    },
+    {
+     "case_id": "hc_e002_q1_r1",
+     "handwritten": true,
+     "category": "handwritten_cell",
+     "writer": "e002",
+     "reference": "יש טשטוש בכל התדרים",
+     "ocr_text": "[unreadable]",
+     "ok": true,
+     "error": null,
+     "failure_class": null,
+     "exact_frozen": false,
+     "cer": 1.0,
+     "wer": 1.0,
+     "omission_rate": 0.75,
+     "hallucination_rate": 0.0,
+     "digit_sign_error": false,
+     "line_lost": false,
+     "word_subs": 1,
+     "word_dels": 3,
+     "word_ins": 0,
+     "unreadable_marker": true,
+     "critical_flags": [
+      "LATIN_TOKEN_CHANGED(ref=[],ocr=['unreadable'])",
+      "UNREADABLE_OUTPUT_ON_READABLE_REFERENCE"
+     ],
+     "latency_s": 3.094,
+     "input_tokens": 1098,
+     "output_tokens": 16,
+     "reasoning_tokens": 0,
+     "cache_hit": false
+    },
+    {
+     "case_id": "hc_e002_q1_r7",
+     "handwritten": true,
+     "category": "handwritten_cell",
+     "writer": "e002",
+     "reference": "סה\"כ הפירמידה נראית תקינה. הדרגה 0 שלה בהירה משמעותית מהתמונה המקורית",
+     "ocr_text": "סדר הנוישקה נחוית תקנה - הפרטס על ה בהיזה משאזרה מותמיכת המקומית",
+     "ok": true,
+     "error": null,
+     "failure_class": null,
+     "exact_frozen": false,
+     "cer": 0.4559,
+     "wer": 1.0,
+     "omission_rate": 0.0833,
+     "hallucination_rate": 0.0,
+     "digit_sign_error": true,
+     "line_lost": false,
+     "word_subs": 11,
+     "word_dels": 1,
+     "word_ins": 0,
+     "unreadable_marker": false,
+     "critical_flags": [
+      "DIGIT_CHANGED(ref=0,ocr=-)",
+      "SIGN_OPERATOR_CHANGED(ref=-,ocr=-)"
+     ],
+     "latency_s": 6.062,
+     "input_tokens": 1098,
+     "output_tokens": 56,
+     "reasoning_tokens": 0,
+     "cache_hit": false
+    },
+    {
+     "case_id": "hc_e002_q2_r1",
+     "handwritten": true,
+     "category": "handwritten_cell",
+     "writer": "e002",
+     "reference": "עבור גילוי שפות יהיה רוב התמונה ב0 ורק עבור שפות 255",
+     "ocr_text": "[unreadable]",
+     "ok": true,
+     "error": null,
+     "failure_class": null,
+     "exact_frozen": false,
+     "cer": 1.0,
+     "wer": 1.0,
+     "omission_rate": 0.9091,
+     "hallucination_rate": 0.0,
+     "digit_sign_error": true,
+     "line_lost": false,
+     "word_subs": 1,
+     "word_dels": 10,
+     "word_ins": 0,
+     "unreadable_marker": true,
+     "critical_flags": [
+      "DIGIT_CHANGED(ref=0255,ocr=-)",
+      "LATIN_TOKEN_CHANGED(ref=[],ocr=['unreadable'])",
+      "UNREADABLE_OUTPUT_ON_READABLE_REFERENCE"
+     ],
+     "latency_s": 4.375,
+     "input_tokens": 1098,
+     "output_tokens": 16,
+     "reasoning_tokens": 0,
+     "cache_hit": false
+    },
+    {
+     "case_id": "hc_e002_q2_r6",
+     "handwritten": true,
+     "category": "handwritten_cell",
+     "writer": "e002",
+     "reference": "המעכה זהה לסכימת תמונה זהה עם תנודה קלה. מין תמונת echo כזאת תגרום להיסטוגרמה החדשה להיות קרובה להכפלה ב-2 [לא קריא]",
+     "ocr_text": "ההסכה להה לסכית התנות זהה על תשונה קלה, אין השאך סתם כאחר, התרוה להסולתמג הישר לחות קרונה להכבדה כל מעי [?]",
+     "ok": true,
+     "error": null,
+     "failure_class": null,
+     "exact_frozen": false,
+     "cer": 0.4248,
+     "wer": 0.9091,
+     "omission_rate": 0.0909,
+     "hallucination_rate": 0.0,
+     "digit_sign_error": true,
+     "line_lost": false,
+     "word_subs": 18,
+     "word_dels": 2,
+     "word_ins": 0,
+     "unreadable_marker": true,
+     "critical_flags": [
+      "DIGIT_CHANGED(ref=2,ocr=-)",
+      "SIGN_OPERATOR_CHANGED(ref=-,ocr=-)",
+      "LATIN_TOKEN_CHANGED(ref=['echo'],ocr=[])",
+      "NEGATION_OMITTED(לא)"
+     ],
+     "latency_s": 4.828,
+     "input_tokens": 1098,
+     "output_tokens": 82,
+     "reasoning_tokens": 0,
+     "cache_hit": false
+    },
+    {
+     "case_id": "pr_docA_p1_b1",
+     "handwritten": false,
+     "category": "formula_printed",
+     "writer": null,
+     "reference": "203.3730\n 203.6730 / \n  סמסטר א' מועד א' תשפ\"ו \n2025-2026",
+     "ocr_text": "203.3730 / 203.6730 סמסטר א' מועד א' תשפ״ו\n2025-2026",
+     "ok": true,
+     "error": null,
+     "failure_class": null,
+     "exact_frozen": false,
+     "cer": 0.1,
+     "wer": 0.3077,
+     "omission_rate": 0.1538,
+     "hallucination_rate": 0.0833,
+     "digit_sign_error": true,
+     "line_lost": false,
+     "word_subs": 1,
+     "word_dels": 2,
+     "word_ins": 1,
+     "unreadable_marker": false,
+     "critical_flags": [],
+     "latency_s": 4.281,
+     "input_tokens": 891,
+     "output_tokens": 48,
+     "reasoning_tokens": 0,
+     "cache_hit": false
+    },
+    {
+     "case_id": "pr_docA_p2_b3",
+     "handwritten": false,
+     "category": "mixed_he_en",
+     "writer": null,
+     "reference": "לאחר הפעולה בונים פרמידת WAVELETS של תמונת התוצאה. בעמוד הבא נתונות \nתמונות התוצאה ממוספרות  )\nA-I\n(.",
+     "ocr_text": "לאחר הפעולה בונים פרמידת WAVELETS של תמונת התוצאה. בעמוד הבא נתונות תמונות התוצאה ממוספרות (A-I).",
+     "ok": true,
+     "error": null,
+     "failure_class": null,
+     "exact_frozen": false,
+     "cer": 0.0,
+     "wer": 0.0,
+     "omission_rate": 0.0,
+     "hallucination_rate": 0.0,
+     "digit_sign_error": false,
+     "line_lost": false,
+     "word_subs": 0,
+     "word_dels": 0,
+     "word_ins": 0,
+     "unreadable_marker": false,
+     "critical_flags": [],
+     "latency_s": 4.656,
+     "input_tokens": 939,
+     "output_tokens": 76,
+     "reasoning_tokens": 0,
+     "cache_hit": false
+    },
+    {
+     "case_id": "assoc_docB_p2_b1",
+     "handwritten": false,
+     "category": "option_row_association",
+     "writer": null,
+     "reference": "0.55\n()ד0.51\n()ג0.47\n()ב0.39\n()א",
+     "ocr_text": "א: 0.39; ב: 0.47; ג: 0.51; ד: 0.55",
+     "ok": true,
+     "error": null,
+     "failure_class": null,
+     "exact_frozen": false,
+     "cer": 0.7083,
+     "wer": 1.2222,
+     "omission_rate": 0.0,
+     "hallucination_rate": 0.25,
+     "digit_sign_error": true,
+     "line_lost": false,
+     "word_subs": 8,
+     "word_dels": 0,
+     "word_ins": 3,
+     "unreadable_marker": false,
+     "critical_flags": [
+      "DIGIT_CHANGED(ref=055051047039,ocr=039047051055)"
+     ],
+     "latency_s": 2.75,
+     "input_tokens": 694,
+     "output_tokens": 40,
+     "reasoning_tokens": 0,
+     "cache_hit": false
+    }
+   ],
+   "views": {
+    "frozen": {
+     "cases": 8,
+     "scored": 8,
+     "unscored_provider_failure": 0,
+     "exact_match": 0,
+     "mean_cer": 0.4878,
+     "median_cer": 0.4404,
+     "mean_wer": 0.7549,
+     "median_wer": 0.9546,
+     "mean_omission_rate": 0.2484,
+     "mean_hallucination_rate": 0.0417,
+     "line_loss": 0,
+     "digit_sign_errors": 5,
+     "case_ids": [
+      "hl_e003_q1_r1__l1",
+      "hc_e002_q1_r1",
+      "hc_e002_q1_r7",
+      "hc_e002_q2_r1",
+      "hc_e002_q2_r6",
+      "pr_docA_p1_b1",
+      "pr_docA_p2_b3",
+      "assoc_docB_p2_b1"
+     ],
+     "view": "frozen",
+     "reference_basis": "frozen reference bytes",
+     "per_case": [
+      {
+       "case_id": "hl_e003_q1_r1__l1",
+       "reference_used": "ניתן לראות ברמות התדרים הגבוהים שיש שפות בכיוון התנועה(הטשטוש)",
+       "hypothesis": "ניתן לראות בראות התפרים הגבוהים שיש שפת גבול הנתונה (הלטוש)",
+       "exact_match": false,
+       "scored": true,
+       "line_lost": false,
+       "cer": 0.2131,
+       "wer": 0.6,
+       "omission_rate": 0.0,
+       "hallucination_rate": 0.0,
+       "digit_sign_error": false
+      },
+      {
+       "case_id": "hc_e002_q1_r1",
+       "reference_used": "יש טשטוש בכל התדרים",
+       "hypothesis": "[unreadable]",
+       "exact_match": false,
+       "scored": true,
+       "line_lost": false,
+       "cer": 1.0,
+       "wer": 1.0,
+       "omission_rate": 0.75,
+       "hallucination_rate": 0.0,
+       "digit_sign_error": false
+      },
+      {
+       "case_id": "hc_e002_q1_r7",
+       "reference_used": "סה\"כ הפירמידה נראית תקינה. הדרגה 0 שלה בהירה משמעותית מהתמונה המקורית",
+       "hypothesis": "סדר הנוישקה נחוית תקנה - הפרטס על ה בהיזה משאזרה מותמיכת המקומית",
+       "exact_match": false,
+       "scored": true,
+       "line_lost": false,
+       "cer": 0.4559,
+       "wer": 1.0,
+       "omission_rate": 0.0833,
+       "hallucination_rate": 0.0,
+       "digit_sign_error": true
+      },
+      {
+       "case_id": "hc_e002_q2_r1",
+       "reference_used": "עבור גילוי שפות יהיה רוב התמונה ב0 ורק עבור שפות 255",
+       "hypothesis": "[unreadable]",
+       "exact_match": false,
+       "scored": true,
+       "line_lost": false,
+       "cer": 1.0,
+       "wer": 1.0,
+       "omission_rate": 0.9091,
+       "hallucination_rate": 0.0,
+       "digit_sign_error": true
+      },
+      {
+       "case_id": "hc_e002_q2_r6",
+       "reference_used": "המעכה זהה לסכימת תמונה זהה עם תנודה קלה. מין תמונת echo כזאת תגרום להיסטוגרמה החדשה להיות קרובה להכפלה ב-2 [לא קריא]",
+       "hypothesis": "ההסכה להה לסכית התנות זהה על תשונה קלה, אין השאך סתם כאחר, התרוה להסולתמג הישר לחות קרונה להכבדה כל מעי [?]",
+       "exact_match": false,
+       "scored": true,
+       "line_lost": false,
+       "cer": 0.4248,
+       "wer": 0.9091,
+       "omission_rate": 0.0909,
+       "hallucination_rate": 0.0,
+       "digit_sign_error": true
+      },
+      {
+       "case_id": "pr_docA_p1_b1",
+       "reference_used": "203.3730\n 203.6730 / \n  סמסטר א' מועד א' תשפ\"ו \n2025-2026",
+       "hypothesis": "203.3730 / 203.6730 סמסטר א' מועד א' תשפ״ו\n2025-2026",
+       "exact_match": false,
+       "scored": true,
+       "line_lost": false,
+       "cer": 0.1,
+       "wer": 0.3077,
+       "omission_rate": 0.1538,
+       "hallucination_rate": 0.0833,
+       "digit_sign_error": true
+      },
+      {
+       "case_id": "pr_docA_p2_b3",
+       "reference_used": "לאחר הפעולה בונים פרמידת WAVELETS של תמונת התוצאה. בעמוד הבא נתונות \nתמונות התוצאה ממוספרות  )\nA-I\n(.",
+       "hypothesis": "לאחר הפעולה בונים פרמידת WAVELETS של תמונת התוצאה. בעמוד הבא נתונות תמונות התוצאה ממוספרות (A-I).",
+       "exact_match": false,
+       "scored": true,
+       "line_lost": false,
+       "cer": 0.0,
+       "wer": 0.0,
+       "omission_rate": 0.0,
+       "hallucination_rate": 0.0,
+       "digit_sign_error": false
+      },
+      {
+       "case_id": "assoc_docB_p2_b1",
+       "reference_used": "0.55\n()ד0.51\n()ג0.47\n()ב0.39\n()א",
+       "hypothesis": "א: 0.39; ב: 0.47; ג: 0.51; ד: 0.55",
+       "exact_match": false,
+       "scored": true,
+       "line_lost": false,
+       "cer": 0.7083,
+       "wer": 1.2222,
+       "omission_rate": 0.0,
+       "hallucination_rate": 0.25,
+       "digit_sign_error": true
+      }
+     ]
+    },
+    "logical_order": {
+     "cases": 8,
+     "scored": 8,
+     "unscored_provider_failure": 0,
+     "exact_match": 0,
+     "mean_cer": 0.3992,
+     "median_cer": 0.319,
+     "mean_wer": 0.6021,
+     "median_wer": 0.7546,
+     "mean_omission_rate": 0.2484,
+     "mean_hallucination_rate": 0.0104,
+     "line_loss": 0,
+     "digit_sign_errors": 4,
+     "case_ids": [
+      "hl_e003_q1_r1__l1",
+      "hc_e002_q1_r1",
+      "hc_e002_q1_r7",
+      "hc_e002_q2_r1",
+      "hc_e002_q2_r6",
+      "pr_docA_p1_b1",
+      "pr_docA_p2_b3",
+      "assoc_docB_p2_b1"
+     ],
+     "view": "logical_order",
+     "reference_basis": "audited logical order where a record exists, frozen otherwise",
+     "per_case": [
+      {
+       "case_id": "hl_e003_q1_r1__l1",
+       "reference_used": "ניתן לראות ברמות התדרים הגבוהים שיש שפות בכיוון התנועה(הטשטוש)",
+       "hypothesis": "ניתן לראות בראות התפרים הגבוהים שיש שפת גבול הנתונה (הלטוש)",
+       "exact_match": false,
+       "scored": true,
+       "line_lost": false,
+       "cer": 0.2131,
+       "wer": 0.6,
+       "omission_rate": 0.0,
+       "hallucination_rate": 0.0,
+       "digit_sign_error": false
+      },
+      {
+       "case_id": "hc_e002_q1_r1",
+       "reference_used": "יש טשטוש בכל התדרים",
+       "hypothesis": "[unreadable]",
+       "exact_match": false,
+       "scored": true,
+       "line_lost": false,
+       "cer": 1.0,
+       "wer": 1.0,
+       "omission_rate": 0.75,
+       "hallucination_rate": 0.0,
+       "digit_sign_error": false
+      },
+      {
+       "case_id": "hc_e002_q1_r7",
+       "reference_used": "סה\"כ הפירמידה נראית תקינה. הדרגה 0 שלה בהירה משמעותית מהתמונה המקורית",
+       "hypothesis": "סדר הנוישקה נחוית תקנה - הפרטס על ה בהיזה משאזרה מותמיכת המקומית",
+       "exact_match": false,
+       "scored": true,
+       "line_lost": false,
+       "cer": 0.4559,
+       "wer": 1.0,
+       "omission_rate": 0.0833,
+       "hallucination_rate": 0.0,
+       "digit_sign_error": true
+      },
+      {
+       "case_id": "hc_e002_q2_r1",
+       "reference_used": "עבור גילוי שפות יהיה רוב התמונה ב0 ורק עבור שפות 255",
+       "hypothesis": "[unreadable]",
+       "exact_match": false,
+       "scored": true,
+       "line_lost": false,
+       "cer": 1.0,
+       "wer": 1.0,
+       "omission_rate": 0.9091,
+       "hallucination_rate": 0.0,
+       "digit_sign_error": true
+      },
+      {
+       "case_id": "hc_e002_q2_r6",
+       "reference_used": "המעכה זהה לסכימת תמונה זהה עם תנודה קלה. מין תמונת echo כזאת תגרום להיסטוגרמה החדשה להיות קרובה להכפלה ב-2 [לא קריא]",
+       "hypothesis": "ההסכה להה לסכית התנות זהה על תשונה קלה, אין השאך סתם כאחר, התרוה להסולתמג הישר לחות קרונה להכבדה כל מעי [?]",
+       "exact_match": false,
+       "scored": true,
+       "line_lost": false,
+       "cer": 0.4248,
+       "wer": 0.9091,
+       "omission_rate": 0.0909,
+       "hallucination_rate": 0.0,
+       "digit_sign_error": true
+      },
+      {
+       "case_id": "pr_docA_p1_b1",
+       "reference_used": "203.3730\n 203.6730 / \n  סמסטר א' מועד א' תשפ\"ו \n2025-2026",
+       "hypothesis": "203.3730 / 203.6730 סמסטר א' מועד א' תשפ״ו\n2025-2026",
+       "exact_match": false,
+       "scored": true,
+       "line_lost": false,
+       "cer": 0.1,
+       "wer": 0.3077,
+       "omission_rate": 0.1538,
+       "hallucination_rate": 0.0833,
+       "digit_sign_error": true
+      },
+      {
+       "case_id": "pr_docA_p2_b3",
+       "reference_used": "לאחר הפעולה בונים פרמידת WAVELETS של תמונת התוצאה. בעמוד הבא נתונות \nתמונות התוצאה ממוספרות  )\nA-I\n(.",
+       "hypothesis": "לאחר הפעולה בונים פרמידת WAVELETS של תמונת התוצאה. בעמוד הבא נתונות תמונות התוצאה ממוספרות (A-I).",
+       "exact_match": false,
+       "scored": true,
+       "line_lost": false,
+       "cer": 0.0,
+       "wer": 0.0,
+       "omission_rate": 0.0,
+       "hallucination_rate": 0.0,
+       "digit_sign_error": false
+      },
+      {
+       "case_id": "assoc_docB_p2_b1",
+       "reference_used": "(א) 0.39; (ב) 0.47; (ג) 0.51; (ד) 0.55",
+       "hypothesis": "א: 0.39; ב: 0.47; ג: 0.51; ד: 0.55",
+       "exact_match": false,
+       "scored": true,
+       "line_lost": false,
+       "cer": 0.0,
+       "wer": 0.0,
+       "omission_rate": 0.0,
+       "hallucination_rate": 0.0,
+       "digit_sign_error": false
+      }
+     ]
+    },
+    "handwritten": {
+     "cases": 5,
+     "scored": 5,
+     "unscored_provider_failure": 0,
+     "exact_match": 0,
+     "mean_cer": 0.6188,
+     "median_cer": 0.4559,
+     "mean_wer": 0.9018,
+     "median_wer": 1.0,
+     "mean_omission_rate": 0.3667,
+     "mean_hallucination_rate": 0.0,
+     "line_loss": 0,
+     "digit_sign_errors": 3,
+     "case_ids": [
+      "hl_e003_q1_r1__l1",
+      "hc_e002_q1_r1",
+      "hc_e002_q1_r7",
+      "hc_e002_q2_r1",
+      "hc_e002_q2_r6"
+     ],
+     "view": "handwritten",
+     "reference_basis": "frozen reference bytes",
+     "per_case": [
+      {
+       "case_id": "hl_e003_q1_r1__l1",
+       "reference_used": "ניתן לראות ברמות התדרים הגבוהים שיש שפות בכיוון התנועה(הטשטוש)",
+       "hypothesis": "ניתן לראות בראות התפרים הגבוהים שיש שפת גבול הנתונה (הלטוש)",
+       "exact_match": false,
+       "scored": true,
+       "line_lost": false,
+       "cer": 0.2131,
+       "wer": 0.6,
+       "omission_rate": 0.0,
+       "hallucination_rate": 0.0,
+       "digit_sign_error": false
+      },
+      {
+       "case_id": "hc_e002_q1_r1",
+       "reference_used": "יש טשטוש בכל התדרים",
+       "hypothesis": "[unreadable]",
+       "exact_match": false,
+       "scored": true,
+       "line_lost": false,
+       "cer": 1.0,
+       "wer": 1.0,
+       "omission_rate": 0.75,
+       "hallucination_rate": 0.0,
+       "digit_sign_error": false
+      },
+      {
+       "case_id": "hc_e002_q1_r7",
+       "reference_used": "סה\"כ הפירמידה נראית תקינה. הדרגה 0 שלה בהירה משמעותית מהתמונה המקורית",
+       "hypothesis": "סדר הנוישקה נחוית תקנה - הפרטס על ה בהיזה משאזרה מותמיכת המקומית",
+       "exact_match": false,
+       "scored": true,
+       "line_lost": false,
+       "cer": 0.4559,
+       "wer": 1.0,
+       "omission_rate": 0.0833,
+       "hallucination_rate": 0.0,
+       "digit_sign_error": true
+      },
+      {
+       "case_id": "hc_e002_q2_r1",
+       "reference_used": "עבור גילוי שפות יהיה רוב התמונה ב0 ורק עבור שפות 255",
+       "hypothesis": "[unreadable]",
+       "exact_match": false,
+       "scored": true,
+       "line_lost": false,
+       "cer": 1.0,
+       "wer": 1.0,
+       "omission_rate": 0.9091,
+       "hallucination_rate": 0.0,
+       "digit_sign_error": true
+      },
+      {
+       "case_id": "hc_e002_q2_r6",
+       "reference_used": "המעכה זהה לסכימת תמונה זהה עם תנודה קלה. מין תמונת echo כזאת תגרום להיסטוגרמה החדשה להיות קרובה להכפלה ב-2 [לא קריא]",
+       "hypothesis": "ההסכה להה לסכית התנות זהה על תשונה קלה, אין השאך סתם כאחר, התרוה להסולתמג הישר לחות קרונה להכבדה כל מעי [?]",
+       "exact_match": false,
+       "scored": true,
+       "line_lost": false,
+       "cer": 0.4248,
+       "wer": 0.9091,
+       "omission_rate": 0.0909,
+       "hallucination_rate": 0.0,
+       "digit_sign_error": true
+      }
+     ]
+    },
+    "printed": {
+     "cases": 3,
+     "scored": 3,
+     "unscored_provider_failure": 0,
+     "exact_match": 0,
+     "mean_cer": 0.2694,
+     "median_cer": 0.1,
+     "mean_wer": 0.51,
+     "median_wer": 0.3077,
+     "mean_omission_rate": 0.0513,
+     "mean_hallucination_rate": 0.1111,
+     "line_loss": 0,
+     "digit_sign_errors": 2,
+     "case_ids": [
+      "pr_docA_p1_b1",
+      "pr_docA_p2_b3",
+      "assoc_docB_p2_b1"
+     ],
+     "view": "printed",
+     "reference_basis": "frozen reference bytes",
+     "per_case": [
+      {
+       "case_id": "pr_docA_p1_b1",
+       "reference_used": "203.3730\n 203.6730 / \n  סמסטר א' מועד א' תשפ\"ו \n2025-2026",
+       "hypothesis": "203.3730 / 203.6730 סמסטר א' מועד א' תשפ״ו\n2025-2026",
+       "exact_match": false,
+       "scored": true,
+       "line_lost": false,
+       "cer": 0.1,
+       "wer": 0.3077,
+       "omission_rate": 0.1538,
+       "hallucination_rate": 0.0833,
+       "digit_sign_error": true
+      },
+      {
+       "case_id": "pr_docA_p2_b3",
+       "reference_used": "לאחר הפעולה בונים פרמידת WAVELETS של תמונת התוצאה. בעמוד הבא נתונות \nתמונות התוצאה ממוספרות  )\nA-I\n(.",
+       "hypothesis": "לאחר הפעולה בונים פרמידת WAVELETS של תמונת התוצאה. בעמוד הבא נתונות תמונות התוצאה ממוספרות (A-I).",
+       "exact_match": false,
+       "scored": true,
+       "line_lost": false,
+       "cer": 0.0,
+       "wer": 0.0,
+       "omission_rate": 0.0,
+       "hallucination_rate": 0.0,
+       "digit_sign_error": false
+      },
+      {
+       "case_id": "assoc_docB_p2_b1",
+       "reference_used": "0.55\n()ד0.51\n()ג0.47\n()ב0.39\n()א",
+       "hypothesis": "א: 0.39; ב: 0.47; ג: 0.51; ד: 0.55",
+       "exact_match": false,
+       "scored": true,
+       "line_lost": false,
+       "cer": 0.7083,
+       "wer": 1.2222,
+       "omission_rate": 0.0,
+       "hallucination_rate": 0.25,
+       "digit_sign_error": true
+      }
+     ]
+    },
+    "by_category": {
+     "formula_printed": {
+      "cases": 1,
+      "scored": 1,
+      "unscored_provider_failure": 0,
+      "exact_match": 0,
+      "mean_cer": 0.1,
+      "median_cer": 0.1,
+      "mean_wer": 0.3077,
+      "median_wer": 0.3077,
+      "mean_omission_rate": 0.1538,
+      "mean_hallucination_rate": 0.0833,
+      "line_loss": 0,
+      "digit_sign_errors": 1,
+      "case_ids": [
+       "pr_docA_p1_b1"
+      ]
+     },
+     "handwritten_cell": {
+      "cases": 4,
+      "scored": 4,
+      "unscored_provider_failure": 0,
+      "exact_match": 0,
+      "mean_cer": 0.7202,
+      "median_cer": 0.7279,
+      "mean_wer": 0.9773,
+      "median_wer": 1.0,
+      "mean_omission_rate": 0.4583,
+      "mean_hallucination_rate": 0.0,
+      "line_loss": 0,
+      "digit_sign_errors": 3,
+      "case_ids": [
+       "hc_e002_q1_r1",
+       "hc_e002_q1_r7",
+       "hc_e002_q2_r1",
+       "hc_e002_q2_r6"
+      ]
+     },
+     "handwritten_line": {
+      "cases": 1,
+      "scored": 1,
+      "unscored_provider_failure": 0,
+      "exact_match": 0,
+      "mean_cer": 0.2131,
+      "median_cer": 0.2131,
+      "mean_wer": 0.6,
+      "median_wer": 0.6,
+      "mean_omission_rate": 0.0,
+      "mean_hallucination_rate": 0.0,
+      "line_loss": 0,
+      "digit_sign_errors": 0,
+      "case_ids": [
+       "hl_e003_q1_r1__l1"
+      ]
+     },
+     "mixed_he_en": {
+      "cases": 1,
+      "scored": 1,
+      "unscored_provider_failure": 0,
+      "exact_match": 0,
+      "mean_cer": 0.0,
+      "median_cer": 0.0,
+      "mean_wer": 0.0,
+      "median_wer": 0.0,
+      "mean_omission_rate": 0.0,
+      "mean_hallucination_rate": 0.0,
+      "line_loss": 0,
+      "digit_sign_errors": 0,
+      "case_ids": [
+       "pr_docA_p2_b3"
+      ]
+     },
+     "option_row_association": {
+      "cases": 1,
+      "scored": 1,
+      "unscored_provider_failure": 0,
+      "exact_match": 0,
+      "mean_cer": 0.7083,
+      "median_cer": 0.7083,
+      "mean_wer": 1.2222,
+      "median_wer": 1.2222,
+      "mean_omission_rate": 0.0,
+      "mean_hallucination_rate": 0.25,
+      "line_loss": 0,
+      "digit_sign_errors": 1,
+      "case_ids": [
+       "assoc_docB_p2_b1"
+      ]
+     }
+    },
+    "denominators": {
+     "frozen": 8,
+     "logical_order": 8,
+     "handwritten": 5,
+     "printed": 3
+    },
+    "policy": "the frozen view is the reproducible metric and the one comparable to Stage-1; logical_order is a DIAGNOSTIC and never replaces it; handwritten is the product-relevant view and is never merged with printed."
+   },
+   "writer_metrics": {
+    "metrics_version": "ocr-writer-metrics-v1",
+    "overall": {
+     "cases": 8,
+     "scored": 8,
+     "line_loss": 0,
+     "line_loss_rate": 0.0,
+     "mean_cer": 0.4878,
+     "median_cer": 0.4404,
+     "max_cer": 1.0,
+     "mean_wer": 0.7549,
+     "mean_omission_rate": 0.2484,
+     "mean_hallucination_rate": 0.0417,
+     "digit_sign_errors": 5,
+     "cer_le_5pct": 1,
+     "cer_le_5pct_rate": 0.125
+    },
+    "per_writer": {
+     "e002": {
+      "cases": 4,
+      "scored": 4,
+      "line_loss": 0,
+      "line_loss_rate": 0.0,
+      "mean_cer": 0.7202,
+      "median_cer": 0.7279,
+      "max_cer": 1.0,
+      "mean_wer": 0.9773,
+      "mean_omission_rate": 0.4583,
+      "mean_hallucination_rate": 0.0,
+      "digit_sign_errors": 3,
+      "cer_le_5pct": 0,
+      "cer_le_5pct_rate": 0.0
+     },
+     "e003": {
+      "cases": 1,
+      "scored": 1,
+      "line_loss": 0,
+      "line_loss_rate": 0.0,
+      "mean_cer": 0.2131,
+      "median_cer": 0.2131,
+      "max_cer": 0.2131,
+      "mean_wer": 0.6,
+      "mean_omission_rate": 0.0,
+      "mean_hallucination_rate": 0.0,
+      "digit_sign_errors": 0,
+      "cer_le_5pct": 0,
+      "cer_le_5pct_rate": 0.0
+     },
+     "no_writer": {
+      "cases": 3,
+      "scored": 3,
+      "line_loss": 0,
+      "line_loss_rate": 0.0,
+      "mean_cer": 0.2694,
+      "median_cer": 0.1,
+      "max_cer": 0.7083,
+      "mean_wer": 0.51,
+      "mean_omission_rate": 0.0513,
+      "mean_hallucination_rate": 0.1111,
+      "digit_sign_errors": 2,
+      "cer_le_5pct": 1,
+      "cer_le_5pct_rate": 0.3333
+     }
+    },
+    "worst_writer_by_mean_cer": "e002",
+    "proposed_gate": "per-writer CER <= 5% (every writer, not the mean of means) AND zero harmful verdict flips — the flip metric needs the frozen local grader and is owner-gated separately",
+    "refused_invalid_reference": [],
+    "per_case": [
+     {
+      "case_id": "assoc_docB_p2_b1",
+      "writer": "no_writer",
+      "scored": true,
+      "line_lost": false,
+      "cer": 0.7083,
+      "wer": 1.2222,
+      "omission_rate": 0.0,
+      "hallucination_rate": 0.25,
+      "digit_sign_error": true
+     },
+     {
+      "case_id": "hc_e002_q1_r1",
+      "writer": "e002",
+      "scored": true,
+      "line_lost": false,
+      "cer": 1.0,
+      "wer": 1.0,
+      "omission_rate": 0.75,
+      "hallucination_rate": 0.0,
+      "digit_sign_error": false
+     },
+     {
+      "case_id": "hc_e002_q1_r7",
+      "writer": "e002",
+      "scored": true,
+      "line_lost": false,
+      "cer": 0.4559,
+      "wer": 1.0,
+      "omission_rate": 0.0833,
+      "hallucination_rate": 0.0,
+      "digit_sign_error": true
+     },
+     {
+      "case_id": "hc_e002_q2_r1",
+      "writer": "e002",
+      "scored": true,
+      "line_lost": false,
+      "cer": 1.0,
+      "wer": 1.0,
+      "omission_rate": 0.9091,
+      "hallucination_rate": 0.0,
+      "digit_sign_error": true
+     },
+     {
+      "case_id": "hc_e002_q2_r6",
+      "writer": "e002",
+      "scored": true,
+      "line_lost": false,
+      "cer": 0.4248,
+      "wer": 0.9091,
+      "omission_rate": 0.0909,
+      "hallucination_rate": 0.0,
+      "digit_sign_error": true
+     },
+     {
+      "case_id": "hl_e003_q1_r1__l1",
+      "writer": "e003",
+      "scored": true,
+      "line_lost": false,
+      "cer": 0.2131,
+      "wer": 0.6,
+      "omission_rate": 0.0,
+      "hallucination_rate": 0.0,
+      "digit_sign_error": false
+     },
+     {
+      "case_id": "pr_docA_p1_b1",
+      "writer": "no_writer",
+      "scored": true,
+      "line_lost": false,
+      "cer": 0.1,
+      "wer": 0.3077,
+      "omission_rate": 0.1538,
+      "hallucination_rate": 0.0833,
+      "digit_sign_error": true
+     },
+     {
+      "case_id": "pr_docA_p2_b3",
+      "writer": "no_writer",
+      "scored": true,
+      "line_lost": false,
+      "cer": 0.0,
+      "wer": 0.0,
+      "omission_rate": 0.0,
+      "hallucination_rate": 0.0,
+      "digit_sign_error": false
+     }
+    ]
+   },
+   "assoc_association_exact": true,
+   "reliability": {
+    "requests": 8,
+    "scored": 8,
+    "provider_or_schema_failures": 0,
+    "failure_classes": {},
+    "schema_failures": 0,
+    "cache_hits": 0
+   },
+   "behaviour": {
+    "refusals_unreadable_on_readable_ref": 2,
+    "unreadable_marker_rate": 0.375,
+    "line_loss": 0,
+    "digit_sign_errors": 5,
+    "critical_error_cases": 5,
+    "handwritten_critical_error_cases": 4
+   },
+   "latency": {
+    "mean_s": 4.383,
+    "median_s": 4.515,
+    "p95_s": 6.062,
+    "total_s": 35.062
+   },
+   "tokens": {
+    "input": 7918,
+    "output": 385,
+    "reasoning": 0
+   }
+  },
+  "google/gemini-3.7-flash": {
+   "stage": "stage1b",
+   "run_id": "dev__smoke__all__google-gemini-3.7-flash__45297cdd83",
+   "decoding": {
+    "reasoning": {
+     "effort": "low"
+    },
+    "max_tokens_recorded": 1000
+   },
+   "per_case": [
+    {
+     "case_id": "hl_e003_q1_r1__l1",
+     "handwritten": true,
+     "category": "handwritten_line",
+     "writer": "e003",
+     "reference": "ניתן לראות ברמות התדרים הגבוהים שיש שפות בכיוון התנועה(הטשטוש)",
+     "ocr_text": "ניתן לראות ברמות התדרים הגבוהים שיש שפות בכיוון התנועה (הטשטוש)",
+     "ok": true,
+     "error": null,
+     "failure_class": null,
+     "exact_frozen": false,
+     "cer": 0.0,
+     "wer": 0.0,
+     "omission_rate": 0.0,
+     "hallucination_rate": 0.0,
+     "digit_sign_error": false,
+     "line_lost": false,
+     "word_subs": 0,
+     "word_dels": 0,
+     "word_ins": 0,
+     "unreadable_marker": false,
+     "critical_flags": [],
+     "latency_s": 4.531,
+     "input_tokens": 1447,
+     "output_tokens": 253,
+     "reasoning_tokens": 219,
+     "cache_hit": false
+    },
+    {
+     "case_id": "hc_e002_q1_r1",
+     "handwritten": true,
+     "category": "handwritten_cell",
+     "writer": "e002",
+     "reference": "יש טשטוש בכל התדרים",
+     "ocr_text": null,
+     "ok": false,
+     "error": "output was truncated at max_tokens=600 (finish_reason=length); raise --max-tokens",
+     "failure_class": "truncation_at_effective_cap",
+     "exact_frozen": false,
+     "cer": null,
+     "wer": null,
+     "omission_rate": null,
+     "hallucination_rate": null,
+     "digit_sign_error": null,
+     "line_lost": true,
+     "word_subs": null,
+     "word_dels": null,
+     "word_ins": null,
+     "unreadable_marker": false,
+     "critical_flags": [
+      "LINE_LOST_NO_OUTPUT"
+     ],
+     "latency_s": null,
+     "input_tokens": null,
+     "output_tokens": null,
+     "reasoning_tokens": null,
+     "cache_hit": false
+    },
+    {
+     "case_id": "hc_e002_q1_r7",
+     "handwritten": true,
+     "category": "handwritten_cell",
+     "writer": "e002",
+     "reference": "סה\"כ הפירמידה נראית תקינה. הדרגה 0 שלה בהירה משמעותית מהתמונה המקורית",
+     "ocr_text": "סה״כ הפירמידה נראית תקינה, הדרגות\nשלה בהירה משמעותית מהתמונה המקורית.",
+     "ok": true,
+     "error": null,
+     "failure_class": null,
+     "exact_frozen": false,
+     "cer": 0.0588,
+     "wer": 0.3333,
+     "omission_rate": 0.1667,
+     "hallucination_rate": 0.0,
+     "digit_sign_error": true,
+     "line_lost": false,
+     "word_subs": 2,
+     "word_dels": 2,
+     "word_ins": 0,
+     "unreadable_marker": false,
+     "critical_flags": [
+      "DIGIT_CHANGED(ref=0,ocr=-)"
+     ],
+     "latency_s": 6.64,
+     "input_tokens": 1386,
+     "output_tokens": 223,
+     "reasoning_tokens": 182,
+     "cache_hit": false
+    },
+    {
+     "case_id": "hc_e002_q2_r1",
+     "handwritten": true,
+     "category": "handwritten_cell",
+     "writer": "e002",
+     "reference": "עבור גילוי שפות יהיה רוב התמונה ב0 ורק עבור שפות 255",
+     "ocr_text": null,
+     "ok": false,
+     "error": "model output failed BenchTranscription validation after 1 attempt(s): 1 error(s), first: Invalid JSON: EOF while parsing a string at line 1 column 46 at ",
+     "failure_class": "schema_validation",
+     "exact_frozen": false,
+     "cer": null,
+     "wer": null,
+     "omission_rate": null,
+     "hallucination_rate": null,
+     "digit_sign_error": null,
+     "line_lost": true,
+     "word_subs": null,
+     "word_dels": null,
+     "word_ins": null,
+     "unreadable_marker": false,
+     "critical_flags": [
+      "LINE_LOST_NO_OUTPUT"
+     ],
+     "latency_s": null,
+     "input_tokens": null,
+     "output_tokens": null,
+     "reasoning_tokens": null,
+     "cache_hit": false
+    },
+    {
+     "case_id": "hc_e002_q2_r6",
+     "handwritten": true,
+     "category": "handwritten_cell",
+     "writer": "e002",
+     "reference": "המעכה זהה לסכימת תמונה זהה עם תנודה קלה. מין תמונת echo כזאת תגרום להיסטוגרמה החדשה להיות קרובה להכפלה ב-2 [לא קריא]",
+     "ocr_text": null,
+     "ok": false,
+     "error": "output was truncated at max_tokens=600 (finish_reason=length); raise --max-tokens",
+     "failure_class": "truncation_at_effective_cap",
+     "exact_frozen": false,
+     "cer": null,
+     "wer": null,
+     "omission_rate": null,
+     "hallucination_rate": null,
+     "digit_sign_error": null,
+     "line_lost": true,
+     "word_subs": null,
+     "word_dels": null,
+     "word_ins": null,
+     "unreadable_marker": false,
+     "critical_flags": [
+      "LINE_LOST_NO_OUTPUT"
+     ],
+     "latency_s": null,
+     "input_tokens": null,
+     "output_tokens": null,
+     "reasoning_tokens": null,
+     "cache_hit": false
+    },
+    {
+     "case_id": "pr_docA_p1_b1",
+     "handwritten": false,
+     "category": "formula_printed",
+     "writer": null,
+     "reference": "203.3730\n 203.6730 / \n  סמסטר א' מועד א' תשפ\"ו \n2025-2026",
+     "ocr_text": "203.6730 / 203.3730 סמסטר א' מועד א' תשפ\"ו\n2025-2026",
+     "ok": true,
+     "error": null,
+     "failure_class": null,
+     "exact_frozen": false,
+     "cer": 0.12,
+     "wer": 0.3077,
+     "omission_rate": 0.0,
+     "hallucination_rate": 0.0,
+     "digit_sign_error": true,
+     "line_lost": false,
+     "word_subs": 4,
+     "word_dels": 0,
+     "word_ins": 0,
+     "unreadable_marker": false,
+     "critical_flags": [
+      "DIGIT_CHANGED(ref=2033730203673020252026,ocr=2036730203373020252026)"
+     ],
+     "latency_s": 2.532,
+     "input_tokens": 1433,
+     "output_tokens": 49,
+     "reasoning_tokens": 0,
+     "cache_hit": false
+    },
+    {
+     "case_id": "pr_docA_p2_b3",
+     "handwritten": false,
+     "category": "mixed_he_en",
+     "writer": null,
+     "reference": "לאחר הפעולה בונים פרמידת WAVELETS של תמונת התוצאה. בעמוד הבא נתונות \nתמונות התוצאה ממוספרות  )\nA-I\n(.",
+     "ocr_text": "לאחר הפעולה בונים פרמידת WAVELETS של תמונת התוצאה. בעמוד הבא נתונות\nתמונות התוצאה ממוספרות (A-I).",
+     "ok": true,
+     "error": null,
+     "failure_class": null,
+     "exact_frozen": false,
+     "cer": 0.0,
+     "wer": 0.0,
+     "omission_rate": 0.0,
+     "hallucination_rate": 0.0,
+     "digit_sign_error": false,
+     "line_lost": false,
+     "word_subs": 0,
+     "word_dels": 0,
+     "word_ins": 0,
+     "unreadable_marker": false,
+     "critical_flags": [],
+     "latency_s": 3.969,
+     "input_tokens": 1365,
+     "output_tokens": 197,
+     "reasoning_tokens": 144,
+     "cache_hit": false
+    },
+    {
+     "case_id": "assoc_docB_p2_b1",
+     "handwritten": false,
+     "category": "option_row_association",
+     "writer": null,
+     "reference": "0.55\n()ד0.51\n()ג0.47\n()ב0.39\n()א",
+     "ocr_text": "א: 0.39; ב: 0.47; ג: 0.51; ד: 0.55",
+     "ok": true,
+     "error": null,
+     "failure_class": null,
+     "exact_frozen": false,
+     "cer": 0.7083,
+     "wer": 1.2222,
+     "omission_rate": 0.0,
+     "hallucination_rate": 0.25,
+     "digit_sign_error": true,
+     "line_lost": false,
+     "word_subs": 8,
+     "word_dels": 0,
+     "word_ins": 3,
+     "unreadable_marker": false,
+     "critical_flags": [
+      "DIGIT_CHANGED(ref=055051047039,ocr=039047051055)"
+     ],
+     "latency_s": 2.859,
+     "input_tokens": 1296,
+     "output_tokens": 127,
+     "reasoning_tokens": 90,
+     "cache_hit": false
+    }
+   ],
+   "views": {
+    "frozen": {
+     "cases": 8,
+     "scored": 5,
+     "unscored_provider_failure": 3,
+     "exact_match": 0,
+     "mean_cer": 0.1774,
+     "median_cer": 0.0588,
+     "mean_wer": 0.3726,
+     "median_wer": 0.3077,
+     "mean_omission_rate": 0.0333,
+     "mean_hallucination_rate": 0.05,
+     "line_loss": 3,
+     "digit_sign_errors": 3,
+     "case_ids": [
+      "hl_e003_q1_r1__l1",
+      "hc_e002_q1_r1",
+      "hc_e002_q1_r7",
+      "hc_e002_q2_r1",
+      "hc_e002_q2_r6",
+      "pr_docA_p1_b1",
+      "pr_docA_p2_b3",
+      "assoc_docB_p2_b1"
+     ],
+     "view": "frozen",
+     "reference_basis": "frozen reference bytes",
+     "per_case": [
+      {
+       "case_id": "hl_e003_q1_r1__l1",
+       "reference_used": "ניתן לראות ברמות התדרים הגבוהים שיש שפות בכיוון התנועה(הטשטוש)",
+       "hypothesis": "ניתן לראות ברמות התדרים הגבוהים שיש שפות בכיוון התנועה (הטשטוש)",
+       "exact_match": false,
+       "scored": true,
+       "line_lost": false,
+       "cer": 0.0,
+       "wer": 0.0,
+       "omission_rate": 0.0,
+       "hallucination_rate": 0.0,
+       "digit_sign_error": false
+      },
+      {
+       "case_id": "hc_e002_q1_r1",
+       "reference_used": "יש טשטוש בכל התדרים",
+       "hypothesis": null,
+       "exact_match": false,
+       "scored": false,
+       "line_lost": true,
+       "cer": null,
+       "wer": null,
+       "omission_rate": null,
+       "hallucination_rate": null,
+       "digit_sign_error": null
+      },
+      {
+       "case_id": "hc_e002_q1_r7",
+       "reference_used": "סה\"כ הפירמידה נראית תקינה. הדרגה 0 שלה בהירה משמעותית מהתמונה המקורית",
+       "hypothesis": "סה״כ הפירמידה נראית תקינה, הדרגות\nשלה בהירה משמעותית מהתמונה המקורית.",
+       "exact_match": false,
+       "scored": true,
+       "line_lost": false,
+       "cer": 0.0588,
+       "wer": 0.3333,
+       "omission_rate": 0.1667,
+       "hallucination_rate": 0.0,
+       "digit_sign_error": true
+      },
+      {
+       "case_id": "hc_e002_q2_r1",
+       "reference_used": "עבור גילוי שפות יהיה רוב התמונה ב0 ורק עבור שפות 255",
+       "hypothesis": null,
+       "exact_match": false,
+       "scored": false,
+       "line_lost": true,
+       "cer": null,
+       "wer": null,
+       "omission_rate": null,
+       "hallucination_rate": null,
+       "digit_sign_error": null
+      },
+      {
+       "case_id": "hc_e002_q2_r6",
+       "reference_used": "המעכה זהה לסכימת תמונה זהה עם תנודה קלה. מין תמונת echo כזאת תגרום להיסטוגרמה החדשה להיות קרובה להכפלה ב-2 [לא קריא]",
+       "hypothesis": null,
+       "exact_match": false,
+       "scored": false,
+       "line_lost": true,
+       "cer": null,
+       "wer": null,
+       "omission_rate": null,
+       "hallucination_rate": null,
+       "digit_sign_error": null
+      },
+      {
+       "case_id": "pr_docA_p1_b1",
+       "reference_used": "203.3730\n 203.6730 / \n  סמסטר א' מועד א' תשפ\"ו \n2025-2026",
+       "hypothesis": "203.6730 / 203.3730 סמסטר א' מועד א' תשפ\"ו\n2025-2026",
+       "exact_match": false,
+       "scored": true,
+       "line_lost": false,
+       "cer": 0.12,
+       "wer": 0.3077,
+       "omission_rate": 0.0,
+       "hallucination_rate": 0.0,
+       "digit_sign_error": true
+      },
+      {
+       "case_id": "pr_docA_p2_b3",
+       "reference_used": "לאחר הפעולה בונים פרמידת WAVELETS של תמונת התוצאה. בעמוד הבא נתונות \nתמונות התוצאה ממוספרות  )\nA-I\n(.",
+       "hypothesis": "לאחר הפעולה בונים פרמידת WAVELETS של תמונת התוצאה. בעמוד הבא נתונות\nתמונות התוצאה ממוספרות (A-I).",
+       "exact_match": false,
+       "scored": true,
+       "line_lost": false,
+       "cer": 0.0,
+       "wer": 0.0,
+       "omission_rate": 0.0,
+       "hallucination_rate": 0.0,
+       "digit_sign_error": false
+      },
+      {
+       "case_id": "assoc_docB_p2_b1",
+       "reference_used": "0.55\n()ד0.51\n()ג0.47\n()ב0.39\n()א",
+       "hypothesis": "א: 0.39; ב: 0.47; ג: 0.51; ד: 0.55",
+       "exact_match": false,
+       "scored": true,
+       "line_lost": false,
+       "cer": 0.7083,
+       "wer": 1.2222,
+       "omission_rate": 0.0,
+       "hallucination_rate": 0.25,
+       "digit_sign_error": true
+      }
+     ]
+    },
+    "logical_order": {
+     "cases": 8,
+     "scored": 5,
+     "unscored_provider_failure": 3,
+     "exact_match": 0,
+     "mean_cer": 0.0358,
+     "median_cer": 0.0,
+     "mean_wer": 0.1282,
+     "median_wer": 0.0,
+     "mean_omission_rate": 0.0333,
+     "mean_hallucination_rate": 0.0,
+     "line_loss": 3,
+     "digit_sign_errors": 2,
+     "case_ids": [
+      "hl_e003_q1_r1__l1",
+      "hc_e002_q1_r1",
+      "hc_e002_q1_r7",
+      "hc_e002_q2_r1",
+      "hc_e002_q2_r6",
+      "pr_docA_p1_b1",
+      "pr_docA_p2_b3",
+      "assoc_docB_p2_b1"
+     ],
+     "view": "logical_order",
+     "reference_basis": "audited logical order where a record exists, frozen otherwise",
+     "per_case": [
+      {
+       "case_id": "hl_e003_q1_r1__l1",
+       "reference_used": "ניתן לראות ברמות התדרים הגבוהים שיש שפות בכיוון התנועה(הטשטוש)",
+       "hypothesis": "ניתן לראות ברמות התדרים הגבוהים שיש שפות בכיוון התנועה (הטשטוש)",
+       "exact_match": false,
+       "scored": true,
+       "line_lost": false,
+       "cer": 0.0,
+       "wer": 0.0,
+       "omission_rate": 0.0,
+       "hallucination_rate": 0.0,
+       "digit_sign_error": false
+      },
+      {
+       "case_id": "hc_e002_q1_r1",
+       "reference_used": "יש טשטוש בכל התדרים",
+       "hypothesis": null,
+       "exact_match": false,
+       "scored": false,
+       "line_lost": true,
+       "cer": null,
+       "wer": null,
+       "omission_rate": null,
+       "hallucination_rate": null,
+       "digit_sign_error": null
+      },
+      {
+       "case_id": "hc_e002_q1_r7",
+       "reference_used": "סה\"כ הפירמידה נראית תקינה. הדרגה 0 שלה בהירה משמעותית מהתמונה המקורית",
+       "hypothesis": "סה״כ הפירמידה נראית תקינה, הדרגות\nשלה בהירה משמעותית מהתמונה המקורית.",
+       "exact_match": false,
+       "scored": true,
+       "line_lost": false,
+       "cer": 0.0588,
+       "wer": 0.3333,
+       "omission_rate": 0.1667,
+       "hallucination_rate": 0.0,
+       "digit_sign_error": true
+      },
+      {
+       "case_id": "hc_e002_q2_r1",
+       "reference_used": "עבור גילוי שפות יהיה רוב התמונה ב0 ורק עבור שפות 255",
+       "hypothesis": null,
+       "exact_match": false,
+       "scored": false,
+       "line_lost": true,
+       "cer": null,
+       "wer": null,
+       "omission_rate": null,
+       "hallucination_rate": null,
+       "digit_sign_error": null
+      },
+      {
+       "case_id": "hc_e002_q2_r6",
+       "reference_used": "המעכה זהה לסכימת תמונה זהה עם תנודה קלה. מין תמונת echo כזאת תגרום להיסטוגרמה החדשה להיות קרובה להכפלה ב-2 [לא קריא]",
+       "hypothesis": null,
+       "exact_match": false,
+       "scored": false,
+       "line_lost": true,
+       "cer": null,
+       "wer": null,
+       "omission_rate": null,
+       "hallucination_rate": null,
+       "digit_sign_error": null
+      },
+      {
+       "case_id": "pr_docA_p1_b1",
+       "reference_used": "203.3730\n 203.6730 / \n  סמסטר א' מועד א' תשפ\"ו \n2025-2026",
+       "hypothesis": "203.6730 / 203.3730 סמסטר א' מועד א' תשפ\"ו\n2025-2026",
+       "exact_match": false,
+       "scored": true,
+       "line_lost": false,
+       "cer": 0.12,
+       "wer": 0.3077,
+       "omission_rate": 0.0,
+       "hallucination_rate": 0.0,
+       "digit_sign_error": true
+      },
+      {
+       "case_id": "pr_docA_p2_b3",
+       "reference_used": "לאחר הפעולה בונים פרמידת WAVELETS של תמונת התוצאה. בעמוד הבא נתונות \nתמונות התוצאה ממוספרות  )\nA-I\n(.",
+       "hypothesis": "לאחר הפעולה בונים פרמידת WAVELETS של תמונת התוצאה. בעמוד הבא נתונות\nתמונות התוצאה ממוספרות (A-I).",
+       "exact_match": false,
+       "scored": true,
+       "line_lost": false,
+       "cer": 0.0,
+       "wer": 0.0,
+       "omission_rate": 0.0,
+       "hallucination_rate": 0.0,
+       "digit_sign_error": false
+      },
+      {
+       "case_id": "assoc_docB_p2_b1",
+       "reference_used": "(א) 0.39; (ב) 0.47; (ג) 0.51; (ד) 0.55",
+       "hypothesis": "א: 0.39; ב: 0.47; ג: 0.51; ד: 0.55",
+       "exact_match": false,
+       "scored": true,
+       "line_lost": false,
+       "cer": 0.0,
+       "wer": 0.0,
+       "omission_rate": 0.0,
+       "hallucination_rate": 0.0,
+       "digit_sign_error": false
+      }
+     ]
+    },
+    "handwritten": {
+     "cases": 5,
+     "scored": 2,
+     "unscored_provider_failure": 3,
+     "exact_match": 0,
+     "mean_cer": 0.0294,
+     "median_cer": 0.0294,
+     "mean_wer": 0.1666,
+     "median_wer": 0.1666,
+     "mean_omission_rate": 0.0833,
+     "mean_hallucination_rate": 0.0,
+     "line_loss": 3,
+     "digit_sign_errors": 1,
+     "case_ids": [
+      "hl_e003_q1_r1__l1",
+      "hc_e002_q1_r1",
+      "hc_e002_q1_r7",
+      "hc_e002_q2_r1",
+      "hc_e002_q2_r6"
+     ],
+     "view": "handwritten",
+     "reference_basis": "frozen reference bytes",
+     "per_case": [
+      {
+       "case_id": "hl_e003_q1_r1__l1",
+       "reference_used": "ניתן לראות ברמות התדרים הגבוהים שיש שפות בכיוון התנועה(הטשטוש)",
+       "hypothesis": "ניתן לראות ברמות התדרים הגבוהים שיש שפות בכיוון התנועה (הטשטוש)",
+       "exact_match": false,
+       "scored": true,
+       "line_lost": false,
+       "cer": 0.0,
+       "wer": 0.0,
+       "omission_rate": 0.0,
+       "hallucination_rate": 0.0,
+       "digit_sign_error": false
+      },
+      {
+       "case_id": "hc_e002_q1_r1",
+       "reference_used": "יש טשטוש בכל התדרים",
+       "hypothesis": null,
+       "exact_match": false,
+       "scored": false,
+       "line_lost": true,
+       "cer": null,
+       "wer": null,
+       "omission_rate": null,
+       "hallucination_rate": null,
+       "digit_sign_error": null
+      },
+      {
+       "case_id": "hc_e002_q1_r7",
+       "reference_used": "סה\"כ הפירמידה נראית תקינה. הדרגה 0 שלה בהירה משמעותית מהתמונה המקורית",
+       "hypothesis": "סה״כ הפירמידה נראית תקינה, הדרגות\nשלה בהירה משמעותית מהתמונה המקורית.",
+       "exact_match": false,
+       "scored": true,
+       "line_lost": false,
+       "cer": 0.0588,
+       "wer": 0.3333,
+       "omission_rate": 0.1667,
+       "hallucination_rate": 0.0,
+       "digit_sign_error": true
+      },
+      {
+       "case_id": "hc_e002_q2_r1",
+       "reference_used": "עבור גילוי שפות יהיה רוב התמונה ב0 ורק עבור שפות 255",
+       "hypothesis": null,
+       "exact_match": false,
+       "scored": false,
+       "line_lost": true,
+       "cer": null,
+       "wer": null,
+       "omission_rate": null,
+       "hallucination_rate": null,
+       "digit_sign_error": null
+      },
+      {
+       "case_id": "hc_e002_q2_r6",
+       "reference_used": "המעכה זהה לסכימת תמונה זהה עם תנודה קלה. מין תמונת echo כזאת תגרום להיסטוגרמה החדשה להיות קרובה להכפלה ב-2 [לא קריא]",
+       "hypothesis": null,
+       "exact_match": false,
+       "scored": false,
+       "line_lost": true,
+       "cer": null,
+       "wer": null,
+       "omission_rate": null,
+       "hallucination_rate": null,
+       "digit_sign_error": null
+      }
+     ]
+    },
+    "printed": {
+     "cases": 3,
+     "scored": 3,
+     "unscored_provider_failure": 0,
+     "exact_match": 0,
+     "mean_cer": 0.2761,
+     "median_cer": 0.12,
+     "mean_wer": 0.51,
+     "median_wer": 0.3077,
+     "mean_omission_rate": 0.0,
+     "mean_hallucination_rate": 0.0833,
+     "line_loss": 0,
+     "digit_sign_errors": 2,
+     "case_ids": [
+      "pr_docA_p1_b1",
+      "pr_docA_p2_b3",
+      "assoc_docB_p2_b1"
+     ],
+     "view": "printed",
+     "reference_basis": "frozen reference bytes",
+     "per_case": [
+      {
+       "case_id": "pr_docA_p1_b1",
+       "reference_used": "203.3730\n 203.6730 / \n  סמסטר א' מועד א' תשפ\"ו \n2025-2026",
+       "hypothesis": "203.6730 / 203.3730 סמסטר א' מועד א' תשפ\"ו\n2025-2026",
+       "exact_match": false,
+       "scored": true,
+       "line_lost": false,
+       "cer": 0.12,
+       "wer": 0.3077,
+       "omission_rate": 0.0,
+       "hallucination_rate": 0.0,
+       "digit_sign_error": true
+      },
+      {
+       "case_id": "pr_docA_p2_b3",
+       "reference_used": "לאחר הפעולה בונים פרמידת WAVELETS של תמונת התוצאה. בעמוד הבא נתונות \nתמונות התוצאה ממוספרות  )\nA-I\n(.",
+       "hypothesis": "לאחר הפעולה בונים פרמידת WAVELETS של תמונת התוצאה. בעמוד הבא נתונות\nתמונות התוצאה ממוספרות (A-I).",
+       "exact_match": false,
+       "scored": true,
+       "line_lost": false,
+       "cer": 0.0,
+       "wer": 0.0,
+       "omission_rate": 0.0,
+       "hallucination_rate": 0.0,
+       "digit_sign_error": false
+      },
+      {
+       "case_id": "assoc_docB_p2_b1",
+       "reference_used": "0.55\n()ד0.51\n()ג0.47\n()ב0.39\n()א",
+       "hypothesis": "א: 0.39; ב: 0.47; ג: 0.51; ד: 0.55",
+       "exact_match": false,
+       "scored": true,
+       "line_lost": false,
+       "cer": 0.7083,
+       "wer": 1.2222,
+       "omission_rate": 0.0,
+       "hallucination_rate": 0.25,
+       "digit_sign_error": true
+      }
+     ]
+    },
+    "by_category": {
+     "formula_printed": {
+      "cases": 1,
+      "scored": 1,
+      "unscored_provider_failure": 0,
+      "exact_match": 0,
+      "mean_cer": 0.12,
+      "median_cer": 0.12,
+      "mean_wer": 0.3077,
+      "median_wer": 0.3077,
+      "mean_omission_rate": 0.0,
+      "mean_hallucination_rate": 0.0,
+      "line_loss": 0,
+      "digit_sign_errors": 1,
+      "case_ids": [
+       "pr_docA_p1_b1"
+      ]
+     },
+     "handwritten_cell": {
+      "cases": 4,
+      "scored": 1,
+      "unscored_provider_failure": 3,
+      "exact_match": 0,
+      "mean_cer": 0.0588,
+      "median_cer": 0.0588,
+      "mean_wer": 0.3333,
+      "median_wer": 0.3333,
+      "mean_omission_rate": 0.1667,
+      "mean_hallucination_rate": 0.0,
+      "line_loss": 3,
+      "digit_sign_errors": 1,
+      "case_ids": [
+       "hc_e002_q1_r1",
+       "hc_e002_q1_r7",
+       "hc_e002_q2_r1",
+       "hc_e002_q2_r6"
+      ]
+     },
+     "handwritten_line": {
+      "cases": 1,
+      "scored": 1,
+      "unscored_provider_failure": 0,
+      "exact_match": 0,
+      "mean_cer": 0.0,
+      "median_cer": 0.0,
+      "mean_wer": 0.0,
+      "median_wer": 0.0,
+      "mean_omission_rate": 0.0,
+      "mean_hallucination_rate": 0.0,
+      "line_loss": 0,
+      "digit_sign_errors": 0,
+      "case_ids": [
+       "hl_e003_q1_r1__l1"
+      ]
+     },
+     "mixed_he_en": {
+      "cases": 1,
+      "scored": 1,
+      "unscored_provider_failure": 0,
+      "exact_match": 0,
+      "mean_cer": 0.0,
+      "median_cer": 0.0,
+      "mean_wer": 0.0,
+      "median_wer": 0.0,
+      "mean_omission_rate": 0.0,
+      "mean_hallucination_rate": 0.0,
+      "line_loss": 0,
+      "digit_sign_errors": 0,
+      "case_ids": [
+       "pr_docA_p2_b3"
+      ]
+     },
+     "option_row_association": {
+      "cases": 1,
+      "scored": 1,
+      "unscored_provider_failure": 0,
+      "exact_match": 0,
+      "mean_cer": 0.7083,
+      "median_cer": 0.7083,
+      "mean_wer": 1.2222,
+      "median_wer": 1.2222,
+      "mean_omission_rate": 0.0,
+      "mean_hallucination_rate": 0.25,
+      "line_loss": 0,
+      "digit_sign_errors": 1,
+      "case_ids": [
+       "assoc_docB_p2_b1"
+      ]
+     }
+    },
+    "denominators": {
+     "frozen": 8,
+     "logical_order": 8,
+     "handwritten": 5,
+     "printed": 3
+    },
+    "policy": "the frozen view is the reproducible metric and the one comparable to Stage-1; logical_order is a DIAGNOSTIC and never replaces it; handwritten is the product-relevant view and is never merged with printed."
+   },
+   "writer_metrics": {
+    "metrics_version": "ocr-writer-metrics-v1",
+    "overall": {
+     "cases": 8,
+     "scored": 5,
+     "line_loss": 3,
+     "line_loss_rate": 0.375,
+     "mean_cer": 0.1774,
+     "median_cer": 0.0588,
+     "max_cer": 0.7083,
+     "mean_wer": 0.3726,
+     "mean_omission_rate": 0.0333,
+     "mean_hallucination_rate": 0.05,
+     "digit_sign_errors": 3,
+     "cer_le_5pct": 2,
+     "cer_le_5pct_rate": 0.4
+    },
+    "per_writer": {
+     "e002": {
+      "cases": 4,
+      "scored": 1,
+      "line_loss": 3,
+      "line_loss_rate": 0.75,
+      "mean_cer": 0.0588,
+      "median_cer": 0.0588,
+      "max_cer": 0.0588,
+      "mean_wer": 0.3333,
+      "mean_omission_rate": 0.1667,
+      "mean_hallucination_rate": 0.0,
+      "digit_sign_errors": 1,
+      "cer_le_5pct": 0,
+      "cer_le_5pct_rate": 0.0
+     },
+     "e003": {
+      "cases": 1,
+      "scored": 1,
+      "line_loss": 0,
+      "line_loss_rate": 0.0,
+      "mean_cer": 0.0,
+      "median_cer": 0.0,
+      "max_cer": 0.0,
+      "mean_wer": 0.0,
+      "mean_omission_rate": 0.0,
+      "mean_hallucination_rate": 0.0,
+      "digit_sign_errors": 0,
+      "cer_le_5pct": 1,
+      "cer_le_5pct_rate": 1.0
+     },
+     "no_writer": {
+      "cases": 3,
+      "scored": 3,
+      "line_loss": 0,
+      "line_loss_rate": 0.0,
+      "mean_cer": 0.2761,
+      "median_cer": 0.12,
+      "max_cer": 0.7083,
+      "mean_wer": 0.51,
+      "mean_omission_rate": 0.0,
+      "mean_hallucination_rate": 0.0833,
+      "digit_sign_errors": 2,
+      "cer_le_5pct": 1,
+      "cer_le_5pct_rate": 0.3333
+     }
+    },
+    "worst_writer_by_mean_cer": "no_writer",
+    "proposed_gate": "per-writer CER <= 5% (every writer, not the mean of means) AND zero harmful verdict flips — the flip metric needs the frozen local grader and is owner-gated separately",
+    "refused_invalid_reference": [],
+    "per_case": [
+     {
+      "case_id": "assoc_docB_p2_b1",
+      "writer": "no_writer",
+      "scored": true,
+      "line_lost": false,
+      "cer": 0.7083,
+      "wer": 1.2222,
+      "omission_rate": 0.0,
+      "hallucination_rate": 0.25,
+      "digit_sign_error": true
+     },
+     {
+      "case_id": "hc_e002_q1_r1",
+      "writer": "e002",
+      "scored": false,
+      "line_lost": true,
+      "cer": null,
+      "wer": null,
+      "omission_rate": null,
+      "hallucination_rate": null,
+      "digit_sign_error": null
+     },
+     {
+      "case_id": "hc_e002_q1_r7",
+      "writer": "e002",
+      "scored": true,
+      "line_lost": false,
+      "cer": 0.0588,
+      "wer": 0.3333,
+      "omission_rate": 0.1667,
+      "hallucination_rate": 0.0,
+      "digit_sign_error": true
+     },
+     {
+      "case_id": "hc_e002_q2_r1",
+      "writer": "e002",
+      "scored": false,
+      "line_lost": true,
+      "cer": null,
+      "wer": null,
+      "omission_rate": null,
+      "hallucination_rate": null,
+      "digit_sign_error": null
+     },
+     {
+      "case_id": "hc_e002_q2_r6",
+      "writer": "e002",
+      "scored": false,
+      "line_lost": true,
+      "cer": null,
+      "wer": null,
+      "omission_rate": null,
+      "hallucination_rate": null,
+      "digit_sign_error": null
+     },
+     {
+      "case_id": "hl_e003_q1_r1__l1",
+      "writer": "e003",
+      "scored": true,
+      "line_lost": false,
+      "cer": 0.0,
+      "wer": 0.0,
+      "omission_rate": 0.0,
+      "hallucination_rate": 0.0,
+      "digit_sign_error": false
+     },
+     {
+      "case_id": "pr_docA_p1_b1",
+      "writer": "no_writer",
+      "scored": true,
+      "line_lost": false,
+      "cer": 0.12,
+      "wer": 0.3077,
+      "omission_rate": 0.0,
+      "hallucination_rate": 0.0,
+      "digit_sign_error": true
+     },
+     {
+      "case_id": "pr_docA_p2_b3",
+      "writer": "no_writer",
+      "scored": true,
+      "line_lost": false,
+      "cer": 0.0,
+      "wer": 0.0,
+      "omission_rate": 0.0,
+      "hallucination_rate": 0.0,
+      "digit_sign_error": false
+     }
+    ]
+   },
+   "assoc_association_exact": true,
+   "reliability": {
+    "requests": 8,
+    "scored": 5,
+    "provider_or_schema_failures": 3,
+    "failure_classes": {
+     "truncation_at_effective_cap": 2,
+     "schema_validation": 1
+    },
+    "schema_failures": 1,
+    "cache_hits": 0
+   },
+   "behaviour": {
+    "refusals_unreadable_on_readable_ref": 0,
+    "unreadable_marker_rate": 0.0,
+    "line_loss": 3,
+    "digit_sign_errors": 3,
+    "critical_error_cases": 6,
+    "handwritten_critical_error_cases": 4
+   },
+   "latency": {
+    "mean_s": 4.106,
+    "median_s": 3.969,
+    "p95_s": 6.64,
+    "total_s": 20.531
+   },
+   "tokens": {
+    "input": 6927,
+    "output": 849,
+    "reasoning": 635
+   }
+  },
+  "google/gemini-3.7-flash [STAGE-1, INVALID CONFIG]": {
+   "stage": "stage1_invalid",
+   "run_id": "dev__smoke__all__google-gemini-3.7-flash__feceaa6084",
+   "classification": "invalid configuration / pre-inference failure",
+   "requests": 8,
+   "billed_usd": 0.0,
+   "all_rejected_pre_inference": true,
+   "error": "Reasoning is mandatory for this endpoint and cannot be disabled",
+   "note": "NOT OCR-quality evidence and never counted as such."
+  }
+ },
+ "harness_defect_found_by_this_arm": {
+  "what": "the run recorded max_tokens=1000 (the derived, pre-registered cap) but the provider was sent 600, the OcrPrimaryAdapter default: run_benchmark passed request.max_tokens instead of the resolved route.max_tokens",
+  "impact_on_this_arm": "3 of 8 cases produced no transcription — 2 explicit 'truncated at max_tokens=600' and 1 JSON-EOF schema failure consistent with the same truncation. The cap was derived specifically to stop this.",
+  "impact_on_stage1": "Stage-1's recorded route max_tokens of 400 was likewise not what the provider received (also 600). Luna and Sonnet were unaffected in outcome — no Stage-1 response hit a length finish_reason — but their recorded decoding config was inaccurate.",
+  "also": "the dry-run cost prediction reads route.max_tokens, so it priced 1000 while 600 was sent",
+  "fix": "runner now passes route.max_tokens; regression test in tests/test_bench_max_tokens_resolution.py",
+  "not_done": "Stage-1b was NOT re-run: the 8 authorized requests are spent and a rerun was outside this authorization. The corrected cap is therefore UNVALIDATED against a live provider."
+ },
+ "accounting": {
+  "starting_ledger_rows": 686,
+  "ending_ledger_rows": 694,
+  "run_attributed_cost_usd": 0.01488075,
+  "billable_responses": 7,
+  "nonbillable_responses": 1,
+  "starting_account_usage": 0.49848267,
+  "ending_account_usage": 0.51336342,
+  "account_delta_usd": 0.01488075,
+  "rounding_difference": 0.0,
+  "account_limit": 20,
+  "account_limit_remaining": 19.48663658,
+  "ceiling_usd": 0.04,
+  "within_ceiling": true,
+  "project_cumulative_usd": 0.51336379
+ },
+ "cost_projections": {
+  "note": "measured cost per BILLABLE crop x N; grading cost is $0 (cloud and local)",
+  "counts": {
+   "seen_dev_32": 32,
+   "seen_calibration_21": 21,
+   "all_seen_53": 53,
+   "per_100_crops": 100,
+   "100_exams_at_5_crops": 500,
+   "100_exams_at_10_crops": 1000,
+   "100_exams_at_15_crops": 1500
+  },
+  "per_model": {
+   "openai/gpt-5.6-luna-pro": {
+    "measured": true,
+    "billable_crops": 8,
+    "total_cost_usd": 0.0071066,
+    "cost_per_crop_usd": 0.00088833,
+    "projections": {
+     "seen_dev_32": 0.028426,
+     "seen_calibration_21": 0.018655,
+     "all_seen_53": 0.047081,
+     "per_100_crops": 0.088833,
+     "100_exams_at_5_crops": 0.444163,
+     "100_exams_at_10_crops": 0.888325,
+     "100_exams_at_15_crops": 1.332488
+    }
+   },
+   "google/gemini-3.7-flash": {
+    "measured": true,
+    "stage": "stage1b",
+    "billable_crops": 7,
+    "total_cost_usd": 0.01488075,
+    "cost_per_crop_usd": 0.00212582,
+    "projections": {
+     "seen_dev_32": 0.068026,
+     "seen_calibration_21": 0.044642,
+     "all_seen_53": 0.112669,
+     "per_100_crops": 0.212582,
+     "100_exams_at_5_crops": 1.062911,
+     "100_exams_at_10_crops": 2.125821,
+     "100_exams_at_15_crops": 3.188732
+    },
+    "caveat": "per BILLABLE crop; 7 of 8 requests billed and 3 produced no usable transcription, so this rate covers attempts, not successes. Reasoning tokens bill at the completion rate and a corrected-cap rerun would cost more."
+   },
+   "anthropic/claude-sonnet-5": {
+    "measured": true,
+    "billable_crops": 8,
+    "total_cost_usd": 0.019686,
+    "cost_per_crop_usd": 0.00246075,
+    "projections": {
+     "seen_dev_32": 0.078744,
+     "seen_calibration_21": 0.051676,
+     "all_seen_53": 0.13042,
+     "per_100_crops": 0.246075,
+     "100_exams_at_5_crops": 1.230375,
+     "100_exams_at_10_crops": 2.46075,
+     "100_exams_at_15_crops": 3.691125
+    }
+   }
+  },
+  "grading_cost": {
+   "cloud_grading_cost_usd": 0.0,
+   "local_grading_cloud_cost_usd": 0.0
+  }
+ },
+ "content_sha256": "02d8d659e6bcdc1fb0fe8b4679fa4da378242002865341be0b256663b2410853",
+ "decision_gates": {
+  "G1_no_total_line_loss": {
+   "rule": "zero cases with no usable output",
+   "why": "a lost line is a silently missing answer downstream, the worst failure this role has"
+  },
+  "G2_no_repeated_refusal": {
+   "rule": "at most 1 unreadable-marker emitted against a readable audited reference",
+   "why": "a transcriber that refuses readable handwriting cannot carry the pipeline"
+  },
+  "G3_no_fabrication_pattern": {
+   "rule": "zero whole-line fabrications",
+   "why": "invented text is worse than no text: it is confidently wrong and grades as if real"
+  },
+  "G4_handwritten_quality": {
+   "rule": "handwritten mean CER <= 0.35 AND scored on >= 4 of the 5 handwritten crops",
+   "why": "materially better than the dropped candidates, on a denominator that is not a survivorship subset. Both halves are required: a superb mean over 2 of 5 cases is not evidence about the 5"
+  },
+  "G5_bounded_critical_errors": {
+   "rule": "at most 2 handwritten cases carrying a digit / sign / operator / negation flag",
+   "why": "these are the errors that change an answer's meaning rather than its spelling"
+  },
+  "G6_reliability": {
+   "rule": "at least 7 of 8 requests return a schema-valid transcription",
+   "why": "a benchmark cannot separate model quality from harness failure below this"
+  },
+  "G7_latency_and_cost": {
+   "rule": "mean latency <= 10s and cost per crop <= $0.01",
+   "why": "the pipeline is batch, so this is a loose bound; it is not a selection criterion"
+  },
+  "_honesty": "These gates were written after the Stage-1b numbers existed — the arm had already run when the criteria were set down, so they are not blind. They are stated conservatively and none was chosen to let a particular candidate through; G4's denominator clause and G6 in fact block the strongest-looking candidate."
+ },
+ "classification": {
+  "openai/gpt-5.6-luna-pro": {
+   "gates": {
+    "G1_no_total_line_loss": {
+     "pass": true,
+     "observed": "0 lost"
+    },
+    "G2_no_repeated_refusal": {
+     "pass": false,
+     "observed": "4 refusals"
+    },
+    "G3_no_fabrication_pattern": {
+     "pass": false,
+     "observed": "1 fabrication(s)"
+    },
+    "G4_handwritten_quality": {
+     "pass": false,
+     "observed": "mean CER 0.9487 on 5/5 handwritten"
+    },
+    "G5_bounded_critical_errors": {
+     "pass": false,
+     "observed": "3 handwritten digit/sign/negation cases"
+    },
+    "G6_reliability": {
+     "pass": true,
+     "observed": "8/8 scored"
+    },
+    "G7_latency_and_cost": {
+     "pass": true,
+     "observed": "mean 2.719s, $0.00088833/crop"
+    }
+   },
+   "gates_passed": 3,
+   "gates_total": 7,
+   "classification": "DROP",
+   "reason": "Confirmed by source verification, and the stratified view makes it worse than the Stage-1 headline: handwritten mean CER 0.9487 (the 0.7715 blend was diluted by printed text). It refused 4 of 5 handwritten crops against readable audited references and fabricated the fifth. Fails G2, G3 and G4. Nothing about its printed-text competence (CER 0.00 on mixed Hebrew/English) rescues a model that cannot read handwriting, which is the entire role."
+  },
+  "anthropic/claude-sonnet-5": {
+   "gates": {
+    "G1_no_total_line_loss": {
+     "pass": true,
+     "observed": "0 lost"
+    },
+    "G2_no_repeated_refusal": {
+     "pass": false,
+     "observed": "2 refusals"
+    },
+    "G3_no_fabrication_pattern": {
+     "pass": true,
+     "observed": "0 fabrication(s)"
+    },
+    "G4_handwritten_quality": {
+     "pass": false,
+     "observed": "mean CER 0.6188 on 5/5 handwritten"
+    },
+    "G5_bounded_critical_errors": {
+     "pass": false,
+     "observed": "3 handwritten digit/sign/negation cases"
+    },
+    "G6_reliability": {
+     "pass": true,
+     "observed": "8/8 scored"
+    },
+    "G7_latency_and_cost": {
+     "pass": true,
+     "observed": "mean 4.383s, $0.00246075/crop"
+    }
+   },
+   "gates_passed": 4,
+   "gates_total": 7,
+   "classification": "MAYBE",
+   "reason": "Unchanged from Stage-1 and still the most RELIABLE arm: 8/8 schema-valid, zero line loss, no fabrication. But handwritten mean CER 0.6188 over the full 5 crops fails G4 by a wide margin, it refused 2 of 5, and 3 handwritten cases carry digit/sign errors. It is usable as a floor, not as a candidate to scale. It does NOT advance on this evidence."
+  },
+  "google/gemini-3.7-flash": {
+   "gates": {
+    "G1_no_total_line_loss": {
+     "pass": false,
+     "observed": "3 lost"
+    },
+    "G2_no_repeated_refusal": {
+     "pass": true,
+     "observed": "0 refusals"
+    },
+    "G3_no_fabrication_pattern": {
+     "pass": true,
+     "observed": "0 fabrication(s)"
+    },
+    "G4_handwritten_quality": {
+     "pass": false,
+     "observed": "mean CER 0.0294 on 2/5 handwritten"
+    },
+    "G5_bounded_critical_errors": {
+     "pass": true,
+     "observed": "1 handwritten digit/sign/negation cases"
+    },
+    "G6_reliability": {
+     "pass": false,
+     "observed": "5/8 scored"
+    },
+    "G7_latency_and_cost": {
+     "pass": true,
+     "observed": "mean 4.106s, $0.00212582/crop"
+    }
+   },
+   "gates_passed": 4,
+   "gates_total": 7,
+   "classification": "MAYBE",
+   "reason": "The most interesting and the least conclusive. On the 5 cases it completed it is far ahead of both rivals — handwritten CER 0.0294 vs Sonnet's 0.6188, an exact reading of one handwritten line, zero refusals, zero fabrication, and the option row read correctly. But it returned no usable output on 3 of 8, so it fails G1, G6 and — decisively — G4's denominator clause: a 0.0294 mean over 2 of 5 handwritten crops is not evidence about the 5. Those 3 failures are attributable to a harness defect (the provider was sent max_tokens=600, not the derived 1000), NOT to the model, and truncation was uncorrelated with reference length — the SHORTEST reference (19 chars) truncated while a 69-char one succeeded, so mandatory-reasoning token variance is what consumed the cap. Whether 1000 is sufficient is UNVALIDATED. It is the clear frontrunner and it has not earned the larger stage yet."
+  }
+ },
+ "decision": {
+  "outcome": "B_WITH_A_PRECONDITION",
+  "advance_to_larger_seen_only_ocr": null,
+  "statement": "No candidate advances to the 32/21/53-crop seen-only stage on this evidence. Luna is dropped. Sonnet and Gemini both remain plausible, but the comparison between them is not yet decidable: the arm that looks best was measured on 5 of 8 cases because of a harness defect this arm itself uncovered. Scaling now would spend the larger budget to answer a question a corrected 8-case rerun answers for about $0.02.",
+  "required_before_any_larger_stage": "one Stage-1c arm: google/gemini-3.7-flash, the identical 8 frozen crops, reasoning=low, with the max_tokens fix in place so the provider actually receives the configured cap"
+ },
+ "recommended_next_experiment": {
+  "name": "OCR_SMOKE_STAGE1C_GEMINI_CORRECTED_CAP",
+  "status": "RECOMMENDED, NOT EXECUTED — requires owner authorization",
+  "candidate": "google/gemini-3.7-flash",
+  "population": "the identical 8 frozen Stage-1 cases; no replacements, no additions",
+  "changes_from_stage1b": [
+   "none to the prompt, schema, adapter, crops or references",
+   "the runner now sends route.max_tokens, so the already-declared cap of 1000 actually reaches the provider (this is the harness fix, not a new decoding decision)"
+  ],
+  "open_question_it_answers": "does gemini-3.7-flash return a schema-valid transcription on all 8 crops when mandatory low-effort reasoning has the derived 753-token headroom? If yes, its handwritten CER becomes comparable to Sonnet's on a full denominator and the choice is decidable. If it still truncates, the cap must be re-derived from the observed reasoning distribution rather than raised reflexively.",
+  "predicted_cost_usd": 0.037415,
+  "max_requests": 8,
+  "contingency": "if 8/8 succeed and handwritten CER holds below ~0.10 on 5/5, Gemini earns the 32-crop seen DEV stage (projected $0.0595). If it truncates again, neither candidate should scale and the next move is a prompt-version or candidate change under a new pre-registration, not a bigger population.",
+  "not_authorized_here": [
+   "the 32-case DEV stage",
+   "the 21-case CALIBRATION stage",
+   "all 53 seen crops",
+   "OCR verification",
+   "any grading",
+   "HELD_OUT"
+  ]
+ },
+ "confirmations": {
+  "new_provider_ocr_requests": 8,
+  "grading_provider_calls": 0,
+  "local_grading_calls": 0,
+  "ocr_verification_calls": 0,
+  "rag_calls": 0,
+  "held_out_calls_or_exposure": 0,
+  "frozen_audited_references_overwritten": 0,
+  "active_grades_changed": 0,
+  "additional_spend_usd": 0.01488075,
+  "within_004_ceiling": true,
+  "api_key_exposure": 0,
+  "luna_rerun": false,
+  "sonnet_rerun": false,
+  "ocr_prompt_modified": false,
+  "replacement_cases": 0,
+  "retry_arm": 0
+ }
+}

@@ -60,7 +60,8 @@ OCR_AUDITED_LOGICAL_ORDER: dict[str, dict[str, Any]] = {
         "source_image": "crops/assoc_docB_p2_b1.png",
         "source_image_sha256":
             "971600121151bc5ba804bdcaa5a243de07c6f52c62c275d378c5d9a7a0b900b4",
-        "auditor": "claude-opus-5 (assistant), by direct inspection of the crop image",
+        "auditor": "AI assistant, by direct inspection of the crop image "
+                   "(exact model identity recorded in the audited-record artifact)",
         "owner_confirmed": False,
         "status": "provisional_pending_owner_confirmation",
         "reason": "pdf_text_layer_order_not_visual_reading_order",

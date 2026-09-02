@@ -1,8 +1,10 @@
 {
  "artifact": "ocr_audited_logical_order_references",
- "created_at": "2026-09-02 12:54:02",
- "git_commit": "d51c685a8a2367658d600f75ea198607d75c0727",
+ "created_at": "2026-09-02 13:11:25",
+ "git_commit": "bab4630d4f360b7c17b70ed94c0efe187f1cf596",
  "policy": "These records sit BESIDE the frozen references and never replace them. evaluation/hebrew_bench_v2 is untouched. Only the 'logical_order' view applies them, and it is a diagnostic that is always reported alongside the strict frozen metric, never instead of it.",
+ "auditor_model_identity": "claude-opus-5 (Claude Code assistant), session 2026-09-02. Recorded HERE rather than in autograder/benchmark/ocr_views.py because production modules must not name Claude (tests/test_claude_independence.py keeps the autograder independent of Claude tooling).",
+ "owner_confirmation": "NOT YET GIVEN. The record stays provisional until the project owner confirms the reading by looking at the crop, which is a few seconds' work: evaluation/model_selection/runs/ocr_primary/stage1_visual_audit.html shows it inline.",
  "records": {
   "assoc_docB_p2_b1": {
    "case_id": "assoc_docB_p2_b1",
@@ -17,7 +19,7 @@
    },
    "source_image": "crops/assoc_docB_p2_b1.png",
    "source_image_sha256": "971600121151bc5ba804bdcaa5a243de07c6f52c62c275d378c5d9a7a0b900b4",
-   "auditor": "claude-opus-5 (assistant), by direct inspection of the crop image",
+   "auditor": "AI assistant, by direct inspection of the crop image (exact model identity recorded in the audited-record artifact)",
    "owner_confirmed": false,
    "status": "provisional_pending_owner_confirmation",
    "reason": "pdf_text_layer_order_not_visual_reading_order",
@@ -31,5 +33,5 @@
   }
  },
  "provider_calls_made": 0,
- "content_sha256": "267d223d3cedd0fea22028217ce59f1b663ad6071fce3e118245f96ac05b7058"
+ "content_sha256": "6c1e9e98926e01f922d7a8611c91d89c2535f77339759e0ef1e61ad427ea0a23"
 }
