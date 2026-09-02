@@ -16,6 +16,7 @@ not mutually exclusive: a row can be provider-completed AND a model-text
 refusal AND not a usable transcription, and that combination is exactly the
 case a single boolean hides.
 
+    provider_request_attempted      a request was issued for this crop at all
     provider_http_response_received an HTTP response body arrived at all
     provider_request_completed      the provider returned CONTENT for us to use
                                     (a body arrived AND it was not a provider-side
@@ -52,6 +53,7 @@ UNREADABLE_MARKERS: tuple[str, ...] = ("[unreadable]", "[?]")
 REFERENCE_UNREADABLE_MARKERS: tuple[str, ...] = ("[לא קריא]", "לא קריא")
 
 OUTCOME_FIELDS: tuple[str, ...] = (
+    "provider_request_attempted",
     "provider_http_response_received",
     "provider_request_completed",
     "provider_content_filter_failure",
@@ -110,6 +112,9 @@ def classify_row(row: dict, reference: str | None = None) -> dict[str, Any]:
     usable = bool(text is not None and text.strip() != "" and not is_bare_marker(text))
 
     return {
+        # a row exists only because a request was issued; recorded explicitly so
+        # the intended denominator is visible in the data, not just inferred
+        "provider_request_attempted": True,
         "provider_http_response_received": body_received,
         "provider_request_completed": completed,
         "provider_content_filter_failure": content_filter,

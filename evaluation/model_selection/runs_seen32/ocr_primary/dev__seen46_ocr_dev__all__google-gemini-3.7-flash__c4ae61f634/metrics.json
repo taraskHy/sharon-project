@@ -1,0 +1,55 @@
+{
+ "primary_metric": "mean_cer (lower is better) on audited references; usable rates secondary",
+ "overall": {
+  "cases": 14,
+  "mean_cer": 0.1155,
+  "median_cer": 0.0152,
+  "usable_le_0.25_pct": 78.57,
+  "usable_le_0.50_pct": 92.86,
+  "number_sign_formula_errors": 2
+ },
+ "by_category": {
+  "handwritten_cell": {
+   "cases": 5,
+   "mean_cer": 0.1657,
+   "median_cer": 0.1648,
+   "usable_le_0.25_pct": 60.0,
+   "usable_le_0.50_pct": 100.0,
+   "number_sign_formula_errors": 1
+  },
+  "handwritten_line": {
+   "cases": 9,
+   "mean_cer": 0.0876,
+   "median_cer": 0.0,
+   "usable_le_0.25_pct": 88.89,
+   "usable_le_0.50_pct": 88.89,
+   "number_sign_formula_errors": 1
+  }
+ },
+ "hard_items": {
+  "cases": 1,
+  "mean_cer": 0.3036,
+  "median_cer": 0.3036,
+  "usable_le_0.25_pct": 0.0,
+  "usable_le_0.50_pct": 100.0,
+  "number_sign_formula_errors": 0
+ },
+ "schema_failures": 6,
+ "provider_failures": 12,
+ "no_output_cases": 18,
+ "unscored_no_reference": 0,
+ "refused_invalid_reference": 0,
+ "usage": {
+  "calls_live": 30,
+  "cache_hits": 2,
+  "latency_mean_s": 10.099,
+  "latency_median_s": 10.789,
+  "input_tokens": 16607,
+  "output_tokens": 6148,
+  "reasoning_tokens": 5752,
+  "total_tokens": 22755,
+  "reported_cost": 0.03551
+ },
+ "cases_selected": 32,
+ "cases_with_result": 32
+}
