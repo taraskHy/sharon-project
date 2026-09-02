@@ -35,8 +35,16 @@ def _is_local_url(base_url: str | None) -> bool:
         # No URL: the backend name decides (provider-default endpoints).
         return True
     host = (urlparse(base_url).hostname or "").lower()
-    return (host in _LOCAL_HOSTS or host.endswith(".local")
-            or bool(_PRIVATE_NET.match(host)))
+    if host in _LOCAL_HOSTS or host.endswith(".local"):
+        return True
+    # RFC1918 ranges apply ONLY to literal IPv4 addresses. A DNS name that
+    # merely STARTS with a private prefix (10.0.0.1.evil.example) must stay
+    # remote, or the cloud boundary could be slipped by hostname dressing.
+    parts = host.split(".")
+    is_ipv4 = (len(parts) == 4
+               and all(p.isdigit() and len(p) <= 3 and int(p) <= 255
+                       for p in parts))
+    return bool(is_ipv4 and _PRIVATE_NET.match(host))
 
 
 def effective_provider(backend: str | None, base_url: str | None) -> str:
