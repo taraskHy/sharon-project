@@ -126,8 +126,14 @@ def approved_cloud_ocr_systems() -> frozenset[str]:
 
     registered = {EXPLANATION_OCR_SYSTEM, OCR_VERIFY_INDEPENDENT_SYSTEM}
     try:
-        from .benchmark.roles import _load_historical_prompts
-        registered |= set(_load_historical_prompts().values())
+        from .benchmark.roles import OCR_PROMPT_VERSIONS, load_ocr_prompts
+        # Every registered OCR prompt VERSION, not just the historical set:
+        # m2-strict-v1 (frozen) and ocr-neutral-v2 (the one-variable framing
+        # treatment, whose rules block is copied verbatim from v1). A new
+        # version must be added to OCR_PROMPT_VERSIONS in code review, exactly
+        # as a new prompt had to be added here before.
+        for _v in OCR_PROMPT_VERSIONS:
+            registered |= set(load_ocr_prompts(_v).values())
     except Exception:  # noqa: BLE001 — fail closed: recovery failure just
         pass           # leaves the bench prompts unregistered
     return frozenset(registered)

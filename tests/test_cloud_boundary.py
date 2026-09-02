@@ -137,19 +137,31 @@ def test_research_mode_is_not_a_bypass_and_bad_modes_are_refused():
 
 
 def test_the_approved_prompt_registry_is_exactly_the_known_ocr_contracts():
-    """The two production OCR contracts + the six frozen m2-strict-v1 bench
+    """The two production OCR contracts, the six frozen m2-strict-v1 bench
     transcription prompts (registered 2026-09-02 for the pre-registered OCR
-    validation campaign). Nothing else — and never the legacy fidelity-verdict
-    prompt, which sees the primary reading."""
-    from autograder.benchmark.roles import _load_historical_prompts
+    validation campaign), and the two ocr-neutral-v2 handwriting prompts
+    (registered 2026-09-02 for OCR_PROMPT_V2_NEUTRAL_FRAMING). Nothing else —
+    and never the legacy fidelity-verdict prompt, which sees the primary
+    reading.
+
+    This test failing on a new prompt is the registry working: a cloud OCR
+    prompt is added deliberately, in code review, or not at all.
+    """
+    from autograder.benchmark.roles import (OCR_PROMPT_VERSIONS,
+                                            _load_historical_prompts,
+                                            load_ocr_prompts)
     from autograder.escalation import OCR_VERIFY_SYSTEM
     bench = _load_historical_prompts()
     assert set(bench) == {"handwritten_line", "handwritten_cell", "printed_rtl",
                           "mixed_he_en", "formula_printed",
                           "option_row_association"}
+    assert OCR_PROMPT_VERSIONS == ("m2-strict-v1", "ocr-neutral-v2")
+    v2 = load_ocr_prompts("ocr-neutral-v2")
+    assert set(v2) == {"handwritten_line", "handwritten_cell"}, \
+        "v2 covers only the handwriting categories the experiment population uses"
     assert approved_cloud_ocr_systems() == frozenset(
         {EXPLANATION_OCR_SYSTEM, OCR_VERIFY_INDEPENDENT_SYSTEM}
-        | set(bench.values()))
+        | set(bench.values()) | set(v2.values()))
     assert OCR_VERIFY_SYSTEM not in approved_cloud_ocr_systems()
 
 

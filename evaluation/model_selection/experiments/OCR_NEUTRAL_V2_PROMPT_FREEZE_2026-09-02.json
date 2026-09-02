@@ -1,0 +1,73 @@
+{
+ "artifact": "ocr_neutral_v2_prompt_freeze",
+ "created_at": "2026-09-02 23:54:27",
+ "provider_calls_made": 0,
+ "git_commit": "342dc715d570aea418fbfa7395ddaf47db2b1d48",
+ "purpose": "the pre-registration OCR_PROMPT_V2_NEUTRAL_FRAMING required the treatment prompt to be written, registered and hash-recorded BEFORE the first provider call. This artifact is that record. It is a COMPANION to the pre-registration rather than an edit of it, so the committed experiment hash 05185839e204ca61 stays intact and verifiable.",
+ "parent_experiment": "OCR_PROMPT_V2_NEUTRAL_FRAMING_GEMINI_SEEN32",
+ "parent_experiment_sha256": "05185839e204ca6131201983d29d2c0c273445070b56276f280b71426920f679",
+ "prompt_version": "ocr-neutral-v2",
+ "categories_in_scope": [
+  "handwritten_cell",
+  "handwritten_line"
+ ],
+ "prompts": {
+  "handwritten_cell": {
+   "v1_sha256": "d40280acf305b40f7b4ba74d115f76d4d7268156ba5acce0d7f1ce60ba67a137",
+   "v2_sha256": "8db9abe7a9804a982c8cdf905c56eb86849ee68770fccbf8be4b7eebe1365505",
+   "v1_head": "You transcribe the handwritten Hebrew answer text (may mix English terms) in this exam answer cell. Ignore any red instructor ink.",
+   "v2_head": "You transcribe the handwritten Hebrew text (may mix English terms) written in this box. Ignore any marks written in a different colour of ink from the main handwriting.",
+   "rules_block_sha256": "687d8f1ab61636956f731d0110ec949752720e933c35d0d68b2a21244c34229f",
+   "rules_block_identical": true,
+   "v2_full_text": "You transcribe the handwritten Hebrew text (may mix English terms) written in this box. Ignore any marks written in a different colour of ink from the main handwriting.\nRules:\n1. Copy EXACTLY the visible text, word by word. Never complete, paraphrase, correct, or invent words. Fidelity over fluency.\n2. If a single word is unreadable, write [?] in its place.\n3. If everything is unreadable, output [unreadable].\n4. Text struck through by the writer is cancelled - skip it.\n5. Hebrew is written right-to-left; output the text in normal logical order (first word first).\nReply with ONLY a JSON object: {\"transcription\": \"<the text>\"}"
+  },
+  "handwritten_line": {
+   "v1_sha256": "8c6981a00d467dbbb92c2495a52e1e050dab68de43a43ce977323bc0c2718172",
+   "v2_sha256": "59f7cac180fd85ceda7d97eb40bb4c5aafb1ad9800c346de3f515d98101e20bf",
+   "v1_head": "You transcribe ONE LINE of handwritten Hebrew (may mix English terms) cropped from a university exam answer sheet.",
+   "v2_head": "You transcribe ONE LINE of handwritten Hebrew (may mix English terms) cropped from a larger scanned page.",
+   "rules_block_sha256": "687d8f1ab61636956f731d0110ec949752720e933c35d0d68b2a21244c34229f",
+   "rules_block_identical": true,
+   "v2_full_text": "You transcribe ONE LINE of handwritten Hebrew (may mix English terms) cropped from a larger scanned page.\nRules:\n1. Copy EXACTLY the visible text, word by word. Never complete, paraphrase, correct, or invent words. Fidelity over fluency.\n2. If a single word is unreadable, write [?] in its place.\n3. If everything is unreadable, output [unreadable].\n4. Text struck through by the writer is cancelled - skip it.\n5. Hebrew is written right-to-left; output the text in normal logical order (first word first).\nReply with ONLY a JSON object: {\"transcription\": \"<the text>\"}"
+  }
+ },
+ "one_variable_guarantee": "v2 is constructed in code (roles.load_ocr_prompts) by replacing ONLY the leading framing sentence and concatenating v1's rules block verbatim. Byte-identity of every behavioural clause is therefore structural, and tests/test_ocr_prompt_v2.py pins it.",
+ "registered_in_cloud_boundary": true,
+ "adapter_version_unchanged": "ocr-primary-bench-v1 (scoring did not change, so the arm stays comparable)",
+ "live_route_snapshot": {
+  "fetched_at": "2026-09-02 23:54:02",
+  "canonical_slug": "google/gemini-3.7-flash-20260813",
+  "reasoning": {
+   "mandatory": true,
+   "default_enabled": true,
+   "supported_efforts": [
+    "high",
+    "medium",
+    "low"
+   ],
+   "default_effort": "medium"
+  },
+  "pricing": {
+   "prompt": "0.00000075",
+   "completion": "0.00000375",
+   "image": "0.00000075",
+   "audio": "0.00000075",
+   "input_audio_cache": "0.000000075",
+   "web_search": "0.014",
+   "internal_reasoning": "0.00000375",
+   "input_cache_read": "0.000000075",
+   "input_cache_write": "0.0000000416666666666667"
+  },
+  "max_completion_tokens": 65536,
+  "account": {
+   "usage": 0.65140092,
+   "limit": 20,
+   "limit_remaining": 19.34859908
+  },
+  "ledger_rows": 766,
+  "ledger_cumulative_usd": 0.65140129,
+  "cache_entries": 611
+ },
+ "annotation_risk": "the deterministic pixel audit found ZERO red-annotated crops among the 32 (max red fraction 0.0), so removing the red-ink phrasing cannot introduce annotation text for this population. annotation_inclusion_error is still measured.",
+ "freeze_sha256": "fe6a2b2f9534f1e5a507fff0254fe488adbe7c3114d25e439e752c5ff450998e"
+}

@@ -324,19 +324,81 @@ def _load_historical_prompts() -> dict[str, str]:
     return OCR_PRIMARY_PROMPTS
 
 
+#: ``ocr-neutral-v2`` — the treatment prompt for OCR_PROMPT_V2_NEUTRAL_FRAMING.
+#:
+#: The frozen ``m2-strict-v1`` prompts frame the task as a graded university
+#: exam ("cropped from a university exam answer sheet", "in this exam answer
+#: cell", "Ignore any red instructor ink"). On the 32-crop seen-DEV run
+#: google/gemini-3.7-flash returned a provider content-filter outcome for 10 of
+#: them, concentrated on the answer-cell half. That framing is a plausible and
+#: so-far untested contributor, and this version is the one-variable test of it.
+#:
+#: CONSTRUCTION IS DELIBERATELY MECHANICAL: each v2 prompt is built by replacing
+#: ONLY the leading framing sentence of its v1 counterpart. Everything from the
+#: Rules: block onward — the exact-copy rule, the [?] and [unreadable] markers,
+#: the struck-through protocol, the RTL ordering rule and the JSON contract — is
+#: carried over byte-for-byte, so "one variable" is a property of the code
+#: rather than a claim in a document.
+#:
+#: The annotation-exclusion instruction is PRESERVED, not dropped: "Ignore any
+#: red instructor ink" becomes a neutral description of the same visual fact.
+#: Removing it outright would risk pulling grading annotations into the
+#: transcription, which the experiment measures as annotation_inclusion_error.
+_NEUTRAL_V2_HEADS: dict[str, str] = {
+    "handwritten_line": (
+        "You transcribe ONE LINE of handwritten Hebrew (may mix English terms) "
+        "cropped from a larger scanned page."),
+    "handwritten_cell": (
+        "You transcribe the handwritten Hebrew text (may mix English terms) written "
+        "in this box. Ignore any marks written in a different colour of ink from the "
+        "main handwriting."),
+}
+
+#: Everything from this marker onward is copied verbatim from v1 into v2.
+_RULES_MARKER = "\nRules:"
+
+OCR_PROMPT_VERSIONS: tuple[str, ...] = ("m2-strict-v1", "ocr-neutral-v2")
+
+
+def load_ocr_prompts(prompt_version: str = "m2-strict-v1") -> dict[str, str]:
+    """OCR system prompts for a version. v1 is the frozen historical set; v2 is
+    derived from it by swapping only the framing sentence."""
+    if prompt_version not in OCR_PROMPT_VERSIONS:
+        raise ValueError(f"unknown OCR prompt version {prompt_version!r}; "
+                         f"expected one of {list(OCR_PROMPT_VERSIONS)}")
+    v1 = _load_historical_prompts()
+    if prompt_version == "m2-strict-v1":
+        return v1
+    out = {}
+    for cat, head in _NEUTRAL_V2_HEADS.items():
+        original = v1[cat]
+        idx = original.index(_RULES_MARKER)
+        out[cat] = head + original[idx:]      # rules block carried over verbatim
+    return out
+
+
 class OcrPrimaryAdapter:
     role = "ocr_primary"
     task = "ocr_primary"
     adapter_version = "ocr-primary-bench-v1"
+    #: default; an instance may pin ocr-neutral-v2. The adapter's SCORING is
+    #: unchanged either way, so adapter_version does not move.
     prompt_version = "m2-strict-v1"
+
+    def __init__(self, prompt_version: str | None = None):
+        if prompt_version:
+            if prompt_version not in OCR_PROMPT_VERSIONS:
+                raise ValueError(f"unknown OCR prompt version {prompt_version!r}")
+            self.prompt_version = prompt_version
     model_visible_fields = ("case_id", "image", "category", "task")
     default_max_tokens = 600
 
     def build_request(self, inputs: dict, bench_root: Path) -> Request:
-        prompts = _load_historical_prompts()
+        prompts = load_ocr_prompts(self.prompt_version)
         cat = inputs["category"]
         if cat not in prompts:
-            raise KeyError(f"no historical prompt for category {cat!r}")
+            raise KeyError(f"prompt version {self.prompt_version!r} has no prompt for "
+                           f"category {cat!r} (available: {sorted(prompts)})")
         return Request(system=prompts[cat],
                        content_blocks=[_image_block_from_file(bench_root, inputs["image"])],
                        output_model=BenchTranscription, prompt_version=self.prompt_version,
@@ -727,13 +789,13 @@ def adapter_for(role: str, prompt_version: str | None = None):
     the grading roles have more than one); None keeps the adapter default."""
     if role in ("grade_primary", "grade_escalate"):
         return GradeAdapter(role, prompt_version=prompt_version)
+    if role == "ocr_primary":
+        return OcrPrimaryAdapter(prompt_version=prompt_version)
     if prompt_version:
         raise ValueError(f"role {role!r} has a single prompt version; "
                          f"cannot pin {prompt_version!r}")
     if role == "ocr_verify":
         return OcrVerifyAdapter()
-    if role == "ocr_primary":
-        return OcrPrimaryAdapter()
     if role == "mc_resolve_cloud":
         return McResolveAdapter()
     if role == "variant_resolve":

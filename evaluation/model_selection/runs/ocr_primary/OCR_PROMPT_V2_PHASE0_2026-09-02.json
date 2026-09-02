@@ -1,0 +1,302 @@
+{
+ "artifact": "ocr_prompt_v2_phase0_control_reproduction",
+ "created_at": "2026-09-02 23:49:10",
+ "provider_calls": 0,
+ "git_commit": "342dc715d570aea418fbfa7395ddaf47db2b1d48",
+ "checks": [
+  {
+   "check": "gemini.intended",
+   "expected": 32,
+   "actual": 32,
+   "verdict": "PASS"
+  },
+  {
+   "check": "gemini.usable",
+   "expected": 14,
+   "actual": 14,
+   "verdict": "PASS"
+  },
+  {
+   "check": "gemini.hard_failures",
+   "expected": 18,
+   "actual": 18,
+   "verdict": "PASS"
+  },
+  {
+   "check": "gemini.provider_filter",
+   "expected": 10,
+   "actual": 10,
+   "verdict": "PASS"
+  },
+  {
+   "check": "gemini.successful_cer",
+   "expected": 0.1155,
+   "actual": 0.1155,
+   "verdict": "PASS"
+  },
+  {
+   "check": "gemini.failure_aware_cer",
+   "expected": 0.613,
+   "actual": 0.613,
+   "verdict": "PASS"
+  },
+  {
+   "check": "gemini.critical_errors",
+   "expected": 2,
+   "actual": 2,
+   "verdict": "PASS"
+  },
+  {
+   "check": "sonnet.intended",
+   "expected": 32,
+   "actual": 32,
+   "verdict": "PASS"
+  },
+  {
+   "check": "sonnet.usable",
+   "expected": 27,
+   "actual": 27,
+   "verdict": "PASS"
+  },
+  {
+   "check": "sonnet.model_text_refusals",
+   "expected": 4,
+   "actual": 4,
+   "verdict": "PASS"
+  },
+  {
+   "check": "sonnet.successful_cer",
+   "expected": 0.4718,
+   "actual": 0.4718,
+   "verdict": "PASS"
+  },
+  {
+   "check": "sonnet.failure_aware_cer",
+   "expected": 0.5544,
+   "actual": 0.5544,
+   "verdict": "PASS"
+  },
+  {
+   "check": "sonnet.critical_errors",
+   "expected": 9,
+   "actual": 9,
+   "verdict": "PASS"
+  },
+  {
+   "check": "paired_run_cost",
+   "expected": "0.12703875",
+   "actual": "0.12703875",
+   "verdict": "PASS"
+  },
+  {
+   "check": "ledger_rows_now",
+   "expected": 766,
+   "actual": 766,
+   "verdict": "PASS"
+  },
+  {
+   "check": "no_grading_since_paired",
+   "expected": 0,
+   "actual": 0,
+   "verdict": "PASS"
+  },
+  {
+   "check": "held_out",
+   "expected": 0,
+   "actual": 0,
+   "verdict": "PASS"
+  },
+  {
+   "check": "fallback_withdrawn",
+   "expected": "NOT USEFUL",
+   "actual": "NOT USEFUL",
+   "verdict": "PASS"
+  },
+  {
+   "check": "composite_refutation_present",
+   "expected": true,
+   "actual": true,
+   "verdict": "PASS"
+  },
+  {
+   "check": "rescue_refutation_present",
+   "expected": true,
+   "actual": true,
+   "verdict": "PASS"
+  },
+  {
+   "check": "references_unchanged",
+   "expected": true,
+   "actual": true,
+   "verdict": "PASS"
+  },
+  {
+   "check": "crops_unchanged",
+   "expected": true,
+   "actual": true,
+   "verdict": "PASS"
+  },
+  {
+   "check": "prereg.n",
+   "expected": 32,
+   "actual": 32,
+   "verdict": "PASS"
+  },
+  {
+   "check": "prereg.order_matches_control",
+   "expected": [
+    "hl_e003_q1_r1__l1",
+    "hl_e003_q1_r3__l1",
+    "hl_e003_q1_r4__l1",
+    "hl_e003_q1_r5__l1",
+    "hl_e003_q1_r6__l1",
+    "hl_e003_q1_r7__l1",
+    "hl_e003_q1_r8__l1",
+    "hl_e003_q2_r1__l1",
+    "hl_e003_q2_r2__l1",
+    "hl_e003_q2_r3__l1",
+    "hl_e003_q2_r4__l1",
+    "hl_e003_q2_r5__l1",
+    "hl_e003_q2_r6__l1",
+    "hl_e003_q2_r7__l1",
+    "hl_e003_q2_r8__l1",
+    "hl_e007_q1_r1__l1",
+    "hc_e002_q1_r1",
+    "hc_e002_q1_r2",
+    "hc_e002_q1_r3",
+    "hc_e002_q1_r4",
+    "hc_e002_q1_r5",
+    "hc_e002_q1_r6",
+    "hc_e002_q1_r7",
+    "hc_e002_q1_r8",
+    "hc_e002_q2_r1",
+    "hc_e002_q2_r2",
+    "hc_e002_q2_r3",
+    "hc_e002_q2_r4",
+    "hc_e002_q2_r5",
+    "hc_e002_q2_r6",
+    "hc_e002_q2_r7",
+    "hc_e002_q2_r8"
+   ],
+   "actual": [
+    "hl_e003_q1_r1__l1",
+    "hl_e003_q1_r3__l1",
+    "hl_e003_q1_r4__l1",
+    "hl_e003_q1_r5__l1",
+    "hl_e003_q1_r6__l1",
+    "hl_e003_q1_r7__l1",
+    "hl_e003_q1_r8__l1",
+    "hl_e003_q2_r1__l1",
+    "hl_e003_q2_r2__l1",
+    "hl_e003_q2_r3__l1",
+    "hl_e003_q2_r4__l1",
+    "hl_e003_q2_r5__l1",
+    "hl_e003_q2_r6__l1",
+    "hl_e003_q2_r7__l1",
+    "hl_e003_q2_r8__l1",
+    "hl_e007_q1_r1__l1",
+    "hc_e002_q1_r1",
+    "hc_e002_q1_r2",
+    "hc_e002_q1_r3",
+    "hc_e002_q1_r4",
+    "hc_e002_q1_r5",
+    "hc_e002_q1_r6",
+    "hc_e002_q1_r7",
+    "hc_e002_q1_r8",
+    "hc_e002_q2_r1",
+    "hc_e002_q2_r2",
+    "hc_e002_q2_r3",
+    "hc_e002_q2_r4",
+    "hc_e002_q2_r5",
+    "hc_e002_q2_r6",
+    "hc_e002_q2_r7",
+    "hc_e002_q2_r8"
+   ],
+   "verdict": "PASS"
+  },
+  {
+   "check": "prereg.case_order_sha256",
+   "expected": "7aeb6cffa515b2f296a7c944c8622040779ce2c06365be57842808b56c2dd4d1",
+   "actual": "7aeb6cffa515b2f296a7c944c8622040779ce2c06365be57842808b56c2dd4d1",
+   "verdict": "PASS"
+  },
+  {
+   "check": "prereg.candidate",
+   "expected": "google/gemini-3.7-flash",
+   "actual": "google/gemini-3.7-flash",
+   "verdict": "PASS"
+  },
+  {
+   "check": "prereg.task",
+   "expected": "ocr_primary",
+   "actual": "ocr_primary",
+   "verdict": "PASS"
+  },
+  {
+   "check": "prereg.held_out",
+   "expected": 0,
+   "actual": 0,
+   "verdict": "PASS"
+  },
+  {
+   "check": "prereg.calibration",
+   "expected": 0,
+   "actual": 0,
+   "verdict": "PASS"
+  },
+  {
+   "check": "prereg.handwritten",
+   "expected": 32,
+   "actual": 32,
+   "verdict": "PASS"
+  },
+  {
+   "check": "prereg.requests",
+   "expected": 32,
+   "actual": 32,
+   "verdict": "PASS"
+  },
+  {
+   "check": "prereg.control_arm_reused_not_rerun",
+   "expected": 0,
+   "actual": 0,
+   "verdict": "PASS"
+  },
+  {
+   "check": "prereg.schema_unchanged",
+   "expected": "003ee19969c8c443d62d75a0b2ff8eaeaa052fb3b40f3c609c3c8feb178d3679",
+   "actual": "003ee19969c8c443d62d75a0b2ff8eaeaa052fb3b40f3c609c3c8feb178d3679",
+   "verdict": "PASS"
+  },
+  {
+   "check": "prereg.adapter_unchanged",
+   "expected": "ocr-primary-bench-v1",
+   "actual": "ocr-primary-bench-v1",
+   "verdict": "PASS"
+  }
+ ],
+ "total": 34,
+ "passed": 34,
+ "failed": 0,
+ "reproduces": true,
+ "committed_drop_rule_verbatim": {
+  "ADOPT_and_rerun_paired": "hard failures <= 4/32 AND successful-only CER <= 0.20. The prompt was a cause; adopt ocr-neutral-v2 and re-run the paired comparison under it.",
+  "DROP_gemini_as_primary": "hard failures >= 10/32. The prompt is NOT the cause; Gemini's filter behaviour on this content is intrinsic at this price point. Move to option D — a different vision/OCR provider — under a new freeze.",
+  "REPORT_ONLY": "anything between 5 and 9 hard failures is reported, not resolved.",
+  "quality_veto": "if successful-only CER exceeds 0.20 the treatment is rejected regardless of coverage: a prompt that reads more crops but reads them worse is not a win."
+ },
+ "adversarial_workflow": {
+  "agents": 9,
+  "errors": 0,
+  "status": "COMPLETED",
+  "corrections_incorporated": [
+   "prospective fallback composite cost was understated ($0.08341781 -> $0.09069875): Sonnet is called on all 18 fallback triggers, not just the 15 it resolves, and per-crop actual cost differs from the arm average",
+   "'64 provider requests' is 64 ATTEMPTS / 62 actual requests / 2 cache replays",
+   "'18 non-billable failures' is 16 failures + 2 cache hits",
+   "the routing critical-error column mixed denominators and a broad flag set; on a consistent failure-aware basis over all 32 crops it is Gemini-only 20, Sonnet-only 14, composite 9 - reversing the ranking the original column implied",
+   "the 'Sonnet is a genuinely useful fallback' conclusion was REFUTED: 0/15 rescues meet even a 10% CER bar, mean word recovery is 20%, 4 of 15 recover zero reference words, and the fallback converts detectable failures into undetectable ones",
+   "the composite fallback is STRICTLY DOMINATED by Gemini-only: the fallback contributes exactly 0.0000 of the composite's metric advantage, review-aware quality and review workload are identical (0.1155, 18 reviews), and it costs twice as much. Recommendation withdrawn."
+  ]
+ },
+ "content_sha256": "353150f0e2c1946142ee76d9d440c23c400b7cad8127cb2d54c30fdb9c67e4b2"
+}
