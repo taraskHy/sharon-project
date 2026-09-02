@@ -38,6 +38,9 @@ vision = true
 candidates = [
     "google/gemini-3.7-flash",
     "openai/gpt-5.6-luna",
+    # owner-named stage-1 OCR smoke candidate (2026-09-02): the priced
+    # ``-pro`` slug; ``gpt-5.6-luna`` above is unpriced and cannot run live
+    "openai/gpt-5.6-luna-pro",
     "anthropic/claude-sonnet-5",
 ]
 benchmark = "B1 OCR (frozen hebrew_bench_v2 protocol)"

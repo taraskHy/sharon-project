@@ -230,6 +230,28 @@ def test_ocr_request_is_crop_plus_transcription_instruction_only(manifest):
                          system=req.system, content_blocks=req.content_blocks)
 
 
+def test_stage1_smoke_candidates_are_registered_for_ocr_primary():
+    """The owner-named stage-1 candidates must be registered ocr_primary
+    candidates (the runner refuses unlisted slugs), and — when the
+    machine-local pricing table exists — priced (an unpriced candidate
+    cannot run live)."""
+    import tomllib
+    reg = tomllib.loads((REPO / "evaluation" / "model_selection" /
+                         "candidates.toml").read_text(encoding="utf-8"))
+    listed = reg["roles"]["ocr_primary"]["candidates"]
+    for slug in ("google/gemini-3.7-flash", "openai/gpt-5.6-luna-pro",
+                 "anthropic/claude-sonnet-5"):
+        assert slug in listed, slug
+    assert reg["roles"]["ocr_primary"]["status"] == "UNSELECTED"
+    models_toml = REPO / "models.toml"
+    if models_toml.exists():
+        pricing = tomllib.loads(models_toml.read_text(encoding="utf-8")).get(
+            "pricing") or {}
+        for slug in ("google/gemini-3.7-flash", "openai/gpt-5.6-luna-pro",
+                     "anthropic/claude-sonnet-5"):
+            assert pricing.get(slug), f"{slug} unpriced: cannot run live"
+
+
 def test_grade_impact_metric_definition_is_owner_gated(campaign):
     m = campaign["metrics"]
     assert "verdict-flip" in m["downstream_grade_impact"]

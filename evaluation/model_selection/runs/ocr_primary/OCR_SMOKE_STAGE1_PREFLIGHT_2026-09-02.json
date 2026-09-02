@@ -1,0 +1,349 @@
+{
+ "artifact": "ocr_smoke_stage1_preflight_baseline",
+ "created_at": "2026-09-02 11:42:20",
+ "execution_status": "NOT_STARTED_BLOCKED_AT_PREFLIGHT",
+ "provider_requests_made": 0,
+ "additional_spend_usd": 0.0,
+ "git_commit": "3bd7b1779f8e38c036d2867ca59c477cdd4e22e8",
+ "campaign_sha256": "8ce4f5eea7b233c5a21a71b9cef8cca5e72f653091722dccef8426ad6e5d67d0",
+ "smoke_selection_sha256": "cc5c9f1ff9911a6821bc49c00131b17770d9a5574baa3e41eb47ecb9d5ef73ec",
+ "stage1": {
+  "adapter_version": "ocr-primary-bench-v1",
+  "prompt_version": "m2-strict-v1",
+  "prompt_sha256_by_category": {
+   "formula_printed": "28d034e2a0f1b77f03b0d4754a9bf187806518048a4ad290fa37a8e0ba5e01c9",
+   "handwritten_cell": "d40280acf305b40f7b4ba74d115f76d4d7268156ba5acce0d7f1ce60ba67a137",
+   "handwritten_line": "8c6981a00d467dbbb92c2495a52e1e050dab68de43a43ce977323bc0c2718172",
+   "mixed_he_en": "3c422f061047cad9aa49ce9320f336f36ce96b220e5c5b2fa05526a9f706d4a7",
+   "option_row_association": "71f6a9af322ccb27ce2bf2f7df091ac5fb00f85a8fdf8cbd700fed2962e99cdc",
+   "printed_rtl": "fb6874a4c84b15b5497e9498f561c7992f56a6b2ac12b20abd8ecde62cde2e40"
+  },
+  "schema": "BenchTranscription {transcription: str}",
+  "schema_sha256": "003ee19969c8c443d62d75a0b2ff8eaeaa052fb3b40f3c609c3c8feb178d3679",
+  "ordered_case_ids": [
+   "hl_e003_q1_r1__l1",
+   "hc_e002_q2_r1",
+   "hc_e002_q1_r1",
+   "hc_e002_q2_r6",
+   "pr_docA_p1_b1",
+   "pr_docA_p2_b3",
+   "hc_e002_q1_r7",
+   "assoc_docB_p2_b1"
+  ],
+  "cases": [
+   {
+    "case_id": "hl_e003_q1_r1__l1",
+    "split": "DEV",
+    "writer": "e003",
+    "category": "handwritten_line",
+    "image": "crops/hl_e003_q1_r1__l1.png",
+    "crop_sha256": "a8703841a8bd44b65a085935d75ab434a554131bcdb49031ebd58d217e1c4757",
+    "reference_sha256": "635929b4b3b8f1d72cac29ab17e6346b3aaa7e883dfe33b56317de6d94fe9ce3",
+    "reference_chars": 62,
+    "provenance_class": "audited_confirmed",
+    "provenance_valid": true,
+    "prompt_sha256": "8c6981a00d467dbbb92c2495a52e1e050dab68de43a43ce977323bc0c2718172"
+   },
+   {
+    "case_id": "hc_e002_q2_r1",
+    "split": "DEV",
+    "writer": "e002",
+    "category": "handwritten_cell",
+    "image": "crops/hc_e002_q2_r1.png",
+    "crop_sha256": "cc2e23b6c8acfa9b54c6d7a6a6a4bf68d172e0259a323c923a02673c19a317ba",
+    "reference_sha256": "1756823bf17385c37bb3abb0fe2fd75565c786f6729ae0fe5b484fc972ec6e38",
+    "reference_chars": 52,
+    "provenance_class": "audited_corrected",
+    "provenance_valid": true,
+    "prompt_sha256": "d40280acf305b40f7b4ba74d115f76d4d7268156ba5acce0d7f1ce60ba67a137"
+   },
+   {
+    "case_id": "hc_e002_q1_r1",
+    "split": "DEV",
+    "writer": "e002",
+    "category": "handwritten_cell",
+    "image": "crops/hc_e002_q1_r1.png",
+    "crop_sha256": "f23d427da6e04dbb384d88418a4657adff24ecaba9b252dbb34259adf824fda7",
+    "reference_sha256": "2f906246081ff11463426c4fda09d9337be6b868d3b62c93293a35adbac24d7f",
+    "reference_chars": 19,
+    "provenance_class": "audited_confirmed",
+    "provenance_valid": true,
+    "prompt_sha256": "d40280acf305b40f7b4ba74d115f76d4d7268156ba5acce0d7f1ce60ba67a137"
+   },
+   {
+    "case_id": "hc_e002_q2_r6",
+    "split": "DEV",
+    "writer": "e002",
+    "category": "handwritten_cell",
+    "image": "crops/hc_e002_q2_r6.png",
+    "crop_sha256": "ebbbff9c23ba3b0b6a1c11bfa73c8526df63cc6222c3baeeb9e833538f79833a",
+    "reference_sha256": "fb8c4ea9a0f82637e88e9db9165f4f5b04a60aa62ea34441b3966242b88e3101",
+    "reference_chars": 116,
+    "provenance_class": "audited_confirmed",
+    "provenance_valid": true,
+    "prompt_sha256": "d40280acf305b40f7b4ba74d115f76d4d7268156ba5acce0d7f1ce60ba67a137"
+   },
+   {
+    "case_id": "pr_docA_p1_b1",
+    "split": "DEV",
+    "writer": null,
+    "category": "formula_printed",
+    "image": "crops/pr_docA_p1_b1.png",
+    "crop_sha256": "5d759b3578312dc61a0f20a7f63228288b5917f47c398488a3f08a3037d7c5aa",
+    "reference_sha256": "d643591de21b3c72a1aafecae3c6a7d1d4727e46a6636370eb05a82a34cca489",
+    "reference_chars": 57,
+    "provenance_class": "text_layer_mechanical",
+    "provenance_valid": true,
+    "prompt_sha256": "28d034e2a0f1b77f03b0d4754a9bf187806518048a4ad290fa37a8e0ba5e01c9"
+   },
+   {
+    "case_id": "pr_docA_p2_b3",
+    "split": "DEV",
+    "writer": null,
+    "category": "mixed_he_en",
+    "image": "crops/pr_docA_p2_b3.png",
+    "crop_sha256": "ed3c5ef5b4cb26a664a76b3709056bbbf26e90bb0f213c2fadb04de105791124",
+    "reference_sha256": "8ca7ce723be337c52f4ba55d24599976f87f2d93b16a813c8eeb324e8f840028",
+    "reference_chars": 101,
+    "provenance_class": "text_layer_mechanical",
+    "provenance_valid": true,
+    "prompt_sha256": "3c422f061047cad9aa49ce9320f336f36ce96b220e5c5b2fa05526a9f706d4a7"
+   },
+   {
+    "case_id": "hc_e002_q1_r7",
+    "split": "DEV",
+    "writer": "e002",
+    "category": "handwritten_cell",
+    "image": "crops/hc_e002_q1_r7.png",
+    "crop_sha256": "7cd8b22b872c3e283c6a3cdb9240abeaa6b20e8ee8bc9c419badcb21d4e2fad7",
+    "reference_sha256": "09902986740b9cca66b2626ea4f0896da35be142cb8c2b65d5688ac224c27890",
+    "reference_chars": 69,
+    "provenance_class": "audited_confirmed",
+    "provenance_valid": true,
+    "prompt_sha256": "d40280acf305b40f7b4ba74d115f76d4d7268156ba5acce0d7f1ce60ba67a137"
+   },
+   {
+    "case_id": "assoc_docB_p2_b1",
+    "split": "DEV",
+    "writer": null,
+    "category": "option_row_association",
+    "image": "crops/assoc_docB_p2_b1.png",
+    "crop_sha256": "971600121151bc5ba804bdcaa5a243de07c6f52c62c275d378c5d9a7a0b900b4",
+    "reference_sha256": "ce52194d71d82f64d3e9a1cbbce79606c4d00fc3ede55ca7e0837accf65f4826",
+    "reference_chars": 32,
+    "provenance_class": "text_layer_mechanical",
+    "provenance_valid": true,
+    "prompt_sha256": "71f6a9af322ccb27ce2bf2f7df091ac5fb00f85a8fdf8cbd700fed2962e99cdc"
+   }
+  ],
+  "held_out_cases": 0
+ },
+ "decoding_config": {
+  "route": {
+   "backend": "openrouter",
+   "model": "UNSELECTED",
+   "max_tokens": 400,
+   "reasoning": {
+    "effort": "none"
+   },
+   "prompt_version": "ocr-v1"
+  },
+  "note": "candidate slug overrides route.model; the adapter's frozen m2-strict-v1 prompt overrides route.prompt_version for the bench protocol; reasoning effort none; max_tokens 400"
+ },
+ "candidates": {
+  "owner_named": [
+   "google/gemini-3.7-flash",
+   "openai/gpt-5.6-luna-pro",
+   "anthropic/claude-sonnet-5"
+  ],
+  "freeze_shortlist": [
+   "google/gemini-3.7-flash",
+   "openai/gpt-5.6-luna",
+   "anthropic/claude-sonnet-5"
+  ],
+  "divergence": "the campaign freeze lists openai/gpt-5.6-luna (unpriced, cannot run live); the owner named the priced openai/gpt-5.6-luna-pro, now registered in candidates.toml (data-only)"
+ },
+ "pricing": {
+  "local_table": {
+   "google/gemini-3.7-flash": {
+    "input": 0.375,
+    "output": 1.875
+   },
+   "openai/gpt-5.6-luna-pro": {
+    "input": 0.2,
+    "output": 1.2
+   },
+   "anthropic/claude-sonnet-5": {
+    "input": 2.0,
+    "output": 10.0
+   }
+  },
+  "live_catalog": {
+   "google/gemini-3.7-flash": {
+    "live_input_per_M": 0.75,
+    "live_output_per_M": 3.75,
+    "live_image": "0.00000075",
+    "local_input_per_M": 0.375,
+    "local_output_per_M": 1.875,
+    "context_length": 1048576,
+    "modality": "text+image+file+audio+video->text"
+   },
+   "openai/gpt-5.6-luna-pro": {
+    "live_input_per_M": 0.19999999999999998,
+    "live_output_per_M": 1.2,
+    "live_image": null,
+    "local_input_per_M": 0.2,
+    "local_output_per_M": 1.2,
+    "context_length": 1050000,
+    "modality": "text+image+file->text"
+   },
+   "anthropic/claude-sonnet-5": {
+    "live_input_per_M": 2.0,
+    "live_output_per_M": 10.0,
+    "live_image": null,
+    "local_input_per_M": 2.0,
+    "local_output_per_M": 10.0,
+    "context_length": 1000000,
+    "modality": "text+image+file->text"
+   }
+  },
+  "drift": "google/gemini-3.7-flash live = 2x local (0.75/3.75 vs 0.375/1.875 per M); others match"
+ },
+ "starting_ledger": {
+  "rows": 662,
+  "cloud_calls": 138,
+  "cache_hits": 6,
+  "cumulative_cost_usd": 0.471689,
+  "by_task": {
+   "grade_primary": {
+    "calls": 138,
+    "input_tokens": 430087,
+    "output_tokens": 24190,
+    "total_tokens": 454277,
+    "reported_cost": 0.471689
+   }
+  }
+ },
+ "starting_key_checkpoint": {
+  "ts": "2026-08-25 02:50:59",
+  "reason": "preflight",
+  "usage": 0.32576607,
+  "limit": 20,
+  "note": "stale (2026-08-25); a fresh checkpoint requires the credential"
+ },
+ "cache_entries": 541,
+ "request_contract_artifact": {
+  "file": "OCR_SMOKE_STAGE1_REQUEST_CONTRACT_2026-09-02.json",
+  "content_sha256": "900b775eb116296a9907d8b70e395b7eabf49d99a18e968290cb2b7f1edbdd24"
+ },
+ "dry_runs": {
+  "google/gemini-3.7-flash": {
+   "run_id": "dev__smoke__all__google-gemini-3.7-flash__feceaa6084",
+   "mode": "dry_run",
+   "cases": 8,
+   "leakage_check": "passed",
+   "pricing_table_available": true,
+   "predicted_cost_local_table": 0.009707,
+   "live_price_factor": 2.0,
+   "predicted_cost_live_adjusted": 0.019414,
+   "case_ids": [
+    "hl_e003_q1_r1__l1",
+    "hc_e002_q1_r1",
+    "hc_e002_q1_r7",
+    "hc_e002_q2_r1",
+    "hc_e002_q2_r6",
+    "pr_docA_p1_b1",
+    "pr_docA_p2_b3",
+    "assoc_docB_p2_b1"
+   ]
+  },
+  "openai/gpt-5.6-luna-pro": {
+   "run_id": "dev__smoke__all__openai-gpt-5.6-luna-pro__c6f10f3603",
+   "mode": "dry_run",
+   "cases": 8,
+   "leakage_check": "passed",
+   "pricing_table_available": true,
+   "predicted_cost_local_table": 0.005817,
+   "live_price_factor": 1.0,
+   "predicted_cost_live_adjusted": 0.005817,
+   "case_ids": [
+    "hl_e003_q1_r1__l1",
+    "hc_e002_q1_r1",
+    "hc_e002_q1_r7",
+    "hc_e002_q2_r1",
+    "hc_e002_q2_r6",
+    "pr_docA_p1_b1",
+    "pr_docA_p2_b3",
+    "assoc_docB_p2_b1"
+   ]
+  },
+  "anthropic/claude-sonnet-5": {
+   "run_id": "dev__smoke__all__anthropic-claude-sonnet-5__0481873207",
+   "mode": "dry_run",
+   "cases": 8,
+   "leakage_check": "passed",
+   "pricing_table_available": true,
+   "predicted_cost_local_table": 0.051773,
+   "live_price_factor": 1.0,
+   "predicted_cost_live_adjusted": 0.051773,
+   "case_ids": [
+    "hl_e003_q1_r1__l1",
+    "hc_e002_q1_r1",
+    "hc_e002_q1_r7",
+    "hc_e002_q2_r1",
+    "hc_e002_q2_r6",
+    "pr_docA_p1_b1",
+    "pr_docA_p2_b3",
+    "assoc_docB_p2_b1"
+   ]
+  }
+ },
+ "population_identical_across_candidates": true,
+ "predicted_cost_gate": {
+  "ceiling_usd": 0.05,
+  "three_arm_local_table": 0.067297,
+  "three_arm_live_adjusted": 0.077004,
+  "three_arm_verdict": "FAIL (both bases exceed the $0.05 operational ceiling)",
+  "gemini_plus_luna_local_table": 0.015524,
+  "gemini_plus_luna_live_adjusted": 0.025231,
+  "gemini_plus_luna_verdict": "PASS",
+  "sonnet_alone_local_table": 0.051773,
+  "sonnet_verdict": "BLOCKED_BY_CEILING (alone exceeds $0.05 at route max_tokens 400)"
+ },
+ "blockers": [
+  {
+   "id": "A",
+   "blocker": "OPENROUTER_API_KEY absent (process, user and machine scope; no .env, no dotenv loader)",
+   "runner_message": "NOT READY: OpenRouter credential is not configured (set OPENROUTER_API_KEY in the environment; it is never stored in a file)",
+   "resolution": "owner exports the key in their own shell before invoking the run (never pasted into chat or a file)"
+  },
+  {
+   "id": "B",
+   "blocker": "the frozen campaign's recorded paid commands omit --research; the runner refuses a live remote ocr_primary bench without it",
+   "runner_message": "live benchmark of 'ocr_primary' against the remote provider requires the explicit research mode: add --research",
+   "resolution": "append --research (the project-designed cloud-benchmark mode; the request contract was verified independently and the per-request leakage check is unchanged)"
+  },
+  {
+   "id": "C",
+   "blocker": "predicted three-arm cost 0.067297 (local) / 0.077004 (live-adjusted) exceeds the $0.05 ceiling; claude-sonnet-5 alone predicts 0.051773",
+   "resolution": "either raise the operational ceiling to >= $0.08 for the three-arm smoke, or authorize gemini + luna-pro now (predicted 0.025 live-adjusted) and defer sonnet"
+  }
+ ],
+ "compliant_commands_after_key_export": {
+  "gemini": "python -m autograder bench run --role ocr_primary --split dev --subset smoke --candidate google/gemini-3.7-flash --backend openrouter --models-config models.toml --research --i-understand-this-spends-money",
+  "luna_pro": "python -m autograder bench run --role ocr_primary --split dev --subset smoke --candidate openai/gpt-5.6-luna-pro --backend openrouter --models-config models.toml --research --i-understand-this-spends-money",
+  "sonnet_requires_ceiling_authorization": "python -m autograder bench run --role ocr_primary --split dev --subset smoke --candidate anthropic/claude-sonnet-5 --backend openrouter --models-config models.toml --research --i-understand-this-spends-money"
+ },
+ "confirmations": {
+  "ocr_provider_requests": 0,
+  "grading_provider_calls": 0,
+  "local_grading_calls": 0,
+  "rag_calls": 0,
+  "held_out_exposure": 0,
+  "audited_references_modified": 0,
+  "active_grades_changed": 0,
+  "additional_spend_usd": 0.0,
+  "api_key_exposure": 0
+ },
+ "content_sha256": "591c889bc072d77ab365aff6c4caec862eb829abc92378ece8d2f732b5cde9cb"
+}
