@@ -45,6 +45,29 @@ candidates = [
 ]
 benchmark = "B1 OCR (frozen hebrew_bench_v2 protocol)"
 
+# Stage-1b (2026-09-02). The Stage-1 smoke sent this model the ocr_primary
+# production route's reasoning={"effort":"none"} and every one of its 8
+# requests was rejected pre-inference with HTTP 400 "Reasoning is mandatory
+# for this endpoint and cannot be disabled" ($0 billed, zero OCR evidence).
+# Live model metadata confirms it: reasoning.mandatory=true,
+# supported_efforts=["high","medium","low"], default_effort="medium". "low" is
+# the LOWEST setting the endpoint accepts, so it is the smallest change that
+# makes the arm runnable at all.
+#
+# max_tokens 600 -> 1000, derived (NOT copied from the grade_primary override,
+# whose 1200 would breach this arm's $0.04 ceiling):
+#   longest audited reference in the frozen 8 = 116 chars (hc_e002_q2_r6)
+#   worst observed visible cost in Stage-1    = 171 tok for 96 chars (1.78 tok/char)
+#   scaled to 116 chars                       = 207 tok; x1.2 margin = 247 tok visible
+#   mandatory low-effort reasoning allowance  = 1000 - 247 = 753 tok (3x visible)
+#   predicted 8-case cost at 1000             = $0.037415 < $0.04 ceiling
+# Reasoning tokens bill at the completion rate ($3.75/M, "internal_reasoning"),
+# which is why the cap is budget-bound rather than set generously.
+[roles.ocr_primary.candidate_overrides."google/gemini-3.7-flash"]
+reasoning = { effort = "low" }
+max_tokens = 1000
+why = "endpoint reports reasoning.mandatory=true and rejects effort=none; 'low' is its lowest supported_effort. max_tokens 600->1000 derived from the longest audited reference (116 chars) and Stage-1's worst observed 1.78 tok/char, leaving 753 tokens for mandatory reasoning; predicted 8-case cost $0.0374 < the $0.04 Stage-1b ceiling."
+
 [roles.ocr_verify]
 status = "UNSELECTED"
 gateway_task = "ocr_verify"

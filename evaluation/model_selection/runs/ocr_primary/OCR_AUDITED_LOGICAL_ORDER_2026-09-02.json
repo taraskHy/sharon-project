@@ -1,0 +1,35 @@
+{
+ "artifact": "ocr_audited_logical_order_references",
+ "created_at": "2026-09-02 12:54:02",
+ "git_commit": "d51c685a8a2367658d600f75ea198607d75c0727",
+ "policy": "These records sit BESIDE the frozen references and never replace them. evaluation/hebrew_bench_v2 is untouched. Only the 'logical_order' view applies them, and it is a diagnostic that is always reported alongside the strict frozen metric, never instead of it.",
+ "records": {
+  "assoc_docB_p2_b1": {
+   "case_id": "assoc_docB_p2_b1",
+   "frozen_reference": "0.55\n()ד0.51\n()ג0.47\n()ב0.39\n()א",
+   "frozen_reference_sha256": "ce52194d71d82f64d3e9a1cbbce79606c4d00fc3ede55ca7e0837accf65f4826",
+   "logical_order_reference": "(א) 0.39; (ב) 0.47; (ג) 0.51; (ד) 0.55",
+   "audited_associations": {
+    "א": "0.39",
+    "ב": "0.47",
+    "ג": "0.51",
+    "ד": "0.55"
+   },
+   "source_image": "crops/assoc_docB_p2_b1.png",
+   "source_image_sha256": "971600121151bc5ba804bdcaa5a243de07c6f52c62c275d378c5d9a7a0b900b4",
+   "auditor": "claude-opus-5 (assistant), by direct inspection of the crop image",
+   "owner_confirmed": false,
+   "status": "provisional_pending_owner_confirmation",
+   "reason": "pdf_text_layer_order_not_visual_reading_order",
+   "evidence": [
+    "the crop is a SINGLE right-to-left row: (א) 0.39   (ב) 0.47   (ג) 0.51   (ד) 0.55",
+    "the frozen reference's own provenance_detail says the pairs were derived mechanically: 'value = nearest numeric word left of the option letter'",
+    "the frozen reference therefore encodes CORRECT pairs in text-layer (left-to-right) order, with line breaks between visual columns",
+    "historical qwen3-27b (independent of Stage-1) read the same RTL order; historical qwen3-8b produced the REVERSED association, so agreement here is discriminative rather than trivial"
+   ],
+   "caveat": "the logical_order_reference's separator convention ('; ' and spacing) was chosen by the auditor, and CER/WER against it are therefore sensitive to a formatting choice no model could know. Read association_exact - which is serialisation-independent - as the real signal for this case."
+  }
+ },
+ "provider_calls_made": 0,
+ "content_sha256": "267d223d3cedd0fea22028217ce59f1b663ad6071fce3e118245f96ac05b7058"
+}

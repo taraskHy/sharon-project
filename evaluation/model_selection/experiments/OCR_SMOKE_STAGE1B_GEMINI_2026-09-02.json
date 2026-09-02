@@ -1,0 +1,254 @@
+{
+ "experiment": "OCR_SMOKE_STAGE1B_GEMINI_REASONING_LOW",
+ "created_at": "2026-09-02 12:56:41",
+ "status": "PRE_REGISTERED_NOT_EXECUTED",
+ "provider_requests_made": 0,
+ "git_commit": "d51c685a8a2367658d600f75ea198607d75c0727",
+ "purpose": "Stage-1 sent this model reasoning={'effort':'none'} and all 8 requests were rejected pre-inference with HTTP 400 'Reasoning is mandatory for this endpoint and cannot be disabled'. $0 was billed and NO OCR-quality evidence exists. This arm re-runs the identical population with the minimum decoding change that makes the endpoint valid, so the candidate can be judged on OCR rather than on a configuration mismatch.",
+ "unchanged_from_stage1": {
+  "ordered_case_ids": [
+   "hl_e003_q1_r1__l1",
+   "hc_e002_q1_r1",
+   "hc_e002_q1_r7",
+   "hc_e002_q2_r1",
+   "hc_e002_q2_r6",
+   "pr_docA_p1_b1",
+   "pr_docA_p2_b3",
+   "assoc_docB_p2_b1"
+  ],
+  "case_order_sha256": "8b9039cf3d15dc497fecbe28ee23a3cab85d4bda7394f98a9cbc03aa55563c45",
+  "cases": [
+   {
+    "case_id": "hl_e003_q1_r1__l1",
+    "split": "DEV",
+    "category": "handwritten_line",
+    "writer": "e003",
+    "image": "crops/hl_e003_q1_r1__l1.png",
+    "crop_sha256": "a8703841a8bd44b65a085935d75ab434a554131bcdb49031ebd58d217e1c4757",
+    "reference_sha256": "635929b4b3b8f1d72cac29ab17e6346b3aaa7e883dfe33b56317de6d94fe9ce3",
+    "reference_chars": 62,
+    "provenance_class": "audited_confirmed",
+    "prompt_sha256": "8c6981a00d467dbbb92c2495a52e1e050dab68de43a43ce977323bc0c2718172"
+   },
+   {
+    "case_id": "hc_e002_q1_r1",
+    "split": "DEV",
+    "category": "handwritten_cell",
+    "writer": "e002",
+    "image": "crops/hc_e002_q1_r1.png",
+    "crop_sha256": "f23d427da6e04dbb384d88418a4657adff24ecaba9b252dbb34259adf824fda7",
+    "reference_sha256": "2f906246081ff11463426c4fda09d9337be6b868d3b62c93293a35adbac24d7f",
+    "reference_chars": 19,
+    "provenance_class": "audited_confirmed",
+    "prompt_sha256": "d40280acf305b40f7b4ba74d115f76d4d7268156ba5acce0d7f1ce60ba67a137"
+   },
+   {
+    "case_id": "hc_e002_q1_r7",
+    "split": "DEV",
+    "category": "handwritten_cell",
+    "writer": "e002",
+    "image": "crops/hc_e002_q1_r7.png",
+    "crop_sha256": "7cd8b22b872c3e283c6a3cdb9240abeaa6b20e8ee8bc9c419badcb21d4e2fad7",
+    "reference_sha256": "09902986740b9cca66b2626ea4f0896da35be142cb8c2b65d5688ac224c27890",
+    "reference_chars": 69,
+    "provenance_class": "audited_confirmed",
+    "prompt_sha256": "d40280acf305b40f7b4ba74d115f76d4d7268156ba5acce0d7f1ce60ba67a137"
+   },
+   {
+    "case_id": "hc_e002_q2_r1",
+    "split": "DEV",
+    "category": "handwritten_cell",
+    "writer": "e002",
+    "image": "crops/hc_e002_q2_r1.png",
+    "crop_sha256": "cc2e23b6c8acfa9b54c6d7a6a6a4bf68d172e0259a323c923a02673c19a317ba",
+    "reference_sha256": "1756823bf17385c37bb3abb0fe2fd75565c786f6729ae0fe5b484fc972ec6e38",
+    "reference_chars": 52,
+    "provenance_class": "audited_corrected",
+    "prompt_sha256": "d40280acf305b40f7b4ba74d115f76d4d7268156ba5acce0d7f1ce60ba67a137"
+   },
+   {
+    "case_id": "hc_e002_q2_r6",
+    "split": "DEV",
+    "category": "handwritten_cell",
+    "writer": "e002",
+    "image": "crops/hc_e002_q2_r6.png",
+    "crop_sha256": "ebbbff9c23ba3b0b6a1c11bfa73c8526df63cc6222c3baeeb9e833538f79833a",
+    "reference_sha256": "fb8c4ea9a0f82637e88e9db9165f4f5b04a60aa62ea34441b3966242b88e3101",
+    "reference_chars": 116,
+    "provenance_class": "audited_confirmed",
+    "prompt_sha256": "d40280acf305b40f7b4ba74d115f76d4d7268156ba5acce0d7f1ce60ba67a137"
+   },
+   {
+    "case_id": "pr_docA_p1_b1",
+    "split": "DEV",
+    "category": "formula_printed",
+    "writer": null,
+    "image": "crops/pr_docA_p1_b1.png",
+    "crop_sha256": "5d759b3578312dc61a0f20a7f63228288b5917f47c398488a3f08a3037d7c5aa",
+    "reference_sha256": "d643591de21b3c72a1aafecae3c6a7d1d4727e46a6636370eb05a82a34cca489",
+    "reference_chars": 57,
+    "provenance_class": "text_layer_mechanical",
+    "prompt_sha256": "28d034e2a0f1b77f03b0d4754a9bf187806518048a4ad290fa37a8e0ba5e01c9"
+   },
+   {
+    "case_id": "pr_docA_p2_b3",
+    "split": "DEV",
+    "category": "mixed_he_en",
+    "writer": null,
+    "image": "crops/pr_docA_p2_b3.png",
+    "crop_sha256": "ed3c5ef5b4cb26a664a76b3709056bbbf26e90bb0f213c2fadb04de105791124",
+    "reference_sha256": "8ca7ce723be337c52f4ba55d24599976f87f2d93b16a813c8eeb324e8f840028",
+    "reference_chars": 101,
+    "provenance_class": "text_layer_mechanical",
+    "prompt_sha256": "3c422f061047cad9aa49ce9320f336f36ce96b220e5c5b2fa05526a9f706d4a7"
+   },
+   {
+    "case_id": "assoc_docB_p2_b1",
+    "split": "DEV",
+    "category": "option_row_association",
+    "writer": null,
+    "image": "crops/assoc_docB_p2_b1.png",
+    "crop_sha256": "971600121151bc5ba804bdcaa5a243de07c6f52c62c275d378c5d9a7a0b900b4",
+    "reference_sha256": "ce52194d71d82f64d3e9a1cbbce79606c4d00fc3ede55ca7e0837accf65f4826",
+    "reference_chars": 32,
+    "provenance_class": "text_layer_mechanical",
+    "prompt_sha256": "71f6a9af322ccb27ce2bf2f7df091ac5fb00f85a8fdf8cbd700fed2962e99cdc"
+   }
+  ],
+  "crop_bytes": "identical (sha256 per case above)",
+  "audited_references": "identical, frozen, NOT modified",
+  "prompt_version": "m2-strict-v1",
+  "prompt_sha256_by_category": {
+   "formula_printed": "28d034e2a0f1b77f03b0d4754a9bf187806518048a4ad290fa37a8e0ba5e01c9",
+   "handwritten_cell": "d40280acf305b40f7b4ba74d115f76d4d7268156ba5acce0d7f1ce60ba67a137",
+   "handwritten_line": "8c6981a00d467dbbb92c2495a52e1e050dab68de43a43ce977323bc0c2718172",
+   "mixed_he_en": "3c422f061047cad9aa49ce9320f336f36ce96b220e5c5b2fa05526a9f706d4a7",
+   "option_row_association": "71f6a9af322ccb27ce2bf2f7df091ac5fb00f85a8fdf8cbd700fed2962e99cdc",
+   "printed_rtl": "fb6874a4c84b15b5497e9498f561c7992f56a6b2ac12b20abd8ecde62cde2e40"
+  },
+  "schema_name": "BenchTranscription",
+  "schema_sha256": "003ee19969c8c443d62d75a0b2ff8eaeaa052fb3b40f3c609c3c8feb178d3679",
+  "adapter_version": "ocr-primary-bench-v1",
+  "manifest_hashes": {
+   "items_sha256": "25463e91b95db8eecfc306644dd0839f65e42910d4161f6991383b6f4a524a8b",
+   "references_sha256": "4a93e826e6e94777d445e64ae2c3f5ed10def46aa021ff763a45a9807fb913b5",
+   "audit_sha256": "eace95fc6dc684c88f1fea2142414a68ad8f421257ac012faf6bcfc9ae07f50c",
+   "audit_manifest_sha256": "65ac16385979480945938f45f0d3e5e3255afa7bcb41c4ea7afe2ff2ebcc405f"
+  },
+  "campaign_sha256": "8ce4f5eea7b233c5a21a71b9cef8cca5e72f653091722dccef8426ad6e5d67d0",
+  "smoke_selection_sha256": "cc5c9f1ff9911a6821bc49c00131b17770d9a5574baa3e41eb47ecb9d5ef73ec"
+ },
+ "the_only_change": {
+  "candidate": "google/gemini-3.7-flash",
+  "reasoning": {
+   "stage1": {
+    "effort": "none"
+   },
+   "stage1b": {
+    "effort": "low"
+   }
+  },
+  "max_tokens": {
+   "stage1": 400,
+   "stage1b": 1000
+  },
+  "declared_in": "evaluation/model_selection/candidates.toml [roles.ocr_primary.candidate_overrides.\"google/gemini-3.7-flash\"]",
+  "mechanism": "the project's existing declared-asymmetry path (CANDIDATE_OVERRIDABLE); it lands in the run's config hash, so the run carries the exact configuration it used"
+ },
+ "live_model_metadata": {
+  "fetched_at": "2026-09-02 12:56:41",
+  "source": "GET https://openrouter.ai/api/v1/models (public, no credential)",
+  "canonical_slug": "google/gemini-3.7-flash-20260813",
+  "reasoning": {
+   "mandatory": true,
+   "default_enabled": true,
+   "supported_efforts": [
+    "high",
+    "medium",
+    "low"
+   ],
+   "default_effort": "medium"
+  },
+  "supported_parameters": [
+   "include_reasoning",
+   "max_tokens",
+   "reasoning",
+   "reasoning_effort",
+   "response_format",
+   "seed",
+   "stop",
+   "structured_outputs",
+   "temperature",
+   "tool_choice",
+   "tools",
+   "top_p"
+  ],
+  "max_completion_tokens": 65536,
+  "pricing": {
+   "prompt": "0.00000075",
+   "completion": "0.00000375",
+   "image": "0.00000075",
+   "audio": "0.00000075",
+   "input_audio_cache": "0.000000075",
+   "web_search": "0.014",
+   "internal_reasoning": "0.00000375",
+   "input_cache_read": "0.000000075",
+   "input_cache_write": "0.0000000416666666666667"
+  },
+  "confirms": "reasoning.mandatory=true and supported_efforts=['high','medium','low'] — 'none' is not offered, so Stage-1's 400 was a configuration error, and 'low' is the lowest setting this endpoint accepts"
+ },
+ "max_tokens_derivation": {
+  "longest_audited_reference": {
+   "case_id": "hc_e002_q2_r6",
+   "chars": 116
+  },
+  "worst_observed_visible_cost_stage1": {
+   "case": "openai/gpt-5.6-luna-pro on hc_e002_q2_r6",
+   "output_tokens": 171,
+   "output_chars": 96,
+   "tokens_per_char": 1.78,
+   "note": "includes the JSON schema wrapper"
+  },
+  "scaled_to_longest_reference_tokens": 207,
+  "safety_margin": "x1.2",
+  "visible_allowance_tokens": 247,
+  "reasoning_allowance_tokens": 753,
+  "chosen_max_tokens": 1000,
+  "predicted_8_case_cost_usd": 0.037415,
+  "ceiling_usd": 0.04,
+  "why_not_1200": "1200 is the grade_primary override's value and was NOT copied: at 1200 the predicted 8-case cost is $0.043415, which breaches this arm's $0.04 ceiling",
+  "billing_note": "reasoning tokens bill at the completion rate (pricing.internal_reasoning = $3.75/M), so the cap is budget-bound",
+  "failure_mode_if_insufficient": "a response truncated by the cap becomes a schema/finish-reason failure. It will be RECORDED as such, not retried and not silently re-run with a bigger cap."
+ },
+ "budget": {
+  "authorized_max_new_requests": 8,
+  "max_predicted_additional_usd": 0.04,
+  "max_actual_additional_usd": 0.04,
+  "project_warn_usd": 8.0,
+  "project_hard_usd": 10.0,
+  "stop_rule": "if live pricing predicts > $0.04, stop before any provider call; if actual additional spend reaches $0.04, stop immediately"
+ },
+ "prohibitions_for_this_arm": [
+  "no rerun of Luna or Sonnet",
+  "no replacement cases",
+  "no retry arm",
+  "no substitute model",
+  "no larger seen OCR stage",
+  "no OCR verification",
+  "no grading (cloud or local)",
+  "no RAG",
+  "no HELD_OUT",
+  "no modification of the frozen m2-strict-v1 prompt",
+  "no decoding change after seeing any output"
+ ],
+ "boundary": {
+  "research_authorization": "the runner builds one naming ocr_primary and this exact model; content safety (registered prompt, grading tripwires, secret scan) is enforced identically to production — see the d51c685 boundary fix",
+  "expected_payload": "exactly one image block, zero text blocks, frozen m2-strict-v1 system prompt"
+ },
+ "comparability": {
+  "verdict": "COMPARABLE",
+  "basis": "population, crop bytes, references, prompt, schema and adapter are all byte-identical to Stage-1 (OCR_BOUNDARY_REFACTOR_BYTE_IDENTITY_2026-09-02.json proves the boundary refactor changed no request byte). The decoding configuration differs by exactly the two values recorded above, and that difference is the experiment.",
+  "caveat": "Stage-1b is compared against Sonnet/Luna on OCR QUALITY. It is not a like-for-like decoding comparison: this arm reasons and they did not."
+ },
+ "experiment_sha256": "4de29894cc25b0cc53c5268d2a2cee385151ddb094862d5d95f6eb0c6e7a1626"
+}
