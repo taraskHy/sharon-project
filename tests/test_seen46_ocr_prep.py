@@ -182,6 +182,15 @@ DRY_DIRS = {
 }
 
 
+#: Stage 1 (``smoke``) was owner-authorized and EXECUTED on 2026-09-02, so its
+#: run directory legitimately carries a ``live`` history entry and an
+#: outputs.jsonl. Stages 2/3 (the seen-46 DEV and CALIBRATION subsets) are NOT
+#: authorized and must still be provably zero-call — that is the assertion
+#: worth keeping strict, and loosening it for the executed stage must not
+#: loosen it for them.
+EXECUTED_STAGES = {"smoke"}
+
+
 @pytest.mark.parametrize("name,expected_cases", [("smoke", 8),
                                                  ("seen46_dev", 32),
                                                  ("seen46_cal", 21)])
@@ -200,8 +209,13 @@ def test_dry_run_plans_are_zero_cost_priced_and_held_out_free(name,
         assert not HELD_PAT.search(row["case_id"])
         assert row["images"] == 1 and row["predicted_cost"] > 0
     run = json.loads((d / "run.json").read_text(encoding="utf-8"))
-    assert all(h["mode"] == "dry_run" for h in run["history"])
-    assert not (d / "outputs.jsonl").exists()        # zero provider calls
+    if name in EXECUTED_STAGES:
+        # the authorized execution may appear, but ONLY as live runs of this
+        # 8-case stage; a dry-run plan must still be on disk for the record
+        assert {h["mode"] for h in run["history"]} <= {"dry_run", "live"}
+    else:
+        assert all(h["mode"] == "dry_run" for h in run["history"])
+        assert not (d / "outputs.jsonl").exists()    # zero provider calls
 
 
 def test_ocr_request_is_crop_plus_transcription_instruction_only(manifest):

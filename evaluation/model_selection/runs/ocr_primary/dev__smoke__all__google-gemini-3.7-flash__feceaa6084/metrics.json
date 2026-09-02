@@ -1,0 +1,36 @@
+{
+ "primary_metric": "mean_cer (lower is better) on audited references; usable rates secondary",
+ "overall": {
+  "cases": 0,
+  "mean_cer": null,
+  "median_cer": null,
+  "usable_le_0.25_pct": null,
+  "usable_le_0.50_pct": null,
+  "number_sign_formula_errors": 0
+ },
+ "by_category": {},
+ "hard_items": {
+  "cases": 0,
+  "mean_cer": null,
+  "median_cer": null,
+  "usable_le_0.25_pct": null,
+  "usable_le_0.50_pct": null,
+  "number_sign_formula_errors": 0
+ },
+ "schema_failures": 8,
+ "unscored_no_reference": 0,
+ "refused_invalid_reference": 0,
+ "usage": {
+  "calls_live": 8,
+  "cache_hits": 0,
+  "latency_mean_s": null,
+  "latency_median_s": null,
+  "input_tokens": 0,
+  "output_tokens": 0,
+  "reasoning_tokens": 0,
+  "total_tokens": 0,
+  "reported_cost": 0.0
+ },
+ "cases_selected": 8,
+ "cases_with_result": 8
+}

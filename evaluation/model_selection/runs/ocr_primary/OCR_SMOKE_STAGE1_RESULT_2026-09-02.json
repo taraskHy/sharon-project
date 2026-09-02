@@ -1,0 +1,1881 @@
+{
+ "artifact": "ocr_smoke_stage1_execution_result",
+ "created_at": "2026-09-02 12:13:39",
+ "git_commit_at_execution": "f7c2f602c53e69474751638ca11996861500fe84",
+ "campaign_sha256": "8ce4f5eea7b233c5a21a71b9cef8cca5e72f653091722dccef8426ad6e5d67d0",
+ "smoke_selection_sha256": "cc5c9f1ff9911a6821bc49c00131b17770d9a5574baa3e41eb47ecb9d5ef73ec",
+ "manifest_hashes": {
+  "items_sha256": "25463e91b95db8eecfc306644dd0839f65e42910d4161f6991383b6f4a524a8b",
+  "references_sha256": "4a93e826e6e94777d445e64ae2c3f5ed10def46aa021ff763a45a9807fb913b5",
+  "audit_sha256": "eace95fc6dc684c88f1fea2142414a68ad8f421257ac012faf6bcfc9ae07f50c",
+  "audit_manifest_sha256": "65ac16385979480945938f45f0d3e5e3255afa7bcb41c4ea7afe2ff2ebcc405f"
+ },
+ "ordered_case_ids": [
+  "hl_e003_q1_r1__l1",
+  "hc_e002_q1_r1",
+  "hc_e002_q1_r7",
+  "hc_e002_q2_r1",
+  "hc_e002_q2_r6",
+  "pr_docA_p1_b1",
+  "pr_docA_p2_b3",
+  "assoc_docB_p2_b1"
+ ],
+ "prompt_version": "m2-strict-v1",
+ "adapter_version": "ocr-primary-bench-v1",
+ "schema_name": "BenchTranscription",
+ "schema_sha256": "003ee19969c8c443d62d75a0b2ff8eaeaa052fb3b40f3c609c3c8feb178d3679",
+ "decoding_config": {
+  "task": "ocr_primary",
+  "backend": "openrouter",
+  "structured_mode": "json_schema",
+  "max_tokens": 400,
+  "temperature": 0.0,
+  "reasoning": {
+   "effort": "none"
+  },
+  "extra_generation": {},
+  "prompt_version": "m2-strict-v1"
+ },
+ "live_pricing": {
+  "fetched_at": "2026-09-02 12:01:35",
+  "source": "https://openrouter.ai/api/v1/models",
+  "models": {
+   "openai/gpt-5.6-luna-pro": {
+    "present": true,
+    "canonical_slug": "openai/gpt-5.6-luna-pro-20260709",
+    "prompt_per_token": "0.0000002",
+    "completion_per_token": "0.0000012",
+    "image_per_image": null,
+    "request": null,
+    "input_per_M": 0.19999999999999998,
+    "output_per_M": 1.2,
+    "context_length": 1050000,
+    "modality": "text+image+file->text"
+   },
+   "google/gemini-3.7-flash": {
+    "present": true,
+    "canonical_slug": "google/gemini-3.7-flash-20260813",
+    "prompt_per_token": "0.00000075",
+    "completion_per_token": "0.00000375",
+    "image_per_image": "0.00000075",
+    "request": null,
+    "input_per_M": 0.75,
+    "output_per_M": 3.75,
+    "context_length": 1048576,
+    "modality": "text+image+file+audio+video->text"
+   },
+   "anthropic/claude-sonnet-5": {
+    "present": true,
+    "canonical_slug": "anthropic/claude-sonnet-5-20260630",
+    "prompt_per_token": "0.000002",
+    "completion_per_token": "0.00001",
+    "image_per_image": null,
+    "request": null,
+    "input_per_M": 2.0,
+    "output_per_M": 10.0,
+    "context_length": 1000000,
+    "modality": "text+image+file->text"
+   }
+  }
+ },
+ "authorized_max_requests": 24,
+ "ocr_provider_requests_made": 24,
+ "results": {
+  "openai/gpt-5.6-luna-pro": {
+   "run_id": "dev__smoke__all__openai-gpt-5.6-luna-pro__c6f10f3603",
+   "per_case": [
+    {
+     "case_id": "hl_e003_q1_r1__l1",
+     "writer": "e003",
+     "category": "handwritten_line",
+     "reference": "ניתן לראות ברמות התדרים הגבוהים שיש שפות בכיוון התנועה(הטשטוש)",
+     "ocr_text": "[?]",
+     "error": null,
+     "error_type": null,
+     "schema_failure": false,
+     "ok": true,
+     "cache_hit": false,
+     "latency_s": 3.265,
+     "input_tokens": 3827,
+     "output_tokens": 113,
+     "reasoning_tokens": 0,
+     "cost_usd": null,
+     "exact_raw_match": false,
+     "cer": 1.0,
+     "wer": 1.0,
+     "omission_rate": 1.0,
+     "hallucination_rate": 0.0,
+     "digit_sign_error": false,
+     "line_lost": false,
+     "word_subs": 0,
+     "word_dels": 10,
+     "word_ins": 0,
+     "unreadable_marker": true,
+     "critical_flags": [
+      "UNREADABLE_OUTPUT_ON_READABLE_REFERENCE"
+     ]
+    },
+    {
+     "case_id": "hc_e002_q1_r1",
+     "writer": "e002",
+     "category": "handwritten_cell",
+     "reference": "יש טשטוש בכל התדרים",
+     "ocr_text": "[unreadable]",
+     "error": null,
+     "error_type": null,
+     "schema_failure": false,
+     "ok": true,
+     "cache_hit": false,
+     "latency_s": 2.547,
+     "input_tokens": 3949,
+     "output_tokens": 72,
+     "reasoning_tokens": 0,
+     "cost_usd": null,
+     "exact_raw_match": false,
+     "cer": 1.0,
+     "wer": 1.0,
+     "omission_rate": 0.75,
+     "hallucination_rate": 0.0,
+     "digit_sign_error": false,
+     "line_lost": false,
+     "word_subs": 1,
+     "word_dels": 3,
+     "word_ins": 0,
+     "unreadable_marker": true,
+     "critical_flags": [
+      "LATIN_TOKEN_CHANGED(ref=[],ocr=['unreadable'])",
+      "UNREADABLE_OUTPUT_ON_READABLE_REFERENCE"
+     ]
+    },
+    {
+     "case_id": "hc_e002_q1_r7",
+     "writer": "e002",
+     "category": "handwritten_cell",
+     "reference": "סה\"כ הפירמידה נראית תקינה. הדרגה 0 שלה בהירה משמעותית מהתמונה המקורית",
+     "ocr_text": "[unreadable]",
+     "error": null,
+     "error_type": null,
+     "schema_failure": false,
+     "ok": true,
+     "cache_hit": false,
+     "latency_s": 2.891,
+     "input_tokens": 3961,
+     "output_tokens": 84,
+     "reasoning_tokens": 0,
+     "cost_usd": null,
+     "exact_raw_match": false,
+     "cer": 1.0,
+     "wer": 1.0,
+     "omission_rate": 0.9167,
+     "hallucination_rate": 0.0,
+     "digit_sign_error": true,
+     "line_lost": false,
+     "word_subs": 1,
+     "word_dels": 11,
+     "word_ins": 0,
+     "unreadable_marker": true,
+     "critical_flags": [
+      "DIGIT_CHANGED(ref=0,ocr=-)",
+      "LATIN_TOKEN_CHANGED(ref=[],ocr=['unreadable'])",
+      "UNREADABLE_OUTPUT_ON_READABLE_REFERENCE"
+     ]
+    },
+    {
+     "case_id": "hc_e002_q2_r1",
+     "writer": "e002",
+     "category": "handwritten_cell",
+     "reference": "עבור גילוי שפות יהיה רוב התמונה ב0 ורק עבור שפות 255",
+     "ocr_text": "[unreadable]",
+     "error": null,
+     "error_type": null,
+     "schema_failure": false,
+     "ok": true,
+     "cache_hit": false,
+     "latency_s": 2.594,
+     "input_tokens": 3978,
+     "output_tokens": 101,
+     "reasoning_tokens": 0,
+     "cost_usd": null,
+     "exact_raw_match": false,
+     "cer": 1.0,
+     "wer": 1.0,
+     "omission_rate": 0.9091,
+     "hallucination_rate": 0.0,
+     "digit_sign_error": true,
+     "line_lost": false,
+     "word_subs": 1,
+     "word_dels": 10,
+     "word_ins": 0,
+     "unreadable_marker": true,
+     "critical_flags": [
+      "DIGIT_CHANGED(ref=0255,ocr=-)",
+      "LATIN_TOKEN_CHANGED(ref=[],ocr=['unreadable'])",
+      "UNREADABLE_OUTPUT_ON_READABLE_REFERENCE"
+     ]
+    },
+    {
+     "case_id": "hc_e002_q2_r6",
+     "writer": "e002",
+     "category": "handwritten_cell",
+     "reference": "המעכה זהה לסכימת תמונה זהה עם תנודה קלה. מין תמונת echo כזאת תגרום להיסטוגרמה החדשה להיות קרובה להכפלה ב-2 [לא קריא]",
+     "ocr_text": "מבחינה למעשה להלכה יש להבחין בין שני סוגים של מצוות, מצוות שבין אדם לחבירו ומצוות שבין אדם למקום",
+     "error": null,
+     "error_type": null,
+     "schema_failure": false,
+     "ok": true,
+     "cache_hit": false,
+     "latency_s": 2.672,
+     "input_tokens": 4048,
+     "output_tokens": 171,
+     "reasoning_tokens": 0,
+     "cost_usd": null,
+     "exact_raw_match": false,
+     "cer": 0.7434,
+     "wer": 1.0,
+     "omission_rate": 0.1818,
+     "hallucination_rate": 0.0,
+     "digit_sign_error": true,
+     "line_lost": false,
+     "word_subs": 18,
+     "word_dels": 4,
+     "word_ins": 0,
+     "unreadable_marker": false,
+     "critical_flags": [
+      "DIGIT_CHANGED(ref=2,ocr=-)",
+      "SIGN_OPERATOR_CHANGED(ref=-,ocr=-)",
+      "LATIN_TOKEN_CHANGED(ref=['echo'],ocr=[])"
+     ]
+    },
+    {
+     "case_id": "pr_docA_p1_b1",
+     "writer": "no_writer",
+     "category": "formula_printed",
+     "reference": "203.3730\n 203.6730 / \n  סמסטר א' מועד א' תשפ\"ו \n2025-2026",
+     "ocr_text": "סמסטר א' מועד א' תשפ\"ו 203.6730 / 203.3730\n2025-2026",
+     "error": null,
+     "error_type": null,
+     "schema_failure": false,
+     "ok": true,
+     "cache_hit": false,
+     "latency_s": 2.437,
+     "input_tokens": 3401,
+     "output_tokens": 147,
+     "reasoning_tokens": 0,
+     "cost_usd": null,
+     "exact_raw_match": false,
+     "cer": 0.72,
+     "wer": 0.7692,
+     "omission_rate": 0.3846,
+     "hallucination_rate": 0.3846,
+     "digit_sign_error": true,
+     "line_lost": false,
+     "word_subs": 0,
+     "word_dels": 5,
+     "word_ins": 5,
+     "unreadable_marker": false,
+     "critical_flags": [
+      "DIGIT_CHANGED(ref=2033730203673020252026,ocr=2036730203373020252026)"
+     ]
+    },
+    {
+     "case_id": "pr_docA_p2_b3",
+     "writer": "no_writer",
+     "category": "mixed_he_en",
+     "reference": "לאחר הפעולה בונים פרמידת WAVELETS של תמונת התוצאה. בעמוד הבא נתונות \nתמונות התוצאה ממוספרות  )\nA-I\n(.",
+     "ocr_text": "לאחר הפעולה בונים פרמידת WAVELETS של תמונת התוצאה. בעמוד הבא נתונות תמונות התוצאה ממוספרות (A-I).",
+     "error": null,
+     "error_type": null,
+     "schema_failure": false,
+     "ok": true,
+     "cache_hit": false,
+     "latency_s": 2.468,
+     "input_tokens": 3509,
+     "output_tokens": 164,
+     "reasoning_tokens": 0,
+     "cost_usd": null,
+     "exact_raw_match": false,
+     "cer": 0.0,
+     "wer": 0.0,
+     "omission_rate": 0.0,
+     "hallucination_rate": 0.0,
+     "digit_sign_error": false,
+     "line_lost": false,
+     "word_subs": 0,
+     "word_dels": 0,
+     "word_ins": 0,
+     "unreadable_marker": false,
+     "critical_flags": []
+    },
+    {
+     "case_id": "assoc_docB_p2_b1",
+     "writer": "no_writer",
+     "category": "option_row_association",
+     "reference": "0.55\n()ד0.51\n()ג0.47\n()ב0.39\n()א",
+     "ocr_text": "א: 0.39; ב: 0.47; ג: 0.51; ד: 0.55",
+     "error": null,
+     "error_type": null,
+     "schema_failure": false,
+     "ok": true,
+     "cache_hit": false,
+     "latency_s": 2.875,
+     "input_tokens": 2920,
+     "output_tokens": 138,
+     "reasoning_tokens": 0,
+     "cost_usd": null,
+     "exact_raw_match": false,
+     "cer": 0.7083,
+     "wer": 1.2222,
+     "omission_rate": 0.0,
+     "hallucination_rate": 0.25,
+     "digit_sign_error": true,
+     "line_lost": false,
+     "word_subs": 8,
+     "word_dels": 0,
+     "word_ins": 3,
+     "unreadable_marker": false,
+     "critical_flags": [
+      "DIGIT_CHANGED(ref=055051047039,ocr=039047051055)"
+     ]
+    }
+   ],
+   "writer_metrics": {
+    "metrics_version": "ocr-writer-metrics-v1",
+    "overall": {
+     "cases": 8,
+     "scored": 8,
+     "line_loss": 0,
+     "line_loss_rate": 0.0,
+     "mean_cer": 0.7715,
+     "median_cer": 0.8717,
+     "max_cer": 1.0,
+     "mean_wer": 0.8739,
+     "mean_omission_rate": 0.5178,
+     "mean_hallucination_rate": 0.0793,
+     "digit_sign_errors": 5,
+     "cer_le_5pct": 1,
+     "cer_le_5pct_rate": 0.125
+    },
+    "per_writer": {
+     "e002": {
+      "cases": 4,
+      "scored": 4,
+      "line_loss": 0,
+      "line_loss_rate": 0.0,
+      "mean_cer": 0.9358,
+      "median_cer": 1.0,
+      "max_cer": 1.0,
+      "mean_wer": 1.0,
+      "mean_omission_rate": 0.6894,
+      "mean_hallucination_rate": 0.0,
+      "digit_sign_errors": 3,
+      "cer_le_5pct": 0,
+      "cer_le_5pct_rate": 0.0
+     },
+     "e003": {
+      "cases": 1,
+      "scored": 1,
+      "line_loss": 0,
+      "line_loss_rate": 0.0,
+      "mean_cer": 1.0,
+      "median_cer": 1.0,
+      "max_cer": 1.0,
+      "mean_wer": 1.0,
+      "mean_omission_rate": 1.0,
+      "mean_hallucination_rate": 0.0,
+      "digit_sign_errors": 0,
+      "cer_le_5pct": 0,
+      "cer_le_5pct_rate": 0.0
+     },
+     "no_writer": {
+      "cases": 3,
+      "scored": 3,
+      "line_loss": 0,
+      "line_loss_rate": 0.0,
+      "mean_cer": 0.4761,
+      "median_cer": 0.7083,
+      "max_cer": 0.72,
+      "mean_wer": 0.6638,
+      "mean_omission_rate": 0.1282,
+      "mean_hallucination_rate": 0.2115,
+      "digit_sign_errors": 2,
+      "cer_le_5pct": 1,
+      "cer_le_5pct_rate": 0.3333
+     }
+    },
+    "worst_writer_by_mean_cer": "e003",
+    "proposed_gate": "per-writer CER <= 5% (every writer, not the mean of means) AND zero harmful verdict flips — the flip metric needs the frozen local grader and is owner-gated separately",
+    "refused_invalid_reference": [],
+    "per_case": [
+     {
+      "case_id": "assoc_docB_p2_b1",
+      "writer": "no_writer",
+      "scored": true,
+      "line_lost": false,
+      "cer": 0.7083,
+      "wer": 1.2222,
+      "omission_rate": 0.0,
+      "hallucination_rate": 0.25,
+      "digit_sign_error": true
+     },
+     {
+      "case_id": "hc_e002_q1_r1",
+      "writer": "e002",
+      "scored": true,
+      "line_lost": false,
+      "cer": 1.0,
+      "wer": 1.0,
+      "omission_rate": 0.75,
+      "hallucination_rate": 0.0,
+      "digit_sign_error": false
+     },
+     {
+      "case_id": "hc_e002_q1_r7",
+      "writer": "e002",
+      "scored": true,
+      "line_lost": false,
+      "cer": 1.0,
+      "wer": 1.0,
+      "omission_rate": 0.9167,
+      "hallucination_rate": 0.0,
+      "digit_sign_error": true
+     },
+     {
+      "case_id": "hc_e002_q2_r1",
+      "writer": "e002",
+      "scored": true,
+      "line_lost": false,
+      "cer": 1.0,
+      "wer": 1.0,
+      "omission_rate": 0.9091,
+      "hallucination_rate": 0.0,
+      "digit_sign_error": true
+     },
+     {
+      "case_id": "hc_e002_q2_r6",
+      "writer": "e002",
+      "scored": true,
+      "line_lost": false,
+      "cer": 0.7434,
+      "wer": 1.0,
+      "omission_rate": 0.1818,
+      "hallucination_rate": 0.0,
+      "digit_sign_error": true
+     },
+     {
+      "case_id": "hl_e003_q1_r1__l1",
+      "writer": "e003",
+      "scored": true,
+      "line_lost": false,
+      "cer": 1.0,
+      "wer": 1.0,
+      "omission_rate": 1.0,
+      "hallucination_rate": 0.0,
+      "digit_sign_error": false
+     },
+     {
+      "case_id": "pr_docA_p1_b1",
+      "writer": "no_writer",
+      "scored": true,
+      "line_lost": false,
+      "cer": 0.72,
+      "wer": 0.7692,
+      "omission_rate": 0.3846,
+      "hallucination_rate": 0.3846,
+      "digit_sign_error": true
+     },
+     {
+      "case_id": "pr_docA_p2_b3",
+      "writer": "no_writer",
+      "scored": true,
+      "line_lost": false,
+      "cer": 0.0,
+      "wer": 0.0,
+      "omission_rate": 0.0,
+      "hallucination_rate": 0.0,
+      "digit_sign_error": false
+     }
+    ]
+   },
+   "summary": {
+    "cases": 8,
+    "exact_raw_match": 0,
+    "mean_cer": 0.7715,
+    "median_cer": 0.8717,
+    "mean_wer": 0.8739,
+    "median_wer": 1.0,
+    "mean_omission_rate": 0.5178,
+    "mean_hallucination_rate": 0.0793,
+    "line_loss": 0,
+    "line_loss_rate": 0.0,
+    "unreadable_marker_rate": 0.5,
+    "digit_sign_errors": 5,
+    "critical_error_cases": 7,
+    "critical_error_flags": 14,
+    "schema_failures": 0,
+    "provider_failures": 0,
+    "cache_hits": 0,
+    "mean_latency_s": 2.719,
+    "median_latency_s": 2.633,
+    "p95_latency_s": 3.265,
+    "total_latency_s": 21.749
+   },
+   "run_usage": {
+    "rows_before": 662,
+    "rows_after": 670,
+    "cost_before": 0.47169,
+    "run_cost": 0.007107,
+    "cost_after": 0.478797,
+    "run_calls": 8,
+    "run_cache_hits": 0,
+    "by_model": {
+     "openai/gpt-5.6-luna-pro": {
+      "calls": 8,
+      "input_tokens": 29593,
+      "output_tokens": 990,
+      "total_tokens": 30583,
+      "reported_cost": 0.007108
+     }
+    },
+    "by_task": {
+     "ocr_primary": {
+      "calls": 8,
+      "input_tokens": 29593,
+      "output_tokens": 990,
+      "total_tokens": 30583,
+      "reported_cost": 0.007108
+     }
+    }
+   }
+  },
+  "google/gemini-3.7-flash": {
+   "run_id": "dev__smoke__all__google-gemini-3.7-flash__feceaa6084",
+   "per_case": [
+    {
+     "case_id": "hl_e003_q1_r1__l1",
+     "writer": "e003",
+     "category": "handwritten_line",
+     "reference": "ניתן לראות ברמות התדרים הגבוהים שיש שפות בכיוון התנועה(הטשטוש)",
+     "ocr_text": null,
+     "error": "HTTP 400 from backend: {\"error\":{\"message\":\"Reasoning is mandatory for this endpoint and cannot be disabled.\",\"code\":400,\"metadata\":{\"provider_name\":null}}}",
+     "error_type": "BackendError",
+     "schema_failure": false,
+     "ok": false,
+     "cache_hit": false,
+     "latency_s": null,
+     "input_tokens": null,
+     "output_tokens": null,
+     "reasoning_tokens": null,
+     "cost_usd": null,
+     "exact_raw_match": false,
+     "cer": null,
+     "wer": null,
+     "omission_rate": null,
+     "hallucination_rate": null,
+     "digit_sign_error": null,
+     "line_lost": true,
+     "word_subs": null,
+     "word_dels": null,
+     "word_ins": null,
+     "unreadable_marker": false,
+     "critical_flags": [
+      "LINE_LOST_NO_OUTPUT"
+     ]
+    },
+    {
+     "case_id": "hc_e002_q1_r1",
+     "writer": "e002",
+     "category": "handwritten_cell",
+     "reference": "יש טשטוש בכל התדרים",
+     "ocr_text": null,
+     "error": "HTTP 400 from backend: {\"error\":{\"message\":\"Reasoning is mandatory for this endpoint and cannot be disabled.\",\"code\":400,\"metadata\":{\"provider_name\":null}}}",
+     "error_type": "BackendError",
+     "schema_failure": false,
+     "ok": false,
+     "cache_hit": false,
+     "latency_s": null,
+     "input_tokens": null,
+     "output_tokens": null,
+     "reasoning_tokens": null,
+     "cost_usd": null,
+     "exact_raw_match": false,
+     "cer": null,
+     "wer": null,
+     "omission_rate": null,
+     "hallucination_rate": null,
+     "digit_sign_error": null,
+     "line_lost": true,
+     "word_subs": null,
+     "word_dels": null,
+     "word_ins": null,
+     "unreadable_marker": false,
+     "critical_flags": [
+      "LINE_LOST_NO_OUTPUT"
+     ]
+    },
+    {
+     "case_id": "hc_e002_q1_r7",
+     "writer": "e002",
+     "category": "handwritten_cell",
+     "reference": "סה\"כ הפירמידה נראית תקינה. הדרגה 0 שלה בהירה משמעותית מהתמונה המקורית",
+     "ocr_text": null,
+     "error": "HTTP 400 from backend: {\"error\":{\"message\":\"Reasoning is mandatory for this endpoint and cannot be disabled.\",\"code\":400,\"metadata\":{\"provider_name\":null}}}",
+     "error_type": "BackendError",
+     "schema_failure": false,
+     "ok": false,
+     "cache_hit": false,
+     "latency_s": null,
+     "input_tokens": null,
+     "output_tokens": null,
+     "reasoning_tokens": null,
+     "cost_usd": null,
+     "exact_raw_match": false,
+     "cer": null,
+     "wer": null,
+     "omission_rate": null,
+     "hallucination_rate": null,
+     "digit_sign_error": null,
+     "line_lost": true,
+     "word_subs": null,
+     "word_dels": null,
+     "word_ins": null,
+     "unreadable_marker": false,
+     "critical_flags": [
+      "LINE_LOST_NO_OUTPUT"
+     ]
+    },
+    {
+     "case_id": "hc_e002_q2_r1",
+     "writer": "e002",
+     "category": "handwritten_cell",
+     "reference": "עבור גילוי שפות יהיה רוב התמונה ב0 ורק עבור שפות 255",
+     "ocr_text": null,
+     "error": "HTTP 400 from backend: {\"error\":{\"message\":\"Reasoning is mandatory for this endpoint and cannot be disabled.\",\"code\":400,\"metadata\":{\"provider_name\":null}}}",
+     "error_type": "BackendError",
+     "schema_failure": false,
+     "ok": false,
+     "cache_hit": false,
+     "latency_s": null,
+     "input_tokens": null,
+     "output_tokens": null,
+     "reasoning_tokens": null,
+     "cost_usd": null,
+     "exact_raw_match": false,
+     "cer": null,
+     "wer": null,
+     "omission_rate": null,
+     "hallucination_rate": null,
+     "digit_sign_error": null,
+     "line_lost": true,
+     "word_subs": null,
+     "word_dels": null,
+     "word_ins": null,
+     "unreadable_marker": false,
+     "critical_flags": [
+      "LINE_LOST_NO_OUTPUT"
+     ]
+    },
+    {
+     "case_id": "hc_e002_q2_r6",
+     "writer": "e002",
+     "category": "handwritten_cell",
+     "reference": "המעכה זהה לסכימת תמונה זהה עם תנודה קלה. מין תמונת echo כזאת תגרום להיסטוגרמה החדשה להיות קרובה להכפלה ב-2 [לא קריא]",
+     "ocr_text": null,
+     "error": "HTTP 400 from backend: {\"error\":{\"message\":\"Reasoning is mandatory for this endpoint and cannot be disabled.\",\"code\":400,\"metadata\":{\"provider_name\":null}}}",
+     "error_type": "BackendError",
+     "schema_failure": false,
+     "ok": false,
+     "cache_hit": false,
+     "latency_s": null,
+     "input_tokens": null,
+     "output_tokens": null,
+     "reasoning_tokens": null,
+     "cost_usd": null,
+     "exact_raw_match": false,
+     "cer": null,
+     "wer": null,
+     "omission_rate": null,
+     "hallucination_rate": null,
+     "digit_sign_error": null,
+     "line_lost": true,
+     "word_subs": null,
+     "word_dels": null,
+     "word_ins": null,
+     "unreadable_marker": false,
+     "critical_flags": [
+      "LINE_LOST_NO_OUTPUT"
+     ]
+    },
+    {
+     "case_id": "pr_docA_p1_b1",
+     "writer": "no_writer",
+     "category": "formula_printed",
+     "reference": "203.3730\n 203.6730 / \n  סמסטר א' מועד א' תשפ\"ו \n2025-2026",
+     "ocr_text": null,
+     "error": "HTTP 400 from backend: {\"error\":{\"message\":\"Reasoning is mandatory for this endpoint and cannot be disabled.\",\"code\":400,\"metadata\":{\"provider_name\":null}}}",
+     "error_type": "BackendError",
+     "schema_failure": false,
+     "ok": false,
+     "cache_hit": false,
+     "latency_s": null,
+     "input_tokens": null,
+     "output_tokens": null,
+     "reasoning_tokens": null,
+     "cost_usd": null,
+     "exact_raw_match": false,
+     "cer": null,
+     "wer": null,
+     "omission_rate": null,
+     "hallucination_rate": null,
+     "digit_sign_error": null,
+     "line_lost": true,
+     "word_subs": null,
+     "word_dels": null,
+     "word_ins": null,
+     "unreadable_marker": false,
+     "critical_flags": [
+      "LINE_LOST_NO_OUTPUT"
+     ]
+    },
+    {
+     "case_id": "pr_docA_p2_b3",
+     "writer": "no_writer",
+     "category": "mixed_he_en",
+     "reference": "לאחר הפעולה בונים פרמידת WAVELETS של תמונת התוצאה. בעמוד הבא נתונות \nתמונות התוצאה ממוספרות  )\nA-I\n(.",
+     "ocr_text": null,
+     "error": "HTTP 400 from backend: {\"error\":{\"message\":\"Reasoning is mandatory for this endpoint and cannot be disabled.\",\"code\":400,\"metadata\":{\"provider_name\":null}}}",
+     "error_type": "BackendError",
+     "schema_failure": false,
+     "ok": false,
+     "cache_hit": false,
+     "latency_s": null,
+     "input_tokens": null,
+     "output_tokens": null,
+     "reasoning_tokens": null,
+     "cost_usd": null,
+     "exact_raw_match": false,
+     "cer": null,
+     "wer": null,
+     "omission_rate": null,
+     "hallucination_rate": null,
+     "digit_sign_error": null,
+     "line_lost": true,
+     "word_subs": null,
+     "word_dels": null,
+     "word_ins": null,
+     "unreadable_marker": false,
+     "critical_flags": [
+      "LINE_LOST_NO_OUTPUT"
+     ]
+    },
+    {
+     "case_id": "assoc_docB_p2_b1",
+     "writer": "no_writer",
+     "category": "option_row_association",
+     "reference": "0.55\n()ד0.51\n()ג0.47\n()ב0.39\n()א",
+     "ocr_text": null,
+     "error": "HTTP 400 from backend: {\"error\":{\"message\":\"Reasoning is mandatory for this endpoint and cannot be disabled.\",\"code\":400,\"metadata\":{\"provider_name\":null}}}",
+     "error_type": "BackendError",
+     "schema_failure": false,
+     "ok": false,
+     "cache_hit": false,
+     "latency_s": null,
+     "input_tokens": null,
+     "output_tokens": null,
+     "reasoning_tokens": null,
+     "cost_usd": null,
+     "exact_raw_match": false,
+     "cer": null,
+     "wer": null,
+     "omission_rate": null,
+     "hallucination_rate": null,
+     "digit_sign_error": null,
+     "line_lost": true,
+     "word_subs": null,
+     "word_dels": null,
+     "word_ins": null,
+     "unreadable_marker": false,
+     "critical_flags": [
+      "LINE_LOST_NO_OUTPUT"
+     ]
+    }
+   ],
+   "writer_metrics": {
+    "metrics_version": "ocr-writer-metrics-v1",
+    "overall": {
+     "cases": 8,
+     "scored": 0,
+     "line_loss": 8,
+     "line_loss_rate": 1.0,
+     "mean_cer": null,
+     "median_cer": null,
+     "max_cer": null,
+     "mean_wer": null,
+     "mean_omission_rate": null,
+     "mean_hallucination_rate": null,
+     "digit_sign_errors": 0,
+     "cer_le_5pct": 0,
+     "cer_le_5pct_rate": null
+    },
+    "per_writer": {
+     "e002": {
+      "cases": 4,
+      "scored": 0,
+      "line_loss": 4,
+      "line_loss_rate": 1.0,
+      "mean_cer": null,
+      "median_cer": null,
+      "max_cer": null,
+      "mean_wer": null,
+      "mean_omission_rate": null,
+      "mean_hallucination_rate": null,
+      "digit_sign_errors": 0,
+      "cer_le_5pct": 0,
+      "cer_le_5pct_rate": null
+     },
+     "e003": {
+      "cases": 1,
+      "scored": 0,
+      "line_loss": 1,
+      "line_loss_rate": 1.0,
+      "mean_cer": null,
+      "median_cer": null,
+      "max_cer": null,
+      "mean_wer": null,
+      "mean_omission_rate": null,
+      "mean_hallucination_rate": null,
+      "digit_sign_errors": 0,
+      "cer_le_5pct": 0,
+      "cer_le_5pct_rate": null
+     },
+     "no_writer": {
+      "cases": 3,
+      "scored": 0,
+      "line_loss": 3,
+      "line_loss_rate": 1.0,
+      "mean_cer": null,
+      "median_cer": null,
+      "max_cer": null,
+      "mean_wer": null,
+      "mean_omission_rate": null,
+      "mean_hallucination_rate": null,
+      "digit_sign_errors": 0,
+      "cer_le_5pct": 0,
+      "cer_le_5pct_rate": null
+     }
+    },
+    "worst_writer_by_mean_cer": null,
+    "proposed_gate": "per-writer CER <= 5% (every writer, not the mean of means) AND zero harmful verdict flips — the flip metric needs the frozen local grader and is owner-gated separately",
+    "refused_invalid_reference": [],
+    "per_case": [
+     {
+      "case_id": "assoc_docB_p2_b1",
+      "writer": "no_writer",
+      "scored": false,
+      "line_lost": true,
+      "cer": null,
+      "wer": null,
+      "omission_rate": null,
+      "hallucination_rate": null,
+      "digit_sign_error": null
+     },
+     {
+      "case_id": "hc_e002_q1_r1",
+      "writer": "e002",
+      "scored": false,
+      "line_lost": true,
+      "cer": null,
+      "wer": null,
+      "omission_rate": null,
+      "hallucination_rate": null,
+      "digit_sign_error": null
+     },
+     {
+      "case_id": "hc_e002_q1_r7",
+      "writer": "e002",
+      "scored": false,
+      "line_lost": true,
+      "cer": null,
+      "wer": null,
+      "omission_rate": null,
+      "hallucination_rate": null,
+      "digit_sign_error": null
+     },
+     {
+      "case_id": "hc_e002_q2_r1",
+      "writer": "e002",
+      "scored": false,
+      "line_lost": true,
+      "cer": null,
+      "wer": null,
+      "omission_rate": null,
+      "hallucination_rate": null,
+      "digit_sign_error": null
+     },
+     {
+      "case_id": "hc_e002_q2_r6",
+      "writer": "e002",
+      "scored": false,
+      "line_lost": true,
+      "cer": null,
+      "wer": null,
+      "omission_rate": null,
+      "hallucination_rate": null,
+      "digit_sign_error": null
+     },
+     {
+      "case_id": "hl_e003_q1_r1__l1",
+      "writer": "e003",
+      "scored": false,
+      "line_lost": true,
+      "cer": null,
+      "wer": null,
+      "omission_rate": null,
+      "hallucination_rate": null,
+      "digit_sign_error": null
+     },
+     {
+      "case_id": "pr_docA_p1_b1",
+      "writer": "no_writer",
+      "scored": false,
+      "line_lost": true,
+      "cer": null,
+      "wer": null,
+      "omission_rate": null,
+      "hallucination_rate": null,
+      "digit_sign_error": null
+     },
+     {
+      "case_id": "pr_docA_p2_b3",
+      "writer": "no_writer",
+      "scored": false,
+      "line_lost": true,
+      "cer": null,
+      "wer": null,
+      "omission_rate": null,
+      "hallucination_rate": null,
+      "digit_sign_error": null
+     }
+    ]
+   },
+   "summary": {
+    "cases": 8,
+    "exact_raw_match": 0,
+    "mean_cer": null,
+    "median_cer": null,
+    "mean_wer": null,
+    "median_wer": null,
+    "mean_omission_rate": null,
+    "mean_hallucination_rate": null,
+    "line_loss": 8,
+    "line_loss_rate": 1.0,
+    "unreadable_marker_rate": 0.0,
+    "digit_sign_errors": 0,
+    "critical_error_cases": 8,
+    "critical_error_flags": 8,
+    "schema_failures": 0,
+    "provider_failures": 8,
+    "cache_hits": 0,
+    "mean_latency_s": null,
+    "median_latency_s": null,
+    "p95_latency_s": null,
+    "total_latency_s": null
+   },
+   "run_usage": {
+    "rows_before": 670,
+    "rows_after": 678,
+    "cost_before": 0.478797,
+    "run_cost": 0.0,
+    "cost_after": 0.478797,
+    "run_calls": 8,
+    "run_cache_hits": 0,
+    "by_model": {
+     "google/gemini-3.7-flash": {
+      "calls": 8,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "total_tokens": 0,
+      "reported_cost": 0.0
+     }
+    },
+    "by_task": {
+     "ocr_primary": {
+      "calls": 8,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "total_tokens": 0,
+      "reported_cost": 0.0
+     }
+    }
+   }
+  },
+  "anthropic/claude-sonnet-5": {
+   "run_id": "dev__smoke__all__anthropic-claude-sonnet-5__0481873207",
+   "per_case": [
+    {
+     "case_id": "hl_e003_q1_r1__l1",
+     "writer": "e003",
+     "category": "handwritten_line",
+     "reference": "ניתן לראות ברמות התדרים הגבוהים שיש שפות בכיוון התנועה(הטשטוש)",
+     "ocr_text": "ניתן לראות בראות התפרים הגבוהים שיש שפת גבול הנתונה (הלטוש)",
+     "error": null,
+     "error_type": null,
+     "schema_failure": false,
+     "ok": true,
+     "cache_hit": false,
+     "latency_s": 5.016,
+     "input_tokens": 1002,
+     "output_tokens": 51,
+     "reasoning_tokens": 0,
+     "cost_usd": null,
+     "exact_raw_match": false,
+     "cer": 0.2131,
+     "wer": 0.6,
+     "omission_rate": 0.0,
+     "hallucination_rate": 0.0,
+     "digit_sign_error": false,
+     "line_lost": false,
+     "word_subs": 6,
+     "word_dels": 0,
+     "word_ins": 0,
+     "unreadable_marker": false,
+     "critical_flags": []
+    },
+    {
+     "case_id": "hc_e002_q1_r1",
+     "writer": "e002",
+     "category": "handwritten_cell",
+     "reference": "יש טשטוש בכל התדרים",
+     "ocr_text": "[unreadable]",
+     "error": null,
+     "error_type": null,
+     "schema_failure": false,
+     "ok": true,
+     "cache_hit": false,
+     "latency_s": 3.094,
+     "input_tokens": 1098,
+     "output_tokens": 16,
+     "reasoning_tokens": 0,
+     "cost_usd": null,
+     "exact_raw_match": false,
+     "cer": 1.0,
+     "wer": 1.0,
+     "omission_rate": 0.75,
+     "hallucination_rate": 0.0,
+     "digit_sign_error": false,
+     "line_lost": false,
+     "word_subs": 1,
+     "word_dels": 3,
+     "word_ins": 0,
+     "unreadable_marker": true,
+     "critical_flags": [
+      "LATIN_TOKEN_CHANGED(ref=[],ocr=['unreadable'])",
+      "UNREADABLE_OUTPUT_ON_READABLE_REFERENCE"
+     ]
+    },
+    {
+     "case_id": "hc_e002_q1_r7",
+     "writer": "e002",
+     "category": "handwritten_cell",
+     "reference": "סה\"כ הפירמידה נראית תקינה. הדרגה 0 שלה בהירה משמעותית מהתמונה המקורית",
+     "ocr_text": "סדר הנוישקה נחוית תקנה - הפרטס על ה בהיזה משאזרה מותמיכת המקומית",
+     "error": null,
+     "error_type": null,
+     "schema_failure": false,
+     "ok": true,
+     "cache_hit": false,
+     "latency_s": 6.062,
+     "input_tokens": 1098,
+     "output_tokens": 56,
+     "reasoning_tokens": 0,
+     "cost_usd": null,
+     "exact_raw_match": false,
+     "cer": 0.4559,
+     "wer": 1.0,
+     "omission_rate": 0.0833,
+     "hallucination_rate": 0.0,
+     "digit_sign_error": true,
+     "line_lost": false,
+     "word_subs": 11,
+     "word_dels": 1,
+     "word_ins": 0,
+     "unreadable_marker": false,
+     "critical_flags": [
+      "DIGIT_CHANGED(ref=0,ocr=-)",
+      "SIGN_OPERATOR_CHANGED(ref=-,ocr=-)"
+     ]
+    },
+    {
+     "case_id": "hc_e002_q2_r1",
+     "writer": "e002",
+     "category": "handwritten_cell",
+     "reference": "עבור גילוי שפות יהיה רוב התמונה ב0 ורק עבור שפות 255",
+     "ocr_text": "[unreadable]",
+     "error": null,
+     "error_type": null,
+     "schema_failure": false,
+     "ok": true,
+     "cache_hit": false,
+     "latency_s": 4.375,
+     "input_tokens": 1098,
+     "output_tokens": 16,
+     "reasoning_tokens": 0,
+     "cost_usd": null,
+     "exact_raw_match": false,
+     "cer": 1.0,
+     "wer": 1.0,
+     "omission_rate": 0.9091,
+     "hallucination_rate": 0.0,
+     "digit_sign_error": true,
+     "line_lost": false,
+     "word_subs": 1,
+     "word_dels": 10,
+     "word_ins": 0,
+     "unreadable_marker": true,
+     "critical_flags": [
+      "DIGIT_CHANGED(ref=0255,ocr=-)",
+      "LATIN_TOKEN_CHANGED(ref=[],ocr=['unreadable'])",
+      "UNREADABLE_OUTPUT_ON_READABLE_REFERENCE"
+     ]
+    },
+    {
+     "case_id": "hc_e002_q2_r6",
+     "writer": "e002",
+     "category": "handwritten_cell",
+     "reference": "המעכה זהה לסכימת תמונה זהה עם תנודה קלה. מין תמונת echo כזאת תגרום להיסטוגרמה החדשה להיות קרובה להכפלה ב-2 [לא קריא]",
+     "ocr_text": "ההסכה להה לסכית התנות זהה על תשונה קלה, אין השאך סתם כאחר, התרוה להסולתמג הישר לחות קרונה להכבדה כל מעי [?]",
+     "error": null,
+     "error_type": null,
+     "schema_failure": false,
+     "ok": true,
+     "cache_hit": false,
+     "latency_s": 4.828,
+     "input_tokens": 1098,
+     "output_tokens": 82,
+     "reasoning_tokens": 0,
+     "cost_usd": null,
+     "exact_raw_match": false,
+     "cer": 0.4248,
+     "wer": 0.9091,
+     "omission_rate": 0.0909,
+     "hallucination_rate": 0.0,
+     "digit_sign_error": true,
+     "line_lost": false,
+     "word_subs": 18,
+     "word_dels": 2,
+     "word_ins": 0,
+     "unreadable_marker": true,
+     "critical_flags": [
+      "DIGIT_CHANGED(ref=2,ocr=-)",
+      "SIGN_OPERATOR_CHANGED(ref=-,ocr=-)",
+      "LATIN_TOKEN_CHANGED(ref=['echo'],ocr=[])"
+     ]
+    },
+    {
+     "case_id": "pr_docA_p1_b1",
+     "writer": "no_writer",
+     "category": "formula_printed",
+     "reference": "203.3730\n 203.6730 / \n  סמסטר א' מועד א' תשפ\"ו \n2025-2026",
+     "ocr_text": "203.3730 / 203.6730 סמסטר א' מועד א' תשפ״ו\n2025-2026",
+     "error": null,
+     "error_type": null,
+     "schema_failure": false,
+     "ok": true,
+     "cache_hit": false,
+     "latency_s": 4.281,
+     "input_tokens": 891,
+     "output_tokens": 48,
+     "reasoning_tokens": 0,
+     "cost_usd": null,
+     "exact_raw_match": false,
+     "cer": 0.1,
+     "wer": 0.3077,
+     "omission_rate": 0.1538,
+     "hallucination_rate": 0.0833,
+     "digit_sign_error": true,
+     "line_lost": false,
+     "word_subs": 1,
+     "word_dels": 2,
+     "word_ins": 1,
+     "unreadable_marker": false,
+     "critical_flags": []
+    },
+    {
+     "case_id": "pr_docA_p2_b3",
+     "writer": "no_writer",
+     "category": "mixed_he_en",
+     "reference": "לאחר הפעולה בונים פרמידת WAVELETS של תמונת התוצאה. בעמוד הבא נתונות \nתמונות התוצאה ממוספרות  )\nA-I\n(.",
+     "ocr_text": "לאחר הפעולה בונים פרמידת WAVELETS של תמונת התוצאה. בעמוד הבא נתונות תמונות התוצאה ממוספרות (A-I).",
+     "error": null,
+     "error_type": null,
+     "schema_failure": false,
+     "ok": true,
+     "cache_hit": false,
+     "latency_s": 4.656,
+     "input_tokens": 939,
+     "output_tokens": 76,
+     "reasoning_tokens": 0,
+     "cost_usd": null,
+     "exact_raw_match": false,
+     "cer": 0.0,
+     "wer": 0.0,
+     "omission_rate": 0.0,
+     "hallucination_rate": 0.0,
+     "digit_sign_error": false,
+     "line_lost": false,
+     "word_subs": 0,
+     "word_dels": 0,
+     "word_ins": 0,
+     "unreadable_marker": false,
+     "critical_flags": []
+    },
+    {
+     "case_id": "assoc_docB_p2_b1",
+     "writer": "no_writer",
+     "category": "option_row_association",
+     "reference": "0.55\n()ד0.51\n()ג0.47\n()ב0.39\n()א",
+     "ocr_text": "א: 0.39; ב: 0.47; ג: 0.51; ד: 0.55",
+     "error": null,
+     "error_type": null,
+     "schema_failure": false,
+     "ok": true,
+     "cache_hit": false,
+     "latency_s": 2.75,
+     "input_tokens": 694,
+     "output_tokens": 40,
+     "reasoning_tokens": 0,
+     "cost_usd": null,
+     "exact_raw_match": false,
+     "cer": 0.7083,
+     "wer": 1.2222,
+     "omission_rate": 0.0,
+     "hallucination_rate": 0.25,
+     "digit_sign_error": true,
+     "line_lost": false,
+     "word_subs": 8,
+     "word_dels": 0,
+     "word_ins": 3,
+     "unreadable_marker": false,
+     "critical_flags": [
+      "DIGIT_CHANGED(ref=055051047039,ocr=039047051055)"
+     ]
+    }
+   ],
+   "writer_metrics": {
+    "metrics_version": "ocr-writer-metrics-v1",
+    "overall": {
+     "cases": 8,
+     "scored": 8,
+     "line_loss": 0,
+     "line_loss_rate": 0.0,
+     "mean_cer": 0.4878,
+     "median_cer": 0.4404,
+     "max_cer": 1.0,
+     "mean_wer": 0.7549,
+     "mean_omission_rate": 0.2484,
+     "mean_hallucination_rate": 0.0417,
+     "digit_sign_errors": 5,
+     "cer_le_5pct": 1,
+     "cer_le_5pct_rate": 0.125
+    },
+    "per_writer": {
+     "e002": {
+      "cases": 4,
+      "scored": 4,
+      "line_loss": 0,
+      "line_loss_rate": 0.0,
+      "mean_cer": 0.7202,
+      "median_cer": 0.7279,
+      "max_cer": 1.0,
+      "mean_wer": 0.9773,
+      "mean_omission_rate": 0.4583,
+      "mean_hallucination_rate": 0.0,
+      "digit_sign_errors": 3,
+      "cer_le_5pct": 0,
+      "cer_le_5pct_rate": 0.0
+     },
+     "e003": {
+      "cases": 1,
+      "scored": 1,
+      "line_loss": 0,
+      "line_loss_rate": 0.0,
+      "mean_cer": 0.2131,
+      "median_cer": 0.2131,
+      "max_cer": 0.2131,
+      "mean_wer": 0.6,
+      "mean_omission_rate": 0.0,
+      "mean_hallucination_rate": 0.0,
+      "digit_sign_errors": 0,
+      "cer_le_5pct": 0,
+      "cer_le_5pct_rate": 0.0
+     },
+     "no_writer": {
+      "cases": 3,
+      "scored": 3,
+      "line_loss": 0,
+      "line_loss_rate": 0.0,
+      "mean_cer": 0.2694,
+      "median_cer": 0.1,
+      "max_cer": 0.7083,
+      "mean_wer": 0.51,
+      "mean_omission_rate": 0.0513,
+      "mean_hallucination_rate": 0.1111,
+      "digit_sign_errors": 2,
+      "cer_le_5pct": 1,
+      "cer_le_5pct_rate": 0.3333
+     }
+    },
+    "worst_writer_by_mean_cer": "e002",
+    "proposed_gate": "per-writer CER <= 5% (every writer, not the mean of means) AND zero harmful verdict flips — the flip metric needs the frozen local grader and is owner-gated separately",
+    "refused_invalid_reference": [],
+    "per_case": [
+     {
+      "case_id": "assoc_docB_p2_b1",
+      "writer": "no_writer",
+      "scored": true,
+      "line_lost": false,
+      "cer": 0.7083,
+      "wer": 1.2222,
+      "omission_rate": 0.0,
+      "hallucination_rate": 0.25,
+      "digit_sign_error": true
+     },
+     {
+      "case_id": "hc_e002_q1_r1",
+      "writer": "e002",
+      "scored": true,
+      "line_lost": false,
+      "cer": 1.0,
+      "wer": 1.0,
+      "omission_rate": 0.75,
+      "hallucination_rate": 0.0,
+      "digit_sign_error": false
+     },
+     {
+      "case_id": "hc_e002_q1_r7",
+      "writer": "e002",
+      "scored": true,
+      "line_lost": false,
+      "cer": 0.4559,
+      "wer": 1.0,
+      "omission_rate": 0.0833,
+      "hallucination_rate": 0.0,
+      "digit_sign_error": true
+     },
+     {
+      "case_id": "hc_e002_q2_r1",
+      "writer": "e002",
+      "scored": true,
+      "line_lost": false,
+      "cer": 1.0,
+      "wer": 1.0,
+      "omission_rate": 0.9091,
+      "hallucination_rate": 0.0,
+      "digit_sign_error": true
+     },
+     {
+      "case_id": "hc_e002_q2_r6",
+      "writer": "e002",
+      "scored": true,
+      "line_lost": false,
+      "cer": 0.4248,
+      "wer": 0.9091,
+      "omission_rate": 0.0909,
+      "hallucination_rate": 0.0,
+      "digit_sign_error": true
+     },
+     {
+      "case_id": "hl_e003_q1_r1__l1",
+      "writer": "e003",
+      "scored": true,
+      "line_lost": false,
+      "cer": 0.2131,
+      "wer": 0.6,
+      "omission_rate": 0.0,
+      "hallucination_rate": 0.0,
+      "digit_sign_error": false
+     },
+     {
+      "case_id": "pr_docA_p1_b1",
+      "writer": "no_writer",
+      "scored": true,
+      "line_lost": false,
+      "cer": 0.1,
+      "wer": 0.3077,
+      "omission_rate": 0.1538,
+      "hallucination_rate": 0.0833,
+      "digit_sign_error": true
+     },
+     {
+      "case_id": "pr_docA_p2_b3",
+      "writer": "no_writer",
+      "scored": true,
+      "line_lost": false,
+      "cer": 0.0,
+      "wer": 0.0,
+      "omission_rate": 0.0,
+      "hallucination_rate": 0.0,
+      "digit_sign_error": false
+     }
+    ]
+   },
+   "summary": {
+    "cases": 8,
+    "exact_raw_match": 0,
+    "mean_cer": 0.4878,
+    "median_cer": 0.4404,
+    "mean_wer": 0.7549,
+    "median_wer": 0.9546,
+    "mean_omission_rate": 0.2484,
+    "mean_hallucination_rate": 0.0417,
+    "line_loss": 0,
+    "line_loss_rate": 0.0,
+    "unreadable_marker_rate": 0.375,
+    "digit_sign_errors": 5,
+    "critical_error_cases": 5,
+    "critical_error_flags": 11,
+    "schema_failures": 0,
+    "provider_failures": 0,
+    "cache_hits": 0,
+    "mean_latency_s": 4.383,
+    "median_latency_s": 4.515,
+    "p95_latency_s": 6.062,
+    "total_latency_s": 35.062
+   },
+   "run_usage": {
+    "rows_before": 678,
+    "rows_after": 686,
+    "cost_before": 0.478797,
+    "run_cost": 0.019686,
+    "cost_after": 0.498483,
+    "run_calls": 8,
+    "run_cache_hits": 0,
+    "by_model": {
+     "anthropic/claude-sonnet-5": {
+      "calls": 8,
+      "input_tokens": 7918,
+      "output_tokens": 385,
+      "total_tokens": 8303,
+      "reported_cost": 0.019686
+     }
+    },
+    "by_task": {
+     "ocr_primary": {
+      "calls": 8,
+      "input_tokens": 7918,
+      "output_tokens": 385,
+      "total_tokens": 8303,
+      "reported_cost": 0.019686
+     }
+    }
+   }
+  }
+ },
+ "critical_error_audit": {
+  "openai/gpt-5.6-luna-pro": {
+   "cases": [
+    {
+     "case_id": "hl_e003_q1_r1__l1",
+     "deterministic_flags": [
+      "UNREADABLE_OUTPUT_ON_READABLE_REFERENCE"
+     ],
+     "human_review": null,
+     "cer": 1.0,
+     "wer": 1.0
+    },
+    {
+     "case_id": "hc_e002_q1_r1",
+     "deterministic_flags": [
+      "LATIN_TOKEN_CHANGED(ref=[],ocr=['unreadable'])",
+      "UNREADABLE_OUTPUT_ON_READABLE_REFERENCE"
+     ],
+     "human_review": null,
+     "cer": 1.0,
+     "wer": 1.0
+    },
+    {
+     "case_id": "hc_e002_q1_r7",
+     "deterministic_flags": [
+      "DIGIT_CHANGED(ref=0,ocr=-)",
+      "LATIN_TOKEN_CHANGED(ref=[],ocr=['unreadable'])",
+      "UNREADABLE_OUTPUT_ON_READABLE_REFERENCE"
+     ],
+     "human_review": null,
+     "cer": 1.0,
+     "wer": 1.0
+    },
+    {
+     "case_id": "hc_e002_q2_r1",
+     "deterministic_flags": [
+      "DIGIT_CHANGED(ref=0255,ocr=-)",
+      "LATIN_TOKEN_CHANGED(ref=[],ocr=['unreadable'])",
+      "UNREADABLE_OUTPUT_ON_READABLE_REFERENCE"
+     ],
+     "human_review": null,
+     "cer": 1.0,
+     "wer": 1.0
+    },
+    {
+     "case_id": "hc_e002_q2_r6",
+     "deterministic_flags": [
+      "DIGIT_CHANGED(ref=2,ocr=-)",
+      "SIGN_OPERATOR_CHANGED(ref=-,ocr=-)",
+      "LATIN_TOKEN_CHANGED(ref=['echo'],ocr=[])"
+     ],
+     "human_review": {
+      "severity": "HUMAN_REVIEW_NEEDED",
+      "observation": "the OCR text is fluent Hebrew about religious commandments while the audited reference is signal-processing content about a histogram/echo. Deterministic flags caught the dropped 'echo' token and the lost digit 2, but the whole-line fabrication is a SEMANTIC judgement a deterministic comparator cannot make.",
+      "class_hint": "invented phrase / content unrelated to the crop"
+     },
+     "cer": 0.7434,
+     "wer": 1.0
+    },
+    {
+     "case_id": "pr_docA_p1_b1",
+     "deterministic_flags": [
+      "DIGIT_CHANGED(ref=2033730203673020252026,ocr=2036730203373020252026)"
+     ],
+     "human_review": null,
+     "cer": 0.72,
+     "wer": 0.7692
+    },
+    {
+     "case_id": "pr_docA_p2_b3",
+     "deterministic_flags": [],
+     "human_review": null,
+     "cer": 0.0,
+     "wer": 0.0
+    },
+    {
+     "case_id": "assoc_docB_p2_b1",
+     "deterministic_flags": [
+      "DIGIT_CHANGED(ref=055051047039,ocr=039047051055)"
+     ],
+     "human_review": null,
+     "cer": 0.7083,
+     "wer": 1.2222
+    }
+   ],
+   "deterministic_flag_cases": 7,
+   "human_review_needed": 1
+  },
+  "google/gemini-3.7-flash": {
+   "cases": [
+    {
+     "case_id": "hl_e003_q1_r1__l1",
+     "deterministic_flags": [
+      "LINE_LOST_NO_OUTPUT"
+     ],
+     "human_review": null,
+     "cer": null,
+     "wer": null
+    },
+    {
+     "case_id": "hc_e002_q1_r1",
+     "deterministic_flags": [
+      "LINE_LOST_NO_OUTPUT"
+     ],
+     "human_review": null,
+     "cer": null,
+     "wer": null
+    },
+    {
+     "case_id": "hc_e002_q1_r7",
+     "deterministic_flags": [
+      "LINE_LOST_NO_OUTPUT"
+     ],
+     "human_review": null,
+     "cer": null,
+     "wer": null
+    },
+    {
+     "case_id": "hc_e002_q2_r1",
+     "deterministic_flags": [
+      "LINE_LOST_NO_OUTPUT"
+     ],
+     "human_review": null,
+     "cer": null,
+     "wer": null
+    },
+    {
+     "case_id": "hc_e002_q2_r6",
+     "deterministic_flags": [
+      "LINE_LOST_NO_OUTPUT"
+     ],
+     "human_review": null,
+     "cer": null,
+     "wer": null
+    },
+    {
+     "case_id": "pr_docA_p1_b1",
+     "deterministic_flags": [
+      "LINE_LOST_NO_OUTPUT"
+     ],
+     "human_review": null,
+     "cer": null,
+     "wer": null
+    },
+    {
+     "case_id": "pr_docA_p2_b3",
+     "deterministic_flags": [
+      "LINE_LOST_NO_OUTPUT"
+     ],
+     "human_review": null,
+     "cer": null,
+     "wer": null
+    },
+    {
+     "case_id": "assoc_docB_p2_b1",
+     "deterministic_flags": [
+      "LINE_LOST_NO_OUTPUT"
+     ],
+     "human_review": null,
+     "cer": null,
+     "wer": null
+    }
+   ],
+   "deterministic_flag_cases": 8,
+   "human_review_needed": 0
+  },
+  "anthropic/claude-sonnet-5": {
+   "cases": [
+    {
+     "case_id": "hl_e003_q1_r1__l1",
+     "deterministic_flags": [],
+     "human_review": {
+      "severity": "HUMAN_REVIEW_NEEDED",
+      "observation": "CER 0.2131 with ZERO deterministic flags, yet several content words differ. Low CER does not mean the meaning survived.",
+      "class_hint": "substituted content words below the deterministic-flag threshold"
+     },
+     "cer": 0.2131,
+     "wer": 0.6
+    },
+    {
+     "case_id": "hc_e002_q1_r1",
+     "deterministic_flags": [
+      "LATIN_TOKEN_CHANGED(ref=[],ocr=['unreadable'])",
+      "UNREADABLE_OUTPUT_ON_READABLE_REFERENCE"
+     ],
+     "human_review": null,
+     "cer": 1.0,
+     "wer": 1.0
+    },
+    {
+     "case_id": "hc_e002_q1_r7",
+     "deterministic_flags": [
+      "DIGIT_CHANGED(ref=0,ocr=-)",
+      "SIGN_OPERATOR_CHANGED(ref=-,ocr=-)"
+     ],
+     "human_review": {
+      "severity": "HUMAN_REVIEW_NEEDED",
+      "observation": "CER 0.4559; most content words replaced by phonetically similar non-words; the digit 0 is lost.",
+      "class_hint": "substantial substitution + digit omission"
+     },
+     "cer": 0.4559,
+     "wer": 1.0
+    },
+    {
+     "case_id": "hc_e002_q2_r1",
+     "deterministic_flags": [
+      "DIGIT_CHANGED(ref=0255,ocr=-)",
+      "LATIN_TOKEN_CHANGED(ref=[],ocr=['unreadable'])",
+      "UNREADABLE_OUTPUT_ON_READABLE_REFERENCE"
+     ],
+     "human_review": null,
+     "cer": 1.0,
+     "wer": 1.0
+    },
+    {
+     "case_id": "hc_e002_q2_r6",
+     "deterministic_flags": [
+      "DIGIT_CHANGED(ref=2,ocr=-)",
+      "SIGN_OPERATOR_CHANGED(ref=-,ocr=-)",
+      "LATIN_TOKEN_CHANGED(ref=['echo'],ocr=[])"
+     ],
+     "human_review": {
+      "severity": "HUMAN_REVIEW_NEEDED",
+      "observation": "CER 0.4248; largely garbled; 'echo' dropped and the multiplication by 2 lost.",
+      "class_hint": "substantial substitution + lost digit/operator"
+     },
+     "cer": 0.4248,
+     "wer": 0.9091
+    },
+    {
+     "case_id": "pr_docA_p1_b1",
+     "deterministic_flags": [],
+     "human_review": null,
+     "cer": 0.1,
+     "wer": 0.3077
+    },
+    {
+     "case_id": "pr_docA_p2_b3",
+     "deterministic_flags": [],
+     "human_review": null,
+     "cer": 0.0,
+     "wer": 0.0
+    },
+    {
+     "case_id": "assoc_docB_p2_b1",
+     "deterministic_flags": [
+      "DIGIT_CHANGED(ref=055051047039,ocr=039047051055)"
+     ],
+     "human_review": null,
+     "cer": 0.7083,
+     "wer": 1.2222
+    }
+   ],
+   "deterministic_flag_cases": 5,
+   "human_review_needed": 3
+  }
+ },
+ "reference_serialization_artifact": {
+  "case_id": "assoc_docB_p2_b1",
+  "affects": [
+   "openai/gpt-5.6-luna-pro",
+   "anthropic/claude-sonnet-5"
+  ],
+  "measured_cer": 0.7083,
+  "finding": "NOT a model error. The frozen reference stores the PDF text layer's raw line order; read bottom-up (visual RTL) the associations are alef=0.39, bet=0.47, gimel=0.51, dalet=0.55. BOTH models emitted exactly that association. The 0.7083 CER and the DIGIT_CHANGED flag are pure serialization-order artifacts of the reference.",
+  "action": "RECORDED ONLY - the audited reference was NOT modified (forbidden by the campaign freeze and this task).",
+  "consequence": "Both models' mean CER is inflated by this one case; option_row_association CER is not a usable Stage-1 signal."
+ },
+ "classification": {
+  "openai/gpt-5.6-luna-pro": {
+   "verdict": "DROP",
+   "reason": "mean CER 0.7715 / mean WER 0.8739 on 8 cases. It refused 4 of 5 handwritten crops outright (unreadable markers against fully readable audited references) and on the fifth produced a fluent, wholly fabricated line. A transcriber that either refuses handwriting or invents it is unusable for this pipeline regardless of its $0.00089/crop price. Printed text was fine (mixed_he_en CER 0.0), but handwriting is the reason this role exists."
+  },
+  "google/gemini-3.7-flash": {
+   "verdict": "MAYBE",
+   "reason": "NO OCR EVIDENCE EXISTS. All 8 requests failed HTTP 400 'Reasoning is mandatory for this endpoint and cannot be disabled' - the frozen route pins reasoning.effort='none'. This is a route/provider configuration incompatibility, NOT a measured OCR quality result. $0.00 billed. Neither advanced nor dropped on evidence; it needs a re-pre-registered arm with a reasoning-enabled decoding config, which was NOT run here because replacement calls are outside this authorization."
+  },
+  "anthropic/claude-sonnet-5": {
+   "verdict": "MAYBE",
+   "reason": "Best measured arm: mean CER 0.4878 vs Luna 0.7715, and the only model that attempts handwriting rather than refusing (2 of 5 refused vs Luna's 4 of 5). Printed/mixed content is strong (CER 0.10 / 0.00) and per-writer e003 CER is 0.2131. But handwritten-cell mean CER is 0.7202 with 3 digit/sign errors, and the proposed production gate is per-writer CER <= 5% - writer e002 sits at 0.7202, over an order of magnitude away. It earns a larger seen-only OCR benchmark; it does NOT demonstrate production OCR readiness, and 8 samples cannot show that."
+  }
+ },
+ "cost_projections": {
+  "note": "measured cost per BILLABLE crop x N; excludes retries, cache hits and any verification pass",
+  "counts": {
+   "seen_dev_32": 32,
+   "seen_calibration_21": 21,
+   "all_seen_53": 53,
+   "per_100_crops": 100,
+   "100_exams_at_5_crops": 500,
+   "100_exams_at_10_crops": 1000,
+   "100_exams_at_15_crops": 1500
+  },
+  "per_model": {
+   "openai/gpt-5.6-luna-pro": {
+    "measured": true,
+    "billable_crops": 8,
+    "total_cost_usd": 0.0071066,
+    "cost_per_crop_usd": 0.00088833,
+    "projections": {
+     "seen_dev_32": 0.028426,
+     "seen_calibration_21": 0.018655,
+     "all_seen_53": 0.047081,
+     "per_100_crops": 0.088833,
+     "100_exams_at_5_crops": 0.444163,
+     "100_exams_at_10_crops": 0.888325,
+     "100_exams_at_15_crops": 1.332488
+    }
+   },
+   "google/gemini-3.7-flash": {
+    "measured": false,
+    "reason": "0 billable responses (all 8 requests failed HTTP 400); no measured cost per crop exists",
+    "cost_per_crop_usd": null,
+    "projections": {
+     "seen_dev_32": null,
+     "seen_calibration_21": null,
+     "all_seen_53": null,
+     "per_100_crops": null,
+     "100_exams_at_5_crops": null,
+     "100_exams_at_10_crops": null,
+     "100_exams_at_15_crops": null
+    }
+   },
+   "anthropic/claude-sonnet-5": {
+    "measured": true,
+    "billable_crops": 8,
+    "total_cost_usd": 0.019686,
+    "cost_per_crop_usd": 0.00246075,
+    "projections": {
+     "seen_dev_32": 0.078744,
+     "seen_calibration_21": 0.051676,
+     "all_seen_53": 0.13042,
+     "per_100_crops": 0.246075,
+     "100_exams_at_5_crops": 1.230375,
+     "100_exams_at_10_crops": 2.46075,
+     "100_exams_at_15_crops": 3.691125
+    }
+   }
+  },
+  "grading_cost": {
+   "cloud_grading_cost_usd": 0.0,
+   "local_grading_cloud_cost_usd": 0.0,
+   "note": "no grading model was called, cloud or local; OCR only"
+  }
+ },
+ "accounting": {
+  "starting_ledger_rows": 662,
+  "ending_ledger_rows": 686,
+  "starting_ledger_cum_usd": 0.47169044,
+  "ending_ledger_cum_usd": 0.49848304,
+  "run_attributed_cost_usd": 0.0267926,
+  "per_model_ledger": {
+   "openai/gpt-5.6-luna-pro": {
+    "rows": 8,
+    "cost": 0.0071066,
+    "billable": 8,
+    "nonbillable": 0
+   },
+   "google/gemini-3.7-flash": {
+    "rows": 8,
+    "cost": 0.0,
+    "billable": 0,
+    "nonbillable": 8
+   },
+   "anthropic/claude-sonnet-5": {
+    "rows": 8,
+    "cost": 0.019686,
+    "billable": 8,
+    "nonbillable": 0
+   }
+  },
+  "starting_account_usage": 0.47169007,
+  "ending_account_usage": 0.49848267,
+  "account_delta_usd": 0.0267926,
+  "account_limit": 20,
+  "account_limit_remaining": 19.50151733,
+  "rounding_difference_ledger_vs_account": 0.0,
+  "billable_responses": 16,
+  "nonbillable_failures": 8,
+  "every_billable_response_has_ledger_row": true,
+  "starting_cache_entries": 541,
+  "ending_cache_entries": 557,
+  "cache_hits_during_run": 0
+ },
+ "budget": {
+  "authorized_additional_spend_ceiling_usd": 0.1,
+  "predicted_additional_usd": 0.077005,
+  "actual_additional_usd": 0.0267926,
+  "within_ceiling": true,
+  "project_cumulative_usd": 0.49848304,
+  "project_warn_usd": 8.0,
+  "project_hard_usd": 10.0
+ },
+ "confirmations": {
+  "ocr_provider_requests": 24,
+  "grading_provider_calls": 0,
+  "local_grading_calls": 0,
+  "rag_calls": 0,
+  "held_out_calls_or_exposure": 0,
+  "audited_references_modified": 0,
+  "active_grades_changed": 0,
+  "additional_spend_usd": 0.0267926,
+  "api_key_exposure": 0,
+  "ocr_prompt_modified": false,
+  "population_expanded": false,
+  "replacement_calls": 0
+ },
+ "content_sha256": "69c99ba4e851d1c10cd592e2d96f944012ba9bdac34daf1c1af1d3ac84f8cf27"
+}

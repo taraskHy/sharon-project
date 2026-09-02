@@ -1,0 +1,208 @@
+{
+ "artifact": "ocr_smoke_stage1_execution_baseline",
+ "created_at": "2026-09-02 12:06:28",
+ "git_commit": "f7c2f602c53e69474751638ca11996861500fe84",
+ "git_branch": "initial-prototype",
+ "worktree_clean_at_baseline": false,
+ "campaign_sha256": "8ce4f5eea7b233c5a21a71b9cef8cca5e72f653091722dccef8426ad6e5d67d0",
+ "smoke_selection_sha256": "cc5c9f1ff9911a6821bc49c00131b17770d9a5574baa3e41eb47ecb9d5ef73ec",
+ "manifest_hashes": {
+  "items_sha256": "25463e91b95db8eecfc306644dd0839f65e42910d4161f6991383b6f4a524a8b",
+  "references_sha256": "4a93e826e6e94777d445e64ae2c3f5ed10def46aa021ff763a45a9807fb913b5",
+  "audit_sha256": "eace95fc6dc684c88f1fea2142414a68ad8f421257ac012faf6bcfc9ae07f50c",
+  "audit_manifest_sha256": "65ac16385979480945938f45f0d3e5e3255afa7bcb41c4ea7afe2ff2ebcc405f"
+ },
+ "ordered_case_ids": [
+  "hl_e003_q1_r1__l1",
+  "hc_e002_q1_r1",
+  "hc_e002_q1_r7",
+  "hc_e002_q2_r1",
+  "hc_e002_q2_r6",
+  "pr_docA_p1_b1",
+  "pr_docA_p2_b3",
+  "assoc_docB_p2_b1"
+ ],
+ "cases": [
+  {
+   "case_id": "hl_e003_q1_r1__l1",
+   "split": "DEV",
+   "category": "handwritten_line",
+   "writer": "e003",
+   "image": "crops/hl_e003_q1_r1__l1.png",
+   "crop_sha256": "a8703841a8bd44b65a085935d75ab434a554131bcdb49031ebd58d217e1c4757",
+   "reference_sha256": "635929b4b3b8f1d72cac29ab17e6346b3aaa7e883dfe33b56317de6d94fe9ce3",
+   "reference_chars": 62,
+   "provenance_class": "audited_confirmed"
+  },
+  {
+   "case_id": "hc_e002_q1_r1",
+   "split": "DEV",
+   "category": "handwritten_cell",
+   "writer": "e002",
+   "image": "crops/hc_e002_q1_r1.png",
+   "crop_sha256": "f23d427da6e04dbb384d88418a4657adff24ecaba9b252dbb34259adf824fda7",
+   "reference_sha256": "2f906246081ff11463426c4fda09d9337be6b868d3b62c93293a35adbac24d7f",
+   "reference_chars": 19,
+   "provenance_class": "audited_confirmed"
+  },
+  {
+   "case_id": "hc_e002_q1_r7",
+   "split": "DEV",
+   "category": "handwritten_cell",
+   "writer": "e002",
+   "image": "crops/hc_e002_q1_r7.png",
+   "crop_sha256": "7cd8b22b872c3e283c6a3cdb9240abeaa6b20e8ee8bc9c419badcb21d4e2fad7",
+   "reference_sha256": "09902986740b9cca66b2626ea4f0896da35be142cb8c2b65d5688ac224c27890",
+   "reference_chars": 69,
+   "provenance_class": "audited_confirmed"
+  },
+  {
+   "case_id": "hc_e002_q2_r1",
+   "split": "DEV",
+   "category": "handwritten_cell",
+   "writer": "e002",
+   "image": "crops/hc_e002_q2_r1.png",
+   "crop_sha256": "cc2e23b6c8acfa9b54c6d7a6a6a4bf68d172e0259a323c923a02673c19a317ba",
+   "reference_sha256": "1756823bf17385c37bb3abb0fe2fd75565c786f6729ae0fe5b484fc972ec6e38",
+   "reference_chars": 52,
+   "provenance_class": "audited_corrected"
+  },
+  {
+   "case_id": "hc_e002_q2_r6",
+   "split": "DEV",
+   "category": "handwritten_cell",
+   "writer": "e002",
+   "image": "crops/hc_e002_q2_r6.png",
+   "crop_sha256": "ebbbff9c23ba3b0b6a1c11bfa73c8526df63cc6222c3baeeb9e833538f79833a",
+   "reference_sha256": "fb8c4ea9a0f82637e88e9db9165f4f5b04a60aa62ea34441b3966242b88e3101",
+   "reference_chars": 116,
+   "provenance_class": "audited_confirmed"
+  },
+  {
+   "case_id": "pr_docA_p1_b1",
+   "split": "DEV",
+   "category": "formula_printed",
+   "writer": null,
+   "image": "crops/pr_docA_p1_b1.png",
+   "crop_sha256": "5d759b3578312dc61a0f20a7f63228288b5917f47c398488a3f08a3037d7c5aa",
+   "reference_sha256": "d643591de21b3c72a1aafecae3c6a7d1d4727e46a6636370eb05a82a34cca489",
+   "reference_chars": 57,
+   "provenance_class": "text_layer_mechanical"
+  },
+  {
+   "case_id": "pr_docA_p2_b3",
+   "split": "DEV",
+   "category": "mixed_he_en",
+   "writer": null,
+   "image": "crops/pr_docA_p2_b3.png",
+   "crop_sha256": "ed3c5ef5b4cb26a664a76b3709056bbbf26e90bb0f213c2fadb04de105791124",
+   "reference_sha256": "8ca7ce723be337c52f4ba55d24599976f87f2d93b16a813c8eeb324e8f840028",
+   "reference_chars": 101,
+   "provenance_class": "text_layer_mechanical"
+  },
+  {
+   "case_id": "assoc_docB_p2_b1",
+   "split": "DEV",
+   "category": "option_row_association",
+   "writer": null,
+   "image": "crops/assoc_docB_p2_b1.png",
+   "crop_sha256": "971600121151bc5ba804bdcaa5a243de07c6f52c62c275d378c5d9a7a0b900b4",
+   "reference_sha256": "ce52194d71d82f64d3e9a1cbbce79606c4d00fc3ede55ca7e0837accf65f4826",
+   "reference_chars": 32,
+   "provenance_class": "text_layer_mechanical"
+  }
+ ],
+ "held_out_cases": 0,
+ "candidates": [
+  "openai/gpt-5.6-luna-pro",
+  "google/gemini-3.7-flash",
+  "anthropic/claude-sonnet-5"
+ ],
+ "live_pricing": {
+  "fetched_at": "2026-09-02 12:01:35",
+  "source": "https://openrouter.ai/api/v1/models",
+  "models": {
+   "openai/gpt-5.6-luna-pro": {
+    "present": true,
+    "canonical_slug": "openai/gpt-5.6-luna-pro-20260709",
+    "prompt_per_token": "0.0000002",
+    "completion_per_token": "0.0000012",
+    "image_per_image": null,
+    "request": null,
+    "input_per_M": 0.19999999999999998,
+    "output_per_M": 1.2,
+    "context_length": 1050000,
+    "modality": "text+image+file->text"
+   },
+   "google/gemini-3.7-flash": {
+    "present": true,
+    "canonical_slug": "google/gemini-3.7-flash-20260813",
+    "prompt_per_token": "0.00000075",
+    "completion_per_token": "0.00000375",
+    "image_per_image": "0.00000075",
+    "request": null,
+    "input_per_M": 0.75,
+    "output_per_M": 3.75,
+    "context_length": 1048576,
+    "modality": "text+image+file+audio+video->text"
+   },
+   "anthropic/claude-sonnet-5": {
+    "present": true,
+    "canonical_slug": "anthropic/claude-sonnet-5-20260630",
+    "prompt_per_token": "0.000002",
+    "completion_per_token": "0.00001",
+    "image_per_image": null,
+    "request": null,
+    "input_per_M": 2.0,
+    "output_per_M": 10.0,
+    "context_length": 1000000,
+    "modality": "text+image+file->text"
+   }
+  }
+ },
+ "prompt_version": "m2-strict-v1",
+ "adapter_version": "ocr-primary-bench-v1",
+ "schema_name": "BenchTranscription",
+ "schema_sha256": "003ee19969c8c443d62d75a0b2ff8eaeaa052fb3b40f3c609c3c8feb178d3679",
+ "decoding_config": {
+  "task": "ocr_primary",
+  "backend": "openrouter",
+  "structured_mode": "json_schema",
+  "max_tokens": 400,
+  "temperature": 0.0,
+  "reasoning": {
+   "effort": "none"
+  },
+  "extra_generation": {},
+  "prompt_version": "m2-strict-v1"
+ },
+ "predicted_costs": {
+  "openai/gpt-5.6-luna-pro": 0.005817,
+  "google/gemini-3.7-flash": 0.019415,
+  "anthropic/claude-sonnet-5": 0.051773,
+  "total": 0.077005,
+  "ceiling_usd": 0.1,
+  "gate": "PASS"
+ },
+ "starting_ledger": {
+  "path": "evaluation\\model_selection\\state\\gateway_ledger\\usage.jsonl",
+  "rows": 662,
+  "cumulative_cost_usd": 0.47169044,
+  "by_task": {
+   "grade_primary": {
+    "calls": 662,
+    "cost": 0.47169045
+   }
+  }
+ },
+ "starting_openrouter_account": {
+  "usage": 0.47169007,
+  "limit": 20,
+  "limit_remaining": 19.52830993,
+  "checked_at": "2026-09-02 12:06:28"
+ },
+ "starting_cache_entries": 541,
+ "cache_policy": "NOT cleared; exact-request hits allowed and reported",
+ "run_dir_note": "the live runs share config_hash (and therefore run_id/dir) with today's dry-runs; those dirs contain only regenerable plan.json/run.json scaffolding and NO outputs.jsonl, so no result is overwritten. Resume keys off outputs.jsonl (runner.py:650), which does not exist -> all 8 cases execute fresh.",
+ "content_sha256": "bcf830f78becc46157e47f66f5b6a3d41cc9ce67d715fc7aa90c025152bf5a8e"
+}

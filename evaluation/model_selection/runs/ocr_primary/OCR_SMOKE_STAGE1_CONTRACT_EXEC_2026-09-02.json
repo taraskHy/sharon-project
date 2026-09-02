@@ -1,0 +1,732 @@
+{
+ "artifact": "ocr_smoke_stage1_request_contract_verification_EXECUTION",
+ "created_at": "2026-09-02 12:04:06",
+ "supersedes": "OCR_SMOKE_STAGE1_REQUEST_CONTRACT_2026-09-02.json (preflight, kept append-only)",
+ "git_commit": "f7c2f602c53e69474751638ca11996861500fe84",
+ "campaign_sha256": "8ce4f5eea7b233c5a21a71b9cef8cca5e72f653091722dccef8426ad6e5d67d0",
+ "smoke_selection_sha256": "cc5c9f1ff9911a6821bc49c00131b17770d9a5574baa3e41eb47ecb9d5ef73ec",
+ "provider_calls_made": 0,
+ "planned_payloads": 24,
+ "candidates": [
+  "openai/gpt-5.6-luna-pro",
+  "google/gemini-3.7-flash",
+  "anthropic/claude-sonnet-5"
+ ],
+ "verdict": {
+  "all_payloads_pass": true,
+  "exactly_one_image_zero_text_blocks": true,
+  "runner_leakage_check": [
+   "passed"
+  ],
+  "production_mode_boundary": [
+   "ALLOWED_IN_PRODUCTION_MODE"
+  ],
+  "grading_tripwire_hits_total": 0,
+  "audited_reference_text_in_any_payload": 0,
+  "system_prompts_all_registered_cloud_ocr": true
+ },
+ "research_mode_note": "--research makes check_cloud_call return early (autograder/cloudboundary.py:148), so the cloud task-allowlist / grading-marker boundary is NOT enforced at runtime during this run. Compensating control: every one of the 24 payloads was re-checked here in execution_mode='production' and all 24 are ALLOWED — the --research flag unlocks the remote-run gate only, it does not let anything through that production mode would refuse. runner.leakage_check (runner.py:726) runs unconditionally in both modes.",
+ "instruction_requirements": {
+  "copy_only_what_is_written__never_invent_or_complete": "EXPLICIT: 'Copy EXACTLY the visible text, word by word. Never complete, paraphrase, correct, or invent words. Fidelity over fluency.'",
+  "preserve_spelling_grammar_terminology_math_digits_signs_operators_negations": "COVERED BY the exact-copy rule; NOT itemized in the frozen m2-strict-v1 prompt. The prompt is frozen and was NOT edited for this run (editing it would break comparability with the frozen hebrew_bench_v2 history).",
+  "unreadable_marker": "EXPLICIT: '[?]' per unreadable word; '[unreadable]' if everything is unreadable",
+  "struck_through_protocol": "EXPLICIT: 'Text struck through by the writer is cancelled - skip it.'",
+  "rtl_logical_order": "EXPLICIT: 'Hebrew is written right-to-left; output the text in normal logical order (first word first).'",
+  "no_explaining_no_paraphrase_no_grading": "EXPLICIT: reply with ONLY the JSON object; no grading instruction present",
+  "schema": "BenchTranscription {transcription: str} only"
+ },
+ "frozen_prompt_deviation": {
+  "category": "option_row_association",
+  "affected_case": "assoc_docB_p2_b1",
+  "finding": "This frozen prompt is a single compressed instruction and does NOT carry the numbered rules: it omits the [?]/[unreadable] markers, the struck-through protocol and the explicit RTL-logical-order clause. It does require 'the EXACT printed value' per option letter.",
+  "action": "RECORDED, NOT FIXED — modifying a frozen prompt mid-campaign is forbidden by this task and by the campaign freeze.",
+  "consequence": "Unreadable-marker and line-loss behaviour is not instructed for this 1 of 8 cases; read its metrics with that caveat."
+ },
+ "benign_substring_explanations": {
+  "'instructor'": "handwritten_cell only: 'Ignore any red instructor ink' — an instruction to IGNORE instructor marks, not grading content",
+  "'correct'": "all rule-bearing prompts: the verb inside the prohibition 'Never complete, paraphrase, correct, or invent words'"
+ },
+ "prompt_sha256_by_category": {
+  "formula_printed": "28d034e2a0f1b77f03b0d4754a9bf187806518048a4ad290fa37a8e0ba5e01c9",
+  "handwritten_cell": "d40280acf305b40f7b4ba74d115f76d4d7268156ba5acce0d7f1ce60ba67a137",
+  "handwritten_line": "8c6981a00d467dbbb92c2495a52e1e050dab68de43a43ce977323bc0c2718172",
+  "mixed_he_en": "3c422f061047cad9aa49ce9320f336f36ce96b220e5c5b2fa05526a9f706d4a7",
+  "option_row_association": "71f6a9af322ccb27ce2bf2f7df091ac5fb00f85a8fdf8cbd700fed2962e99cdc",
+  "printed_rtl": "fb6874a4c84b15b5497e9498f561c7992f56a6b2ac12b20abd8ecde62cde2e40"
+ },
+ "live_pricing": {
+  "fetched_at": "2026-09-02 12:01:35",
+  "source": "https://openrouter.ai/api/v1/models",
+  "models": {
+   "openai/gpt-5.6-luna-pro": {
+    "present": true,
+    "canonical_slug": "openai/gpt-5.6-luna-pro-20260709",
+    "prompt_per_token": "0.0000002",
+    "completion_per_token": "0.0000012",
+    "image_per_image": null,
+    "request": null,
+    "input_per_M": 0.19999999999999998,
+    "output_per_M": 1.2,
+    "context_length": 1050000,
+    "modality": "text+image+file->text"
+   },
+   "google/gemini-3.7-flash": {
+    "present": true,
+    "canonical_slug": "google/gemini-3.7-flash-20260813",
+    "prompt_per_token": "0.00000075",
+    "completion_per_token": "0.00000375",
+    "image_per_image": "0.00000075",
+    "request": null,
+    "input_per_M": 0.75,
+    "output_per_M": 3.75,
+    "context_length": 1048576,
+    "modality": "text+image+file+audio+video->text"
+   },
+   "anthropic/claude-sonnet-5": {
+    "present": true,
+    "canonical_slug": "anthropic/claude-sonnet-5-20260630",
+    "prompt_per_token": "0.000002",
+    "completion_per_token": "0.00001",
+    "image_per_image": null,
+    "request": null,
+    "input_per_M": 2.0,
+    "output_per_M": 10.0,
+    "context_length": 1000000,
+    "modality": "text+image+file->text"
+   }
+  }
+ },
+ "payloads": [
+  {
+   "candidate": "openai/gpt-5.6-luna-pro",
+   "case_id": "hl_e003_q1_r1__l1",
+   "category": "handwritten_line",
+   "writer": "e003",
+   "split": "DEV",
+   "image": "crops/hl_e003_q1_r1__l1.png",
+   "crop_sha256": "a8703841a8bd44b65a085935d75ab434a554131bcdb49031ebd58d217e1c4757",
+   "blocks": [
+    "image"
+   ],
+   "exactly_one_image_zero_text": true,
+   "system_prompt_sha256": "8c6981a00d467dbbb92c2495a52e1e050dab68de43a43ce977323bc0c2718172",
+   "system_prompt_registered": true,
+   "prompt_version": "m2-strict-v1",
+   "max_tokens": 600,
+   "output_model": "BenchTranscription",
+   "leakage_check": "passed",
+   "production_boundary": "ALLOWED_IN_PRODUCTION_MODE",
+   "grading_tripwire_hits": [],
+   "banned_substring_hits": [
+    "correct"
+   ],
+   "reference_text_present_in_payload": false,
+   "PASS": true
+  },
+  {
+   "candidate": "openai/gpt-5.6-luna-pro",
+   "case_id": "hc_e002_q2_r1",
+   "category": "handwritten_cell",
+   "writer": "e002",
+   "split": "DEV",
+   "image": "crops/hc_e002_q2_r1.png",
+   "crop_sha256": "cc2e23b6c8acfa9b54c6d7a6a6a4bf68d172e0259a323c923a02673c19a317ba",
+   "blocks": [
+    "image"
+   ],
+   "exactly_one_image_zero_text": true,
+   "system_prompt_sha256": "d40280acf305b40f7b4ba74d115f76d4d7268156ba5acce0d7f1ce60ba67a137",
+   "system_prompt_registered": true,
+   "prompt_version": "m2-strict-v1",
+   "max_tokens": 600,
+   "output_model": "BenchTranscription",
+   "leakage_check": "passed",
+   "production_boundary": "ALLOWED_IN_PRODUCTION_MODE",
+   "grading_tripwire_hits": [],
+   "banned_substring_hits": [
+    "instructor",
+    "correct"
+   ],
+   "reference_text_present_in_payload": false,
+   "PASS": true
+  },
+  {
+   "candidate": "openai/gpt-5.6-luna-pro",
+   "case_id": "hc_e002_q1_r1",
+   "category": "handwritten_cell",
+   "writer": "e002",
+   "split": "DEV",
+   "image": "crops/hc_e002_q1_r1.png",
+   "crop_sha256": "f23d427da6e04dbb384d88418a4657adff24ecaba9b252dbb34259adf824fda7",
+   "blocks": [
+    "image"
+   ],
+   "exactly_one_image_zero_text": true,
+   "system_prompt_sha256": "d40280acf305b40f7b4ba74d115f76d4d7268156ba5acce0d7f1ce60ba67a137",
+   "system_prompt_registered": true,
+   "prompt_version": "m2-strict-v1",
+   "max_tokens": 600,
+   "output_model": "BenchTranscription",
+   "leakage_check": "passed",
+   "production_boundary": "ALLOWED_IN_PRODUCTION_MODE",
+   "grading_tripwire_hits": [],
+   "banned_substring_hits": [
+    "instructor",
+    "correct"
+   ],
+   "reference_text_present_in_payload": false,
+   "PASS": true
+  },
+  {
+   "candidate": "openai/gpt-5.6-luna-pro",
+   "case_id": "hc_e002_q2_r6",
+   "category": "handwritten_cell",
+   "writer": "e002",
+   "split": "DEV",
+   "image": "crops/hc_e002_q2_r6.png",
+   "crop_sha256": "ebbbff9c23ba3b0b6a1c11bfa73c8526df63cc6222c3baeeb9e833538f79833a",
+   "blocks": [
+    "image"
+   ],
+   "exactly_one_image_zero_text": true,
+   "system_prompt_sha256": "d40280acf305b40f7b4ba74d115f76d4d7268156ba5acce0d7f1ce60ba67a137",
+   "system_prompt_registered": true,
+   "prompt_version": "m2-strict-v1",
+   "max_tokens": 600,
+   "output_model": "BenchTranscription",
+   "leakage_check": "passed",
+   "production_boundary": "ALLOWED_IN_PRODUCTION_MODE",
+   "grading_tripwire_hits": [],
+   "banned_substring_hits": [
+    "instructor",
+    "correct"
+   ],
+   "reference_text_present_in_payload": false,
+   "PASS": true
+  },
+  {
+   "candidate": "openai/gpt-5.6-luna-pro",
+   "case_id": "pr_docA_p1_b1",
+   "category": "formula_printed",
+   "writer": null,
+   "split": "DEV",
+   "image": "crops/pr_docA_p1_b1.png",
+   "crop_sha256": "5d759b3578312dc61a0f20a7f63228288b5917f47c398488a3f08a3037d7c5aa",
+   "blocks": [
+    "image"
+   ],
+   "exactly_one_image_zero_text": true,
+   "system_prompt_sha256": "28d034e2a0f1b77f03b0d4754a9bf187806518048a4ad290fa37a8e0ba5e01c9",
+   "system_prompt_registered": true,
+   "prompt_version": "m2-strict-v1",
+   "max_tokens": 600,
+   "output_model": "BenchTranscription",
+   "leakage_check": "passed",
+   "production_boundary": "ALLOWED_IN_PRODUCTION_MODE",
+   "grading_tripwire_hits": [],
+   "banned_substring_hits": [
+    "correct"
+   ],
+   "reference_text_present_in_payload": false,
+   "PASS": true
+  },
+  {
+   "candidate": "openai/gpt-5.6-luna-pro",
+   "case_id": "pr_docA_p2_b3",
+   "category": "mixed_he_en",
+   "writer": null,
+   "split": "DEV",
+   "image": "crops/pr_docA_p2_b3.png",
+   "crop_sha256": "ed3c5ef5b4cb26a664a76b3709056bbbf26e90bb0f213c2fadb04de105791124",
+   "blocks": [
+    "image"
+   ],
+   "exactly_one_image_zero_text": true,
+   "system_prompt_sha256": "3c422f061047cad9aa49ce9320f336f36ce96b220e5c5b2fa05526a9f706d4a7",
+   "system_prompt_registered": true,
+   "prompt_version": "m2-strict-v1",
+   "max_tokens": 600,
+   "output_model": "BenchTranscription",
+   "leakage_check": "passed",
+   "production_boundary": "ALLOWED_IN_PRODUCTION_MODE",
+   "grading_tripwire_hits": [],
+   "banned_substring_hits": [
+    "correct"
+   ],
+   "reference_text_present_in_payload": false,
+   "PASS": true
+  },
+  {
+   "candidate": "openai/gpt-5.6-luna-pro",
+   "case_id": "hc_e002_q1_r7",
+   "category": "handwritten_cell",
+   "writer": "e002",
+   "split": "DEV",
+   "image": "crops/hc_e002_q1_r7.png",
+   "crop_sha256": "7cd8b22b872c3e283c6a3cdb9240abeaa6b20e8ee8bc9c419badcb21d4e2fad7",
+   "blocks": [
+    "image"
+   ],
+   "exactly_one_image_zero_text": true,
+   "system_prompt_sha256": "d40280acf305b40f7b4ba74d115f76d4d7268156ba5acce0d7f1ce60ba67a137",
+   "system_prompt_registered": true,
+   "prompt_version": "m2-strict-v1",
+   "max_tokens": 600,
+   "output_model": "BenchTranscription",
+   "leakage_check": "passed",
+   "production_boundary": "ALLOWED_IN_PRODUCTION_MODE",
+   "grading_tripwire_hits": [],
+   "banned_substring_hits": [
+    "instructor",
+    "correct"
+   ],
+   "reference_text_present_in_payload": false,
+   "PASS": true
+  },
+  {
+   "candidate": "openai/gpt-5.6-luna-pro",
+   "case_id": "assoc_docB_p2_b1",
+   "category": "option_row_association",
+   "writer": null,
+   "split": "DEV",
+   "image": "crops/assoc_docB_p2_b1.png",
+   "crop_sha256": "971600121151bc5ba804bdcaa5a243de07c6f52c62c275d378c5d9a7a0b900b4",
+   "blocks": [
+    "image"
+   ],
+   "exactly_one_image_zero_text": true,
+   "system_prompt_sha256": "71f6a9af322ccb27ce2bf2f7df091ac5fb00f85a8fdf8cbd700fed2962e99cdc",
+   "system_prompt_registered": true,
+   "prompt_version": "m2-strict-v1",
+   "max_tokens": 600,
+   "output_model": "BenchTranscription",
+   "leakage_check": "passed",
+   "production_boundary": "ALLOWED_IN_PRODUCTION_MODE",
+   "grading_tripwire_hits": [],
+   "banned_substring_hits": [],
+   "reference_text_present_in_payload": false,
+   "PASS": true
+  },
+  {
+   "candidate": "google/gemini-3.7-flash",
+   "case_id": "hl_e003_q1_r1__l1",
+   "category": "handwritten_line",
+   "writer": "e003",
+   "split": "DEV",
+   "image": "crops/hl_e003_q1_r1__l1.png",
+   "crop_sha256": "a8703841a8bd44b65a085935d75ab434a554131bcdb49031ebd58d217e1c4757",
+   "blocks": [
+    "image"
+   ],
+   "exactly_one_image_zero_text": true,
+   "system_prompt_sha256": "8c6981a00d467dbbb92c2495a52e1e050dab68de43a43ce977323bc0c2718172",
+   "system_prompt_registered": true,
+   "prompt_version": "m2-strict-v1",
+   "max_tokens": 600,
+   "output_model": "BenchTranscription",
+   "leakage_check": "passed",
+   "production_boundary": "ALLOWED_IN_PRODUCTION_MODE",
+   "grading_tripwire_hits": [],
+   "banned_substring_hits": [
+    "correct"
+   ],
+   "reference_text_present_in_payload": false,
+   "PASS": true
+  },
+  {
+   "candidate": "google/gemini-3.7-flash",
+   "case_id": "hc_e002_q2_r1",
+   "category": "handwritten_cell",
+   "writer": "e002",
+   "split": "DEV",
+   "image": "crops/hc_e002_q2_r1.png",
+   "crop_sha256": "cc2e23b6c8acfa9b54c6d7a6a6a4bf68d172e0259a323c923a02673c19a317ba",
+   "blocks": [
+    "image"
+   ],
+   "exactly_one_image_zero_text": true,
+   "system_prompt_sha256": "d40280acf305b40f7b4ba74d115f76d4d7268156ba5acce0d7f1ce60ba67a137",
+   "system_prompt_registered": true,
+   "prompt_version": "m2-strict-v1",
+   "max_tokens": 600,
+   "output_model": "BenchTranscription",
+   "leakage_check": "passed",
+   "production_boundary": "ALLOWED_IN_PRODUCTION_MODE",
+   "grading_tripwire_hits": [],
+   "banned_substring_hits": [
+    "instructor",
+    "correct"
+   ],
+   "reference_text_present_in_payload": false,
+   "PASS": true
+  },
+  {
+   "candidate": "google/gemini-3.7-flash",
+   "case_id": "hc_e002_q1_r1",
+   "category": "handwritten_cell",
+   "writer": "e002",
+   "split": "DEV",
+   "image": "crops/hc_e002_q1_r1.png",
+   "crop_sha256": "f23d427da6e04dbb384d88418a4657adff24ecaba9b252dbb34259adf824fda7",
+   "blocks": [
+    "image"
+   ],
+   "exactly_one_image_zero_text": true,
+   "system_prompt_sha256": "d40280acf305b40f7b4ba74d115f76d4d7268156ba5acce0d7f1ce60ba67a137",
+   "system_prompt_registered": true,
+   "prompt_version": "m2-strict-v1",
+   "max_tokens": 600,
+   "output_model": "BenchTranscription",
+   "leakage_check": "passed",
+   "production_boundary": "ALLOWED_IN_PRODUCTION_MODE",
+   "grading_tripwire_hits": [],
+   "banned_substring_hits": [
+    "instructor",
+    "correct"
+   ],
+   "reference_text_present_in_payload": false,
+   "PASS": true
+  },
+  {
+   "candidate": "google/gemini-3.7-flash",
+   "case_id": "hc_e002_q2_r6",
+   "category": "handwritten_cell",
+   "writer": "e002",
+   "split": "DEV",
+   "image": "crops/hc_e002_q2_r6.png",
+   "crop_sha256": "ebbbff9c23ba3b0b6a1c11bfa73c8526df63cc6222c3baeeb9e833538f79833a",
+   "blocks": [
+    "image"
+   ],
+   "exactly_one_image_zero_text": true,
+   "system_prompt_sha256": "d40280acf305b40f7b4ba74d115f76d4d7268156ba5acce0d7f1ce60ba67a137",
+   "system_prompt_registered": true,
+   "prompt_version": "m2-strict-v1",
+   "max_tokens": 600,
+   "output_model": "BenchTranscription",
+   "leakage_check": "passed",
+   "production_boundary": "ALLOWED_IN_PRODUCTION_MODE",
+   "grading_tripwire_hits": [],
+   "banned_substring_hits": [
+    "instructor",
+    "correct"
+   ],
+   "reference_text_present_in_payload": false,
+   "PASS": true
+  },
+  {
+   "candidate": "google/gemini-3.7-flash",
+   "case_id": "pr_docA_p1_b1",
+   "category": "formula_printed",
+   "writer": null,
+   "split": "DEV",
+   "image": "crops/pr_docA_p1_b1.png",
+   "crop_sha256": "5d759b3578312dc61a0f20a7f63228288b5917f47c398488a3f08a3037d7c5aa",
+   "blocks": [
+    "image"
+   ],
+   "exactly_one_image_zero_text": true,
+   "system_prompt_sha256": "28d034e2a0f1b77f03b0d4754a9bf187806518048a4ad290fa37a8e0ba5e01c9",
+   "system_prompt_registered": true,
+   "prompt_version": "m2-strict-v1",
+   "max_tokens": 600,
+   "output_model": "BenchTranscription",
+   "leakage_check": "passed",
+   "production_boundary": "ALLOWED_IN_PRODUCTION_MODE",
+   "grading_tripwire_hits": [],
+   "banned_substring_hits": [
+    "correct"
+   ],
+   "reference_text_present_in_payload": false,
+   "PASS": true
+  },
+  {
+   "candidate": "google/gemini-3.7-flash",
+   "case_id": "pr_docA_p2_b3",
+   "category": "mixed_he_en",
+   "writer": null,
+   "split": "DEV",
+   "image": "crops/pr_docA_p2_b3.png",
+   "crop_sha256": "ed3c5ef5b4cb26a664a76b3709056bbbf26e90bb0f213c2fadb04de105791124",
+   "blocks": [
+    "image"
+   ],
+   "exactly_one_image_zero_text": true,
+   "system_prompt_sha256": "3c422f061047cad9aa49ce9320f336f36ce96b220e5c5b2fa05526a9f706d4a7",
+   "system_prompt_registered": true,
+   "prompt_version": "m2-strict-v1",
+   "max_tokens": 600,
+   "output_model": "BenchTranscription",
+   "leakage_check": "passed",
+   "production_boundary": "ALLOWED_IN_PRODUCTION_MODE",
+   "grading_tripwire_hits": [],
+   "banned_substring_hits": [
+    "correct"
+   ],
+   "reference_text_present_in_payload": false,
+   "PASS": true
+  },
+  {
+   "candidate": "google/gemini-3.7-flash",
+   "case_id": "hc_e002_q1_r7",
+   "category": "handwritten_cell",
+   "writer": "e002",
+   "split": "DEV",
+   "image": "crops/hc_e002_q1_r7.png",
+   "crop_sha256": "7cd8b22b872c3e283c6a3cdb9240abeaa6b20e8ee8bc9c419badcb21d4e2fad7",
+   "blocks": [
+    "image"
+   ],
+   "exactly_one_image_zero_text": true,
+   "system_prompt_sha256": "d40280acf305b40f7b4ba74d115f76d4d7268156ba5acce0d7f1ce60ba67a137",
+   "system_prompt_registered": true,
+   "prompt_version": "m2-strict-v1",
+   "max_tokens": 600,
+   "output_model": "BenchTranscription",
+   "leakage_check": "passed",
+   "production_boundary": "ALLOWED_IN_PRODUCTION_MODE",
+   "grading_tripwire_hits": [],
+   "banned_substring_hits": [
+    "instructor",
+    "correct"
+   ],
+   "reference_text_present_in_payload": false,
+   "PASS": true
+  },
+  {
+   "candidate": "google/gemini-3.7-flash",
+   "case_id": "assoc_docB_p2_b1",
+   "category": "option_row_association",
+   "writer": null,
+   "split": "DEV",
+   "image": "crops/assoc_docB_p2_b1.png",
+   "crop_sha256": "971600121151bc5ba804bdcaa5a243de07c6f52c62c275d378c5d9a7a0b900b4",
+   "blocks": [
+    "image"
+   ],
+   "exactly_one_image_zero_text": true,
+   "system_prompt_sha256": "71f6a9af322ccb27ce2bf2f7df091ac5fb00f85a8fdf8cbd700fed2962e99cdc",
+   "system_prompt_registered": true,
+   "prompt_version": "m2-strict-v1",
+   "max_tokens": 600,
+   "output_model": "BenchTranscription",
+   "leakage_check": "passed",
+   "production_boundary": "ALLOWED_IN_PRODUCTION_MODE",
+   "grading_tripwire_hits": [],
+   "banned_substring_hits": [],
+   "reference_text_present_in_payload": false,
+   "PASS": true
+  },
+  {
+   "candidate": "anthropic/claude-sonnet-5",
+   "case_id": "hl_e003_q1_r1__l1",
+   "category": "handwritten_line",
+   "writer": "e003",
+   "split": "DEV",
+   "image": "crops/hl_e003_q1_r1__l1.png",
+   "crop_sha256": "a8703841a8bd44b65a085935d75ab434a554131bcdb49031ebd58d217e1c4757",
+   "blocks": [
+    "image"
+   ],
+   "exactly_one_image_zero_text": true,
+   "system_prompt_sha256": "8c6981a00d467dbbb92c2495a52e1e050dab68de43a43ce977323bc0c2718172",
+   "system_prompt_registered": true,
+   "prompt_version": "m2-strict-v1",
+   "max_tokens": 600,
+   "output_model": "BenchTranscription",
+   "leakage_check": "passed",
+   "production_boundary": "ALLOWED_IN_PRODUCTION_MODE",
+   "grading_tripwire_hits": [],
+   "banned_substring_hits": [
+    "correct"
+   ],
+   "reference_text_present_in_payload": false,
+   "PASS": true
+  },
+  {
+   "candidate": "anthropic/claude-sonnet-5",
+   "case_id": "hc_e002_q2_r1",
+   "category": "handwritten_cell",
+   "writer": "e002",
+   "split": "DEV",
+   "image": "crops/hc_e002_q2_r1.png",
+   "crop_sha256": "cc2e23b6c8acfa9b54c6d7a6a6a4bf68d172e0259a323c923a02673c19a317ba",
+   "blocks": [
+    "image"
+   ],
+   "exactly_one_image_zero_text": true,
+   "system_prompt_sha256": "d40280acf305b40f7b4ba74d115f76d4d7268156ba5acce0d7f1ce60ba67a137",
+   "system_prompt_registered": true,
+   "prompt_version": "m2-strict-v1",
+   "max_tokens": 600,
+   "output_model": "BenchTranscription",
+   "leakage_check": "passed",
+   "production_boundary": "ALLOWED_IN_PRODUCTION_MODE",
+   "grading_tripwire_hits": [],
+   "banned_substring_hits": [
+    "instructor",
+    "correct"
+   ],
+   "reference_text_present_in_payload": false,
+   "PASS": true
+  },
+  {
+   "candidate": "anthropic/claude-sonnet-5",
+   "case_id": "hc_e002_q1_r1",
+   "category": "handwritten_cell",
+   "writer": "e002",
+   "split": "DEV",
+   "image": "crops/hc_e002_q1_r1.png",
+   "crop_sha256": "f23d427da6e04dbb384d88418a4657adff24ecaba9b252dbb34259adf824fda7",
+   "blocks": [
+    "image"
+   ],
+   "exactly_one_image_zero_text": true,
+   "system_prompt_sha256": "d40280acf305b40f7b4ba74d115f76d4d7268156ba5acce0d7f1ce60ba67a137",
+   "system_prompt_registered": true,
+   "prompt_version": "m2-strict-v1",
+   "max_tokens": 600,
+   "output_model": "BenchTranscription",
+   "leakage_check": "passed",
+   "production_boundary": "ALLOWED_IN_PRODUCTION_MODE",
+   "grading_tripwire_hits": [],
+   "banned_substring_hits": [
+    "instructor",
+    "correct"
+   ],
+   "reference_text_present_in_payload": false,
+   "PASS": true
+  },
+  {
+   "candidate": "anthropic/claude-sonnet-5",
+   "case_id": "hc_e002_q2_r6",
+   "category": "handwritten_cell",
+   "writer": "e002",
+   "split": "DEV",
+   "image": "crops/hc_e002_q2_r6.png",
+   "crop_sha256": "ebbbff9c23ba3b0b6a1c11bfa73c8526df63cc6222c3baeeb9e833538f79833a",
+   "blocks": [
+    "image"
+   ],
+   "exactly_one_image_zero_text": true,
+   "system_prompt_sha256": "d40280acf305b40f7b4ba74d115f76d4d7268156ba5acce0d7f1ce60ba67a137",
+   "system_prompt_registered": true,
+   "prompt_version": "m2-strict-v1",
+   "max_tokens": 600,
+   "output_model": "BenchTranscription",
+   "leakage_check": "passed",
+   "production_boundary": "ALLOWED_IN_PRODUCTION_MODE",
+   "grading_tripwire_hits": [],
+   "banned_substring_hits": [
+    "instructor",
+    "correct"
+   ],
+   "reference_text_present_in_payload": false,
+   "PASS": true
+  },
+  {
+   "candidate": "anthropic/claude-sonnet-5",
+   "case_id": "pr_docA_p1_b1",
+   "category": "formula_printed",
+   "writer": null,
+   "split": "DEV",
+   "image": "crops/pr_docA_p1_b1.png",
+   "crop_sha256": "5d759b3578312dc61a0f20a7f63228288b5917f47c398488a3f08a3037d7c5aa",
+   "blocks": [
+    "image"
+   ],
+   "exactly_one_image_zero_text": true,
+   "system_prompt_sha256": "28d034e2a0f1b77f03b0d4754a9bf187806518048a4ad290fa37a8e0ba5e01c9",
+   "system_prompt_registered": true,
+   "prompt_version": "m2-strict-v1",
+   "max_tokens": 600,
+   "output_model": "BenchTranscription",
+   "leakage_check": "passed",
+   "production_boundary": "ALLOWED_IN_PRODUCTION_MODE",
+   "grading_tripwire_hits": [],
+   "banned_substring_hits": [
+    "correct"
+   ],
+   "reference_text_present_in_payload": false,
+   "PASS": true
+  },
+  {
+   "candidate": "anthropic/claude-sonnet-5",
+   "case_id": "pr_docA_p2_b3",
+   "category": "mixed_he_en",
+   "writer": null,
+   "split": "DEV",
+   "image": "crops/pr_docA_p2_b3.png",
+   "crop_sha256": "ed3c5ef5b4cb26a664a76b3709056bbbf26e90bb0f213c2fadb04de105791124",
+   "blocks": [
+    "image"
+   ],
+   "exactly_one_image_zero_text": true,
+   "system_prompt_sha256": "3c422f061047cad9aa49ce9320f336f36ce96b220e5c5b2fa05526a9f706d4a7",
+   "system_prompt_registered": true,
+   "prompt_version": "m2-strict-v1",
+   "max_tokens": 600,
+   "output_model": "BenchTranscription",
+   "leakage_check": "passed",
+   "production_boundary": "ALLOWED_IN_PRODUCTION_MODE",
+   "grading_tripwire_hits": [],
+   "banned_substring_hits": [
+    "correct"
+   ],
+   "reference_text_present_in_payload": false,
+   "PASS": true
+  },
+  {
+   "candidate": "anthropic/claude-sonnet-5",
+   "case_id": "hc_e002_q1_r7",
+   "category": "handwritten_cell",
+   "writer": "e002",
+   "split": "DEV",
+   "image": "crops/hc_e002_q1_r7.png",
+   "crop_sha256": "7cd8b22b872c3e283c6a3cdb9240abeaa6b20e8ee8bc9c419badcb21d4e2fad7",
+   "blocks": [
+    "image"
+   ],
+   "exactly_one_image_zero_text": true,
+   "system_prompt_sha256": "d40280acf305b40f7b4ba74d115f76d4d7268156ba5acce0d7f1ce60ba67a137",
+   "system_prompt_registered": true,
+   "prompt_version": "m2-strict-v1",
+   "max_tokens": 600,
+   "output_model": "BenchTranscription",
+   "leakage_check": "passed",
+   "production_boundary": "ALLOWED_IN_PRODUCTION_MODE",
+   "grading_tripwire_hits": [],
+   "banned_substring_hits": [
+    "instructor",
+    "correct"
+   ],
+   "reference_text_present_in_payload": false,
+   "PASS": true
+  },
+  {
+   "candidate": "anthropic/claude-sonnet-5",
+   "case_id": "assoc_docB_p2_b1",
+   "category": "option_row_association",
+   "writer": null,
+   "split": "DEV",
+   "image": "crops/assoc_docB_p2_b1.png",
+   "crop_sha256": "971600121151bc5ba804bdcaa5a243de07c6f52c62c275d378c5d9a7a0b900b4",
+   "blocks": [
+    "image"
+   ],
+   "exactly_one_image_zero_text": true,
+   "system_prompt_sha256": "71f6a9af322ccb27ce2bf2f7df091ac5fb00f85a8fdf8cbd700fed2962e99cdc",
+   "system_prompt_registered": true,
+   "prompt_version": "m2-strict-v1",
+   "max_tokens": 600,
+   "output_model": "BenchTranscription",
+   "leakage_check": "passed",
+   "production_boundary": "ALLOWED_IN_PRODUCTION_MODE",
+   "grading_tripwire_hits": [],
+   "banned_substring_hits": [],
+   "reference_text_present_in_payload": false,
+   "PASS": true
+  }
+ ],
+ "content_sha256": "69a30757fa95a4738c4dca9531e0d46dad91a671d5757419e1d5c4c9fad795ca"
+}
