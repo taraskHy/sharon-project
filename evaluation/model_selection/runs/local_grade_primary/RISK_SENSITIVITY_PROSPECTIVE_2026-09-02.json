@@ -1,0 +1,3052 @@
+{
+ "artifact": "risk_sensitivity_prospective",
+ "created_at": "2026-09-02 03:02:14",
+ "provenance": {
+  "git_commit": "30c2a69521c9dafa7a2fcc4690d55fc7c5287222",
+  "reference_sha256": "ce78aed115633883dd94bd14035ddc3e3f38d02c2484bbd0a7f49c5dbc384306",
+  "matrix_name": "asymmetric_grading_risk_v1",
+  "matrix_sha256": "605536c54e24c528d1e699a50d3ab3aa470b2daa165037dbb41129de23943ee0",
+  "matrix_file_sha256": "11e65e79e0f36cf6d1b4c12b1c2f8898b97244b402731091f894f462a000ebdd",
+  "engine_version": "risk-engine-v1",
+  "observability_inventory_version": "risk-observability-v1",
+  "policy_hashes": {
+   "prospective_valid_only_v1": "076cd16b08294979",
+   "prospective_noninvalid_v1": "20937aea2e446a7b",
+   "prospective_auto_all_structurally_valid_v1": "ebea34ec3a977d58",
+   "retrospective_human_dispute_aware_b_v1": "edae2694397ebe61",
+   "retrospective_human_dispute_aware_c_v1": "23e120ef9b01f410"
+  },
+  "model_run_id": "frozen_seen46+corrected_rerun_2026-09-02",
+  "grader_provenance": {
+   "model_digest": "0533d74300e4",
+   "prompt_version": "grade-v4-charitable-local",
+   "prompt_sha256": "d8c799d1bdec0274623c89b9435eccdcdb4ba8f8f6c27bf7d87bd0b15ba87f2d",
+   "schema_sha256": "2a19252fd83702a240865020141cd4c422b1312b4ed8c6c49c51ee7dce8d06c6",
+   "validation_version": "grade-validation-v2"
+  },
+  "case_coverage": 46,
+  "held_out_cases": 0,
+  "new_inference_calls": 0,
+  "cloud_calls": 0,
+  "ocr_calls": 0,
+  "rag_calls": 0
+ },
+ "grid_definition": {
+  "varied": {
+   "invalid->valid": [
+    10,
+    12,
+    15,
+    20
+   ],
+   "partially_valid->valid": [
+    3,
+    5,
+    7
+   ],
+   "valid->invalid": [
+    2,
+    3,
+    5
+   ],
+   "adjacent_undergrade": [
+    1,
+    2
+   ]
+  },
+  "fixed": {
+   "invalid->partially_valid": 3
+  }
+ },
+ "matrices_evaluated": 72,
+ "auto_id_sets": {
+  "prospective_valid_only_v1": [
+   "e002_q1_r2",
+   "e002_q1_r3",
+   "e002_q1_r4",
+   "e002_q1_r5",
+   "e002_q1_r6",
+   "e002_q2_r1",
+   "e002_q2_r2",
+   "e002_q2_r3",
+   "e002_q2_r8",
+   "e003_q1_r1",
+   "e003_q1_r3",
+   "e003_q1_r4",
+   "e003_q1_r5",
+   "e003_q2_r1",
+   "e003_q2_r2",
+   "e003_q2_r3",
+   "e003_q2_r5",
+   "e003_q2_r7",
+   "e003_q2_r8",
+   "e004_q1_r2",
+   "e004_q1_r4",
+   "e004_q1_r8",
+   "e004_q2_r1",
+   "e004_q2_r2",
+   "e004_q2_r3",
+   "e004_q2_r6",
+   "e004_q2_r8"
+  ],
+  "prospective_noninvalid_v1": [
+   "e002_q1_r1",
+   "e002_q1_r2",
+   "e002_q1_r3",
+   "e002_q1_r4",
+   "e002_q1_r5",
+   "e002_q1_r6",
+   "e002_q1_r8",
+   "e002_q2_r1",
+   "e002_q2_r2",
+   "e002_q2_r3",
+   "e002_q2_r5",
+   "e002_q2_r6",
+   "e002_q2_r8",
+   "e003_q1_r1",
+   "e003_q1_r3",
+   "e003_q1_r4",
+   "e003_q1_r5",
+   "e003_q1_r6",
+   "e003_q1_r8",
+   "e003_q2_r1",
+   "e003_q2_r2",
+   "e003_q2_r3",
+   "e003_q2_r5",
+   "e003_q2_r6",
+   "e003_q2_r7",
+   "e003_q2_r8",
+   "e004_q1_r2",
+   "e004_q1_r3",
+   "e004_q1_r4",
+   "e004_q1_r5",
+   "e004_q1_r8",
+   "e004_q2_r1",
+   "e004_q2_r2",
+   "e004_q2_r3",
+   "e004_q2_r4",
+   "e004_q2_r5",
+   "e004_q2_r6",
+   "e004_q2_r8",
+   "e007_q1_r1"
+  ],
+  "prospective_auto_all_structurally_valid_v1": [
+   "e002_q1_r1",
+   "e002_q1_r2",
+   "e002_q1_r3",
+   "e002_q1_r4",
+   "e002_q1_r5",
+   "e002_q1_r6",
+   "e002_q1_r8",
+   "e002_q2_r1",
+   "e002_q2_r2",
+   "e002_q2_r3",
+   "e002_q2_r4",
+   "e002_q2_r5",
+   "e002_q2_r6",
+   "e002_q2_r8",
+   "e003_q1_r1",
+   "e003_q1_r3",
+   "e003_q1_r4",
+   "e003_q1_r5",
+   "e003_q1_r6",
+   "e003_q1_r7",
+   "e003_q1_r8",
+   "e003_q2_r1",
+   "e003_q2_r2",
+   "e003_q2_r3",
+   "e003_q2_r4",
+   "e003_q2_r5",
+   "e003_q2_r6",
+   "e003_q2_r7",
+   "e003_q2_r8",
+   "e004_q1_r1",
+   "e004_q1_r2",
+   "e004_q1_r3",
+   "e004_q1_r4",
+   "e004_q1_r5",
+   "e004_q1_r6",
+   "e004_q1_r8",
+   "e004_q2_r1",
+   "e004_q2_r2",
+   "e004_q2_r3",
+   "e004_q2_r4",
+   "e004_q2_r5",
+   "e004_q2_r6",
+   "e004_q2_r8",
+   "e007_q1_r1"
+  ]
+ },
+ "grid_results": [
+  {
+   "matrix": {
+    "invalid->valid": 10,
+    "partially_valid->valid": 3,
+    "valid->invalid": 2,
+    "adjacent_undergrade": 1,
+    "invalid->partially_valid": 3
+   },
+   "deployable_auto_totals": {
+    "prospective_valid_only_v1": 12,
+    "prospective_noninvalid_v1": 26,
+    "prospective_auto_all_structurally_valid_v1": 32
+   },
+   "deployable_auto_means": {
+    "prospective_valid_only_v1": 0.4444,
+    "prospective_noninvalid_v1": 0.6667,
+    "prospective_auto_all_structurally_valid_v1": 0.7273
+   },
+   "raw_severe_counts": {
+    "prospective_valid_only_v1": {
+     "invalid_to_valid": 0,
+     "partial_to_valid": 4
+    },
+    "prospective_noninvalid_v1": {
+     "invalid_to_valid": 0,
+     "partial_to_valid": 4
+    },
+    "prospective_auto_all_structurally_valid_v1": {
+     "invalid_to_valid": 0,
+     "partial_to_valid": 4
+    }
+   },
+   "best_deployable_by_total_auto_risk": "prospective_valid_only_v1",
+   "best_deployable_by_mean_auto_risk": "prospective_valid_only_v1",
+   "semantic_layer_winners": [
+    "arm_a_q8_0"
+   ],
+   "constant_baseline_wins_semantic_layer": false
+  },
+  {
+   "matrix": {
+    "invalid->valid": 10,
+    "partially_valid->valid": 3,
+    "valid->invalid": 2,
+    "adjacent_undergrade": 2,
+    "invalid->partially_valid": 3
+   },
+   "deployable_auto_totals": {
+    "prospective_valid_only_v1": 12,
+    "prospective_noninvalid_v1": 28,
+    "prospective_auto_all_structurally_valid_v1": 36
+   },
+   "deployable_auto_means": {
+    "prospective_valid_only_v1": 0.4444,
+    "prospective_noninvalid_v1": 0.7179,
+    "prospective_auto_all_structurally_valid_v1": 0.8182
+   },
+   "raw_severe_counts": {
+    "prospective_valid_only_v1": {
+     "invalid_to_valid": 0,
+     "partial_to_valid": 4
+    },
+    "prospective_noninvalid_v1": {
+     "invalid_to_valid": 0,
+     "partial_to_valid": 4
+    },
+    "prospective_auto_all_structurally_valid_v1": {
+     "invalid_to_valid": 0,
+     "partial_to_valid": 4
+    }
+   },
+   "best_deployable_by_total_auto_risk": "prospective_valid_only_v1",
+   "best_deployable_by_mean_auto_risk": "prospective_valid_only_v1",
+   "semantic_layer_winners": [
+    "arm_b_two_pass",
+    "baseline_8b_one_pass"
+   ],
+   "constant_baseline_wins_semantic_layer": false
+  },
+  {
+   "matrix": {
+    "invalid->valid": 10,
+    "partially_valid->valid": 3,
+    "valid->invalid": 3,
+    "adjacent_undergrade": 1,
+    "invalid->partially_valid": 3
+   },
+   "deployable_auto_totals": {
+    "prospective_valid_only_v1": 12,
+    "prospective_noninvalid_v1": 26,
+    "prospective_auto_all_structurally_valid_v1": 34
+   },
+   "deployable_auto_means": {
+    "prospective_valid_only_v1": 0.4444,
+    "prospective_noninvalid_v1": 0.6667,
+    "prospective_auto_all_structurally_valid_v1": 0.7727
+   },
+   "raw_severe_counts": {
+    "prospective_valid_only_v1": {
+     "invalid_to_valid": 0,
+     "partial_to_valid": 4
+    },
+    "prospective_noninvalid_v1": {
+     "invalid_to_valid": 0,
+     "partial_to_valid": 4
+    },
+    "prospective_auto_all_structurally_valid_v1": {
+     "invalid_to_valid": 0,
+     "partial_to_valid": 4
+    }
+   },
+   "best_deployable_by_total_auto_risk": "prospective_valid_only_v1",
+   "best_deployable_by_mean_auto_risk": "prospective_valid_only_v1",
+   "semantic_layer_winners": [
+    "arm_a_q8_0"
+   ],
+   "constant_baseline_wins_semantic_layer": false
+  },
+  {
+   "matrix": {
+    "invalid->valid": 10,
+    "partially_valid->valid": 3,
+    "valid->invalid": 3,
+    "adjacent_undergrade": 2,
+    "invalid->partially_valid": 3
+   },
+   "deployable_auto_totals": {
+    "prospective_valid_only_v1": 12,
+    "prospective_noninvalid_v1": 28,
+    "prospective_auto_all_structurally_valid_v1": 38
+   },
+   "deployable_auto_means": {
+    "prospective_valid_only_v1": 0.4444,
+    "prospective_noninvalid_v1": 0.7179,
+    "prospective_auto_all_structurally_valid_v1": 0.8636
+   },
+   "raw_severe_counts": {
+    "prospective_valid_only_v1": {
+     "invalid_to_valid": 0,
+     "partial_to_valid": 4
+    },
+    "prospective_noninvalid_v1": {
+     "invalid_to_valid": 0,
+     "partial_to_valid": 4
+    },
+    "prospective_auto_all_structurally_valid_v1": {
+     "invalid_to_valid": 0,
+     "partial_to_valid": 4
+    }
+   },
+   "best_deployable_by_total_auto_risk": "prospective_valid_only_v1",
+   "best_deployable_by_mean_auto_risk": "prospective_valid_only_v1",
+   "semantic_layer_winners": [
+    "arm_b_two_pass",
+    "baseline_8b_one_pass"
+   ],
+   "constant_baseline_wins_semantic_layer": false
+  },
+  {
+   "matrix": {
+    "invalid->valid": 10,
+    "partially_valid->valid": 3,
+    "valid->invalid": 5,
+    "adjacent_undergrade": 1,
+    "invalid->partially_valid": 3
+   },
+   "deployable_auto_totals": {
+    "prospective_valid_only_v1": 12,
+    "prospective_noninvalid_v1": 26,
+    "prospective_auto_all_structurally_valid_v1": 38
+   },
+   "deployable_auto_means": {
+    "prospective_valid_only_v1": 0.4444,
+    "prospective_noninvalid_v1": 0.6667,
+    "prospective_auto_all_structurally_valid_v1": 0.8636
+   },
+   "raw_severe_counts": {
+    "prospective_valid_only_v1": {
+     "invalid_to_valid": 0,
+     "partial_to_valid": 4
+    },
+    "prospective_noninvalid_v1": {
+     "invalid_to_valid": 0,
+     "partial_to_valid": 4
+    },
+    "prospective_auto_all_structurally_valid_v1": {
+     "invalid_to_valid": 0,
+     "partial_to_valid": 4
+    }
+   },
+   "best_deployable_by_total_auto_risk": "prospective_valid_only_v1",
+   "best_deployable_by_mean_auto_risk": "prospective_valid_only_v1",
+   "semantic_layer_winners": [
+    "arm_a_q8_0"
+   ],
+   "constant_baseline_wins_semantic_layer": false
+  },
+  {
+   "matrix": {
+    "invalid->valid": 10,
+    "partially_valid->valid": 3,
+    "valid->invalid": 5,
+    "adjacent_undergrade": 2,
+    "invalid->partially_valid": 3
+   },
+   "deployable_auto_totals": {
+    "prospective_valid_only_v1": 12,
+    "prospective_noninvalid_v1": 28,
+    "prospective_auto_all_structurally_valid_v1": 42
+   },
+   "deployable_auto_means": {
+    "prospective_valid_only_v1": 0.4444,
+    "prospective_noninvalid_v1": 0.7179,
+    "prospective_auto_all_structurally_valid_v1": 0.9545
+   },
+   "raw_severe_counts": {
+    "prospective_valid_only_v1": {
+     "invalid_to_valid": 0,
+     "partial_to_valid": 4
+    },
+    "prospective_noninvalid_v1": {
+     "invalid_to_valid": 0,
+     "partial_to_valid": 4
+    },
+    "prospective_auto_all_structurally_valid_v1": {
+     "invalid_to_valid": 0,
+     "partial_to_valid": 4
+    }
+   },
+   "best_deployable_by_total_auto_risk": "prospective_valid_only_v1",
+   "best_deployable_by_mean_auto_risk": "prospective_valid_only_v1",
+   "semantic_layer_winners": [
+    "arm_b_two_pass",
+    "baseline_8b_one_pass"
+   ],
+   "constant_baseline_wins_semantic_layer": false
+  },
+  {
+   "matrix": {
+    "invalid->valid": 10,
+    "partially_valid->valid": 5,
+    "valid->invalid": 2,
+    "adjacent_undergrade": 1,
+    "invalid->partially_valid": 3
+   },
+   "deployable_auto_totals": {
+    "prospective_valid_only_v1": 20,
+    "prospective_noninvalid_v1": 34,
+    "prospective_auto_all_structurally_valid_v1": 40
+   },
+   "deployable_auto_means": {
+    "prospective_valid_only_v1": 0.7407,
+    "prospective_noninvalid_v1": 0.8718,
+    "prospective_auto_all_structurally_valid_v1": 0.9091
+   },
+   "raw_severe_counts": {
+    "prospective_valid_only_v1": {
+     "invalid_to_valid": 0,
+     "partial_to_valid": 4
+    },
+    "prospective_noninvalid_v1": {
+     "invalid_to_valid": 0,
+     "partial_to_valid": 4
+    },
+    "prospective_auto_all_structurally_valid_v1": {
+     "invalid_to_valid": 0,
+     "partial_to_valid": 4
+    }
+   },
+   "best_deployable_by_total_auto_risk": "prospective_valid_only_v1",
+   "best_deployable_by_mean_auto_risk": "prospective_valid_only_v1",
+   "semantic_layer_winners": [
+    "arm_a_q8_0"
+   ],
+   "constant_baseline_wins_semantic_layer": false
+  },
+  {
+   "matrix": {
+    "invalid->valid": 10,
+    "partially_valid->valid": 5,
+    "valid->invalid": 2,
+    "adjacent_undergrade": 2,
+    "invalid->partially_valid": 3
+   },
+   "deployable_auto_totals": {
+    "prospective_valid_only_v1": 20,
+    "prospective_noninvalid_v1": 36,
+    "prospective_auto_all_structurally_valid_v1": 44
+   },
+   "deployable_auto_means": {
+    "prospective_valid_only_v1": 0.7407,
+    "prospective_noninvalid_v1": 0.9231,
+    "prospective_auto_all_structurally_valid_v1": 1.0
+   },
+   "raw_severe_counts": {
+    "prospective_valid_only_v1": {
+     "invalid_to_valid": 0,
+     "partial_to_valid": 4
+    },
+    "prospective_noninvalid_v1": {
+     "invalid_to_valid": 0,
+     "partial_to_valid": 4
+    },
+    "prospective_auto_all_structurally_valid_v1": {
+     "invalid_to_valid": 0,
+     "partial_to_valid": 4
+    }
+   },
+   "best_deployable_by_total_auto_risk": "prospective_valid_only_v1",
+   "best_deployable_by_mean_auto_risk": "prospective_valid_only_v1",
+   "semantic_layer_winners": [
+    "arm_b_two_pass",
+    "baseline_8b_one_pass"
+   ],
+   "constant_baseline_wins_semantic_layer": false
+  },
+  {
+   "matrix": {
+    "invalid->valid": 10,
+    "partially_valid->valid": 5,
+    "valid->invalid": 3,
+    "adjacent_undergrade": 1,
+    "invalid->partially_valid": 3
+   },
+   "deployable_auto_totals": {
+    "prospective_valid_only_v1": 20,
+    "prospective_noninvalid_v1": 34,
+    "prospective_auto_all_structurally_valid_v1": 42
+   },
+   "deployable_auto_means": {
+    "prospective_valid_only_v1": 0.7407,
+    "prospective_noninvalid_v1": 0.8718,
+    "prospective_auto_all_structurally_valid_v1": 0.9545
+   },
+   "raw_severe_counts": {
+    "prospective_valid_only_v1": {
+     "invalid_to_valid": 0,
+     "partial_to_valid": 4
+    },
+    "prospective_noninvalid_v1": {
+     "invalid_to_valid": 0,
+     "partial_to_valid": 4
+    },
+    "prospective_auto_all_structurally_valid_v1": {
+     "invalid_to_valid": 0,
+     "partial_to_valid": 4
+    }
+   },
+   "best_deployable_by_total_auto_risk": "prospective_valid_only_v1",
+   "best_deployable_by_mean_auto_risk": "prospective_valid_only_v1",
+   "semantic_layer_winners": [
+    "arm_a_q8_0"
+   ],
+   "constant_baseline_wins_semantic_layer": false
+  },
+  {
+   "matrix": {
+    "invalid->valid": 10,
+    "partially_valid->valid": 5,
+    "valid->invalid": 3,
+    "adjacent_undergrade": 2,
+    "invalid->partially_valid": 3
+   },
+   "deployable_auto_totals": {
+    "prospective_valid_only_v1": 20,
+    "prospective_noninvalid_v1": 36,
+    "prospective_auto_all_structurally_valid_v1": 46
+   },
+   "deployable_auto_means": {
+    "prospective_valid_only_v1": 0.7407,
+    "prospective_noninvalid_v1": 0.9231,
+    "prospective_auto_all_structurally_valid_v1": 1.0455
+   },
+   "raw_severe_counts": {
+    "prospective_valid_only_v1": {
+     "invalid_to_valid": 0,
+     "partial_to_valid": 4
+    },
+    "prospective_noninvalid_v1": {
+     "invalid_to_valid": 0,
+     "partial_to_valid": 4
+    },
+    "prospective_auto_all_structurally_valid_v1": {
+     "invalid_to_valid": 0,
+     "partial_to_valid": 4
+    }
+   },
+   "best_deployable_by_total_auto_risk": "prospective_valid_only_v1",
+   "best_deployable_by_mean_auto_risk": "prospective_valid_only_v1",
+   "semantic_layer_winners": [
+    "arm_b_two_pass",
+    "baseline_8b_one_pass"
+   ],
+   "constant_baseline_wins_semantic_layer": false
+  },
+  {
+   "matrix": {
+    "invalid->valid": 10,
+    "partially_valid->valid": 5,
+    "valid->invalid": 5,
+    "adjacent_undergrade": 1,
+    "invalid->partially_valid": 3
+   },
+   "deployable_auto_totals": {
+    "prospective_valid_only_v1": 20,
+    "prospective_noninvalid_v1": 34,
+    "prospective_auto_all_structurally_valid_v1": 46
+   },
+   "deployable_auto_means": {
+    "prospective_valid_only_v1": 0.7407,
+    "prospective_noninvalid_v1": 0.8718,
+    "prospective_auto_all_structurally_valid_v1": 1.0455
+   },
+   "raw_severe_counts": {
+    "prospective_valid_only_v1": {
+     "invalid_to_valid": 0,
+     "partial_to_valid": 4
+    },
+    "prospective_noninvalid_v1": {
+     "invalid_to_valid": 0,
+     "partial_to_valid": 4
+    },
+    "prospective_auto_all_structurally_valid_v1": {
+     "invalid_to_valid": 0,
+     "partial_to_valid": 4
+    }
+   },
+   "best_deployable_by_total_auto_risk": "prospective_valid_only_v1",
+   "best_deployable_by_mean_auto_risk": "prospective_valid_only_v1",
+   "semantic_layer_winners": [
+    "always_partially_valid"
+   ],
+   "constant_baseline_wins_semantic_layer": true
+  },
+  {
+   "matrix": {
+    "invalid->valid": 10,
+    "partially_valid->valid": 5,
+    "valid->invalid": 5,
+    "adjacent_undergrade": 2,
+    "invalid->partially_valid": 3
+   },
+   "deployable_auto_totals": {
+    "prospective_valid_only_v1": 20,
+    "prospective_noninvalid_v1": 36,
+    "prospective_auto_all_structurally_valid_v1": 50
+   },
+   "deployable_auto_means": {
+    "prospective_valid_only_v1": 0.7407,
+    "prospective_noninvalid_v1": 0.9231,
+    "prospective_auto_all_structurally_valid_v1": 1.1364
+   },
+   "raw_severe_counts": {
+    "prospective_valid_only_v1": {
+     "invalid_to_valid": 0,
+     "partial_to_valid": 4
+    },
+    "prospective_noninvalid_v1": {
+     "invalid_to_valid": 0,
+     "partial_to_valid": 4
+    },
+    "prospective_auto_all_structurally_valid_v1": {
+     "invalid_to_valid": 0,
+     "partial_to_valid": 4
+    }
+   },
+   "best_deployable_by_total_auto_risk": "prospective_valid_only_v1",
+   "best_deployable_by_mean_auto_risk": "prospective_valid_only_v1",
+   "semantic_layer_winners": [
+    "arm_b_two_pass",
+    "baseline_8b_one_pass"
+   ],
+   "constant_baseline_wins_semantic_layer": false
+  },
+  {
+   "matrix": {
+    "invalid->valid": 10,
+    "partially_valid->valid": 7,
+    "valid->invalid": 2,
+    "adjacent_undergrade": 1,
+    "invalid->partially_valid": 3
+   },
+   "deployable_auto_totals": {
+    "prospective_valid_only_v1": 28,
+    "prospective_noninvalid_v1": 42,
+    "prospective_auto_all_structurally_valid_v1": 48
+   },
+   "deployable_auto_means": {
+    "prospective_valid_only_v1": 1.037,
+    "prospective_noninvalid_v1": 1.0769,
+    "prospective_auto_all_structurally_valid_v1": 1.0909
+   },
+   "raw_severe_counts": {
+    "prospective_valid_only_v1": {
+     "invalid_to_valid": 0,
+     "partial_to_valid": 4
+    },
+    "prospective_noninvalid_v1": {
+     "invalid_to_valid": 0,
+     "partial_to_valid": 4
+    },
+    "prospective_auto_all_structurally_valid_v1": {
+     "invalid_to_valid": 0,
+     "partial_to_valid": 4
+    }
+   },
+   "best_deployable_by_total_auto_risk": "prospective_valid_only_v1",
+   "best_deployable_by_mean_auto_risk": "prospective_valid_only_v1",
+   "semantic_layer_winners": [
+    "always_partially_valid"
+   ],
+   "constant_baseline_wins_semantic_layer": true
+  },
+  {
+   "matrix": {
+    "invalid->valid": 10,
+    "partially_valid->valid": 7,
+    "valid->invalid": 2,
+    "adjacent_undergrade": 2,
+    "invalid->partially_valid": 3
+   },
+   "deployable_auto_totals": {
+    "prospective_valid_only_v1": 28,
+    "prospective_noninvalid_v1": 44,
+    "prospective_auto_all_structurally_valid_v1": 52
+   },
+   "deployable_auto_means": {
+    "prospective_valid_only_v1": 1.037,
+    "prospective_noninvalid_v1": 1.1282,
+    "prospective_auto_all_structurally_valid_v1": 1.1818
+   },
+   "raw_severe_counts": {
+    "prospective_valid_only_v1": {
+     "invalid_to_valid": 0,
+     "partial_to_valid": 4
+    },
+    "prospective_noninvalid_v1": {
+     "invalid_to_valid": 0,
+     "partial_to_valid": 4
+    },
+    "prospective_auto_all_structurally_valid_v1": {
+     "invalid_to_valid": 0,
+     "partial_to_valid": 4
+    }
+   },
+   "best_deployable_by_total_auto_risk": "prospective_valid_only_v1",
+   "best_deployable_by_mean_auto_risk": "prospective_valid_only_v1",
+   "semantic_layer_winners": [
+    "arm_a_q8_0",
+    "arm_b_two_pass",
+    "baseline_8b_one_pass"
+   ],
+   "constant_baseline_wins_semantic_layer": false
+  },
+  {
+   "matrix": {
+    "invalid->valid": 10,
+    "partially_valid->valid": 7,
+    "valid->invalid": 3,
+    "adjacent_undergrade": 1,
+    "invalid->partially_valid": 3
+   },
+   "deployable_auto_totals": {
+    "prospective_valid_only_v1": 28,
+    "prospective_noninvalid_v1": 42,
+    "prospective_auto_all_structurally_valid_v1": 50
+   },
+   "deployable_auto_means": {
+    "prospective_valid_only_v1": 1.037,
+    "prospective_noninvalid_v1": 1.0769,
+    "prospective_auto_all_structurally_valid_v1": 1.1364
+   },
+   "raw_severe_counts": {
+    "prospective_valid_only_v1": {
+     "invalid_to_valid": 0,
+     "partial_to_valid": 4
+    },
+    "prospective_noninvalid_v1": {
+     "invalid_to_valid": 0,
+     "partial_to_valid": 4
+    },
+    "prospective_auto_all_structurally_valid_v1": {
+     "invalid_to_valid": 0,
+     "partial_to_valid": 4
+    }
+   },
+   "best_deployable_by_total_auto_risk": "prospective_valid_only_v1",
+   "best_deployable_by_mean_auto_risk": "prospective_valid_only_v1",
+   "semantic_layer_winners": [
+    "always_partially_valid"
+   ],
+   "constant_baseline_wins_semantic_layer": true
+  },
+  {
+   "matrix": {
+    "invalid->valid": 10,
+    "partially_valid->valid": 7,
+    "valid->invalid": 3,
+    "adjacent_undergrade": 2,
+    "invalid->partially_valid": 3
+   },
+   "deployable_auto_totals": {
+    "prospective_valid_only_v1": 28,
+    "prospective_noninvalid_v1": 44,
+    "prospective_auto_all_structurally_valid_v1": 54
+   },
+   "deployable_auto_means": {
+    "prospective_valid_only_v1": 1.037,
+    "prospective_noninvalid_v1": 1.1282,
+    "prospective_auto_all_structurally_valid_v1": 1.2273
+   },
+   "raw_severe_counts": {
+    "prospective_valid_only_v1": {
+     "invalid_to_valid": 0,
+     "partial_to_valid": 4
+    },
+    "prospective_noninvalid_v1": {
+     "invalid_to_valid": 0,
+     "partial_to_valid": 4
+    },
+    "prospective_auto_all_structurally_valid_v1": {
+     "invalid_to_valid": 0,
+     "partial_to_valid": 4
+    }
+   },
+   "best_deployable_by_total_auto_risk": "prospective_valid_only_v1",
+   "best_deployable_by_mean_auto_risk": "prospective_valid_only_v1",
+   "semantic_layer_winners": [
+    "arm_a_q8_0",
+    "arm_b_two_pass",
+    "baseline_8b_one_pass"
+   ],
+   "constant_baseline_wins_semantic_layer": false
+  },
+  {
+   "matrix": {
+    "invalid->valid": 10,
+    "partially_valid->valid": 7,
+    "valid->invalid": 5,
+    "adjacent_undergrade": 1,
+    "invalid->partially_valid": 3
+   },
+   "deployable_auto_totals": {
+    "prospective_valid_only_v1": 28,
+    "prospective_noninvalid_v1": 42,
+    "prospective_auto_all_structurally_valid_v1": 54
+   },
+   "deployable_auto_means": {
+    "prospective_valid_only_v1": 1.037,
+    "prospective_noninvalid_v1": 1.0769,
+    "prospective_auto_all_structurally_valid_v1": 1.2273
+   },
+   "raw_severe_counts": {
+    "prospective_valid_only_v1": {
+     "invalid_to_valid": 0,
+     "partial_to_valid": 4
+    },
+    "prospective_noninvalid_v1": {
+     "invalid_to_valid": 0,
+     "partial_to_valid": 4
+    },
+    "prospective_auto_all_structurally_valid_v1": {
+     "invalid_to_valid": 0,
+     "partial_to_valid": 4
+    }
+   },
+   "best_deployable_by_total_auto_risk": "prospective_valid_only_v1",
+   "best_deployable_by_mean_auto_risk": "prospective_valid_only_v1",
+   "semantic_layer_winners": [
+    "always_partially_valid"
+   ],
+   "constant_baseline_wins_semantic_layer": true
+  },
+  {
+   "matrix": {
+    "invalid->valid": 10,
+    "partially_valid->valid": 7,
+    "valid->invalid": 5,
+    "adjacent_undergrade": 2,
+    "invalid->partially_valid": 3
+   },
+   "deployable_auto_totals": {
+    "prospective_valid_only_v1": 28,
+    "prospective_noninvalid_v1": 44,
+    "prospective_auto_all_structurally_valid_v1": 58
+   },
+   "deployable_auto_means": {
+    "prospective_valid_only_v1": 1.037,
+    "prospective_noninvalid_v1": 1.1282,
+    "prospective_auto_all_structurally_valid_v1": 1.3182
+   },
+   "raw_severe_counts": {
+    "prospective_valid_only_v1": {
+     "invalid_to_valid": 0,
+     "partial_to_valid": 4
+    },
+    "prospective_noninvalid_v1": {
+     "invalid_to_valid": 0,
+     "partial_to_valid": 4
+    },
+    "prospective_auto_all_structurally_valid_v1": {
+     "invalid_to_valid": 0,
+     "partial_to_valid": 4
+    }
+   },
+   "best_deployable_by_total_auto_risk": "prospective_valid_only_v1",
+   "best_deployable_by_mean_auto_risk": "prospective_valid_only_v1",
+   "semantic_layer_winners": [
+    "arm_a_q8_0",
+    "arm_b_two_pass",
+    "baseline_8b_one_pass"
+   ],
+   "constant_baseline_wins_semantic_layer": false
+  },
+  {
+   "matrix": {
+    "invalid->valid": 12,
+    "partially_valid->valid": 3,
+    "valid->invalid": 2,
+    "adjacent_undergrade": 1,
+    "invalid->partially_valid": 3
+   },
+   "deployable_auto_totals": {
+    "prospective_valid_only_v1": 12,
+    "prospective_noninvalid_v1": 26,
+    "prospective_auto_all_structurally_valid_v1": 32
+   },
+   "deployable_auto_means": {
+    "prospective_valid_only_v1": 0.4444,
+    "prospective_noninvalid_v1": 0.6667,
+    "prospective_auto_all_structurally_valid_v1": 0.7273
+   },
+   "raw_severe_counts": {
+    "prospective_valid_only_v1": {
+     "invalid_to_valid": 0,
+     "partial_to_valid": 4
+    },
+    "prospective_noninvalid_v1": {
+     "invalid_to_valid": 0,
+     "partial_to_valid": 4
+    },
+    "prospective_auto_all_structurally_valid_v1": {
+     "invalid_to_valid": 0,
+     "partial_to_valid": 4
+    }
+   },
+   "best_deployable_by_total_auto_risk": "prospective_valid_only_v1",
+   "best_deployable_by_mean_auto_risk": "prospective_valid_only_v1",
+   "semantic_layer_winners": [
+    "arm_a_q8_0"
+   ],
+   "constant_baseline_wins_semantic_layer": false
+  },
+  {
+   "matrix": {
+    "invalid->valid": 12,
+    "partially_valid->valid": 3,
+    "valid->invalid": 2,
+    "adjacent_undergrade": 2,
+    "invalid->partially_valid": 3
+   },
+   "deployable_auto_totals": {
+    "prospective_valid_only_v1": 12,
+    "prospective_noninvalid_v1": 28,
+    "prospective_auto_all_structurally_valid_v1": 36
+   },
+   "deployable_auto_means": {
+    "prospective_valid_only_v1": 0.4444,
+    "prospective_noninvalid_v1": 0.7179,
+    "prospective_auto_all_structurally_valid_v1": 0.8182
+   },
+   "raw_severe_counts": {
+    "prospective_valid_only_v1": {
+     "invalid_to_valid": 0,
+     "partial_to_valid": 4
+    },
+    "prospective_noninvalid_v1": {
+     "invalid_to_valid": 0,
+     "partial_to_valid": 4
+    },
+    "prospective_auto_all_structurally_valid_v1": {
+     "invalid_to_valid": 0,
+     "partial_to_valid": 4
+    }
+   },
+   "best_deployable_by_total_auto_risk": "prospective_valid_only_v1",
+   "best_deployable_by_mean_auto_risk": "prospective_valid_only_v1",
+   "semantic_layer_winners": [
+    "arm_b_two_pass",
+    "baseline_8b_one_pass"
+   ],
+   "constant_baseline_wins_semantic_layer": false
+  },
+  {
+   "matrix": {
+    "invalid->valid": 12,
+    "partially_valid->valid": 3,
+    "valid->invalid": 3,
+    "adjacent_undergrade": 1,
+    "invalid->partially_valid": 3
+   },
+   "deployable_auto_totals": {
+    "prospective_valid_only_v1": 12,
+    "prospective_noninvalid_v1": 26,
+    "prospective_auto_all_structurally_valid_v1": 34
+   },
+   "deployable_auto_means": {
+    "prospective_valid_only_v1": 0.4444,
+    "prospective_noninvalid_v1": 0.6667,
+    "prospective_auto_all_structurally_valid_v1": 0.7727
+   },
+   "raw_severe_counts": {
+    "prospective_valid_only_v1": {
+     "invalid_to_valid": 0,
+     "partial_to_valid": 4
+    },
+    "prospective_noninvalid_v1": {
+     "invalid_to_valid": 0,
+     "partial_to_valid": 4
+    },
+    "prospective_auto_all_structurally_valid_v1": {
+     "invalid_to_valid": 0,
+     "partial_to_valid": 4
+    }
+   },
+   "best_deployable_by_total_auto_risk": "prospective_valid_only_v1",
+   "best_deployable_by_mean_auto_risk": "prospective_valid_only_v1",
+   "semantic_layer_winners": [
+    "arm_a_q8_0"
+   ],
+   "constant_baseline_wins_semantic_layer": false
+  },
+  {
+   "matrix": {
+    "invalid->valid": 12,
+    "partially_valid->valid": 3,
+    "valid->invalid": 3,
+    "adjacent_undergrade": 2,
+    "invalid->partially_valid": 3
+   },
+   "deployable_auto_totals": {
+    "prospective_valid_only_v1": 12,
+    "prospective_noninvalid_v1": 28,
+    "prospective_auto_all_structurally_valid_v1": 38
+   },
+   "deployable_auto_means": {
+    "prospective_valid_only_v1": 0.4444,
+    "prospective_noninvalid_v1": 0.7179,
+    "prospective_auto_all_structurally_valid_v1": 0.8636
+   },
+   "raw_severe_counts": {
+    "prospective_valid_only_v1": {
+     "invalid_to_valid": 0,
+     "partial_to_valid": 4
+    },
+    "prospective_noninvalid_v1": {
+     "invalid_to_valid": 0,
+     "partial_to_valid": 4
+    },
+    "prospective_auto_all_structurally_valid_v1": {
+     "invalid_to_valid": 0,
+     "partial_to_valid": 4
+    }
+   },
+   "best_deployable_by_total_auto_risk": "prospective_valid_only_v1",
+   "best_deployable_by_mean_auto_risk": "prospective_valid_only_v1",
+   "semantic_layer_winners": [
+    "arm_b_two_pass",
+    "baseline_8b_one_pass"
+   ],
+   "constant_baseline_wins_semantic_layer": false
+  },
+  {
+   "matrix": {
+    "invalid->valid": 12,
+    "partially_valid->valid": 3,
+    "valid->invalid": 5,
+    "adjacent_undergrade": 1,
+    "invalid->partially_valid": 3
+   },
+   "deployable_auto_totals": {
+    "prospective_valid_only_v1": 12,
+    "prospective_noninvalid_v1": 26,
+    "prospective_auto_all_structurally_valid_v1": 38
+   },
+   "deployable_auto_means": {
+    "prospective_valid_only_v1": 0.4444,
+    "prospective_noninvalid_v1": 0.6667,
+    "prospective_auto_all_structurally_valid_v1": 0.8636
+   },
+   "raw_severe_counts": {
+    "prospective_valid_only_v1": {
+     "invalid_to_valid": 0,
+     "partial_to_valid": 4
+    },
+    "prospective_noninvalid_v1": {
+     "invalid_to_valid": 0,
+     "partial_to_valid": 4
+    },
+    "prospective_auto_all_structurally_valid_v1": {
+     "invalid_to_valid": 0,
+     "partial_to_valid": 4
+    }
+   },
+   "best_deployable_by_total_auto_risk": "prospective_valid_only_v1",
+   "best_deployable_by_mean_auto_risk": "prospective_valid_only_v1",
+   "semantic_layer_winners": [
+    "arm_a_q8_0"
+   ],
+   "constant_baseline_wins_semantic_layer": false
+  },
+  {
+   "matrix": {
+    "invalid->valid": 12,
+    "partially_valid->valid": 3,
+    "valid->invalid": 5,
+    "adjacent_undergrade": 2,
+    "invalid->partially_valid": 3
+   },
+   "deployable_auto_totals": {
+    "prospective_valid_only_v1": 12,
+    "prospective_noninvalid_v1": 28,
+    "prospective_auto_all_structurally_valid_v1": 42
+   },
+   "deployable_auto_means": {
+    "prospective_valid_only_v1": 0.4444,
+    "prospective_noninvalid_v1": 0.7179,
+    "prospective_auto_all_structurally_valid_v1": 0.9545
+   },
+   "raw_severe_counts": {
+    "prospective_valid_only_v1": {
+     "invalid_to_valid": 0,
+     "partial_to_valid": 4
+    },
+    "prospective_noninvalid_v1": {
+     "invalid_to_valid": 0,
+     "partial_to_valid": 4
+    },
+    "prospective_auto_all_structurally_valid_v1": {
+     "invalid_to_valid": 0,
+     "partial_to_valid": 4
+    }
+   },
+   "best_deployable_by_total_auto_risk": "prospective_valid_only_v1",
+   "best_deployable_by_mean_auto_risk": "prospective_valid_only_v1",
+   "semantic_layer_winners": [
+    "arm_b_two_pass",
+    "baseline_8b_one_pass"
+   ],
+   "constant_baseline_wins_semantic_layer": false
+  },
+  {
+   "matrix": {
+    "invalid->valid": 12,
+    "partially_valid->valid": 5,
+    "valid->invalid": 2,
+    "adjacent_undergrade": 1,
+    "invalid->partially_valid": 3
+   },
+   "deployable_auto_totals": {
+    "prospective_valid_only_v1": 20,
+    "prospective_noninvalid_v1": 34,
+    "prospective_auto_all_structurally_valid_v1": 40
+   },
+   "deployable_auto_means": {
+    "prospective_valid_only_v1": 0.7407,
+    "prospective_noninvalid_v1": 0.8718,
+    "prospective_auto_all_structurally_valid_v1": 0.9091
+   },
+   "raw_severe_counts": {
+    "prospective_valid_only_v1": {
+     "invalid_to_valid": 0,
+     "partial_to_valid": 4
+    },
+    "prospective_noninvalid_v1": {
+     "invalid_to_valid": 0,
+     "partial_to_valid": 4
+    },
+    "prospective_auto_all_structurally_valid_v1": {
+     "invalid_to_valid": 0,
+     "partial_to_valid": 4
+    }
+   },
+   "best_deployable_by_total_auto_risk": "prospective_valid_only_v1",
+   "best_deployable_by_mean_auto_risk": "prospective_valid_only_v1",
+   "semantic_layer_winners": [
+    "arm_a_q8_0"
+   ],
+   "constant_baseline_wins_semantic_layer": false
+  },
+  {
+   "matrix": {
+    "invalid->valid": 12,
+    "partially_valid->valid": 5,
+    "valid->invalid": 2,
+    "adjacent_undergrade": 2,
+    "invalid->partially_valid": 3
+   },
+   "deployable_auto_totals": {
+    "prospective_valid_only_v1": 20,
+    "prospective_noninvalid_v1": 36,
+    "prospective_auto_all_structurally_valid_v1": 44
+   },
+   "deployable_auto_means": {
+    "prospective_valid_only_v1": 0.7407,
+    "prospective_noninvalid_v1": 0.9231,
+    "prospective_auto_all_structurally_valid_v1": 1.0
+   },
+   "raw_severe_counts": {
+    "prospective_valid_only_v1": {
+     "invalid_to_valid": 0,
+     "partial_to_valid": 4
+    },
+    "prospective_noninvalid_v1": {
+     "invalid_to_valid": 0,
+     "partial_to_valid": 4
+    },
+    "prospective_auto_all_structurally_valid_v1": {
+     "invalid_to_valid": 0,
+     "partial_to_valid": 4
+    }
+   },
+   "best_deployable_by_total_auto_risk": "prospective_valid_only_v1",
+   "best_deployable_by_mean_auto_risk": "prospective_valid_only_v1",
+   "semantic_layer_winners": [
+    "arm_b_two_pass",
+    "baseline_8b_one_pass"
+   ],
+   "constant_baseline_wins_semantic_layer": false
+  },
+  {
+   "matrix": {
+    "invalid->valid": 12,
+    "partially_valid->valid": 5,
+    "valid->invalid": 3,
+    "adjacent_undergrade": 1,
+    "invalid->partially_valid": 3
+   },
+   "deployable_auto_totals": {
+    "prospective_valid_only_v1": 20,
+    "prospective_noninvalid_v1": 34,
+    "prospective_auto_all_structurally_valid_v1": 42
+   },
+   "deployable_auto_means": {
+    "prospective_valid_only_v1": 0.7407,
+    "prospective_noninvalid_v1": 0.8718,
+    "prospective_auto_all_structurally_valid_v1": 0.9545
+   },
+   "raw_severe_counts": {
+    "prospective_valid_only_v1": {
+     "invalid_to_valid": 0,
+     "partial_to_valid": 4
+    },
+    "prospective_noninvalid_v1": {
+     "invalid_to_valid": 0,
+     "partial_to_valid": 4
+    },
+    "prospective_auto_all_structurally_valid_v1": {
+     "invalid_to_valid": 0,
+     "partial_to_valid": 4
+    }
+   },
+   "best_deployable_by_total_auto_risk": "prospective_valid_only_v1",
+   "best_deployable_by_mean_auto_risk": "prospective_valid_only_v1",
+   "semantic_layer_winners": [
+    "arm_a_q8_0"
+   ],
+   "constant_baseline_wins_semantic_layer": false
+  },
+  {
+   "matrix": {
+    "invalid->valid": 12,
+    "partially_valid->valid": 5,
+    "valid->invalid": 3,
+    "adjacent_undergrade": 2,
+    "invalid->partially_valid": 3
+   },
+   "deployable_auto_totals": {
+    "prospective_valid_only_v1": 20,
+    "prospective_noninvalid_v1": 36,
+    "prospective_auto_all_structurally_valid_v1": 46
+   },
+   "deployable_auto_means": {
+    "prospective_valid_only_v1": 0.7407,
+    "prospective_noninvalid_v1": 0.9231,
+    "prospective_auto_all_structurally_valid_v1": 1.0455
+   },
+   "raw_severe_counts": {
+    "prospective_valid_only_v1": {
+     "invalid_to_valid": 0,
+     "partial_to_valid": 4
+    },
+    "prospective_noninvalid_v1": {
+     "invalid_to_valid": 0,
+     "partial_to_valid": 4
+    },
+    "prospective_auto_all_structurally_valid_v1": {
+     "invalid_to_valid": 0,
+     "partial_to_valid": 4
+    }
+   },
+   "best_deployable_by_total_auto_risk": "prospective_valid_only_v1",
+   "best_deployable_by_mean_auto_risk": "prospective_valid_only_v1",
+   "semantic_layer_winners": [
+    "arm_b_two_pass",
+    "baseline_8b_one_pass"
+   ],
+   "constant_baseline_wins_semantic_layer": false
+  },
+  {
+   "matrix": {
+    "invalid->valid": 12,
+    "partially_valid->valid": 5,
+    "valid->invalid": 5,
+    "adjacent_undergrade": 1,
+    "invalid->partially_valid": 3
+   },
+   "deployable_auto_totals": {
+    "prospective_valid_only_v1": 20,
+    "prospective_noninvalid_v1": 34,
+    "prospective_auto_all_structurally_valid_v1": 46
+   },
+   "deployable_auto_means": {
+    "prospective_valid_only_v1": 0.7407,
+    "prospective_noninvalid_v1": 0.8718,
+    "prospective_auto_all_structurally_valid_v1": 1.0455
+   },
+   "raw_severe_counts": {
+    "prospective_valid_only_v1": {
+     "invalid_to_valid": 0,
+     "partial_to_valid": 4
+    },
+    "prospective_noninvalid_v1": {
+     "invalid_to_valid": 0,
+     "partial_to_valid": 4
+    },
+    "prospective_auto_all_structurally_valid_v1": {
+     "invalid_to_valid": 0,
+     "partial_to_valid": 4
+    }
+   },
+   "best_deployable_by_total_auto_risk": "prospective_valid_only_v1",
+   "best_deployable_by_mean_auto_risk": "prospective_valid_only_v1",
+   "semantic_layer_winners": [
+    "always_partially_valid"
+   ],
+   "constant_baseline_wins_semantic_layer": true
+  },
+  {
+   "matrix": {
+    "invalid->valid": 12,
+    "partially_valid->valid": 5,
+    "valid->invalid": 5,
+    "adjacent_undergrade": 2,
+    "invalid->partially_valid": 3
+   },
+   "deployable_auto_totals": {
+    "prospective_valid_only_v1": 20,
+    "prospective_noninvalid_v1": 36,
+    "prospective_auto_all_structurally_valid_v1": 50
+   },
+   "deployable_auto_means": {
+    "prospective_valid_only_v1": 0.7407,
+    "prospective_noninvalid_v1": 0.9231,
+    "prospective_auto_all_structurally_valid_v1": 1.1364
+   },
+   "raw_severe_counts": {
+    "prospective_valid_only_v1": {
+     "invalid_to_valid": 0,
+     "partial_to_valid": 4
+    },
+    "prospective_noninvalid_v1": {
+     "invalid_to_valid": 0,
+     "partial_to_valid": 4
+    },
+    "prospective_auto_all_structurally_valid_v1": {
+     "invalid_to_valid": 0,
+     "partial_to_valid": 4
+    }
+   },
+   "best_deployable_by_total_auto_risk": "prospective_valid_only_v1",
+   "best_deployable_by_mean_auto_risk": "prospective_valid_only_v1",
+   "semantic_layer_winners": [
+    "arm_b_two_pass",
+    "baseline_8b_one_pass"
+   ],
+   "constant_baseline_wins_semantic_layer": false
+  },
+  {
+   "matrix": {
+    "invalid->valid": 12,
+    "partially_valid->valid": 7,
+    "valid->invalid": 2,
+    "adjacent_undergrade": 1,
+    "invalid->partially_valid": 3
+   },
+   "deployable_auto_totals": {
+    "prospective_valid_only_v1": 28,
+    "prospective_noninvalid_v1": 42,
+    "prospective_auto_all_structurally_valid_v1": 48
+   },
+   "deployable_auto_means": {
+    "prospective_valid_only_v1": 1.037,
+    "prospective_noninvalid_v1": 1.0769,
+    "prospective_auto_all_structurally_valid_v1": 1.0909
+   },
+   "raw_severe_counts": {
+    "prospective_valid_only_v1": {
+     "invalid_to_valid": 0,
+     "partial_to_valid": 4
+    },
+    "prospective_noninvalid_v1": {
+     "invalid_to_valid": 0,
+     "partial_to_valid": 4
+    },
+    "prospective_auto_all_structurally_valid_v1": {
+     "invalid_to_valid": 0,
+     "partial_to_valid": 4
+    }
+   },
+   "best_deployable_by_total_auto_risk": "prospective_valid_only_v1",
+   "best_deployable_by_mean_auto_risk": "prospective_valid_only_v1",
+   "semantic_layer_winners": [
+    "always_partially_valid"
+   ],
+   "constant_baseline_wins_semantic_layer": true
+  },
+  {
+   "matrix": {
+    "invalid->valid": 12,
+    "partially_valid->valid": 7,
+    "valid->invalid": 2,
+    "adjacent_undergrade": 2,
+    "invalid->partially_valid": 3
+   },
+   "deployable_auto_totals": {
+    "prospective_valid_only_v1": 28,
+    "prospective_noninvalid_v1": 44,
+    "prospective_auto_all_structurally_valid_v1": 52
+   },
+   "deployable_auto_means": {
+    "prospective_valid_only_v1": 1.037,
+    "prospective_noninvalid_v1": 1.1282,
+    "prospective_auto_all_structurally_valid_v1": 1.1818
+   },
+   "raw_severe_counts": {
+    "prospective_valid_only_v1": {
+     "invalid_to_valid": 0,
+     "partial_to_valid": 4
+    },
+    "prospective_noninvalid_v1": {
+     "invalid_to_valid": 0,
+     "partial_to_valid": 4
+    },
+    "prospective_auto_all_structurally_valid_v1": {
+     "invalid_to_valid": 0,
+     "partial_to_valid": 4
+    }
+   },
+   "best_deployable_by_total_auto_risk": "prospective_valid_only_v1",
+   "best_deployable_by_mean_auto_risk": "prospective_valid_only_v1",
+   "semantic_layer_winners": [
+    "arm_a_q8_0",
+    "arm_b_two_pass",
+    "baseline_8b_one_pass"
+   ],
+   "constant_baseline_wins_semantic_layer": false
+  },
+  {
+   "matrix": {
+    "invalid->valid": 12,
+    "partially_valid->valid": 7,
+    "valid->invalid": 3,
+    "adjacent_undergrade": 1,
+    "invalid->partially_valid": 3
+   },
+   "deployable_auto_totals": {
+    "prospective_valid_only_v1": 28,
+    "prospective_noninvalid_v1": 42,
+    "prospective_auto_all_structurally_valid_v1": 50
+   },
+   "deployable_auto_means": {
+    "prospective_valid_only_v1": 1.037,
+    "prospective_noninvalid_v1": 1.0769,
+    "prospective_auto_all_structurally_valid_v1": 1.1364
+   },
+   "raw_severe_counts": {
+    "prospective_valid_only_v1": {
+     "invalid_to_valid": 0,
+     "partial_to_valid": 4
+    },
+    "prospective_noninvalid_v1": {
+     "invalid_to_valid": 0,
+     "partial_to_valid": 4
+    },
+    "prospective_auto_all_structurally_valid_v1": {
+     "invalid_to_valid": 0,
+     "partial_to_valid": 4
+    }
+   },
+   "best_deployable_by_total_auto_risk": "prospective_valid_only_v1",
+   "best_deployable_by_mean_auto_risk": "prospective_valid_only_v1",
+   "semantic_layer_winners": [
+    "always_partially_valid"
+   ],
+   "constant_baseline_wins_semantic_layer": true
+  },
+  {
+   "matrix": {
+    "invalid->valid": 12,
+    "partially_valid->valid": 7,
+    "valid->invalid": 3,
+    "adjacent_undergrade": 2,
+    "invalid->partially_valid": 3
+   },
+   "deployable_auto_totals": {
+    "prospective_valid_only_v1": 28,
+    "prospective_noninvalid_v1": 44,
+    "prospective_auto_all_structurally_valid_v1": 54
+   },
+   "deployable_auto_means": {
+    "prospective_valid_only_v1": 1.037,
+    "prospective_noninvalid_v1": 1.1282,
+    "prospective_auto_all_structurally_valid_v1": 1.2273
+   },
+   "raw_severe_counts": {
+    "prospective_valid_only_v1": {
+     "invalid_to_valid": 0,
+     "partial_to_valid": 4
+    },
+    "prospective_noninvalid_v1": {
+     "invalid_to_valid": 0,
+     "partial_to_valid": 4
+    },
+    "prospective_auto_all_structurally_valid_v1": {
+     "invalid_to_valid": 0,
+     "partial_to_valid": 4
+    }
+   },
+   "best_deployable_by_total_auto_risk": "prospective_valid_only_v1",
+   "best_deployable_by_mean_auto_risk": "prospective_valid_only_v1",
+   "semantic_layer_winners": [
+    "arm_a_q8_0",
+    "arm_b_two_pass",
+    "baseline_8b_one_pass"
+   ],
+   "constant_baseline_wins_semantic_layer": false
+  },
+  {
+   "matrix": {
+    "invalid->valid": 12,
+    "partially_valid->valid": 7,
+    "valid->invalid": 5,
+    "adjacent_undergrade": 1,
+    "invalid->partially_valid": 3
+   },
+   "deployable_auto_totals": {
+    "prospective_valid_only_v1": 28,
+    "prospective_noninvalid_v1": 42,
+    "prospective_auto_all_structurally_valid_v1": 54
+   },
+   "deployable_auto_means": {
+    "prospective_valid_only_v1": 1.037,
+    "prospective_noninvalid_v1": 1.0769,
+    "prospective_auto_all_structurally_valid_v1": 1.2273
+   },
+   "raw_severe_counts": {
+    "prospective_valid_only_v1": {
+     "invalid_to_valid": 0,
+     "partial_to_valid": 4
+    },
+    "prospective_noninvalid_v1": {
+     "invalid_to_valid": 0,
+     "partial_to_valid": 4
+    },
+    "prospective_auto_all_structurally_valid_v1": {
+     "invalid_to_valid": 0,
+     "partial_to_valid": 4
+    }
+   },
+   "best_deployable_by_total_auto_risk": "prospective_valid_only_v1",
+   "best_deployable_by_mean_auto_risk": "prospective_valid_only_v1",
+   "semantic_layer_winners": [
+    "always_partially_valid"
+   ],
+   "constant_baseline_wins_semantic_layer": true
+  },
+  {
+   "matrix": {
+    "invalid->valid": 12,
+    "partially_valid->valid": 7,
+    "valid->invalid": 5,
+    "adjacent_undergrade": 2,
+    "invalid->partially_valid": 3
+   },
+   "deployable_auto_totals": {
+    "prospective_valid_only_v1": 28,
+    "prospective_noninvalid_v1": 44,
+    "prospective_auto_all_structurally_valid_v1": 58
+   },
+   "deployable_auto_means": {
+    "prospective_valid_only_v1": 1.037,
+    "prospective_noninvalid_v1": 1.1282,
+    "prospective_auto_all_structurally_valid_v1": 1.3182
+   },
+   "raw_severe_counts": {
+    "prospective_valid_only_v1": {
+     "invalid_to_valid": 0,
+     "partial_to_valid": 4
+    },
+    "prospective_noninvalid_v1": {
+     "invalid_to_valid": 0,
+     "partial_to_valid": 4
+    },
+    "prospective_auto_all_structurally_valid_v1": {
+     "invalid_to_valid": 0,
+     "partial_to_valid": 4
+    }
+   },
+   "best_deployable_by_total_auto_risk": "prospective_valid_only_v1",
+   "best_deployable_by_mean_auto_risk": "prospective_valid_only_v1",
+   "semantic_layer_winners": [
+    "arm_a_q8_0",
+    "arm_b_two_pass",
+    "baseline_8b_one_pass"
+   ],
+   "constant_baseline_wins_semantic_layer": false
+  },
+  {
+   "matrix": {
+    "invalid->valid": 15,
+    "partially_valid->valid": 3,
+    "valid->invalid": 2,
+    "adjacent_undergrade": 1,
+    "invalid->partially_valid": 3
+   },
+   "deployable_auto_totals": {
+    "prospective_valid_only_v1": 12,
+    "prospective_noninvalid_v1": 26,
+    "prospective_auto_all_structurally_valid_v1": 32
+   },
+   "deployable_auto_means": {
+    "prospective_valid_only_v1": 0.4444,
+    "prospective_noninvalid_v1": 0.6667,
+    "prospective_auto_all_structurally_valid_v1": 0.7273
+   },
+   "raw_severe_counts": {
+    "prospective_valid_only_v1": {
+     "invalid_to_valid": 0,
+     "partial_to_valid": 4
+    },
+    "prospective_noninvalid_v1": {
+     "invalid_to_valid": 0,
+     "partial_to_valid": 4
+    },
+    "prospective_auto_all_structurally_valid_v1": {
+     "invalid_to_valid": 0,
+     "partial_to_valid": 4
+    }
+   },
+   "best_deployable_by_total_auto_risk": "prospective_valid_only_v1",
+   "best_deployable_by_mean_auto_risk": "prospective_valid_only_v1",
+   "semantic_layer_winners": [
+    "arm_a_q8_0"
+   ],
+   "constant_baseline_wins_semantic_layer": false
+  },
+  {
+   "matrix": {
+    "invalid->valid": 15,
+    "partially_valid->valid": 3,
+    "valid->invalid": 2,
+    "adjacent_undergrade": 2,
+    "invalid->partially_valid": 3
+   },
+   "deployable_auto_totals": {
+    "prospective_valid_only_v1": 12,
+    "prospective_noninvalid_v1": 28,
+    "prospective_auto_all_structurally_valid_v1": 36
+   },
+   "deployable_auto_means": {
+    "prospective_valid_only_v1": 0.4444,
+    "prospective_noninvalid_v1": 0.7179,
+    "prospective_auto_all_structurally_valid_v1": 0.8182
+   },
+   "raw_severe_counts": {
+    "prospective_valid_only_v1": {
+     "invalid_to_valid": 0,
+     "partial_to_valid": 4
+    },
+    "prospective_noninvalid_v1": {
+     "invalid_to_valid": 0,
+     "partial_to_valid": 4
+    },
+    "prospective_auto_all_structurally_valid_v1": {
+     "invalid_to_valid": 0,
+     "partial_to_valid": 4
+    }
+   },
+   "best_deployable_by_total_auto_risk": "prospective_valid_only_v1",
+   "best_deployable_by_mean_auto_risk": "prospective_valid_only_v1",
+   "semantic_layer_winners": [
+    "arm_b_two_pass",
+    "baseline_8b_one_pass"
+   ],
+   "constant_baseline_wins_semantic_layer": false
+  },
+  {
+   "matrix": {
+    "invalid->valid": 15,
+    "partially_valid->valid": 3,
+    "valid->invalid": 3,
+    "adjacent_undergrade": 1,
+    "invalid->partially_valid": 3
+   },
+   "deployable_auto_totals": {
+    "prospective_valid_only_v1": 12,
+    "prospective_noninvalid_v1": 26,
+    "prospective_auto_all_structurally_valid_v1": 34
+   },
+   "deployable_auto_means": {
+    "prospective_valid_only_v1": 0.4444,
+    "prospective_noninvalid_v1": 0.6667,
+    "prospective_auto_all_structurally_valid_v1": 0.7727
+   },
+   "raw_severe_counts": {
+    "prospective_valid_only_v1": {
+     "invalid_to_valid": 0,
+     "partial_to_valid": 4
+    },
+    "prospective_noninvalid_v1": {
+     "invalid_to_valid": 0,
+     "partial_to_valid": 4
+    },
+    "prospective_auto_all_structurally_valid_v1": {
+     "invalid_to_valid": 0,
+     "partial_to_valid": 4
+    }
+   },
+   "best_deployable_by_total_auto_risk": "prospective_valid_only_v1",
+   "best_deployable_by_mean_auto_risk": "prospective_valid_only_v1",
+   "semantic_layer_winners": [
+    "arm_a_q8_0"
+   ],
+   "constant_baseline_wins_semantic_layer": false
+  },
+  {
+   "matrix": {
+    "invalid->valid": 15,
+    "partially_valid->valid": 3,
+    "valid->invalid": 3,
+    "adjacent_undergrade": 2,
+    "invalid->partially_valid": 3
+   },
+   "deployable_auto_totals": {
+    "prospective_valid_only_v1": 12,
+    "prospective_noninvalid_v1": 28,
+    "prospective_auto_all_structurally_valid_v1": 38
+   },
+   "deployable_auto_means": {
+    "prospective_valid_only_v1": 0.4444,
+    "prospective_noninvalid_v1": 0.7179,
+    "prospective_auto_all_structurally_valid_v1": 0.8636
+   },
+   "raw_severe_counts": {
+    "prospective_valid_only_v1": {
+     "invalid_to_valid": 0,
+     "partial_to_valid": 4
+    },
+    "prospective_noninvalid_v1": {
+     "invalid_to_valid": 0,
+     "partial_to_valid": 4
+    },
+    "prospective_auto_all_structurally_valid_v1": {
+     "invalid_to_valid": 0,
+     "partial_to_valid": 4
+    }
+   },
+   "best_deployable_by_total_auto_risk": "prospective_valid_only_v1",
+   "best_deployable_by_mean_auto_risk": "prospective_valid_only_v1",
+   "semantic_layer_winners": [
+    "arm_b_two_pass",
+    "baseline_8b_one_pass"
+   ],
+   "constant_baseline_wins_semantic_layer": false
+  },
+  {
+   "matrix": {
+    "invalid->valid": 15,
+    "partially_valid->valid": 3,
+    "valid->invalid": 5,
+    "adjacent_undergrade": 1,
+    "invalid->partially_valid": 3
+   },
+   "deployable_auto_totals": {
+    "prospective_valid_only_v1": 12,
+    "prospective_noninvalid_v1": 26,
+    "prospective_auto_all_structurally_valid_v1": 38
+   },
+   "deployable_auto_means": {
+    "prospective_valid_only_v1": 0.4444,
+    "prospective_noninvalid_v1": 0.6667,
+    "prospective_auto_all_structurally_valid_v1": 0.8636
+   },
+   "raw_severe_counts": {
+    "prospective_valid_only_v1": {
+     "invalid_to_valid": 0,
+     "partial_to_valid": 4
+    },
+    "prospective_noninvalid_v1": {
+     "invalid_to_valid": 0,
+     "partial_to_valid": 4
+    },
+    "prospective_auto_all_structurally_valid_v1": {
+     "invalid_to_valid": 0,
+     "partial_to_valid": 4
+    }
+   },
+   "best_deployable_by_total_auto_risk": "prospective_valid_only_v1",
+   "best_deployable_by_mean_auto_risk": "prospective_valid_only_v1",
+   "semantic_layer_winners": [
+    "arm_a_q8_0"
+   ],
+   "constant_baseline_wins_semantic_layer": false
+  },
+  {
+   "matrix": {
+    "invalid->valid": 15,
+    "partially_valid->valid": 3,
+    "valid->invalid": 5,
+    "adjacent_undergrade": 2,
+    "invalid->partially_valid": 3
+   },
+   "deployable_auto_totals": {
+    "prospective_valid_only_v1": 12,
+    "prospective_noninvalid_v1": 28,
+    "prospective_auto_all_structurally_valid_v1": 42
+   },
+   "deployable_auto_means": {
+    "prospective_valid_only_v1": 0.4444,
+    "prospective_noninvalid_v1": 0.7179,
+    "prospective_auto_all_structurally_valid_v1": 0.9545
+   },
+   "raw_severe_counts": {
+    "prospective_valid_only_v1": {
+     "invalid_to_valid": 0,
+     "partial_to_valid": 4
+    },
+    "prospective_noninvalid_v1": {
+     "invalid_to_valid": 0,
+     "partial_to_valid": 4
+    },
+    "prospective_auto_all_structurally_valid_v1": {
+     "invalid_to_valid": 0,
+     "partial_to_valid": 4
+    }
+   },
+   "best_deployable_by_total_auto_risk": "prospective_valid_only_v1",
+   "best_deployable_by_mean_auto_risk": "prospective_valid_only_v1",
+   "semantic_layer_winners": [
+    "arm_b_two_pass",
+    "baseline_8b_one_pass"
+   ],
+   "constant_baseline_wins_semantic_layer": false
+  },
+  {
+   "matrix": {
+    "invalid->valid": 15,
+    "partially_valid->valid": 5,
+    "valid->invalid": 2,
+    "adjacent_undergrade": 1,
+    "invalid->partially_valid": 3
+   },
+   "deployable_auto_totals": {
+    "prospective_valid_only_v1": 20,
+    "prospective_noninvalid_v1": 34,
+    "prospective_auto_all_structurally_valid_v1": 40
+   },
+   "deployable_auto_means": {
+    "prospective_valid_only_v1": 0.7407,
+    "prospective_noninvalid_v1": 0.8718,
+    "prospective_auto_all_structurally_valid_v1": 0.9091
+   },
+   "raw_severe_counts": {
+    "prospective_valid_only_v1": {
+     "invalid_to_valid": 0,
+     "partial_to_valid": 4
+    },
+    "prospective_noninvalid_v1": {
+     "invalid_to_valid": 0,
+     "partial_to_valid": 4
+    },
+    "prospective_auto_all_structurally_valid_v1": {
+     "invalid_to_valid": 0,
+     "partial_to_valid": 4
+    }
+   },
+   "best_deployable_by_total_auto_risk": "prospective_valid_only_v1",
+   "best_deployable_by_mean_auto_risk": "prospective_valid_only_v1",
+   "semantic_layer_winners": [
+    "arm_a_q8_0"
+   ],
+   "constant_baseline_wins_semantic_layer": false
+  },
+  {
+   "matrix": {
+    "invalid->valid": 15,
+    "partially_valid->valid": 5,
+    "valid->invalid": 2,
+    "adjacent_undergrade": 2,
+    "invalid->partially_valid": 3
+   },
+   "deployable_auto_totals": {
+    "prospective_valid_only_v1": 20,
+    "prospective_noninvalid_v1": 36,
+    "prospective_auto_all_structurally_valid_v1": 44
+   },
+   "deployable_auto_means": {
+    "prospective_valid_only_v1": 0.7407,
+    "prospective_noninvalid_v1": 0.9231,
+    "prospective_auto_all_structurally_valid_v1": 1.0
+   },
+   "raw_severe_counts": {
+    "prospective_valid_only_v1": {
+     "invalid_to_valid": 0,
+     "partial_to_valid": 4
+    },
+    "prospective_noninvalid_v1": {
+     "invalid_to_valid": 0,
+     "partial_to_valid": 4
+    },
+    "prospective_auto_all_structurally_valid_v1": {
+     "invalid_to_valid": 0,
+     "partial_to_valid": 4
+    }
+   },
+   "best_deployable_by_total_auto_risk": "prospective_valid_only_v1",
+   "best_deployable_by_mean_auto_risk": "prospective_valid_only_v1",
+   "semantic_layer_winners": [
+    "arm_b_two_pass",
+    "baseline_8b_one_pass"
+   ],
+   "constant_baseline_wins_semantic_layer": false
+  },
+  {
+   "matrix": {
+    "invalid->valid": 15,
+    "partially_valid->valid": 5,
+    "valid->invalid": 3,
+    "adjacent_undergrade": 1,
+    "invalid->partially_valid": 3
+   },
+   "deployable_auto_totals": {
+    "prospective_valid_only_v1": 20,
+    "prospective_noninvalid_v1": 34,
+    "prospective_auto_all_structurally_valid_v1": 42
+   },
+   "deployable_auto_means": {
+    "prospective_valid_only_v1": 0.7407,
+    "prospective_noninvalid_v1": 0.8718,
+    "prospective_auto_all_structurally_valid_v1": 0.9545
+   },
+   "raw_severe_counts": {
+    "prospective_valid_only_v1": {
+     "invalid_to_valid": 0,
+     "partial_to_valid": 4
+    },
+    "prospective_noninvalid_v1": {
+     "invalid_to_valid": 0,
+     "partial_to_valid": 4
+    },
+    "prospective_auto_all_structurally_valid_v1": {
+     "invalid_to_valid": 0,
+     "partial_to_valid": 4
+    }
+   },
+   "best_deployable_by_total_auto_risk": "prospective_valid_only_v1",
+   "best_deployable_by_mean_auto_risk": "prospective_valid_only_v1",
+   "semantic_layer_winners": [
+    "arm_a_q8_0"
+   ],
+   "constant_baseline_wins_semantic_layer": false
+  },
+  {
+   "matrix": {
+    "invalid->valid": 15,
+    "partially_valid->valid": 5,
+    "valid->invalid": 3,
+    "adjacent_undergrade": 2,
+    "invalid->partially_valid": 3
+   },
+   "deployable_auto_totals": {
+    "prospective_valid_only_v1": 20,
+    "prospective_noninvalid_v1": 36,
+    "prospective_auto_all_structurally_valid_v1": 46
+   },
+   "deployable_auto_means": {
+    "prospective_valid_only_v1": 0.7407,
+    "prospective_noninvalid_v1": 0.9231,
+    "prospective_auto_all_structurally_valid_v1": 1.0455
+   },
+   "raw_severe_counts": {
+    "prospective_valid_only_v1": {
+     "invalid_to_valid": 0,
+     "partial_to_valid": 4
+    },
+    "prospective_noninvalid_v1": {
+     "invalid_to_valid": 0,
+     "partial_to_valid": 4
+    },
+    "prospective_auto_all_structurally_valid_v1": {
+     "invalid_to_valid": 0,
+     "partial_to_valid": 4
+    }
+   },
+   "best_deployable_by_total_auto_risk": "prospective_valid_only_v1",
+   "best_deployable_by_mean_auto_risk": "prospective_valid_only_v1",
+   "semantic_layer_winners": [
+    "arm_b_two_pass",
+    "baseline_8b_one_pass"
+   ],
+   "constant_baseline_wins_semantic_layer": false
+  },
+  {
+   "matrix": {
+    "invalid->valid": 15,
+    "partially_valid->valid": 5,
+    "valid->invalid": 5,
+    "adjacent_undergrade": 1,
+    "invalid->partially_valid": 3
+   },
+   "deployable_auto_totals": {
+    "prospective_valid_only_v1": 20,
+    "prospective_noninvalid_v1": 34,
+    "prospective_auto_all_structurally_valid_v1": 46
+   },
+   "deployable_auto_means": {
+    "prospective_valid_only_v1": 0.7407,
+    "prospective_noninvalid_v1": 0.8718,
+    "prospective_auto_all_structurally_valid_v1": 1.0455
+   },
+   "raw_severe_counts": {
+    "prospective_valid_only_v1": {
+     "invalid_to_valid": 0,
+     "partial_to_valid": 4
+    },
+    "prospective_noninvalid_v1": {
+     "invalid_to_valid": 0,
+     "partial_to_valid": 4
+    },
+    "prospective_auto_all_structurally_valid_v1": {
+     "invalid_to_valid": 0,
+     "partial_to_valid": 4
+    }
+   },
+   "best_deployable_by_total_auto_risk": "prospective_valid_only_v1",
+   "best_deployable_by_mean_auto_risk": "prospective_valid_only_v1",
+   "semantic_layer_winners": [
+    "always_partially_valid"
+   ],
+   "constant_baseline_wins_semantic_layer": true
+  },
+  {
+   "matrix": {
+    "invalid->valid": 15,
+    "partially_valid->valid": 5,
+    "valid->invalid": 5,
+    "adjacent_undergrade": 2,
+    "invalid->partially_valid": 3
+   },
+   "deployable_auto_totals": {
+    "prospective_valid_only_v1": 20,
+    "prospective_noninvalid_v1": 36,
+    "prospective_auto_all_structurally_valid_v1": 50
+   },
+   "deployable_auto_means": {
+    "prospective_valid_only_v1": 0.7407,
+    "prospective_noninvalid_v1": 0.9231,
+    "prospective_auto_all_structurally_valid_v1": 1.1364
+   },
+   "raw_severe_counts": {
+    "prospective_valid_only_v1": {
+     "invalid_to_valid": 0,
+     "partial_to_valid": 4
+    },
+    "prospective_noninvalid_v1": {
+     "invalid_to_valid": 0,
+     "partial_to_valid": 4
+    },
+    "prospective_auto_all_structurally_valid_v1": {
+     "invalid_to_valid": 0,
+     "partial_to_valid": 4
+    }
+   },
+   "best_deployable_by_total_auto_risk": "prospective_valid_only_v1",
+   "best_deployable_by_mean_auto_risk": "prospective_valid_only_v1",
+   "semantic_layer_winners": [
+    "arm_b_two_pass",
+    "baseline_8b_one_pass"
+   ],
+   "constant_baseline_wins_semantic_layer": false
+  },
+  {
+   "matrix": {
+    "invalid->valid": 15,
+    "partially_valid->valid": 7,
+    "valid->invalid": 2,
+    "adjacent_undergrade": 1,
+    "invalid->partially_valid": 3
+   },
+   "deployable_auto_totals": {
+    "prospective_valid_only_v1": 28,
+    "prospective_noninvalid_v1": 42,
+    "prospective_auto_all_structurally_valid_v1": 48
+   },
+   "deployable_auto_means": {
+    "prospective_valid_only_v1": 1.037,
+    "prospective_noninvalid_v1": 1.0769,
+    "prospective_auto_all_structurally_valid_v1": 1.0909
+   },
+   "raw_severe_counts": {
+    "prospective_valid_only_v1": {
+     "invalid_to_valid": 0,
+     "partial_to_valid": 4
+    },
+    "prospective_noninvalid_v1": {
+     "invalid_to_valid": 0,
+     "partial_to_valid": 4
+    },
+    "prospective_auto_all_structurally_valid_v1": {
+     "invalid_to_valid": 0,
+     "partial_to_valid": 4
+    }
+   },
+   "best_deployable_by_total_auto_risk": "prospective_valid_only_v1",
+   "best_deployable_by_mean_auto_risk": "prospective_valid_only_v1",
+   "semantic_layer_winners": [
+    "always_partially_valid"
+   ],
+   "constant_baseline_wins_semantic_layer": true
+  },
+  {
+   "matrix": {
+    "invalid->valid": 15,
+    "partially_valid->valid": 7,
+    "valid->invalid": 2,
+    "adjacent_undergrade": 2,
+    "invalid->partially_valid": 3
+   },
+   "deployable_auto_totals": {
+    "prospective_valid_only_v1": 28,
+    "prospective_noninvalid_v1": 44,
+    "prospective_auto_all_structurally_valid_v1": 52
+   },
+   "deployable_auto_means": {
+    "prospective_valid_only_v1": 1.037,
+    "prospective_noninvalid_v1": 1.1282,
+    "prospective_auto_all_structurally_valid_v1": 1.1818
+   },
+   "raw_severe_counts": {
+    "prospective_valid_only_v1": {
+     "invalid_to_valid": 0,
+     "partial_to_valid": 4
+    },
+    "prospective_noninvalid_v1": {
+     "invalid_to_valid": 0,
+     "partial_to_valid": 4
+    },
+    "prospective_auto_all_structurally_valid_v1": {
+     "invalid_to_valid": 0,
+     "partial_to_valid": 4
+    }
+   },
+   "best_deployable_by_total_auto_risk": "prospective_valid_only_v1",
+   "best_deployable_by_mean_auto_risk": "prospective_valid_only_v1",
+   "semantic_layer_winners": [
+    "arm_a_q8_0",
+    "arm_b_two_pass",
+    "baseline_8b_one_pass"
+   ],
+   "constant_baseline_wins_semantic_layer": false
+  },
+  {
+   "matrix": {
+    "invalid->valid": 15,
+    "partially_valid->valid": 7,
+    "valid->invalid": 3,
+    "adjacent_undergrade": 1,
+    "invalid->partially_valid": 3
+   },
+   "deployable_auto_totals": {
+    "prospective_valid_only_v1": 28,
+    "prospective_noninvalid_v1": 42,
+    "prospective_auto_all_structurally_valid_v1": 50
+   },
+   "deployable_auto_means": {
+    "prospective_valid_only_v1": 1.037,
+    "prospective_noninvalid_v1": 1.0769,
+    "prospective_auto_all_structurally_valid_v1": 1.1364
+   },
+   "raw_severe_counts": {
+    "prospective_valid_only_v1": {
+     "invalid_to_valid": 0,
+     "partial_to_valid": 4
+    },
+    "prospective_noninvalid_v1": {
+     "invalid_to_valid": 0,
+     "partial_to_valid": 4
+    },
+    "prospective_auto_all_structurally_valid_v1": {
+     "invalid_to_valid": 0,
+     "partial_to_valid": 4
+    }
+   },
+   "best_deployable_by_total_auto_risk": "prospective_valid_only_v1",
+   "best_deployable_by_mean_auto_risk": "prospective_valid_only_v1",
+   "semantic_layer_winners": [
+    "always_partially_valid"
+   ],
+   "constant_baseline_wins_semantic_layer": true
+  },
+  {
+   "matrix": {
+    "invalid->valid": 15,
+    "partially_valid->valid": 7,
+    "valid->invalid": 3,
+    "adjacent_undergrade": 2,
+    "invalid->partially_valid": 3
+   },
+   "deployable_auto_totals": {
+    "prospective_valid_only_v1": 28,
+    "prospective_noninvalid_v1": 44,
+    "prospective_auto_all_structurally_valid_v1": 54
+   },
+   "deployable_auto_means": {
+    "prospective_valid_only_v1": 1.037,
+    "prospective_noninvalid_v1": 1.1282,
+    "prospective_auto_all_structurally_valid_v1": 1.2273
+   },
+   "raw_severe_counts": {
+    "prospective_valid_only_v1": {
+     "invalid_to_valid": 0,
+     "partial_to_valid": 4
+    },
+    "prospective_noninvalid_v1": {
+     "invalid_to_valid": 0,
+     "partial_to_valid": 4
+    },
+    "prospective_auto_all_structurally_valid_v1": {
+     "invalid_to_valid": 0,
+     "partial_to_valid": 4
+    }
+   },
+   "best_deployable_by_total_auto_risk": "prospective_valid_only_v1",
+   "best_deployable_by_mean_auto_risk": "prospective_valid_only_v1",
+   "semantic_layer_winners": [
+    "arm_a_q8_0",
+    "arm_b_two_pass",
+    "baseline_8b_one_pass"
+   ],
+   "constant_baseline_wins_semantic_layer": false
+  },
+  {
+   "matrix": {
+    "invalid->valid": 15,
+    "partially_valid->valid": 7,
+    "valid->invalid": 5,
+    "adjacent_undergrade": 1,
+    "invalid->partially_valid": 3
+   },
+   "deployable_auto_totals": {
+    "prospective_valid_only_v1": 28,
+    "prospective_noninvalid_v1": 42,
+    "prospective_auto_all_structurally_valid_v1": 54
+   },
+   "deployable_auto_means": {
+    "prospective_valid_only_v1": 1.037,
+    "prospective_noninvalid_v1": 1.0769,
+    "prospective_auto_all_structurally_valid_v1": 1.2273
+   },
+   "raw_severe_counts": {
+    "prospective_valid_only_v1": {
+     "invalid_to_valid": 0,
+     "partial_to_valid": 4
+    },
+    "prospective_noninvalid_v1": {
+     "invalid_to_valid": 0,
+     "partial_to_valid": 4
+    },
+    "prospective_auto_all_structurally_valid_v1": {
+     "invalid_to_valid": 0,
+     "partial_to_valid": 4
+    }
+   },
+   "best_deployable_by_total_auto_risk": "prospective_valid_only_v1",
+   "best_deployable_by_mean_auto_risk": "prospective_valid_only_v1",
+   "semantic_layer_winners": [
+    "always_partially_valid"
+   ],
+   "constant_baseline_wins_semantic_layer": true
+  },
+  {
+   "matrix": {
+    "invalid->valid": 15,
+    "partially_valid->valid": 7,
+    "valid->invalid": 5,
+    "adjacent_undergrade": 2,
+    "invalid->partially_valid": 3
+   },
+   "deployable_auto_totals": {
+    "prospective_valid_only_v1": 28,
+    "prospective_noninvalid_v1": 44,
+    "prospective_auto_all_structurally_valid_v1": 58
+   },
+   "deployable_auto_means": {
+    "prospective_valid_only_v1": 1.037,
+    "prospective_noninvalid_v1": 1.1282,
+    "prospective_auto_all_structurally_valid_v1": 1.3182
+   },
+   "raw_severe_counts": {
+    "prospective_valid_only_v1": {
+     "invalid_to_valid": 0,
+     "partial_to_valid": 4
+    },
+    "prospective_noninvalid_v1": {
+     "invalid_to_valid": 0,
+     "partial_to_valid": 4
+    },
+    "prospective_auto_all_structurally_valid_v1": {
+     "invalid_to_valid": 0,
+     "partial_to_valid": 4
+    }
+   },
+   "best_deployable_by_total_auto_risk": "prospective_valid_only_v1",
+   "best_deployable_by_mean_auto_risk": "prospective_valid_only_v1",
+   "semantic_layer_winners": [
+    "arm_a_q8_0",
+    "arm_b_two_pass",
+    "baseline_8b_one_pass"
+   ],
+   "constant_baseline_wins_semantic_layer": false
+  },
+  {
+   "matrix": {
+    "invalid->valid": 20,
+    "partially_valid->valid": 3,
+    "valid->invalid": 2,
+    "adjacent_undergrade": 1,
+    "invalid->partially_valid": 3
+   },
+   "deployable_auto_totals": {
+    "prospective_valid_only_v1": 12,
+    "prospective_noninvalid_v1": 26,
+    "prospective_auto_all_structurally_valid_v1": 32
+   },
+   "deployable_auto_means": {
+    "prospective_valid_only_v1": 0.4444,
+    "prospective_noninvalid_v1": 0.6667,
+    "prospective_auto_all_structurally_valid_v1": 0.7273
+   },
+   "raw_severe_counts": {
+    "prospective_valid_only_v1": {
+     "invalid_to_valid": 0,
+     "partial_to_valid": 4
+    },
+    "prospective_noninvalid_v1": {
+     "invalid_to_valid": 0,
+     "partial_to_valid": 4
+    },
+    "prospective_auto_all_structurally_valid_v1": {
+     "invalid_to_valid": 0,
+     "partial_to_valid": 4
+    }
+   },
+   "best_deployable_by_total_auto_risk": "prospective_valid_only_v1",
+   "best_deployable_by_mean_auto_risk": "prospective_valid_only_v1",
+   "semantic_layer_winners": [
+    "arm_a_q8_0"
+   ],
+   "constant_baseline_wins_semantic_layer": false
+  },
+  {
+   "matrix": {
+    "invalid->valid": 20,
+    "partially_valid->valid": 3,
+    "valid->invalid": 2,
+    "adjacent_undergrade": 2,
+    "invalid->partially_valid": 3
+   },
+   "deployable_auto_totals": {
+    "prospective_valid_only_v1": 12,
+    "prospective_noninvalid_v1": 28,
+    "prospective_auto_all_structurally_valid_v1": 36
+   },
+   "deployable_auto_means": {
+    "prospective_valid_only_v1": 0.4444,
+    "prospective_noninvalid_v1": 0.7179,
+    "prospective_auto_all_structurally_valid_v1": 0.8182
+   },
+   "raw_severe_counts": {
+    "prospective_valid_only_v1": {
+     "invalid_to_valid": 0,
+     "partial_to_valid": 4
+    },
+    "prospective_noninvalid_v1": {
+     "invalid_to_valid": 0,
+     "partial_to_valid": 4
+    },
+    "prospective_auto_all_structurally_valid_v1": {
+     "invalid_to_valid": 0,
+     "partial_to_valid": 4
+    }
+   },
+   "best_deployable_by_total_auto_risk": "prospective_valid_only_v1",
+   "best_deployable_by_mean_auto_risk": "prospective_valid_only_v1",
+   "semantic_layer_winners": [
+    "arm_b_two_pass",
+    "baseline_8b_one_pass"
+   ],
+   "constant_baseline_wins_semantic_layer": false
+  },
+  {
+   "matrix": {
+    "invalid->valid": 20,
+    "partially_valid->valid": 3,
+    "valid->invalid": 3,
+    "adjacent_undergrade": 1,
+    "invalid->partially_valid": 3
+   },
+   "deployable_auto_totals": {
+    "prospective_valid_only_v1": 12,
+    "prospective_noninvalid_v1": 26,
+    "prospective_auto_all_structurally_valid_v1": 34
+   },
+   "deployable_auto_means": {
+    "prospective_valid_only_v1": 0.4444,
+    "prospective_noninvalid_v1": 0.6667,
+    "prospective_auto_all_structurally_valid_v1": 0.7727
+   },
+   "raw_severe_counts": {
+    "prospective_valid_only_v1": {
+     "invalid_to_valid": 0,
+     "partial_to_valid": 4
+    },
+    "prospective_noninvalid_v1": {
+     "invalid_to_valid": 0,
+     "partial_to_valid": 4
+    },
+    "prospective_auto_all_structurally_valid_v1": {
+     "invalid_to_valid": 0,
+     "partial_to_valid": 4
+    }
+   },
+   "best_deployable_by_total_auto_risk": "prospective_valid_only_v1",
+   "best_deployable_by_mean_auto_risk": "prospective_valid_only_v1",
+   "semantic_layer_winners": [
+    "arm_a_q8_0"
+   ],
+   "constant_baseline_wins_semantic_layer": false
+  },
+  {
+   "matrix": {
+    "invalid->valid": 20,
+    "partially_valid->valid": 3,
+    "valid->invalid": 3,
+    "adjacent_undergrade": 2,
+    "invalid->partially_valid": 3
+   },
+   "deployable_auto_totals": {
+    "prospective_valid_only_v1": 12,
+    "prospective_noninvalid_v1": 28,
+    "prospective_auto_all_structurally_valid_v1": 38
+   },
+   "deployable_auto_means": {
+    "prospective_valid_only_v1": 0.4444,
+    "prospective_noninvalid_v1": 0.7179,
+    "prospective_auto_all_structurally_valid_v1": 0.8636
+   },
+   "raw_severe_counts": {
+    "prospective_valid_only_v1": {
+     "invalid_to_valid": 0,
+     "partial_to_valid": 4
+    },
+    "prospective_noninvalid_v1": {
+     "invalid_to_valid": 0,
+     "partial_to_valid": 4
+    },
+    "prospective_auto_all_structurally_valid_v1": {
+     "invalid_to_valid": 0,
+     "partial_to_valid": 4
+    }
+   },
+   "best_deployable_by_total_auto_risk": "prospective_valid_only_v1",
+   "best_deployable_by_mean_auto_risk": "prospective_valid_only_v1",
+   "semantic_layer_winners": [
+    "arm_b_two_pass",
+    "baseline_8b_one_pass"
+   ],
+   "constant_baseline_wins_semantic_layer": false
+  },
+  {
+   "matrix": {
+    "invalid->valid": 20,
+    "partially_valid->valid": 3,
+    "valid->invalid": 5,
+    "adjacent_undergrade": 1,
+    "invalid->partially_valid": 3
+   },
+   "deployable_auto_totals": {
+    "prospective_valid_only_v1": 12,
+    "prospective_noninvalid_v1": 26,
+    "prospective_auto_all_structurally_valid_v1": 38
+   },
+   "deployable_auto_means": {
+    "prospective_valid_only_v1": 0.4444,
+    "prospective_noninvalid_v1": 0.6667,
+    "prospective_auto_all_structurally_valid_v1": 0.8636
+   },
+   "raw_severe_counts": {
+    "prospective_valid_only_v1": {
+     "invalid_to_valid": 0,
+     "partial_to_valid": 4
+    },
+    "prospective_noninvalid_v1": {
+     "invalid_to_valid": 0,
+     "partial_to_valid": 4
+    },
+    "prospective_auto_all_structurally_valid_v1": {
+     "invalid_to_valid": 0,
+     "partial_to_valid": 4
+    }
+   },
+   "best_deployable_by_total_auto_risk": "prospective_valid_only_v1",
+   "best_deployable_by_mean_auto_risk": "prospective_valid_only_v1",
+   "semantic_layer_winners": [
+    "arm_a_q8_0"
+   ],
+   "constant_baseline_wins_semantic_layer": false
+  },
+  {
+   "matrix": {
+    "invalid->valid": 20,
+    "partially_valid->valid": 3,
+    "valid->invalid": 5,
+    "adjacent_undergrade": 2,
+    "invalid->partially_valid": 3
+   },
+   "deployable_auto_totals": {
+    "prospective_valid_only_v1": 12,
+    "prospective_noninvalid_v1": 28,
+    "prospective_auto_all_structurally_valid_v1": 42
+   },
+   "deployable_auto_means": {
+    "prospective_valid_only_v1": 0.4444,
+    "prospective_noninvalid_v1": 0.7179,
+    "prospective_auto_all_structurally_valid_v1": 0.9545
+   },
+   "raw_severe_counts": {
+    "prospective_valid_only_v1": {
+     "invalid_to_valid": 0,
+     "partial_to_valid": 4
+    },
+    "prospective_noninvalid_v1": {
+     "invalid_to_valid": 0,
+     "partial_to_valid": 4
+    },
+    "prospective_auto_all_structurally_valid_v1": {
+     "invalid_to_valid": 0,
+     "partial_to_valid": 4
+    }
+   },
+   "best_deployable_by_total_auto_risk": "prospective_valid_only_v1",
+   "best_deployable_by_mean_auto_risk": "prospective_valid_only_v1",
+   "semantic_layer_winners": [
+    "arm_b_two_pass",
+    "baseline_8b_one_pass"
+   ],
+   "constant_baseline_wins_semantic_layer": false
+  },
+  {
+   "matrix": {
+    "invalid->valid": 20,
+    "partially_valid->valid": 5,
+    "valid->invalid": 2,
+    "adjacent_undergrade": 1,
+    "invalid->partially_valid": 3
+   },
+   "deployable_auto_totals": {
+    "prospective_valid_only_v1": 20,
+    "prospective_noninvalid_v1": 34,
+    "prospective_auto_all_structurally_valid_v1": 40
+   },
+   "deployable_auto_means": {
+    "prospective_valid_only_v1": 0.7407,
+    "prospective_noninvalid_v1": 0.8718,
+    "prospective_auto_all_structurally_valid_v1": 0.9091
+   },
+   "raw_severe_counts": {
+    "prospective_valid_only_v1": {
+     "invalid_to_valid": 0,
+     "partial_to_valid": 4
+    },
+    "prospective_noninvalid_v1": {
+     "invalid_to_valid": 0,
+     "partial_to_valid": 4
+    },
+    "prospective_auto_all_structurally_valid_v1": {
+     "invalid_to_valid": 0,
+     "partial_to_valid": 4
+    }
+   },
+   "best_deployable_by_total_auto_risk": "prospective_valid_only_v1",
+   "best_deployable_by_mean_auto_risk": "prospective_valid_only_v1",
+   "semantic_layer_winners": [
+    "arm_a_q8_0"
+   ],
+   "constant_baseline_wins_semantic_layer": false
+  },
+  {
+   "matrix": {
+    "invalid->valid": 20,
+    "partially_valid->valid": 5,
+    "valid->invalid": 2,
+    "adjacent_undergrade": 2,
+    "invalid->partially_valid": 3
+   },
+   "deployable_auto_totals": {
+    "prospective_valid_only_v1": 20,
+    "prospective_noninvalid_v1": 36,
+    "prospective_auto_all_structurally_valid_v1": 44
+   },
+   "deployable_auto_means": {
+    "prospective_valid_only_v1": 0.7407,
+    "prospective_noninvalid_v1": 0.9231,
+    "prospective_auto_all_structurally_valid_v1": 1.0
+   },
+   "raw_severe_counts": {
+    "prospective_valid_only_v1": {
+     "invalid_to_valid": 0,
+     "partial_to_valid": 4
+    },
+    "prospective_noninvalid_v1": {
+     "invalid_to_valid": 0,
+     "partial_to_valid": 4
+    },
+    "prospective_auto_all_structurally_valid_v1": {
+     "invalid_to_valid": 0,
+     "partial_to_valid": 4
+    }
+   },
+   "best_deployable_by_total_auto_risk": "prospective_valid_only_v1",
+   "best_deployable_by_mean_auto_risk": "prospective_valid_only_v1",
+   "semantic_layer_winners": [
+    "arm_b_two_pass",
+    "baseline_8b_one_pass"
+   ],
+   "constant_baseline_wins_semantic_layer": false
+  },
+  {
+   "matrix": {
+    "invalid->valid": 20,
+    "partially_valid->valid": 5,
+    "valid->invalid": 3,
+    "adjacent_undergrade": 1,
+    "invalid->partially_valid": 3
+   },
+   "deployable_auto_totals": {
+    "prospective_valid_only_v1": 20,
+    "prospective_noninvalid_v1": 34,
+    "prospective_auto_all_structurally_valid_v1": 42
+   },
+   "deployable_auto_means": {
+    "prospective_valid_only_v1": 0.7407,
+    "prospective_noninvalid_v1": 0.8718,
+    "prospective_auto_all_structurally_valid_v1": 0.9545
+   },
+   "raw_severe_counts": {
+    "prospective_valid_only_v1": {
+     "invalid_to_valid": 0,
+     "partial_to_valid": 4
+    },
+    "prospective_noninvalid_v1": {
+     "invalid_to_valid": 0,
+     "partial_to_valid": 4
+    },
+    "prospective_auto_all_structurally_valid_v1": {
+     "invalid_to_valid": 0,
+     "partial_to_valid": 4
+    }
+   },
+   "best_deployable_by_total_auto_risk": "prospective_valid_only_v1",
+   "best_deployable_by_mean_auto_risk": "prospective_valid_only_v1",
+   "semantic_layer_winners": [
+    "arm_a_q8_0"
+   ],
+   "constant_baseline_wins_semantic_layer": false
+  },
+  {
+   "matrix": {
+    "invalid->valid": 20,
+    "partially_valid->valid": 5,
+    "valid->invalid": 3,
+    "adjacent_undergrade": 2,
+    "invalid->partially_valid": 3
+   },
+   "deployable_auto_totals": {
+    "prospective_valid_only_v1": 20,
+    "prospective_noninvalid_v1": 36,
+    "prospective_auto_all_structurally_valid_v1": 46
+   },
+   "deployable_auto_means": {
+    "prospective_valid_only_v1": 0.7407,
+    "prospective_noninvalid_v1": 0.9231,
+    "prospective_auto_all_structurally_valid_v1": 1.0455
+   },
+   "raw_severe_counts": {
+    "prospective_valid_only_v1": {
+     "invalid_to_valid": 0,
+     "partial_to_valid": 4
+    },
+    "prospective_noninvalid_v1": {
+     "invalid_to_valid": 0,
+     "partial_to_valid": 4
+    },
+    "prospective_auto_all_structurally_valid_v1": {
+     "invalid_to_valid": 0,
+     "partial_to_valid": 4
+    }
+   },
+   "best_deployable_by_total_auto_risk": "prospective_valid_only_v1",
+   "best_deployable_by_mean_auto_risk": "prospective_valid_only_v1",
+   "semantic_layer_winners": [
+    "arm_b_two_pass",
+    "baseline_8b_one_pass"
+   ],
+   "constant_baseline_wins_semantic_layer": false
+  },
+  {
+   "matrix": {
+    "invalid->valid": 20,
+    "partially_valid->valid": 5,
+    "valid->invalid": 5,
+    "adjacent_undergrade": 1,
+    "invalid->partially_valid": 3
+   },
+   "deployable_auto_totals": {
+    "prospective_valid_only_v1": 20,
+    "prospective_noninvalid_v1": 34,
+    "prospective_auto_all_structurally_valid_v1": 46
+   },
+   "deployable_auto_means": {
+    "prospective_valid_only_v1": 0.7407,
+    "prospective_noninvalid_v1": 0.8718,
+    "prospective_auto_all_structurally_valid_v1": 1.0455
+   },
+   "raw_severe_counts": {
+    "prospective_valid_only_v1": {
+     "invalid_to_valid": 0,
+     "partial_to_valid": 4
+    },
+    "prospective_noninvalid_v1": {
+     "invalid_to_valid": 0,
+     "partial_to_valid": 4
+    },
+    "prospective_auto_all_structurally_valid_v1": {
+     "invalid_to_valid": 0,
+     "partial_to_valid": 4
+    }
+   },
+   "best_deployable_by_total_auto_risk": "prospective_valid_only_v1",
+   "best_deployable_by_mean_auto_risk": "prospective_valid_only_v1",
+   "semantic_layer_winners": [
+    "always_partially_valid"
+   ],
+   "constant_baseline_wins_semantic_layer": true
+  },
+  {
+   "matrix": {
+    "invalid->valid": 20,
+    "partially_valid->valid": 5,
+    "valid->invalid": 5,
+    "adjacent_undergrade": 2,
+    "invalid->partially_valid": 3
+   },
+   "deployable_auto_totals": {
+    "prospective_valid_only_v1": 20,
+    "prospective_noninvalid_v1": 36,
+    "prospective_auto_all_structurally_valid_v1": 50
+   },
+   "deployable_auto_means": {
+    "prospective_valid_only_v1": 0.7407,
+    "prospective_noninvalid_v1": 0.9231,
+    "prospective_auto_all_structurally_valid_v1": 1.1364
+   },
+   "raw_severe_counts": {
+    "prospective_valid_only_v1": {
+     "invalid_to_valid": 0,
+     "partial_to_valid": 4
+    },
+    "prospective_noninvalid_v1": {
+     "invalid_to_valid": 0,
+     "partial_to_valid": 4
+    },
+    "prospective_auto_all_structurally_valid_v1": {
+     "invalid_to_valid": 0,
+     "partial_to_valid": 4
+    }
+   },
+   "best_deployable_by_total_auto_risk": "prospective_valid_only_v1",
+   "best_deployable_by_mean_auto_risk": "prospective_valid_only_v1",
+   "semantic_layer_winners": [
+    "arm_b_two_pass",
+    "baseline_8b_one_pass"
+   ],
+   "constant_baseline_wins_semantic_layer": false
+  },
+  {
+   "matrix": {
+    "invalid->valid": 20,
+    "partially_valid->valid": 7,
+    "valid->invalid": 2,
+    "adjacent_undergrade": 1,
+    "invalid->partially_valid": 3
+   },
+   "deployable_auto_totals": {
+    "prospective_valid_only_v1": 28,
+    "prospective_noninvalid_v1": 42,
+    "prospective_auto_all_structurally_valid_v1": 48
+   },
+   "deployable_auto_means": {
+    "prospective_valid_only_v1": 1.037,
+    "prospective_noninvalid_v1": 1.0769,
+    "prospective_auto_all_structurally_valid_v1": 1.0909
+   },
+   "raw_severe_counts": {
+    "prospective_valid_only_v1": {
+     "invalid_to_valid": 0,
+     "partial_to_valid": 4
+    },
+    "prospective_noninvalid_v1": {
+     "invalid_to_valid": 0,
+     "partial_to_valid": 4
+    },
+    "prospective_auto_all_structurally_valid_v1": {
+     "invalid_to_valid": 0,
+     "partial_to_valid": 4
+    }
+   },
+   "best_deployable_by_total_auto_risk": "prospective_valid_only_v1",
+   "best_deployable_by_mean_auto_risk": "prospective_valid_only_v1",
+   "semantic_layer_winners": [
+    "always_partially_valid"
+   ],
+   "constant_baseline_wins_semantic_layer": true
+  },
+  {
+   "matrix": {
+    "invalid->valid": 20,
+    "partially_valid->valid": 7,
+    "valid->invalid": 2,
+    "adjacent_undergrade": 2,
+    "invalid->partially_valid": 3
+   },
+   "deployable_auto_totals": {
+    "prospective_valid_only_v1": 28,
+    "prospective_noninvalid_v1": 44,
+    "prospective_auto_all_structurally_valid_v1": 52
+   },
+   "deployable_auto_means": {
+    "prospective_valid_only_v1": 1.037,
+    "prospective_noninvalid_v1": 1.1282,
+    "prospective_auto_all_structurally_valid_v1": 1.1818
+   },
+   "raw_severe_counts": {
+    "prospective_valid_only_v1": {
+     "invalid_to_valid": 0,
+     "partial_to_valid": 4
+    },
+    "prospective_noninvalid_v1": {
+     "invalid_to_valid": 0,
+     "partial_to_valid": 4
+    },
+    "prospective_auto_all_structurally_valid_v1": {
+     "invalid_to_valid": 0,
+     "partial_to_valid": 4
+    }
+   },
+   "best_deployable_by_total_auto_risk": "prospective_valid_only_v1",
+   "best_deployable_by_mean_auto_risk": "prospective_valid_only_v1",
+   "semantic_layer_winners": [
+    "arm_a_q8_0",
+    "arm_b_two_pass",
+    "baseline_8b_one_pass"
+   ],
+   "constant_baseline_wins_semantic_layer": false
+  },
+  {
+   "matrix": {
+    "invalid->valid": 20,
+    "partially_valid->valid": 7,
+    "valid->invalid": 3,
+    "adjacent_undergrade": 1,
+    "invalid->partially_valid": 3
+   },
+   "deployable_auto_totals": {
+    "prospective_valid_only_v1": 28,
+    "prospective_noninvalid_v1": 42,
+    "prospective_auto_all_structurally_valid_v1": 50
+   },
+   "deployable_auto_means": {
+    "prospective_valid_only_v1": 1.037,
+    "prospective_noninvalid_v1": 1.0769,
+    "prospective_auto_all_structurally_valid_v1": 1.1364
+   },
+   "raw_severe_counts": {
+    "prospective_valid_only_v1": {
+     "invalid_to_valid": 0,
+     "partial_to_valid": 4
+    },
+    "prospective_noninvalid_v1": {
+     "invalid_to_valid": 0,
+     "partial_to_valid": 4
+    },
+    "prospective_auto_all_structurally_valid_v1": {
+     "invalid_to_valid": 0,
+     "partial_to_valid": 4
+    }
+   },
+   "best_deployable_by_total_auto_risk": "prospective_valid_only_v1",
+   "best_deployable_by_mean_auto_risk": "prospective_valid_only_v1",
+   "semantic_layer_winners": [
+    "always_partially_valid"
+   ],
+   "constant_baseline_wins_semantic_layer": true
+  },
+  {
+   "matrix": {
+    "invalid->valid": 20,
+    "partially_valid->valid": 7,
+    "valid->invalid": 3,
+    "adjacent_undergrade": 2,
+    "invalid->partially_valid": 3
+   },
+   "deployable_auto_totals": {
+    "prospective_valid_only_v1": 28,
+    "prospective_noninvalid_v1": 44,
+    "prospective_auto_all_structurally_valid_v1": 54
+   },
+   "deployable_auto_means": {
+    "prospective_valid_only_v1": 1.037,
+    "prospective_noninvalid_v1": 1.1282,
+    "prospective_auto_all_structurally_valid_v1": 1.2273
+   },
+   "raw_severe_counts": {
+    "prospective_valid_only_v1": {
+     "invalid_to_valid": 0,
+     "partial_to_valid": 4
+    },
+    "prospective_noninvalid_v1": {
+     "invalid_to_valid": 0,
+     "partial_to_valid": 4
+    },
+    "prospective_auto_all_structurally_valid_v1": {
+     "invalid_to_valid": 0,
+     "partial_to_valid": 4
+    }
+   },
+   "best_deployable_by_total_auto_risk": "prospective_valid_only_v1",
+   "best_deployable_by_mean_auto_risk": "prospective_valid_only_v1",
+   "semantic_layer_winners": [
+    "arm_a_q8_0",
+    "arm_b_two_pass",
+    "baseline_8b_one_pass"
+   ],
+   "constant_baseline_wins_semantic_layer": false
+  },
+  {
+   "matrix": {
+    "invalid->valid": 20,
+    "partially_valid->valid": 7,
+    "valid->invalid": 5,
+    "adjacent_undergrade": 1,
+    "invalid->partially_valid": 3
+   },
+   "deployable_auto_totals": {
+    "prospective_valid_only_v1": 28,
+    "prospective_noninvalid_v1": 42,
+    "prospective_auto_all_structurally_valid_v1": 54
+   },
+   "deployable_auto_means": {
+    "prospective_valid_only_v1": 1.037,
+    "prospective_noninvalid_v1": 1.0769,
+    "prospective_auto_all_structurally_valid_v1": 1.2273
+   },
+   "raw_severe_counts": {
+    "prospective_valid_only_v1": {
+     "invalid_to_valid": 0,
+     "partial_to_valid": 4
+    },
+    "prospective_noninvalid_v1": {
+     "invalid_to_valid": 0,
+     "partial_to_valid": 4
+    },
+    "prospective_auto_all_structurally_valid_v1": {
+     "invalid_to_valid": 0,
+     "partial_to_valid": 4
+    }
+   },
+   "best_deployable_by_total_auto_risk": "prospective_valid_only_v1",
+   "best_deployable_by_mean_auto_risk": "prospective_valid_only_v1",
+   "semantic_layer_winners": [
+    "always_partially_valid"
+   ],
+   "constant_baseline_wins_semantic_layer": true
+  },
+  {
+   "matrix": {
+    "invalid->valid": 20,
+    "partially_valid->valid": 7,
+    "valid->invalid": 5,
+    "adjacent_undergrade": 2,
+    "invalid->partially_valid": 3
+   },
+   "deployable_auto_totals": {
+    "prospective_valid_only_v1": 28,
+    "prospective_noninvalid_v1": 44,
+    "prospective_auto_all_structurally_valid_v1": 58
+   },
+   "deployable_auto_means": {
+    "prospective_valid_only_v1": 1.037,
+    "prospective_noninvalid_v1": 1.1282,
+    "prospective_auto_all_structurally_valid_v1": 1.3182
+   },
+   "raw_severe_counts": {
+    "prospective_valid_only_v1": {
+     "invalid_to_valid": 0,
+     "partial_to_valid": 4
+    },
+    "prospective_noninvalid_v1": {
+     "invalid_to_valid": 0,
+     "partial_to_valid": 4
+    },
+    "prospective_auto_all_structurally_valid_v1": {
+     "invalid_to_valid": 0,
+     "partial_to_valid": 4
+    }
+   },
+   "best_deployable_by_total_auto_risk": "prospective_valid_only_v1",
+   "best_deployable_by_mean_auto_risk": "prospective_valid_only_v1",
+   "semantic_layer_winners": [
+    "arm_a_q8_0",
+    "arm_b_two_pass",
+    "baseline_8b_one_pass"
+   ],
+   "constant_baseline_wins_semantic_layer": false
+  }
+ ],
+ "winner_frequency_by_total_auto_risk": {
+  "prospective_valid_only_v1": 72
+ },
+ "winner_frequency_by_mean_auto_risk": {
+  "prospective_valid_only_v1": 72
+ },
+ "robustness_classification": {
+  "deployable_policy_risk_ordering": "ROBUST",
+  "deployable_policy_risk_ordering_note": "prospective_valid_only_v1 minimizes both total and mean AUTO weighted risk on every matrix — but ONLY because it refuses every partially_valid verdict; the choice between the deployable policies is a coverage-vs-risk tradeoff, not a dominance result",
+  "model_arm_ranking": "FRAGILE",
+  "model_arm_ranking_note": "verified: the baseline-vs-q8_0 ordering flips on the adjacent-undergrade cost (expectation confirmed, not assumed)",
+  "constant_baseline_wins_count": 16
+ },
+ "content_sha256": "cdab2f4cf540a4f1a64dc3e54e3361f162d5b31351b43dd0b8e56fc126f4bcca"
+}

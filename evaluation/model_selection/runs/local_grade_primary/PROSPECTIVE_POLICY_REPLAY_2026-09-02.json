@@ -1,0 +1,531 @@
+{
+ "artifact": "prospective_policy_replay",
+ "created_at": "2026-09-02 03:02:14",
+ "scope_note": "explanation-case automation only; the deployable table uses ONLY decision-time-observable inputs, the retrospective table is an ORACLE-ASSISTED UPPER BOUND computed with post-review human data that would NOT exist at decision time on a new exam",
+ "provenance": {
+  "git_commit": "30c2a69521c9dafa7a2fcc4690d55fc7c5287222",
+  "reference_sha256": "ce78aed115633883dd94bd14035ddc3e3f38d02c2484bbd0a7f49c5dbc384306",
+  "matrix_name": "asymmetric_grading_risk_v1",
+  "matrix_sha256": "605536c54e24c528d1e699a50d3ab3aa470b2daa165037dbb41129de23943ee0",
+  "matrix_file_sha256": "11e65e79e0f36cf6d1b4c12b1c2f8898b97244b402731091f894f462a000ebdd",
+  "engine_version": "risk-engine-v1",
+  "observability_inventory_version": "risk-observability-v1",
+  "policy_hashes": {
+   "prospective_valid_only_v1": "076cd16b08294979",
+   "prospective_noninvalid_v1": "20937aea2e446a7b",
+   "prospective_auto_all_structurally_valid_v1": "ebea34ec3a977d58",
+   "retrospective_human_dispute_aware_b_v1": "edae2694397ebe61",
+   "retrospective_human_dispute_aware_c_v1": "23e120ef9b01f410"
+  },
+  "model_run_id": "frozen_seen46+corrected_rerun_2026-09-02",
+  "grader_provenance": {
+   "model_digest": "0533d74300e4",
+   "prompt_version": "grade-v4-charitable-local",
+   "prompt_sha256": "d8c799d1bdec0274623c89b9435eccdcdb4ba8f8f6c27bf7d87bd0b15ba87f2d",
+   "schema_sha256": "2a19252fd83702a240865020141cd4c422b1312b4ed8c6c49c51ee7dce8d06c6",
+   "validation_version": "grade-validation-v2"
+  },
+  "case_coverage": 46,
+  "held_out_cases": 0,
+  "new_inference_calls": 0,
+  "cloud_calls": 0,
+  "ocr_calls": 0,
+  "rag_calls": 0
+ },
+ "policy_taxonomy": [
+  {
+   "policy_id": "prospective_valid_only_v1",
+   "version": 1,
+   "scope": "PROSPECTIVE_DEPLOYABLE",
+   "policy_sha256": "076cd16b08294979",
+   "online_deployable": true,
+   "uses_human_or_reference_data": false,
+   "allowed_modes": [
+    "off",
+    "shadow",
+    "active-once-unlocked"
+   ],
+   "description": "AUTO only a structurally clean, grounded 'valid' verdict; everything else to REVIEW"
+  },
+  {
+   "policy_id": "prospective_noninvalid_v1",
+   "version": 1,
+   "scope": "PROSPECTIVE_DEPLOYABLE",
+   "policy_sha256": "20937aea2e446a7b",
+   "online_deployable": true,
+   "uses_human_or_reference_data": false,
+   "allowed_modes": [
+    "off",
+    "shadow",
+    "active-once-unlocked"
+   ],
+   "description": "AUTO structurally clean 'valid' and 'partially_valid'; 'invalid' always to REVIEW"
+  },
+  {
+   "policy_id": "prospective_auto_all_structurally_valid_v1",
+   "version": 1,
+   "scope": "ANALYSIS_BASELINE_ONLY",
+   "policy_sha256": "ebea34ec3a977d58",
+   "online_deployable": false,
+   "uses_human_or_reference_data": false,
+   "allowed_modes": [
+    "off",
+    "shadow (offline analysis only)"
+   ],
+   "description": "shadow/analysis baseline: AUTO any structurally clean verdict, including 'invalid'"
+  },
+  {
+   "policy_id": "retrospective_human_dispute_aware_b_v1",
+   "version": 1,
+   "scope": "RETROSPECTIVE_HUMAN_ASSISTED",
+   "policy_sha256": "edae2694397ebe61",
+   "online_deployable": false,
+   "uses_human_or_reference_data": true,
+   "allowed_modes": [
+    "off",
+    "shadow (offline analysis only)"
+   ],
+   "description": "valid-only + wide-human-disagreement and active-issue routing; ORACLE-ASSISTED, not deployable on new cases"
+  },
+  {
+   "policy_id": "retrospective_human_dispute_aware_c_v1",
+   "version": 1,
+   "scope": "RETROSPECTIVE_HUMAN_ASSISTED",
+   "policy_sha256": "23e120ef9b01f410",
+   "online_deployable": false,
+   "uses_human_or_reference_data": true,
+   "allowed_modes": [
+    "off",
+    "shadow (offline analysis only)"
+   ],
+   "description": "valid+partial + wide-human-disagreement and active-issue routing; ORACLE-ASSISTED, not deployable on new cases"
+  }
+ ],
+ "observability_inventory": {
+  "inventory_version": "risk-observability-v1",
+  "fields": {
+   "semantic_verdict": "ONLINE_OBSERVABLE",
+   "schema_ok": "ONLINE_OBSERVABLE",
+   "evidence_ok": "ONLINE_OBSERVABLE",
+   "validation_ok": "ONLINE_OBSERVABLE",
+   "uncertain": "ONLINE_OBSERVABLE",
+   "transcription_complete": "ONLINE_OBSERVABLE",
+   "source_integrity": "ONLINE_OBSERVABLE",
+   "model_output_current": "ONLINE_OBSERVABLE",
+   "local_grader_available": "ONLINE_OBSERVABLE",
+   "model_digest": "ONLINE_OBSERVABLE",
+   "prompt_version": "ONLINE_OBSERVABLE",
+   "prompt_sha256": "ONLINE_OBSERVABLE",
+   "schema_sha256": "ONLINE_OBSERVABLE",
+   "validation_version": "ONLINE_OBSERVABLE",
+   "reviewer_verdict": "POST_HOC_ONLY",
+   "reviewer_disagreement": "POST_HOC_ONLY",
+   "wide_human_disagreement": "POST_HOC_ONLY",
+   "active_review_issue": "POST_HOC_ONLY",
+   "adjudicated_verdict": "POST_HOC_ONLY",
+   "final_verdict": "POST_HOC_ONLY",
+   "reference_verdict": "POST_HOC_ONLY",
+   "human_reference": "POST_HOC_ONLY",
+   "expected_verdict": "POST_HOC_ONLY",
+   "label_verdict": "POST_HOC_ONLY",
+   "instructor_score": "POST_HOC_ONLY",
+   "instructor_derived_verdict": "POST_HOC_ONLY",
+   "benchmark_correct": "POST_HOC_ONLY",
+   "model_correct": "POST_HOC_ONLY",
+   "strict_loss": "POST_HOC_ONLY",
+   "reviewer_identity": "ADMIN_ONLY",
+   "reviewer_note": "ADMIN_ONLY",
+   "reference_source": "ADMIN_ONLY",
+   "aggregate_performance": "ADMIN_ONLY"
+  },
+  "rule": "production prospective decisions may consume ONLY ONLINE_OBSERVABLE fields; unknown fields fail closed"
+ },
+ "deployable_prospective": {
+  "prospective_valid_only_v1": {
+   "auto": 27,
+   "review": 19,
+   "auto_coverage_pct": 58.7,
+   "review_rate_pct": 41.3,
+   "auto_precision_pct": 85.2,
+   "auto_total_weighted_loss": 20,
+   "auto_mean_weighted_loss": 0.7407,
+   "auto_error_cells": {
+    "invalid->partially_valid": 0,
+    "invalid->valid": 0,
+    "partially_valid->invalid": 0,
+    "partially_valid->valid": 4,
+    "valid->invalid": 0,
+    "valid->partially_valid": 0
+   },
+   "invalid_to_valid_auto": 0,
+   "invalid_to_partial_auto": 0,
+   "partial_to_valid_auto": 4,
+   "valid_to_partial_auto": 0,
+   "valid_to_invalid_auto": 0,
+   "auto_overgrades": 4,
+   "auto_undergrades": 0,
+   "auto_overgrade_cases": [
+    "e002_q1_r5",
+    "e002_q1_r6",
+    "e003_q2_r1",
+    "e004_q1_r8"
+   ],
+   "auto_undergrade_cases": [],
+   "verdict_step_excess": 4,
+   "verdict_step_deficit": 0,
+   "step_unit_note": "verdict steps, NOT exam points (mapping varies per question and is not invented)",
+   "review_reasons": {
+    "REVIEW_EVIDENCE_FAILURE": 2,
+    "REVIEW_INVALID_VERDICT": 5,
+    "REVIEW_PARTIAL_VERDICT": 12
+   },
+   "reviews_per_100_explanation_cases": 41.3,
+   "rare_event_uncertainty": {
+    "invalid_to_valid": {
+     "math_version": "rare-events-v1",
+     "observed": 0,
+     "denominator": 5,
+     "point_estimate": 0.0,
+     "one_sided_upper_95": 0.45072,
+     "two_sided_95": [
+      0.0,
+      0.521824
+     ],
+     "alpha": 0.05,
+     "note": "zero observed events does NOT demonstrate a zero rate; the upper bound is what the data can actually exclude",
+     "denominator_definition": "ALL actually-invalid seen cases (the population on which the catastrophic error could occur)"
+    },
+    "partial_to_valid": {
+     "math_version": "rare-events-v1",
+     "observed": 4,
+     "denominator": 13,
+     "point_estimate": 0.307692,
+     "one_sided_upper_95": 0.572619,
+     "two_sided_95": [
+      0.09092,
+      0.614262
+     ],
+     "alpha": 0.05,
+     "note": "zero observed events does NOT demonstrate a zero rate; the upper bound is what the data can actually exclude",
+     "denominator_definition": "ALL actually-partially_valid seen cases"
+    }
+   }
+  },
+  "prospective_noninvalid_v1": {
+   "auto": 39,
+   "review": 7,
+   "auto_coverage_pct": 84.8,
+   "review_rate_pct": 15.2,
+   "auto_precision_pct": 74.4,
+   "auto_total_weighted_loss": 34,
+   "auto_mean_weighted_loss": 0.8718,
+   "auto_error_cells": {
+    "invalid->partially_valid": 4,
+    "invalid->valid": 0,
+    "partially_valid->invalid": 0,
+    "partially_valid->valid": 4,
+    "valid->invalid": 0,
+    "valid->partially_valid": 2
+   },
+   "invalid_to_valid_auto": 0,
+   "invalid_to_partial_auto": 4,
+   "partial_to_valid_auto": 4,
+   "valid_to_partial_auto": 2,
+   "valid_to_invalid_auto": 0,
+   "auto_overgrades": 8,
+   "auto_undergrades": 2,
+   "auto_overgrade_cases": [
+    "e002_q1_r5",
+    "e002_q1_r6",
+    "e003_q2_r1",
+    "e003_q2_r6",
+    "e004_q1_r3",
+    "e004_q1_r8",
+    "e004_q2_r4",
+    "e004_q2_r5"
+   ],
+   "auto_undergrade_cases": [
+    "e002_q2_r5",
+    "e003_q1_r6"
+   ],
+   "verdict_step_excess": 8,
+   "verdict_step_deficit": 2,
+   "step_unit_note": "verdict steps, NOT exam points (mapping varies per question and is not invented)",
+   "review_reasons": {
+    "REVIEW_EVIDENCE_FAILURE": 2,
+    "REVIEW_INVALID_VERDICT": 5
+   },
+   "reviews_per_100_explanation_cases": 15.2,
+   "rare_event_uncertainty": {
+    "invalid_to_valid": {
+     "math_version": "rare-events-v1",
+     "observed": 0,
+     "denominator": 5,
+     "point_estimate": 0.0,
+     "one_sided_upper_95": 0.45072,
+     "two_sided_95": [
+      0.0,
+      0.521824
+     ],
+     "alpha": 0.05,
+     "note": "zero observed events does NOT demonstrate a zero rate; the upper bound is what the data can actually exclude",
+     "denominator_definition": "ALL actually-invalid seen cases (the population on which the catastrophic error could occur)"
+    },
+    "partial_to_valid": {
+     "math_version": "rare-events-v1",
+     "observed": 4,
+     "denominator": 13,
+     "point_estimate": 0.307692,
+     "one_sided_upper_95": 0.572619,
+     "two_sided_95": [
+      0.09092,
+      0.614262
+     ],
+     "alpha": 0.05,
+     "note": "zero observed events does NOT demonstrate a zero rate; the upper bound is what the data can actually exclude",
+     "denominator_definition": "ALL actually-partially_valid seen cases"
+    }
+   }
+  },
+  "prospective_auto_all_structurally_valid_v1": {
+   "auto": 44,
+   "review": 2,
+   "auto_coverage_pct": 95.7,
+   "review_rate_pct": 4.3,
+   "auto_precision_pct": 68.2,
+   "auto_total_weighted_loss": 42,
+   "auto_mean_weighted_loss": 0.9545,
+   "auto_error_cells": {
+    "invalid->partially_valid": 4,
+    "invalid->valid": 0,
+    "partially_valid->invalid": 2,
+    "partially_valid->valid": 4,
+    "valid->invalid": 2,
+    "valid->partially_valid": 2
+   },
+   "invalid_to_valid_auto": 0,
+   "invalid_to_partial_auto": 4,
+   "partial_to_valid_auto": 4,
+   "valid_to_partial_auto": 2,
+   "valid_to_invalid_auto": 2,
+   "auto_overgrades": 8,
+   "auto_undergrades": 6,
+   "auto_overgrade_cases": [
+    "e002_q1_r5",
+    "e002_q1_r6",
+    "e003_q2_r1",
+    "e003_q2_r6",
+    "e004_q1_r3",
+    "e004_q1_r8",
+    "e004_q2_r4",
+    "e004_q2_r5"
+   ],
+   "auto_undergrade_cases": [
+    "e002_q2_r4",
+    "e002_q2_r5",
+    "e003_q1_r6",
+    "e003_q1_r7",
+    "e004_q1_r1",
+    "e004_q1_r6"
+   ],
+   "verdict_step_excess": 8,
+   "verdict_step_deficit": 8,
+   "step_unit_note": "verdict steps, NOT exam points (mapping varies per question and is not invented)",
+   "review_reasons": {
+    "REVIEW_EVIDENCE_FAILURE": 2
+   },
+   "reviews_per_100_explanation_cases": 4.3,
+   "rare_event_uncertainty": {
+    "invalid_to_valid": {
+     "math_version": "rare-events-v1",
+     "observed": 0,
+     "denominator": 5,
+     "point_estimate": 0.0,
+     "one_sided_upper_95": 0.45072,
+     "two_sided_95": [
+      0.0,
+      0.521824
+     ],
+     "alpha": 0.05,
+     "note": "zero observed events does NOT demonstrate a zero rate; the upper bound is what the data can actually exclude",
+     "denominator_definition": "ALL actually-invalid seen cases (the population on which the catastrophic error could occur)"
+    },
+    "partial_to_valid": {
+     "math_version": "rare-events-v1",
+     "observed": 4,
+     "denominator": 13,
+     "point_estimate": 0.307692,
+     "one_sided_upper_95": 0.572619,
+     "two_sided_95": [
+      0.09092,
+      0.614262
+     ],
+     "alpha": 0.05,
+     "note": "zero observed events does NOT demonstrate a zero rate; the upper bound is what the data can actually exclude",
+     "denominator_definition": "ALL actually-partially_valid seen cases"
+    }
+   }
+  }
+ },
+ "oracle_retrospective_upper_bound_NOT_DEPLOYABLE": {
+  "retrospective_human_dispute_aware_b_v1": {
+   "auto": 22,
+   "review": 24,
+   "auto_coverage_pct": 47.8,
+   "review_rate_pct": 52.2,
+   "auto_precision_pct": 90.9,
+   "auto_total_weighted_loss": 10,
+   "auto_mean_weighted_loss": 0.4545,
+   "auto_error_cells": {
+    "invalid->partially_valid": 0,
+    "invalid->valid": 0,
+    "partially_valid->invalid": 0,
+    "partially_valid->valid": 2,
+    "valid->invalid": 0,
+    "valid->partially_valid": 0
+   },
+   "invalid_to_valid_auto": 0,
+   "invalid_to_partial_auto": 0,
+   "partial_to_valid_auto": 2,
+   "valid_to_partial_auto": 0,
+   "valid_to_invalid_auto": 0,
+   "auto_overgrades": 2,
+   "auto_undergrades": 0,
+   "auto_overgrade_cases": [
+    "e003_q2_r1",
+    "e004_q1_r8"
+   ],
+   "auto_undergrade_cases": [],
+   "verdict_step_excess": 2,
+   "verdict_step_deficit": 0,
+   "step_unit_note": "verdict steps, NOT exam points (mapping varies per question and is not invented)",
+   "review_reasons": {
+    "REVIEW_ACTIVE_EVIDENCE_ISSUE": 5,
+    "REVIEW_EVIDENCE_FAILURE": 2,
+    "REVIEW_INVALID_VERDICT": 2,
+    "REVIEW_PARTIAL_VERDICT": 9,
+    "REVIEW_WIDE_HUMAN_DISAGREEMENT": 6
+   },
+   "reviews_per_100_explanation_cases": 52.2,
+   "rare_event_uncertainty": {
+    "invalid_to_valid": {
+     "math_version": "rare-events-v1",
+     "observed": 0,
+     "denominator": 5,
+     "point_estimate": 0.0,
+     "one_sided_upper_95": 0.45072,
+     "two_sided_95": [
+      0.0,
+      0.521824
+     ],
+     "alpha": 0.05,
+     "note": "zero observed events does NOT demonstrate a zero rate; the upper bound is what the data can actually exclude",
+     "denominator_definition": "ALL actually-invalid seen cases (the population on which the catastrophic error could occur)"
+    },
+    "partial_to_valid": {
+     "math_version": "rare-events-v1",
+     "observed": 2,
+     "denominator": 13,
+     "point_estimate": 0.153846,
+     "one_sided_upper_95": 0.410099,
+     "two_sided_95": [
+      0.019207,
+      0.454471
+     ],
+     "alpha": 0.05,
+     "note": "zero observed events does NOT demonstrate a zero rate; the upper bound is what the data can actually exclude",
+     "denominator_definition": "ALL actually-partially_valid seen cases"
+    }
+   }
+  },
+  "retrospective_human_dispute_aware_c_v1": {
+   "auto": 31,
+   "review": 15,
+   "auto_coverage_pct": 67.4,
+   "review_rate_pct": 32.6,
+   "auto_precision_pct": 77.4,
+   "auto_total_weighted_loss": 23,
+   "auto_mean_weighted_loss": 0.7419,
+   "auto_error_cells": {
+    "invalid->partially_valid": 4,
+    "invalid->valid": 0,
+    "partially_valid->invalid": 0,
+    "partially_valid->valid": 2,
+    "valid->invalid": 0,
+    "valid->partially_valid": 1
+   },
+   "invalid_to_valid_auto": 0,
+   "invalid_to_partial_auto": 4,
+   "partial_to_valid_auto": 2,
+   "valid_to_partial_auto": 1,
+   "valid_to_invalid_auto": 0,
+   "auto_overgrades": 6,
+   "auto_undergrades": 1,
+   "auto_overgrade_cases": [
+    "e003_q2_r1",
+    "e003_q2_r6",
+    "e004_q1_r3",
+    "e004_q1_r8",
+    "e004_q2_r4",
+    "e004_q2_r5"
+   ],
+   "auto_undergrade_cases": [
+    "e002_q2_r5"
+   ],
+   "verdict_step_excess": 6,
+   "verdict_step_deficit": 1,
+   "step_unit_note": "verdict steps, NOT exam points (mapping varies per question and is not invented)",
+   "review_reasons": {
+    "REVIEW_ACTIVE_EVIDENCE_ISSUE": 5,
+    "REVIEW_EVIDENCE_FAILURE": 2,
+    "REVIEW_INVALID_VERDICT": 2,
+    "REVIEW_WIDE_HUMAN_DISAGREEMENT": 6
+   },
+   "reviews_per_100_explanation_cases": 32.6,
+   "rare_event_uncertainty": {
+    "invalid_to_valid": {
+     "math_version": "rare-events-v1",
+     "observed": 0,
+     "denominator": 5,
+     "point_estimate": 0.0,
+     "one_sided_upper_95": 0.45072,
+     "two_sided_95": [
+      0.0,
+      0.521824
+     ],
+     "alpha": 0.05,
+     "note": "zero observed events does NOT demonstrate a zero rate; the upper bound is what the data can actually exclude",
+     "denominator_definition": "ALL actually-invalid seen cases (the population on which the catastrophic error could occur)"
+    },
+    "partial_to_valid": {
+     "math_version": "rare-events-v1",
+     "observed": 2,
+     "denominator": 13,
+     "point_estimate": 0.153846,
+     "one_sided_upper_95": 0.410099,
+     "two_sided_95": [
+      0.019207,
+      0.454471
+     ],
+     "alpha": 0.05,
+     "note": "zero observed events does NOT demonstrate a zero rate; the upper bound is what the data can actually exclude",
+     "denominator_definition": "ALL actually-partially_valid seen cases"
+    }
+   }
+  }
+ },
+ "cross_check_vs_committed_replay": {
+  "retro_b_matches_committed_HUMAN_DISPUTE_AWARE_B": true,
+  "retro_c_matches_committed_HUMAN_DISPUTE_AWARE_C": true,
+  "auto_all_matches_committed_AUTO_ALL": true
+ },
+ "minimum_invalid_examples_for_zero_event_upper_bound": {
+  "10pct": 29,
+  "5pct": 59,
+  "2pct": 149,
+  "1pct": 299,
+  "formula": "smallest n with (1-bound)^n <= alpha  <=>  n >= ln(alpha)/ln(1-bound), alpha = 0.05",
+  "note": "threshold choice belongs to the owner; none is chosen here"
+ },
+ "content_sha256": "9ef025c292fa3688a092c53a288331f09ba8f7745f3e7777a954f431b95fd595"
+}

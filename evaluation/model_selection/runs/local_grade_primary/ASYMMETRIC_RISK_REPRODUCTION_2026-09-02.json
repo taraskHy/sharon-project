@@ -1,0 +1,712 @@
+{
+ "artifact": "asymmetric_risk_reproduction",
+ "created_at": "2026-09-02 02:46:12",
+ "git_commit": "30c2a69521c9dafa7a2fcc4690d55fc7c5287222",
+ "verdict": "REPRODUCED",
+ "checks_total": 58,
+ "checks_failed": 0,
+ "failed_checks": [],
+ "checks": [
+  {
+   "check": "reference self-hash verifies",
+   "reported": "required",
+   "recomputed": "ce78aed115633883",
+   "source_artifact": "FINAL_HUMAN_REFERENCE_2026-09-02.json",
+   "source_sha256": "67220cbabd0958a4abafac0dd666e57e094d318040288ae454b50c0b869155cf",
+   "pass": true
+  },
+  {
+   "check": "1. case count",
+   "reported": 46,
+   "recomputed": 46,
+   "source_artifact": "FINAL_HUMAN_REFERENCE_2026-09-02.json",
+   "source_sha256": "67220cbabd0958a4abafac0dd666e57e094d318040288ae454b50c0b869155cf",
+   "pass": true
+  },
+  {
+   "check": "7a. no duplicate ids",
+   "reported": "required",
+   "recomputed": 46,
+   "source_artifact": "FINAL_HUMAN_REFERENCE_2026-09-02.json",
+   "source_sha256": "67220cbabd0958a4abafac0dd666e57e094d318040288ae454b50c0b869155cf",
+   "pass": true
+  },
+  {
+   "check": "2. class distribution",
+   "reported": {
+    "invalid": 5,
+    "partially_valid": 13,
+    "valid": 28
+   },
+   "recomputed": {
+    "invalid": 5,
+    "partially_valid": 13,
+    "valid": 28
+   },
+   "source_artifact": "FINAL_HUMAN_REFERENCE_2026-09-02.json",
+   "source_sha256": "67220cbabd0958a4abafac0dd666e57e094d318040288ae454b50c0b869155cf",
+   "pass": true
+  },
+  {
+   "check": "3. source distribution",
+   "reported": {
+    "two_reviewer_consensus": 22,
+    "adjudicated_human_reference": 22,
+    "owner_adjudicated_after_source_repair": 2
+   },
+   "recomputed": {
+    "adjudicated_human_reference": 22,
+    "two_reviewer_consensus": 22,
+    "owner_adjudicated_after_source_repair": 2
+   },
+   "source_artifact": "FINAL_HUMAN_REFERENCE_2026-09-02.json",
+   "source_sha256": "67220cbabd0958a4abafac0dd666e57e094d318040288ae454b50c0b869155cf",
+   "pass": true
+  },
+  {
+   "check": "4. corrected r6/r8 active (reference pointer)",
+   "reported": [
+    "corrected_rerun_2026-09-02",
+    "corrected_rerun_2026-09-02"
+   ],
+   "recomputed": [
+    "corrected_rerun_2026-09-02",
+    "corrected_rerun_2026-09-02"
+   ],
+   "source_artifact": "FINAL_HUMAN_REFERENCE_2026-09-02.json",
+   "source_sha256": "67220cbabd0958a4abafac0dd666e57e094d318040288ae454b50c0b869155cf",
+   "pass": true
+  },
+  {
+   "check": "5. stale r6/r8 rows preserved in run dirs but not used",
+   "reported": "required",
+   "recomputed": [
+    "e004_q2_r6",
+    "e004_q2_r8"
+   ],
+   "source_artifact": "grade_primary run dirs + CORRECTED_RERUN",
+   "source_sha256": "feb6d7febb3a3457351fb4ee862b52d59ecd1cb145814bfb430c484a35e6128f",
+   "pass": true
+  },
+  {
+   "check": "6/7. all arms cover exactly the 46 reference ids",
+   "reported": "required",
+   "recomputed": {
+    "baseline": 46,
+    "arm_a": 46,
+    "arm_b": 46
+   },
+   "source_artifact": "arm files",
+   "source_sha256": "60a871a37d11a352/4bab0dee665cba3b",
+   "pass": true
+  },
+  {
+   "check": "15. no HELD_OUT writer id anywhere",
+   "reported": "required",
+   "recomputed": [
+    "e002",
+    "e003",
+    "e004",
+    "e007"
+   ],
+   "source_artifact": "FINAL_HUMAN_REFERENCE_2026-09-02.json",
+   "source_sha256": "67220cbabd0958a4abafac0dd666e57e094d318040288ae454b50c0b869155cf",
+   "pass": true
+  },
+  {
+   "check": "policy self-hash verifies + expected prefix",
+   "reported": "required",
+   "recomputed": "11e65e79e0f36cf6",
+   "source_artifact": "asymmetric_grading_risk_v1.json",
+   "source_sha256": "9c6785c9c53f7cbbcde645ed601793a3641bf8821a156423589f5370c97f4885",
+   "pass": true
+  },
+  {
+   "check": "policy matrix values",
+   "reported": {
+    "invalid": {
+     "invalid": 0,
+     "partially_valid": 3,
+     "valid": 12
+    },
+    "partially_valid": {
+     "invalid": 1,
+     "partially_valid": 0,
+     "valid": 5
+    },
+    "valid": {
+     "invalid": 3,
+     "partially_valid": 1,
+     "valid": 0
+    }
+   },
+   "recomputed": {
+    "invalid": {
+     "invalid": 0,
+     "partially_valid": 3,
+     "valid": 12
+    },
+    "partially_valid": {
+     "invalid": 1,
+     "partially_valid": 0,
+     "valid": 5
+    },
+    "valid": {
+     "invalid": 3,
+     "partially_valid": 1,
+     "valid": 0
+    }
+   },
+   "source_artifact": "asymmetric_grading_risk_v1.json",
+   "source_sha256": "9c6785c9c53f7cbbcde645ed601793a3641bf8821a156423589f5370c97f4885",
+   "pass": true
+  },
+  {
+   "check": "strict artifact self-hash verifies",
+   "reported": "required",
+   "recomputed": "34770cc7a772b283",
+   "source_artifact": "ASYMMETRIC_RISK_STRICT_2026-09-02.json",
+   "source_sha256": "bb569e96acc4ebecdfd4d06ee6824446b7c8a6eb8115e7b47e8365009e3e22f1",
+   "pass": true
+  },
+  {
+   "check": "8. confusion cells baseline_8b_one_pass",
+   "reported": {
+    "invalid->partially_valid": 4,
+    "invalid->valid": 0,
+    "partially_valid->invalid": 3,
+    "partially_valid->valid": 4,
+    "valid->invalid": 2,
+    "valid->partially_valid": 2
+   },
+   "recomputed": {
+    "invalid->partially_valid": 4,
+    "invalid->valid": 0,
+    "partially_valid->invalid": 3,
+    "partially_valid->valid": 4,
+    "valid->invalid": 2,
+    "valid->partially_valid": 2
+   },
+   "source_artifact": "ASYMMETRIC_RISK_STRICT_2026-09-02.json",
+   "source_sha256": "bb569e96acc4ebecdfd4d06ee6824446b7c8a6eb8115e7b47e8365009e3e22f1",
+   "pass": true
+  },
+  {
+   "check": "9. strict total loss baseline_8b_one_pass",
+   "reported": 43,
+   "recomputed": 43,
+   "source_artifact": "ASYMMETRIC_RISK_STRICT_2026-09-02.json",
+   "source_sha256": "bb569e96acc4ebecdfd4d06ee6824446b7c8a6eb8115e7b47e8365009e3e22f1",
+   "pass": true
+  },
+  {
+   "check": "9b. strict total loss baseline_8b_one_pass (mission expectation)",
+   "reported": 43,
+   "recomputed": 43,
+   "source_artifact": "mission spec",
+   "source_sha256": "-",
+   "pass": true
+  },
+  {
+   "check": "exact agreement baseline_8b_one_pass",
+   "reported": 31,
+   "recomputed": 31,
+   "source_artifact": "ASYMMETRIC_RISK_STRICT_2026-09-02.json",
+   "source_sha256": "bb569e96acc4ebecdfd4d06ee6824446b7c8a6eb8115e7b47e8365009e3e22f1",
+   "pass": true
+  },
+  {
+   "check": "8. confusion cells arm_a_q8_0",
+   "reported": {
+    "invalid->partially_valid": 3,
+    "invalid->valid": 0,
+    "partially_valid->invalid": 4,
+    "partially_valid->valid": 3,
+    "valid->invalid": 2,
+    "valid->partially_valid": 6
+   },
+   "recomputed": {
+    "invalid->partially_valid": 3,
+    "invalid->valid": 0,
+    "partially_valid->invalid": 4,
+    "partially_valid->valid": 3,
+    "valid->invalid": 2,
+    "valid->partially_valid": 6
+   },
+   "source_artifact": "ASYMMETRIC_RISK_STRICT_2026-09-02.json",
+   "source_sha256": "bb569e96acc4ebecdfd4d06ee6824446b7c8a6eb8115e7b47e8365009e3e22f1",
+   "pass": true
+  },
+  {
+   "check": "9. strict total loss arm_a_q8_0",
+   "reported": 40,
+   "recomputed": 40,
+   "source_artifact": "ASYMMETRIC_RISK_STRICT_2026-09-02.json",
+   "source_sha256": "bb569e96acc4ebecdfd4d06ee6824446b7c8a6eb8115e7b47e8365009e3e22f1",
+   "pass": true
+  },
+  {
+   "check": "9b. strict total loss arm_a_q8_0 (mission expectation)",
+   "reported": 40,
+   "recomputed": 40,
+   "source_artifact": "mission spec",
+   "source_sha256": "-",
+   "pass": true
+  },
+  {
+   "check": "exact agreement arm_a_q8_0",
+   "reported": 28,
+   "recomputed": 28,
+   "source_artifact": "ASYMMETRIC_RISK_STRICT_2026-09-02.json",
+   "source_sha256": "bb569e96acc4ebecdfd4d06ee6824446b7c8a6eb8115e7b47e8365009e3e22f1",
+   "pass": true
+  },
+  {
+   "check": "8. confusion cells arm_b_two_pass",
+   "reported": {
+    "invalid->partially_valid": 4,
+    "invalid->valid": 0,
+    "partially_valid->invalid": 3,
+    "partially_valid->valid": 4,
+    "valid->invalid": 2,
+    "valid->partially_valid": 2
+   },
+   "recomputed": {
+    "invalid->partially_valid": 4,
+    "invalid->valid": 0,
+    "partially_valid->invalid": 3,
+    "partially_valid->valid": 4,
+    "valid->invalid": 2,
+    "valid->partially_valid": 2
+   },
+   "source_artifact": "ASYMMETRIC_RISK_STRICT_2026-09-02.json",
+   "source_sha256": "bb569e96acc4ebecdfd4d06ee6824446b7c8a6eb8115e7b47e8365009e3e22f1",
+   "pass": true
+  },
+  {
+   "check": "9. strict total loss arm_b_two_pass",
+   "reported": 43,
+   "recomputed": 43,
+   "source_artifact": "ASYMMETRIC_RISK_STRICT_2026-09-02.json",
+   "source_sha256": "bb569e96acc4ebecdfd4d06ee6824446b7c8a6eb8115e7b47e8365009e3e22f1",
+   "pass": true
+  },
+  {
+   "check": "9b. strict total loss arm_b_two_pass (mission expectation)",
+   "reported": 43,
+   "recomputed": 43,
+   "source_artifact": "mission spec",
+   "source_sha256": "-",
+   "pass": true
+  },
+  {
+   "check": "exact agreement arm_b_two_pass",
+   "reported": 31,
+   "recomputed": 31,
+   "source_artifact": "ASYMMETRIC_RISK_STRICT_2026-09-02.json",
+   "source_sha256": "bb569e96acc4ebecdfd4d06ee6824446b7c8a6eb8115e7b47e8365009e3e22f1",
+   "pass": true
+  },
+  {
+   "check": "baseline mean weighted loss",
+   "reported": 0.9348,
+   "recomputed": 0.9348,
+   "source_artifact": "ASYMMETRIC_RISK_STRICT_2026-09-02.json",
+   "source_sha256": "bb569e96acc4ebecdfd4d06ee6824446b7c8a6eb8115e7b47e8365009e3e22f1",
+   "pass": true
+  },
+  {
+   "check": "baseline invalid->valid / partial->valid",
+   "reported": [
+    0,
+    4
+   ],
+   "recomputed": [
+    0,
+    4
+   ],
+   "source_artifact": "ASYMMETRIC_RISK_STRICT_2026-09-02.json",
+   "source_sha256": "bb569e96acc4ebecdfd4d06ee6824446b7c8a6eb8115e7b47e8365009e3e22f1",
+   "pass": true
+  },
+  {
+   "check": "baseline overgrade/undergrade cost",
+   "reported": [
+    32,
+    11
+   ],
+   "recomputed": [
+    32,
+    11
+   ],
+   "source_artifact": "ASYMMETRIC_RISK_STRICT_2026-09-02.json",
+   "source_sha256": "bb569e96acc4ebecdfd4d06ee6824446b7c8a6eb8115e7b47e8365009e3e22f1",
+   "pass": true
+  },
+  {
+   "check": "11. constant always_invalid",
+   "reported": 97,
+   "recomputed": 97,
+   "source_artifact": "ASYMMETRIC_RISK_STRICT_2026-09-02.json",
+   "source_sha256": "bb569e96acc4ebecdfd4d06ee6824446b7c8a6eb8115e7b47e8365009e3e22f1",
+   "pass": true
+  },
+  {
+   "check": "11b. constant always_invalid (mission expectation)",
+   "reported": 97,
+   "recomputed": 97,
+   "source_artifact": "mission spec",
+   "source_sha256": "-",
+   "pass": true
+  },
+  {
+   "check": "11. constant always_partially_valid",
+   "reported": 43,
+   "recomputed": 43,
+   "source_artifact": "ASYMMETRIC_RISK_STRICT_2026-09-02.json",
+   "source_sha256": "bb569e96acc4ebecdfd4d06ee6824446b7c8a6eb8115e7b47e8365009e3e22f1",
+   "pass": true
+  },
+  {
+   "check": "11b. constant always_partially_valid (mission expectation)",
+   "reported": 43,
+   "recomputed": 43,
+   "source_artifact": "mission spec",
+   "source_sha256": "-",
+   "pass": true
+  },
+  {
+   "check": "11. constant always_valid",
+   "reported": 125,
+   "recomputed": 125,
+   "source_artifact": "ASYMMETRIC_RISK_STRICT_2026-09-02.json",
+   "source_sha256": "bb569e96acc4ebecdfd4d06ee6824446b7c8a6eb8115e7b47e8365009e3e22f1",
+   "pass": true
+  },
+  {
+   "check": "11b. constant always_valid (mission expectation)",
+   "reported": 125,
+   "recomputed": 125,
+   "source_artifact": "mission spec",
+   "source_sha256": "-",
+   "pass": true
+  },
+  {
+   "check": "disagreement artifact self-hash verifies",
+   "reported": "required",
+   "recomputed": "0a9ef6a7080ae9be",
+   "source_artifact": "ASYMMETRIC_RISK_DISAGREEMENT_AWARE_2026-09-02.json",
+   "source_sha256": "2dd45b7affe53bd052ba0a087a9219a8719697980615d2df816ef5938cc2cae7",
+   "pass": true
+  },
+  {
+   "check": "10. disagreement-aware clean loss baseline_8b_one_pass",
+   "reported": 20.0,
+   "recomputed": 20.0,
+   "source_artifact": "ASYMMETRIC_RISK_DISAGREEMENT_AWARE_2026-09-02.json",
+   "source_sha256": "2dd45b7affe53bd052ba0a087a9219a8719697980615d2df816ef5938cc2cae7",
+   "pass": true
+  },
+  {
+   "check": "10. disagreement-aware clean loss arm_a_q8_0",
+   "reported": 18.0,
+   "recomputed": 18.0,
+   "source_artifact": "ASYMMETRIC_RISK_DISAGREEMENT_AWARE_2026-09-02.json",
+   "source_sha256": "2dd45b7affe53bd052ba0a087a9219a8719697980615d2df816ef5938cc2cae7",
+   "pass": true
+  },
+  {
+   "check": "10. disagreement-aware clean loss arm_b_two_pass",
+   "reported": 20.0,
+   "recomputed": 20.0,
+   "source_artifact": "ASYMMETRIC_RISK_DISAGREEMENT_AWARE_2026-09-02.json",
+   "source_sha256": "2dd45b7affe53bd052ba0a087a9219a8719697980615d2df816ef5938cc2cae7",
+   "pass": true
+  },
+  {
+   "check": "10b. disagreement-aware included cases",
+   "reported": 31,
+   "recomputed": 31,
+   "source_artifact": "ASYMMETRIC_RISK_DISAGREEMENT_AWARE_2026-09-02.json",
+   "source_sha256": "2dd45b7affe53bd052ba0a087a9219a8719697980615d2df816ef5938cc2cae7",
+   "pass": true
+  },
+  {
+   "check": "sensitivity artifact self-hash verifies",
+   "reported": "required",
+   "recomputed": "3a0d8ac0243354ab",
+   "source_artifact": "ASYMMETRIC_RISK_SENSITIVITY_2026-09-02.json",
+   "source_sha256": "6290172c53201b4598218c26d40d8b2abc9d9fa37429bdc6a077f554e187fb35",
+   "pass": true
+  },
+  {
+   "check": "12. sensitivity: all 72 matrices' totals reproduce",
+   "reported": "required",
+   "recomputed": 72,
+   "source_artifact": "ASYMMETRIC_RISK_SENSITIVITY_2026-09-02.json",
+   "source_sha256": "6290172c53201b4598218c26d40d8b2abc9d9fa37429bdc6a077f554e187fb35",
+   "pass": true
+  },
+  {
+   "check": "12b. sensitivity winner frequency",
+   "reported": {
+    "always_partially_valid": 16,
+    "arm_a_q8_0": 32,
+    "arm_b_two_pass": 36,
+    "baseline_8b_one_pass": 36
+   },
+   "recomputed": {
+    "always_partially_valid": 16,
+    "arm_a_q8_0": 32,
+    "arm_b_two_pass": 36,
+    "baseline_8b_one_pass": 36
+   },
+   "source_artifact": "ASYMMETRIC_RISK_SENSITIVITY_2026-09-02.json",
+   "source_sha256": "6290172c53201b4598218c26d40d8b2abc9d9fa37429bdc6a077f554e187fb35",
+   "pass": true
+  },
+  {
+   "check": "12c. sensitivity grid complete (4x3x3x2)",
+   "reported": "required",
+   "recomputed": 72,
+   "source_artifact": "ASYMMETRIC_RISK_SENSITIVITY_2026-09-02.json",
+   "source_sha256": "6290172c53201b4598218c26d40d8b2abc9d9fa37429bdc6a077f554e187fb35",
+   "pass": true
+  },
+  {
+   "check": "replay artifact self-hash verifies",
+   "reported": "required",
+   "recomputed": "db7aa08f48da9464",
+   "source_artifact": "PRODUCTION_POLICY_REPLAY_2026-09-02.json",
+   "source_sha256": "6b5c19e02aa0a8402ede471b01f19b487ae1761d2a53b5af5cfc71e92be2bc83",
+   "pass": true
+  },
+  {
+   "check": "13. replay AUTO_ALL (artifact)",
+   "reported": {
+    "auto": 44,
+    "risk": 42,
+    "cov": 95.7
+   },
+   "recomputed": {
+    "auto": 44,
+    "risk": 42,
+    "cov": 95.7
+   },
+   "source_artifact": "PRODUCTION_POLICY_REPLAY_2026-09-02.json",
+   "source_sha256": "6b5c19e02aa0a8402ede471b01f19b487ae1761d2a53b5af5cfc71e92be2bc83",
+   "pass": true
+  },
+  {
+   "check": "13b. replay AUTO_ALL (mission expectation)",
+   "reported": {
+    "cov": 95.7,
+    "risk": 42,
+    "pv_val": 4,
+    "under": 6
+   },
+   "recomputed": {
+    "cov": 95.7,
+    "risk": 42,
+    "pv_val": 4,
+    "under": 6
+   },
+   "source_artifact": "mission spec",
+   "source_sha256": "-",
+   "pass": true
+  },
+  {
+   "check": "13. replay AUTO_VALID_ONLY (artifact)",
+   "reported": {
+    "auto": 25,
+    "risk": 15,
+    "cov": 54.3
+   },
+   "recomputed": {
+    "auto": 25,
+    "risk": 15,
+    "cov": 54.3
+   },
+   "source_artifact": "PRODUCTION_POLICY_REPLAY_2026-09-02.json",
+   "source_sha256": "6b5c19e02aa0a8402ede471b01f19b487ae1761d2a53b5af5cfc71e92be2bc83",
+   "pass": true
+  },
+  {
+   "check": "13b. replay AUTO_VALID_ONLY (mission expectation)",
+   "reported": {
+    "cov": 54.3,
+    "risk": 15,
+    "pv_val": 3,
+    "under": 0,
+    "review": 21,
+    "prec": 88.0
+   },
+   "recomputed": {
+    "cov": 54.3,
+    "risk": 15,
+    "pv_val": 3,
+    "under": 0,
+    "review": 21,
+    "prec": 88.0
+   },
+   "source_artifact": "mission spec",
+   "source_sha256": "-",
+   "pass": true
+  },
+  {
+   "check": "13. replay AUTO_VALID_AND_PARTIAL (artifact)",
+   "reported": {
+    "auto": 35,
+    "risk": 29,
+    "cov": 76.1
+   },
+   "recomputed": {
+    "auto": 35,
+    "risk": 29,
+    "cov": 76.1
+   },
+   "source_artifact": "PRODUCTION_POLICY_REPLAY_2026-09-02.json",
+   "source_sha256": "6b5c19e02aa0a8402ede471b01f19b487ae1761d2a53b5af5cfc71e92be2bc83",
+   "pass": true
+  },
+  {
+   "check": "13b. replay AUTO_VALID_AND_PARTIAL (mission expectation)",
+   "reported": {
+    "cov": 76.1,
+    "risk": 29,
+    "pv_val": 3,
+    "under": 2,
+    "review": 11,
+    "prec": 74.3
+   },
+   "recomputed": {
+    "cov": 76.1,
+    "risk": 29,
+    "pv_val": 3,
+    "under": 2,
+    "review": 11,
+    "prec": 74.3
+   },
+   "source_artifact": "mission spec",
+   "source_sha256": "-",
+   "pass": true
+  },
+  {
+   "check": "13. replay HUMAN_DISPUTE_AWARE_B (artifact)",
+   "reported": {
+    "auto": 22,
+    "risk": 10,
+    "cov": 47.8
+   },
+   "recomputed": {
+    "auto": 22,
+    "risk": 10,
+    "cov": 47.8
+   },
+   "source_artifact": "PRODUCTION_POLICY_REPLAY_2026-09-02.json",
+   "source_sha256": "6b5c19e02aa0a8402ede471b01f19b487ae1761d2a53b5af5cfc71e92be2bc83",
+   "pass": true
+  },
+  {
+   "check": "13b. replay HUMAN_DISPUTE_AWARE_B (mission expectation)",
+   "reported": {
+    "cov": 47.8,
+    "risk": 10
+   },
+   "recomputed": {
+    "cov": 47.8,
+    "risk": 10
+   },
+   "source_artifact": "mission spec",
+   "source_sha256": "-",
+   "pass": true
+  },
+  {
+   "check": "13. replay HUMAN_DISPUTE_AWARE_C (artifact)",
+   "reported": {
+    "auto": 31,
+    "risk": 23,
+    "cov": 67.4
+   },
+   "recomputed": {
+    "auto": 31,
+    "risk": 23,
+    "cov": 67.4
+   },
+   "source_artifact": "PRODUCTION_POLICY_REPLAY_2026-09-02.json",
+   "source_sha256": "6b5c19e02aa0a8402ede471b01f19b487ae1761d2a53b5af5cfc71e92be2bc83",
+   "pass": true
+  },
+  {
+   "check": "13b. replay HUMAN_DISPUTE_AWARE_C (mission expectation)",
+   "reported": {
+    "cov": 67.4,
+    "risk": 23
+   },
+   "recomputed": {
+    "cov": 67.4,
+    "risk": 23
+   },
+   "source_artifact": "mission spec",
+   "source_sha256": "-",
+   "pass": true
+  },
+  {
+   "check": "14. gate HARD_FALSE_FULL",
+   "reported": "PASS",
+   "recomputed": "PASS",
+   "source_artifact": "ASYMMETRIC_RISK_SUMMARY_2026-09-02.md",
+   "source_sha256": "db55cdc741f074964652daee7f84c3a77db695bb6f6868b4ff5ab3e0e4c390c8",
+   "pass": true
+  },
+  {
+   "check": "14. gate WEIGHTED_RISK",
+   "reported": "FAIL",
+   "recomputed": "FAIL",
+   "source_artifact": "ASYMMETRIC_RISK_SUMMARY_2026-09-02.md",
+   "source_sha256": "db55cdc741f074964652daee7f84c3a77db695bb6f6868b4ff5ab3e0e4c390c8",
+   "pass": true
+  },
+  {
+   "check": "14. gate GROUNDING",
+   "reported": "FAIL",
+   "recomputed": "FAIL",
+   "source_artifact": "ASYMMETRIC_RISK_SUMMARY_2026-09-02.md",
+   "source_sha256": "db55cdc741f074964652daee7f84c3a77db695bb6f6868b4ff5ab3e0e4c390c8",
+   "pass": true
+  },
+  {
+   "check": "14b. gates passed count",
+   "reported": "5/9",
+   "recomputed": "5/9",
+   "source_artifact": "ASYMMETRIC_RISK_SUMMARY_2026-09-02.md",
+   "source_sha256": "db55cdc741f074964652daee7f84c3a77db695bb6f6868b4ff5ab3e0e4c390c8",
+   "pass": true
+  },
+  {
+   "check": "cross-check exact agreement vs improvement report",
+   "reported": {
+    "baseline": 31,
+    "arm_a": 28,
+    "arm_b": 31
+   },
+   "recomputed": {
+    "baseline": 31,
+    "arm_a": 28,
+    "arm_b": 31
+   },
+   "source_artifact": "LOCAL_IMPROVEMENT_REPORT_2026-09-02.json",
+   "source_sha256": "f743f421b0782231a35e534124e3496047b820beb22bdf3ad06b6df976884927",
+   "pass": true
+  }
+ ],
+ "confirmations": {
+  "new_inference_calls": 0,
+  "cloud_calls": 0,
+  "ocr_calls": 0,
+  "rag_calls": 0,
+  "held_out_exposure": 0,
+  "records_modified": 0
+ },
+ "content_sha256": "8e218ad659857bae8a97bea2106152afb9b01dc1bd94946420e4193fdb0fc626"
+}
