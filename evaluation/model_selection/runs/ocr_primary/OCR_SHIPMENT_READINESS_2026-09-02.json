@@ -202,11 +202,21 @@
     "NO",
     "yes (accounting tests)",
     "no"
+   ],
+   [
+    "OCR fallback masks a detectable failure",
+    "none — the fallback output is well-formed by construction",
+    "policy flags every fallback row needs_review",
+    "a plausible transcription recovering ~20% of the answer replaces a visible failure",
+    "**YES, if the needs_review flag is not honoured**",
+    "yes (46 stress tests pin the flag)",
+    "**YES — the flag is load-bearing**"
    ]
   ],
   "release_blockers": [
    "OCR wrong digit / sign / operator / negation",
-   "OCR fabrication (fluent unrelated text)"
+   "OCR fabrication (fluent unrelated text)",
+   "OCR fallback masks a detectable failure"
   ],
   "blocker_rationale": "both blockers are the same underlying fact: an OCR transcription can be confidently wrong in a way that changes meaning, and in production there is no reference to compare against, so nothing detects it."
  },
@@ -431,9 +441,9 @@
    ],
    [
     "failure handling",
-    "YELLOW",
+    "RED",
     "12-axis OCR taxonomy; fallback fails closed; 46 stress tests",
-    "OCR semantic corruption has no production detector",
+    "the OCR fallback converts detectable failures into undetectable ones; safe only while every fallback row is human-reviewed",
     "design a detector or a second read"
    ],
    [
@@ -453,9 +463,15 @@
   ],
   "counts": {
    "GREEN": 10,
-   "YELLOW": 5,
-   "RED": 3
+   "YELLOW": 4,
+   "RED": 4
   }
  },
- "content_sha256": "15f86cfca61714d71a1db53e90c0c438de4981a263fef19ff1cfc9a71bcc16b3"
+ "content_sha256": "99406decd25e8b507afb41208bf83b3fbe05c145ecc8ff20bfcb0b4f9974941f",
+ "fallback_safety_inversion": {
+  "finding": "the fallback converts DETECTABLE failures into UNDETECTABLE ones. All 18 Gemini triggers are loud, machine-visible events — a content_filter finish reason, a JSON parse error, a length truncation. Any pipeline can route those to a human with certainty. The fallback replaces them with fluent Hebrew that recovers ~20% of the answer and carries no signal at all that it is wrong.",
+  "why_it_matters_here": "this is release blocker #1 restated: in production there is no reference, so nothing distinguishes a good transcription from one that recovered zero of the reference's words.",
+  "consequence_for_the_metric": "the composite's failure-aware CER of 0.3560 is arithmetically correct and misleading as a SAFETY signal: it rewards replacing a known null with unknown-quality text. A failure-aware score cannot see the difference between 'we know we failed' and 'we do not know we failed'.",
+  "what_saves_it": "only that the policy flags every fallback row needs_review. That flag is now load-bearing, not a formality — the composite is defensible ONLY if every fallback row is actually read by a human."
+ }
 }

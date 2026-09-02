@@ -152,14 +152,36 @@ the per-strategy critical_error_cases counts are computed over each strategy's O
 
 The oracle matches the prospective policy exactly, which means Gemini's transcription had the lower CER on every case where both models produced usable text. The deployable policy is already doing as well as hindsight could on this data — a real, if narrow, result.
 
-## 9. Is Sonnet actually a useful fallback?
+## 9. Is Sonnet actually a useful fallback? — the claim, refuted
 
-Measured **only on the 18 crops where Gemini hard-failed**, not on Sonnet's overall average:
+Measured only on the 18 crops where Gemini hard-failed, Sonnet returned a schema-valid non-marker transcription for **15 of 18 (83.3%)**. I first reported that as Sonnet being a genuinely useful fallback. **Independent verification refuted that, and it was right.**
 
-- rescued **15/18 = 83.3%**; failed to rescue 3
-- rescue-subset successful CER **0.4516** versus 0.4971 on the crops Gemini handled
+| What was recovered | Value |
+|---|---|
+| rescues meeting the project's own proposed OCR gate (CER ≤ 5%) | **0/15** |
+| rescues meeting even a lenient CER ≤ 10% | **0/15** |
+| best single rescue | CER 0.1094 |
+| mean word recovery (fraction of the reference's words actually reproduced) | **20.3%** |
+| rescues recovering under 25% of the reference's words | 8/15 |
+| rescues recovering **zero** reference words | **4/15** |
 
-So the crops Gemini loses are **not** systematically harder for Sonnet — it reads them about as well as anything else it reads. The honest caveat is what "rescue" means: a transcription with ~45% character error is recovered *coverage*, not recovered *accuracy*. It is a candidate for human review, which is exactly how the policy marks it (`needs_review` on every fallback row).
+on average a 'rescue' reproduces about a fifth of the words in the student's answer, and four of the fifteen reproduce none of them at all. Those are not transcriptions of the answer; they are plausible Hebrew text of the right shape.
+
+The comparison I used to justify the claim does not survive either: statistically indistinguishable (independent permutation testing gives p ~ 0.55), and the two subsets differ in crop-type mix, which Sonnet's CER depends on. 0.45-0.50 is simply Sonnet's floor on this handwriting, not a property of the hard crops. The comparison supports nothing.
+
+### The safety inversion
+
+**the fallback converts DETECTABLE failures into UNDETECTABLE ones. All 18 Gemini triggers are loud, machine-visible events — a content_filter finish reason, a JSON parse error, a length truncation. Any pipeline can route those to a human with certainty. The fallback replaces them with fluent Hebrew that recovers ~20% of the answer and carries no signal at all that it is wrong.**
+
+this is release blocker #1 restated: in production there is no reference, so nothing distinguishes a good transcription from one that recovered zero of the reference's words.
+
+*Consequence for the metric:* the composite's failure-aware CER of 0.3560 is arithmetically correct and misleading as a SAFETY signal: it rewards replacing a known null with unknown-quality text. A failure-aware score cannot see the difference between 'we know we failed' and 'we do not know we failed'.
+
+*What saves it:* only that the policy flags every fallback row needs_review. That flag is now load-bearing, not a formality — the composite is defensible ONLY if every fallback row is actually read by a human.
+
+For scale: on the 12 crops both models read, Gemini's CER is 0.0947 against Sonnet's 0.4971 — on the crops both models read, Gemini is roughly five times more accurate.
+
+**Revised answer.** Does Sonnet rescue the difficult cases? It recovers COVERAGE on 15 of 18, and it does NOT recover the answer: mean word recovery 20%, four rescues recover nothing, none reaches even a lenient accuracy bar. As a route to a human reviewer it is useful. As a route to an automated grade it is worse than the failure it replaces, because the failure was visible.
 
 ## 10. Critical-error audit
 
@@ -176,7 +198,7 @@ This is the counterweight to Sonnet's coverage advantage: **44% of Sonnet's usab
 
 **`anthropic/claude-sonnet-5` → MAYBE.** The only arm with acceptable operational coverage (27/32, zero provider failures, zero truncation, zero parse failures) and the only one that handled all 16 line crops. But CER 0.4718 is not usable transcription in any strict sense, and 12 of its 27 usable outputs carry a critical digit/sign/negation error. It is a viable *fallback* and a viable *coverage floor*; it is not a solution.
 
-**Composite → PROMISING.** The prospective Gemini→Sonnet policy reaches 29/32 coverage with a failure-aware CER of 0.3560 — better than either model alone (Gemini 0.6130, Sonnet 0.5544) — at a measured $0.084 for 32 crops, with 3 crops left for human review and every fallback row flagged. It is the best deployable configuration measured. It is **not** production-ready OCR: a third of its output still needs review, and 32 samples on one exam's handwriting cannot establish otherwise.
+**Composite → PROMISING ONLY AS A ROUTE TO A HUMAN.** The prospective Gemini→Sonnet policy reaches 29/32 coverage with a failure-aware CER of 0.3560 — arithmetically better than either model alone — at a measured $0.0907 for 32 crops. But the refutation above changes what that number means: 15 of its 29 covered crops are fallback rows that recover about a fifth of the student's words, four of them recovering none, replacing failures that were loud and machine-detectable. As a mechanism for getting a human the best available text, it is the best configuration measured. As a step toward an automated grade it is **worse than Gemini alone**, because Gemini alone at least knows when it has failed. The `needs_review` flag on every fallback row is now load-bearing, not bookkeeping.
 
 ## 12. Cost and projections
 
