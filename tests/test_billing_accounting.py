@@ -25,6 +25,7 @@ from autograder.backends.base import BackendError
 from autograder.backends.openrouter import OpenRouterBackend
 from autograder.gateway import ModelGateway
 from autograder.usage import BudgetExceeded, BudgetLimits, BudgetManager, UsageLedger, reconcile_cost
+from autograder.cloudboundary import research_authorization
 
 
 class Out(BaseModel):
@@ -64,7 +65,9 @@ def _gw(tmp_path, handler, *, monkeypatch, limits=None, validation_retries=0):
     gw = ModelGateway.from_dict(
         {"models": {"grade_primary": {"backend": "openrouter", "model": "vendor/m",
                                       "max_tokens": 600, "prompt_version": "grade-v2"}}},
-        backend_factory=factory, ledger=ledger, execution_mode="research")
+        backend_factory=factory, ledger=ledger, execution_mode="research",
+        research_auth=research_authorization("test:billing", tasks=["grade_primary"],
+                                             models=["vendor/m"]))
     gw.pricing_config = PRICING
     if limits is not None:
         gw.budget = BudgetManager(limits, ledger=ledger)

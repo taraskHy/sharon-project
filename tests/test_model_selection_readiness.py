@@ -11,6 +11,7 @@ from autograder.backends.mock import MockBackend
 from autograder.gateway import UNSELECTED, GatewayConfigError, ModelGateway
 from autograder.reliability import GradingModeError, ReliabilityConfig, run_reliability_judging
 from autograder.schema import AnswerKey
+from autograder.cloudboundary import research_authorization
 from autograder.usage import (BudgetExceeded, BudgetLimits, BudgetManager, UsageLedger,
                               aggregate_by, predicted_call_cost, run_cost_report)
 
@@ -142,7 +143,9 @@ def test_gateway_refuses_before_provider_call_when_ceiling_would_cross(tmp_path)
         # research mode: the pre-call budget refusal is what is under test; a
         # production gateway would refuse the cloud grading route even earlier
         # (tests/test_cloud_boundary.py).
-        execution_mode="research")
+        execution_mode="research",
+        research_auth=research_authorization("test:readiness", tasks=["grade_primary"],
+                                             models=["vendor/m"]))
     with pytest.raises(BudgetExceeded):
         gw.call(task="grade_primary", system="s" * 4000,
                 content_blocks=[{"type": "text", "text": "q"}], output_model=Out)

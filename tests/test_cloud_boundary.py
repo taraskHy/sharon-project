@@ -118,8 +118,15 @@ def test_local_and_mock_grading_backends_are_allowed(backend, base_url):
            system=GRADE_SYSTEM)          # local grading may carry the grading prompt
 
 
-def test_research_mode_is_an_explicit_bypass_and_bad_modes_are_refused():
-    _check("grade_primary", mode="research")
+def test_research_mode_is_not_a_bypass_and_bad_modes_are_refused():
+    """Superseded 2026-09-02: research mode used to return before every layer,
+    so this asserted that ``--research`` alone permitted cloud grading. It no
+    longer does — an explicit ResearchAuthorization naming the task AND the
+    model is required (see tests/test_research_boundary.py). A typo'd mode
+    still never silently allows anything."""
+    with pytest.raises(CloudBoundaryError) as e:
+        _check("grade_primary", mode="research")
+    assert e.value.code == "CLOUD_TASK_FORBIDDEN"
     with pytest.raises(CloudBoundaryError):
         _check("grade_primary", mode="prod")     # typo'd mode never silently allows
 
@@ -262,8 +269,18 @@ def test_pointing_grading_at_openrouter_through_an_openai_route_changes_nothing(
 
 
 def test_research_mode_must_be_named_at_construction(tmp_path):
+    """Research mode is named at construction — and since 2026-09-02 the
+    authorization is too: naming the mode alone no longer opens cloud grading."""
+    from autograder.cloudboundary import research_authorization
+
     gw, _ = _gw(tmp_path, {"grade_primary": {"backend": "openrouter", "model": "vendor/m"}},
                 mode="research")
+    with pytest.raises(CloudBoundaryError):
+        gw.call(task="grade_primary", system=GRADE_SYSTEM,
+                content_blocks=[{"type": "text", "text": "grade"}],
+                output_model=GradeResult, meta={})
+    gw.research_auth = research_authorization("test:cloud-boundary",
+                                              tasks=["grade_primary"], models=["vendor/m"])
     res = gw.call(task="grade_primary", system=GRADE_SYSTEM,
                   content_blocks=[{"type": "text", "text": "grade"}],
                   output_model=GradeResult, meta={})

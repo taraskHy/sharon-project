@@ -21,6 +21,7 @@ from autograder.gateway import ModelGateway
 from autograder.key_parser import save_answer_key
 from autograder.privacy import PrivacyError
 from autograder.requestcache import RequestCache
+from autograder.cloudboundary import research_authorization
 from autograder.usage import (BudgetExceeded, BudgetLimits, BudgetManager, UsageLedger,
                               effective_provider, is_cloud_route)
 from tests.test_grade import make_key
@@ -110,7 +111,10 @@ def _gateway(tmp_path, route_spec: dict):
                                 backend_factory=factory,
                                 cache=RequestCache(tmp_path / "cache"),
                                 ledger=UsageLedger(tmp_path / "usage.jsonl"),
-                                execution_mode="research")
+                                execution_mode="research",
+                                research_auth=research_authorization(
+                                    "test:gateway-boundary", tasks=["grade_primary"],
+                                    models=[route_spec["model"]]))
     gw.budget = BudgetManager(BudgetLimits(max_calls_per_job=1), ledger=None,
                               warn=lambda m: None)
     return gw

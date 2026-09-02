@@ -1,0 +1,320 @@
+{
+ "artifact": "ocr_stage1_reproduction_readonly",
+ "created_at": "2026-09-02 12:35:40",
+ "provider_requests_made": 0,
+ "git_commit": "01cf41847d48167833426b80dcccf31089e8052a",
+ "purpose": "recompute every Stage-1 reported value from committed artifacts before any new live call",
+ "checks": [
+  {
+   "check": "rows[openai/gpt-5.6-luna-pro]",
+   "reported": 8,
+   "recomputed": 8,
+   "source_artifact": "evaluation\\model_selection\\runs\\ocr_primary\\dev__smoke__all__openai-gpt-5.6-luna-pro__c6f10f3603\\outputs.jsonl",
+   "source_sha256": "040b0a5b8a00f5e44b525984c00b7063b1ad0087f494adb0cee82345477063fb",
+   "verdict": "PASS"
+  },
+  {
+   "check": "rows[google/gemini-3.7-flash]",
+   "reported": 8,
+   "recomputed": 8,
+   "source_artifact": "evaluation\\model_selection\\runs\\ocr_primary\\dev__smoke__all__google-gemini-3.7-flash__feceaa6084\\outputs.jsonl",
+   "source_sha256": "b1098f730e976b5c11f7ce8770942aea73ae3a27886e180e4c6a33328776388a",
+   "verdict": "PASS"
+  },
+  {
+   "check": "rows[anthropic/claude-sonnet-5]",
+   "reported": 8,
+   "recomputed": 8,
+   "source_artifact": "evaluation\\model_selection\\runs\\ocr_primary\\dev__smoke__all__anthropic-claude-sonnet-5__0481873207\\outputs.jsonl",
+   "source_sha256": "9a7af7351f8c49ffda941512d6e2892c6308531fe37c2e0de31d09c13fa652ee",
+   "verdict": "PASS"
+  },
+  {
+   "check": "attempted_requests_total",
+   "reported": 24,
+   "recomputed": 24,
+   "source_artifact": "outputs.jsonl x3",
+   "source_sha256": "-",
+   "verdict": "PASS"
+  },
+  {
+   "check": "luna_raw_outputs_preserved",
+   "reported": 8,
+   "recomputed": 8,
+   "source_artifact": "evaluation\\model_selection\\runs\\ocr_primary\\dev__smoke__all__openai-gpt-5.6-luna-pro__c6f10f3603\\outputs.jsonl",
+   "source_sha256": "-",
+   "verdict": "PASS"
+  },
+  {
+   "check": "sonnet_raw_outputs_preserved",
+   "reported": 8,
+   "recomputed": 8,
+   "source_artifact": "evaluation\\model_selection\\runs\\ocr_primary\\dev__smoke__all__anthropic-claude-sonnet-5__0481873207\\outputs.jsonl",
+   "source_sha256": "-",
+   "verdict": "PASS"
+  },
+  {
+   "check": "gemini_http400_pre_inference",
+   "reported": 8,
+   "recomputed": 8,
+   "source_artifact": "evaluation\\model_selection\\runs\\ocr_primary\\dev__smoke__all__google-gemini-3.7-flash__feceaa6084\\outputs.jsonl",
+   "source_sha256": "-",
+   "verdict": "PASS"
+  },
+  {
+   "check": "gemini_zero_tokens_consumed",
+   "reported": true,
+   "recomputed": true,
+   "source_artifact": "evaluation\\model_selection\\runs\\ocr_primary\\dev__smoke__all__google-gemini-3.7-flash__feceaa6084\\outputs.jsonl",
+   "source_sha256": "-",
+   "verdict": "PASS"
+  },
+  {
+   "check": "identical_ordered_case_set",
+   "reported": true,
+   "recomputed": true,
+   "source_artifact": "outputs.jsonl x3",
+   "source_sha256": "-",
+   "verdict": "PASS"
+  },
+  {
+   "check": "ordered_case_ids_match_baseline",
+   "reported": [
+    "hl_e003_q1_r1__l1",
+    "hc_e002_q1_r1",
+    "hc_e002_q1_r7",
+    "hc_e002_q2_r1",
+    "hc_e002_q2_r6",
+    "pr_docA_p1_b1",
+    "pr_docA_p2_b3",
+    "assoc_docB_p2_b1"
+   ],
+   "recomputed": [
+    "hl_e003_q1_r1__l1",
+    "hc_e002_q1_r1",
+    "hc_e002_q1_r7",
+    "hc_e002_q2_r1",
+    "hc_e002_q2_r6",
+    "pr_docA_p1_b1",
+    "pr_docA_p2_b3",
+    "assoc_docB_p2_b1"
+   ],
+   "source_artifact": "evaluation\\model_selection\\runs\\ocr_primary\\OCR_SMOKE_STAGE1_BASELINE_2026-09-02.json",
+   "source_sha256": "d84eed20c04899a900aea22c63e30de6511d6522974c34644a00a8c0ff0376bf",
+   "verdict": "PASS"
+  },
+  {
+   "check": "task_is_ocr_primary_only",
+   "reported": "{'ocr_primary'}",
+   "recomputed": "{'ocr_primary'}",
+   "source_artifact": "outputs.jsonl x3",
+   "source_sha256": "-",
+   "verdict": "PASS"
+  },
+  {
+   "check": "split_is_DEV_only_HELD_OUT_zero",
+   "reported": "{'DEV'}",
+   "recomputed": "{'DEV'}",
+   "source_artifact": "outputs.jsonl x3",
+   "source_sha256": "-",
+   "verdict": "PASS"
+  },
+  {
+   "check": "ledger_new_rows",
+   "reported": 24,
+   "recomputed": 24,
+   "source_artifact": "evaluation\\model_selection\\state\\gateway_ledger\\usage.jsonl",
+   "source_sha256": "-",
+   "verdict": "PASS"
+  },
+  {
+   "check": "ledger_new_rows_all_ocr_primary",
+   "reported": "{'ocr_primary'}",
+   "recomputed": "{'ocr_primary'}",
+   "source_artifact": "evaluation\\model_selection\\state\\gateway_ledger\\usage.jsonl",
+   "source_sha256": "-",
+   "verdict": "PASS"
+  },
+  {
+   "check": "ledger_no_grading_calls",
+   "reported": 0,
+   "recomputed": 0,
+   "source_artifact": "evaluation\\model_selection\\state\\gateway_ledger\\usage.jsonl",
+   "source_sha256": "-",
+   "verdict": "PASS"
+  },
+  {
+   "check": "ledger_delta_usd",
+   "reported": 0.0267926,
+   "recomputed": 0.0267926,
+   "source_artifact": "evaluation\\model_selection\\state\\gateway_ledger\\usage.jsonl",
+   "source_sha256": "-",
+   "verdict": "PASS"
+  },
+  {
+   "check": "ledger_delta_matches_report",
+   "reported": 0.0267926,
+   "recomputed": 0.0267926,
+   "source_artifact": "evaluation\\model_selection\\runs\\ocr_primary\\OCR_SMOKE_STAGE1_RESULT_2026-09-02.json",
+   "source_sha256": "db8de36224551d8db83a9f091086a52b17058cf55f0f2ecbd54759b2e5523bdd",
+   "verdict": "PASS"
+  },
+  {
+   "check": "ledger_luna_cost",
+   "reported": 0.0071066,
+   "recomputed": 0.0071066,
+   "source_artifact": "evaluation\\model_selection\\state\\gateway_ledger\\usage.jsonl",
+   "source_sha256": "-",
+   "verdict": "PASS"
+  },
+  {
+   "check": "ledger_sonnet_cost",
+   "reported": 0.019686,
+   "recomputed": 0.019686,
+   "source_artifact": "evaluation\\model_selection\\state\\gateway_ledger\\usage.jsonl",
+   "source_sha256": "-",
+   "verdict": "PASS"
+  },
+  {
+   "check": "ledger_gemini_cost_zero",
+   "reported": 0.0,
+   "recomputed": 0.0,
+   "source_artifact": "evaluation\\model_selection\\state\\gateway_ledger\\usage.jsonl",
+   "source_sha256": "-",
+   "verdict": "PASS"
+  },
+  {
+   "check": "account_reconciliation_recorded",
+   "reported": 0.0,
+   "recomputed": 0.0,
+   "source_artifact": "evaluation\\model_selection\\runs\\ocr_primary\\OCR_SMOKE_STAGE1_RESULT_2026-09-02.json",
+   "source_sha256": "db8de36224551d8db83a9f091086a52b17058cf55f0f2ecbd54759b2e5523bdd",
+   "verdict": "PASS"
+  },
+  {
+   "check": "mean_cer[openai/gpt-5.6-luna-pro]",
+   "reported": 0.7715,
+   "recomputed": 0.7715,
+   "source_artifact": "outputs.jsonl + frozen manifest",
+   "source_sha256": "4a93e826e6e94777d445e64ae2c3f5ed10def46aa021ff763a45a9807fb913b5",
+   "verdict": "PASS"
+  },
+  {
+   "check": "median_cer[openai/gpt-5.6-luna-pro]",
+   "reported": 0.8717,
+   "recomputed": 0.8717,
+   "source_artifact": "outputs.jsonl + frozen manifest",
+   "source_sha256": "4a93e826e6e94777d445e64ae2c3f5ed10def46aa021ff763a45a9807fb913b5",
+   "verdict": "PASS"
+  },
+  {
+   "check": "mean_wer[openai/gpt-5.6-luna-pro]",
+   "reported": 0.8739,
+   "recomputed": 0.8739,
+   "source_artifact": "outputs.jsonl + frozen manifest",
+   "source_sha256": "4a93e826e6e94777d445e64ae2c3f5ed10def46aa021ff763a45a9807fb913b5",
+   "verdict": "PASS"
+  },
+  {
+   "check": "no_scoreable_output[google/gemini-3.7-flash]",
+   "reported": 8,
+   "recomputed": 8,
+   "source_artifact": "outputs.jsonl",
+   "source_sha256": "-",
+   "verdict": "PASS"
+  },
+  {
+   "check": "mean_cer[anthropic/claude-sonnet-5]",
+   "reported": 0.4878,
+   "recomputed": 0.4878,
+   "source_artifact": "outputs.jsonl + frozen manifest",
+   "source_sha256": "4a93e826e6e94777d445e64ae2c3f5ed10def46aa021ff763a45a9807fb913b5",
+   "verdict": "PASS"
+  },
+  {
+   "check": "median_cer[anthropic/claude-sonnet-5]",
+   "reported": 0.4404,
+   "recomputed": 0.4404,
+   "source_artifact": "outputs.jsonl + frozen manifest",
+   "source_sha256": "4a93e826e6e94777d445e64ae2c3f5ed10def46aa021ff763a45a9807fb913b5",
+   "verdict": "PASS"
+  },
+  {
+   "check": "mean_wer[anthropic/claude-sonnet-5]",
+   "reported": 0.7549,
+   "recomputed": 0.7549,
+   "source_artifact": "outputs.jsonl + frozen manifest",
+   "source_sha256": "4a93e826e6e94777d445e64ae2c3f5ed10def46aa021ff763a45a9807fb913b5",
+   "verdict": "PASS"
+  },
+  {
+   "check": "audited_references_unmodified",
+   "reported": true,
+   "recomputed": true,
+   "source_artifact": "frozen manifest",
+   "source_sha256": "4a93e826e6e94777d445e64ae2c3f5ed10def46aa021ff763a45a9807fb913b5",
+   "verdict": "PASS"
+  },
+  {
+   "check": "crop_bytes_unmodified",
+   "reported": true,
+   "recomputed": true,
+   "source_artifact": "frozen crops",
+   "source_sha256": "25463e91b95db8eecfc306644dd0839f65e42910d4161f6991383b6f4a524a8b",
+   "verdict": "PASS"
+  },
+  {
+   "check": "manifest_hashes_unchanged",
+   "reported": {
+    "items_sha256": "25463e91b95db8eecfc306644dd0839f65e42910d4161f6991383b6f4a524a8b",
+    "references_sha256": "4a93e826e6e94777d445e64ae2c3f5ed10def46aa021ff763a45a9807fb913b5",
+    "audit_sha256": "eace95fc6dc684c88f1fea2142414a68ad8f421257ac012faf6bcfc9ae07f50c",
+    "audit_manifest_sha256": "65ac16385979480945938f45f0d3e5e3255afa7bcb41c4ea7afe2ff2ebcc405f"
+   },
+   "recomputed": {
+    "items_sha256": "25463e91b95db8eecfc306644dd0839f65e42910d4161f6991383b6f4a524a8b",
+    "references_sha256": "4a93e826e6e94777d445e64ae2c3f5ed10def46aa021ff763a45a9807fb913b5",
+    "audit_sha256": "eace95fc6dc684c88f1fea2142414a68ad8f421257ac012faf6bcfc9ae07f50c",
+    "audit_manifest_sha256": "65ac16385979480945938f45f0d3e5e3255afa7bcb41c4ea7afe2ff2ebcc405f"
+   },
+   "source_artifact": "frozen manifest",
+   "source_sha256": "-",
+   "verdict": "PASS"
+  },
+  {
+   "check": "prompt_hashes_unchanged_since_execution",
+   "reported": {
+    "formula_printed": "28d034e2a0f1b77f03b0d4754a9bf187806518048a4ad290fa37a8e0ba5e01c9",
+    "handwritten_cell": "d40280acf305b40f7b4ba74d115f76d4d7268156ba5acce0d7f1ce60ba67a137",
+    "handwritten_line": "8c6981a00d467dbbb92c2495a52e1e050dab68de43a43ce977323bc0c2718172",
+    "mixed_he_en": "3c422f061047cad9aa49ce9320f336f36ce96b220e5c5b2fa05526a9f706d4a7",
+    "option_row_association": "71f6a9af322ccb27ce2bf2f7df091ac5fb00f85a8fdf8cbd700fed2962e99cdc",
+    "printed_rtl": "fb6874a4c84b15b5497e9498f561c7992f56a6b2ac12b20abd8ecde62cde2e40"
+   },
+   "recomputed": {
+    "formula_printed": "28d034e2a0f1b77f03b0d4754a9bf187806518048a4ad290fa37a8e0ba5e01c9",
+    "handwritten_cell": "d40280acf305b40f7b4ba74d115f76d4d7268156ba5acce0d7f1ce60ba67a137",
+    "handwritten_line": "8c6981a00d467dbbb92c2495a52e1e050dab68de43a43ce977323bc0c2718172",
+    "mixed_he_en": "3c422f061047cad9aa49ce9320f336f36ce96b220e5c5b2fa05526a9f706d4a7",
+    "option_row_association": "71f6a9af322ccb27ce2bf2f7df091ac5fb00f85a8fdf8cbd700fed2962e99cdc",
+    "printed_rtl": "fb6874a4c84b15b5497e9498f561c7992f56a6b2ac12b20abd8ecde62cde2e40"
+   },
+   "source_artifact": "evaluation\\model_selection\\runs\\ocr_primary\\OCR_SMOKE_STAGE1_CONTRACT_EXEC_2026-09-02.json",
+   "source_sha256": "1fda0a567f897a1ad777da1f53eee38ac8e16643915deb90ef861789deec5312",
+   "verdict": "PASS"
+  },
+  {
+   "check": "prompt_version_unchanged",
+   "reported": "m2-strict-v1",
+   "recomputed": "m2-strict-v1",
+   "source_artifact": "evaluation\\model_selection\\runs\\ocr_primary\\OCR_SMOKE_STAGE1_BASELINE_2026-09-02.json",
+   "source_sha256": "d84eed20c04899a900aea22c63e30de6511d6522974c34644a00a8c0ff0376bf",
+   "verdict": "PASS"
+  }
+ ],
+ "checks_total": 33,
+ "checks_passed": 33,
+ "checks_failed": 0,
+ "stage1_reproduces": true,
+ "content_sha256": "5718054e2206af05f5a4654114abd35a08622fe8b487e49f6f6248a1c4539755"
+}

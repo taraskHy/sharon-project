@@ -131,7 +131,7 @@ class ModelGateway:
     def __init__(self, routes: dict[str, TaskRoute], *,
                  backend_factory: Callable[[BackendConfig], VisionBackend] | None = None,
                  cache=None, ledger=None, budget=None,
-                 execution_mode: str = "production"):
+                 execution_mode: str = "production", research_auth=None):
         from .cloudboundary import EXECUTION_MODES
 
         if execution_mode not in EXECUTION_MODES:
@@ -150,9 +150,15 @@ class ModelGateway:
                 raise GatewayConfigError(f"task {name!r} ({r.backend}) needs base_url")
         self.routes = routes
         #: "production" (default) enforces the cloud-OCR boundary on every
-        #: call; "research" exists ONLY for the explicitly invoked historical
-        #: cloud-grader benchmarks (autograder bench ... --research).
+        #: call; "research" exists ONLY for explicitly invoked, pre-registered
+        #: experiments (autograder bench ... --research).
         self.execution_mode = execution_mode
+        #: An explicit ResearchAuthorization, or None. It widens ONLY the task
+        #: layer, and only to the exact task+model it names; the content layer
+        #: (registered prompt, grading tripwires, secrets, block shape) is
+        #: enforced identically in both modes. research_auth is meaningless
+        #: outside research mode and the boundary refuses that combination.
+        self.research_auth = research_auth
         self._factory = backend_factory or create_backend
         self._backends: dict[str, VisionBackend] = {}
         self.cache = cache        # duck-typed: get(fp) / put(fp, obj, meta)
@@ -241,14 +247,17 @@ class ModelGateway:
              output_model: type[T], meta: dict | None = None,
              max_tokens: int | None = None) -> CallResult:
         route = self.route(task)
-        # THE PRODUCTION CLOUD BOUNDARY (cloudboundary.py): a remote provider
-        # may receive OCR transcription work only. Checked before the cache,
-        # the budget, and any serialization — a forbidden route is never
-        # consulted at all. Research mode is explicit and benchmark-only.
+        # THE CLOUD BOUNDARY (cloudboundary.py): a remote provider may receive
+        # OCR transcription work only, plus whatever an explicit research
+        # authorization names. Checked before the cache, the budget, and any
+        # serialization — a forbidden route is never consulted at all. Content
+        # safety is enforced in BOTH modes; --research widens the task layer
+        # alone, and only as far as a pre-registration says.
         from .cloudboundary import check_cloud_call
         check_cloud_call(task=task, backend=route.backend, base_url=route.base_url,
                          execution_mode=self.execution_mode, system=system,
-                         content_blocks=content_blocks)
+                         content_blocks=content_blocks,
+                         research_auth=self.research_auth, model=route.model)
         meta = dict(meta or {})
         if self.privacy_guard:
             hard, soft = scan_blocks(content_blocks)

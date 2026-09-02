@@ -9,6 +9,7 @@ from autograder.backends.mock import MockBackend
 from autograder.orchestrator import (handle_model_failure, install_hooks, openrouter_configured,
                                      prepare_exam_package, setup_from_config)
 from autograder.usage import BudgetExceeded, BudgetLimits
+from autograder.cloudboundary import research_authorization
 from tests.test_grade import make_key
 
 
@@ -125,7 +126,10 @@ def test_rerun_resumes_missing_items_only(tmp_path):
         # outright (tests/test_cloud_boundary.py).
         return ModelGateway.from_dict({"models": {"grade_primary": {"backend": "openrouter", "model": "m"}}},
                                       backend_factory=factory, cache=RequestCache(tmp_path / "c"),
-                                      execution_mode="research")
+                                      execution_mode="research",
+                                      research_auth=research_authorization(
+                                          "test:orchestrator", tasks=["grade_primary"],
+                                          models=["m"]))
 
     g1 = gw()
     g1.call(task="grade_primary", system="s", content_blocks=[{"type": "text", "text": "exam1"}], output_model=Out)

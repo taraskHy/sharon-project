@@ -16,6 +16,7 @@ from autograder.gateway import ModelGateway
 from autograder.gradingpack import (RAG_POLICIES, activate_rag, attach_rag, build_pack,
                                     rag_query, source_fingerprint)
 from autograder.provenance import DecisionProvenance, drift_between, provenance_from_call
+from autograder.cloudboundary import research_authorization
 from tests.test_escalation import _gw
 from tests.test_grade import make_key
 
@@ -54,7 +55,9 @@ def _call_result():
                                       "prompt_version": "grade-v7",
                                       "reasoning": {"effort": "low"}}}},
         backend_factory=lambda c: MockBackend(config=c, responder=lambda *a: GradeResult(score=2)),
-        execution_mode="research")   # cloud-shaped grading route as a provenance vehicle
+        execution_mode="research",   # cloud-shaped grading route as a provenance vehicle
+        research_auth=research_authorization("test:provenance", tasks=["grade_primary"],
+                                             models=["vendor/grade-1"]))
     be = gw.backend_for("grade_primary")
     be.last_usage = {"provider": "SomeProvider", "model": "vendor/grade-1-2026-05",
                      "request_id": "req-9", "generation_id": "gen-9", "total_tokens": 400}
@@ -83,7 +86,9 @@ def test_provenance_never_carries_a_secret():
                                                                        "top_p": 1.0}}}},
                                 backend_factory=lambda c: MockBackend(
                                     config=c, responder=lambda *a: GradeResult(score=1)),
-                                execution_mode="research")
+                                execution_mode="research",
+                                research_auth=research_authorization(
+                                    "test:provenance-secret", tasks=["t"], models=["vendor/x"]))
     res = gw.call(task="t", system="s", content_blocks=[{"type": "text", "text": "x"}],
                   output_model=GradeResult)
     p = provenance_from_call(res, system="s", content_blocks=[], output_model=GradeResult)

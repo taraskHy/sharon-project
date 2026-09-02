@@ -16,6 +16,7 @@ from autograder.backends import BackendConfig, BackendError
 from autograder.backends.mock import MockBackend
 from autograder.backends.openrouter import OpenRouterBackend
 from autograder.gateway import GatewayConfigError, ModelGateway, TaskRoute
+from autograder.cloudboundary import research_authorization
 
 
 class Out(BaseModel):
@@ -245,7 +246,10 @@ def test_openrouter_via_gateway_records_usage(monkeypatch):
 
     gw = ModelGateway.from_dict({"models": {"grade_primary": {"backend": "openrouter", "model": "vendor/model"}}},
                                 backend_factory=factory, ledger=Ledger(),
-                                execution_mode="research")  # usage-recording vehicle
+                                execution_mode="research",  # usage-recording vehicle
+                                research_auth=research_authorization(
+                                    "test:gateway-usage", tasks=["grade_primary"],
+                                    models=["vendor/model"]))
     res = gw.call(task="grade_primary", system="s", content_blocks=[{"type": "text", "text": "x"}],
                   output_model=Out, meta={"job_id": "j1", "exam_id": "e1", "question_id": "3", "stage": "grade"})
     assert res.usage["total_tokens"] == 15

@@ -13,6 +13,7 @@ from autograder.backends.mock import MockBackend
 from autograder.gateway import ModelGateway
 from autograder.requestcache import RequestCache, fingerprint
 from autograder.usage import BudgetExceeded, BudgetLimits, BudgetManager, UsageLedger
+from autograder.cloudboundary import research_authorization
 
 
 class Out(BaseModel):
@@ -39,7 +40,9 @@ def _gw(tmp_path, responses, **kw):
     gw = ModelGateway.from_dict(
         {"models": {"grade_primary": {"backend": "openrouter", "model": "vendor/m", "prompt_version": "p1"}}},
         backend_factory=factory, cache=RequestCache(tmp_path / "cache"),
-        execution_mode="research", **kw)
+        execution_mode="research",
+        research_auth=research_authorization("test:cache-ledger", tasks=["grade_primary"],
+                                             models=["vendor/m"]), **kw)
     return gw, counter
 
 
@@ -97,7 +100,9 @@ def test_failures_never_enter_cache(tmp_path):
     gw = ModelGateway.from_dict({"models": {"t": {"backend": "openrouter", "model": "m"}}},
                                 backend_factory=lambda c: Boom(config=c),
                                 cache=RequestCache(tmp_path / "c"),
-                                execution_mode="research")
+                                execution_mode="research",
+                                research_auth=research_authorization(
+                                    "test:cache-ledger", tasks=["t"], models=["m"]))
     with pytest.raises(BackendError):
         gw.call(task="t", system="s", content_blocks=[{"type": "text", "text": "x"}], output_model=Out)
     assert not list((tmp_path / "c").rglob("*.json"))

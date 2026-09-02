@@ -487,8 +487,19 @@ def build_gateway(spec: RunSpec, route, registry: CandidateRegistry, warn_sink: 
         # transport retries stay (network-only, recorded by the backend)
         return create_backend(dataclasses.replace(cfg, validation_retries=spec.validation_retries))
 
+    # --research widens the TASK layer only, and only as far as this explicit
+    # per-run authorization says: this exact role, on this exact resolved model.
+    # It never relaxes the content layer (registered OCR prompt, grading
+    # tripwires, secret scan) — that is enforced identically in both modes.
+    research_auth = None
+    if spec.research:
+        from ..cloudboundary import research_authorization
+        research_auth = research_authorization(
+            f"bench:{route.task}:{spec.split}:{spec.subset or 'all'}",
+            tasks=[route.task], models=[route.model])
     gw = ModelGateway({route.task: route}, backend_factory=_factory, cache=cache, ledger=ledger, budget=None,
-                      execution_mode="research" if spec.research else "production")
+                      execution_mode="research" if spec.research else "production",
+                      research_auth=research_auth)
     limits = BudgetLimits(max_cost_total=float(hard), soft_fraction=float(warn) / float(hard) if hard else 0.8)
     gw.budget = BudgetManager(limits, ledger=ledger, warn=warn_sink)
     if spec.models_config is not None and Path(spec.models_config).exists():
