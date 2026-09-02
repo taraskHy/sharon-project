@@ -1,0 +1,212 @@
+{
+ "artifact": "release_readiness",
+ "gate_version": "release-gates-asym-v2",
+ "created_at": "2026-09-02 03:14:22",
+ "git_commit": "30c2a69521c9dafa7a2fcc4690d55fc7c5287222",
+ "status": "SHADOW_READY",
+ "status_derivation": {
+  "SHADOW_READY_criteria": "engine implemented + OFF/SHADOW proven inert + ACTIVE locked + reproduction clean + HELD_OUT sealed + zero observed false-full",
+  "not_READY_FOR_OCR_VALIDATION_because": [
+   "two named engineering prep items in the OCR freeze are open (seen46-ocr subset registration; per-writer WER scoring)",
+   "owner spend authorization for the campaign is not given"
+  ],
+  "not_READY_FOR_FINAL_VALIDATION_because": [
+   "semantic layer does not beat always_partially_valid on weighted risk",
+   "grounding failures 4.3% > 2%",
+   "serious-overgrade gate fails prospectively (4 > 2)",
+   "rare-event power gate fails (5 invalid examples)",
+   "OCR unvalidated",
+   "decision policy not yet frozen"
+  ]
+ },
+ "data": {
+  "seen_references": 46,
+  "class_distribution": {
+   "invalid": 5,
+   "partially_valid": 13,
+   "valid": 28
+  },
+  "source_distribution": {
+   "two_reviewer_consensus": 22,
+   "adjudicated_human_reference": 22,
+   "owner_adjudicated_after_source_repair": 2
+  },
+  "human_disagreement": "22 agreed / 14 adjacent / 8 wide / 2 owner-repaired",
+  "held_out": "sealed, untouched"
+ },
+ "grader": {
+  "baseline_arm": "qwen3-vl:8b-instruct Q4 one-pass, grade-v4-charitable-local",
+  "strict_risk": 43,
+  "disagreement_aware_risk": 20.0,
+  "rare_event": {
+   "math_version": "rare-events-v1",
+   "observed": 0,
+   "denominator": 5,
+   "point_estimate": 0.0,
+   "one_sided_upper_95": 0.45072,
+   "two_sided_95": [
+    0.0,
+    0.521824
+   ],
+   "alpha": 0.05,
+   "note": "zero observed events does NOT demonstrate a zero rate; the upper bound is what the data can actually exclude",
+   "denominator_definition": "ALL actually-invalid seen cases (the population on which the catastrophic error could occur)"
+  },
+  "severe_overgrades_semantic": 4,
+  "undergrades_semantic": 7,
+  "grounding_failures": 2
+ },
+ "policy": {
+  "prospective_deployable": {
+   "prospective_valid_only_v1": {
+    "auto_coverage_pct": 58.7,
+    "auto_risk": 20,
+    "false_full": 0
+   },
+   "prospective_noninvalid_v1": {
+    "auto_coverage_pct": 84.8,
+    "auto_risk": 34,
+    "false_full": 0
+   },
+   "prospective_auto_all_structurally_valid_v1": {
+    "auto_coverage_pct": 95.7,
+    "auto_risk": 42,
+    "false_full": 0
+   }
+  },
+  "retrospective_upper_bounds_NOT_DEPLOYABLE": {
+   "retrospective_human_dispute_aware_b_v1": {
+    "auto": 22,
+    "auto_risk": 10
+   },
+   "retrospective_human_dispute_aware_c_v1": {
+    "auto": 31,
+    "auto_risk": 23
+   }
+  },
+  "recommended_shadow_candidate": "prospective_noninvalid_v1 (84.8% coverage, risk 34) with prospective_valid_only_v1 (58.7%, risk 20) as the conservative alternative; run BOTH in shadow and decide on shadow evidence",
+  "matrix_sensitivity": {
+   "deployable_policy_risk_ordering": "ROBUST",
+   "deployable_policy_risk_ordering_note": "prospective_valid_only_v1 minimizes both total and mean AUTO weighted risk on every matrix — but ONLY because it refuses every partially_valid verdict; the choice between the deployable policies is a coverage-vs-risk tradeoff, not a dominance result",
+   "model_arm_ranking": "FRAGILE",
+   "model_arm_ranking_note": "verified: the baseline-vs-q8_0 ordering flips on the adjacent-undergrade cost (expectation confirmed, not assumed)",
+   "constant_baseline_wins_count": 16
+  },
+  "deployment_lock": "ACTIVE mode locked (no ActivationRecord exists; no production caller)"
+ },
+ "ocr": {
+  "executed": false,
+  "campaign": "ocr_validation_campaign_2026-09-02",
+  "campaign_sha256": "8ce4f5eea7b233c5a21a71b9cef8cca5e72f653091722dccef8426ad6e5d67d0",
+  "unresolved": [
+   "register a frozen seen46-ocr subset for the bench CLI (--subset currently has no seen-46 OCR entry)",
+   "add per-writer WER/omission aggregation to the scoring path (word_align is loaded but unused by OcrPrimaryAdapter); adapter_version must bump if its scoring changes"
+  ]
+ },
+ "engineering": {
+  "risk_engine_version": "risk-engine-v1",
+  "throughput_per_s": 1428.9,
+  "event_bytes": 1477.0,
+  "note": "test/concurrency/backup/boundary results are recorded in the morning report and CI logs"
+ },
+ "gates": [
+  {
+   "gate": "HARD_FALSE_FULL",
+   "target": "confirmed invalid -> automatic valid = 0 observed",
+   "observed": "0 across every arm and policy (seen development data only (46 explanation cases))",
+   "confidence_limitation": "only 5 invalid cases: one-sided 95% upper bound 45.1% — observation passes, demonstrated safety does NOT",
+   "pass": true,
+   "evidence": "PROSPECTIVE_POLICY_REPLAY"
+  },
+  {
+   "gate": "RARE_EVENT_POWER",
+   "target": "enough invalid examples to bound the false-full rate at the owner's chosen threshold (e.g. 5% needs 59, 1% needs 299)",
+   "observed": "5 invalid examples available",
+   "confidence_limitation": "threshold choice is the owner's; every listed option needs more invalid examples than exist on seen data",
+   "pass": false,
+   "evidence": "PROSPECTIVE_POLICY_REPLAY (exact binomial)"
+  },
+  {
+   "gate": "SERIOUS_OVERGRADE",
+   "target": "automatic partially_valid -> valid <= 2/46",
+   "observed": "prospective_valid_only 4, prospective_noninvalid 4 (the committed 2 was oracle-assisted)",
+   "confidence_limitation": "seen development data only (46 explanation cases)",
+   "pass": false,
+   "evidence": "PROSPECTIVE_POLICY_REPLAY"
+  },
+  {
+   "gate": "WEIGHTED_RISK_VS_CONSTANTS",
+   "target": "semantic-layer total risk <= 0.90 x best constant (always_partially_valid = 43)",
+   "observed": "baseline 43",
+   "confidence_limitation": "seen development data only (46 explanation cases)",
+   "pass": false,
+   "evidence": "ASYMMETRIC_RISK_STRICT"
+  },
+  {
+   "gate": "UNDERGRADE_CAP",
+   "target": "automatic harmful undergrades <= 3/46",
+   "observed": "valid_only 0, noninvalid 2",
+   "confidence_limitation": "seen development data only (46 explanation cases)",
+   "pass": true,
+   "evidence": "PROSPECTIVE_POLICY_REPLAY"
+  },
+  {
+   "gate": "GROUNDING",
+   "target": "evidence+schema failures <= 2% of cases",
+   "observed": "2/46 = 4.3%",
+   "confidence_limitation": "seen development data only (46 explanation cases)",
+   "pass": false,
+   "evidence": "ASYMMETRIC_RISK_STRICT"
+  },
+  {
+   "gate": "AUTOMATION_JOINT",
+   "target": "AUTO coverage >= 70% AND weighted-risk gate passes",
+   "observed": "valid_only 58.7% / noninvalid 84.8%; weighted-risk gate fails",
+   "confidence_limitation": "seen development data only (46 explanation cases)",
+   "pass": false,
+   "evidence": "both artifacts"
+  },
+  {
+   "gate": "DISAGREEMENT_ROUTING_ONLINE",
+   "target": "wide human disagreement routes to REVIEW in production",
+   "observed": "IMPOSSIBLE prospectively: reviewer disagreement does not exist at decision time; the engine refuses retrospective policies in production and the oracle tables are marked NOT DEPLOYABLE",
+   "confidence_limitation": "needs a future PROSPECTIVE ambiguity signal to recover the oracle gains",
+   "pass": false,
+   "evidence": "policy taxonomy + engine tests"
+  },
+  {
+   "gate": "ENGINE_SHADOW_SAFETY",
+   "target": "OFF/SHADOW never change the active grade; ACTIVE locked; typed refusals everywhere",
+   "observed": "1,152-state exhaustive suite + fuzz + concurrency all green; no production caller of ACTIVE exists",
+   "confidence_limitation": "engineering property, fully testable",
+   "pass": true,
+   "evidence": "test_risk_engine* suites"
+  },
+  {
+   "gate": "REPRODUCTION",
+   "target": "every load-bearing committed number reproduces from raw artifacts",
+   "observed": "REPRODUCED: 58 checks, 0 failed",
+   "confidence_limitation": "deterministic",
+   "pass": true,
+   "evidence": "ASYMMETRIC_RISK_REPRODUCTION"
+  },
+  {
+   "gate": "OCR",
+   "target": "production OCR validated separately before end-to-end shipping",
+   "observed": "campaign FROZEN (8ce4f5eea7b2…), NOT EXECUTED; 0 OCR calls",
+   "confidence_limitation": "hard shipping blocker until run and passed",
+   "pass": false,
+   "evidence": "OCR_VALIDATION_CAMPAIGN"
+  },
+  {
+   "gate": "FINAL_TEST",
+   "target": "HELD_OUT untouched until grader+matrix+policy+OCR frozen",
+   "observed": "untouched; 0 exposure in every artifact of this campaign",
+   "confidence_limitation": "-",
+   "pass": true,
+   "evidence": "all artifacts"
+  }
+ ],
+ "gates_passed": "5/12",
+ "content_sha256": "addf1ca997dc32d0621f2e57d535416719374b7a5727f07fa613bccda07d0269"
+}

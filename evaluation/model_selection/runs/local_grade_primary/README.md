@@ -29,6 +29,24 @@ Result root for the LOCAL grade_primary benchmark. Experiment records:
   recommendation NOT deployed). Tooling `scripts/asymmetric_risk.py`, tests
   `tests/test_asymmetric_risk.py`. No inference/cloud/OCR/RAG/HELD_OUT.
 
+- **Shadow risk layer** (2026-09-02 overnight, zero-inference):
+  independent reproduction of the whole asymmetric-risk campaign
+  (`ASYMMETRIC_RISK_REPRODUCTION_2026-09-02.*`, verdict REPRODUCED, 58/58),
+  the versioned deterministic risk engine (`autograder/riskengine.py`,
+  `risk-engine-v1`, OFF/SHADOW only, ACTIVE locked; policy taxonomy
+  PROSPECTIVE / RETROSPECTIVE / BASELINE with fail-closed typed inputs),
+  the deployable-policy shadow replay
+  (`SHADOW_REPLAY_2026-09-02.jsonl` — 138 events;
+  `PROSPECTIVE_POLICY_REPLAY_2026-09-02.*` — prospective valid-only 27/46
+  risk 20, noninvalid 39/46 risk 34, false-full 0 everywhere; oracle
+  HUMAN_DISPUTE tables reproduced and marked NOT DEPLOYABLE), exact
+  rare-event bounds (0/5 -> 45.1% upper; 29/59/149/299 sample table),
+  prospective sensitivity (`RISK_SENSITIVITY_PROSPECTIVE_2026-09-02.*`),
+  engine bench (`RISK_ENGINE_BENCH_2026-09-02.*`), the frozen OCR campaign
+  (`experiments/OCR_VALIDATION_CAMPAIGN_2026-09-02.json`, NOT executed) and
+  `RELEASE_READINESS_2026-09-02.*` (status **SHADOW_READY**). Docs:
+  `docs/risk_engine.md`. Admin diagnostics: `GET /api/admin/shadow`.
+
 - **ACTIVE** (output-contract phase, 2026-08-28):
   `evaluation/model_selection/experiments/LOCAL_GRADE_CONTRACT_FREEZE_2026-08-28.json`
   — prompt `grade-v4-charitable-local` (v4 semantics verbatim + mechanical
