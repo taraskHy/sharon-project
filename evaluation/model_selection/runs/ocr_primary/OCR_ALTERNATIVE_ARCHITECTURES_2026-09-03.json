@@ -1,0 +1,92 @@
+{
+ "artifact": "ocr_alternative_architectures",
+ "created_at": "2026-09-04 00:19:51",
+ "git_commit": "ee09bd14b8249dcc74b856acc16d6e873ebb275a",
+ "provider_calls": 0,
+ "status": "ANALYSIS ONLY - nothing implemented, nothing called, no architecture changed",
+ "context": "A credible OpenRouter candidate does exist (the shortlist), so these are the fallbacks if the 8-case screen fails, not a present recommendation.",
+ "options": [
+  {
+   "id": 1,
+   "option": "direct OCR/document API instead of a general vision model (e.g. Google Document AI, Azure Document Intelligence, AWS Textract)",
+   "expected_benefit": "purpose-built handwriting OCR with per-word confidence scores, which is exactly the signal the current blocker needs: wrong digits inside a USABLE transcription are presently undetectable in production",
+   "privacy": "student exam images leave the country/vendor boundary to a NEW third party; a fresh DPA question, not covered by the existing OpenRouter decision",
+   "engineering_cost": "high - a new backend, new auth, new payload boundary, new ledger mapping",
+   "recurring_cost": "per-page pricing, typically well above $0.0016/crop",
+   "lock_in": "high (proprietary response schema)",
+   "violates_openrouter_only_product_decision": true,
+   "requires_owner_approval": true
+  },
+  {
+   "id": 2,
+   "option": "direct provider API (Google AI Studio / Vertex) instead of OpenRouter",
+   "expected_benefit": "Vertex exposes CONFIGURABLE safety thresholds that OpenRouter does not surface. If the screen shows the filter is provider-specific, this is the mechanism that would let it be turned down for a legitimate educational corpus.",
+   "privacy": "same vendor already receiving the crops; removes OpenRouter as an intermediary, which arguably IMPROVES the data path",
+   "engineering_cost": "medium - one new backend behind the existing gateway seam",
+   "recurring_cost": "similar or lower (no OpenRouter margin)",
+   "lock_in": "medium",
+   "violates_openrouter_only_product_decision": true,
+   "requires_owner_approval": true,
+   "note": "the 8-case screen is the cheap precondition: pin the two providers first, and only pursue this if the filter turns out to be provider-specific"
+  },
+  {
+   "id": 3,
+   "option": "deterministic image preprocessing plus OCR",
+   "expected_benefit": "NONE DEMONSTRATED - already measured and refuted in this project",
+   "evidence": "four preprocessing strategies (blue-channel isolation, printed-text subtraction, line pre-segmentation, contrast) across 7 configurations: mean CER 1.00-1.23. Preprocessing moved the number by ~0.2 CER at best and never approached usability.",
+   "privacy": "none (local)",
+   "engineering_cost": "already spent",
+   "recurring_cost": "$0",
+   "lock_in": "none",
+   "violates_openrouter_only_product_decision": false,
+   "requires_owner_approval": false,
+   "verdict": "REFUTED BY MEASUREMENT - do not re-attempt without a new idea"
+  },
+  {
+   "id": 4,
+   "option": "local OCR/VLM for transcription",
+   "expected_benefit": "NONE DEMONSTRATED - already measured and refuted",
+   "evidence": "qwen3-vl 8B (Q4_K_M, q8_0), qwen3-vl 30B-a3b, sivan22/hdd-words-ocr (a dedicated Hebrew handwriting HTR), and surya-ocr: best mean CER 0.944, all with fluent hallucination or degenerate repetition. Cloud Gemini reads the same corpus at 0.1155 when it answers.",
+   "privacy": "BEST - nothing leaves the machine",
+   "engineering_cost": "already spent",
+   "recurring_cost": "$0",
+   "lock_in": "none",
+   "violates_openrouter_only_product_decision": false,
+   "requires_owner_approval": false,
+   "verdict": "REFUTED BY MEASUREMENT at the model scales tested. A materially larger local VLM on the RTX 2000 Ada is the only untested variant and is bounded by VRAM."
+  },
+  {
+   "id": 5,
+   "option": "human OCR verification for only machine-detected failures",
+   "expected_benefit": "HIGH AND ALREADY HALF-BUILT. This is the one option the measurements actively support: Gemini's failures are LOUD (content_filter, parse, truncation) and machine-detectable, so they can be routed to a human deterministically. It converts an accuracy problem into a bounded review-queue problem.",
+   "cost_shape": "at 16/32 usable, roughly half of all crops enter review - expensive in human time, and the review burden is the honest headline number",
+   "privacy": "none beyond the current design",
+   "engineering_cost": "medium - the review UI and the labeling app already exist",
+   "recurring_cost": "human time",
+   "lock_in": "none",
+   "violates_openrouter_only_product_decision": false,
+   "requires_owner_approval": true,
+   "critical_caveat": "this does NOT address the standing blocker. A wrong digit inside a USABLE transcription is silent: it is not flagged, so it never reaches the review queue. Failure routing fixes coverage, not correctness."
+  },
+  {
+   "id": 6,
+   "option": "hybrid local/cloud OCR with explicit provenance",
+   "expected_benefit": "low on current evidence - the local half has no measured accuracy to contribute, so a hybrid inherits the cloud arm's numbers plus complexity",
+   "privacy": "partial improvement only if the local arm handles real cases, which it cannot yet",
+   "engineering_cost": "high",
+   "recurring_cost": "cloud cost unchanged",
+   "lock_in": "low",
+   "violates_openrouter_only_product_decision": false,
+   "requires_owner_approval": true,
+   "verdict": "premature - revisit only if a local model ever reaches usable CER"
+  }
+ ],
+ "require_owner_approval": [
+  1,
+  2,
+  5,
+  6
+ ],
+ "no_architecture_changed_in_this_task": true,
+ "content_sha256": "b847bbf70b77c969cb20e197458722b8d6cd8e465233fc7275442ebdf682e9d4"
+}

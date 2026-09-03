@@ -115,6 +115,10 @@ class RunSpec:
     warn_usd: float | None = None           # default: registry [budget] warn_usd (8.00)
     hard_usd: float | None = None           # default: registry [budget] experiment_total_usd (10.00)
     validation_retries: int = 0             # NEVER silently repair malformed output in a benchmark
+    #: names the NEW experiment that authorizes re-running a configuration the
+    #: OCR decision registry has already measured and dropped. Without it a
+    #: dropped arm refuses to run live (see benchmark.ocr_decisions).
+    allow_dropped_config: str | None = None
     subset: str | None = None               # "smoke" -> the frozen pre-registered DEV smoke subset
     skip_key_preflight: bool = False        # tests only: skip the GET /api/v1/key preflight step
     final_evaluation: bool = False          # ONLY the `bench final-eval` path sets this (HELD_OUT live run)
@@ -688,6 +692,15 @@ def run_benchmark(spec: RunSpec, *, gateway=None, registry: CandidateRegistry | 
         # Cloud readiness is explained in one sentence, never a stack trace.
         from ..cloudcheck import require_cloud_task
         require_cloud_task(gw, route.task)
+        # ---- OCR decision registry: a dropped arm does not re-run by accident.
+        # Checked BEFORE the budget preflight so a ruled-out configuration is
+        # refused without touching the account at all.
+        if spec.role == "ocr_primary":
+            from .ocr_decisions import assert_selectable, provider_pin_of
+            assert_selectable(getattr(route, "model", "") or "",
+                              getattr(route, "prompt_version", None),
+                              provider_pin_of(route),
+                              authorized_experiment=spec.allow_dropped_config)
         ledger_baseline = len(gw.ledger.entries()) if getattr(gw, "ledger", None) is not None else 0
         # ---- live-call preflight (Part 7): credential -> key metadata (explicit)
         # -> checkpoint -> compare with ledger -> budget safe? -> allowed.

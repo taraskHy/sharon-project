@@ -1,0 +1,202 @@
+{
+ "artifact": "ocr_experiment_lineage",
+ "created_at": "2026-09-04 00:18:25",
+ "git_commit": "ee09bd14b8249dcc74b856acc16d6e873ebb275a",
+ "provider_calls": 0,
+ "purpose": "One ordered record of every OCR experiment, what it measured, and what superseded it.",
+ "stages": [
+  {
+   "stage": "Stage-1",
+   "date": "2026-09-02",
+   "experiment_sha256": "8ce4f5eea7b233c5a21a71b9cef8cca5e72f653091722dccef8426ad6e5d67d0",
+   "models": [
+    "openai/gpt-5.6-luna-pro",
+    "anthropic/claude-sonnet-5",
+    "google/gemini-3.7-flash"
+   ],
+   "prompt": "m2-strict-v1",
+   "case_set": "frozen smoke 8 (5 handwritten, 3 printed)",
+   "route": "openrouter, automatic provider routing",
+   "intended": 24,
+   "usable": "24/24 schema-valid responses",
+   "failure_taxonomy": "Luna 4 unreadable-on-readable + 1 fabrication; Gemini arm INVALID - the route recorded reasoning effort=none, which this endpoint rejects with HTTP 400 (8/8 pre-inference rejections, nothing billed)",
+   "cost_usd": 0.0268,
+   "outcome": "Luna DROP; Sonnet MAYBE; Gemini UNMEASURED",
+   "superseded_by": "Stage-1b (re-ran Gemini with a legal reasoning effort)"
+  },
+  {
+   "stage": "Stage-1b",
+   "date": "2026-09-02",
+   "experiment_sha256": "4de29894cc25b0cc53c5268d2a2cee385151ddb094862d5d95f6eb0c6e7a1626",
+   "models": [
+    "google/gemini-3.7-flash"
+   ],
+   "prompt": "m2-strict-v1",
+   "case_set": "the same frozen smoke 8",
+   "route": "openrouter, automatic",
+   "intended": 8,
+   "usable": "5/8",
+   "failure_taxonomy": "harness defect discovered by this arm: the runner sent max_tokens 600 while the route recorded 1000, so the cap under test never reached the wire",
+   "outcome": "INVALID as a measurement of the configured cap",
+   "superseded_by": "Stage-1c (corrected cap, proven on the wire)"
+  },
+  {
+   "stage": "Stage-1c",
+   "date": "2026-09-02",
+   "experiment_sha256": "2be5224f49142dab7641c0be4ca6455c12c203e000dc3dd89d8f6feee442ffb1",
+   "models": [
+    "google/gemini-3.7-flash"
+   ],
+   "prompt": "m2-strict-v1",
+   "case_set": "the same frozen smoke 8",
+   "route": "openrouter, automatic",
+   "intended": 8,
+   "usable": "5/8",
+   "failure_taxonomy": "3 content-filter refusals, 2 of them on handwritten crops; 60% handwritten filter rate on a denominator of 5",
+   "cost_usd": 0.01099875,
+   "route_forensics": {
+    "ledger_rows": 16,
+    "provider_x_finish_reason": {
+     "Google|length": 2,
+     "Google|stop": 10,
+     "None|content_filter": 3,
+     "None|error": 1
+    },
+    "distinct_providers_observed_on_SUCCESSFUL_rows": {
+     "Google": 12
+    },
+    "content_filtered_rows": 3,
+    "content_filtered_rows_with_a_provider_recorded": 0,
+    "provider_of_filtered_rows": "UNKNOWN",
+    "request_ids_preserved": 12,
+    "http_status": {
+     "200": 16
+    },
+    "routing_mode": "AUTOMATIC (no provider pin: extra_generation carried no provider object)"
+   },
+   "outcome": "B - a bounded larger seen-only comparison is warranted",
+   "superseded_by": "paired seen32"
+  },
+  {
+   "stage": "paired seen32",
+   "date": "2026-09-02",
+   "experiment_sha256": "c2e9cc8f6188a4963eca9a3f6242d3753049faa93a064cc4d774731d5edabcc3",
+   "models": [
+    "google/gemini-3.7-flash",
+    "anthropic/claude-sonnet-5"
+   ],
+   "prompt": "m2-strict-v1",
+   "case_set": "frozen seen46_ocr_dev 32 (100% handwritten)",
+   "route": "openrouter, automatic",
+   "intended": 64,
+   "usable": {
+    "gemini": "14/32",
+    "sonnet": "27/32"
+   },
+   "failure_taxonomy": {
+    "gemini": {
+     "provider_content_filter": 10,
+     "json_parse_failure": 6,
+     "truncation": 2,
+     "total_line_loss": 18
+    },
+    "sonnet": {
+     "model_text_refusal": 4,
+     "total_line_loss": 5
+    }
+   },
+   "quality": {
+    "gemini_successful_cer": 0.1155,
+    "gemini_failure_aware_cer": 0.613,
+    "sonnet_successful_cer": 0.4718,
+    "sonnet_failure_aware_cer": 0.5544
+   },
+   "cost_usd": 0.12703875,
+   "route_forensics": {
+    "ledger_rows": 32,
+    "provider_x_finish_reason": {
+     "Google AI Studio|length": 1,
+     "Google AI Studio|stop": 2,
+     "Google|length": 1,
+     "Google|stop": 10,
+     "None|content_filter": 10,
+     "None|error": 6,
+     "None|None": 2
+    },
+    "distinct_providers_observed_on_SUCCESSFUL_rows": {
+     "Google": 11,
+     "Google AI Studio": 3
+    },
+    "content_filtered_rows": 10,
+    "content_filtered_rows_with_a_provider_recorded": 0,
+    "provider_of_filtered_rows": "UNKNOWN",
+    "request_ids_preserved": 14,
+    "http_status": {
+     "200": 30,
+     "None": 2
+    },
+    "routing_mode": "AUTOMATIC (no provider pin: extra_generation carried no provider object)"
+   },
+   "outcome": "Gemini DROP as sole route; Sonnet MAYBE (coverage, not quality); Gemini->Sonnet composite NOT USEFUL and withdrawn",
+   "superseded_by": "neutral-framing seen32 (for the Gemini prompt question only)"
+  },
+  {
+   "stage": "neutral-framing seen32",
+   "date": "2026-09-03",
+   "experiment_sha256": "05185839e204ca6131201983d29d2c0c273445070b56276f280b71426920f679",
+   "models": [
+    "google/gemini-3.7-flash"
+   ],
+   "prompt": "ocr-neutral-v2",
+   "case_set": "the SAME frozen 32 - identical ids, order, crop bytes and references",
+   "route": "openrouter, automatic",
+   "intended": 32,
+   "usable": "16/32",
+   "failure_taxonomy": {
+    "provider_content_filter": 14,
+    "json_parse_failure": 1,
+    "truncation": 1,
+    "total_line_loss": 16,
+    "annotation_inclusion_errors": 0
+   },
+   "quality": {
+    "successful_cer": 0.1608,
+    "failure_aware_cer": 0.5804,
+    "critical_errors": "2/16",
+    "matched_pairs_delta_cer": 0.0257,
+    "matched_pairs_sign_test_p": 0.7266
+   },
+   "cost_usd": 0.051831,
+   "route_forensics": {
+    "ledger_rows": 32,
+    "provider_x_finish_reason": {
+     "Google|length": 1,
+     "Google|stop": 16,
+     "None|content_filter": 14,
+     "None|error": 1
+    },
+    "distinct_providers_observed_on_SUCCESSFUL_rows": {
+     "Google": 17
+    },
+    "content_filtered_rows": 14,
+    "content_filtered_rows_with_a_provider_recorded": 0,
+    "provider_of_filtered_rows": "UNKNOWN",
+    "request_ids_preserved": 17,
+    "http_status": {
+     "200": 32
+    },
+    "routing_mode": "AUTOMATIC (no provider pin: extra_generation carried no provider object)"
+   },
+   "outcome": "hypothesis REFUTED in the wrong direction (filters 10 -> 14); pre-registered drop rule fired at 16/32 hard failures -> DROP_AS_PRIMARY_ROUTE",
+   "one_variable_caveat_recorded_explicitly": "This was NOT a perfectly isolated 'remove instructor framing' experiment. The cell prompt also swapped its annotation clause: 'Ignore any red instructor ink' became 'Ignore any marks written in a different colour of ink from the main handwriting'. On this population the first clause is a NO-OP (0/32 crops carry red ink) while the second is LIVE on 19/32 crops (blue handwriting over printed black rules). The line prompt changed only the framing sentence. The arm therefore compares two framing PACKAGES, and the cell and line halves received different edits.",
+   "superseded_by": null
+  }
+ ],
+ "aggregate_confirmations": {
+  "held_out_executions": 0,
+  "audited_references_modified": 0,
+  "active_grades_changed": 0,
+  "total_ocr_campaign_spend_usd": 0.703232
+ },
+ "content_sha256": "ae6481eaf36386c6f3eb57fbf5a022a41424bcfe1e5e5116d7a9ffb5ae663752"
+}

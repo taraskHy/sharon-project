@@ -1,0 +1,65 @@
+{
+ "artifact": "ocr_provider_route_forensics",
+ "created_at": "2026-09-04 00:18:25",
+ "git_commit": "ee09bd14b8249dcc74b856acc16d6e873ebb275a",
+ "provider_calls": 0,
+ "method": "existing run artifacts ONLY - gateway ledger rows, preserved response metadata, run configs and the request cache. No generation request was made.",
+ "requested_model_slug": "google/gemini-3.7-flash",
+ "backend": "openrouter (effective_provider 'openrouter' on all 145 Gemini ledger rows)",
+ "routing_was_pinned_or_automatic": "AUTOMATIC in every Gemini experiment: every run config carried extra_generation {} and RunSpec.provider None, so no provider routing object was ever sent.",
+ "distinct_serving_providers_observed": {
+  "Google": 92,
+  "Google AI Studio": 4,
+  "not recorded (null)": 49,
+  "note": "these are the values OpenRouter returned in the response body's `provider` field and the gateway preserved verbatim."
+ },
+ "did_all_filter_outcomes_come_from_the_same_provider": "UNKNOWN",
+ "did_successful_and_failed_outputs_use_the_same_provider": "UNKNOWN",
+ "why_unknown": {
+  "finding": "ALL 27 content-filtered Gemini rows across every experiment record provider = null. Not one filtered generation is attributable to a serving provider.",
+  "mechanism": "the gateway parses `provider` from the response body (openrouter.py _usage_from_response). A content-filtered generation returns HTTP 200 with inference_reached true but no usage block (usage_returned false) and no provider field, so there is nothing to record.",
+  "not_recoverable_from_cache": "the request cache stores only the PARSED, schema-validated value (a {'transcription': ...} object) plus a small meta dict - never the raw HTTP body. 627 cache entries carry no provider field. Filtered responses are not cached at all.",
+  "consequence": "provider-specificity of the filter is UNMEASURED. It is not established, and it is not ruled out."
+ },
+ "route_variation_between_the_two_32_crop_arms": {
+  "control_m2-strict-v1": {
+   "Google": 11,
+   "Google AI Studio": 3,
+   "null (filtered/errored)": 18
+  },
+  "neutral_ocr-neutral-v2": {
+   "Google": 17,
+   "Google AI Studio": 0,
+   "null (filtered/errored)": 15
+  },
+  "finding": "automatic routing sent 3 control-arm requests to Google AI Studio and 0 neutral-arm requests there. The serving-provider mix therefore DIFFERED between the two arms of a paired experiment, uncontrolled.",
+  "could_route_variation_explain_part_of_the_behaviour": "PARTLY, AND IT IS AN UNCONTROLLED CONFOUND. The filter count rose 10 -> 14 in the same comparison where AI Studio rows fell 3 -> 0. That is consistent with a provider effect, but it is equally consistent with chance on n=32 (the usable-count change itself was not significant, exact McNemar p=0.7266) or with a pure prompt effect. Because no filtered row names its provider, the two explanations cannot be separated from these artifacts. This is reported as a confound to be resolved by measurement, NOT as a finding.",
+  "honest_status": "the paired neutral-vs-control conclusion (filtering did not improve) stands, because it does not depend on provider attribution; but the MAGNITUDE of the 10 -> 14 change should not be read as a pure prompt effect."
+ },
+ "does_openrouter_offer_multiple_routes_for_this_exact_model": {
+  "answer": "YES - verified against the live public catalog",
+  "endpoints": 6,
+  "distinct_providers": [
+   "Google (google-vertex)",
+   "Google AI Studio (google-ai-studio)"
+  ],
+  "endpoint_tags": [
+   "google-vertex/global",
+   "google-vertex/global/flex",
+   "google-vertex/global/priority",
+   "google-ai-studio",
+   "google-ai-studio/flex",
+   "google-ai-studio/priority"
+  ],
+  "materially_distinct": "YES - Vertex and AI Studio are different serving surfaces from the same vendor with different safety-configuration surfaces, not aliases of one endpoint. The three tags WITHIN each provider (flex/priority/plain) are service tiers of the SAME provider and are NOT treated as independent.",
+  "openrouter_model_level_moderation": "is_moderated = false for this slug, so the content_filter outcomes come from Google's own safety layer rather than an OpenRouter moderation stage."
+ },
+ "can_the_project_pin_a_provider_deterministically": {
+  "answer": "YES",
+  "mechanism": "RunSpec.provider -> route knobs -> BackendConfig.extra_generation['provider'] -> OpenRouter payload['provider'] (openrouter.py _build_payload). The field already existed and was already honoured; only the CLI never passed it through, which this task fixed by adding --provider.",
+  "enters_the_config_hash": "YES - 'provider' is in the hashed route knobs, so a pinned arm resolves a different run id and is a distinct frozen experiment.",
+  "determinism_requires": "a single entry in `order` AND allow_fallbacks=false; anything else can silently change the serving provider mid-run (enforced by ocr_decisions.provider_pin_of, which reports such a route as unpinned)"
+ },
+ "classification": "A provider-pinned Gemini run IS a distinct route experiment and is classified as such in the decision registry.",
+ "content_sha256": "13aa441ae5ee84d67e9744f814bcb1aab9c2c2da619965836aa0ff431069dbca"
+}

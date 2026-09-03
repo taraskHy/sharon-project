@@ -1,4 +1,4 @@
-# Pipeline status — component readiness (2026-09-02)
+# Pipeline status — component readiness (2026-09-03)
 
 The current end-to-end shape, with every component marked. **SHADOW is not
 production activation**, and nothing here is activated.
@@ -8,9 +8,9 @@ scanned exam
     ↓
 deterministic variant / MC logic                       READY
     ↓
-OpenRouter OCR ONLY (ocr_primary)                      EXPERIMENTAL
+OpenRouter OCR ONLY (ocr_primary)                      EXPERIMENTAL — NO WINNER
   · two-layer cloud boundary, deny-by-default          READY
-  · Gemini→Sonnet hard-failure fallback                EXPERIMENTAL
+  · Gemini→Sonnet hard-failure fallback                REJECTED (withdrawn)
     ↓
 immutable transcription (content-hashed artifacts)     READY
     ↓
@@ -35,8 +35,8 @@ deterministic risk engine (risk-engine-v1)             SHADOW
 | deterministic MC path | **READY** | no LLM in the loop; covered by tests |
 | variant detection | **READY** | deterministic; frozen 16-case dataset |
 | cloud boundary | **READY** | two-layer authorization; `--research` no longer bypasses content safety; 34 boundary tests; all 64 paired payloads verified on the wire |
-| OCR transcription | **EXPERIMENTAL** | best deployable configuration reaches 29/32 coverage at failure-aware CER 0.3560 on handwriting |
-| OCR fallback policy | **EXPERIMENTAL** | `gemini_then_sonnet_hard_failure_fallback_v1`, reference-blind by construction, 46 adversarial stress tests; **not wired into production** |
+| OCR transcription | **EXPERIMENTAL — no winner** | every candidate measured has been dropped or is control-only; see the decision registry |
+| OCR fallback policy | **REJECTED** | `gemini_then_sonnet_hard_failure_fallback_v1` withdrawn as strictly dominated; **never wired into production** |
 | immutable transcription | **READY** | content-hashed, append-only run artifacts |
 | local grading infrastructure | **READY** | runs offline; grade-validation-v2; no cloud path exists |
 | semantic grading quality | **EXPERIMENTAL** | no arm beats always-partial on the frozen 46-case set |
@@ -63,18 +63,51 @@ that can disagree — no OCR output can feed an unreviewed grade.
 
 ## What the OCR evidence currently says
 
-Measured on 32 frozen seen-DEV handwritten crops (16 line, 16 cell):
+**There is no current OCR winner.** `roles.ocr_primary` remains `UNSELECTED`.
+Every candidate measured so far has been dropped or retained only as a control:
 
-| Route | Coverage | Failure-aware CER | Failure-aware critical errors /32 |
-|---|---|---|---|
-| Gemini only | 14/32 | 0.6130 | 20 |
-| Sonnet only | 27/32 | 0.5544 | 14 |
-| Gemini → Sonnet fallback | **29/32** | **0.3560** | **9** |
+| Configuration | Status | Why |
+|---|---|---|
+| `openai/gpt-5.6-luna-pro` | **DROP** | 4/5 handwritten crops refused, 1 fabrication, failure-aware handwriting CER 0.9487 |
+| `anthropic/claude-sonnet-5` | **HISTORICAL CONTROL ONLY** | 27/32 coverage but successful-output CER 0.4718 with 9/27 critical errors — not suitable for automatic OCR |
+| `google/gemini-3.7-flash` + `m2-strict-v1` | **DROP as primary route** | 14/32 usable, 10 lost to provider content filtering |
+| `google/gemini-3.7-flash` + `ocr-neutral-v2` | **DROP as primary route** | filtering got *worse* (10 → 14); pre-registered drop rule fired at 16/32 hard failures |
+| `gemini_then_sonnet_hard_failure_fallback_v1` | **REJECTED** | strictly dominated; withdrawn |
 
-The fallback is the best deployable configuration measured and is still not
-good enough to ship unreviewed: 18 of 32 crops are touched by a human under it
-(3 unresolved + 15 fallback rows flagged for review).
+These are recorded machine-readably in
+`evaluation/model_selection/policies/ocr_decision_registry.json`, which refuses
+to run a dropped arm without an explicit override naming a new experiment, and
+refuses to report a dropped arm as a winner.
 
-See `evaluation/model_selection/runs/ocr_primary/OCR_SEEN32_PAIRED_RESULT_2026-09-02.md`
-for the full result and `OCR_SHIPMENT_READINESS_2026-09-02.json` for the
-failure-mode inventory and checklist.
+### Two lessons that generalise beyond OCR
+
+**Good conditional CER is not enough when coverage is poor.** Gemini reads this
+handwriting better than anything else measured anywhere in the project —
+successful-output CER 0.1155, four times better than Sonnet and five times
+better than the best local system — and it is still unusable on its own,
+because it only produced usable output on 14 of 32 crops. A metric conditioned
+on success silently excludes every case that never produced one. Always report
+the failure-aware number and its denominator alongside it.
+
+**Fluent fallback text can be more dangerous than an explicit failure.** A
+content filter is loud and machine-detectable, so the crop routes to a human. A
+fluent wrong transcription is silent and reaches the grader. The Gemini→Sonnet
+composite raised coverage to 29/32 and was rejected precisely because it bought
+that coverage by converting detectable failures into undetectable errors.
+
+### Next step
+
+`OCR_ALTERNATIVE_CANDIDATE_SCREEN_V1` — a frozen, **not yet executed** 8-case
+screen over three routes: Gemini pinned to `google-ai-studio`, Gemini pinned to
+`google-vertex` (the catalog serves this slug from two distinct providers, both
+prior arms ran automatic routing across a mix, and no content-filtered row in
+any run records which provider produced it), and
+`qwen/qwen3-vl-235b-a22b-instruct` pinned to `alibaba` as a genuinely different
+family. Local OCR is not the fallback: 14 local configurations across
+Qwen3-VL 8B/30B, a dedicated Hebrew HTR model and surya document OCR all
+returned mean CER ≥ 0.94 on this corpus.
+
+See `OCR_EXPERIMENT_LINEAGE_2026-09-03.json`,
+`OCR_PROVIDER_ROUTE_FORENSICS_2026-09-03.json`,
+`OCR_CANDIDATE_DISCOVERY_2026-09-03.json` and
+`OCR_SHIPMENT_READINESS_2026-09-02.json` (failure-mode inventory).

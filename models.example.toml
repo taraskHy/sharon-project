@@ -165,3 +165,9 @@ soft_fraction = 0.8
 # [pricing."vendor/model-slug"]
 # input = 0.15
 # output = 0.60
+
+[pricing."qwen/qwen3-vl-235b-a22b-instruct"]
+input = 0.21
+output = 1.90
+# OCR_ALTERNATIVE_CANDIDATE_SCREEN_V1 candidate — read off the live OpenRouter catalog
+# 2026-09-03 (prompt 0.00000021 / completion 0.0000019 per token).

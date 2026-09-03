@@ -1,0 +1,287 @@
+{
+ "artifact": "ocr_phase0_reproduction",
+ "created_at": "2026-09-03",
+ "provider_calls": 0,
+ "checks": [
+  {
+   "check": "paired: gemini rows",
+   "got": 32,
+   "expected": 32,
+   "pass": true
+  },
+  {
+   "check": "paired: sonnet rows",
+   "got": 32,
+   "expected": 32,
+   "pass": true
+  },
+  {
+   "check": "paired: gemini usable",
+   "got": 14,
+   "expected": 14,
+   "pass": true
+  },
+  {
+   "check": "paired: sonnet usable",
+   "got": 27,
+   "expected": 27,
+   "pass": true
+  },
+  {
+   "check": "paired: sonnet model_text_refusal",
+   "got": 4,
+   "expected": 4,
+   "pass": true
+  },
+  {
+   "check": "paired: cost",
+   "got": 0.12703875,
+   "expected": 0.12703875,
+   "pass": true
+  },
+  {
+   "check": "paired: fallback withdrawn",
+   "got": true,
+   "expected": null,
+   "pass": true
+  },
+  {
+   "check": "case ids identical AND same order",
+   "got": true,
+   "expected": true,
+   "pass": true
+  },
+  {
+   "check": "crop hashes identical",
+   "got": true,
+   "expected": true,
+   "pass": true
+  },
+  {
+   "check": "reference hashes identical",
+   "got": true,
+   "expected": true,
+   "pass": true
+  },
+  {
+   "check": "n = 32",
+   "got": 32,
+   "expected": 32,
+   "pass": true
+  },
+  {
+   "check": "5.  original usable",
+   "got": 14,
+   "expected": 14,
+   "pass": true
+  },
+  {
+   "check": "6.  neutral  usable",
+   "got": 16,
+   "expected": 16,
+   "pass": true
+  },
+  {
+   "check": "7.  original provider-filter",
+   "got": 10,
+   "expected": 10,
+   "pass": true
+  },
+  {
+   "check": "8.  neutral  provider-filter",
+   "got": 14,
+   "expected": 14,
+   "pass": true
+  },
+  {
+   "check": "9.  original successful CER",
+   "got": 0.1155,
+   "expected": 0.1155,
+   "pass": true
+  },
+  {
+   "check": "10. neutral  successful CER",
+   "got": 0.1608,
+   "expected": 0.1608,
+   "pass": true
+  },
+  {
+   "check": "11. original failure-aware CER",
+   "got": 0.613,
+   "expected": 0.613,
+   "pass": true
+  },
+  {
+   "check": "12. neutral  failure-aware CER",
+   "got": 0.5804,
+   "expected": 0.5804,
+   "pass": true
+  },
+  {
+   "check": "13a. original annotation errors",
+   "got": 0,
+   "expected": 0,
+   "pass": true
+  },
+  {
+   "check": "13b. neutral  annotation errors",
+   "got": 0,
+   "expected": 0,
+   "pass": true
+  },
+  {
+   "check": "14a. HELD_OUT execution log entries",
+   "got": 0,
+   "expected": 0,
+   "pass": true
+  },
+  {
+   "check": "14b. neutral arm HELD_OUT",
+   "got": 0,
+   "expected": 0,
+   "pass": true
+  },
+  {
+   "check": "14c. neutral arm CALIBRATION",
+   "got": 0,
+   "expected": 0,
+   "pass": true
+  },
+  {
+   "check": "14d. no calibration/held-out writers in case set",
+   "got": [],
+   "expected": [],
+   "pass": true
+  },
+  {
+   "check": "15a. references_sha256",
+   "got": "4a93e826e6e94777d445e64ae2c3f5ed10def46aa021ff763a45a9807fb913b5",
+   "expected": "4a93e826e6e94777d445e64ae2c3f5ed10def46aa021ff763a45a9807fb913b5",
+   "pass": true
+  },
+  {
+   "check": "15b. items_sha256",
+   "got": "25463e91b95db8eecfc306644dd0839f65e42910d4161f6991383b6f4a524a8b",
+   "expected": "25463e91b95db8eecfc306644dd0839f65e42910d4161f6991383b6f4a524a8b",
+   "pass": true
+  },
+  {
+   "check": "15c. audit_sha256",
+   "got": "eace95fc6dc684c88f1fea2142414a68ad8f421257ac012faf6bcfc9ae07f50c",
+   "expected": "eace95fc6dc684c88f1fea2142414a68ad8f421257ac012faf6bcfc9ae07f50c",
+   "pass": true
+  },
+  {
+   "check": "16a. tasks in rows since 2026-09-03",
+   "got": [
+    "ocr_primary"
+   ],
+   "expected": [
+    "ocr_primary"
+   ],
+   "pass": true
+  },
+  {
+   "check": "16b. grading rows since 2026-09-03",
+   "got": 0,
+   "expected": 0,
+   "pass": true
+  },
+  {
+   "check": "17a. ledger rows delta",
+   "got": 32,
+   "expected": 32,
+   "pass": true
+  },
+  {
+   "check": "17b. ledger delta == run cost",
+   "got": 0.051831,
+   "expected": 0.051831,
+   "pass": true
+  },
+  {
+   "check": "17c. account delta == run cost",
+   "got": 0.051831,
+   "expected": 0.051831,
+   "pass": true
+  },
+  {
+   "check": "17d. rounding diff < 1e-6",
+   "got": true,
+   "expected": true,
+   "pass": true
+  },
+  {
+   "check": "17e. billable + nonbillable",
+   "got": 32,
+   "expected": 32,
+   "pass": true
+  },
+  {
+   "check": "17f. live ledger cumulative",
+   "got": 0.703232,
+   "expected": 0.703232,
+   "pass": true
+  },
+  {
+   "check": "prompt handwritten_line: only line 0 differs",
+   "got": [
+    0
+   ],
+   "expected": [
+    0
+   ],
+   "pass": true
+  },
+  {
+   "check": "prompt handwritten_line: rules block byte-identical",
+   "got": true,
+   "expected": true,
+   "pass": true
+  },
+  {
+   "check": "prompt handwritten_cell: only line 0 differs",
+   "got": [
+    0
+   ],
+   "expected": [
+    0
+   ],
+   "pass": true
+  },
+  {
+   "check": "prompt handwritten_cell: rules block byte-identical",
+   "got": true,
+   "expected": true,
+   "pass": true
+  },
+  {
+   "check": "neutral arm ALSO swapped the annotation clause (not framing-only)",
+   "got": true,
+   "expected": true,
+   "pass": true
+  }
+ ],
+ "prompt_diff": {
+  "handwritten_line": {
+   "differing_line_indices": [
+    0
+   ],
+   "v1_line0": "You transcribe ONE LINE of handwritten Hebrew (may mix English terms) cropped from a university exam answer sheet.",
+   "v2_line0": "You transcribe ONE LINE of handwritten Hebrew (may mix English terms) cropped from a larger scanned page.",
+   "tail_identical": true
+  },
+  "handwritten_cell": {
+   "differing_line_indices": [
+    0
+   ],
+   "v1_line0": "You transcribe the handwritten Hebrew answer text (may mix English terms) in this exam answer cell. Ignore any red instructor ink.",
+   "v2_line0": "You transcribe the handwritten Hebrew text (may mix English terms) written in this box. Ignore any marks written in a different colour of ink from the main handwriting.",
+   "tail_identical": true
+  }
+ },
+ "n_pass": 41,
+ "n_total": 41,
+ "failures": [],
+ "content_sha256": "6cf5b3ac27017cace4e612dbad713e4f75856c3c0a19d79694d913feef2168d6"
+}

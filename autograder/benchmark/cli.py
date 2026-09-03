@@ -111,7 +111,25 @@ def _spec_from_args(args, dry_run: bool, *, final_evaluation: bool = False) -> R
         retry_failed=bool(getattr(args, "retry_failed", False)), allow_unlisted=bool(args.allow_unlisted),
         note=args.note or "", max_tokens=args.max_tokens,
         warn_usd=getattr(args, "warn_usd", None), hard_usd=getattr(args, "hard_usd", None),
+        allow_dropped_config=getattr(args, "allow_dropped_config", None),
+        provider=_provider_arg(getattr(args, "provider", None)),
         research=bool(getattr(args, "research", False)))
+
+
+def _provider_arg(raw: str | None) -> dict | None:
+    """Parse --provider JSON. A malformed value must fail here, loudly, rather
+    than silently fall back to automatic routing and quietly change which
+    serving provider a frozen arm ran against."""
+    if raw is None:
+        return None
+    try:
+        val = json.loads(raw)
+    except ValueError as e:
+        raise SystemExit(f"--provider must be a JSON object: {e}")
+    if not isinstance(val, dict):
+        raise SystemExit("--provider must be a JSON object, e.g. "
+                         '\'{"order":["google-ai-studio"],"allow_fallbacks":false}\'')
+    return val
 
 
 def _run(args, dry_run: bool, *, final_evaluation: bool = False) -> int:
@@ -518,6 +536,15 @@ def add_bench_commands(sub) -> None:
         p.add_argument("--hard-usd", type=float, default=None,
                        help="cumulative hard ceiling; aborts the run when crossed "
                             "(default: registry experiment_total_usd)")
+        p.add_argument("--provider", default=None, metavar="JSON",
+                       help='OpenRouter provider routing object, e.g. '
+                            '\'{"order":["google-ai-studio"],"allow_fallbacks":false}\'. '
+                            "Pins the serving provider deterministically and enters the run "
+                            "config hash, so a pinned arm is a distinct frozen experiment.")
+        p.add_argument("--allow-dropped-config", default=None, metavar="EXPERIMENT",
+                       help="name the NEW experiment that authorizes re-running an OCR "
+                            "configuration the decision registry has already dropped; "
+                            "without it a dropped arm refuses to run")
         p.add_argument("--prompt-version", default=None,
                        help="pin a grading prompt version (e.g. grade-v3) instead of the "
                             "adapter default; recorded in the run config hash")

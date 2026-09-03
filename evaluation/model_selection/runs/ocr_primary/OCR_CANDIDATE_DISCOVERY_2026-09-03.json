@@ -1,0 +1,256 @@
+{
+ "artifact": "ocr_candidate_discovery_and_shortlist",
+ "created_at": "2026-09-04 00:19:51",
+ "git_commit": "ee09bd14b8249dcc74b856acc16d6e873ebb275a",
+ "provider_inference_calls": 0,
+ "method": {
+  "endpoints_used": [
+   "GET https://openrouter.ai/api/v1/models (public catalog)",
+   "GET https://openrouter.ai/api/v1/models/{slug}/endpoints",
+   "GET https://openrouter.ai/api/v1/providers"
+  ],
+  "these_are_metadata_only": "no generation request, no crop transmitted, no token billed",
+  "fetched_at_utc": "2026-09-03T21:02:27.379541+00:00",
+  "catalog_size": 425,
+  "primary_sources": "OpenRouter catalog metadata and each model's own published description. Benchmark blogs, marketing pages and leaderboards were NOT used."
+ },
+ "funnel": {
+  "models_in_catalog": 425,
+  "image_input_capable": 256,
+  "image + structured_outputs": 222,
+  "image + structured_outputs + priced": 218,
+  "official_description_documents_ocr_or_document_parsing": 1
+ },
+ "eligibility_filter_applied": [
+  "accepts image input",
+  "can return sufficient exact text (max_completion_tokens >> the longest frozen reference)",
+  "route can be priced BEFORE execution",
+  "output budget supports the longest frozen reference (116 chars)",
+  "gateway can enforce the OCR-only payload boundary",
+  "no existing result has disqualified the identical model/route",
+  "meaningfully distinct from the failed candidates",
+  "freezable by exact slug + route config",
+  "8-case cost is reasonable",
+  "no automatic fallback can silently change model/provider"
+ ],
+ "rejected_with_reason": [
+  {
+   "candidate": "openai/gpt-5.6-luna-pro",
+   "reason": "already disqualified - registry DROP (4/5 handwritten refusals, 1 fabrication, failure-aware handwritten CER 0.9487)"
+  },
+  {
+   "candidate": "anthropic/claude-sonnet-5",
+   "reason": "already measured on the exact target population - HISTORICAL_CONTROL_ONLY (27/32 usable but successful CER 0.4718, 9/27 critical). Not shortlisted merely to fill the list."
+  },
+  {
+   "candidate": "google/gemini-3.7-flash under AUTOMATIC routing",
+   "reason": "already measured under two prompts and dropped both times. Only a PINNED route is a new configuration."
+  },
+  {
+   "candidate": "all text-only models",
+   "reason": "no image input - 169 of 425 catalog entries"
+  },
+  {
+   "candidate": "models without structured_outputs",
+   "reason": "the frozen BenchTranscription JSON-schema contract cannot be enforced, so a failure could not be distinguished from a formatting artefact (e.g. mistralai/mistral-small-3.1-24b-instruct, meta-llama/llama-4-scout on its Novita endpoint)"
+  },
+  {
+   "candidate": "models with zero or absent pricing (incl. ':free' tiers)",
+   "reason": "an unpriced route makes predicted_call_cost 0, so the pre-call budget gate could not refuse a call that crosses the ceiling. require_priced_candidate refuses these by design."
+  },
+  {
+   "candidate": "meta-llama/llama-4-scout",
+   "reason": "its three endpoints disagree on capability (Novita reports structured_outputs false) and span three unrelated providers, so the arm would not be reproducible without a pin, and pinning to the one Google-Vertex endpoint reintroduces the provider whose behaviour is under investigation"
+  },
+  {
+   "candidate": "qwen/qwen3-vl-235b on DeepInfra / Venice / Parasail / Novita",
+   "reason": "served at fp8/bf16 quantisation by four different providers; unpinned this is non-reproducible, and quantisation is a live quality risk for this task"
+  },
+  {
+   "candidate": "a same-route prompt variation",
+   "reason": "explicitly excluded - two prompt variants have already been measured on this route and prompt engineering there is exhausted"
+  }
+ ],
+ "shortlist": [
+  {
+   "rank": "primary",
+   "candidate": "google/gemini-3.7-flash pinned to google-ai-studio",
+   "why_genuinely_different": "a deterministic single-provider route, never previously measured; the two 32-crop arms both ran AUTOMATIC routing across a mix of two providers",
+   "scores": {
+    "ocr_suitability": "highest measured in this project (successful CER 0.1155)",
+    "hebrew_script_plausibility": "demonstrated on this exact corpus",
+    "provider_reliability": "unknown per-provider; that is the question",
+    "refusal_risk": "HIGH - this is the failure mode under test",
+    "route_determinism": "high once pinned (allow_fallbacks=false)",
+    "structured_output_reliability": "good - 0 schema failures in 32",
+    "cost": "$0.038 worst case for 8",
+    "latency": "6.7-8.7 s/crop measured"
+   },
+   "evidence": "OCR_PROVIDER_ROUTE_FORENSICS_2026-09-03.json",
+   "unknowns": [
+    "whether the pin is honoured without silent fallback"
+   ]
+  },
+  {
+   "rank": "secondary",
+   "candidate": "google/gemini-3.7-flash pinned to google-vertex",
+   "why_genuinely_different": "the paired half; without it a filter count cannot be attributed",
+   "scores": {
+    "ocr_suitability": "same model, same expected quality",
+    "refusal_risk": "HIGH - under test",
+    "route_determinism": "high once pinned",
+    "cost": "$0.038 worst case for 8"
+   },
+   "unknowns": [
+    "Vertex safety thresholds are not surfaced through OpenRouter"
+   ]
+  },
+  {
+   "rank": "third",
+   "candidate": "qwen/qwen3-vl-235b-a22b-instruct pinned to alibaba",
+   "why_genuinely_different": "different family, vendor and serving provider; the ONLY catalog model whose official description documents document parsing and chart/table extraction; not moderated by OpenRouter",
+   "scores": {
+    "ocr_suitability": "documented for documents; UNMEASURED on Hebrew handwriting",
+    "hebrew_script_plausibility": "WEAK PRIOR - see local_prior_art below",
+    "provider_reliability": "unknown",
+    "refusal_risk": "low (is_moderated false, no Google-style native safety layer expected, but unverified)",
+    "route_determinism": "high once pinned to the single Alibaba endpoint",
+    "structured_output_reliability": "declared; unverified here",
+    "cost": "$0.020 worst case for 8",
+    "latency": "unknown"
+   },
+   "unknowns": [
+    "image tokenisation on 1287px crops",
+    "Hebrew handwriting at this scale"
+   ]
+  }
+ ],
+ "candidate_count": 3,
+ "no_accuracy_number_invented": "no expected CER is claimed for any untested candidate",
+ "local_prior_art_that_constrains_this_choice": {
+  "why_it_matters": "the project already measured local OCR on this corpus in 2026-07, including TWO DEDICATED OCR SYSTEMS and four preprocessing strategies. Every configuration failed catastrophically. This is the evidence that a cloud VLM is not merely a convenience, and it is also the strongest caution against the Qwen candidate.",
+  "configurations": {
+   "isol0_orig_e002": {
+    "model": "qwen3-vl:8b-instruct",
+    "preproc": "none",
+    "n": 48,
+    "mean_cer": 1.197,
+    "median_cer": 0.81,
+    "best_case_cer": 0.68
+   },
+   "isol1_blueonly": {
+    "model": "qwen3-vl:8b-instruct",
+    "preproc": "none",
+    "n": 48,
+    "mean_cer": 1.113,
+    "median_cer": 0.82,
+    "best_case_cer": 0.62
+   },
+   "isol2_tsub": {
+    "model": "qwen3-vl:8b-instruct",
+    "preproc": "none",
+    "n": 48,
+    "mean_cer": 1.004,
+    "median_cer": 0.79,
+    "best_case_cer": 0.66
+   },
+   "isol3_tsub_lines": {
+    "model": "qwen3-vl:8b-instruct",
+    "preproc": "pre-segmented lines",
+    "n": 48,
+    "mean_cer": 1.231,
+    "median_cer": 0.79,
+    "best_case_cer": 0.71
+   },
+   "isol4_hdd_blueonly": {
+    "model": "sivan22/hdd-words-ocr@e089ce717594",
+    "preproc": "gray+projection-line+word-segmentation",
+    "n": 32,
+    "mean_cer": 1.142,
+    "median_cer": 0.85,
+    "best_case_cer": 0.71
+   },
+   "isol5_hdd_tsub": {
+    "model": "sivan22/hdd-words-ocr@e089ce717594",
+    "preproc": "gray+projection-line+word-segmentation",
+    "n": 32,
+    "mean_cer": 1.066,
+    "median_cer": 0.81,
+    "best_case_cer": 0.66
+   },
+   "isol6_hdd_tsub_lines": {
+    "model": "sivan22/hdd-words-ocr@e089ce717594",
+    "preproc": "gray+projection-line+word-segmentation",
+    "n": 32,
+    "mean_cer": 1.069,
+    "median_cer": 0.82,
+    "best_case_cer": 0.66
+   },
+   "it1_baseline_8b": {
+    "model": "qwen3-vl:8b-instruct",
+    "preproc": "none",
+    "n": 48,
+    "mean_cer": 1.63,
+    "median_cer": 0.82,
+    "best_case_cer": 0.75
+   },
+   "it2_strict_prompt": {
+    "model": "qwen3-vl:8b-instruct",
+    "preproc": "none",
+    "n": 48,
+    "mean_cer": 1.38,
+    "median_cer": 0.795,
+    "best_case_cer": 0.68
+   },
+   "it3_q8_quant": {
+    "model": "qwen3-vl:8b-instruct-q8_0",
+    "preproc": "none",
+    "n": 48,
+    "mean_cer": 1.292,
+    "median_cer": 0.85,
+    "best_case_cer": 0.71
+   },
+   "it4_contrast": {
+    "model": "qwen3-vl:8b-instruct",
+    "preproc": "contrast",
+    "n": 48,
+    "mean_cer": 1.014,
+    "median_cer": 0.765,
+    "best_case_cer": 0.63
+   },
+   "it5_moe30b": {
+    "model": "qwen3-vl:30b-a3b-instruct",
+    "preproc": "contrast",
+    "n": 48,
+    "mean_cer": 1.186,
+    "median_cer": 0.81,
+    "best_case_cer": 0.64
+   },
+   "it6_hdd_words": {
+    "model": "sivan22/hdd-words-ocr@e089ce717594",
+    "preproc": "gray+projection-line+word-segmentation",
+    "n": 32,
+    "mean_cer": 0.944,
+    "median_cer": 0.895,
+    "best_case_cer": 0.71
+   },
+   "it7_surya": {
+    "model": "surya-ocr ? (surya-0.17 FoundationPredictor+RecognitionPredictor(det_predictor))",
+    "preproc": "none (whole cell; surya does detection)",
+    "n": 32,
+    "mean_cer": 1.271,
+    "median_cer": 0.92,
+    "best_case_cer": 0.86
+   }
+  },
+  "best_local_result": "mean CER 0.944 (dedicated Hebrew word-level HTR); best single case 0.62",
+  "cloud_comparison": {
+   "gemini_successful_only_cer": 0.1155,
+   "sonnet_successful_only_cer": 0.4718
+  },
+  "reading": "every local option - Qwen3-VL 8B (Q4_K_M and q8_0), Qwen3-VL 30B-a3b, a dedicated Hebrew handwriting HTR model, and surya document OCR - produced mean CER at or above 0.94 with fluent hallucinated Hebrew, across blue-channel isolation, text subtraction, line pre-segmentation and contrast preprocessing. The best local case is still 5x worse than Gemini's MEAN successful-only CER.",
+  "consequence_for_the_qwen_candidate": "the same family at 8B and 30B-a3b failed on this exact handwriting. The 235B-a22b is a different capacity class and unquantised at Alibaba, which is why it remains worth one 8-case screen - but the prior is genuinely unfavourable and is recorded as the arm's main risk rather than omitted."
+ },
+ "if_no_candidate_survives": "see OCR_ALTERNATIVE_ARCHITECTURES_2026-09-03.json",
+ "content_sha256": "d6a6634d6ad673fa24134359ccb762d7a262700d7d856b34994aaeb412c0e956"
+}
