@@ -192,7 +192,9 @@
    "main_risk": "the filter may be model-level rather than provider-level, in which case both Gemini arms fail together and the route hypothesis is closed - which is itself a decisive result",
    "unknowns": [
     "whether OpenRouter honours the pin without silent fallback (allow_fallbacks=false is set; the recorded provider field is checked per row after the run)"
-   ]
+   ],
+   "arm_type": "PROVIDER-ROUTE ATTRIBUTION ARM",
+   "arm_type_note": "Measures WHICH SERVING PROVIDER produced the outcome, not whether the model is acceptable. Gemini under automatic routing is already DROP_AS_PRIMARY_ROUTE and this arm does not reopen that."
   },
   {
    "arm_id": "gemini_pinned_vertex",
@@ -225,7 +227,9 @@
    "main_risk": "same as the AI Studio arm",
    "unknowns": [
     "Vertex exposes configurable safety thresholds that OpenRouter does not surface; a difference between the two arms would be suggestive, not mechanistic"
-   ]
+   ],
+   "arm_type": "PROVIDER-ROUTE ATTRIBUTION ARM",
+   "arm_type_note": "Measures WHICH SERVING PROVIDER produced the outcome, not whether the model is acceptable. Gemini under automatic routing is already DROP_AS_PRIMARY_ROUTE and this arm does not reopen that."
   },
   {
    "arm_id": "qwen3_vl_235b_pinned_alibaba",
@@ -257,7 +261,8 @@
    "unknowns": [
     "qwen image tokenisation on 1287px-wide crops is unmeasured here, so the input-token estimate is a conservative guess and the predicted ceiling absorbs it",
     "Hebrew handwriting performance at this scale is untested"
-   ]
+   ],
+   "arm_type": "CROSS-FAMILY CANDIDATE ARM"
   }
  ],
  "candidate_count": 3,
@@ -281,9 +286,10 @@
   "screen": {
    "predicted_worst_case_usd": 0.096896,
    "expected_all_succeed_usd": 0.047358,
-   "proposed_predicted_ceiling_usd": 0.12,
-   "proposed_actual_ceiling_usd": 0.08,
-   "ceiling_rule_applied": "the PREDICTED ceiling is set above the dry-run worst case (every response filling max_tokens) and the ACTUAL ceiling above the all-succeed projection - the lesson from OCR_PROMPT_V2, where an $0.08 actual ceiling would have aborted the arm at 26 of 32 crops precisely when the treatment worked."
+   "ceiling_rule_applied": "the PREDICTED ceiling is set above the dry-run worst case (every response filling max_tokens) and the ACTUAL ceiling above the all-succeed projection - the lesson from OCR_PROMPT_V2, where an $0.08 actual ceiling would have aborted the arm at 26 of 32 crops precisely when the treatment worked.",
+   "campaign_warning_increment_usd": 0.08,
+   "campaign_hard_increment_usd": 0.12,
+   "increment_semantics": "$0.08 is the campaign WARNING increment and $0.12 the campaign HARD increment, both applied ONCE to an immutable starting ledger L0 and shared by all three arms - not a per-arm allowance. See policies/OCR_ALTSCREEN_CAMPAIGN_BUDGET.json."
   },
   "follow_up_32_case_per_surviving_candidate": {
    "gemini_worst_case_usd": 0.153312,
@@ -323,8 +329,13 @@
    "fabricated_mathematical_content": 0
   },
   "gates_are_frozen": "these thresholds are fixed before any output and must not be weakened after seeing results",
-  "passing_authorizes": "the 32-crop seen OCR experiment for that candidate only",
-  "passing_does_not_establish": "production readiness, a route selection, or any claim about HELD_OUT"
+  "passing_authorizes": "ADVANCE_TO_SEEN32 for that candidate only - the 32-crop seen experiment. Passing this screen CANNOT select a production winner.",
+  "passing_does_not_establish": "production readiness, a production winner, a route selection, or any claim about HELD_OUT. The only outcome a pass produces is ADVANCE_TO_SEEN32.",
+  "outcome_vocabulary": {
+   "pass": "ADVANCE_TO_SEEN32",
+   "fail": "DROP",
+   "between": "REPORT_ONLY (reported, not resolved)"
+  }
  },
  "payload_and_boundary_verification": {
   "payloads_built_offline": 24,
@@ -364,5 +375,13 @@
    "command": "python -m autograder.cli bench run --role ocr_primary --split dev --candidate qwen/qwen3-vl-235b-a22b-instruct --subset smoke --prompt-version m2-strict-v1 --research --models-config models.toml --runs-root evaluation/model_selection/runs_altscreen --provider '{\"order\":[\"alibaba\"],\"allow_fallbacks\":false}' --warn-usd <ledger+0.08> --hard-usd <ledger+0.12> --i-understand-this-spends-money"
   }
  ],
- "experiment_sha256": "39305a627c43e82867b4cc7c80c4a75243c61e4781e3e23b8da22c6f1eb29f34"
+ "campaign_budget_manifest": "evaluation/model_selection/policies/OCR_ALTSCREEN_CAMPAIGN_BUDGET.json",
+ "hardening_applied_2026-09-04": {
+  "raw_response_preservation": "every provider reply of a live arm is archived sanitized to run_dir/raw_responses.jsonl BEFORE parsing, including HTTP 200 with no usage block and no provider field",
+  "campaign_budget": "one immutable L0 with absolute thresholds shared by all three arms",
+  "route_enforcement": "an EXPLICITLY different serving provider stops the arm; UNKNOWN attribution does not"
+ },
+ "supersedes_experiment_sha256": "39305a627c43e82867b4cc7c80c4a75243c61e4781e3e23b8da22c6f1eb29f34",
+ "amendment_note": "Amended 2026-09-04 BEFORE any execution. The amendment is LANGUAGE AND BUDGET SEMANTICS ONLY: arm labels (provider-route attribution vs cross-family), the ADVANCE_TO_SEEN32 outcome vocabulary, and the campaign warning/hard increment wording, plus a record of the hardening applied. Candidates, provider pins, the eight frozen cases and their order, crop bytes, references, prompt version and hashes, schema, routes, reasoning, max_tokens and every advancement gate are UNCHANGED. Re-hashed because the content changed; the prior hash is recorded above. Zero provider calls have been made under either hash.",
+ "experiment_sha256": "579b1f60415623dddbc482c4c701efa90a6d5d9c6d271adb08c3b61824a5eec6"
 }

@@ -119,6 +119,13 @@ class RunSpec:
     #: OCR decision registry has already measured and dropped. Without it a
     #: dropped arm refuses to run live (see benchmark.ocr_decisions).
     allow_dropped_config: str | None = None
+    #: path to a frozen campaign budget manifest. When set, its ABSOLUTE
+    #: thresholds (computed once from L0) replace warn_usd/hard_usd for every
+    #: arm, so sequential arms share one envelope instead of each receiving a
+    #: fresh increment. See autograder.campaignbudget.
+    campaign_budget: str | None = None
+    #: archive every raw provider response under the run directory
+    capture_raw: bool = True
     subset: str | None = None               # "smoke" -> the frozen pre-registered DEV smoke subset
     skip_key_preflight: bool = False        # tests only: skip the GET /api/v1/key preflight step
     final_evaluation: bool = False          # ONLY the `bench final-eval` path sets this (HELD_OUT live run)
@@ -480,8 +487,19 @@ def build_gateway(spec: RunSpec, route, registry: CandidateRegistry, warn_sink: 
     from ..requestcache import RequestCache
     from ..usage import BudgetLimits, BudgetManager, UsageLedger
 
-    hard = spec.hard_usd if spec.hard_usd is not None else (registry.experiment_total_usd or 10.0)
-    warn = spec.warn_usd if spec.warn_usd is not None else (registry.warn_usd or 8.0)
+    # A campaign budget, when supplied, is AUTHORITATIVE and outranks both the
+    # per-run flags and the registry defaults: its thresholds are absolute,
+    # computed once from L0, and identical for every arm. Without this, each
+    # sequential arm would be handed ledger_now + increment — a fresh
+    # allowance per arm, and a 3-arm screen could spend 3x its authorization.
+    campaign = None
+    if getattr(spec, "campaign_budget", None):
+        from ..campaignbudget import load_campaign_budget
+        campaign = load_campaign_budget(spec.campaign_budget)
+        hard, warn = campaign.hard_usd, campaign.warn_usd
+    else:
+        hard = spec.hard_usd if spec.hard_usd is not None else (registry.experiment_total_usd or 10.0)
+        warn = spec.warn_usd if spec.warn_usd is not None else (registry.warn_usd or 8.0)
     root = Path(spec.state_root)
     cache = RequestCache(root / "gateway_cache")
     ledger = UsageLedger(root / "gateway_ledger" / "usage.jsonl")
@@ -506,6 +524,7 @@ def build_gateway(spec: RunSpec, route, registry: CandidateRegistry, warn_sink: 
                       research_auth=research_auth)
     limits = BudgetLimits(max_cost_total=float(hard), soft_fraction=float(warn) / float(hard) if hard else 0.8)
     gw.budget = BudgetManager(limits, ledger=ledger, warn=warn_sink)
+    gw.campaign_budget = campaign
     if spec.models_config is not None and Path(spec.models_config).exists():
         import tomllib
         data = tomllib.loads(Path(spec.models_config).read_text(encoding="utf-8"))
@@ -742,6 +761,24 @@ def run_benchmark(spec: RunSpec, *, gateway=None, registry: CandidateRegistry | 
         pricing = tomllib.loads(Path(spec.models_config).read_text(encoding="utf-8")).get("pricing")
 
     bench_root_for_files = files_root
+
+    # ---- raw response archive + campaign envelope ---------------------------
+    # Every provider reply of a LIVE arm is archived verbatim (sanitized)
+    # before parsing, so an HTTP 200 that carries no usage block and no
+    # provider field — the shape that made the prompt-v2 filter question
+    # unanswerable — still leaves a body on disk.
+    live_backend = None
+    if not spec.dry_run and spec.capture_raw:
+        try:
+            from ..rawcapture import RawResponseArchive
+            live_backend = gw.backend_for(route.task)
+            live_backend.raw_archive = RawResponseArchive(run_dir / "raw_responses.jsonl")
+            live_backend.capture_task = route.task
+        except Exception as e:  # noqa: BLE001 — never block a run on archiving
+            warnings.append(f"raw response capture unavailable: {type(e).__name__}: {e}")
+            live_backend = None
+    campaign = getattr(gw, "campaign_budget", None)
+
     for case in cases:
         if case.case_id in skip:
             n_skipped += 1
@@ -749,6 +786,8 @@ def run_benchmark(spec: RunSpec, *, gateway=None, registry: CandidateRegistry | 
         request = adapter.build_request(dict(case.inputs), bench_root_for_files)
         leakage_check(case, request, adapter.model_visible_fields)
         attempt = attempts.get(case.case_id, 0) + 1
+        if live_backend is not None:
+            live_backend.capture_case_id = case.case_id
         if spec.dry_run:
             from ..usage import predicted_call_cost
             est = predicted_call_cost(route, request.system, request.content_blocks, pricing)
@@ -760,6 +799,25 @@ def run_benchmark(spec: RunSpec, *, gateway=None, registry: CandidateRegistry | 
             continue
         row: dict[str, Any] = {"case_id": case.case_id, "split": case.split, "component": case.component,
                                "attempt": attempt, "ts": ts(), "model": candidate, "task": route.task}
+        # ---- campaign reservation: refuse a request that COULD cross the
+        # fixed hard threshold. The reservation is this call's worst case, not
+        # its expectation; the thresholds are absolute and identical for every
+        # arm of the campaign.
+        if campaign is not None:
+            from ..campaignbudget import CampaignBudgetExceeded
+            from ..usage import predicted_call_cost
+            worst = predicted_call_cost(route, request.system, request.content_blocks, pricing) or 0.0
+            ledger_now = sum(float(e.get("reported_cost") or 0) for e in gw.ledger.entries()
+                             if e.get("cloud") and not e.get("cache_hit"))
+            try:
+                campaign.check(ledger_now=ledger_now, max_request_cost_usd=worst)
+            except CampaignBudgetExceeded as e:
+                stopped = f"campaign budget: {e}"
+                row.update({"ok": None, "error_type": "CampaignBudgetExceeded",
+                            "error": str(e)[:500], "stopped": True})
+                _append_jsonl(outputs_path, row)
+                log(f"STOP: {stopped}")
+                break
         try:
             # max_tokens comes from the ROUTE, not from the adapter's Request.
             # build_route already seeds the chain with the adapter's own
@@ -797,6 +855,20 @@ def run_benchmark(spec: RunSpec, *, gateway=None, registry: CandidateRegistry | 
         row.update({"ok": True, "output": value.model_dump() if hasattr(value, "model_dump") else value,
                     "usage": dict(res.usage or {}), "latency_s": res.latency_s, "cache_hit": res.cache_hit,
                     "fingerprint": res.fingerprint, "retries": getattr(res, "retries", 0)})
+        # ---- route enforcement: a pinned arm that was served by a DIFFERENT
+        # provider is not the arm we froze. Only an EXPLICIT contrary
+        # observation counts — a response that names no provider leaves the pin
+        # unconfirmed (UNKNOWN), which is not a violation.
+        rc = getattr(live_backend, "last_route_check", None) if live_backend is not None else None
+        if rc and not res.cache_hit:
+            row["route_check"] = rc
+            if rc.get("violation"):
+                row.update({"ok": False, "error_type": "RouteViolation",
+                            "error": str(rc.get("detail"))[:500], "stopped": True})
+                _append_jsonl(outputs_path, row)
+                stopped = f"route violation: {rc.get('detail')}"
+                log(f"STOP: {stopped}")
+                break
         _append_jsonl(outputs_path, row)
         n_done += 1
         log(f"{case.case_id}: ok ({'cache' if res.cache_hit else f'{res.latency_s}s'})")

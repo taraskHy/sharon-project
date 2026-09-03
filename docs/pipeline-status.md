@@ -103,9 +103,30 @@ screen over three routes: Gemini pinned to `google-ai-studio`, Gemini pinned to
 prior arms ran automatic routing across a mix, and no content-filtered row in
 any run records which provider produced it), and
 `qwen/qwen3-vl-235b-a22b-instruct` pinned to `alibaba` as a genuinely different
-family. Local OCR is not the fallback: 14 local configurations across
-Qwen3-VL 8B/30B, a dedicated Hebrew HTR model and surya document OCR all
-returned mean CER ≥ 0.94 on this corpus.
+family.
+
+The two Gemini arms are **provider-route attribution arms**: they measure *which
+serving provider* produced the outcome, not whether the model is acceptable.
+Gemini under automatic routing stays dropped and this does not reopen it. The
+historical content-filter outcomes are **not** a declared OpenRouter moderation
+stage (`is_moderated=false`); they are consistent with an upstream model-side or
+provider-side filter, but the mechanism and the exact serving endpoint remain
+**UNKNOWN** and unrecoverable from the existing artifacts.
+
+Passing the screen yields **ADVANCE_TO_SEEN32 only** — it authorizes the 32-crop
+seen experiment for that candidate and **cannot select a production winner**.
+
+Local OCR is not the fallback either: **none of the 14 tested local
+configurations was competitive** (Qwen3-VL 8B/30B, a dedicated Hebrew HTR model
+and surya document OCR, mean CER ≥ 0.94 on this corpus). That is 14 measured
+configurations, not a proof about local OCR in general — larger local VLMs are
+untested and bounded by available VRAM.
+
+Spend is governed by one immutable campaign envelope
+(`policies/OCR_ALTSCREEN_CAMPAIGN_BUDGET.json`): a starting ledger `L0` captured
+once, plus a **$0.08 campaign warning increment** and a **$0.12 campaign hard
+increment**. Both are absolute and shared by all three arms — not a per-arm
+allowance.
 
 See `OCR_EXPERIMENT_LINEAGE_2026-09-03.json`,
 `OCR_PROVIDER_ROUTE_FORENSICS_2026-09-03.json`,

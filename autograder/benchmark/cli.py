@@ -112,6 +112,7 @@ def _spec_from_args(args, dry_run: bool, *, final_evaluation: bool = False) -> R
         note=args.note or "", max_tokens=args.max_tokens,
         warn_usd=getattr(args, "warn_usd", None), hard_usd=getattr(args, "hard_usd", None),
         allow_dropped_config=getattr(args, "allow_dropped_config", None),
+        campaign_budget=getattr(args, "campaign_budget", None),
         provider=_provider_arg(getattr(args, "provider", None)),
         research=bool(getattr(args, "research", False)))
 
@@ -541,6 +542,11 @@ def add_bench_commands(sub) -> None:
                             '\'{"order":["google-ai-studio"],"allow_fallbacks":false}\'. '
                             "Pins the serving provider deterministically and enters the run "
                             "config hash, so a pinned arm is a distinct frozen experiment.")
+        p.add_argument("--campaign-budget", default=None, metavar="PATH",
+                       help="frozen campaign budget manifest. Its ABSOLUTE thresholds "
+                            "(computed once from L0) replace --warn-usd/--hard-usd for every "
+                            "arm, so sequential arms share one envelope instead of each "
+                            "receiving a fresh increment.")
         p.add_argument("--allow-dropped-config", default=None, metavar="EXPERIMENT",
                        help="name the NEW experiment that authorizes re-running an OCR "
                             "configuration the decision registry has already dropped; "

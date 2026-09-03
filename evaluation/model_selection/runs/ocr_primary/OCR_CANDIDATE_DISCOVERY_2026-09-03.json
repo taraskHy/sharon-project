@@ -89,7 +89,9 @@
    "evidence": "OCR_PROVIDER_ROUTE_FORENSICS_2026-09-03.json",
    "unknowns": [
     "whether the pin is honoured without silent fallback"
-   ]
+   ],
+   "arm_type": "PROVIDER-ROUTE ATTRIBUTION ARM",
+   "arm_type_note": "This arm exists to attribute the content-filter outcome to a serving provider, not to re-test the model. Gemini under automatic routing is already dropped."
   },
   {
    "rank": "secondary",
@@ -103,7 +105,9 @@
    },
    "unknowns": [
     "Vertex safety thresholds are not surfaced through OpenRouter"
-   ]
+   ],
+   "arm_type": "PROVIDER-ROUTE ATTRIBUTION ARM",
+   "arm_type_note": "This arm exists to attribute the content-filter outcome to a serving provider, not to re-test the model. Gemini under automatic routing is already dropped."
   },
   {
    "rank": "third",
@@ -122,7 +126,8 @@
    "unknowns": [
     "image tokenisation on 1287px crops",
     "Hebrew handwriting at this scale"
-   ]
+   ],
+   "arm_type": "CROSS-FAMILY CANDIDATE ARM"
   }
  ],
  "candidate_count": 3,
@@ -248,9 +253,10 @@
    "gemini_successful_only_cer": 0.1155,
    "sonnet_successful_only_cer": 0.4718
   },
-  "reading": "every local option - Qwen3-VL 8B (Q4_K_M and q8_0), Qwen3-VL 30B-a3b, a dedicated Hebrew handwriting HTR model, and surya document OCR - produced mean CER at or above 0.94 with fluent hallucinated Hebrew, across blue-channel isolation, text subtraction, line pre-segmentation and contrast preprocessing. The best local case is still 5x worse than Gemini's MEAN successful-only CER.",
-  "consequence_for_the_qwen_candidate": "the same family at 8B and 30B-a3b failed on this exact handwriting. The 235B-a22b is a different capacity class and unquantised at Alibaba, which is why it remains worth one 8-case screen - but the prior is genuinely unfavourable and is recorded as the arm's main risk rather than omitted."
+  "reading": "none of the 14 tested local configurations was competitive - Qwen3-VL 8B (Q4_K_M and q8_0), Qwen3-VL 30B-a3b, a dedicated Hebrew handwriting HTR model, and surya document OCR - produced mean CER at or above 0.94 with fluent hallucinated Hebrew, across blue-channel isolation, text subtraction, line pre-segmentation and contrast preprocessing. The best local case is still 5x worse than Gemini's MEAN successful-only CER.",
+  "consequence_for_the_qwen_candidate": "the same family at 8B and 30B-a3b failed on this exact handwriting. The 235B-a22b is a different capacity class and unquantised at Alibaba, which is why it remains worth one 8-case screen - but the prior is genuinely unfavourable and is recorded as the arm's main risk rather than omitted.",
+  "scope_of_the_claim": "This is 14 measured configurations, not a proof about local OCR in general. None was competitive; larger local VLMs remain untested and are bounded by available VRAM."
  },
  "if_no_candidate_survives": "see OCR_ALTERNATIVE_ARCHITECTURES_2026-09-03.json",
- "content_sha256": "d6a6634d6ad673fa24134359ccb762d7a262700d7d856b34994aaeb412c0e956"
+ "content_sha256": "efdc1e81d0404c83688f9f3da3d423f08ce0dd784568e53e810d43986f526a63"
 }

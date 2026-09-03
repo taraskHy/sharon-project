@@ -32,7 +32,7 @@
   {
    "id": 3,
    "option": "deterministic image preprocessing plus OCR",
-   "expected_benefit": "NONE DEMONSTRATED - already measured and refuted in this project",
+   "expected_benefit": "NONE DEMONSTRATED - none of the tested preprocessing configurations was competitive",
    "evidence": "four preprocessing strategies (blue-channel isolation, printed-text subtraction, line pre-segmentation, contrast) across 7 configurations: mean CER 1.00-1.23. Preprocessing moved the number by ~0.2 CER at best and never approached usability.",
    "privacy": "none (local)",
    "engineering_cost": "already spent",
@@ -40,12 +40,12 @@
    "lock_in": "none",
    "violates_openrouter_only_product_decision": false,
    "requires_owner_approval": false,
-   "verdict": "REFUTED BY MEASUREMENT - do not re-attempt without a new idea"
+   "verdict": "NOT COMPETITIVE IN THE CONFIGURATIONS TESTED - four preprocessing strategies across 7 configurations; do not re-attempt without a new idea"
   },
   {
    "id": 4,
    "option": "local OCR/VLM for transcription",
-   "expected_benefit": "NONE DEMONSTRATED - already measured and refuted",
+   "expected_benefit": "NONE DEMONSTRATED - none of the 14 tested local configurations was competitive",
    "evidence": "qwen3-vl 8B (Q4_K_M, q8_0), qwen3-vl 30B-a3b, sivan22/hdd-words-ocr (a dedicated Hebrew handwriting HTR), and surya-ocr: best mean CER 0.944, all with fluent hallucination or degenerate repetition. Cloud Gemini reads the same corpus at 0.1155 when it answers.",
    "privacy": "BEST - nothing leaves the machine",
    "engineering_cost": "already spent",
@@ -53,7 +53,7 @@
    "lock_in": "none",
    "violates_openrouter_only_product_decision": false,
    "requires_owner_approval": false,
-   "verdict": "REFUTED BY MEASUREMENT at the model scales tested. A materially larger local VLM on the RTX 2000 Ada is the only untested variant and is bounded by VRAM."
+   "verdict": "NOT COMPETITIVE IN THE CONFIGURATIONS TESTED. None of the 14 tested local configurations was competitive at the model scales tried. A materially larger local VLM on the RTX 2000 Ada is the only untested variant and is bounded by VRAM."
   },
   {
    "id": 5,
@@ -88,5 +88,6 @@
   6
  ],
  "no_architecture_changed_in_this_task": true,
- "content_sha256": "b847bbf70b77c969cb20e197458722b8d6cd8e465233fc7275442ebdf682e9d4"
+ "language_correction": "'refuted' overstated the scope of a finite set of measurements: 14 configurations were tested and none was competitive, which is not the same as refuting local OCR as an architecture. Corrected throughout; no measurement changed.",
+ "content_sha256": "0fdcde5e3a47cedd33759595a5867ad48503bf6331510ee355513eefe0e7d77e"
 }

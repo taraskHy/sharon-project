@@ -97,6 +97,19 @@ class OpenAICompatBackend(VisionBackend):
         #: before any parsing runs, so a parse failure cannot erase a charge.
         self.billing_events: list[BillingEvent] = []
         self._attempt_no = 0
+        #: Optional RawResponseArchive. When set, EVERY provider HTTP reply is
+        #: archived verbatim (sanitized) before parsing — including an HTTP 200
+        #: that carries no usage block and no provider field, which is exactly
+        #: the shape whose raw body was unrecoverable in the prompt-v2 arms.
+        self.raw_archive = None
+        #: Populated per response so callers can enforce a provider pin.
+        self.last_route_check: dict | None = None
+        #: The payload of the request in flight, for route provenance.
+        self._payload_in_flight: dict | None = None
+        #: Correlation labels the runner sets so an archived row can be joined
+        #: back to its case without re-parsing the body.
+        self.capture_task: str | None = None
+        self.capture_case_id: str | None = None
 
     # -- request plumbing ---------------------------------------------------
 
@@ -152,6 +165,44 @@ class OpenAICompatBackend(VisionBackend):
             self.last_usage = dict(usage)
         return ev
 
+    def _archive_raw(self, *, resp, data: dict | None, http_status: int | None,
+                     error: str | None = None) -> None:
+        """Archive one raw provider response. Never raises into the request
+        path: an archiving failure must not turn a successful (or informative
+        failed) provider call into a lost one."""
+        if self.raw_archive is None:
+            return
+        try:
+            from ..rawcapture import build_record
+            finish = None
+            try:
+                finish = (data or {})["choices"][0].get("finish_reason")
+            except (KeyError, IndexError, TypeError):
+                finish = None
+            usage = self._usage_from_response(data or {}) if data else {}
+            rec = build_record(
+                payload=self._payload_in_flight,
+                http_status=http_status,
+                raw_text=(resp.text if resp is not None else None),
+                headers=(resp.headers if resp is not None else None),
+                parsed_body=data,
+                parsed_outcome={
+                    "finish_reason": finish,
+                    "usage_returned": bool(data and (data or {}).get("usage")),
+                    "input_tokens": usage.get("input_tokens"),
+                    "output_tokens": usage.get("output_tokens"),
+                    "reported_cost": usage.get("reported_cost"),
+                },
+                attempt=self._attempt_no,
+                task=self.capture_task,
+                case_id=self.capture_case_id,
+                error=error,
+            )
+            self.last_route_check = rec.route_check
+            self.raw_archive.append(rec)
+        except Exception:  # noqa: BLE001 — archiving is best-effort by design
+            pass
+
     @staticmethod
     def _body_json(resp: httpx.Response) -> dict:
         """Best-effort JSON of a response body; {} when it is not JSON.
@@ -163,6 +214,7 @@ class OpenAICompatBackend(VisionBackend):
 
     def _post_chat(self, payload: dict) -> dict:
         last_error: Exception | None = None
+        self._payload_in_flight = payload
         for attempt in range(self.config.transport_retries + 1):
             try:
                 resp = self._client.post("/chat/completions", json=payload)
@@ -182,18 +234,24 @@ class OpenAICompatBackend(VisionBackend):
                 last_error = BackendError(
                     f"HTTP {resp.status_code} from backend: {resp.text[:300]}"
                 )
+                _d = self._body_json(resp)
                 self._note_provider_response(
-                    data=self._body_json(resp), http_status=resp.status_code,
+                    data=_d, http_status=resp.status_code,
                     error=f"retryable HTTP {resp.status_code}")
+                self._archive_raw(resp=resp, data=_d, http_status=resp.status_code,
+                                  error=f"retryable HTTP {resp.status_code}")
                 time.sleep(delay)
                 continue
             if resp.status_code != 200:
                 # Recorded before raising: a rejected request that never
                 # reached inference carries no usage and is not billable,
                 # but "we were refused" must still be auditable.
+                _d = self._body_json(resp)
                 self._note_provider_response(
-                    data=self._body_json(resp), http_status=resp.status_code,
+                    data=_d, http_status=resp.status_code,
                     error=f"HTTP {resp.status_code}")
+                self._archive_raw(resp=resp, data=_d, http_status=resp.status_code,
+                                  error=f"HTTP {resp.status_code}")
                 raise BackendError(
                     f"HTTP {resp.status_code} from backend: {resp.text[:500]}"
                 )
@@ -202,10 +260,15 @@ class OpenAICompatBackend(VisionBackend):
             except json.JSONDecodeError as e:
                 self._note_provider_response(data=None, http_status=resp.status_code,
                                              error="non-JSON body")
+                self._archive_raw(resp=resp, data=None, http_status=resp.status_code,
+                                  error="non-JSON body")
                 raise BackendError(
                     f"backend returned a non-JSON HTTP body: {resp.text[:300]}"
                 ) from e
             self._note_provider_response(data=data, http_status=resp.status_code)
+            # Archived for EVERY 200, including the historical failure shape:
+            # 200 + no usage block + no provider field + filtered content.
+            self._archive_raw(resp=resp, data=data, http_status=resp.status_code)
             return data
         raise BackendError(
             f"backend unreachable after {self.config.transport_retries + 1} attempts: {last_error}"

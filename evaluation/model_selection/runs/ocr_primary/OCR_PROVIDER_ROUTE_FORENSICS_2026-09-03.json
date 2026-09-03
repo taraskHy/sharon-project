@@ -52,7 +52,7 @@
    "google-ai-studio/priority"
   ],
   "materially_distinct": "YES - Vertex and AI Studio are different serving surfaces from the same vendor with different safety-configuration surfaces, not aliases of one endpoint. The three tags WITHIN each provider (flex/priority/plain) are service tiers of the SAME provider and are NOT treated as independent.",
-  "openrouter_model_level_moderation": "is_moderated = false for this slug, so the content_filter outcomes come from Google's own safety layer rather than an OpenRouter moderation stage."
+  "openrouter_model_level_moderation": "is_moderated = false for this slug on OpenRouter, so these outcomes are NOT a declared OpenRouter moderation stage. They are consistent with an upstream model-side or provider-side content filter. Which of those it was, and on which endpoint, remains UNKNOWN: no content-filtered response in any historical arm records its provider."
  },
  "can_the_project_pin_a_provider_deterministically": {
   "answer": "YES",
@@ -61,5 +61,11 @@
   "determinism_requires": "a single entry in `order` AND allow_fallbacks=false; anything else can silently change the serving provider mid-run (enforced by ocr_decisions.provider_pin_of, which reports such a route as unpinned)"
  },
  "classification": "A provider-pinned Gemini run IS a distinct route experiment and is classified as such in the decision registry.",
- "content_sha256": "13aa441ae5ee84d67e9744f814bcb1aab9c2c2da619965836aa0ff431069dbca"
+ "historical_filter_attribution": {
+  "claim": "is_moderated = false for this slug on OpenRouter, so these outcomes are NOT a declared OpenRouter moderation stage. They are consistent with an upstream model-side or provider-side content filter. Which of those it was, and on which endpoint, remains UNKNOWN: no content-filtered response in any historical arm records its provider.",
+  "what_is_established": "the outcomes carried finish_reason=content_filter on HTTP 200, and OpenRouter does not declare model-level moderation for this slug",
+  "what_is_NOT_established": "the mechanism (model-side vs provider-side) and the exact serving endpoint. Both are UNKNOWN and unrecoverable from these artifacts.",
+  "language_correction": "an earlier draft attributed these definitively to 'Google's own safety layer'. That overstated what the artifacts support and has been corrected here. No measurement changed."
+ },
+ "content_sha256": "efdc242f95aa311088ade2ea065cb32e3dfc3b30b5cb80524dc904ed9c15bb61"
 }

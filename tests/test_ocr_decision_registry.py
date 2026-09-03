@@ -320,12 +320,77 @@ def test_payload_boundary_was_verified_offline(screen):
     assert v["held_out_in_payloads"] == 0
 
 
-def test_budget_ceilings_cover_the_worst_case_not_the_expectation(screen):
-    b = screen["budget"]["screen"]
-    assert b["proposed_predicted_ceiling_usd"] > b["predicted_worst_case_usd"]
-    assert b["proposed_actual_ceiling_usd"] > b["expected_all_succeed_usd"]
+def test_campaign_envelope_covers_the_whole_screen_worst_case(screen):
+    """The single envelope must absorb ALL THREE arms at their worst case —
+    the per-arm framing is exactly what would have over-spent."""
+    from autograder.campaignbudget import load_campaign_budget
+    b = load_campaign_budget(screen["campaign_budget_manifest"])
+    assert b.experiment_sha256 == screen["experiment_sha256"], \
+        "the budget must be bound to the frozen experiment it funds"
+    assert b.hard_increment_usd == 0.12 and b.warning_increment_usd == 0.08
+    worst = screen["budget"]["screen"]["predicted_worst_case_usd"]
+    assert b.predicted_campaign_worst_case_usd == pytest.approx(worst)
+    # the hard threshold must cover L0 plus every arm's worst case at once
+    assert b.hard_usd >= b.starting_ledger_usd + worst
     assert screen["budget"]["historically_lower_actual_was_NOT_used_to_lower_the_predicted_ceiling"]
     assert screen["budget"]["project_wide_unchanged"]["hard_usd"] == 10.0
+
+
+def test_increment_semantics_are_stated_as_campaign_wide(screen):
+    b = screen["budget"]["screen"]
+    assert b["campaign_warning_increment_usd"] == 0.08
+    assert b["campaign_hard_increment_usd"] == 0.12
+    assert "not a per-arm allowance" in b["increment_semantics"]
+
+
+def test_gemini_arms_are_labelled_provider_route_attribution_arms(screen):
+    for arm in screen["candidates"]:
+        if arm["model"] == "google/gemini-3.7-flash":
+            assert arm["arm_type"] == "PROVIDER-ROUTE ATTRIBUTION ARM"
+        else:
+            assert arm["arm_type"] == "CROSS-FAMILY CANDIDATE ARM"
+
+
+def test_passing_the_screen_means_advance_to_seen32_only(screen):
+    g = screen["advancement_and_drop_rules_stated_in_advance"]
+    assert g["outcome_vocabulary"]["pass"] == "ADVANCE_TO_SEEN32"
+    assert "ADVANCE_TO_SEEN32" in g["passing_authorizes"]
+    assert "CANNOT select a production winner" in g["passing_authorizes"]
+    assert "production winner" in g["passing_does_not_establish"]
+
+
+def test_historical_filter_attribution_is_not_overstated():
+    """The artifacts support 'not declared OpenRouter moderation'; they do NOT
+    support naming the mechanism or the endpoint."""
+    f = json.loads(Path("evaluation/model_selection/runs/ocr_primary/"
+                        "OCR_PROVIDER_ROUTE_FORENSICS_2026-09-03.json").read_text(encoding="utf-8"))
+    reg = json.loads(Path("evaluation/model_selection/policies/"
+                          "ocr_decision_registry.json").read_text(encoding="utf-8"))
+    claims = [f["historical_filter_attribution"]["claim"],
+              f["does_openrouter_offer_multiple_routes_for_this_exact_model"]
+               ["openrouter_model_level_moderation"],
+              reg["historical_filter_attribution"]]
+    for claim in claims:
+        # the asserted claim itself must be hedged and must not name a mechanism
+        assert "consistent with" in claim
+        assert "UNKNOWN" in claim
+        assert "NOT a declared OpenRouter moderation stage" in claim
+        assert "own safety layer" not in claim
+    # the correction NOTE may quote the withdrawn wording — that is the record
+    note = f["historical_filter_attribution"]["language_correction"]
+    assert "overstated" in note
+
+
+def test_local_prior_art_is_scoped_to_the_configurations_tested():
+    a = json.loads(Path("evaluation/model_selection/runs/ocr_primary/"
+                        "OCR_ALTERNATIVE_ARCHITECTURES_2026-09-03.json").read_text(encoding="utf-8"))
+    opt4 = next(o for o in a["options"] if o["id"] == 4)
+    assert "none of the 14 tested local configurations was competitive" in opt4["expected_benefit"]
+    assert "REFUTED BY MEASUREMENT" not in opt4["verdict"]
+    d = json.loads(Path("evaluation/model_selection/runs/ocr_primary/"
+                        "OCR_CANDIDATE_DISCOVERY_2026-09-03.json").read_text(encoding="utf-8"))
+    assert "not a proof about local OCR in general" in \
+        d["local_prior_art_that_constrains_this_choice"]["scope_of_the_claim"]
 
 
 # ---- 15. immutability ---------------------------------------------------------
