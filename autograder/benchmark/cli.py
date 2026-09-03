@@ -110,6 +110,7 @@ def _spec_from_args(args, dry_run: bool, *, final_evaluation: bool = False) -> R
         limit=args.limit, dry_run=dry_run, confirm_held_out=bool(args.confirm_held_out),
         retry_failed=bool(getattr(args, "retry_failed", False)), allow_unlisted=bool(args.allow_unlisted),
         note=args.note or "", max_tokens=args.max_tokens,
+        warn_usd=getattr(args, "warn_usd", None), hard_usd=getattr(args, "hard_usd", None),
         research=bool(getattr(args, "research", False)))
 
 
@@ -506,6 +507,17 @@ def add_bench_commands(sub) -> None:
                             "execution); dev_verdict = the frozen full DEV verdict-evaluable "
                             "population")
         p.add_argument("--allow-unlisted", action="store_true")
+        # CUMULATIVE campaign ceilings (compared against the persisted ledger
+        # total, not this run alone), so a per-experiment cap is expressed as
+        # "ledger now + what this experiment may spend". Default: the registry's
+        # $8/$10. BudgetManager raises BudgetExceeded mid-run when crossed, so
+        # an authorized per-experiment ceiling is actually enforced rather than
+        # merely checked in preflight.
+        p.add_argument("--warn-usd", type=float, default=None,
+                       help="cumulative soft ceiling (default: registry warn_usd)")
+        p.add_argument("--hard-usd", type=float, default=None,
+                       help="cumulative hard ceiling; aborts the run when crossed "
+                            "(default: registry experiment_total_usd)")
         p.add_argument("--prompt-version", default=None,
                        help="pin a grading prompt version (e.g. grade-v3) instead of the "
                             "adapter default; recorded in the run config hash")

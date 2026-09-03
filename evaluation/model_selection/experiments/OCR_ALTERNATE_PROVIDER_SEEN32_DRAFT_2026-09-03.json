@@ -1,0 +1,54 @@
+{
+ "experiment": "OCR_ALTERNATE_PROVIDER_SEEN32",
+ "status": "DRAFT - NOT FROZEN, NOT AUTHORIZED, NOT EXECUTED",
+ "created_at": "2026-09-03 04:40:34",
+ "git_commit": "6fdc6e20066d1fdf1846f4c5a708e2e57bd732ef",
+ "provider_calls": 0,
+ "why_this_experiment": "the pre-registered drop rule for gemini-3.7-flash fired (16/32 hard failures). Its option D names the successor: evaluate a genuinely DIFFERENT vision/OCR provider under a new freeze.",
+ "BLOCKED_ON_OWNER": {
+  "what_is_needed": "the owner must name and register the candidate model. This draft deliberately does NOT pick one.",
+  "why_the_model_cannot_be_chosen_here": "the registered ocr_primary candidates are exhausted: google/gemini-3.7-flash is now DROPPED; openai/gpt-5.6-luna was DROPPED at Stage-1 and its base slug is unpriced; anthropic/claude-sonnet-5 is already measured on this exact population (27/32 usable, CER 0.4718, 9/27 critical) and is not a genuinely different provider path from the paired arm.",
+  "requirements_for_the_named_candidate": [
+   "a vision model on a DIFFERENT provider path, not another OpenRouter Google/Anthropic route",
+   "priced in models.toml - an unpriced slug cannot be budget-gated and will not run",
+   "registered in candidates.toml under roles.ocr_primary",
+   "reasoning/max_tokens overrides derived and recorded BEFORE the first call, as Stage-1b did"
+  ]
+ },
+ "design_when_authorized": {
+  "population": "the SAME frozen 32 seen-DEV handwritten crops, same order, same crop bytes, same audited references (case_order_sha256 7aeb6cffa515b2f296a7c944c8622040779ce2c06365be57842808b56c2dd4d1)",
+  "prompt": "m2-strict-v1 - the CONTROL prompt. ocr-neutral-v2 is not carried forward: it did not reduce filtering and its clause is live on 19/32 crops in this population.",
+  "arms": 1,
+  "split": "DEV",
+  "CALIBRATION": 0,
+  "HELD_OUT": 0,
+  "metrics": "unchanged - the same taxonomy, CER/WER, critical-error family and annotation_inclusion_error used by both existing arms",
+  "comparison": "paired, case by case, against BOTH existing Gemini arms and the Sonnet arm"
+ },
+ "drop_rules_to_be_stated_before_execution": {
+  "note": "these are PROPOSED and must be fixed in the frozen artifact before any request",
+  "DROP": "hard failures >= 10/32 - same threshold as the Gemini rule, for comparability",
+  "ADVANCE": "hard failures <= 4/32 AND successful-only CER <= 0.20",
+  "REPORT_ONLY": "5 to 9 hard failures",
+  "quality_veto": "successful-only CER > 0.20 rejects the arm regardless of coverage"
+ },
+ "budget_note": {
+  "lesson_from_this_experiment": "set the PREDICTED ceiling against the dry-run worst case (all responses filling max_tokens), and set the ACTUAL ceiling above the all-succeed projection - otherwise success itself aborts the run mid-arm and yields a truncated result the drop rule cannot evaluate.",
+  "observed_ratio_this_arm": {
+   "predicted_worst_case_usd": 0.150003,
+   "actual_usd": 0.051831,
+   "actual_over_predicted": 0.3455
+  }
+ },
+ "prohibitions": [
+  "no HELD_OUT",
+  "no CALIBRATION",
+  "no grading on OCR output",
+  "no RAG",
+  "no OCR verification",
+  "no fallback composite",
+  "no reference edits",
+  "no prompt tuning after observing results"
+ ],
+ "content_sha256": "b6ad727c9f76b31561857a429e6489575651d3dc4f3c9a9ea098fe83f4dbb91a"
+}

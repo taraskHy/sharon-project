@@ -1,0 +1,211 @@
+{
+ "artifact": "ocr_prompt_v2_execution_baseline",
+ "phase": "PHASE 6 - recorded BEFORE the first live provider request",
+ "created_at": "2026-09-03 04:29:22",
+ "git_commit": "6fdc6e20066d1fdf1846f4c5a708e2e57bd732ef",
+ "authorization_change": {
+  "who": "owner, this session",
+  "prior_ceilings": {
+   "predicted_usd": 0.08,
+   "actual_usd": 0.08
+  },
+  "new_ceilings": {
+   "predicted_usd": 0.16,
+   "actual_usd": 0.12
+  },
+  "reason_recorded": "the dry-run prediction is a worst case assuming all 32 responses fill max_tokens=1000 ($0.150003); the prior $0.08 predicted ceiling sat below a worst case already on record. The actual ceiling was raised in the same decision because $0.08 of ACTUAL spend is first breached at k=26 usable crops, which would abort the run precisely when the treatment works.",
+  "everything_else_unchanged": "model, crop population, crop order, crop bytes, references, schema, preprocessing, reasoning, max_tokens, adapter, decoding, metrics, failure taxonomy, and the frozen treatment prompt are all untouched"
+ },
+ "enforcement": {
+  "mechanism": "BudgetManager(max_cost_total) inside the benchmark gateway; BudgetManager.check() refuses the call that WOULD cross the ceiling, using a deterministic pre-call estimate, so the ceiling is enforced rather than merely observed",
+  "cli_change": "exposed the pre-existing RunSpec.warn_usd / RunSpec.hard_usd fields as --warn-usd / --hard-usd. build_gateway already honoured them; only the CLI never passed them through. These are CUMULATIVE campaign ceilings, so a per-experiment cap is expressed as ledger-now + allowance.",
+  "does_not_affect_the_experiment": "budget flags do not enter the run config hash - the run id stays 61dd6641fb, identical to the frozen dry run",
+  "warn_usd_cumulative": 0.731401,
+  "hard_usd_cumulative": 0.771401,
+  "aborts_after_new_spend_of_usd": 0.12
+ },
+ "experiment": {
+  "name": "OCR_PROMPT_V2_NEUTRAL_FRAMING_GEMINI_SEEN32",
+  "experiment_sha256": "05185839e204ca6131201983d29d2c0c273445070b56276f280b71426920f679",
+  "prompt_freeze_sha256": "fe6a2b2f9534f1e5a507fff0254fe488adbe7c3114d25e439e752c5ff450998e",
+  "subset": "seen46_ocr_dev",
+  "subset_selection_sha256": "98c8d117e6747adcdc0e0a41ed91f1c5cdd7fd72d0ecffab9695483e873fd0a5",
+  "case_order_sha256": "7aeb6cffa515b2f296a7c944c8622040779ce2c06365be57842808b56c2dd4d1",
+  "control_run_id": "dev__seen46_ocr_dev__all__google-gemini-3.7-flash__c4ae61f634",
+  "treatment_run_id": "dev__seen46_ocr_dev__all__google-gemini-3.7-flash__61dd6641fb",
+  "treatment_config_hash": "61dd6641fbef6a5e39b0dae2345ce3490ebffbe49b25469dc515354bad67e367"
+ },
+ "route": {
+  "model_slug": "google/gemini-3.7-flash",
+  "task": "ocr_primary",
+  "backend": "openrouter",
+  "structured_mode": "json_schema",
+  "max_tokens": 1000,
+  "temperature": 0.0,
+  "reasoning": {
+   "effort": "low"
+  },
+  "adapter_version": "ocr-primary-bench-v1",
+  "validation_retries": 0,
+  "execution_mode": "research"
+ },
+ "live_pricing_usd_per_million": {
+  "input": 0.75,
+  "output": 3.75
+ },
+ "prompt_hashes": {
+  "control_m2_strict_v1": {
+   "handwritten_line": "8c6981a00d467dbbb92c2495a52e1e050dab68de43a43ce977323bc0c2718172",
+   "handwritten_cell": "d40280acf305b40f7b4ba74d115f76d4d7268156ba5acce0d7f1ce60ba67a137"
+  },
+  "treatment_ocr_neutral_v2": {
+   "handwritten_line": "59f7cac180fd85ceda7d97eb40bb4c5aafb1ad9800c346de3f515d98101e20bf",
+   "handwritten_cell": "8db9abe7a9804a982c8cdf905c56eb86849ee68770fccbf8be4b7eebe1365505"
+  },
+  "all_four_distinct": true,
+  "cache_key_separation": "treatment prompt hashes differ from control, so no control response can be replayed from cache"
+ },
+ "schema": {
+  "name": "BenchTranscription",
+  "sha256": "003ee19969c8c443d62d75a0b2ff8eaeaa052fb3b40f3c609c3c8feb178d3679"
+ },
+ "manifest_hashes": {
+  "items_sha256": "25463e91b95db8eecfc306644dd0839f65e42910d4161f6991383b6f4a524a8b",
+  "references_sha256": "4a93e826e6e94777d445e64ae2c3f5ed10def46aa021ff763a45a9807fb913b5",
+  "audit_sha256": "eace95fc6dc684c88f1fea2142414a68ad8f421257ac012faf6bcfc9ae07f50c",
+  "audit_manifest_sha256": "65ac16385979480945938f45f0d3e5e3255afa7bcb41c4ea7afe2ff2ebcc405f"
+ },
+ "population": {
+  "n": 32,
+  "handwritten": 32,
+  "line_crops": 16,
+  "cell_crops": 16,
+  "splits": [
+   "DEV"
+  ],
+  "CALIBRATION": 0,
+  "HELD_OUT": 0,
+  "ordered_case_ids": [
+   "hl_e003_q1_r1__l1",
+   "hl_e003_q1_r3__l1",
+   "hl_e003_q1_r4__l1",
+   "hl_e003_q1_r5__l1",
+   "hl_e003_q1_r6__l1",
+   "hl_e003_q1_r7__l1",
+   "hl_e003_q1_r8__l1",
+   "hl_e003_q2_r1__l1",
+   "hl_e003_q2_r2__l1",
+   "hl_e003_q2_r3__l1",
+   "hl_e003_q2_r4__l1",
+   "hl_e003_q2_r5__l1",
+   "hl_e003_q2_r6__l1",
+   "hl_e003_q2_r7__l1",
+   "hl_e003_q2_r8__l1",
+   "hl_e007_q1_r1__l1",
+   "hc_e002_q1_r1",
+   "hc_e002_q1_r2",
+   "hc_e002_q1_r3",
+   "hc_e002_q1_r4",
+   "hc_e002_q1_r5",
+   "hc_e002_q1_r6",
+   "hc_e002_q1_r7",
+   "hc_e002_q1_r8",
+   "hc_e002_q2_r1",
+   "hc_e002_q2_r2",
+   "hc_e002_q2_r3",
+   "hc_e002_q2_r4",
+   "hc_e002_q2_r5",
+   "hc_e002_q2_r6",
+   "hc_e002_q2_r7",
+   "hc_e002_q2_r8"
+  ],
+  "crop_sha256": {
+   "hl_e003_q1_r1__l1": "a8703841a8bd44b65a085935d75ab434a554131bcdb49031ebd58d217e1c4757",
+   "hl_e003_q1_r3__l1": "5cd4e819c520a7ba98b311f5c823bc108c19a1191d69e7fafd278702658afe5b",
+   "hl_e003_q1_r4__l1": "16d2e8776a4e4a8bc8318cf31d7ad2b8578c92b11fd57581fb0b4d89699b0bcc",
+   "hl_e003_q1_r5__l1": "08591e5e4c978b04dffc1b0f7a34baa5ee7fe688fa12d0d2f4697f67f76ce72a",
+   "hl_e003_q1_r6__l1": "4952636c8784647def93fd2d3b1ed75a43b0e596fbd78ee971ed801beef3a9cd",
+   "hl_e003_q1_r7__l1": "61a6b526b82d270f7dbd5a3f6fb8ce1f7528430e5e1301f762109b4e90b09d1a",
+   "hl_e003_q1_r8__l1": "9ba1f9b00b8402c80ee2ff52aed75d7ea93ea4981ecb609a42eb9d08ee65193c",
+   "hl_e003_q2_r1__l1": "5db5d21234018b0416d3d578599ef4765ad5245f8f3efab8b0b54ae0966886ae",
+   "hl_e003_q2_r2__l1": "501f5cf070630e63ed702f5fbe82ff6934b7a58a7e1572ecb964794424669d7c",
+   "hl_e003_q2_r3__l1": "0644de9a66805ff9dc8d936e828416bb2eb6cd4eff3085f75396cf8e6619e8c3",
+   "hl_e003_q2_r4__l1": "da04b7b64250e1fdcd7f4155c9a01f29c06f837c99b801970a2b012b1231483c",
+   "hl_e003_q2_r5__l1": "b33c423a631eba69057777d10d0892b06307224e6b87bb2378c6f45820de9712",
+   "hl_e003_q2_r6__l1": "02bdea4b629331062c40d96be61daec9da54e45c8aa293c27ea3352c6820eb9c",
+   "hl_e003_q2_r7__l1": "48a679313541a2757dbe2889b9441b538693787928080fee84f6af0c738b69c8",
+   "hl_e003_q2_r8__l1": "2d5c769a13383cba3659ac7bb16a1e06e18c516b39283a9a5bdb92b7c6550c54",
+   "hl_e007_q1_r1__l1": "7943be13b1283c20ddb20bc4142cc6b4bc79096281ed31bbd28ad89fdcaca19b",
+   "hc_e002_q1_r1": "f23d427da6e04dbb384d88418a4657adff24ecaba9b252dbb34259adf824fda7",
+   "hc_e002_q1_r2": "4e32452cb182c8d00bd6fca8ed9a48daae5989abfde639a0a87a7408019f3e4d",
+   "hc_e002_q1_r3": "6e8bd3c6f5a3d9b0a4de9e2bb89aca68064310b3b6dc7e1c6175a3bf5eb8b303",
+   "hc_e002_q1_r4": "f15b9ad86927580f08a74ae8591008162824426dea4a30121eb1d22fe9fb0b76",
+   "hc_e002_q1_r5": "4e3fc43c37e863a18e6bb11405b1ddbcd340f02f09c6466124d60ad103fc86e8",
+   "hc_e002_q1_r6": "73ddca4fc3b7ed6ad04a2b98b71655b472f210898f4f2c279c5f535abb5ec38e",
+   "hc_e002_q1_r7": "7cd8b22b872c3e283c6a3cdb9240abeaa6b20e8ee8bc9c419badcb21d4e2fad7",
+   "hc_e002_q1_r8": "59362ebd7f95957a2a00c517b545633e896034c4759c4a802b10b56b93f9adc2",
+   "hc_e002_q2_r1": "cc2e23b6c8acfa9b54c6d7a6a6a4bf68d172e0259a323c923a02673c19a317ba",
+   "hc_e002_q2_r2": "f7c723e702b909618741b7f86d972c6112f52d7810d4f8fef7ce3cf1db87a5e9",
+   "hc_e002_q2_r3": "61ba1dee258ad3bba7ee963b521574d8e0464233de18c7d1b13c38970aaf6d67",
+   "hc_e002_q2_r4": "0f7ef96b1315244f926d55fec18d5549fab3831bd2874c70ea751185596814e5",
+   "hc_e002_q2_r5": "66e3aeac2178bbeca6dc56f7acb2af73a8027bf1f634f889f77bbfeed71196ff",
+   "hc_e002_q2_r6": "ebbbff9c23ba3b0b6a1c11bfa73c8526df63cc6222c3baeeb9e833538f79833a",
+   "hc_e002_q2_r7": "7b9a7681340ba4c07b1ff25f94d792591473b22418767e544870d88e4abccc13",
+   "hc_e002_q2_r8": "78954854bc568ca592838681ae30cad5d173eb50deab82f84959be06d9bc01b2"
+  },
+  "reference_sha256": {
+   "hl_e003_q1_r1__l1": "635929b4b3b8f1d72cac29ab17e6346b3aaa7e883dfe33b56317de6d94fe9ce3",
+   "hl_e003_q1_r3__l1": "73e88a07fd9325db9769530c304beb96ffa44e0fd12d48beba26e5a300a3af77",
+   "hl_e003_q1_r4__l1": "6df101d4897d940a35935b6f459f5221661ebcb7afd8d5468b35180b625718c2",
+   "hl_e003_q1_r5__l1": "9901f128f6b00cd39c25421f976359dc5442d93298da22e01987290a0de1b01b",
+   "hl_e003_q1_r6__l1": "f796ec9a5c3329103f053eac380ad6c63367715ab3988a72cc008d355a0a25a4",
+   "hl_e003_q1_r7__l1": "b5c045e9d7e221d5a03a590e0cd1346543d30dc8a1a7f9ae907cf4fccb88d4f7",
+   "hl_e003_q1_r8__l1": "29a9e8c14a9df3c6599227cf8ea333d53ce05a821169dbd669c01c72cc7dc609",
+   "hl_e003_q2_r1__l1": "4f2be7f48607b8f8a221c1a7c870d4488b641ad6fa8d580a241fac28b66b7abc",
+   "hl_e003_q2_r2__l1": "048ef2fbc3f08bdfefdf8c865a9056e97486f08b062f1eca6622d858b607970c",
+   "hl_e003_q2_r3__l1": "7db13c0e630f72bf5c8f1be490509857822b1f28e13882127496f32e73c89c5d",
+   "hl_e003_q2_r4__l1": "2aea307ed01a0ee1cf2dbbb0572a2de4f1ad101c2252065cfb92f967cb6c2888",
+   "hl_e003_q2_r5__l1": "4582e67edfe6370a4eab61ef2e6d1afc315f8ba684ffe391b1db056bcce44fbc",
+   "hl_e003_q2_r6__l1": "9a8d9585ccb6f3b03f3ced0061c8ef7c816d8bcbfbf8c3afa014dcd99b1673ec",
+   "hl_e003_q2_r7__l1": "f254c03e480227c896ea20f4f650583dbbcec7718d13c6d944a0b57a270db0f3",
+   "hl_e003_q2_r8__l1": "7b686174ece5f3d6fc785304dd50e3f5869a41d8625651b27bed66b3a1ba8139",
+   "hl_e007_q1_r1__l1": "61a6270dc98c257b515a49ae98f7c768d317ee4f1e86072908bf18b7aca7bef6",
+   "hc_e002_q1_r1": "2f906246081ff11463426c4fda09d9337be6b868d3b62c93293a35adbac24d7f",
+   "hc_e002_q1_r2": "749e0f310ad5e28ad0e6527b219071e65d66777937272b52e0507ea99ac3a2c4",
+   "hc_e002_q1_r3": "a5f968c2defa020408e66259df202f686fef8643a8e739e3134ad53c58e6f4f2",
+   "hc_e002_q1_r4": "7e50a8a03d914bc3e4efede38e9c8ea3ef84cce2772d8ae1849765149b78b577",
+   "hc_e002_q1_r5": "2295e3fb1905bb1df2c4a8ff1079922d52cb161f970964759a59d3a63beee39b",
+   "hc_e002_q1_r6": "147a0cf4aad67a66a00a87139fce7118895c2e6fcd1fae19d25b6cf5637ab421",
+   "hc_e002_q1_r7": "09902986740b9cca66b2626ea4f0896da35be142cb8c2b65d5688ac224c27890",
+   "hc_e002_q1_r8": "5e1447f4b7f3ccf36cd1807f5f7fe23d8baaedcae1359e4d04d3601e827e7b4f",
+   "hc_e002_q2_r1": "1756823bf17385c37bb3abb0fe2fd75565c786f6729ae0fe5b484fc972ec6e38",
+   "hc_e002_q2_r2": "fc23ab665253c4cc40a7873f4cd2aaf6f1c1e8aa65860bb8f4be2786a33db6db",
+   "hc_e002_q2_r3": "3cc92cc4d376778d2cc9d2acbc440556ecc209f29924036c6afca0afcdf256d9",
+   "hc_e002_q2_r4": "eba914acbaade76b06cb8044a9e53c8840029ba2370adc0607a0d535211e7350",
+   "hc_e002_q2_r5": "f165e13ab5e8c102c64c664d844142a711387ad0e659139462ee03bc4bc3897d",
+   "hc_e002_q2_r6": "fb8c4ea9a0f82637e88e9db9165f4f5b04a60aa62ea34441b3966242b88e3101",
+   "hc_e002_q2_r7": "f256f17e5c0760d1f771faa414bad47204f478a2992f240cac60963422653e95",
+   "hc_e002_q2_r8": "d973791d9ff50577eff64453d5001ef433410175dd0e097706209c64c1589f3c"
+  }
+ },
+ "starting_state": {
+  "ledger_rows": 766,
+  "ledger_cumulative_cloud_usd": 0.65140129,
+  "cache_entries": 611,
+  "outputs_jsonl_exists": false,
+  "project_hard_ceiling_usd": 10.0,
+  "project_warn_ceiling_usd": 8.0
+ },
+ "predicted": {
+  "dry_run_predicted_usd": 0.150003,
+  "authorized_predicted_ceiling_usd": 0.16,
+  "gate": "PASS",
+  "projected_actual_usd": {
+   "k14_no_improvement": 0.05081,
+   "k26": 0.08004,
+   "k32_full_success": 0.09466
+  }
+ },
+ "max_intended_provider_requests": 32,
+ "content_sha256": "461cf8e532ec3a59657ea2db931e7ae4863228fd36c28a9d4bbcd42ccbfd1bbf"
+}

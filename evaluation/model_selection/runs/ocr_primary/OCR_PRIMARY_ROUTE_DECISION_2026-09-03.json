@@ -1,0 +1,76 @@
+{
+ "artifact": "ocr_primary_route_decision_record",
+ "created_at": "2026-09-03 04:40:34",
+ "git_commit": "6fdc6e20066d1fdf1846f4c5a708e2e57bd732ef",
+ "provider_calls": 0,
+ "supersedes": "the OCR-route portion of OCR_SHIPMENT_READINESS_2026-09-02.json; that artifact stays as written and is not edited",
+ "decision": "DROP google/gemini-3.7-flash as the primary OCR route on this OpenRouter path",
+ "authority": "the drop rule pre-registered in OCR_PROMPT_V2_NEUTRAL_FRAMING_2026-09-02.json (experiment_sha256 05185839e204ca61...), stated BEFORE any request and not changed after seeing results: 'hard failures >= 10/32 -> the prompt is NOT the cause; Gemini's filter behaviour on this content is intrinsic at this price point'",
+ "evidence": {
+  "control_m2-strict-v1": {
+   "usable": "14/32",
+   "provider_content_filter": 10,
+   "hard_failures": 18,
+   "successful_cer": 0.1155,
+   "failure_aware_cer": 0.613,
+   "critical_errors": "2/14",
+   "cost_usd": 0.04492875
+  },
+  "treatment_ocr-neutral-v2": {
+   "usable": "16/32",
+   "provider_content_filter": 14,
+   "hard_failures": 16,
+   "successful_cer": 0.1608,
+   "failure_aware_cer": 0.5804,
+   "critical_errors": "2/16",
+   "cost_usd": 0.051831
+  },
+  "hypothesis": "neutralising exam/grading framing materially reduces provider-filter outcomes",
+  "verdict": "REFUTED, and in the wrong direction - filters rose 10 -> 14 of 32",
+  "usable_delta_not_significant": {
+   "exact_mcnemar_p": 0.726562,
+   "discordant_pairs": 8
+  },
+  "quality_like_for_like": {
+   "n_usable_in_both_arms": 11,
+   "case_ids": [
+    "hl_e003_q1_r4__l1",
+    "hl_e003_q1_r6__l1",
+    "hl_e003_q2_r1__l1",
+    "hl_e003_q2_r2__l1",
+    "hl_e003_q2_r3__l1",
+    "hl_e003_q2_r6__l1",
+    "hc_e002_q1_r1",
+    "hc_e002_q1_r4",
+    "hc_e002_q1_r7",
+    "hc_e002_q1_r8",
+    "hc_e002_q2_r5"
+   ],
+   "control_mean_cer": 0.147,
+   "neutral_mean_cer": 0.1727,
+   "mean_paired_delta_cer": 0.0257,
+   "median_paired_delta_cer": 0.0,
+   "improved": 3,
+   "regressed": 5,
+   "unchanged": 3,
+   "exact_sign_test_p": 0.7266,
+   "reading": "on the crops both arms read, quality is statistically indistinguishable (p=0.7266 on 8 non-tied pairs); the headline successful-only CER gap is partly a composition effect, not a pure quality change."
+  },
+  "coverage_gain_source": "not fewer filters - JSON parse failures fell 6 -> 1 and truncation 2 -> 1",
+  "annotation_contamination": "0 in BOTH arms; the Phase-2 guard held and there is nothing to fix"
+ },
+ "what_is_NOT_concluded": [
+  "no claim that a different provider will do better - that is the next experiment, not this result",
+  "no production-readiness claim for any OCR configuration",
+  "no claim about a true failure rate below ~9%: n=32 cannot support one",
+  "the cell-vs-line swap (cell 5->9 usable, line 9->7, line filter 2->8) is a HYPOTHESIS for a future freeze: each half is n=16 and the two categories received different prompt edits"
+ ],
+ "standing_prohibitions_reaffirmed": [
+  "the Gemini->Sonnet composite fallback stays WITHDRAWN (strictly dominated; converts loud machine-detectable failures into plausible wrong text)",
+  "AI prefill remains rejected by the gate",
+  "instructor grade = reference truth; audits are flags-only"
+ ],
+ "open_blocker_unchanged": "wrong digit / sign / operator / negation in a usable transcription is NOT detectable in production (no reference exists there). This remains the blocking failure mode for unreviewed use, independent of route.",
+ "ocr_primary_role_status": "UNSELECTED (unchanged) - dropping a candidate does not select one",
+ "content_sha256": "56c3bf21888f3041cf0aa40e570eafe60e8a2305343915794a62f34674ee4797"
+}

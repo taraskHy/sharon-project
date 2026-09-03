@@ -132,14 +132,75 @@
    "mode": "dry_run",
    "note": "",
    "retry_failed": false
+  },
+  {
+   "ts": "2026-09-03 04:28:03",
+   "mode": "dry_run",
+   "note": "",
+   "retry_failed": false
+  },
+  {
+   "ts": "2026-09-03 04:31:06",
+   "mode": "live",
+   "note": "",
+   "retry_failed": false
   }
  ],
- "updated_at": "2026-09-03 02:24:40",
- "cases_done": 32,
- "cases_failed": 0,
+ "updated_at": "2026-09-03 04:34:35",
+ "cases_done": 16,
+ "cases_failed": 16,
  "cases_skipped_resume": 0,
  "stopped_reason": null,
- "last_mode": "dry_run",
+ "last_mode": "live",
  "warnings": [],
- "last_preflight": null
+ "last_preflight": {
+  "allowed": true,
+  "steps": [
+   {
+    "step": "credential_present",
+    "ok": true
+   },
+   {
+    "step": "key_metadata",
+    "ok": true,
+    "usage": 0.65140092,
+    "limit_remaining": 19.34859908,
+    "detail": null
+   },
+   {
+    "step": "record_starting_key_usage",
+    "ok": true,
+    "campaign_start_usage": 0,
+    "campaign_start_ledger": 0
+   },
+   {
+    "step": "compare_ledger_with_key",
+    "ok": true,
+    "local_ledger_usd": 0.651403,
+    "comparison": {
+     "local_ledger_usd": 0.651403,
+     "key_usage_usd": 0.65140092,
+     "key_usage_at_campaign_start_usd": 0,
+     "local_ledger_at_campaign_start_usd": 0,
+     "comparable": true,
+     "disagree": false,
+     "note": "ledger and account agree",
+     "key_usage_attributable_usd": 0.651401,
+     "local_ledger_delta_usd": 0.651403,
+     "gap_usd": -2e-06
+    }
+   },
+   {
+    "step": "budget_safe",
+    "ok": true,
+    "local_cumulative_usd": 0.651403,
+    "predicted_call_usd": 0.150003,
+    "projected_usd": 0.801406,
+    "hard_stop_usd": 0.811401,
+    "state": "OK",
+    "warning": false
+   }
+  ],
+  "reason": "call allowed"
+ }
 }
