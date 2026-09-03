@@ -377,11 +377,17 @@
  ],
  "campaign_budget_manifest": "evaluation/model_selection/policies/OCR_ALTSCREEN_CAMPAIGN_BUDGET.json",
  "hardening_applied_2026-09-04": {
-  "raw_response_preservation": "every provider reply of a live arm is archived sanitized to run_dir/raw_responses.jsonl BEFORE parsing, including HTTP 200 with no usage block and no provider field",
-  "campaign_budget": "one immutable L0 with absolute thresholds shared by all three arms",
-  "route_enforcement": "an EXPLICITLY different serving provider stops the arm; UNKNOWN attribution does not"
+  "raw_response_preservation": "every provider reply of a live arm is archived sanitized to run_dir/raw_responses.jsonl BEFORE parsing, for EVERY PHYSICAL HTTP ATTEMPT including transport retries, including HTTP 200 with no usage block and no provider field",
+  "campaign_budget": "one immutable L0 with absolute thresholds shared by all three arms, authorized PER PHYSICAL ATTEMPT at the send boundary with the attempt's own worst-case cost; outstanding reservations count against the balance so a retry cannot be authorized against a ledger that has not caught up",
+  "route_enforcement": "aggregated over EVERY attempt. The FIRST explicit violation is sticky and is never cleared by a later correct attempt; UNKNOWN attribution is retained and is not a violation",
+  "archive_failure_guarantee": "FAILS CLOSED. Loss of an already-billed response is not preventable in software; SILENT loss is. An archive write failure raises, the parsed result is not returned, no further attempt or case is sent, and a marker file plus a tainted billing event record the gap.",
+  "correlation_identifiers": "campaign_id, arm_id, logical_request_id, attempt_id, retry_index, case_id + case_hash and ledger_entry_id are propagated so raw_responses.jsonl, the route records, the cost ledger row and the benchmark output row join on identifiers rather than on timestamps or file order",
+  "verified_by": "tests/test_physical_attempt_enforcement.py (scenarios A-F, real retry path)"
  },
- "supersedes_experiment_sha256": "39305a627c43e82867b4cc7c80c4a75243c61e4781e3e23b8da22c6f1eb29f34",
- "amendment_note": "Amended 2026-09-04 BEFORE any execution. The amendment is LANGUAGE AND BUDGET SEMANTICS ONLY: arm labels (provider-route attribution vs cross-family), the ADVANCE_TO_SEEN32 outcome vocabulary, and the campaign warning/hard increment wording, plus a record of the hardening applied. Candidates, provider pins, the eight frozen cases and their order, crop bytes, references, prompt version and hashes, schema, routes, reasoning, max_tokens and every advancement gate are UNCHANGED. Re-hashed because the content changed; the prior hash is recorded above. Zero provider calls have been made under either hash.",
- "experiment_sha256": "579b1f60415623dddbc482c4c701efa90a6d5d9c6d271adb08c3b61824a5eec6"
+ "supersedes_experiment_sha256": [
+  "39305a627c43e82867b4cc7c80c4a75243c61e4781e3e23b8da22c6f1eb29f34",
+  "579b1f60415623dddbc482c4c701efa90a6d5d9c6d271adb08c3b61824a5eec6"
+ ],
+ "amendment_note": "Amended 2026-09-04 BEFORE any execution. The amendment is LANGUAGE AND BUDGET SEMANTICS ONLY: arm labels (provider-route attribution vs cross-family), the ADVANCE_TO_SEEN32 outcome vocabulary, and the campaign warning/hard increment wording, plus a record of the hardening applied. Candidates, provider pins, the eight frozen cases and their order, crop bytes, references, prompt version and hashes, schema, routes, reasoning, max_tokens and every advancement gate are UNCHANGED. Re-hashed because the content changed; the prior hash is recorded above. Zero provider calls have been made under either hash. SECOND AMENDMENT 2026-09-04, still before any execution: records that enforcement now runs per PHYSICAL HTTP ATTEMPT (budget authorization at the send boundary, route state aggregated and sticky across retries, fail-closed archiving, stable correlation ids). Again LANGUAGE AND MECHANISM ONLY - candidates, pins, the eight frozen cases and their order, crop bytes, references, prompt version and hashes, schema, routes, reasoning, max_tokens and every advancement gate are UNCHANGED.",
+ "experiment_sha256": "67a716fc6540ee410470b48739abc37ebdf90efe3b0a63413e503b83f50178cb"
 }

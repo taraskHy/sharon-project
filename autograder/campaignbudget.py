@@ -22,7 +22,7 @@ from __future__ import annotations
 import hashlib
 import json
 import time
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any
 
@@ -42,7 +42,7 @@ def _seal(doc: dict, field: str = "content_sha256") -> dict:
     return doc
 
 
-@dataclass(frozen=True)
+@dataclass
 class CampaignBudget:
     campaign: str
     experiment_sha256: str
@@ -53,29 +53,76 @@ class CampaignBudget:
     hard_usd: float                     # absolute: L0 + hard increment
     predicted_arm_costs: dict[str, float]
     path: Path | None = None
+    #: Worst-case amounts for attempts that have been AUTHORIZED and sent but
+    #: whose real cost has not yet reached the persisted ledger. The gateway
+    #: writes ledger rows only after parse() returns, so during a transport
+    #: retry the earlier attempt's spend is invisible to the ledger — without
+    #: this, attempt 2 would be authorized against a stale balance.
+    _reserved: dict[str, float] = field(default_factory=dict, repr=False)
 
     @property
     def predicted_campaign_worst_case_usd(self) -> float:
         return round(sum(self.predicted_arm_costs.values()), 6)
 
+    @property
+    def reserved_usd(self) -> float:
+        """Total currently RESERVED but not yet committed to the ledger."""
+        return round(sum(self._reserved.values()), 8)
+
     def remaining_usd(self, ledger_now: float) -> float:
-        return round(self.hard_usd - ledger_now, 8)
+        """Headroom after committed spend AND outstanding reservations."""
+        return round(self.hard_usd - float(ledger_now) - self.reserved_usd, 8)
 
     def check(self, *, ledger_now: float, max_request_cost_usd: float) -> None:
-        """Reserve the MAXIMUM this request could cost and refuse if that
-        would cross the fixed hard threshold.
+        """Refuse if this attempt could cross the fixed hard threshold.
 
         The reservation is deliberately the worst case, not an expectation: a
         ceiling that admits a request on the basis of its average cost has not
-        bounded anything.
+        bounded anything. Outstanding reservations count against the balance,
+        so a retry cannot be authorized against a ledger that has not yet
+        caught up with the attempt that preceded it.
         """
-        projected = float(ledger_now) + float(max_request_cost_usd or 0.0)
+        projected = float(ledger_now) + self.reserved_usd + float(max_request_cost_usd or 0.0)
         if projected > self.hard_usd:
             raise CampaignBudgetExceeded(
-                f"campaign {self.campaign!r}: this request could bring cumulative spend to "
-                f"${projected:.6f}, crossing the fixed hard threshold ${self.hard_usd:.6f} "
+                f"campaign {self.campaign!r}: this attempt could bring cumulative spend to "
+                f"${projected:.6f} (ledger ${float(ledger_now):.6f} + reserved "
+                f"${self.reserved_usd:.6f} + this attempt ${float(max_request_cost_usd or 0):.6f}), "
+                f"crossing the fixed hard threshold ${self.hard_usd:.6f} "
                 f"(L0 ${self.starting_ledger_usd:.6f} + ${self.hard_increment_usd:.2f}). "
-                f"The threshold is fixed for the whole campaign and is NOT recomputed per arm.")
+                f"The threshold is fixed for the whole campaign and is NOT recomputed per arm "
+                f"or per attempt.")
+
+    def authorize_attempt(self, *, attempt_id: str, ledger_now: float,
+                          max_request_cost_usd: float) -> None:
+        """Check, then RESERVE, for one physical HTTP attempt.
+
+        Called immediately before transmission. Reserving under the attempt's
+        own id makes the reservation idempotent: re-authorizing the same
+        attempt_id REPLACES its reservation rather than stacking a second one,
+        and the attempt's own prior reservation is excluded from its own
+        headroom check — otherwise it would be counted twice and a legitimate
+        re-authorization could be refused against itself.
+        """
+        prior = self._reserved.pop(attempt_id, None)
+        try:
+            self.check(ledger_now=ledger_now, max_request_cost_usd=max_request_cost_usd)
+        except CampaignBudgetExceeded:
+            if prior is not None:          # restore: the refusal changes nothing
+                self._reserved[attempt_id] = prior
+            raise
+        self._reserved[attempt_id] = float(max_request_cost_usd or 0.0)
+
+    def release(self, attempt_id: str) -> None:
+        """Drop one reservation without committing it (the send never happened)."""
+        self._reserved.pop(attempt_id, None)
+
+    def settle_all(self) -> float:
+        """Clear every outstanding reservation because the ledger has now been
+        written for them. Returns the amount released, for the record."""
+        total = self.reserved_usd
+        self._reserved.clear()
+        return total
 
     def warning_state(self, ledger_now: float) -> str:
         if ledger_now >= self.hard_usd:

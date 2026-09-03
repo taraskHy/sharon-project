@@ -771,13 +771,39 @@ def run_benchmark(spec: RunSpec, *, gateway=None, registry: CandidateRegistry | 
     if not spec.dry_run and spec.capture_raw:
         try:
             from ..rawcapture import RawResponseArchive
-            live_backend = gw.backend_for(route.task)
+            candidate_backend = gw.backend_for(route.task)
+            # Only an HTTP backend implements the capture protocol (per-attempt
+            # records + a pre-send hook). Local/mock backends make no priced
+            # provider call, so there is nothing to archive or authorize.
+            if not hasattr(candidate_backend, "attempt_records"):
+                raise TypeError(f"{type(candidate_backend).__name__} does not support raw capture")
+            live_backend = candidate_backend
             live_backend.raw_archive = RawResponseArchive(run_dir / "raw_responses.jsonl")
             live_backend.capture_task = route.task
+            live_backend.capture_campaign_id = (campaign.campaign if
+                                                getattr(gw, "campaign_budget", None) else None)
+            live_backend.capture_arm_id = run_id
         except Exception as e:  # noqa: BLE001 — never block a run on archiving
             warnings.append(f"raw response capture unavailable: {type(e).__name__}: {e}")
             live_backend = None
     campaign = getattr(gw, "campaign_budget", None)
+
+    # ---- PER-PHYSICAL-ATTEMPT budget authorization ---------------------------
+    # The logical pre-call check below is NOT sufficient on its own: one
+    # gw.call() can send up to transport_retries + 1 physical requests, and the
+    # gateway writes ledger rows only after parse() returns, so a retry would
+    # otherwise be authorized against a stale balance. This hook runs
+    # immediately before every physical send and reserves that attempt's own
+    # worst case; a retry with no headroom is refused BEFORE transmission.
+    _current_attempt_worst_cost = [0.0]
+    if live_backend is not None and campaign is not None:
+        def _authorize_send(*, attempt_id, retry_index, payload, _gw=gw, _c=campaign):
+            ledger_now = sum(float(e.get("reported_cost") or 0) for e in _gw.ledger.entries()
+                             if e.get("cloud") and not e.get("cache_hit"))
+            _c.authorize_attempt(attempt_id=attempt_id, ledger_now=ledger_now,
+                                 max_request_cost_usd=_current_attempt_worst_cost[0])
+
+        live_backend.pre_send_hook = _authorize_send
 
     for case in cases:
         if case.case_id in skip:
@@ -788,6 +814,7 @@ def run_benchmark(spec: RunSpec, *, gateway=None, registry: CandidateRegistry | 
         attempt = attempts.get(case.case_id, 0) + 1
         if live_backend is not None:
             live_backend.capture_case_id = case.case_id
+            live_backend.capture_logical_request_id = f"{run_id}::{case.case_id}::{attempt}"
         if spec.dry_run:
             from ..usage import predicted_call_cost
             est = predicted_call_cost(route, request.system, request.content_blocks, pricing)
@@ -809,6 +836,8 @@ def run_benchmark(spec: RunSpec, *, gateway=None, registry: CandidateRegistry | 
             worst = predicted_call_cost(route, request.system, request.content_blocks, pricing) or 0.0
             ledger_now = sum(float(e.get("reported_cost") or 0) for e in gw.ledger.entries()
                              if e.get("cloud") and not e.get("cache_hit"))
+            if live_backend is not None and campaign is not None:
+                _current_attempt_worst_cost[0] = worst
             try:
                 campaign.check(ledger_now=ledger_now, max_request_cost_usd=worst)
             except CampaignBudgetExceeded as e:
@@ -836,7 +865,35 @@ def run_benchmark(spec: RunSpec, *, gateway=None, registry: CandidateRegistry | 
                                 "question_id": case.meta.get("question_id")})
         except Exception as e:  # noqa: BLE001 — classified below, never retried silently
             from ..usage import BudgetExceeded
+            from ..rawcapture import ArchiveFailure
             name = type(e).__name__
+            # the gateway has now written ledger rows for every attempt of this
+            # call, so the in-flight reservations are committed and released
+            if campaign is not None:
+                campaign.settle_all()
+            if live_backend is not None:
+                row["attempt_records"] = list(live_backend.attempt_records)
+            # An archive failure FAILS CLOSED: the response was billed but its
+            # evidence was not recorded, so no further attempt or case runs.
+            if isinstance(e, ArchiveFailure):
+                stopped = f"archive failure: {e}"
+                row.update({"ok": False, "error_type": "ArchiveFailure",
+                            "error": str(e)[:500], "stopped": True,
+                            "archive_failure": True})
+                _append_jsonl(outputs_path, row)
+                log(f"STOP: {stopped}")
+                break
+            # A route violation on ANY attempt taints the arm, even if the
+            # exception itself is something else.
+            if live_backend is not None and live_backend.route_violation:
+                stopped = f"route violation: {live_backend.route_violation.get('detail')}"
+                row.update({"ok": False, "error_type": "RouteViolation",
+                            "error": str(live_backend.route_violation.get("detail"))[:500],
+                            "stopped": True,
+                            "route_violation": live_backend.route_violation})
+                _append_jsonl(outputs_path, row)
+                log(f"STOP: {stopped}")
+                break
             if isinstance(e, BudgetExceeded):
                 stopped = f"budget: {e}"
                 row.update({"ok": None, "error_type": name, "error": str(e)[:500], "stopped": True})
@@ -855,18 +912,23 @@ def run_benchmark(spec: RunSpec, *, gateway=None, registry: CandidateRegistry | 
         row.update({"ok": True, "output": value.model_dump() if hasattr(value, "model_dump") else value,
                     "usage": dict(res.usage or {}), "latency_s": res.latency_s, "cache_hit": res.cache_hit,
                     "fingerprint": res.fingerprint, "retries": getattr(res, "retries", 0)})
-        # ---- route enforcement: a pinned arm that was served by a DIFFERENT
-        # provider is not the arm we froze. Only an EXPLICIT contrary
-        # observation counts — a response that names no provider leaves the pin
-        # unconfirmed (UNKNOWN), which is not a violation.
-        rc = getattr(live_backend, "last_route_check", None) if live_backend is not None else None
-        if rc and not res.cache_hit:
-            row["route_check"] = rc
-            if rc.get("violation"):
+        if campaign is not None:
+            campaign.settle_all()
+        # ---- route enforcement across EVERY physical attempt --------------
+        # Read the STICKY first violation and the full per-attempt list, never
+        # a mutable final-only value: a violation on attempt 1 followed by a
+        # correct provider on attempt 2 must still stop the arm.
+        if live_backend is not None and not res.cache_hit:
+            row["attempt_records"] = list(live_backend.attempt_records)
+            if live_backend.attempt_records:
+                row["route_check"] = live_backend.attempt_records[-1]
+            if live_backend.route_violation:
+                v = live_backend.route_violation
                 row.update({"ok": False, "error_type": "RouteViolation",
-                            "error": str(rc.get("detail"))[:500], "stopped": True})
+                            "error": str(v.get("detail"))[:500], "stopped": True,
+                            "route_violation": v})
                 _append_jsonl(outputs_path, row)
-                stopped = f"route violation: {rc.get('detail')}"
+                stopped = f"route violation: {v.get('detail')}"
                 log(f"STOP: {stopped}")
                 break
         _append_jsonl(outputs_path, row)

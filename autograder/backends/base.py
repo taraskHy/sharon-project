@@ -118,6 +118,13 @@ class BillingEvent:
     finish_reason: str | None = None
     attempt: int = 1
     error: str | None = None
+    #: Stable identifier for the PHYSICAL HTTP attempt that produced this
+    #: event. Propagated into the ledger row so a raw-response archive entry,
+    #: a route-attribution record and a cost row all join on one key rather
+    #: than on timestamps or file order.
+    attempt_id: str | None = None
+    #: 0 for the first send of a logical request, 1.. for transport retries.
+    retry_index: int = 0
 
     @property
     def billable(self) -> bool:
@@ -138,6 +145,8 @@ class BillingEvent:
             "parse_ok": self.parse_ok,
             "finish_reason": self.finish_reason,
             "attempt": self.attempt,
+            "attempt_id": self.attempt_id,
+            "retry_index": self.retry_index,
             "billable": self.billable,
             "error": self.error,
             **dict(self.usage or {}),

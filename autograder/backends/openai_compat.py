@@ -25,6 +25,7 @@ from __future__ import annotations
 
 import json
 import time
+import uuid
 from typing import TypeVar
 
 import httpx
@@ -103,13 +104,31 @@ class OpenAICompatBackend(VisionBackend):
         #: the shape whose raw body was unrecoverable in the prompt-v2 arms.
         self.raw_archive = None
         #: Populated per response so callers can enforce a provider pin.
+        #: NOTE: this is the LAST attempt's verdict only. Callers enforcing a
+        #: pin must read ``attempt_records`` / ``route_violation`` instead — a
+        #: violation on attempt 1 followed by a correct provider on attempt 2
+        #: would otherwise be erased here.
         self.last_route_check: dict | None = None
+        #: One entry per PHYSICAL HTTP attempt of the current parse(), in
+        #: order. Never overwritten; a retry appends.
+        self.attempt_records: list[dict] = []
+        #: STICKY. The first explicit route violation seen in this parse().
+        #: A later, correct attempt never clears it.
+        self.route_violation: dict | None = None
+        #: Called immediately BEFORE each physical send with
+        #: (attempt_id, retry_index, payload). Raising aborts before
+        #: transmission — this is where per-attempt budget authorization runs.
+        self.pre_send_hook = None
         #: The payload of the request in flight, for route provenance.
         self._payload_in_flight: dict | None = None
         #: Correlation labels the runner sets so an archived row can be joined
         #: back to its case without re-parsing the body.
         self.capture_task: str | None = None
         self.capture_case_id: str | None = None
+        #: Stable correlation labels supplied by the caller.
+        self.capture_campaign_id: str | None = None
+        self.capture_arm_id: str | None = None
+        self.capture_logical_request_id: str | None = None
 
     # -- request plumbing ---------------------------------------------------
 
@@ -159,6 +178,8 @@ class OpenAICompatBackend(VisionBackend):
             finish_reason=finish,
             attempt=self._attempt_no,
             error=error,
+            attempt_id=getattr(self, "_current_attempt_id", None),
+            retry_index=getattr(self, "_current_retry_index", 0),
         )
         self.billing_events.append(ev)
         if has_usage:
@@ -166,14 +187,20 @@ class OpenAICompatBackend(VisionBackend):
         return ev
 
     def _archive_raw(self, *, resp, data: dict | None, http_status: int | None,
-                     error: str | None = None) -> None:
-        """Archive one raw provider response. Never raises into the request
-        path: an archiving failure must not turn a successful (or informative
-        failed) provider call into a lost one."""
+                     error: str | None = None, attempt_id: str | None = None,
+                     retry_index: int = 0) -> None:
+        """Archive one raw provider response, then record its route verdict.
+
+        FAILS CLOSED. If the archive write fails, this raises ArchiveFailure:
+        the response has already arrived and already been billed, and that
+        cannot be undone, but accepting a parsed result whose evidence was
+        never recorded — and continuing to spend on further attempts while
+        blind — is worse than stopping.
+        """
         if self.raw_archive is None:
             return
+        from ..rawcapture import ArchiveFailure, build_record
         try:
-            from ..rawcapture import build_record
             finish = None
             try:
                 finish = (data or {})["choices"][0].get("finish_reason")
@@ -197,10 +224,64 @@ class OpenAICompatBackend(VisionBackend):
                 task=self.capture_task,
                 case_id=self.capture_case_id,
                 error=error,
+                campaign_id=self.capture_campaign_id,
+                arm_id=self.capture_arm_id,
+                logical_request_id=self.capture_logical_request_id,
+                attempt_id=attempt_id,
+                retry_index=retry_index,
             )
-            self.last_route_check = rec.route_check
+        except Exception as e:  # noqa: BLE001 — building a record must not mask the response
+            raise ArchiveFailure(f"could not build the raw-response record: {e}") from e
+        try:
             self.raw_archive.append(rec)
-        except Exception:  # noqa: BLE001 — archiving is best-effort by design
+        except Exception as e:  # noqa: BLE001 — FAIL CLOSED
+            self._note_archive_failure(attempt_id=attempt_id, retry_index=retry_index, exc=e)
+            raise ArchiveFailure(
+                f"raw response for attempt {attempt_id} could not be archived: {e}. "
+                "The response was already billed; stopping rather than accepting a parsed "
+                "result whose evidence was not recorded."
+            ) from e
+        # route state: append per attempt, and make the FIRST violation sticky
+        self.last_route_check = rec.route_check
+        self.attempt_records.append({
+            "attempt_id": attempt_id, "retry_index": retry_index,
+            "http_status": http_status, "case_id": self.capture_case_id,
+            "arm_id": self.capture_arm_id, "campaign_id": self.capture_campaign_id,
+            "logical_request_id": self.capture_logical_request_id,
+            "raw_body_sha256": rec.raw_body_sha256,
+            **rec.route_check,
+        })
+        if rec.route_check.get("violation") and self.route_violation is None:
+            self.route_violation = dict(self.attempt_records[-1])
+
+    def _note_archive_failure(self, *, attempt_id, retry_index, exc) -> None:
+        """Strongest independent audit record still available once the primary
+        archive write has failed: a sibling marker file, then a billing event.
+        Both are best-effort; the ArchiveFailure is raised regardless."""
+        try:
+            import json as _json
+            import time as _time
+            path = getattr(self.raw_archive, "path", None)
+            if path is not None:
+                marker = path.with_suffix(path.suffix + ".ARCHIVE_FAILURE")
+                with marker.open("a", encoding="utf-8", newline="\n") as fh:
+                    fh.write(_json.dumps({
+                        "ts": _time.strftime("%Y-%m-%d %H:%M:%S"),
+                        "attempt_id": attempt_id, "retry_index": retry_index,
+                        "case_id": self.capture_case_id, "arm_id": self.capture_arm_id,
+                        "campaign_id": self.capture_campaign_id,
+                        "logical_request_id": self.capture_logical_request_id,
+                        "error": f"{type(exc).__name__}: {exc}",
+                        "consequence": "response was billed but NOT archived; arm stopped",
+                    }, ensure_ascii=False) + "\n")
+        except Exception:  # noqa: BLE001 — the marker is best-effort
+            pass
+        try:
+            if self.billing_events:
+                ev = self.billing_events[-1]
+                ev.error = ((ev.error or "") + " | ARCHIVE_FAILURE").strip(" |")
+                ev.parse_ok = False
+        except Exception:  # noqa: BLE001
             pass
 
     @staticmethod
@@ -216,6 +297,15 @@ class OpenAICompatBackend(VisionBackend):
         last_error: Exception | None = None
         self._payload_in_flight = payload
         for attempt in range(self.config.transport_retries + 1):
+            # ---- PHYSICAL SEND BOUNDARY -------------------------------------
+            # Every physical attempt, including a transport retry, gets its own
+            # identity and must be authorized here. A retry does NOT inherit
+            # the first attempt's authorization: the hook raises to abort
+            # BEFORE transmission if the campaign has no headroom left.
+            attempt_id = uuid.uuid4().hex
+            self._current_attempt_id, self._current_retry_index = attempt_id, attempt
+            if self.pre_send_hook is not None:
+                self.pre_send_hook(attempt_id=attempt_id, retry_index=attempt, payload=payload)
             try:
                 resp = self._client.post("/chat/completions", json=payload)
             except httpx.TimeoutException as e:
@@ -239,7 +329,8 @@ class OpenAICompatBackend(VisionBackend):
                     data=_d, http_status=resp.status_code,
                     error=f"retryable HTTP {resp.status_code}")
                 self._archive_raw(resp=resp, data=_d, http_status=resp.status_code,
-                                  error=f"retryable HTTP {resp.status_code}")
+                                  error=f"retryable HTTP {resp.status_code}",
+                                  attempt_id=attempt_id, retry_index=attempt)
                 time.sleep(delay)
                 continue
             if resp.status_code != 200:
@@ -251,7 +342,8 @@ class OpenAICompatBackend(VisionBackend):
                     data=_d, http_status=resp.status_code,
                     error=f"HTTP {resp.status_code}")
                 self._archive_raw(resp=resp, data=_d, http_status=resp.status_code,
-                                  error=f"HTTP {resp.status_code}")
+                                  error=f"HTTP {resp.status_code}",
+                                  attempt_id=attempt_id, retry_index=attempt)
                 raise BackendError(
                     f"HTTP {resp.status_code} from backend: {resp.text[:500]}"
                 )
@@ -261,14 +353,16 @@ class OpenAICompatBackend(VisionBackend):
                 self._note_provider_response(data=None, http_status=resp.status_code,
                                              error="non-JSON body")
                 self._archive_raw(resp=resp, data=None, http_status=resp.status_code,
-                                  error="non-JSON body")
+                                  error="non-JSON body",
+                                  attempt_id=attempt_id, retry_index=attempt)
                 raise BackendError(
                     f"backend returned a non-JSON HTTP body: {resp.text[:300]}"
                 ) from e
             self._note_provider_response(data=data, http_status=resp.status_code)
             # Archived for EVERY 200, including the historical failure shape:
             # 200 + no usage block + no provider field + filtered content.
-            self._archive_raw(resp=resp, data=data, http_status=resp.status_code)
+            self._archive_raw(resp=resp, data=data, http_status=resp.status_code,
+                              attempt_id=attempt_id, retry_index=attempt)
             return data
         raise BackendError(
             f"backend unreachable after {self.config.transport_retries + 1} attempts: {last_error}"
@@ -359,6 +453,9 @@ class OpenAICompatBackend(VisionBackend):
         # including the ones whose bodies we then fail to use.
         self.billing_events = []
         self._attempt_no = 0
+        self.attempt_records = []
+        self.route_violation = None
+        self.last_route_check = None
 
         last_validation_error = ""
         for attempt in range(self.config.validation_retries + 1):

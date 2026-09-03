@@ -1,7 +1,7 @@
 {
  "artifact": "campaign_budget",
  "campaign": "OCR_ALTERNATIVE_CANDIDATE_SCREEN_V1",
- "experiment_sha256": "579b1f60415623dddbc482c4c701efa90a6d5d9c6d271adb08c3b61824a5eec6",
+ "experiment_sha256": "67a716fc6540ee410470b48739abc37ebdf90efe3b0a63413e503b83f50178cb",
  "starting_ledger_usd_L0": 0.70323229,
  "warning_increment_usd": 0.08,
  "hard_increment_usd": 0.12,
@@ -14,6 +14,6 @@
  },
  "predicted_campaign_worst_case_usd": 0.096896,
  "immutability_rule": "L0 is captured ONCE, before the first arm. warn_usd and hard_usd are absolute and are reused verbatim by every arm. They are never recomputed from a later ledger — that is what would hand each arm a fresh allowance.",
- "created_at": "2026-09-04 00:47:53",
- "content_sha256": "6590f472f3669ebacaddf7a5013e9c7d7d603e0a9638b95e4ec9e46227a2ecee"
+ "created_at": "2026-09-04 01:15:48",
+ "content_sha256": "8f32fd67d7bcae90e104922b59ec1d5a89e60a56826c4c533aee6453e463d2ff"
 }

@@ -167,13 +167,49 @@ def test_archive_is_append_only(tmp_path):
     assert len(b.raw_archive.records()) == 3
 
 
-def test_archiving_failure_never_breaks_the_request(tmp_path):
+def test_archive_write_failure_fails_closed(tmp_path):
+    """CORRECTED CLAIM. An earlier version of this suite asserted that an
+    archiving failure "never breaks the request" and returned the parsed body
+    anyway. That is the wrong guarantee: the response was already billed, and
+    accepting it without its evidence is exactly the blindness this module
+    exists to prevent. It now FAILS CLOSED."""
+    from autograder.rawcapture import ArchiveFailure
+
     class Exploding:
+        path = None
         def append(self, rec):
             raise OSError("disk full")
     b = _backend(lambda r: httpx.Response(200, json=dict(FILTERED_200, usage={"prompt_tokens": 1})))
     b.raw_archive = Exploding()
-    assert b._post_chat({"model": "m", "messages": []})["id"] == FILTERED_200["id"]
+    with pytest.raises(ArchiveFailure) as ei:
+        b._post_chat({"model": "m", "messages": []})
+    assert "already billed" in str(ei.value)
+
+
+def test_archive_failure_leaves_an_independent_audit_record(tmp_path):
+    """The strongest record still available once the primary write failed: a
+    sibling marker file plus a tainted billing event."""
+    from autograder.rawcapture import ArchiveFailure, RawResponseArchive
+
+    arch = RawResponseArchive(tmp_path / "raw.jsonl")
+    def boom(rec):
+        raise OSError("disk full")
+    arch.append = boom
+    b = _backend(lambda r: httpx.Response(200, json=dict(FILTERED_200, usage={"prompt_tokens": 1})))
+    b.raw_archive = arch
+    b.capture_case_id, b.capture_arm_id = "hc_e002_q1_r1", "arm-1"
+    with pytest.raises(ArchiveFailure):
+        b._post_chat({"model": "m", "messages": []})
+
+    marker = tmp_path / "raw.jsonl.ARCHIVE_FAILURE"
+    assert marker.exists(), "an independent failure record must survive"
+    rec = json.loads(marker.read_text(encoding="utf-8").splitlines()[0])
+    assert rec["case_id"] == "hc_e002_q1_r1" and rec["arm_id"] == "arm-1"
+    assert rec["attempt_id"] and "disk full" in rec["error"]
+    assert "billed but NOT archived" in rec["consequence"]
+    # the billing event is tainted so the ledger row cannot read as clean
+    assert b.billing_events[-1].parse_ok is False
+    assert "ARCHIVE_FAILURE" in (b.billing_events[-1].error or "")
 
 
 # ---- secret redaction --------------------------------------------------------

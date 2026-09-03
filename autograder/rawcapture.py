@@ -28,6 +28,25 @@ would have manufactured a false answer to the prompt-v2 question.
 **Artifacts are write-once.** A filename that already exists is never
 overwritten; the collision is surfaced instead, because silently replacing an
 archived response would destroy the audit trail it exists to provide.
+
+What this module does and does not guarantee
+--------------------------------------------
+
+It does NOT guarantee that a provider call can never be lost. No software can
+promise that once a response has already arrived: the provider has billed us,
+and a storage failure at that moment cannot be undone by retrying, buffering or
+any other local action.
+
+The guarantee is narrower and actually achievable:
+
+* a provider response is never *silently* accepted without its raw evidence —
+  if the archive write fails, :class:`ArchiveFailure` is raised, the parsed
+  result is NOT returned, and no further attempt or case is sent;
+* a best-effort independent marker (``<archive>.ARCHIVE_FAILURE``) and a
+  tainted billing event record what was lost, so the gap is visible in the
+  audit trail rather than inferred from a hole in it.
+
+In short: loss is possible, but silent loss is not.
 """
 from __future__ import annotations
 
@@ -137,6 +156,20 @@ class RouteViolation(RuntimeError):
     """The response explicitly named a provider we did not pin to."""
 
 
+class ArchiveFailure(RuntimeError):
+    """The raw response could not be archived.
+
+    This FAILS CLOSED. The response has already arrived and has already been
+    billed — that cannot be undone — but proceeding would mean accepting a
+    parsed result whose evidence was never recorded, and continuing to spend
+    on further attempts while blind. Raising stops the arm instead.
+
+    The honest guarantee is therefore NOT "a provider call can never be lost".
+    It is: a provider call is never *silently* accepted without its raw
+    evidence. If the archive write fails, the run stops and says so.
+    """
+
+
 def check_route(requested: dict[str, Any], observed_provider: str | None,
                 status: str) -> dict[str, Any]:
     """Compare intent against what the response explicitly reported.
@@ -201,6 +234,14 @@ class RawResponseRecord:
     task: str | None = None
     case_id: str | None = None
     error: str | None = None
+    # ---- stable correlation identifiers (never timestamps or file order) ----
+    campaign_id: str | None = None
+    arm_id: str | None = None
+    logical_request_id: str | None = None
+    attempt_id: str | None = None
+    retry_index: int | None = None
+    case_hash: str | None = None
+    ledger_entry_id: str | None = None
 
     def to_json(self) -> dict[str, Any]:
         d = asdict(self)
@@ -221,6 +262,9 @@ def build_record(*, payload: dict | None, http_status: int | None,
                  parsed_outcome: dict[str, Any] | None = None,
                  attempt: int | None = None, task: str | None = None,
                  case_id: str | None = None, error: str | None = None,
+                 campaign_id: str | None = None, arm_id: str | None = None,
+                 logical_request_id: str | None = None, attempt_id: str | None = None,
+                 retry_index: int | None = None, ledger_entry_id: str | None = None,
                  now: str | None = None) -> RawResponseRecord:
     """Assemble one sanitized record. Pure: no I/O, no network."""
     requested = requested_route_of(payload)
@@ -250,6 +294,11 @@ def build_record(*, payload: dict | None, http_status: int | None,
         parsed_outcome=dict(parsed_outcome or {}),
         route_check=check_route(requested, observed, status),
         attempt=attempt, task=task, case_id=case_id, error=error,
+        campaign_id=campaign_id, arm_id=arm_id,
+        logical_request_id=logical_request_id, attempt_id=attempt_id,
+        retry_index=retry_index,
+        case_hash=(hashlib.sha256(case_id.encode()).hexdigest()[:16] if case_id else None),
+        ledger_entry_id=ledger_entry_id or attempt_id,
     )
 
 
@@ -281,6 +330,6 @@ class RawResponseArchive:
 
 
 __all__ = ["SAFE_HEADERS", "FORBIDDEN_HEADERS", "EXPLICIT", "UNKNOWN", "MAX_BODY_CHARS",
-           "RawResponseRecord", "RawResponseArchive", "RouteViolation",
+           "RawResponseRecord", "RawResponseArchive", "RouteViolation", "ArchiveFailure",
            "build_record", "redact_secrets", "safe_headers", "observed_provider_of",
            "requested_route_of", "check_route"]
