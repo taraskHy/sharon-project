@@ -1,0 +1,79 @@
+{
+ "primary_metric": "mean_cer (lower is better) on audited references; usable rates secondary",
+ "overall": {
+  "cases": 6,
+  "mean_cer": 0.1914,
+  "median_cer": 0.0621,
+  "usable_le_0.25_pct": 66.67,
+  "usable_le_0.50_pct": 83.33,
+  "number_sign_formula_errors": 3
+ },
+ "by_category": {
+  "formula_printed": {
+   "cases": 1,
+   "mean_cer": 0.08,
+   "median_cer": 0.08,
+   "usable_le_0.25_pct": 100.0,
+   "usable_le_0.50_pct": 100.0,
+   "number_sign_formula_errors": 1
+  },
+  "handwritten_cell": {
+   "cases": 2,
+   "mean_cer": 0.1799,
+   "median_cer": 0.1799,
+   "usable_le_0.25_pct": 50.0,
+   "usable_le_0.50_pct": 100.0,
+   "number_sign_formula_errors": 1
+  },
+  "handwritten_line": {
+   "cases": 1,
+   "mean_cer": 0.0,
+   "median_cer": 0.0,
+   "usable_le_0.25_pct": 100.0,
+   "usable_le_0.50_pct": 100.0,
+   "number_sign_formula_errors": 0
+  },
+  "mixed_he_en": {
+   "cases": 1,
+   "mean_cer": 0.0,
+   "median_cer": 0.0,
+   "usable_le_0.25_pct": 100.0,
+   "usable_le_0.50_pct": 100.0,
+   "number_sign_formula_errors": 0
+  },
+  "option_row_association": {
+   "cases": 1,
+   "mean_cer": 0.7083,
+   "median_cer": 0.7083,
+   "usable_le_0.25_pct": 0.0,
+   "usable_le_0.50_pct": 0.0,
+   "number_sign_formula_errors": 1
+  }
+ },
+ "hard_items": {
+  "cases": 0,
+  "mean_cer": null,
+  "median_cer": null,
+  "usable_le_0.25_pct": null,
+  "usable_le_0.50_pct": null,
+  "number_sign_formula_errors": 0
+ },
+ "schema_failures": 2,
+ "provider_failures": 0,
+ "no_output_cases": 2,
+ "unscored_no_reference": 0,
+ "refused_invalid_reference": 0,
+ "usage": {
+  "calls_live": 3,
+  "cache_hits": 5,
+  "latency_mean_s": 4.047,
+  "latency_median_s": 4.047,
+  "input_tokens": 1359,
+  "output_tokens": 402,
+  "reasoning_tokens": 367,
+  "total_tokens": 1761,
+  "reported_cost": 0.002527
+ },
+ "cases_selected": 8,
+ "cases_with_result": 8
+}

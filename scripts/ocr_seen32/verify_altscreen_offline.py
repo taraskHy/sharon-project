@@ -118,10 +118,20 @@ def main() -> int:
            .read_text(encoding="utf-8").splitlines() if l.strip()]
     cum = sum(float(r.get("reported_cost") or 0) for r in led
               if r.get("cloud") and not r.get("cache_hit"))
-    check("ledger cumulative == L0", round(cum, 8) == round(b.starting_ledger_usd, 8),
-          f"{cum:.8f}")
-    check("no run directory for the screen",
-          not Path("evaluation/model_selection/runs_altscreen").exists())
+    # L0 is the PRE-CAMPAIGN baseline. Once an arm has legitimately run, the
+    # ledger is above it — what must still hold is that spend never left the
+    # envelope and never exceeded the authorization.
+    spent = round(cum - b.starting_ledger_usd, 8)
+    check("ledger has not fallen below L0", cum >= b.starting_ledger_usd - 1e-9, f"{cum:.8f}")
+    check("cumulative ledger is within the fixed hard threshold", cum <= b.hard_usd,
+          f"{cum:.8f} <= {b.hard_usd:.8f}")
+    check("campaign spend is within the $0.12 authorization", spent <= 0.12,
+          f"${spent:.8f}")
+    root = Path("evaluation/model_selection/runs_altscreen")
+    partial = [p.parent.name for p in root.rglob("outputs.jsonl")
+               if len([l for l in p.read_text(encoding="utf-8").splitlines() if l.strip()]) not in (0, 8)]
+    check("no PARTIAL arm outputs (a refused arm leaves an empty dir, which is fine)",
+          not partial, str(partial))
 
     print(f"\n{'=' * 70}\n{len(ok)} checks PASS, {len(problems)} PROBLEM(S)")
     if problems:

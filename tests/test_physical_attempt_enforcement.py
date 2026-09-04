@@ -367,3 +367,63 @@ def test_F_join_does_not_depend_on_order_or_timestamps(tmp_path):
         assert evs[r["attempt_id"]].http_status == r["http_status"]
     # timestamps are not a key: they can legitimately collide within a second
     assert len({r["attempt_id"] for r in recs}) == 2
+
+
+# =============================================================================
+# G. route identity — the defect that stopped the live campaign on 2026-09-04
+# =============================================================================
+
+@pytest.mark.xfail(strict=True, reason=
+    "KNOWN DEFECT, deliberately unfixed. TaskRoute.fingerprint_fields() omits `provider`, so a "
+    "pinned arm shares a config_hash AND a request-cache key with the unpinned configuration. "
+    "This stopped the live campaign on 2026-09-04 after 5 of 8 cases were served from an "
+    "UNPINNED run's cache (see OCR_ALTSCREEN_MECHANICAL_STOP_2026-09-04.json). Fixing it "
+    "changes every route fingerprint and therefore the frozen experiment hash, so it needs an "
+    "explicit re-freeze and re-authorization rather than a silent supersede. strict=True means "
+    "whoever fixes it must flip this marker deliberately.")
+def test_G_provider_must_enter_the_route_fingerprint():
+    """REGRESSION, currently FAILING BY DESIGN when unfixed.
+
+    TaskRoute.fingerprint_fields() omitted `provider`, so a provider-pinned arm
+    resolved the SAME config_hash and the SAME request-cache fingerprint as the
+    unpinned configuration. In the live campaign this made a 'pinned' arm reuse
+    5 cached responses produced by an earlier UNPINNED run, and gave the arm no
+    distinct run identity.
+
+    Two pins that name DIFFERENT providers must never share a fingerprint, and
+    a pinned route must never share one with an unpinned route.
+    """
+    from autograder.gateway import TaskRoute
+    base = dict(task="ocr_primary", backend="openrouter", model="google/gemini-3.7-flash")
+    ai = TaskRoute(**base, provider={"order": ["google-ai-studio"], "allow_fallbacks": False})
+    vx = TaskRoute(**base, provider={"order": ["google-vertex"], "allow_fallbacks": False})
+    auto = TaskRoute(**base)
+
+    assert "provider" in ai.fingerprint_fields(), \
+        "provider must be part of route identity or a pinned arm cannot be distinguished"
+    assert ai.fingerprint_fields() != vx.fingerprint_fields(), \
+        "two different provider pins must not share a fingerprint"
+    assert ai.fingerprint_fields() != auto.fingerprint_fields(), \
+        "a pinned route must not share a fingerprint with automatic routing"
+
+
+@pytest.mark.xfail(strict=True, reason=
+    "Same known defect: the cache key derives from the route fingerprint, which omits provider.")
+def test_G_request_cache_fingerprint_separates_pinned_routes():
+    """The cache key is derived from the route fingerprint, so the same defect
+    let an unpinned cached response satisfy a pinned request."""
+    from autograder.gateway import TaskRoute
+    from autograder.requestcache import fingerprint
+    from pydantic import BaseModel
+
+    class M(BaseModel):
+        transcription: str
+
+    base = dict(task="ocr_primary", backend="openrouter", model="google/gemini-3.7-flash")
+    blocks = [{"type": "text", "text": "same"}]
+    fp = lambda r: fingerprint(r, "sys", blocks, M, 1000, {})
+    ai = TaskRoute(**base, provider={"order": ["google-ai-studio"], "allow_fallbacks": False})
+    vx = TaskRoute(**base, provider={"order": ["google-vertex"], "allow_fallbacks": False})
+    auto = TaskRoute(**base)
+    assert fp(ai) != fp(vx), "ai-studio and vertex must not share a cache key"
+    assert fp(ai) != fp(auto), "a pinned arm must not replay an unpinned cached response"

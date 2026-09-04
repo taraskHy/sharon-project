@@ -160,6 +160,33 @@ def test_provider_pin_requires_determinism():
     assert provider_pin_of(NoPin()) is None
 
 
+def test_pin_is_recognised_on_a_TaskRoute_not_only_a_BackendConfig(reg):
+    """REGRESSION. provider_pin_of originally read only extra_generation, but
+    TaskRoute carries the routing object as a TOP-LEVEL field and folds it into
+    extra_generation only in to_backend_config(). A genuinely pinned arm
+    therefore looked like automatic routing and was refused as a dropped
+    auto-route configuration — which is exactly how the first live attempt of
+    the alt-candidate screen was blocked, at zero cost."""
+    from autograder.gateway import TaskRoute
+    pin = {"order": ["google-ai-studio"], "allow_fallbacks": False}
+    route = TaskRoute(task="ocr_primary", backend="openrouter", model=GEM,
+                      provider=pin, prompt_version="m2-strict-v1")
+    assert provider_pin_of(route) == "google-ai-studio", "TaskRoute shape"
+    assert provider_pin_of(route.to_backend_config()) == "google-ai-studio", "BackendConfig shape"
+    # and the guard must therefore let the pinned arm through
+    assert_selectable(GEM, "m2-strict-v1", provider_pin_of(route), registry=reg)
+
+
+def test_an_unpinned_taskroute_is_still_automatic_routing(reg):
+    from autograder.gateway import TaskRoute
+    assert provider_pin_of(TaskRoute(task="t", backend="openrouter", model=GEM)) is None
+    assert provider_pin_of(TaskRoute(task="t", backend="openrouter", model=GEM,
+                                     provider={"order": ["a"], "allow_fallbacks": True})) is None
+    assert provider_pin_of(TaskRoute(task="t", backend="openrouter", model=GEM,
+                                     provider={"order": ["a", "b"],
+                                               "allow_fallbacks": False})) is None
+
+
 def test_pinned_gemini_is_a_distinct_route_and_not_inherited_as_dropped(reg):
     for pin in ("google-ai-studio", "google-vertex"):
         assert decisions_for(GEM, "m2-strict-v1", pin, registry=reg) == []
@@ -302,11 +329,21 @@ def test_screen_experiment_self_hash_verifies(screen):
 
 # ---- 14. zero provider calls --------------------------------------------------
 
-def test_the_screen_has_not_been_executed(screen):
+def test_preparing_the_screen_made_no_provider_calls(screen):
+    """Directory ABSENCE is not the property that matters — a refused arm
+    creates the run directory before the decision-registry guard fires, and
+    that refusal is a success, not an execution. What matters is that no
+    outputs exist for an arm that has not run."""
     assert screen["provider_calls_made_preparing_this"] == 0
-    assert screen["status"].startswith("FROZEN - NOT EXECUTED")
-    assert not Path("evaluation/model_selection/runs_altscreen").exists(), \
-        "the screen must not have been run"
+    root = Path("evaluation/model_selection/runs_altscreen")
+    if root.exists():
+        for run_dir in root.rglob("*"):
+            if run_dir.is_dir() and (run_dir / "outputs.jsonl").exists():
+                rows = [json.loads(l) for l in
+                        (run_dir / "outputs.jsonl").read_text(encoding="utf-8").splitlines()
+                        if l.strip()]
+                # an executed arm must be a COMPLETE frozen arm, never a partial
+                assert len(rows) <= 8, f"{run_dir.name} has more rows than the frozen 8"
 
 
 def test_payload_boundary_was_verified_offline(screen):

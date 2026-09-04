@@ -1,0 +1,86 @@
+{
+ "artifact": "ocr_altscreen_campaign_mechanical_stop",
+ "created_at": "2026-09-04 03:06:10",
+ "git_commit": "87e79bf7f8505882e956fc94108b525e1656a5cf",
+ "campaign": "OCR_ALTERNATIVE_CANDIDATE_SCREEN_V1",
+ "experiment_sha256": "67a716fc6540ee410470b48739abc37ebdf90efe3b0a63413e503b83f50178cb",
+ "outcome": "INCONCLUSIVE_MECHANICAL_STOP",
+ "arms_attempted": 1,
+ "arms_completed_validly": 0,
+ "arms_not_started": 2,
+ "stopped_before_arm": [
+  "gemini_pinned_vertex",
+  "qwen3_vl_235b_pinned_alibaba"
+ ],
+ "spend": {
+  "L0": 0.70323229,
+  "ending_ledger_usd": 0.70575904,
+  "additional_spend_usd": 0.00252675,
+  "authorization_usd": 0.12,
+  "within_authorization": true,
+  "hard_threshold_usd": 0.82323229,
+  "headroom_remaining_usd": 0.11747325,
+  "ledger_rows_before": 798,
+  "ledger_rows_after": 806
+ },
+ "stop_conditions_triggered": [
+  {
+   "condition": "missing or inconsistent attempt linkage",
+   "evidence": "an UnboundLocalError in the runner's raw-capture setup (`campaign` referenced before assignment) made the runner treat capture as unavailable and set live_backend = None. Consequences: the PRE-SEND BUDGET HOOK was never installed, per-attempt route aggregation never ran, and NO logical row carries attempt_records. Archiving continued only incidentally, because raw_archive had already been assigned on the backend object before the exception fired - so the 3 archived rows have campaign_id, arm_id and case_id all null.",
+   "surfaced_as": "run warning: 'raw response capture unavailable: UnboundLocalError'",
+   "severity": "the per-physical-attempt enforcement built and reported at 87e79bf DID NOT RUN in this arm"
+  },
+  {
+   "condition": "unexpected provider/run configuration",
+   "evidence": "TaskRoute.fingerprint_fields() does NOT include `provider`. The pinned arm therefore resolved config_hash 45297cdd83 - IDENTICAL to the historical UNPINNED Stage-1b/1c Gemini runs - so a pinned arm has no distinct run identity, and run.json (which records fingerprint_fields) cannot record which provider was requested.",
+   "consequence_1": "5 of the 8 cases were served from the REQUEST CACHE, whose fingerprint also omits provider. Those 5 replays were produced by an earlier UNPINNED run and are not measurements of the pinned route at all.",
+   "consequence_2": "a previous report of mine claimed 'provider enters the config hash, so a pinned arm is a distinct frozen experiment'. That claim was FALSE and is retracted here.",
+   "severity": "invalidates the arm as a provider-attribution measurement"
+  }
+ ],
+ "what_the_three_live_attempts_do_show": {
+  "caveat": "recorded for completeness only. This is NOT a gate evaluation: the arm is invalid, and 3 live attempts on a partially cache-served 8-case arm cannot evaluate any pre-registered gate.",
+  "live_attempts": 3,
+  "cache_replays": 5,
+  "pin_reached_the_wire": true,
+  "observed_provider": [
+   "Google AI Studio"
+  ],
+  "provider_attribution_status": [
+   "EXPLICIT"
+  ],
+  "route_violations": 0,
+  "note": "on all three LIVE attempts the payload carried order=['google-ai-studio'] with allow_fallbacks=false and the response EXPLICITLY reported 'Google AI Studio'. The pin mechanism itself worked on the wire. That is the one positive finding here, and it does not rescue the arm."
+ },
+ "attribution_discipline_held": {
+  "requested_and_observed_kept_separate": true,
+  "unknown_treated_as_unknown": true,
+  "no_provider_inferred_from_slug_or_requested_route": true,
+  "explicit_mismatch_would_have_been_a_violation": true,
+  "violations_observed": 0
+ },
+ "integrity_of_what_was_written": {
+  "raw_response_rows": 3,
+  "raw_body_sha256_present": true,
+  "ledger_rows_for_this_arm": 8,
+  "billable_live_calls": 3,
+  "cache_hit_rows": 5,
+  "archive_failure_marker": false,
+  "held_out_access": 0,
+  "audited_references_modified": 0,
+  "active_grades_changed": 0
+ },
+ "gates_not_evaluated": "No pre-registered gate is evaluated. The arm did not produce a valid 8-case pinned measurement, and evaluating gates on a partially cache-served arm would be reading a number that does not mean what its label says.",
+ "required_before_any_re_run": [
+  "fix TaskRoute.fingerprint_fields() to include `provider`, so a pinned arm has a distinct config_hash AND a distinct request-cache fingerprint (this is the defect that let unpinned cached responses serve a pinned arm)",
+  "fix the UnboundLocalError so the pre-send budget hook and per-attempt route aggregation actually install",
+  "record the requested provider routing in run.json, which fingerprint_fields currently omits",
+  "re-freeze the screen (the config hashes and therefore the run identities will change) and obtain a fresh authorization - the $0.12 grant was for the frozen campaign as specified",
+  "decide explicitly whether the 5 cached Stage-1c responses may be reused at all, or whether the arm must run cache-cold"
+ ],
+ "recommendation": "INCONCLUSIVE_MECHANICAL_STOP. Do not run arms 2 and 3 under the present freeze: they would inherit the same fingerprint collision and the same cache contamination, and arm 2 (vertex) would additionally be at risk of replaying the very ai-studio responses arm 1 just produced, since the two pins share a fingerprint. Fix the four defects, re-freeze, re-authorize.",
+ "authorization_respected": true,
+ "no_seen32": true,
+ "ocr_primary_role_status": "UNSELECTED (unchanged)",
+ "content_sha256": "d7fbf6f9c2b32fb0cefdb1c82f3bf94ec0cddbb8ecc380cc2b98d48b351e268f"
+}

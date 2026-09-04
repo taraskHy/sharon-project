@@ -105,13 +105,27 @@ def decisions_for(model: str, prompt_version: str | None = None,
 def provider_pin_of(route: Any) -> str | None:
     """The single pinned provider slug of a route, or None for automatic
     routing. A pin with fallbacks enabled, or more than one provider in the
-    order, is NOT deterministic and is reported as unpinned."""
-    eg = getattr(route, "extra_generation", None)
+    order, is NOT deterministic and is reported as unpinned.
+
+    The routing object lives in one of two places depending on how far down the
+    stack the route has travelled. ``TaskRoute`` carries it as a TOP-LEVEL
+    ``provider`` field and only folds it into ``extra_generation`` inside
+    ``to_backend_config()``. Reading only ``extra_generation`` therefore made a
+    genuinely pinned TaskRoute look like automatic routing — which is how the
+    first live attempt of the alt-candidate screen was refused as a dropped
+    auto-route arm. Both shapes are accepted, top level first.
+    """
+    prov = None
     if isinstance(route, dict):
-        eg = route.get("extra_generation")
-    if not isinstance(eg, dict):
-        return None
-    prov = eg.get("provider")
+        prov = route.get("provider")
+        if not isinstance(prov, dict):
+            eg = route.get("extra_generation")
+            prov = eg.get("provider") if isinstance(eg, dict) else None
+    else:
+        prov = getattr(route, "provider", None)
+        if not isinstance(prov, dict):
+            eg = getattr(route, "extra_generation", None)
+            prov = eg.get("provider") if isinstance(eg, dict) else None
     if not isinstance(prov, dict):
         return None
     order = prov.get("order")
