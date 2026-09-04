@@ -453,3 +453,95 @@ def test_ocr_primary_role_is_still_unselected():
     import tomllib
     reg = tomllib.loads(Path("evaluation/model_selection/candidates.toml").read_text(encoding="utf-8"))
     assert reg["roles"]["ocr_primary"]["status"] == "UNSELECTED"
+
+
+# ---- V1 closure and V2 freeze -------------------------------------------------
+
+V1P = Path("evaluation/model_selection/experiments/"
+           "OCR_ALTERNATIVE_CANDIDATE_SCREEN_V1_2026-09-03.json")
+V2P = Path("evaluation/model_selection/experiments/"
+           "OCR_ALTERNATIVE_CANDIDATE_SCREEN_V2_2026-09-04.json")
+CLOSURE = Path("evaluation/model_selection/runs/ocr_primary/"
+               "OCR_ALTSCREEN_V1_CLOSURE_2026-09-04.json")
+
+
+@pytest.fixture(scope="module")
+def v2():
+    return json.loads(V2P.read_text(encoding="utf-8"))
+
+
+def test_v1_is_closed_as_inconclusive_and_never_rehashed():
+    c = json.loads(CLOSURE.read_text(encoding="utf-8"))
+    v1 = json.loads(V1P.read_text(encoding="utf-8"))
+    assert c["terminal_outcome"] == "INCONCLUSIVE_MECHANICAL_STOP"
+    assert c["gates_not_evaluated"] is True
+    assert c["experiment_sha256"] == v1["experiment_sha256"], \
+        "the closure must reference V1's hash AS EXECUTED, unchanged"
+    assert "never be edited or re-hashed" in c["immutability"]
+
+
+def test_v1_evidence_is_preserved_and_partitioned():
+    e = json.loads(CLOSURE.read_text(encoding="utf-8"))["preserved_evidence"]
+    assert e["five_historical_unpinned_cache_hits"]["count"] == 5
+    assert e["three_live_ai_studio_attempts"]["count"] == 3
+    assert e["three_live_ai_studio_attempts"]["route_violations"] == 0
+    assert e["spend"]["additional_spend_usd"] == 0.00252675
+    assert e["spend"]["ledger_before"] == 0.70323229
+    assert e["spend"]["ledger_after"] == 0.70575904
+    assert "campaign_id" in e["missing_linkage_fields"]["null_fields"]
+
+
+def test_v1_live_outputs_support_only_the_pin_statement_and_are_not_reusable():
+    live = json.loads(CLOSURE.read_text(encoding="utf-8"))[
+        "preserved_evidence"]["three_live_ai_studio_attempts"]
+    assert "reached the wire" in live["THE_ONLY_STATEMENT_THESE_SUPPORT"]
+    assert "must NOT be reused" in live["explicitly_not_reusable"]
+    assert json.loads(V2P.read_text(encoding="utf-8"))[
+        "supersedes"]["v1_outputs_excluded_from_v2_evaluation"] is True
+
+
+def test_v2_keeps_the_frozen_design(v2):
+    v1 = json.loads(V1P.read_text(encoding="utf-8"))
+    assert v2["population"]["ordered_case_ids"] == v1["population"]["ordered_case_ids"]
+    assert v2["population"]["cases"] == v1["population"]["cases"]
+    assert v2["prompt"]["version"] == "m2-strict-v1"
+    assert v2["schema"] == v1["schema"]
+    assert v2["advancement_and_drop_rules_stated_in_advance"] == \
+        v1["advancement_and_drop_rules_stated_in_advance"]
+    assert [a["provider_pin"] for a in v2["candidates"]] == \
+        [a["provider_pin"] for a in v1["candidates"]]
+    assert v2["execution_requirements"]["retry_policy"]["transport_retries"] == 2
+
+
+def test_v2_freezes_the_corrected_identity_and_cache_policy(v2):
+    ip = v2["identity_and_cache_policy"]
+    assert ip["identity_version"] == 2
+    assert ip["cache_policy"] == "refresh"
+    assert ip["cache_hits_allowed"] == 0
+    assert ip["cache_hit_consequence"] == "INCONCLUSIVE_MECHANICAL_STOP"
+    assert len(set(ip["arm_identities"].values())) == 3
+    assert set(ip["excluded_from_all_identities"]) >= {"api_key", "api_key_env"}
+    assert v2["execution_requirements"]["all_intended_logical_requests_live"] == 24
+    assert set(v2["execution_requirements"]["required_attempt_linkage_fields"]) == {
+        "campaign_id", "arm_id", "case_id", "logical_request_id", "attempt_id", "retry_index"}
+
+
+def test_v2_budget_is_prospective_and_fits(v2):
+    b = v2["budget"]
+    assert b["L0_verified_from_disk"] == 0.70575904
+    assert b["campaign_family_absolute_limits_preserved"] == {"warning": 0.78323229,
+                                                              "hard": 0.82323229}
+    assert b["prospective_warning_increment"] == 0.07747325
+    assert b["prospective_hard_increment"] == 0.11747325
+    assert b["L0_verified_from_disk"] + b["predicted_worst_case_usd"] <= 0.82323229
+    assert "NOT_AUTHORIZED" in b
+
+
+def test_v2_is_frozen_but_not_authorized_and_not_executed(v2):
+    assert v2["status"] == "FROZEN - NOT EXECUTED - NOT AUTHORIZED"
+    assert v2["provider_calls_made_preparing_this"] == 0
+    body = json.dumps({k: v for k, v in v2.items() if k != "experiment_sha256"},
+                      ensure_ascii=False, indent=1, sort_keys=True, default=str)
+    assert hashlib.sha256(body.encode()).hexdigest() == v2["experiment_sha256"]
+    assert not Path("evaluation/model_selection/policies/"
+                    "OCR_ALTSCREEN_V2_CAMPAIGN_BUDGET.json").exists()

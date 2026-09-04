@@ -1,0 +1,105 @@
+{
+ "artifact": "ocr_altscreen_v1_terminal_closure",
+ "created_at": "2026-09-04 13:55:20",
+ "git_commit": "9ae5039642e7ea3bd8a3903b3702e4805fb17b1c",
+ "provider_calls_in_this_artifact": 0,
+ "experiment": "OCR_ALTERNATIVE_CANDIDATE_SCREEN_V1",
+ "experiment_sha256": "67a716fc6540ee410470b48739abc37ebdf90efe3b0a63413e503b83f50178cb",
+ "terminal_outcome": "INCONCLUSIVE_MECHANICAL_STOP",
+ "immutability": "V1 has been PARTIALLY EXECUTED. It must never be edited or re-hashed again. Any correction lives in a NEW experiment (V2), never as an amendment to this one. Its prior amendment chain (39305a62 -> 579b1f60 -> 67a716fc) is closed.",
+ "gates_not_evaluated": true,
+ "gates_not_evaluated_reason": "no arm produced a valid 8-case pinned measurement; evaluating pre-registered gates on a partially cache-served arm would report a number that does not mean what its label says",
+ "arms": {
+  "attempted": 1,
+  "completed_validly": 0,
+  "not_started": [
+   "gemini_pinned_vertex",
+   "qwen3_vl_235b_pinned_alibaba"
+  ]
+ },
+ "preserved_evidence": {
+  "five_historical_unpinned_cache_hits": {
+   "count": 5,
+   "case_ids": [
+    "hc_e002_q1_r1",
+    "hc_e002_q1_r7",
+    "pr_docA_p1_b1",
+    "pr_docA_p2_b3",
+    "assoc_docB_p2_b1"
+   ],
+   "what_they_are": "responses produced by an EARLIER UNPINNED run and replayed because the v1 cache key omitted `provider`. They are not measurements of the pinned route and are excluded from every metric.",
+   "status": "PRESERVED ON DISK, EXCLUDED FROM ALL EVALUATION"
+  },
+  "three_live_ai_studio_attempts": {
+   "count": 3,
+   "attempt_ids": [
+    "0f31b6bd25be4af5a36808494b61f467",
+    "3cd58ab5a5b0470f8df09053e3cde02b",
+    "8883f0dd64964fe0b4b3d9a5cfb6607f"
+   ],
+   "raw_body_sha256": {
+    "0f31b6bd25be4af5a36808494b61f467": "142fbc11e54385a3ad6e22a61a77d6e61d2a4048213adf9395e8f021dcbbd583",
+    "3cd58ab5a5b0470f8df09053e3cde02b": "58be2b9cfbf94bc5a24b564f6e79f87493724508193c614201fa6c011a9a84c7",
+    "8883f0dd64964fe0b4b3d9a5cfb6607f": "31d24adb5a7daaf3c02e78fb1c3ebbf4d268f0ce5940d115a7679c4ab54aba2c"
+   },
+   "raw_body_bytes": {
+    "0f31b6bd25be4af5a36808494b61f467": 1879,
+    "3cd58ab5a5b0470f8df09053e3cde02b": 928,
+    "8883f0dd64964fe0b4b3d9a5cfb6607f": 1477
+   },
+   "requested_provider_order": [
+    "google-ai-studio"
+   ],
+   "allow_fallbacks": false,
+   "observed_provider": [
+    "Google AI Studio"
+   ],
+   "provider_attribution_status": [
+    "EXPLICIT"
+   ],
+   "route_violations": 0,
+   "THE_ONLY_STATEMENT_THESE_SUPPORT": "the requested pin reached the wire and the responses explicitly identified Google AI Studio",
+   "explicitly_not_reusable": "must NOT be reused in V2 metrics, V2 denominators or any advancement decision"
+  },
+  "spend": {
+   "additional_spend_usd": 0.00252675,
+   "ledger_before": 0.70323229,
+   "ledger_after": 0.70575904,
+   "ledger_rows_before": 798,
+   "ledger_rows_after": 806,
+   "authorization_usd": 0.12,
+   "within_authorization": true
+  },
+  "missing_linkage_fields": {
+   "affected": "every logical row and all three archived attempts",
+   "null_fields": [
+    "campaign_id",
+    "arm_id",
+    "case_id"
+   ],
+   "attempt_records_on_logical_rows": 0,
+   "cause": "the runner treated capture as unavailable, so nothing populated them"
+  }
+ },
+ "mechanical_defects": [
+  {
+   "id": "V1-D1",
+   "title": "route identity omitted the provider pin",
+   "detail": "TaskRoute.fingerprint_fields() was a hand-maintained list that did not mention `provider`. The pinned arm therefore resolved config_hash 45297cdd83 - identical to the historical UNPINNED Stage-1b/1c runs - and the request cache, keyed from the same list, served 5 of 8 cases from an earlier unpinned run.",
+   "fixed_in": "autograder/routeidentity.py (identity DERIVED from the effective backend config)",
+   "retracted_claim": "a report at 5f75438 stated 'provider enters the config hash, so a pinned arm is a distinct frozen experiment'. That was false and is retracted."
+  },
+  {
+   "id": "V1-D2",
+   "title": "campaign setup failed open",
+   "detail": "an UnboundLocalError (`campaign` referenced before assignment) was caught by a broad handler that downgraded it to 'raw response capture unavailable'. The pre-send budget hook and per-attempt route aggregation were never installed, so the per-physical-attempt enforcement built at 87e79bf did not run.",
+   "fixed_in": "autograder/benchmark/runner.py (_install_attempt_protocol + CampaignSetupError)"
+  }
+ ],
+ "ocr_primary_role_status": "UNSELECTED (unchanged)",
+ "held_out_access": 0,
+ "audited_references_modified": 0,
+ "active_grades_changed": 0,
+ "successor": "OCR_ALTERNATIVE_CANDIDATE_SCREEN_V2",
+ "content_sha256": "95321135aa48c2e3d12944c32bcbef093993542a67306e546ac7baa35ec95647"
+}

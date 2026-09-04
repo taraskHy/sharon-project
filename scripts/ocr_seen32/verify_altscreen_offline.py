@@ -1,4 +1,4 @@
-"""Offline pre-flight for OCR_ALTERNATIVE_CANDIDATE_SCREEN_V1. ZERO calls.
+"""Offline pre-flight for OCR_ALTERNATIVE_CANDIDATE_SCREEN_V2. ZERO calls.
 
 Rebuilds all 24 payloads and re-checks every property the freeze claims, so the
 claims are verified against live code rather than trusted from the artifact.
@@ -11,12 +11,11 @@ from pathlib import Path
 
 from autograder.benchmark.manifests import load_manifest
 from autograder.benchmark.roles import OcrPrimaryAdapter, load_ocr_prompts
-from autograder.campaignbudget import load_campaign_budget
 from autograder.cloudboundary import approved_cloud_ocr_systems
 from autograder.rawcapture import requested_route_of
 
 SCREEN = Path("evaluation/model_selection/experiments/"
-              "OCR_ALTERNATIVE_CANDIDATE_SCREEN_V1_2026-09-03.json")
+              "OCR_ALTERNATIVE_CANDIDATE_SCREEN_V2_2026-09-04.json")
 GRADING_WORDS = ["rubric", "score", "grade", "points", "מחוון", "ציון",
                  "correct answer", "official solution", "partially_valid"]
 SECRET_RE = re.compile(r"sk-[A-Za-z0-9]{6}|or-v1-[a-f0-9]{6}|Bearer\s+[A-Za-z0-9]{8}", re.I)
@@ -100,18 +99,40 @@ def main() -> int:
         check(f"{arm['arm_id']}: allow_fallbacks is false", pr["allow_fallbacks"] is False)
         check(f"{arm['arm_id']}: recognised as pinned", r["route_pinned"] is True)
 
-    print("\n== one shared campaign budget ==")
-    b = load_campaign_budget(screen["campaign_budget_manifest"])
-    check("budget bound to this exact experiment", b.experiment_sha256 == screen["experiment_sha256"])
-    check("warning increment is $0.08", b.warning_increment_usd == 0.08)
-    check("hard increment is $0.12", b.hard_increment_usd == 0.12)
-    check("thresholds are absolute (L0 + increment)",
-          round(b.starting_ledger_usd + 0.12, 8) == round(b.hard_usd, 8),
-          f"L0={b.starting_ledger_usd} hard={b.hard_usd}")
-    check("envelope covers all three arms at worst case",
-          b.hard_usd >= b.starting_ledger_usd + b.predicted_campaign_worst_case_usd,
-          f"worst={b.predicted_campaign_worst_case_usd}")
-    check("all three arms priced in the manifest", len(b.predicted_arm_costs) == 3)
+    print("\n== identity and cache policy ==")
+    from autograder.gateway import TaskRoute
+    from autograder.routeidentity import experiment_identity
+
+    ip = screen["identity_and_cache_policy"]
+    check("identity version is 2", ip["identity_version"] == 2)
+    check("identity is DERIVED from the effective config", "to_backend_config" in ip["derivation"])
+    check("cache policy is refresh", ip["cache_policy"] == "refresh")
+    check("cache_hits_allowed is 0", ip["cache_hits_allowed"] == 0)
+    check("secrets excluded from every identity",
+          set(ip["excluded_from_all_identities"]) >= {"api_key", "api_key_env"})
+    check("all three arms hash differently", len(set(ip["arm_identities"].values())) == 3)
+    for arm in screen["candidates"]:
+        r = TaskRoute(task="ocr_primary", backend="openrouter", model=arm["model"],
+                      base_url="https://openrouter.ai/api/v1", structured_mode="json_schema",
+                      max_tokens=1000, temperature=0.0, reasoning=arm["route"]["reasoning"],
+                      provider=arm["provider_routing"], prompt_version="m2-strict-v1")
+        check(f"{arm['arm_id']}: identity recomputes from live code",
+              experiment_identity(r) == arm["experiment_identity"],
+              experiment_identity(r)[:16])
+
+    print("\n== budget (PROSPECTIVE — V2 is NOT authorized) ==")
+    bg = screen["budget"]
+    check("no V2 campaign budget manifest exists yet",
+          not Path("evaluation/model_selection/policies/"
+                   "OCR_ALTSCREEN_V2_CAMPAIGN_BUDGET.json").exists())
+    check("absolute family limits preserved",
+          bg["campaign_family_absolute_limits_preserved"] == {"warning": 0.78323229,
+                                                              "hard": 0.82323229})
+    check("prospective increments derive from L0",
+          round(bg["L0_verified_from_disk"] + bg["prospective_hard_increment"], 8) == 0.82323229)
+    check("worst case fits under the remaining hard limit",
+          bg["L0_verified_from_disk"] + bg["predicted_worst_case_usd"] <= 0.82323229,
+          f"headroom={bg['headroom_after_worst_case_usd']}")
 
     print("\n== ledger untouched ==")
     led = [json.loads(l) for l in Path("evaluation/model_selection/state/gateway_ledger/usage.jsonl")
@@ -121,12 +142,9 @@ def main() -> int:
     # L0 is the PRE-CAMPAIGN baseline. Once an arm has legitimately run, the
     # ledger is above it — what must still hold is that spend never left the
     # envelope and never exceeded the authorization.
-    spent = round(cum - b.starting_ledger_usd, 8)
-    check("ledger has not fallen below L0", cum >= b.starting_ledger_usd - 1e-9, f"{cum:.8f}")
-    check("cumulative ledger is within the fixed hard threshold", cum <= b.hard_usd,
-          f"{cum:.8f} <= {b.hard_usd:.8f}")
-    check("campaign spend is within the $0.12 authorization", spent <= 0.12,
-          f"${spent:.8f}")
+    L0 = screen["budget"]["L0_verified_from_disk"]
+    check("ledger matches the L0 frozen into V2", round(cum, 8) == round(L0, 8), f"{cum:.8f}")
+    check("ledger is below the absolute family hard limit", cum <= 0.82323229, f"{cum:.8f}")
     root = Path("evaluation/model_selection/runs_altscreen")
     partial = [p.parent.name for p in root.rglob("outputs.jsonl")
                if len([l for l in p.read_text(encoding="utf-8").splitlines() if l.strip()]) not in (0, 8)]

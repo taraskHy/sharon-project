@@ -28,22 +28,25 @@ def _h(data: bytes | str) -> str:
 def fingerprint(route, system: str, content_blocks: list[dict],
                 output_model: type[BaseModel], max_tokens: int | None,
                 meta: dict | None = None) -> str:
-    parts: dict[str, Any] = {
-        "route": route.fingerprint_fields(),
-        "max_tokens_override": max_tokens,
-        "system": _h(system),
-        "schema": _h(json.dumps(output_model.model_json_schema(), sort_keys=True)),
-        "blocks": [],
-        "pack_hash": (meta or {}).get("pack_hash"),
-    }
-    for b in content_blocks:
-        if b.get("type") == "text":
-            parts["blocks"].append(("text", _h(b.get("text", ""))))
-        elif b.get("type") == "image":
-            parts["blocks"].append(("image", _h(b["source"]["data"])))
-        else:
-            parts["blocks"].append((str(b.get("type")), _h(json.dumps(b, sort_keys=True))))
-    return _h(json.dumps(parts, sort_keys=True, default=str))
+    """The SEMANTIC REQUEST IDENTITY: may a stored response be reused here?
+
+    Derived from the EFFECTIVE backend configuration (see
+    ``autograder.routeidentity``), not from a hand-maintained field list. The
+    old list omitted ``provider``, so a provider-pinned request could be served
+    a response produced by an UNPINNED run — which is exactly what happened to
+    five of eight cases in the V1 alt-candidate screen.
+
+    The identity is VERSIONED, so keys written under the old scheme can never
+    be read by the corrected one. Historical entries stay on disk untouched.
+    """
+    from .routeidentity import semantic_request_identity
+
+    base = semantic_request_identity(
+        route, system=system, content_blocks=content_blocks,
+        schema=output_model.model_json_schema(), max_tokens=max_tokens)
+    pack = (meta or {}).get("pack_hash")
+    return base if pack is None else _h(json.dumps({"base": base, "pack_hash": pack},
+                                                   sort_keys=True))
 
 
 class RequestCache:

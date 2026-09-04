@@ -171,6 +171,9 @@ class ModelGateway:
         # recorded here rather than raised (a student could write one by hand).
         self.privacy_guard = True
         self.privacy_warnings: list[str] = []
+        #: False => REFRESH policy (bypass cache READS, still write). Set by a
+        #: research screen that must not be served historical responses.
+        self.cache_read_enabled: bool = True
 
     # -- construction --------------------------------------------------------
 
@@ -268,7 +271,12 @@ class ModelGateway:
         if self.cache is not None and route.cacheable:
             from .requestcache import fingerprint
             fp = fingerprint(route, system, content_blocks, output_model, max_tokens, meta)
-            hit = self.cache.get(fp, output_model)
+            # cache_read_enabled=False is the REFRESH policy: bypass the read,
+            # make the live request, and still WRITE the (correctly versioned)
+            # entry. A research screen must measure the route it pinned, not
+            # replay a stored answer — and simply choosing a new runs-root does
+            # NOT do this, because the request cache is shared campaign state.
+            hit = self.cache.get(fp, output_model) if self.cache_read_enabled else None
             if hit is not None:
                 res = CallResult(value=hit, task=task, route=route, cache_hit=True,
                                  latency_s=0.0, fingerprint=fp)

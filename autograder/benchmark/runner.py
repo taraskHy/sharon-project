@@ -44,6 +44,8 @@ from .manifests import (DEFAULT_BENCH_ROOT, DEFAULT_DATASETS_ROOT, REPO_ROOT, RO
                         SPLITS, BenchCase, BenchmarkManifest, load_manifest)
 from .registry import DEFAULT_REGISTRY_PATH, CandidateRegistry, load_registry
 from .roles import Request, adapter_for
+from ..routeidentity import CACHE_IDENTITY_VERSION as _IDENTITY_VERSION
+from ..routeidentity import experiment_identity as _experiment_identity
 
 DEFAULT_STATE_ROOT = REPO_ROOT / "evaluation" / "model_selection" / "state"
 DEFAULT_RUNS_ROOT = REPO_ROOT / "evaluation" / "model_selection" / "runs"
@@ -88,6 +90,43 @@ def require_priced_candidate(model: str, pricing: dict | None) -> None:
             "(read the numbers off the provider's model page) and pass --models-config models.toml.")
 
 
+class CampaignSetupError(RuntimeError):
+    """A campaign arm could not install its attempt-enforcement protocol."""
+
+
+#: Correlation fields every live campaign attempt must carry. A row missing any
+#: of these cannot be joined to its cost or its route evidence, so it is a
+#: mechanical stop rather than a usable measurement.
+REQUIRED_LINKAGE_FIELDS = ("campaign_id", "arm_id", "case_id",
+                           "logical_request_id", "attempt_id", "retry_index")
+
+
+def _install_attempt_protocol(*, gw, route, run_dir, run_id, campaign):
+    """Install raw capture and the per-attempt protocol, or raise.
+
+    Raises rather than returning None: the caller decides whether a failure is
+    fatal, and under a campaign it always is.
+    """
+    from ..rawcapture import RawResponseArchive
+
+    backend = gw.backend_for(route.task)
+    # The protocol is not optional under a campaign: without these attributes
+    # there is no pre-send hook to authorize a physical attempt and no
+    # per-attempt route record to aggregate.
+    missing = [a for a in ("attempt_records", "route_violation", "pre_send_hook",
+                           "raw_archive", "capture_case_id")
+               if not hasattr(backend, a)]
+    if missing:
+        raise TypeError(
+            f"{type(backend).__name__} does not implement the attempt-enforcement protocol "
+            f"(missing: {missing})")
+    backend.raw_archive = RawResponseArchive(run_dir / "raw_responses.jsonl")
+    backend.capture_task = route.task
+    backend.capture_campaign_id = campaign.campaign if campaign is not None else None
+    backend.capture_arm_id = run_id
+    return backend
+
+
 @dataclass
 class RunSpec:
     role: str
@@ -126,6 +165,12 @@ class RunSpec:
     campaign_budget: str | None = None
     #: archive every raw provider response under the run directory
     capture_raw: bool = True
+    #: "use"     — normal: read the cache, write the cache
+    #: "refresh" — RESEARCH SCREEN: bypass cache READS, make the live request,
+    #:             still write the correctly-versioned entry. Choosing a new
+    #:             runs-root does NOT do this; the request cache is shared
+    #:             campaign state and would still serve historical responses.
+    cache_policy: str = "use"
     subset: str | None = None               # "smoke" -> the frozen pre-registered DEV smoke subset
     skip_key_preflight: bool = False        # tests only: skip the GET /api/v1/key preflight step
     final_evaluation: bool = False          # ONLY the `bench final-eval` path sets this (HELD_OUT live run)
@@ -661,6 +706,15 @@ def run_benchmark(spec: RunSpec, *, gateway=None, registry: CandidateRegistry | 
         "validation_retries": spec.validation_retries, **prov,
         "manifest_hashes": manifest.hashes,
         "case_ids_sha256": manifest.case_ids_sha256(split, spec.component),
+        # DERIVED experiment identity. route.fingerprint_fields() above is a
+        # hand-maintained list that omitted `provider` and let a pinned arm
+        # share a run id with the unpinned configuration (V1 incident,
+        # 2026-09-04). This field is computed from the EFFECTIVE backend config
+        # after to_backend_config(), so a knob that reaches the wire cannot
+        # escape the run identity by being forgotten in a list.
+        "experiment_identity": _experiment_identity(route),
+        "identity_version": _IDENTITY_VERSION,
+        "cache_policy": getattr(spec, "cache_policy", "use"),
     }
     config_hash = hashlib.sha256(json.dumps(config, sort_keys=True, default=str).encode("utf-8")).hexdigest()
     run_id = run_id_for(spec, candidate, config_hash)
@@ -767,26 +821,35 @@ def run_benchmark(spec: RunSpec, *, gateway=None, registry: CandidateRegistry | 
     # before parsing, so an HTTP 200 that carries no usage block and no
     # provider field — the shape that made the prompt-v2 filter question
     # unanswerable — still leaves a body on disk.
+    # `campaign` is read FIRST. In V1 it was read after this block while the
+    # block referenced it, so setup raised UnboundLocalError, the broad handler
+    # downgraded the failure to a warning, and the run proceeded with NO
+    # per-attempt budget hook and NO route aggregation. Ordering is part of the
+    # contract now, and the handler below no longer swallows anything when a
+    # campaign is in force.
+    if getattr(spec, "cache_policy", "use") == "refresh":
+        gw.cache_read_enabled = False
+    campaign = getattr(gw, "campaign_budget", None)
     live_backend = None
     if not spec.dry_run and spec.capture_raw:
         try:
-            from ..rawcapture import RawResponseArchive
-            candidate_backend = gw.backend_for(route.task)
-            # Only an HTTP backend implements the capture protocol (per-attempt
-            # records + a pre-send hook). Local/mock backends make no priced
-            # provider call, so there is nothing to archive or authorize.
-            if not hasattr(candidate_backend, "attempt_records"):
-                raise TypeError(f"{type(candidate_backend).__name__} does not support raw capture")
-            live_backend = candidate_backend
-            live_backend.raw_archive = RawResponseArchive(run_dir / "raw_responses.jsonl")
-            live_backend.capture_task = route.task
-            live_backend.capture_campaign_id = (campaign.campaign if
-                                                getattr(gw, "campaign_budget", None) else None)
-            live_backend.capture_arm_id = run_id
-        except Exception as e:  # noqa: BLE001 — never block a run on archiving
+            live_backend = _install_attempt_protocol(
+                gw=gw, route=route, run_dir=run_dir, run_id=run_id, campaign=campaign)
+        except Exception as e:  # noqa: BLE001 — classified immediately below
+            # FAIL CLOSED under a campaign. An authorized campaign whose
+            # enforcement did not install is not a cheaper run, it is an
+            # UNENFORCED one: no budget authorization per physical send, no
+            # route aggregation, no attempt linkage. Refuse before any cache
+            # lookup or transport activity.
+            if campaign is not None:
+                raise CampaignSetupError(
+                    f"campaign {campaign.campaign!r}: attempt-enforcement setup failed "
+                    f"({type(e).__name__}: {e}). Refusing to run: a campaign arm without "
+                    "per-physical-attempt budget authorization, route aggregation and attempt "
+                    "linkage is unenforced, not merely unarchived. ZERO provider requests made."
+                ) from e
             warnings.append(f"raw response capture unavailable: {type(e).__name__}: {e}")
             live_backend = None
-    campaign = getattr(gw, "campaign_budget", None)
 
     # ---- PER-PHYSICAL-ATTEMPT budget authorization ---------------------------
     # The logical pre-call check below is NOT sufficient on its own: one
@@ -914,6 +977,27 @@ def run_benchmark(spec: RunSpec, *, gateway=None, registry: CandidateRegistry | 
                     "fingerprint": res.fingerprint, "retries": getattr(res, "retries", 0)})
         if campaign is not None:
             campaign.settle_all()
+        # ---- a refresh screen may not be served a cached response ----------
+        if getattr(spec, "cache_policy", "use") == "refresh" and res.cache_hit:
+            stopped = ("cache hit under cache_policy=refresh: a research screen must measure the "
+                       "route it pinned, not replay a stored answer")
+            row.update({"ok": False, "error_type": "CacheContamination",
+                        "error": stopped, "stopped": True})
+            _append_jsonl(outputs_path, row)
+            log(f"STOP: {stopped}")
+            break
+        # ---- every live campaign attempt must carry full linkage -----------
+        if campaign is not None and live_backend is not None and not res.cache_hit:
+            missing = [f for rec in (live_backend.attempt_records or [])
+                       for f in REQUIRED_LINKAGE_FIELDS if rec.get(f) in (None, "")]
+            if not live_backend.attempt_records or missing:
+                stopped = (f"incomplete attempt linkage: missing {sorted(set(missing))}"
+                           if missing else "no attempt records for a live call")
+                row.update({"ok": False, "error_type": "IncompleteLinkage",
+                            "error": stopped, "stopped": True})
+                _append_jsonl(outputs_path, row)
+                log(f"STOP: {stopped}")
+                break
         # ---- route enforcement across EVERY physical attempt --------------
         # Read the STICKY first violation and the full per-attempt list, never
         # a mutable final-only value: a violation on attempt 1 followed by a
