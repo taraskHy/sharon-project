@@ -1,0 +1,98 @@
+{
+ "artifact": "ocr_altscreen_v4_preexecution_block",
+ "created_at": "2026-09-05 12:47:19",
+ "git_commit": "fe78907a3b7a3e31e25006ba2e216ea87093e4e3",
+ "provider_calls": 0,
+ "metadata_calls": 0,
+ "additional_spend_usd": 0.0,
+ "experiment": "OCR_ALTERNATIVE_CANDIDATE_SCREEN_V4",
+ "experiment_sha256": "e5e0fb05b1fcce0633e8dfd21c6ad31e66f9b56ddbcca91ffc78a40d7df85bf3",
+ "outcome": "BLOCKED BEFORE EXECUTION — V4 REQUIRES IMMUTABLE CLOSURE AND A SUCCESSOR (V5)",
+ "v4_not_amended": true,
+ "v4_not_executed": true,
+ "budget_manifest_created": false,
+ "metadata_get_performed": false,
+ "blocker": {
+  "rule_applied": "the authorization states: 'First inspect V4 and confirm it already preregisters the exact procedure for resolving an unverified provider slug from a newly captured OpenRouter provider catalogue. If that procedure is absent or ambiguous, do not amend V4. Make zero paid calls and report that V4 requires immutable closure and V5.'",
+  "finding": "ABSENT. V4 carries a one-sentence CAVEAT, not a procedure.",
+  "what_v4_actually_says": "the `alibaba` slug has NO preserved slug->display-name evidence; the 2026-09-03 discovery read it from OpenRouter's /providers endpoint but never persisted the response. Its attribution will therefore report UNKNOWN_UNVERIFIED_SLUG — never silently compliant and never a violation. Capturing and committing a provider catalogue (public metadata, no inference) is a PREREQUISITE for the Qwen arm's route attribution to mean anything.",
+  "word_frequency_in_v4": {
+   "procedure": 0,
+   "acceptance": 0,
+   "prerequisite": 1
+  },
+  "what_a_procedure_would_have_had_to_freeze_and_does_not": [
+   "the exact endpoint to request",
+   "the fields that must be preserved (URL, retrieval timestamp, HTTP status, exact raw body, raw-body SHA-256, sanitized headers, parsed provider entries)",
+   "the acceptance criteria: slug exists; display-name mapping is unique; the frozen endpoint remains available; pricing does not exceed the frozen conservative cost; the Google mappings remain compatible with the preserved frozen mapping",
+   "the action on absence, ambiguity, rename without a unique mapping, or higher pricing",
+   "whether resolving the slug is permitted at all without amending the frozen experiment"
+  ],
+  "why_this_is_not_a_formality": "without frozen acceptance criteria, whatever a catalogue returned would be judged after seeing it. That is the post-hoc decision-making every freeze in this project exists to prevent, and it is how a 'prerequisite' quietly becomes a rubber stamp."
+ },
+ "everything_verified_before_the_block": {
+  "starting_state_checks": "19/19 PASS",
+  "branch": "initial-prototype",
+  "head": "fe78907a3b7a3e31e25006ba2e216ea87093e4e3",
+  "worktree": "clean",
+  "v4_self_hash_recomputes": true,
+  "v3_closure_sha256": "52159942ffefeee8f533bbe7c1fb3ba2c978f270611e6260e9f7fbaffdde3864",
+  "v1_v2_v3_artifacts_immutable": true,
+  "ledger": {
+   "rows": 815,
+   "usd": 0.71783254
+  },
+  "family_limits": {
+   "warning": 0.78323229,
+   "hard": 0.82323229
+  },
+  "held_out_access": 0,
+  "cache_identity_version": 4,
+  "offline_verifier": "100/100 PASS",
+  "credential": "present and non-empty; never printed, read, hashed or exposed",
+  "identity_verification_offline": {
+   "experiment_identities_matched": "3/3",
+   "semantic_identities_matched": "24/24 — every case-arm request, not only the three first cases",
+   "ai_studio": "749d7c41f17c127e932fc55d347f86ed8d33dee7b26511fecebe5aa858af1cfa",
+   "vertex": "9a912512cd1e99de7fb7e3d00fb4fb0be072ace0c70eeff821b60e99fc1091ed",
+   "qwen_alibaba": "b22a1a20dc55809957d096aeb554caf4df55857bafd2045f9b4b1a5ec8ad41f7",
+   "path": "CLI parser -> build_route() -> to_backend_config() -> payload builder, MockTransport"
+  },
+  "qwen_payload_inspection": {
+   "max_tokens": 1000,
+   "reasoning_field": "ABSENT — the key is not transmitted at all, not an object with a value",
+   "model": "qwen/qwen3-vl-235b-a22b-instruct",
+   "schema_name": "BenchTranscription",
+   "provider_order": [
+    "alibaba"
+   ],
+   "allow_fallbacks": false,
+   "transport_retries": 0,
+   "verdict": "the declared candidate_override works: the pre-inference HTTP 400 shape that destroyed the Stage-1 Gemini arm is not present"
+  }
+ },
+ "state_unchanged": {
+  "ledger_rows": 815,
+  "ledger_usd": 0.71783254,
+  "spend_this_task_usd": 0.0,
+  "held_out_access": 0,
+  "grading_calls": 0,
+  "rag_calls": 0,
+  "v4_budget_manifest": "NOT CREATED",
+  "autograder_code_changed": false
+ },
+ "required_before_any_v4_family_execution": [
+  "close V4 immutably as SUPERSEDED_BEFORE_EXECUTION (it was never executed; its hash is preserved)",
+  "freeze V5 carrying V4's design unchanged plus a PREREGISTERED unverified-slug resolution procedure with explicit acceptance criteria and failure actions",
+  "OR, if the owner prefers, freeze V5 with the Qwen arm removed, which needs no catalogue capture at all — the two Gemini route-attribution arms are already fully resolvable from the preserved mapping"
+ ],
+ "not_done_because_unauthorized": [
+  "V5 creation",
+  "any V4 amendment",
+  "the metadata GET",
+  "the budget manifest",
+  "any provider call"
+ ],
+ "ocr_primary_role_status": "UNSELECTED (unchanged)",
+ "content_sha256": "997c5a098f4acbc1c9e3044f5df2681c5c4a929fae65f79b722e56877020c7fd"
+}

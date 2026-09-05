@@ -718,3 +718,65 @@ def test_v3_result_records_the_false_positive_root_cause():
     im = r["IDENTITY_MISMATCH_RECORDED"]
     assert im["sole_differing_field"] == "base_url"
     assert im["classification"] == "freeze bookkeeping defect, not a configuration deviation"
+
+
+# ---- V4 pre-execution block ---------------------------------------------------
+
+V4P = Path("evaluation/model_selection/experiments/"
+           "OCR_ALTERNATIVE_CANDIDATE_SCREEN_V4_2026-09-05.json")
+V4BLOCK = Path("evaluation/model_selection/runs/ocr_primary/"
+               "OCR_ALTSCREEN_V4_PREEXECUTION_BLOCK_2026-09-05.json")
+
+
+def test_v4_was_blocked_before_execution_with_zero_calls():
+    b = json.loads(V4BLOCK.read_text(encoding="utf-8"))
+    assert b["provider_calls"] == 0 and b["metadata_calls"] == 0
+    assert b["additional_spend_usd"] == 0.0
+    assert b["v4_not_amended"] is True and b["v4_not_executed"] is True
+    assert b["budget_manifest_created"] is False
+    assert b["metadata_get_performed"] is False
+    assert not Path("evaluation/model_selection/policies/"
+                    "OCR_ALTSCREEN_V4_CAMPAIGN_BUDGET.json").exists()
+
+
+def test_v4_really_lacks_a_preregistered_slug_resolution_procedure():
+    """The blocker must be verifiable from V4 itself, not asserted."""
+    v4 = json.loads(V4P.read_text(encoding="utf-8"))
+    blob = json.dumps(v4, ensure_ascii=False).lower()
+    assert "procedure" not in blob, "if V4 ever gains a procedure, this block is stale"
+    assert "acceptance" not in blob
+    # what it DOES have is a prose caveat, which is not a procedure
+    assert "PREREQUISITE" in v4["provider_mapping_caveat"]
+    q = next(a for a in v4["candidates"] if a["arm_id"] == "qwen3_vl_235b_pinned_alibaba")
+    assert q["provider_mapping"]["slug_mapping_status"] == "UNVERIFIED"
+    assert q["provider_mapping"]["expected_display_names"] == []
+
+
+def test_v4_remains_immutable_and_unexecuted():
+    v4 = json.loads(V4P.read_text(encoding="utf-8"))
+    body = json.dumps({k: v for k, v in v4.items() if k != "experiment_sha256"},
+                      ensure_ascii=False, indent=1, sort_keys=True, default=str)
+    assert hashlib.sha256(body.encode()).hexdigest() == v4["experiment_sha256"]
+    assert v4["experiment_sha256"] == \
+        "e5e0fb05b1fcce0633e8dfd21c6ad31e66f9b56ddbcca91ffc78a40d7df85bf3"
+    assert v4["status"] == "FROZEN - NOT EXECUTED - NOT AUTHORIZED"
+    assert not Path("evaluation/model_selection/runs_altscreen_v4").exists()
+
+
+def test_the_offline_identity_verification_that_did_pass_is_recorded():
+    b = json.loads(V4BLOCK.read_text(encoding="utf-8"))
+    v = b["everything_verified_before_the_block"]["identity_verification_offline"]
+    assert v["experiment_identities_matched"] == "3/3"
+    assert v["semantic_identities_matched"].startswith("24/24")
+    q = b["everything_verified_before_the_block"]["qwen_payload_inspection"]
+    assert q["max_tokens"] == 1000
+    assert q["reasoning_field"].startswith("ABSENT")
+    assert q["provider_order"] == ["alibaba"] and q["allow_fallbacks"] is False
+
+
+def test_the_ledger_did_not_move():
+    b = json.loads(V4BLOCK.read_text(encoding="utf-8"))
+    assert b["state_unchanged"]["ledger_rows"] == 815
+    assert b["state_unchanged"]["ledger_usd"] == 0.71783254
+    assert b["state_unchanged"]["held_out_access"] == 0
+    assert b["state_unchanged"]["autograder_code_changed"] is False
