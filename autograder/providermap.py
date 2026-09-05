@@ -84,15 +84,40 @@ def _parse_forensics(path: Path) -> dict[str, ProviderEntry]:
     return out
 
 
-#: Slugs this project pins that have NO preserved slug->display-name evidence.
-#: They are declared so a pin remains expressible, but their attribution can
-#: never be confirmed until a provider catalogue is captured and committed.
-UNVERIFIED_SLUGS: dict[str, str] = {
-    "alibaba": ("no preserved artifact records this slug's display name. The 2026-09-03 "
-                "discovery session read it from OpenRouter's /providers endpoint but never "
-                "persisted the response; every surviving mention is prose in a freeze "
-                "narrative, which is not evidence of the wire value."),
-}
+#: An ACCEPTED metadata snapshot captured under
+#: OCR_PROVIDER_METADATA_CAPTURE_PROTOCOL_V1. Mappings it resolved are VERIFIED:
+#: the raw body is archived with its SHA-256 and the acceptance evaluator ran as
+#: a pure function over it. This is what finally resolved `alibaba`, whose
+#: mapping had been unevidenced since the 2026-09-03 discovery failed to persist
+#: its response.
+SNAPSHOT_ARTIFACT = Path("evaluation/model_selection/runs/ocr_primary/"
+                         "OCR_METADATA_SNAPSHOT_2026-09-06.json")
+
+#: Slugs this project pins that have NO evidenced display name from ANY source.
+#: Declared so a pin stays expressible while its attribution stays unconfirmable.
+#: Empty now that the capture resolved `alibaba`; kept because the next new pin
+#: will need it, and because an empty denylist is a claim worth making explicit.
+UNVERIFIED_SLUGS: dict[str, str] = {}
+
+
+def _parse_snapshot(path: Path) -> dict[str, ProviderEntry]:
+    """VERIFIED mappings from an ACCEPTED capture. A snapshot that did not
+    accept contributes nothing — a catalogue we rejected is not evidence."""
+    if not path.exists():
+        return {}
+    doc = json.loads(path.read_text(encoding="utf-8"))
+    acc = doc.get("acceptance") or {}
+    if acc.get("result") != "ACCEPTED":
+        return {}
+    out: dict[str, ProviderEntry] = {}
+    for slug, name in (acc.get("resolved_mapping") or {}).items():
+        if isinstance(name, str) and name.strip():
+            out[slug] = ProviderEntry(
+                slug=slug, display_names=(name.strip(),), status=VERIFIED,
+                evidence=(f"{path.name} (content_sha256 {str(doc.get('content_sha256'))[:16]}...), "
+                          f"accepted with {acc.get('failure_count', '?')} failures under "
+                          f"{doc.get('protocol')}"))
+    return out
 
 
 def source_digest(path: Path | None = None) -> dict[str, Any]:
@@ -114,6 +139,11 @@ def load_provider_map(path: Path | None = None) -> dict[str, ProviderEntry]:
     m = _parse_forensics(p)
     if not m:
         raise ProviderMapError(f"no provider mappings could be read from {p}")
+    # An accepted capture is newer and stronger evidence than the forensics
+    # excerpt, so it takes precedence where the two overlap. The acceptance
+    # evaluator already refuses a catalogue that CHANGED a preserved mapping,
+    # so overlap can only ever agree.
+    m.update(_parse_snapshot(SNAPSHOT_ARTIFACT))
     for slug, why in UNVERIFIED_SLUGS.items():
         m.setdefault(slug, ProviderEntry(slug=slug, display_names=(), status=UNVERIFIED,
                                          evidence=why))
@@ -187,7 +217,7 @@ def match_provider(*, requested_slug: str | None, observed_provider: str | None,
     return out
 
 
-__all__ = ["SOURCE_ARTIFACT", "COMPLIANT", "VIOLATION", "UNKNOWN", "UNKNOWN_AMBIGUOUS",
+__all__ = ["SOURCE_ARTIFACT", "SNAPSHOT_ARTIFACT", "COMPLIANT", "VIOLATION", "UNKNOWN", "UNKNOWN_AMBIGUOUS",
            "UNKNOWN_UNRECOGNISED", "UNKNOWN_UNVERIFIED_SLUG", "VERIFIED", "UNVERIFIED",
            "ProviderEntry", "ProviderMapError", "load_provider_map", "match_provider",
            "slug_for_display_name", "source_digest", "UNVERIFIED_SLUGS"]

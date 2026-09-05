@@ -36,6 +36,7 @@ import hashlib
 import json
 import re
 import time
+from pathlib import Path
 from typing import Any
 
 PROTOCOL_ID = "OCR_PROVIDER_METADATA_CAPTURE_PROTOCOL_V1"
@@ -381,3 +382,82 @@ __all__ = ["PROTOCOL_ID", "ENDPOINT_PROVIDERS", "ENDPOINT_MODELS", "ENDPOINT_MOD
            "FAMILY_HARD_ABS_USD", "ACCEPTED", "FAILED", "MetadataProtocolError",
            "evaluate_acceptance", "protocol_document", "conservative_arm_cost",
            "safe_headers", "sha256_text"]
+
+
+# =============================================================================
+# Re-derivation from archived raw bodies
+# =============================================================================
+#
+# `evaluate_acceptance` is pure, so a recorded verdict is only worth as much as
+# the ability to reproduce it. The persisted snapshot keeps its derived sections
+# under a `parsed` key, which is NOT the shape the frozen evaluator reads — so
+# feeding the artifact back to it verbatim does not work, and must not be
+# "fixed" by editing either the frozen evaluator or the archived evidence.
+#
+# Instead re-derive from the raw bodies, which are stored verbatim with their
+# SHA-256. That is a strictly stronger check: it re-parses primary evidence
+# rather than trusting a summary of it.
+
+def sections_from_raw_bodies(*, providers_body: str, models_body: str,
+                             endpoint_bodies: dict[str, str]) -> dict[str, Any]:
+    """Build the exact input `evaluate_acceptance` expects from raw JSON text.
+
+    ``endpoint_bodies`` maps model slug -> the verbatim body of that model's
+    /endpoints response.
+    """
+    providers = [
+        {"slug": p.get("slug"), "name": p.get("name")}
+        for p in (json.loads(providers_body).get("data") or [])
+    ]
+
+    prices: dict[str, dict[str, float | None]] = {}
+    for m in (json.loads(models_body).get("data") or []):
+        if m.get("id") in FROZEN_PRICES:
+            pr = m.get("pricing") or {}
+            prices[m["id"]] = {"input_per_m": _price_per_m(pr.get("prompt")),
+                               "output_per_m": _price_per_m(pr.get("completion"))}
+
+    endpoints: dict[str, Any] = {}
+    for model, body in endpoint_bodies.items():
+        data = json.loads(body).get("data") or {}
+        eps = data.get("endpoints") or []
+        arch = data.get("architecture") or {}
+        params = {p for e in eps for p in (e.get("supported_parameters") or [])}
+        endpoints[model] = {
+            "canonical_slug": data.get("canonical_slug"),
+            "endpoints": [{"provider_name": e.get("provider_name"),
+                           "quantization": e.get("quantization"),
+                           "context_length": e.get("context_length")} for e in eps],
+            "capabilities": {
+                "image_input": "image" in (arch.get("input_modalities") or []),
+                "structured_outputs": "structured_outputs" in params,
+            },
+        }
+    return {"providers": providers, "model_endpoints": endpoints, "prices": prices}
+
+
+def reevaluate_from_archive(snapshot: dict[str, Any],
+                            raw_dir: Path | str) -> dict[str, Any]:
+    """Re-run the frozen acceptance evaluator against the archived raw bodies.
+
+    Raises if any archived body's SHA-256 no longer matches what the snapshot
+    recorded — a body that changed is not the evidence the verdict was based on.
+    """
+    raw_dir = Path(raw_dir)
+    bodies: dict[str, str] = {}
+    for key, rec in (snapshot.get("raw_bodies") or {}).items():
+        path = raw_dir / Path(rec["file"]).name
+        blob = path.read_bytes()
+        got = hashlib.sha256(blob).hexdigest()
+        if got != rec["raw_body_sha256"]:
+            raise ValueError(f"archived body {key!r} has changed: {got} != "
+                             f"{rec['raw_body_sha256']}")
+        bodies[key] = blob.decode("utf-8")
+
+    endpoint_bodies = {arm["model"]: bodies[k] for arm in REQUIRED_ARMS
+                       for k in bodies
+                       if k.startswith("endpoints") and arm["model"].split("/")[-1] in k}
+    sections = sections_from_raw_bodies(providers_body=bodies["providers"],
+                                        models_body=bodies["models"],
+                                        endpoint_bodies=endpoint_bodies)
+    return evaluate_acceptance({**sections, "requests": snapshot.get("requests") or {}})

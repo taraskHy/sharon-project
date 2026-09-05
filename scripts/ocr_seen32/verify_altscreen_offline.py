@@ -1,4 +1,4 @@
-"""Offline pre-flight for OCR_ALTERNATIVE_CANDIDATE_SCREEN_V4. ZERO calls.
+"""Offline pre-flight for OCR_ALTERNATIVE_CANDIDATE_SCREEN_V5. ZERO calls.
 
 Rebuilds all 24 payloads and re-checks every property the freeze claims, so the
 claims are verified against live code rather than trusted from the artifact.
@@ -15,7 +15,7 @@ from autograder.cloudboundary import approved_cloud_ocr_systems
 from autograder.rawcapture import requested_route_of
 
 SCREEN = Path("evaluation/model_selection/experiments/"
-              "OCR_ALTERNATIVE_CANDIDATE_SCREEN_V4_2026-09-05.json")
+              "OCR_ALTERNATIVE_CANDIDATE_SCREEN_V5_2026-09-06.json")
 GRADING_WORDS = ["rubric", "score", "grade", "points", "מחוון", "ציון",
                  "correct answer", "official solution", "partially_valid"]
 SECRET_RE = re.compile(r"sk-[A-Za-z0-9]{6}|or-v1-[a-f0-9]{6}|Bearer\s+[A-Za-z0-9]{8}", re.I)
@@ -184,6 +184,13 @@ def main() -> int:
 
     print("\n== cost model (four distinct bounds) ==")
     cm = screen["cost_model"]
+    mp = screen["metadata_prerequisite"]
+    check("metadata prerequisite ACCEPTED", mp["result"] == "ACCEPTED")
+    check("metadata acceptance had 0 failures", mp["failure_count"] == 0)
+    check("all three slugs resolved", len(mp["accepted_provider_mapping"]) == 3)
+    check("alibaba resolved", bool(mp["accepted_provider_mapping"].get("alibaba")),
+          str(mp["accepted_provider_mapping"].get("alibaba")))
+    check("staleness rule frozen", "re-accept with 0 failures" in mp["staleness_rule"])
     rp = screen["execution_requirements"]["retry_policy"]
     check("retry policy frozen at 0 transport retries", rp["transport_retries"] == 0)
     check("max physical attempts per logical request = 1",
@@ -205,12 +212,12 @@ def main() -> int:
 
     print("\n== budget (PROSPECTIVE — V4 is NOT authorized) ==")
     bg = screen["budget"]
-    check("no V4 campaign budget manifest exists",
+    check("no V5 campaign budget manifest exists",
           not Path("evaluation/model_selection/policies/"
-                   "OCR_ALTSCREEN_V4_CAMPAIGN_BUDGET.json").exists())
-    check("the V3 manifest is NOT reused and its authorization does not carry over",
-          bg["v3_budget_manifest_not_reused"] is True
-          and bg["v3_authorization_does_not_carry_over"] is True)
+                   "OCR_ALTSCREEN_V5_CAMPAIGN_BUDGET.json").exists())
+    check("the V4 authorization is unused and does not carry over",
+          bg["v4_authorization_unused_and_non_transferable"] is True
+          and bg["no_v5_budget_manifest_created"] is True)
     check("absolute family limits preserved",
           bg["campaign_family_absolute_limits_preserved"] == {"warning": 0.78323229,
                                                               "hard": 0.82323229})
@@ -230,10 +237,10 @@ def main() -> int:
     # envelope and never exceeded the authorization.
     L0 = screen["budget"]["L0_verified_from_disk"]
     # V4 is neither authorized nor executed, so the ledger must still equal its L0.
-    check("ledger equals the L0 frozen into V4 (V4 has spent nothing)",
+    check("ledger equals the L0 frozen into V5 (V5 has spent nothing)",
           round(cum, 8) == round(L0, 8), f"{cum:.8f}")
     check("ledger is below the absolute family hard limit", cum <= 0.82323229, f"{cum:.8f}")
-    check("the COMPLETE V4 maximum still fits under the family hard limit",
+    check("the COMPLETE V5 maximum still fits under the family hard limit",
           round(L0 + screen["cost_model"]["single_attempt_maximum_usd"], 8) <= 0.82323229,
           f"headroom {round(0.82323229 - L0 - screen['cost_model']['single_attempt_maximum_usd'], 8)}")
     # An arm is legitimately short ONLY when its last row records a mechanical

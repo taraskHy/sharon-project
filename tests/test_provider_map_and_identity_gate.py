@@ -58,13 +58,37 @@ def test_the_two_google_slugs_are_verified_from_the_artifact(pmap):
     assert pmap["google-vertex"].status == VERIFIED
 
 
-def test_alibaba_is_declared_but_explicitly_UNVERIFIED(pmap):
-    """No preserved artifact records this slug's display name. It must not be
-    guessed, and it must not be silently treated as compliant."""
+def test_alibaba_is_now_VERIFIED_from_the_accepted_capture(pmap):
+    """It was UNVERIFIED until 2026-09-06, when a capture under
+    OCR_PROVIDER_METADATA_CAPTURE_PROTOCOL_V1 resolved it. The evidence is a
+    snapshot with an archived raw body, not a memory of a discovery session."""
     e = pmap["alibaba"]
-    assert e.status == UNVERIFIED
-    assert e.display_names == ()
-    assert "never persisted" in e.evidence
+    assert e.status == VERIFIED
+    assert e.display_names == ("Alibaba",)
+    assert "OCR_METADATA_SNAPSHOT" in e.evidence and "accepted" in e.evidence
+
+
+def test_a_rejected_snapshot_would_contribute_nothing(tmp_path):
+    """A catalogue we refused is not evidence."""
+    import json as _json
+
+    from autograder.providermap import _parse_snapshot
+
+    p = tmp_path / "snap.json"
+    p.write_text(_json.dumps({"acceptance": {"result": "METADATA_PREREQUISITE_FAILED",
+                                             "resolved_mapping": {"alibaba": "Alibaba"}}}),
+                 encoding="utf-8")
+    assert _parse_snapshot(p) == {}
+
+
+def test_the_unverified_path_still_works_for_a_future_unmapped_slug(pmap):
+    """UNVERIFIED_SLUGS is empty now, but the semantics must survive."""
+    from autograder.providermap import ProviderEntry
+
+    m = dict(pmap)
+    m["brand-new"] = ProviderEntry("brand-new", (), UNVERIFIED, "no evidence yet")
+    r = match_provider(requested_slug="brand-new", observed_provider="Brand New", pmap=m)
+    assert r["result"] == UNKNOWN_UNVERIFIED_SLUG
 
 
 # ---- the exact V3 false positive ---------------------------------------------
@@ -129,12 +153,13 @@ def test_an_ambiguous_display_name_is_UNKNOWN_AMBIGUOUS():
     assert "more than one slug" in r3["detail"]
 
 
-def test_unverified_slug_can_never_be_confirmed_or_refuted(pmap):
+def test_the_alibaba_pin_is_now_confirmable(pmap):
     r = match_provider(requested_slug="alibaba", observed_provider="Alibaba", pmap=pmap)
-    assert r["result"] == UNKNOWN_UNVERIFIED_SLUG
-    assert r["slug_mapping_status"] == UNVERIFIED
-    # crucially: not compliant, and not a violation either
-    assert r["result"] not in (COMPLIANT, VIOLATION)
+    assert r["result"] == COMPLIANT
+    assert r["slug_mapping_status"] == VERIFIED
+    # and a different provider serving that slug's model is still caught
+    assert match_provider(requested_slug="alibaba", observed_provider="DeepInfra",
+                          pmap=pmap)["result"] == UNKNOWN_UNRECOGNISED
 
 
 def test_case_and_whitespace_normalisation_applies_only_after_mapping(pmap):
