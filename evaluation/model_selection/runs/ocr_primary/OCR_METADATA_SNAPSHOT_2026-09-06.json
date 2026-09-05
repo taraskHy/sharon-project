@@ -1,0 +1,732 @@
+{
+ "artifact": "ocr_provider_metadata_snapshot",
+ "protocol": "OCR_PROVIDER_METADATA_CAPTURE_PROTOCOL_V1",
+ "protocol_sha256": "61b96343fc134c1480722d7ac2ad0b6a0b62b0b4b295c6fde9d9a8e43c0f4f32",
+ "created_at": "2026-09-06 00:15:31",
+ "git_commit": "52582d51486f7d21c8626b1b92edfb9bdc56e108",
+ "inference_calls": 0,
+ "model_calls": 0,
+ "paid_calls": 0,
+ "additional_spend_usd": 0.0,
+ "authorization_header_sent": false,
+ "credentials_sent": false,
+ "request_body_sent": null,
+ "method": "GET",
+ "redirects_followed": 0,
+ "requests": {
+  "providers": {
+   "protocol_sha256": "61b96343fc134c1480722d7ac2ad0b6a0b62b0b4b295c6fde9d9a8e43c0f4f32",
+   "url": "https://openrouter.ai/api/v1/providers",
+   "timestamp": "2026-09-05T21:14:40.541974+00:00",
+   "http_status": 200,
+   "headers": {
+    "date": "Sat, 05 Sep 2026 21:14:40 GMT",
+    "content-type": "application/json",
+    "server": "cloudflare"
+   },
+   "raw_body_sha256": "1717ffc892c315c108bd01c71049964fe4629c6a14c310a3daa3d452bb80e9fc",
+   "raw_body_bytes": 24587,
+   "archived": true,
+   "parse_error": null
+  },
+  "models": {
+   "protocol_sha256": "61b96343fc134c1480722d7ac2ad0b6a0b62b0b4b295c6fde9d9a8e43c0f4f32",
+   "url": "https://openrouter.ai/api/v1/models",
+   "timestamp": "2026-09-05T21:14:41.130125+00:00",
+   "http_status": 200,
+   "headers": {
+    "date": "Sat, 05 Sep 2026 21:14:40 GMT",
+    "content-type": "application/json",
+    "server": "cloudflare"
+   },
+   "raw_body_sha256": "8ae4553799727488057b048a22463cbee03458d25656fbcb292ca212402ef6df",
+   "raw_body_bytes": 714182,
+   "archived": true,
+   "parse_error": null
+  },
+  "endpoints:google/gemini-3.7-flash": {
+   "protocol_sha256": "61b96343fc134c1480722d7ac2ad0b6a0b62b0b4b295c6fde9d9a8e43c0f4f32",
+   "url": "https://openrouter.ai/api/v1/models/google/gemini-3.7-flash/endpoints",
+   "timestamp": "2026-09-05T21:14:41.626993+00:00",
+   "http_status": 200,
+   "headers": {
+    "date": "Sat, 05 Sep 2026 21:14:41 GMT",
+    "content-type": "application/json",
+    "server": "cloudflare"
+   },
+   "raw_body_sha256": "5f2a368a485ae4fbaf609faec7940cf550a010359b25f883f17634fd631cb6a5",
+   "raw_body_bytes": 6898,
+   "archived": true,
+   "parse_error": null
+  },
+  "endpoints:qwen/qwen3-vl-235b-a22b-instruct": {
+   "protocol_sha256": "61b96343fc134c1480722d7ac2ad0b6a0b62b0b4b295c6fde9d9a8e43c0f4f32",
+   "url": "https://openrouter.ai/api/v1/models/qwen/qwen3-vl-235b-a22b-instruct/endpoints",
+   "timestamp": "2026-09-05T21:14:42.114601+00:00",
+   "http_status": 200,
+   "headers": {
+    "date": "Sat, 05 Sep 2026 21:14:41 GMT",
+    "content-type": "application/json",
+    "server": "cloudflare"
+   },
+   "raw_body_sha256": "362bb5570fc5df112b14c5abb14416599497e8948abfed77e9c9685670a81462",
+   "raw_body_bytes": 5111,
+   "archived": true,
+   "parse_error": null
+  }
+ },
+ "raw_bodies": {
+  "providers": {
+   "file": "evaluation/model_selection/runs/ocr_primary/OCR_METADATA_RAW_2026-09-06/providers.json",
+   "raw_body_sha256": "1717ffc892c315c108bd01c71049964fe4629c6a14c310a3daa3d452bb80e9fc",
+   "bytes": 24587
+  },
+  "models": {
+   "file": "evaluation/model_selection/runs/ocr_primary/OCR_METADATA_RAW_2026-09-06/models.json",
+   "raw_body_sha256": "8ae4553799727488057b048a22463cbee03458d25656fbcb292ca212402ef6df",
+   "bytes": 714182
+  },
+  "endpoints:google/gemini-3.7-flash": {
+   "file": "evaluation/model_selection/runs/ocr_primary/OCR_METADATA_RAW_2026-09-06/endpoints_google_gemini-3.7-flash.json",
+   "raw_body_sha256": "5f2a368a485ae4fbaf609faec7940cf550a010359b25f883f17634fd631cb6a5",
+   "bytes": 6898
+  },
+  "endpoints:qwen/qwen3-vl-235b-a22b-instruct": {
+   "file": "evaluation/model_selection/runs/ocr_primary/OCR_METADATA_RAW_2026-09-06/endpoints_qwen_qwen3-vl-235b-a22b-instruct.json",
+   "raw_body_sha256": "362bb5570fc5df112b14c5abb14416599497e8948abfed77e9c9685670a81462",
+   "bytes": 5111
+  }
+ },
+ "parsed": {
+  "providers": [
+   {
+    "slug": "cerebras",
+    "name": "Cerebras"
+   },
+   {
+    "slug": "morph",
+    "name": "Morph"
+   },
+   {
+    "slug": "stepfun",
+    "name": "StepFun"
+   },
+   {
+    "slug": "deepgram",
+    "name": "Deepgram"
+   },
+   {
+    "slug": "voyageai",
+    "name": "VoyageAI by MongoDB"
+   },
+   {
+    "slug": "black-forest-labs",
+    "name": "Black Forest Labs"
+   },
+   {
+    "slug": "moonshotai",
+    "name": "Moonshot AI"
+   },
+   {
+    "slug": "stealth",
+    "name": "Stealth"
+   },
+   {
+    "slug": "reka",
+    "name": "Reka"
+   },
+   {
+    "slug": "arcee-ai",
+    "name": "Arcee AI"
+   },
+   {
+    "slug": "sambanova",
+    "name": "SambaNova"
+   },
+   {
+    "slug": "ai21",
+    "name": "AI21"
+   },
+   {
+    "slug": "minimax",
+    "name": "Minimax"
+   },
+   {
+    "slug": "z-ai",
+    "name": "Z.AI"
+   },
+   {
+    "slug": "io-net",
+    "name": "Io Net"
+   },
+   {
+    "slug": "ionstream",
+    "name": "Ionstream"
+   },
+   {
+    "slug": "cohere",
+    "name": "Cohere"
+   },
+   {
+    "slug": "ncompass",
+    "name": "NCompass"
+   },
+   {
+    "slug": "claude-on-aws",
+    "name": "Claude Platform on AWS"
+   },
+   {
+    "slug": "baseten",
+    "name": "BaseTen"
+   },
+   {
+    "slug": "groq",
+    "name": "Groq"
+   },
+   {
+    "slug": "crusoe",
+    "name": "Crusoe"
+   },
+   {
+    "slug": "modal",
+    "name": "Modal"
+   },
+   {
+    "slug": "deepseek",
+    "name": "DeepSeek"
+   },
+   {
+    "slug": "darkbloom",
+    "name": "Darkbloom"
+   },
+   {
+    "slug": "mancer",
+    "name": "Mancer 2"
+   },
+   {
+    "slug": "nextbit",
+    "name": "NextBit"
+   },
+   {
+    "slug": "infermatic",
+    "name": "Infermatic"
+   },
+   {
+    "slug": "avian",
+    "name": "Avian"
+   },
+   {
+    "slug": "deepinfra",
+    "name": "DeepInfra"
+   },
+   {
+    "slug": "inflection",
+    "name": "Inflection"
+   },
+   {
+    "slug": "xai",
+    "name": "xAI"
+   },
+   {
+    "slug": "switchpoint",
+    "name": "Switchpoint"
+   },
+   {
+    "slug": "sail-research",
+    "name": "Sail Research"
+   },
+   {
+    "slug": "ollama",
+    "name": "Ollama"
+   },
+   {
+    "slug": "tencent",
+    "name": "Tencent"
+   },
+   {
+    "slug": "krea",
+    "name": "Krea"
+   },
+   {
+    "slug": "amazon-nova",
+    "name": "Amazon Nova"
+   },
+   {
+    "slug": "cosine",
+    "name": "Cosine"
+   },
+   {
+    "slug": "mara",
+    "name": "Mara"
+   },
+   {
+    "slug": "perceptron",
+    "name": "Perceptron"
+   },
+   {
+    "slug": "sourceful",
+    "name": "Sourceful"
+   },
+   {
+    "slug": "fish-audio",
+    "name": "Fish Audio"
+   },
+   {
+    "slug": "azure",
+    "name": "Azure"
+   },
+   {
+    "slug": "cloudflare",
+    "name": "Cloudflare"
+   },
+   {
+    "slug": "crucible",
+    "name": "Crucible"
+   },
+   {
+    "slug": "nebius",
+    "name": "Nebius"
+   },
+   {
+    "slug": "aion-labs",
+    "name": "AionLabs"
+   },
+   {
+    "slug": "liquid",
+    "name": "Liquid"
+   },
+   {
+    "slug": "decart",
+    "name": "Decart"
+   },
+   {
+    "slug": "recraft",
+    "name": "Recraft"
+   },
+   {
+    "slug": "meta",
+    "name": "Meta"
+   },
+   {
+    "slug": "seed",
+    "name": "Seed"
+   },
+   {
+    "slug": "coreweave",
+    "name": "CoreWeave"
+   },
+   {
+    "slug": "dekallm",
+    "name": "DekaLLM"
+   },
+   {
+    "slug": "phala",
+    "name": "Phala"
+   },
+   {
+    "slug": "siliconflow",
+    "name": "SiliconFlow"
+   },
+   {
+    "slug": "openai",
+    "name": "OpenAI"
+   },
+   {
+    "slug": "poolside",
+    "name": "Poolside"
+   },
+   {
+    "slug": "modelrun",
+    "name": "ModelRun"
+   },
+   {
+    "slug": "fake-provider",
+    "name": "FakeProvider"
+   },
+   {
+    "slug": "modular",
+    "name": "Modular"
+   },
+   {
+    "slug": "cirrascale",
+    "name": "Cirrascale"
+   },
+   {
+    "slug": "ambient",
+    "name": "Ambient"
+   },
+   {
+    "slug": "anthropic",
+    "name": "Anthropic"
+   },
+   {
+    "slug": "baidu",
+    "name": "Baidu"
+   },
+   {
+    "slug": "atlas-cloud",
+    "name": "AtlasCloud"
+   },
+   {
+    "slug": "together",
+    "name": "Together"
+   },
+   {
+    "slug": "runway",
+    "name": "Runway"
+   },
+   {
+    "slug": "digitalocean",
+    "name": "DigitalOcean"
+   },
+   {
+    "slug": "alibaba",
+    "name": "Alibaba"
+   },
+   {
+    "slug": "nex-agi",
+    "name": "Nex AGI"
+   },
+   {
+    "slug": "chutes",
+    "name": "Chutes"
+   },
+   {
+    "slug": "inceptron",
+    "name": "Inceptron"
+   },
+   {
+    "slug": "upstage",
+    "name": "Upstage"
+   },
+   {
+    "slug": "thinkingmachines",
+    "name": "Thinking Machines"
+   },
+   {
+    "slug": "xiaomi",
+    "name": "Xiaomi"
+   },
+   {
+    "slug": "google-vertex",
+    "name": "Google"
+   },
+   {
+    "slug": "google-ai-studio",
+    "name": "Google AI Studio"
+   },
+   {
+    "slug": "parasail",
+    "name": "Parasail"
+   },
+   {
+    "slug": "databricks",
+    "name": "Databricks"
+   },
+   {
+    "slug": "open-inference",
+    "name": "OpenInference"
+   },
+   {
+    "slug": "nvidia",
+    "name": "Nvidia"
+   },
+   {
+    "slug": "featherless",
+    "name": "Featherless"
+   },
+   {
+    "slug": "makora",
+    "name": "Makora"
+   },
+   {
+    "slug": "relace",
+    "name": "Relace"
+   },
+   {
+    "slug": "streamlake",
+    "name": "StreamLake"
+   },
+   {
+    "slug": "amazon-bedrock",
+    "name": "Amazon Bedrock"
+   },
+   {
+    "slug": "clarifai",
+    "name": "Clarifai"
+   },
+   {
+    "slug": "quiver",
+    "name": "Quiver"
+   },
+   {
+    "slug": "venice",
+    "name": "Venice"
+   },
+   {
+    "slug": "sakana",
+    "name": "Sakana AI"
+   },
+   {
+    "slug": "inception",
+    "name": "Inception"
+   },
+   {
+    "slug": "inference-net",
+    "name": "InferenceNet"
+   },
+   {
+    "slug": "inferact-vllm",
+    "name": "Inferact vLLM"
+   },
+   {
+    "slug": "friendli",
+    "name": "Friendli"
+   },
+   {
+    "slug": "akashml",
+    "name": "AkashML"
+   },
+   {
+    "slug": "heygen",
+    "name": "HeyGen"
+   },
+   {
+    "slug": "perplexity",
+    "name": "Perplexity"
+   },
+   {
+    "slug": "tenstorrent",
+    "name": "Tenstorrent"
+   },
+   {
+    "slug": "wafer",
+    "name": "Wafer"
+   },
+   {
+    "slug": "gmicloud",
+    "name": "GMICloud"
+   },
+   {
+    "slug": "fireworks",
+    "name": "Fireworks"
+   },
+   {
+    "slug": "mistral",
+    "name": "Mistral"
+   },
+   {
+    "slug": "prime-intellect",
+    "name": "PrimeIntellect"
+   },
+   {
+    "slug": "novita",
+    "name": "Novita"
+   }
+  ],
+  "model_endpoints": {
+   "google/gemini-3.7-flash": {
+    "canonical_slug": "google/gemini-3.7-flash",
+    "endpoints": [
+     {
+      "provider_name": "Google"
+     },
+     {
+      "provider_name": "Google AI Studio"
+     },
+     {
+      "provider_name": "Google AI Studio"
+     },
+     {
+      "provider_name": "Google"
+     },
+     {
+      "provider_name": "Google"
+     },
+     {
+      "provider_name": "Google AI Studio"
+     }
+    ],
+    "capabilities": {
+     "image_input": true,
+     "structured_outputs": true
+    }
+   },
+   "qwen/qwen3-vl-235b-a22b-instruct": {
+    "canonical_slug": "qwen/qwen3-vl-235b-a22b-instruct",
+    "endpoints": [
+     {
+      "provider_name": "DeepInfra"
+     },
+     {
+      "provider_name": "Venice"
+     },
+     {
+      "provider_name": "Parasail"
+     },
+     {
+      "provider_name": "Alibaba"
+     },
+     {
+      "provider_name": "Novita"
+     }
+    ],
+    "capabilities": {
+     "image_input": true,
+     "structured_outputs": true
+    }
+   }
+  },
+  "prices": {
+   "qwen/qwen3-vl-235b-a22b-instruct": {
+    "input_per_m": 0.21,
+    "output_per_m": 1.9
+   },
+   "google/gemini-3.7-flash": {
+    "input_per_m": 0.75,
+    "output_per_m": 3.75
+   }
+  }
+ },
+ "acceptance": {
+  "protocol": "OCR_PROVIDER_METADATA_CAPTURE_PROTOCOL_V1",
+  "result": "ACCEPTED",
+  "failure_count": 0,
+  "reasons": [
+   {
+    "ok": true,
+    "code": "SLUG_RESOLVED",
+    "detail": "'google-ai-studio' -> 'Google AI Studio'",
+    "slug": "google-ai-studio",
+    "display_name": "Google AI Studio"
+   },
+   {
+    "ok": true,
+    "code": "PRESERVED_MAPPING_COMPATIBLE",
+    "detail": "'google-ai-studio' still 'Google AI Studio'",
+    "slug": "google-ai-studio"
+   },
+   {
+    "ok": true,
+    "code": "SLUG_RESOLVED",
+    "detail": "'google-vertex' -> 'Google'",
+    "slug": "google-vertex",
+    "display_name": "Google"
+   },
+   {
+    "ok": true,
+    "code": "PRESERVED_MAPPING_COMPATIBLE",
+    "detail": "'google-vertex' still 'Google'",
+    "slug": "google-vertex"
+   },
+   {
+    "ok": true,
+    "code": "SLUG_RESOLVED",
+    "detail": "'alibaba' -> 'Alibaba'",
+    "slug": "alibaba",
+    "display_name": "Alibaba"
+   },
+   {
+    "ok": true,
+    "code": "ARM_ROUTE_AVAILABLE",
+    "detail": "'google/gemini-3.7-flash' available via 'google-ai-studio'",
+    "model": "google/gemini-3.7-flash",
+    "slug": "google-ai-studio"
+   },
+   {
+    "ok": true,
+    "code": "ARM_ROUTE_AVAILABLE",
+    "detail": "'google/gemini-3.7-flash' available via 'google-vertex'",
+    "model": "google/gemini-3.7-flash",
+    "slug": "google-vertex"
+   },
+   {
+    "ok": true,
+    "code": "ARM_ROUTE_AVAILABLE",
+    "detail": "'qwen/qwen3-vl-235b-a22b-instruct' available via 'alibaba'",
+    "model": "qwen/qwen3-vl-235b-a22b-instruct",
+    "slug": "alibaba"
+   },
+   {
+    "ok": true,
+    "code": "PRICE_CAPTURED",
+    "detail": "'google/gemini-3.7-flash' live {'input_per_m': 0.75, 'output_per_m': 3.75} vs frozen {'input_per_m': 0.75, 'output_per_m': 3.75}",
+    "model": "google/gemini-3.7-flash"
+   },
+   {
+    "ok": true,
+    "code": "PRICE_CAPTURED",
+    "detail": "'qwen/qwen3-vl-235b-a22b-instruct' live {'input_per_m': 0.21, 'output_per_m': 1.9} vs frozen {'input_per_m': 0.21, 'output_per_m': 1.9}",
+    "model": "qwen/qwen3-vl-235b-a22b-instruct"
+   },
+   {
+    "ok": true,
+    "code": "CAMPAIGN_MAXIMUM_WITHIN_FROZEN",
+    "detail": "$0.09689600 <= $0.096896",
+    "recomputed": 0.096896
+   },
+   {
+    "ok": true,
+    "code": "FITS_FAMILY_HARD_LIMIT",
+    "detail": "L0 + maximum = $0.81472854 <= $0.82323229"
+   }
+  ],
+  "resolved_mapping": {
+   "google-ai-studio": "Google AI Studio",
+   "google-vertex": "Google",
+   "alibaba": "Alibaba"
+  },
+  "effective_prices_per_m": {
+   "google/gemini-3.7-flash": {
+    "input_per_m": 0.75,
+    "output_per_m": 3.75,
+    "frozen": {
+     "input_per_m": 0.75,
+     "output_per_m": 3.75
+    },
+    "live": {
+     "input_per_m": 0.75,
+     "output_per_m": 3.75
+    },
+    "retained_frozen_because_live_is_lower": false
+   },
+   "qwen/qwen3-vl-235b-a22b-instruct": {
+    "input_per_m": 0.21,
+    "output_per_m": 1.9,
+    "frozen": {
+     "input_per_m": 0.21,
+     "output_per_m": 1.9
+    },
+    "live": {
+     "input_per_m": 0.21,
+     "output_per_m": 1.9
+    },
+    "retained_frozen_because_live_is_lower": false
+   }
+  },
+  "conservative_arm_costs_usd": {
+   "gemini_pinned_ai_studio": 0.038328,
+   "gemini_pinned_vertex": 0.038328,
+   "qwen3_vl_235b_pinned_alibaba": 0.02024
+  },
+  "conservative_campaign_maximum_usd": 0.096896,
+  "frozen_campaign_maximum_usd": 0.096896,
+  "L0_usd": 0.71783254,
+  "family_hard_abs_usd": 0.82323229,
+  "remaining_headroom_usd": 0.00850375
+ },
+ "headline": {
+  "result": "ACCEPTED",
+  "resolved_mapping": {
+   "google-ai-studio": "Google AI Studio",
+   "google-vertex": "Google",
+   "alibaba": "Alibaba"
+  },
+  "alibaba_now_VERIFIED": "Alibaba",
+  "google_mappings_unchanged": true,
+  "conservative_campaign_maximum_usd": 0.096896,
+  "frozen_campaign_maximum_usd": 0.096896,
+  "remaining_headroom_usd": 0.00850375
+ },
+ "content_sha256": "89bb3b548bb0e620c402eec20b4627034768e13106735e9890586dcf85efdb4d"
+}
