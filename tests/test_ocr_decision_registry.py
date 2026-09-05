@@ -660,12 +660,61 @@ def test_v3_keeps_gates_and_limits_unchanged(v3):
     assert v3["prompt"]["version"] == "m2-strict-v1"
 
 
-def test_v3_is_frozen_not_authorized_not_executed(v3):
-    assert v3["status"] == "FROZEN - NOT EXECUTED - NOT AUTHORIZED"
+def test_v3_artifact_is_immutable_and_was_never_edited_by_execution(v3):
+    """V3 was authorized and executed on 2026-09-05. The artifact itself must
+    still recompute to its frozen hash: execution records results in a SEPARATE
+    result artifact, never by amending the experiment."""
     assert v3["provider_calls_made_preparing_this"] == 0
     assert v3["identity_and_cache_policy"]["identity_version"] == 3
     body = json.dumps({k: v for k, v in v3.items() if k != "experiment_sha256"},
                       ensure_ascii=False, indent=1, sort_keys=True, default=str)
     assert hashlib.sha256(body.encode()).hexdigest() == v3["experiment_sha256"]
-    assert not Path("evaluation/model_selection/policies/"
-                    "OCR_ALTSCREEN_V3_CAMPAIGN_BUDGET.json").exists()
+    assert v3["experiment_sha256"] ==         "4b84a0644064c95498f6091a22c7580f5ad1895411f1e0e9dba2efce582e4257"
+
+
+def test_v3_budget_manifest_binds_to_the_authorized_terms():
+    from autograder.campaignbudget import load_campaign_budget
+    mp = Path("evaluation/model_selection/policies/OCR_ALTSCREEN_V3_CAMPAIGN_BUDGET.json")
+    cb = load_campaign_budget(mp)
+    assert cb.experiment_sha256 ==         "4b84a0644064c95498f6091a22c7580f5ad1895411f1e0e9dba2efce582e4257"
+    assert cb.starting_ledger_usd == 0.70575904
+    assert round(cb.hard_usd, 8) == 0.82323229
+    assert round(cb.warn_usd, 8) == 0.78323229
+    assert cb.hard_increment_usd == 0.11747325
+    a = json.loads(mp.read_text(encoding="utf-8"))["authorization"]
+    assert a["transport_retries"] == 0 and a["cache_policy"] == "refresh"
+    assert a["cache_hits_allowed"] == 0
+    assert a["permitted_physical_attempts_per_logical_request"] == 1
+    assert a["held_out_forbidden"] is True
+
+
+def test_v3_result_is_an_inconclusive_mechanical_stop():
+    r = json.loads(Path("evaluation/model_selection/runs/ocr_primary/"
+                        "OCR_ALTSCREEN_V3_RESULT_2026-09-05.json").read_text(encoding="utf-8"))
+    assert r["terminal_outcome"] == "INCONCLUSIVE_MECHANICAL_STOP"
+    assert r["gates_not_evaluated"] is True
+    assert r["stop_condition"]["type"] == "explicit route violation"
+    # spend respected both the grant and the frozen maximum
+    acc = r["accounting"]
+    assert acc["within_authorization"] is True
+    assert acc["within_frozen_maximum"] is True
+    assert acc["additional_spend_usd"] <= 0.11747325
+    assert acc["hard_threshold_crossed"] is False
+    # the execution contract held
+    ec = r["execution_contract_held"]
+    assert ec["cache_hits"] == 0 and ec["transport_retries"] == 0
+    assert ec["physical_attempts_per_logical_request"] == 1
+    assert ec["held_out_access"] == 0 and ec["grading_calls"] == 0 and ec["rag_calls"] == 0
+
+
+def test_v3_result_records_the_false_positive_root_cause():
+    r = json.loads(Path("evaluation/model_selection/runs/ocr_primary/"
+                        "OCR_ALTSCREEN_V3_RESULT_2026-09-05.json").read_text(encoding="utf-8"))
+    rc = r["ROOT_CAUSE_THE_VIOLATION_IS_A_FALSE_POSITIVE"]
+    assert "google-vertex" in rc["finding"] and "Google" in rc["finding"]
+    assert "COINCIDENCE" in rc["why_arm_1_passed"]
+    assert "fails SAFE" in rc["fail_direction"]
+    # and the identity mismatch is recorded, not hidden
+    im = r["IDENTITY_MISMATCH_RECORDED"]
+    assert im["sole_differing_field"] == "base_url"
+    assert im["classification"] == "freeze bookkeeping defect, not a configuration deviation"

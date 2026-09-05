@@ -144,9 +144,18 @@ def main() -> int:
 
     print("\n== budget (PROSPECTIVE — V3 is NOT authorized) ==")
     bg = screen["budget"]
-    check("no V3 campaign budget manifest exists yet",
-          not Path("evaluation/model_selection/policies/"
-                   "OCR_ALTSCREEN_V3_CAMPAIGN_BUDGET.json").exists())
+    # V3 was AUTHORIZED and EXECUTED on 2026-09-05; the manifest now exists and
+    # must bind to this exact experiment.
+    from autograder.campaignbudget import load_campaign_budget
+    mp = Path("evaluation/model_selection/policies/OCR_ALTSCREEN_V3_CAMPAIGN_BUDGET.json")
+    check("V3 campaign budget manifest exists and self-hash verifies", mp.exists())
+    if mp.exists():
+        cb = load_campaign_budget(mp)
+        check("manifest is bound to the V3 experiment hash",
+              cb.experiment_sha256 == screen["experiment_sha256"])
+        check("manifest L0 == the frozen L0",
+              round(cb.starting_ledger_usd, 8) == round(bg["L0_verified_from_disk"], 8))
+        check("manifest hard == family absolute", round(cb.hard_usd, 8) == 0.82323229)
     check("absolute family limits preserved",
           bg["campaign_family_absolute_limits_preserved"] == {"warning": 0.78323229,
                                                               "hard": 0.82323229})
@@ -162,13 +171,25 @@ def main() -> int:
     # ledger is above it — what must still hold is that spend never left the
     # envelope and never exceeded the authorization.
     L0 = screen["budget"]["L0_verified_from_disk"]
-    check("ledger matches the L0 frozen into V3", round(cum, 8) == round(L0, 8), f"{cum:.8f}")
+    spent = round(cum - L0, 8)
+    # L0 is the PRE-CAMPAIGN baseline; V3 has now legitimately spent against it.
+    check("ledger has not fallen below the frozen L0", cum >= L0 - 1e-9, f"{cum:.8f}")
+    check("spend is within the $0.11747325 authorization", spent <= 0.11747325, f"${spent:.8f}")
+    check("spend is within the FROZEN $0.096896 complete-campaign maximum",
+          spent <= 0.096896, f"${spent:.8f}")
     check("ledger is below the absolute family hard limit", cum <= 0.82323229, f"{cum:.8f}")
-    root = Path("evaluation/model_selection/runs_altscreen")
-    partial = [p.parent.name for p in root.rglob("outputs.jsonl")
-               if len([l for l in p.read_text(encoding="utf-8").splitlines() if l.strip()]) not in (0, 8)]
-    check("no PARTIAL arm outputs (a refused arm leaves an empty dir, which is fine)",
-          not partial, str(partial))
+    # An arm is legitimately short ONLY when its last row records a mechanical
+    # stop. A silently truncated arm is not acceptable.
+    bad_short = []
+    for root in (Path("evaluation/model_selection/runs_altscreen"),
+                 Path("evaluation/model_selection/runs_altscreen_v3")):
+        for f in root.rglob("outputs.jsonl"):
+            rows = [json.loads(l) for l in f.read_text(encoding="utf-8").splitlines() if l.strip()]
+            if len(rows) in (0, 8):
+                continue
+            if not rows[-1].get("stopped"):
+                bad_short.append(f.parent.name)
+    check("every short arm ends in a recorded mechanical stop", not bad_short, str(bad_short))
 
     print(f"\n{'=' * 70}\n{len(ok)} checks PASS, {len(problems)} PROBLEM(S)")
     if problems:

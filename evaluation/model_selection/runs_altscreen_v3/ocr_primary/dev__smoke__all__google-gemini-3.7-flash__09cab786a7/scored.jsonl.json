@@ -1,0 +1,20 @@
+[
+ {
+  "case_id": "hl_e003_q1_r1__l1",
+  "split": "DEV",
+  "category": "handwritten_line",
+  "tier": "owner",
+  "hard": false,
+  "reference_status": "confirmed",
+  "schema_failure": false,
+  "provider_failure": true,
+  "no_output": true,
+  "failure_detail": "pinned to 'google-vertex' with allow_fallbacks=false but the response reported 'Google'",
+  "cer": null,
+  "usable_25": null,
+  "usable_50": null,
+  "number_sign_error": null,
+  "scored": false,
+  "skip_reason": "provider_failure"
+ }
+]

@@ -1,5 +1,5 @@
 """Mechanical integrity check for one executed arm of
-OCR_ALTERNATIVE_CANDIDATE_SCREEN_V1. ZERO provider calls.
+OCR_ALTERNATIVE_CANDIDATE_SCREEN_V3. ZERO provider calls.
 
 Deliberately MECHANICAL ONLY. It does not look at transcription quality: the
 checkpoint between arms exists to catch safety failures (linkage, archiving,
@@ -16,7 +16,7 @@ from pathlib import Path
 from autograder.campaignbudget import load_campaign_budget
 
 SCREEN = Path("evaluation/model_selection/experiments/"
-              "OCR_ALTERNATIVE_CANDIDATE_SCREEN_V1_2026-09-03.json")
+              "OCR_ALTERNATIVE_CANDIDATE_SCREEN_V3_2026-09-05.json")
 LEDGER = Path("evaluation/model_selection/state/gateway_ledger/usage.jsonl")
 SECRET_RE = re.compile(r"sk-or-v1-[A-Za-z0-9]{8}|or-v1-[a-f0-9]{12}|Bearer\s+[A-Za-z0-9._\-]{12}", re.I)
 
@@ -35,7 +35,9 @@ def _read(p):
 def main(run_dir: str) -> int:
     d = Path(run_dir)
     screen = json.loads(SCREEN.read_text(encoding="utf-8"))
-    budget = load_campaign_budget(screen["campaign_budget_manifest"])
+    budget = load_campaign_budget(
+        screen.get("campaign_budget_manifest")
+        or "evaluation/model_selection/policies/OCR_ALTSCREEN_V3_CAMPAIGN_BUDGET.json")
     outputs = _read(d / "outputs.jsonl")
     raw = _read(d / "raw_responses.jsonl") if (d / "raw_responses.jsonl").exists() else []
     ledger = _read(LEDGER)
@@ -79,6 +81,21 @@ def main(run_dir: str) -> int:
     ck("archive carries a logical_request_id",
        all(r.get("logical_request_id") for r in raw))
 
+    # ---- 2b. V3: exactly one physical attempt, never a cache replay ----------
+    print("\n== V3 frozen execution contract ==")
+    rp = screen["execution_requirements"]["retry_policy"]
+    ck("cache_hit=false on every row", not any(r.get("cache_hit") for r in outputs),
+       f"{sum(1 for r in outputs if r.get('cache_hit'))} hit(s)")
+    per_case = {}
+    for r in raw:
+        per_case.setdefault(r.get("case_id"), []).append(r)
+    over = {c: len(v) for c, v in per_case.items() if len(v) > 1}
+    ck("at most ONE physical attempt per logical request", not over, str(over))
+    ck("every retry_index is 0 (transport_retries=0)",
+       all(r.get("retry_index") == 0 for r in raw))
+    ck("frozen policy is transport_retries=0", rp["transport_retries"] == 0)
+    ck("physical attempts <= 8 for this arm", len(raw) <= 8, f"{len(raw)}")
+
     # ---- 3. no archive failure, no route violation ---------------------------
     print("\n== safety conditions ==")
     marker = d / "raw_responses.jsonl.ARCHIVE_FAILURE"
@@ -97,12 +114,17 @@ def main(run_dir: str) -> int:
 
     # ---- 4. configuration is the frozen one ---------------------------------
     print("\n== frozen configuration ==")
+    # Match on AUTHORITATIVE evidence — what was actually requested on the wire,
+    # from the raw archive. run["config"]["route"] is fingerprint_fields(), which
+    # by design omits `provider` (identity is derived separately), so matching on
+    # it would always fail for a pinned arm.
+    requested_orders = {tuple(r.get("requested_provider_order") or ()) for r in raw}
+    requested_models = {r.get("requested_model") for r in raw}
     arm = next((a for a in screen["candidates"]
-                if a["model"] == run["config"]["route"]["model"]
-                and (a["provider_routing"] == (run["config"]["route"]
-                     .get("extra_generation", {}) or {}).get("provider"))), None)
-    ck("route matches a frozen arm", arm is not None,
-       run["config"]["route"]["model"])
+                if {a["model"]} == requested_models
+                and requested_orders == {tuple(a["provider_routing"]["order"])}), None)
+    ck("route matches a frozen arm (by transmitted provider order + model)",
+       arm is not None, f"{requested_models} {requested_orders}")
     ck("prompt version is m2-strict-v1",
        run["config"]["prompt_version"] == "m2-strict-v1")
     ck("schema hash matches the freeze",
@@ -124,8 +146,10 @@ def main(run_dir: str) -> int:
     spent = round(cum - budget.starting_ledger_usd, 8)
     ck("cumulative ledger is below the fixed hard threshold",
        cum <= budget.hard_usd, f"{cum:.8f} <= {budget.hard_usd:.8f}")
-    ck("campaign spend so far is within the $0.12 authorization",
-       spent <= 0.12, f"${spent:.6f}")
+    ck("campaign spend within the $0.11747325 authorization",
+       spent <= 0.11747325, f"${spent:.8f}")
+    ck("campaign spend within the FROZEN $0.096896 complete-campaign maximum",
+       spent <= 0.096896, f"${spent:.8f}")
     remaining = round(budget.hard_usd - cum, 8)
     print(f"   arm cost ${arm_cost:.6f} | campaign spent ${spent:.6f} | remaining ${remaining:.6f}")
 

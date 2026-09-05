@@ -1,0 +1,155 @@
+{
+ "artifact": "ocr_altscreen_v3_campaign_result",
+ "created_at": "2026-09-05 04:28:41",
+ "git_commit": "d07dd20b6f783502db141896a2cad95cbbdd3f95",
+ "campaign": "OCR_ALTERNATIVE_CANDIDATE_SCREEN_V3",
+ "experiment_sha256": "4b84a0644064c95498f6091a22c7580f5ad1895411f1e0e9dba2efce582e4257",
+ "budget_manifest_commit": "d07dd20b6f783502db141896a2cad95cbbdd3f95",
+ "starting_code_commit": "1259f3adfe6245fef431057080ae1b2daf091bd0",
+ "terminal_outcome": "INCONCLUSIVE_MECHANICAL_STOP",
+ "gates_not_evaluated": true,
+ "gates_not_evaluated_reason": "the campaign stopped on a route-violation stop condition after arm 2's first case. Arm 1 completed, but the paired Gemini route comparison it exists to support is impossible without arm 2, and arm 3 never started. Evaluating a preregistered gate on one unpaired arm would answer a question the screen was not designed to ask.",
+ "stop_condition": {
+  "type": "explicit route violation",
+  "arm": "gemini_pinned_vertex",
+  "case": "hl_e003_q1_r1__l1",
+  "attempt_id": "9be63653fb744a6aa4b23db2180fb145",
+  "requested_provider_order": [
+   "google-vertex"
+  ],
+  "allow_fallbacks": false,
+  "observed_provider": "Google",
+  "provider_attribution_status": "EXPLICIT",
+  "raw_body_sha256": "9cc23da8495b812418553ca19f89bd68bfe6ef46d23379d53b3d44494fb0be61",
+  "enforcement_behaved_as_designed": "the check fired on the FIRST case and stopped the arm before any further send, rather than accepting output from a provider other than the pinned one"
+ },
+ "ROOT_CAUSE_THE_VIOLATION_IS_A_FALSE_POSITIVE": {
+  "finding": "OpenRouter's provider SLUG for Vertex is `google-vertex` and its DISPLAY NAME is `Google`. The response reporting `Google` therefore means the pin WAS honoured. The violation was raised by rawcapture._norm(), which strips non-alphanumerics and lowercases both sides and then compares a SLUG against a DISPLAY NAME.",
+  "evidence": "OCR_PROVIDER_ROUTE_FORENSICS_2026-09-03.json records the mapping read from OpenRouter's /providers endpoint: 'Google (google-vertex)' and 'Google AI Studio (google-ai-studio)'.",
+  "why_arm_1_passed": "_norm('google-ai-studio') == _norm('Google AI Studio') == 'googleaistudio' — the slug and the display name normalise identically BY COINCIDENCE. _norm('google-vertex')='googlevertex' vs _norm('Google')='google' do not.",
+  "consequence": "arm 1's clean route record is therefore weaker evidence than it looks: it passed because of a coincidence in string form, not because the comparison is sound.",
+  "not_fixed_here": "fixing the comparison and re-running is outside this authorization, which excludes retries, reruns and changed configuration and does not permit a V3 amendment or a V4. The defect is reported, not repaired.",
+  "fail_direction": "the bug fails SAFE — it stops rather than accepting possible fallback output"
+ },
+ "arms": [
+  {
+   "arm_id": "gemini_pinned_ai_studio",
+   "run_id": "dev__smoke__all__google-gemini-3.7-flash__7a31feab11",
+   "arm_type": "PROVIDER-ROUTE ATTRIBUTION ARM",
+   "completed": true,
+   "intended": 8,
+   "attempted": 8,
+   "usable": 5,
+   "handwritten_coverage": "2/5",
+   "printed_coverage": "3/3",
+   "transport_failures": 0,
+   "provider_content_filter": 0,
+   "other_provider_http_failures": 0,
+   "model_text_refusals": 0,
+   "truncation": 0,
+   "json_parse_failures": 3,
+   "schema_failures": 0,
+   "fabrication": 0,
+   "total_line_loss": 3,
+   "critical_errors": "NOT COMPUTED — the campaign stopped mechanically; no gate is evaluated",
+   "successful_output_handwritten_cer": 0.2105,
+   "successful_output_handwritten_cer_denominator": "2/5",
+   "failure_aware_handwritten_cer": 0.6842,
+   "mean_latency_s": 2.232,
+   "physical_attempts": 8,
+   "physical_attempts_per_logical_request": 1,
+   "all_retry_index_zero": true,
+   "cache_hits": 0,
+   "requested_provider": "google-ai-studio",
+   "observed_provider_counts": {
+    "Google AI Studio": 8
+   },
+   "unknown_attribution_count": 0,
+   "route_violations": 0,
+   "arm_cost_usd": 0.009792,
+   "gates": "NOT EVALUATED — see gates_not_evaluated"
+  },
+  {
+   "arm_id": "gemini_pinned_vertex",
+   "run_id": "dev__smoke__all__google-gemini-3.7-flash__09cab786a7",
+   "arm_type": "PROVIDER-ROUTE ATTRIBUTION ARM",
+   "completed": false,
+   "intended": 8,
+   "attempted": 1,
+   "usable": 0,
+   "stopped_on": "RouteViolation, first case, before any further send",
+   "physical_attempts": 1,
+   "cache_hits": 0,
+   "requested_provider": "google-vertex",
+   "observed_provider_counts": {
+    "Google": 1
+   },
+   "arm_cost_usd": 0.0022815,
+   "gates": "NOT EVALUATED — arm did not run"
+  },
+  {
+   "arm_id": "qwen3_vl_235b_pinned_alibaba",
+   "arm_type": "CROSS-FAMILY CANDIDATE ARM",
+   "completed": false,
+   "attempted": 0,
+   "arm_cost_usd": 0.0,
+   "status": "NEVER STARTED — the campaign stopped after arm 2",
+   "gates": "NOT EVALUATED — arm did not run"
+  }
+ ],
+ "paired_gemini_comparison": {
+  "possible": false,
+  "reason": "arm 2 produced one stopped case; there are no explicitly paired cases to compare.",
+  "no_significance_claimed": "eight cases could not support a significance claim in any event"
+ },
+ "accounting": {
+  "L0": 0.70575904,
+  "ledger_rows_before": 806,
+  "ledger_rows_after": 815,
+  "ending_ledger_usd": 0.71783254,
+  "additional_spend_usd": 0.0120735,
+  "authorized_increment_usd": 0.11747325,
+  "within_authorization": true,
+  "frozen_complete_campaign_maximum_usd": 0.096896,
+  "within_frozen_maximum": true,
+  "warning_absolute_usd": 0.78323229,
+  "hard_absolute_usd": 0.82323229,
+  "warning_threshold_crossed": false,
+  "hard_threshold_crossed": false,
+  "arm_costs_usd": {
+   "gemini_pinned_ai_studio": 0.009792,
+   "gemini_pinned_vertex": 0.0022815,
+   "qwen3_vl_235b_pinned_alibaba": 0.0
+  }
+ },
+ "execution_contract_held": {
+  "logical_requests_attempted": 9,
+  "logical_requests_intended_for_the_campaign": 24,
+  "physical_attempts": 9,
+  "physical_attempts_per_logical_request": 1,
+  "transport_retries": 0,
+  "cache_policy": "refresh",
+  "cache_hits": 0,
+  "cache_hits_allowed": 0,
+  "archive_failures": 0,
+  "secret_leakage": 0,
+  "held_out_access": 0,
+  "grading_calls": 0,
+  "rag_calls": 0,
+  "every_attempt_carried_full_linkage": true
+ },
+ "IDENTITY_MISMATCH_RECORDED": {
+  "what": "the executed arms' derived experiment_identity does not equal the value frozen in V3, for BOTH Gemini arms.",
+  "arm1_frozen": "805abe746b8ce9c50dc004e820ca2f887ff52d2803ec2bbeb4e91522689d00ff",
+  "arm1_executed": "1a13e7807436a566188f2da609317116e19c4f6bd9cfaa728bfd0d60bf275704",
+  "sole_differing_field": "base_url",
+  "detail": "V3's identities were computed from a hand-built TaskRoute carrying base_url='https://openrouter.ai/api/v1'. build_route() leaves base_url None and the OpenRouter backend supplies its own endpoint, so the effective config differs in that one field. Every other field — model, provider pin, allow_fallbacks, reasoning, max_tokens, temperature, structured_mode, strict_schema, prompt_version, transport_retries, validation_retries, timeout_s — is identical.",
+  "was_this_a_wire_deviation": "NO. The transmitted request matched the freeze on every dimension: model, prompt version, schema hash, case ids and order, provider order and allow_fallbacks, all verified from the raw archive.",
+  "classification": "freeze bookkeeping defect, not a configuration deviation",
+  "fix_for_the_next_freeze": "compute frozen identities from a route produced by build_route() — the actual construction path — instead of a hand-built one."
+ },
+ "ocr_primary_role_status": "UNSELECTED (unchanged)",
+ "seen32_not_run": true,
+ "v1_and_v2_outputs_excluded": true,
+ "content_sha256": "f0b08aec2485e9be2a7fd4963780a751b03a9f0b7782208f0f4126eaa518a544"
+}

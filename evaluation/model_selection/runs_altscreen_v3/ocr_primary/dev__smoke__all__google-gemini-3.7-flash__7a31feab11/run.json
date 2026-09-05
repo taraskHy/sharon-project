@@ -1,0 +1,201 @@
+{
+ "run_id": "dev__smoke__all__google-gemini-3.7-flash__7a31feab11",
+ "config_hash": "7a31feab1183f89d40c573fae50f43e9e50dd850c54c6eac15fa0d41a9db9c64",
+ "created_at": "2026-09-05 04:22:53",
+ "git_commit": "d07dd20b6f783502db141896a2cad95cbbdd3f95",
+ "spec": {
+  "role": "ocr_primary",
+  "split": "dev",
+  "candidate": "google/gemini-3.7-flash",
+  "component": null,
+  "backend": "openrouter",
+  "base_url": null,
+  "models_config": "models.toml",
+  "registry_path": "C:\\Users\\ethan\\OneDrive\\Desktop\\etgar\\cp_course\\sharon-project\\evaluation\\model_selection\\candidates.toml",
+  "bench_root": "C:\\Users\\ethan\\OneDrive\\Desktop\\etgar\\cp_course\\sharon-project\\evaluation\\hebrew_bench_v2",
+  "datasets_root": "C:\\Users\\ethan\\OneDrive\\Desktop\\etgar\\cp_course\\sharon-project\\evaluation\\model_selection\\datasets",
+  "state_root": "C:\\Users\\ethan\\OneDrive\\Desktop\\etgar\\cp_course\\sharon-project\\evaluation\\model_selection\\state",
+  "runs_root": "evaluation\\model_selection\\runs_altscreen_v3",
+  "held_out_log": "C:\\Users\\ethan\\OneDrive\\Desktop\\etgar\\cp_course\\sharon-project\\evaluation\\model_selection\\HELD_OUT_EXECUTIONS.jsonl",
+  "limit": null,
+  "dry_run": false,
+  "confirm_held_out": false,
+  "retry_failed": false,
+  "allow_unlisted": false,
+  "note": "",
+  "max_tokens": null,
+  "reasoning": null,
+  "provider": {
+   "order": [
+    "google-ai-studio"
+   ],
+   "allow_fallbacks": false
+  },
+  "transport_retries": 0,
+  "warn_usd": null,
+  "hard_usd": null,
+  "validation_retries": 0,
+  "allow_dropped_config": null,
+  "campaign_budget": "evaluation/model_selection/policies/OCR_ALTSCREEN_V3_CAMPAIGN_BUDGET.json",
+  "capture_raw": true,
+  "cache_policy": "refresh",
+  "subset": "smoke",
+  "skip_key_preflight": false,
+  "final_evaluation": false,
+  "smoke_root": null,
+  "prompt_version": "m2-strict-v1",
+  "research": true
+ },
+ "config": {
+  "role": "ocr_primary",
+  "task": "ocr_primary",
+  "split": "DEV",
+  "component": null,
+  "subset": "smoke",
+  "candidate": "google/gemini-3.7-flash",
+  "backend": "openrouter",
+  "base_url": null,
+  "route": {
+   "task": "ocr_primary",
+   "backend": "openrouter",
+   "model": "google/gemini-3.7-flash",
+   "structured_mode": "json_schema",
+   "max_tokens": 1000,
+   "temperature": 0.0,
+   "reasoning": {
+    "effort": "low"
+   },
+   "extra_generation": {},
+   "prompt_version": "m2-strict-v1"
+  },
+  "adapter_version": "ocr-primary-bench-v1",
+  "validation_retries": 0,
+  "prompt_version": "m2-strict-v1",
+  "prompt_sha256": "8c6981a00d467dbbb92c2495a52e1e050dab68de43a43ce977323bc0c2718172",
+  "schema_name": "BenchTranscription",
+  "schema_sha256": "003ee19969c8c443d62d75a0b2ff8eaeaa052fb3b40f3c609c3c8feb178d3679",
+  "manifest_hashes": {
+   "items_sha256": "25463e91b95db8eecfc306644dd0839f65e42910d4161f6991383b6f4a524a8b",
+   "references_sha256": "4a93e826e6e94777d445e64ae2c3f5ed10def46aa021ff763a45a9807fb913b5",
+   "audit_sha256": "eace95fc6dc684c88f1fea2142414a68ad8f421257ac012faf6bcfc9ae07f50c",
+   "audit_manifest_sha256": "65ac16385979480945938f45f0d3e5e3255afa7bcb41c4ea7afe2ff2ebcc405f"
+  },
+  "case_ids_sha256": "1210a29239815c69575a6877de3d488781f822adf8c64fa0759692640124277b",
+  "experiment_identity": "1a13e7807436a566188f2da609317116e19c4f6bd9cfaa728bfd0d60bf275704",
+  "identity_version": 3,
+  "cache_policy": "refresh"
+ },
+ "manifest": {
+  "role": "ocr_primary",
+  "name": "hebrew_bench_v2 OCR benchmark (audited references)",
+  "status": "FROZEN",
+  "root": "C:\\Users\\ethan\\OneDrive\\Desktop\\etgar\\cp_course\\sharon-project\\evaluation\\hebrew_bench_v2",
+  "cases": 129,
+  "components": [
+   "ALL"
+  ],
+  "counts": {
+   "DEV": {
+    "ALL": 60
+   },
+   "CALIBRATION": {
+    "ALL": 23
+   },
+   "HELD_OUT": {
+    "ALL": 46
+   }
+  },
+  "hashes": {
+   "items_sha256": "25463e91b95db8eecfc306644dd0839f65e42910d4161f6991383b6f4a524a8b",
+   "references_sha256": "4a93e826e6e94777d445e64ae2c3f5ed10def46aa021ff763a45a9807fb913b5",
+   "audit_sha256": "eace95fc6dc684c88f1fea2142414a68ad8f421257ac012faf6bcfc9ae07f50c",
+   "audit_manifest_sha256": "65ac16385979480945938f45f0d3e5e3255afa7bcb41c4ea7afe2ff2ebcc405f"
+  },
+  "split_assignment": {
+   "DEV": [
+    "e002",
+    "e003",
+    "e007"
+   ],
+   "CALIBRATION": [
+    "e004"
+   ],
+   "HELD_OUT": [
+    "e005",
+    "e006"
+   ]
+  },
+  "notes": [
+   "eligibility: eligible iff item.tier is a human-transcription tier ('owner',) AND the reference provenance is not a mechanical/text-layer derivation; category is never the criterion",
+   "audit summary: {'total': 102, 'checked': 102, 'confirmed': 69, 'corrected': 33, 'ambiguous': 0, 'unchecked': 0, 'remaining': 0, 'benchmark_total': 129, 'excluded_not_in_scope': 27, 'out_of_scope_entries_ignored': 0}",
+   "references come from reference_for_scoring(mode='final') — audited text where corrected, original where confirmed/out-of-scope; never the unaudited text as final truth",
+   "historical outputs stay readable via `bench report --role ocr_primary --historical`"
+  ]
+ },
+ "cases_selected": 8,
+ "history": [
+  {
+   "ts": "2026-09-05 04:22:53",
+   "mode": "live",
+   "note": "",
+   "retry_failed": false
+  }
+ ],
+ "updated_at": "2026-09-05 04:23:13",
+ "cases_done": 5,
+ "cases_failed": 3,
+ "cases_skipped_resume": 0,
+ "stopped_reason": null,
+ "last_mode": "live",
+ "warnings": [],
+ "last_preflight": {
+  "allowed": true,
+  "steps": [
+   {
+    "step": "credential_present",
+    "ok": true
+   },
+   {
+    "step": "key_metadata",
+    "ok": true,
+    "usage": 0.70575867,
+    "limit_remaining": 19.29424133,
+    "detail": null
+   },
+   {
+    "step": "record_starting_key_usage",
+    "ok": true,
+    "campaign_start_usage": 0,
+    "campaign_start_ledger": 0
+   },
+   {
+    "step": "compare_ledger_with_key",
+    "ok": true,
+    "local_ledger_usd": 0.705762,
+    "comparison": {
+     "local_ledger_usd": 0.705762,
+     "key_usage_usd": 0.70575867,
+     "key_usage_at_campaign_start_usd": 0,
+     "local_ledger_at_campaign_start_usd": 0,
+     "comparable": true,
+     "disagree": false,
+     "note": "ledger and account agree",
+     "key_usage_attributable_usd": 0.705759,
+     "local_ledger_delta_usd": 0.705762,
+     "gap_usd": -3e-06
+    }
+   },
+   {
+    "step": "budget_safe",
+    "ok": true,
+    "local_cumulative_usd": 0.705762,
+    "predicted_call_usd": 0.03741487499999999,
+    "projected_usd": 0.743177,
+    "hard_stop_usd": 10.0,
+    "state": "OK",
+    "warning": false
+   }
+  ],
+  "reason": "call allowed"
+ }
+}

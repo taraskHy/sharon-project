@@ -425,3 +425,48 @@ def test_G_request_cache_fingerprint_separates_pinned_routes():
     auto = TaskRoute(**base)
     assert fp(ai) != fp(vx), "ai-studio and vertex must not share a cache key"
     assert fp(ai) != fp(auto), "a pinned arm must not replay an unpinned cached response"
+
+
+# =============================================================================
+# H. provider SLUG vs DISPLAY NAME — the V3 campaign stopper (2026-09-05)
+# =============================================================================
+
+@pytest.mark.xfail(strict=True, reason=(
+    "KNOWN DEFECT, deliberately unfixed under the V3 authorization, which excludes "
+    "reruns and configuration changes. check_route compares the requested provider "
+    "SLUG against the response's DISPLAY NAME via _norm(). OpenRouter reports slug "
+    "'google-vertex' as display name 'Google', so a correctly honoured Vertex pin is "
+    "flagged as a route violation — which halted the V3 campaign on arm 2's first "
+    "case. 'google-ai-studio'/'Google AI Studio' normalise identically BY COINCIDENCE, "
+    "which is the only reason arm 1 passed. The comparison needs a slug->name map, not "
+    "string normalisation. strict=True forces whoever fixes it to flip this marker."))
+def test_H_a_slug_and_its_display_name_are_the_same_provider():
+    from autograder.rawcapture import EXPLICIT, check_route, requested_route_of
+
+    req = requested_route_of({"provider": {"order": ["google-vertex"],
+                                           "allow_fallbacks": False}})
+    # OpenRouter's own /providers mapping: slug google-vertex -> name "Google"
+    verdict = check_route(req, "Google", EXPLICIT)
+    assert verdict["violation"] is False, \
+        "a correctly honoured google-vertex pin must not be a violation"
+
+
+def test_H_the_ai_studio_pair_matches_only_by_coincidence():
+    """Documents WHY arm 1 passed: the slug and the display name happen to
+    normalise to the same string. That is luck, not correctness."""
+    from autograder.rawcapture import _norm
+
+    assert _norm("google-ai-studio") == _norm("Google AI Studio") == "googleaistudio"
+    assert _norm("google-vertex") == "googlevertex"
+    assert _norm("Google") == "google"
+    assert _norm("google-vertex") != _norm("Google")
+
+
+def test_H_the_stop_still_fails_safe():
+    """Whatever else is wrong, the direction is safe: an unrecognised provider
+    stops the arm rather than accepting possibly-fallback output."""
+    from autograder.rawcapture import EXPLICIT, check_route, requested_route_of
+
+    req = requested_route_of({"provider": {"order": ["google-ai-studio"],
+                                           "allow_fallbacks": False}})
+    assert check_route(req, "SomeOtherProvider", EXPLICIT)["violation"] is True
