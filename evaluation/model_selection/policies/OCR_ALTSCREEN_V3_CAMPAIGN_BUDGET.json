@@ -1,0 +1,59 @@
+{
+ "artifact": "campaign_budget",
+ "campaign": "OCR_ALTERNATIVE_CANDIDATE_SCREEN_V3",
+ "experiment_sha256": "4b84a0644064c95498f6091a22c7580f5ad1895411f1e0e9dba2efce582e4257",
+ "starting_ledger_usd_L0": 0.70575904,
+ "warning_increment_usd": 0.07747325,
+ "hard_increment_usd": 0.11747325,
+ "warn_usd_absolute": 0.78323229,
+ "hard_usd_absolute": 0.82323229,
+ "predicted_arm_costs_usd": {
+  "gemini_pinned_ai_studio": 0.038328,
+  "gemini_pinned_vertex": 0.038328,
+  "qwen3_vl_235b_pinned_alibaba": 0.02024
+ },
+ "predicted_campaign_worst_case_usd": 0.096896,
+ "immutability_rule": "L0 is captured ONCE, before the first arm. warn_usd and hard_usd are absolute and are reused verbatim by every arm. They are never recomputed from a later ledger — that is what would hand each arm a fresh allowance.",
+ "created_at": "2026-09-05 04:22:01",
+ "authorization": {
+  "granted_for": "OCR_ALTERNATIVE_CANDIDATE_SCREEN_V3 only",
+  "starting_code_commit": "1259f3adfe6245fef431057080ae1b2daf091bd0",
+  "experiment_sha256": "4b84a0644064c95498f6091a22c7580f5ad1895411f1e0e9dba2efce582e4257",
+  "cache_identity_version": 3,
+  "maximum_authorized_increment_usd": 0.11747325,
+  "nominal_expected_increment_usd": 0.047358,
+  "frozen_complete_single_attempt_maximum_usd": 0.096896,
+  "warning_absolute_usd": 0.78323229,
+  "hard_absolute_usd": 0.82323229,
+  "logical_requests": 24,
+  "permitted_physical_attempts_per_logical_request": 1,
+  "transport_retries": 0,
+  "cache_policy": "refresh",
+  "cache_hits_allowed": 0,
+  "arm_order": [
+   "gemini_pinned_ai_studio",
+   "gemini_pinned_vertex",
+   "qwen3_vl_235b_pinned_alibaba"
+  ],
+  "arm_experiment_identities": {
+   "gemini_pinned_ai_studio": "805abe746b8ce9c50dc004e820ca2f887ff52d2803ec2bbeb4e91522689d00ff",
+   "gemini_pinned_vertex": "ee6f07be8f74e843509c493e5b1c9f7564e1b0f6c52c062ae3ff0564251802ce",
+   "qwen3_vl_235b_pinned_alibaba": "63e7d49b6096b07864cdb2bbbb959638c4b5789567cc34b9217feb27f61d905e"
+  },
+  "v1_and_v2_outputs_excluded": true,
+  "held_out_forbidden": true,
+  "not_authorized": [
+   "retries",
+   "reruns",
+   "Seen-32",
+   "replacement cases",
+   "changed configuration",
+   "grading",
+   "RAG",
+   "HELD_OUT",
+   "any other inference"
+  ],
+  "frozen_cost_stop_rule": "if actual accounting invalidates the frozen complete-campaign maximum of $0.096896, stop mechanically EVEN IF the $0.11747325 authorization still has headroom. The frozen figure binds independently of the grant."
+ },
+ "content_sha256": "e4ab17621620d8c60938e8a25c103c5e36129b520f3cb49f5675335eaca940e5"
+}
