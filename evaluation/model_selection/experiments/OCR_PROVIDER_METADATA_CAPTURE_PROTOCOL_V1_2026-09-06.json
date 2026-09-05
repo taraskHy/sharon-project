@@ -1,0 +1,137 @@
+{
+ "protocol": "OCR_PROVIDER_METADATA_CAPTURE_PROTOCOL_V1",
+ "endpoints": {
+  "providers": "https://openrouter.ai/api/v1/providers",
+  "models": "https://openrouter.ai/api/v1/models",
+  "model_endpoints_template": "https://openrouter.ai/api/v1/models/{slug}/endpoints"
+ },
+ "endpoint_provenance": "identified from PRESERVED artifacts (OCR_CANDIDATE_DISCOVERY_2026-09-03.json, OCR_OPENROUTER_CATALOG_SNAPSHOT_2026-09-03.json), never from a new live response",
+ "http_method": "GET",
+ "request_body": null,
+ "timeout_s": 60.0,
+ "max_retries": 2,
+ "retry_scope": "transport errors and retryable 5xx only; never a different URL",
+ "follow_redirects": false,
+ "permitted_content_types": [
+  "application/json"
+ ],
+ "allowed_response_headers": [
+  "content-type",
+  "content-length",
+  "date",
+  "server",
+  "x-request-id",
+  "request-id"
+ ],
+ "forbidden_request_headers": [
+  "authorization",
+  "x-api-key",
+  "api-key",
+  "cookie"
+ ],
+ "unauthenticated": "metadata requests MUST be unauthenticated. If a credential is required, STOP rather than sending it.",
+ "no_payload_content": "no exam content, crops, prompts, references or credentials are transmitted; there is no request body at all",
+ "raw_body_preservation": "the exact response text is archived verbatim and its SHA-256 recorded; the parsed result is stored SEPARATELY",
+ "timestamp_format": "%Y-%m-%dT%H:%M:%S.%f%z",
+ "json_parsing": "strict json.loads of the raw body; any exception is PARSE_FAILURE and the protocol fails",
+ "fields": {
+  "provider_slug": "providers[].slug",
+  "provider_display_name": "providers[].name",
+  "model_endpoint_provider": "models/{slug}/endpoints -> data.endpoints[].provider_name",
+  "model_canonical_slug": "data.canonical_slug",
+  "availability": "presence of a matching endpoints[] entry for the pinned provider",
+  "price_input": "models[].pricing.prompt (per TOKEN)",
+  "price_output": "models[].pricing.completion (per TOKEN)",
+  "image_input": "models[].architecture.input_modalities contains 'image'",
+  "structured_outputs": "models[].supported_parameters contains 'structured_outputs'"
+ },
+ "normalization": "display names compared after whitespace collapse + casefold ONLY, and only after canonical slug lookup; slugs are never normalised into display names",
+ "mapping_uniqueness": "each required slug must appear exactly once with a non-empty display name; reverse ambiguity (one display name owned by multiple slugs) is reported explicitly and fails",
+ "price_rules": {
+  "unit_conversion": "per-token strings multiplied by 1e6 to per-million",
+  "effective_price": "max(frozen, live) per field — a lower live price NEVER lowers the conservative maximum",
+  "conservative_arm_cost": "8 cases x (input_tokens*input_per_m + max_tokens*output_per_m)",
+  "token_profile": {
+   "google/gemini-3.7-flash": {
+    "input_tokens": 1388,
+    "max_tokens": 1000
+   },
+   "qwen/qwen3-vl-235b-a22b-instruct": {
+    "input_tokens": 3000,
+    "max_tokens": 1000
+   }
+  },
+  "frozen_prices_per_m": {
+   "google/gemini-3.7-flash": {
+    "input_per_m": 0.75,
+    "output_per_m": 3.75
+   },
+   "qwen/qwen3-vl-235b-a22b-instruct": {
+    "input_per_m": 0.21,
+    "output_per_m": 1.9
+   }
+  }
+ },
+ "acceptance_outcomes": {
+  "pass": "ACCEPTED",
+  "fail": "METADATA_PREREQUISITE_FAILED"
+ },
+ "rejection_triggers": [
+  "HTTP status other than 200",
+  "unexpected content type",
+  "archive failure",
+  "JSON parse failure",
+  "required slug absent",
+  "slug not unique",
+  "empty display name",
+  "reverse-ambiguous display name",
+  "preserved Google mapping changed",
+  "model endpoints missing",
+  "model alias/canonical redirect",
+  "arm route unavailable at the pinned provider",
+  "image input lost",
+  "structured output lost",
+  "price fields missing",
+  "recomputed conservative maximum above the frozen maximum",
+  "L0 + maximum above the family hard limit"
+ ],
+ "failure_action": "record METADATA_PREREQUISITE_FAILED immutably, make no inference calls, invent no mappings, do NOT drop Qwen, and do NOT freeze an executable V5",
+ "gates_never_weakened": "output-token assumptions and advancement gates are constants here; they may not be relaxed to make a budget fit",
+ "required_provider_slugs": [
+  "google-ai-studio",
+  "google-vertex",
+  "alibaba"
+ ],
+ "preserved_mapping": {
+  "google-ai-studio": "Google AI Studio",
+  "google-vertex": "Google"
+ },
+ "required_arms": [
+  {
+   "arm_id": "gemini_pinned_ai_studio",
+   "model": "google/gemini-3.7-flash",
+   "provider_slug": "google-ai-studio"
+  },
+  {
+   "arm_id": "gemini_pinned_vertex",
+   "model": "google/gemini-3.7-flash",
+   "provider_slug": "google-vertex"
+  },
+  {
+   "arm_id": "qwen3_vl_235b_pinned_alibaba",
+   "model": "qwen/qwen3-vl-235b-a22b-instruct",
+   "provider_slug": "alibaba"
+  }
+ ],
+ "frozen_campaign_maximum_usd": 0.096896,
+ "L0_usd": 0.71783254,
+ "family_hard_abs_usd": 0.82323229,
+ "artifact": "ocr_provider_metadata_capture_protocol",
+ "status": "FROZEN BEFORE ANY REQUEST",
+ "created_at": "2026-09-06 00:12:36",
+ "git_commit": "3e2133ebf93add8a9952428fa9257c054127bb5a",
+ "requests_performed_at_freeze_time": 0,
+ "why": "V4 was blocked because it named a catalogue capture a 'prerequisite' without saying what the capture was or what would make it pass. This protocol is committed and pushed BEFORE the first request so no threshold can be chosen after seeing data.",
+ "executable_implementation": "autograder/metadatacapture.py (evaluate_acceptance is a pure function)",
+ "content_sha256": "61b96343fc134c1480722d7ac2ad0b6a0b62b0b4b295c6fde9d9a8e43c0f4f32"
+}
