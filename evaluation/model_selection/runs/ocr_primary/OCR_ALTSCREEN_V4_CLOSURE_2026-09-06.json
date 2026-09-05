@@ -1,0 +1,47 @@
+{
+ "artifact": "ocr_altscreen_v4_closure",
+ "created_at": "2026-09-06 00:10:40",
+ "git_commit": "03296a77dd70361e84d32a499736fab189700229",
+ "experiment": "OCR_ALTERNATIVE_CANDIDATE_SCREEN_V4",
+ "experiment_sha256": "e5e0fb05b1fcce0633e8dfd21c6ad31e66f9b56ddbcca91ffc78a40d7df85bf3",
+ "outcome": "SUPERSEDED_BEFORE_EXECUTION",
+ "paid_model_calls": 0,
+ "metadata_calls": 0,
+ "additional_spend_usd": 0.0,
+ "gates_not_evaluated": true,
+ "all_v4_outputs_nonexistent": true,
+ "v4_budget_manifest_created": false,
+ "reason": "the frozen experiment REQUIRED provider-catalogue resolution for its unverified `alibaba` slug but did not preregister an operational capture procedure or acceptance criteria. V4 carried a one-sentence caveat naming the capture a PREREQUISITE; the strings 'procedure' and 'acceptance' appear zero times in the artifact. Without frozen criteria a captured catalogue would have been judged after being seen, which is the post-hoc reasoning a freeze exists to prevent.",
+ "authorization": {
+  "granted_increment_usd": 0.10539975,
+  "used_usd": 0.0,
+  "unused": true,
+  "non_transferable": true,
+  "note": "the V4 grant is spent-nothing and does NOT carry to V5; V5 needs a new authorization"
+ },
+ "preserved_byte_for_byte": {
+  "v4_experiment": {
+   "path": "evaluation/model_selection/experiments/OCR_ALTERNATIVE_CANDIDATE_SCREEN_V4_2026-09-05.json",
+   "experiment_sha256": "e5e0fb05b1fcce0633e8dfd21c6ad31e66f9b56ddbcca91ffc78a40d7df85bf3"
+  },
+  "v4_preexecution_block": {
+   "path": "evaluation/model_selection/runs/ocr_primary/OCR_ALTSCREEN_V4_PREEXECUTION_BLOCK_2026-09-05.json",
+   "content_sha256": "997c5a098f4acbc1c9e3044f5df2681c5c4a929fae65f79b722e56877020c7fd"
+  },
+  "neither_edited_nor_rehashed": true
+ },
+ "what_v4_established_and_carries_forward": [
+  "3/3 experiment identities and 24/24 case-specific semantic identities verified through the real CLI -> build_route -> to_backend_config -> payload path",
+  "the Qwen payload transmits NO reasoning key at all and max_tokens=1000, so the Stage-1 pre-inference HTTP 400 shape is absent",
+  "canonical provider slug<->display-name matching with the two Google mappings VERIFIED",
+  "mandatory pre-cache and pre-send identity equality"
+ ],
+ "ledger_unchanged": {
+  "rows": 815,
+  "usd": 0.71783254
+ },
+ "held_out_access": 0,
+ "ocr_primary_role_status": "UNSELECTED (unchanged)",
+ "successor": "OCR_ALTERNATIVE_CANDIDATE_SCREEN_V5 (requires a preregistered metadata-capture protocol to be committed and executed first)",
+ "content_sha256": "f4baa09609e6c38830358cdc086bdb0415f3895ecc6cddc7d8e271ed096d7adc"
+}
