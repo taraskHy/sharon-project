@@ -78,6 +78,27 @@ reasoning = { effort = "low" }
 max_tokens = 1000
 why = "endpoint reports reasoning.mandatory=true and rejects effort=none; 'low' is its lowest supported_effort. max_tokens 600->1000 derived from the longest audited reference (116 chars) and Stage-1's worst observed 1.78 tok/char, leaving 753 tokens for mandatory reasoning; the derivation and its cost figures live in the Stage-1b pre-registration artifact."
 
+# Qwen3-VL-235B (2026-09-05). DECLARED because the runtime path would otherwise
+# hand this model the ocr_primary PRODUCTION route defaults — max_tokens 400 and
+# reasoning={"effort":"none"} — while every alt-screen freeze recorded 1000 with
+# no reasoning. That divergence is the same class of defect as the base_url
+# mismatch that invalidated the V3 arm identities: a frozen artifact describing a
+# configuration the harness does not produce.
+#
+#   reasoning = {}  CLEARS the parameter. The live catalog reports NO reasoning
+#     object for this slug and does not list `reasoning` among its supported
+#     parameters, so sending effort="none" risks the pre-inference HTTP 400 that
+#     destroyed the Stage-1 Gemini arm. Not sending it at all is the only safe
+#     form.
+#   max_tokens = 1000  matches the value every alt-screen cost model was computed
+#     from. It is all VISIBLE budget here (no reasoning tokens), roughly 4x the
+#     ~248 tokens the longest audited reference (116 chars) needs at Stage-1's
+#     worst observed 1.78 tok/char.
+[roles.ocr_primary.candidate_overrides."qwen/qwen3-vl-235b-a22b-instruct"]
+reasoning = {}
+max_tokens = 1000
+why = "the live catalog lists no reasoning support for this slug, so the production route's effort=none must be cleared rather than sent; max_tokens 1000 is the value the alt-screen cost model was derived from and is all visible budget."
+
 [roles.ocr_verify]
 status = "UNSELECTED"
 gateway_task = "ocr_verify"

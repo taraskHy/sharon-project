@@ -1,0 +1,65 @@
+{
+ "artifact": "ocr_altscreen_v3_closure",
+ "created_at": "2026-09-05 12:17:54",
+ "git_commit": "17438df5b552a3893ec7d08db0249e85ac517db4",
+ "provider_calls": 0,
+ "experiment": "OCR_ALTERNATIVE_CANDIDATE_SCREEN_V3",
+ "experiment_sha256": "4b84a0644064c95498f6091a22c7580f5ad1895411f1e0e9dba2efce582e4257",
+ "outcome": "INCONCLUSIVE_MECHANICAL_STOP",
+ "gates_not_evaluated": true,
+ "provenance": {
+  "original_code_head": "1259f3adfe6245fef431057080ae1b2daf091bd0",
+  "budget_manifest_commit": "d07dd20b6f783502db141896a2cad95cbbdd3f95",
+  "budget_manifest_content_sha256": "e4ab17621620d8c60938e8a25c103c5e36129b520f3cb49f5675335eaca940e5",
+  "results_commit": "17438df5b552a3893ec7d08db0249e85ac517db4"
+ },
+ "execution": {
+  "gemini_pinned_ai_studio_completed_attempts": 8,
+  "gemini_pinned_vertex_completed_attempts": 1,
+  "qwen3_vl_235b_pinned_alibaba": "NOT STARTED",
+  "additional_spend_usd": 0.0120735,
+  "ledger_before": {
+   "rows": 806,
+   "usd": 0.70575904
+  },
+  "ledger_after": {
+   "rows": 815,
+   "usd": 0.71783254
+  }
+ },
+ "false_positive_route_violation": {
+  "arm": "gemini_pinned_vertex",
+  "case": "hl_e003_q1_r1__l1",
+  "requested_slug": "google-vertex",
+  "observed_provider": "Google",
+  "verdict_at_the_time": "VIOLATION (campaign halted)",
+  "verdict_under_the_canonical_mapping": "COMPLIANT",
+  "cause": "the check normalised a provider SLUG and a DISPLAY NAME to the same string space. OpenRouter reports slug `google-vertex` as display name `Google`, so the pin was honoured. `google-ai-studio`/`Google AI Studio` normalise identically by coincidence, which is the only reason arm 1 passed.",
+  "fixed_in": "autograder/providermap.py (canonical mapping from a preserved artifact)"
+ },
+ "frozen_versus_runtime_identity_mismatch": {
+  "arms_affected": [
+   "gemini_pinned_ai_studio",
+   "gemini_pinned_vertex"
+  ],
+  "sole_differing_field": "base_url",
+  "cause": "V3's identities were computed from a hand-built TaskRoute carrying the explicit OpenRouter URL; build_route() leaves base_url None and the backend supplies its own endpoint.",
+  "also_discovered_during_the_v4_repair": "the Qwen arm was mis-frozen the SAME way and more severely: the runtime path gives it max_tokens=400 and reasoning={'effort':'none'} from the production route, while V3 froze 1000 with no reasoning. It was never detected because arm 3 never ran, and sending a reasoning parameter to a model with no reasoning support is what destroyed the Stage-1 Gemini arm with a pre-inference HTTP 400.",
+  "fixed_in": "routeidentity.canonical_base_url + identities_from_argv (frozen identities are now derived through the real CLI path), and a declared Qwen candidate_override"
+ },
+ "PROTOCOL_DEVIATION": {
+  "what": "after arm 1's frozen-versus-runtime identity mismatch was detected, the campaign continued and issued the first Vertex request.",
+  "assessment": "this remained inside the financial authorization and no unauthorized configuration was transmitted, but it VIOLATED the experiment-integrity rule. A detected identity mismatch means the arm being measured is not demonstrably the arm that was frozen, and the correct action was to stop the campaign at that point rather than to judge the differing field harmless.",
+  "accountability": "the judgement was mine and it was wrong. 'The differing field looks harmless' is precisely the reasoning an integrity gate exists to override.",
+  "remedy": "identity equality is now a MANDATORY hard stop checked before any cache read and before any send (routeidentity.assert_identity_matches, RunSpec.expect_identity, --expect-identity). No field-level judgement is permitted."
+ },
+ "evidence_status": {
+  "all_nine_outputs_excluded_from_v4_metrics_and_advancement": true,
+  "ai_studio_measurements": "DIAGNOSTIC EVIDENCE ONLY. They may be cited to describe what was observed, and for nothing else. They may NOT receive a formal DROP decision and may NOT be combined with future V4 outputs for a confirmatory paired comparison.",
+  "vertex_attempt": "one attempt, stopped; diagnostic only",
+  "immutability": "V3, its budget manifest, its raw responses and its result artifact are preserved byte-for-byte and are neither edited nor re-hashed."
+ },
+ "ocr_primary_role_status": "UNSELECTED (unchanged)",
+ "successor": "OCR_ALTERNATIVE_CANDIDATE_SCREEN_V4",
+ "content_sha256": "52159942ffefeee8f533bbe7c1fb3ba2c978f270611e6260e9f7fbaffdde3864"
+}

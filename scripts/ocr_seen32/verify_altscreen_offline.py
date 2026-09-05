@@ -1,4 +1,4 @@
-"""Offline pre-flight for OCR_ALTERNATIVE_CANDIDATE_SCREEN_V3. ZERO calls.
+"""Offline pre-flight for OCR_ALTERNATIVE_CANDIDATE_SCREEN_V4. ZERO calls.
 
 Rebuilds all 24 payloads and re-checks every property the freeze claims, so the
 claims are verified against live code rather than trusted from the artifact.
@@ -15,7 +15,7 @@ from autograder.cloudboundary import approved_cloud_ocr_systems
 from autograder.rawcapture import requested_route_of
 
 SCREEN = Path("evaluation/model_selection/experiments/"
-              "OCR_ALTERNATIVE_CANDIDATE_SCREEN_V3_2026-09-05.json")
+              "OCR_ALTERNATIVE_CANDIDATE_SCREEN_V4_2026-09-05.json")
 GRADING_WORDS = ["rubric", "score", "grade", "points", "מחוון", "ציון",
                  "correct answer", "official solution", "partially_valid"]
 SECRET_RE = re.compile(r"sk-[A-Za-z0-9]{6}|or-v1-[a-f0-9]{6}|Bearer\s+[A-Za-z0-9]{8}", re.I)
@@ -104,22 +104,83 @@ def main() -> int:
     from autograder.routeidentity import experiment_identity
 
     ip = screen["identity_and_cache_policy"]
-    check("identity version is 3", ip["identity_version"] == 3)
+    check("identity version is 4", ip["identity_version"] == 4)
     check("identity is DERIVED from the effective config", "to_backend_config" in ip["derivation"])
     check("cache policy is refresh", ip["cache_policy"] == "refresh")
     check("cache_hits_allowed is 0", ip["cache_hits_allowed"] == 0)
     check("secrets excluded from every identity",
           set(ip["excluded_from_all_identities"]) >= {"api_key", "api_key_env"})
     check("all three arms hash differently", len(set(ip["arm_identities"].values())) == 3)
+    # EXACT CLI -> build_route -> MockTransport preflight. A simplified
+    # hand-constructed route is insufficient: V3 froze one and executed another.
+    import os as _os
+
+    import httpx as _httpx
+
+    from autograder.backends.openrouter import OpenRouterBackend
+    from autograder.routeidentity import identities_from_argv
+
+    _os.environ.setdefault("OPENROUTER_API_KEY", "sk-or-v1-" + "FAKE" * 8 + "-NOTAREALKEY")
+    first = order[0]
+    req0 = adapter.build_request(dict(by[first].inputs), man.root)
     for arm in screen["candidates"]:
-        r = TaskRoute(task="ocr_primary", backend="openrouter", model=arm["model"],
-                      base_url="https://openrouter.ai/api/v1", structured_mode="json_schema",
-                      max_tokens=1000, temperature=0.0, reasoning=arm["route"]["reasoning"],
-                      transport_retries=screen["execution_requirements"]["retry_policy"]["transport_retries"],
-                      provider=arm["provider_routing"], prompt_version="m2-strict-v1")
-        check(f"{arm['arm_id']}: identity recomputes from live code",
-              experiment_identity(r) == arm["experiment_identity"],
-              experiment_identity(r)[:16])
+        aid = arm["arm_id"]
+        ident = identities_from_argv(arm["cli_argv"], output_model=req0.output_model,
+                                     system=req0.system, content_blocks=req0.content_blocks,
+                                     max_tokens=1000)
+        ec = ident["effective_config"]
+        check(f"{aid}: CLI identity == frozen identity",
+              ident["experiment_identity"] == arm["experiment_identity"],
+              ident["experiment_identity"][:16])
+        check(f"{aid}: CLI semantic identity == frozen (first case)",
+              ident["semantic_request_identity"] == arm["semantic_request_identity_by_case"][first])
+        check(f"{aid}: effective config == frozen canonical config",
+              ec == arm["effective_config"])
+        check(f"{aid}: effective base URL explicit and correct",
+              ec["base_url"] == "https://openrouter.ai/api/v1", str(ec["base_url"]))
+        prov = ec["extra_generation"]["provider"]
+        check(f"{aid}: provider order is exactly the pin", prov["order"] == [arm["provider_pin"]])
+        check(f"{aid}: allow_fallbacks false", prov["allow_fallbacks"] is False)
+        check(f"{aid}: transport_retries 0", ec["transport_retries"] == 0)
+        check(f"{aid}: cache_policy refresh", ident["spec"]["cache_policy"] == "refresh")
+
+        # drive the REAL backend against MockTransport and inspect the payload
+        sent = []
+
+        def _h(request, _s=sent):
+            _s.append(json.loads(request.content))
+            return _httpx.Response(200, json={
+                "id": "gen-preflight", "provider": "x",
+                "usage": {"prompt_tokens": 1, "completion_tokens": 1, "cost": 0.0},
+                "choices": [{"finish_reason": "stop",
+                             "message": {"content": '{"transcription": "x"}'}}]})
+
+        from autograder.benchmark.cli import _spec_from_args
+        from autograder.benchmark.registry import load_registry as _lr
+        from autograder.benchmark.runner import build_route as _br
+        from autograder.cli import build_parser as _bp
+
+        _spec = _spec_from_args(_bp().parse_args(arm["cli_argv"]), dry_run=False)
+        _route = _br(_spec, _spec.candidate, "m2-strict-v1", adapter.default_max_tokens,
+                     registry=_lr(_spec.registry_path))
+        be = OpenRouterBackend(_route.to_backend_config(),
+                               transport=_httpx.MockTransport(_h))
+        check(f"{aid}: backend exposes the attempt protocol",
+              all(hasattr(be, a) for a in ("attempt_records", "route_violation",
+                                           "pre_send_hook", "raw_archive", "capture_case_id")))
+        be._post_chat(be._build_payload([{"role": "user", "content": "x"}],
+                                        req0.output_model, 1000))
+        pay = sent[0]
+        check(f"{aid}: payload provider block matches the pin",
+              pay.get("provider") == arm["provider_routing"], json.dumps(pay.get("provider")))
+        check(f"{aid}: payload model is the frozen candidate", pay["model"] == arm["model"])
+        check(f"{aid}: payload max_tokens is 1000", pay["max_tokens"] == 1000)
+        check(f"{aid}: response_format bytes match the frozen wire schema",
+              json.dumps(pay["response_format"]["json_schema"], sort_keys=True) ==
+              json.dumps({"name": arm["wire_response_format"]["name"],
+                          "schema": arm["wire_response_format"]["schema"]}, sort_keys=True))
+        check(f"{aid}: reasoning parameter matches the frozen effective config",
+              pay.get("reasoning") == ec["extra_generation"].get("reasoning"))
 
     print("\n== cost model (four distinct bounds) ==")
     cm = screen["cost_model"]
@@ -142,25 +203,22 @@ def main() -> int:
           cm["for_reference_only_at_transport_retries_2"]["fits"] is False,
           f"${cm['for_reference_only_at_transport_retries_2']['retry_inclusive_completion_bound_usd']}")
 
-    print("\n== budget (PROSPECTIVE — V3 is NOT authorized) ==")
+    print("\n== budget (PROSPECTIVE — V4 is NOT authorized) ==")
     bg = screen["budget"]
-    # V3 was AUTHORIZED and EXECUTED on 2026-09-05; the manifest now exists and
-    # must bind to this exact experiment.
-    from autograder.campaignbudget import load_campaign_budget
-    mp = Path("evaluation/model_selection/policies/OCR_ALTSCREEN_V3_CAMPAIGN_BUDGET.json")
-    check("V3 campaign budget manifest exists and self-hash verifies", mp.exists())
-    if mp.exists():
-        cb = load_campaign_budget(mp)
-        check("manifest is bound to the V3 experiment hash",
-              cb.experiment_sha256 == screen["experiment_sha256"])
-        check("manifest L0 == the frozen L0",
-              round(cb.starting_ledger_usd, 8) == round(bg["L0_verified_from_disk"], 8))
-        check("manifest hard == family absolute", round(cb.hard_usd, 8) == 0.82323229)
+    check("no V4 campaign budget manifest exists",
+          not Path("evaluation/model_selection/policies/"
+                   "OCR_ALTSCREEN_V4_CAMPAIGN_BUDGET.json").exists())
+    check("the V3 manifest is NOT reused and its authorization does not carry over",
+          bg["v3_budget_manifest_not_reused"] is True
+          and bg["v3_authorization_does_not_carry_over"] is True)
     check("absolute family limits preserved",
           bg["campaign_family_absolute_limits_preserved"] == {"warning": 0.78323229,
                                                               "hard": 0.82323229})
     check("prospective increments derive from L0",
-          round(bg["L0_verified_from_disk"] + bg["prospective_hard_increment"], 8) == 0.82323229)
+          round(bg["L0_verified_from_disk"] + bg["prospective_hard_increment"], 8) == 0.82323229
+          and round(bg["L0_verified_from_disk"]
+                    + bg["prospective_warning_increment"], 8) == 0.78323229)
+    check("L0 equals the ledger on disk", bg["L0_verified_from_disk"] == 0.71783254)
 
     print("\n== ledger untouched ==")
     led = [json.loads(l) for l in Path("evaluation/model_selection/state/gateway_ledger/usage.jsonl")
@@ -171,13 +229,13 @@ def main() -> int:
     # ledger is above it — what must still hold is that spend never left the
     # envelope and never exceeded the authorization.
     L0 = screen["budget"]["L0_verified_from_disk"]
-    spent = round(cum - L0, 8)
-    # L0 is the PRE-CAMPAIGN baseline; V3 has now legitimately spent against it.
-    check("ledger has not fallen below the frozen L0", cum >= L0 - 1e-9, f"{cum:.8f}")
-    check("spend is within the $0.11747325 authorization", spent <= 0.11747325, f"${spent:.8f}")
-    check("spend is within the FROZEN $0.096896 complete-campaign maximum",
-          spent <= 0.096896, f"${spent:.8f}")
+    # V4 is neither authorized nor executed, so the ledger must still equal its L0.
+    check("ledger equals the L0 frozen into V4 (V4 has spent nothing)",
+          round(cum, 8) == round(L0, 8), f"{cum:.8f}")
     check("ledger is below the absolute family hard limit", cum <= 0.82323229, f"{cum:.8f}")
+    check("the COMPLETE V4 maximum still fits under the family hard limit",
+          round(L0 + screen["cost_model"]["single_attempt_maximum_usd"], 8) <= 0.82323229,
+          f"headroom {round(0.82323229 - L0 - screen['cost_model']['single_attempt_maximum_usd'], 8)}")
     # An arm is legitimately short ONLY when its last row records a mechanical
     # stop. A silently truncated arm is not acceptable.
     bad_short = []

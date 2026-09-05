@@ -151,7 +151,8 @@ def test_identity_is_versioned_so_old_keys_cannot_collide():
     # v1 = the hand-listed fingerprint_fields that omitted `provider`
     # v2 = derived from the effective config, but digesting the RAW schema
     # v3 = digests the CANONICAL WIRE SCHEMA actually transmitted
-    assert CACHE_IDENTITY_VERSION == 3
+    # v4 = canonicalises base_url to the EFFECTIVE endpoint
+    assert CACHE_IDENTITY_VERSION == 4
 
 
 def test_identity_report_documents_the_fields_used():

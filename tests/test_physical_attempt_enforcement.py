@@ -431,15 +431,6 @@ def test_G_request_cache_fingerprint_separates_pinned_routes():
 # H. provider SLUG vs DISPLAY NAME — the V3 campaign stopper (2026-09-05)
 # =============================================================================
 
-@pytest.mark.xfail(strict=True, reason=(
-    "KNOWN DEFECT, deliberately unfixed under the V3 authorization, which excludes "
-    "reruns and configuration changes. check_route compares the requested provider "
-    "SLUG against the response's DISPLAY NAME via _norm(). OpenRouter reports slug "
-    "'google-vertex' as display name 'Google', so a correctly honoured Vertex pin is "
-    "flagged as a route violation — which halted the V3 campaign on arm 2's first "
-    "case. 'google-ai-studio'/'Google AI Studio' normalise identically BY COINCIDENCE, "
-    "which is the only reason arm 1 passed. The comparison needs a slug->name map, not "
-    "string normalisation. strict=True forces whoever fixes it to flip this marker."))
 def test_H_a_slug_and_its_display_name_are_the_same_provider():
     from autograder.rawcapture import EXPLICIT, check_route, requested_route_of
 
@@ -462,11 +453,26 @@ def test_H_the_ai_studio_pair_matches_only_by_coincidence():
     assert _norm("google-vertex") != _norm("Google")
 
 
-def test_H_the_stop_still_fails_safe():
-    """Whatever else is wrong, the direction is safe: an unrecognised provider
-    stops the arm rather than accepting possibly-fallback output."""
+def test_H_a_KNOWN_wrong_provider_is_a_violation():
+    """A display name that canonically belongs to a DIFFERENT slug is a real
+    violation and stops the arm."""
     from autograder.rawcapture import EXPLICIT, check_route, requested_route_of
 
     req = requested_route_of({"provider": {"order": ["google-ai-studio"],
                                            "allow_fallbacks": False}})
-    assert check_route(req, "SomeOtherProvider", EXPLICIT)["violation"] is True
+    v = check_route(req, "Google", EXPLICIT)          # Google == google-vertex
+    assert v["violation"] is True and v["result"] == "VIOLATION"
+
+
+def test_H_an_UNRECOGNISED_provider_is_UNKNOWN_not_silently_compliant():
+    """An unmapped name cannot be confirmed. It is neither a pass nor a breach —
+    calling it a violation would make every new provider look like fallback, and
+    calling it compliant would defeat the check entirely."""
+    from autograder.rawcapture import EXPLICIT, check_route, requested_route_of
+
+    req = requested_route_of({"provider": {"order": ["google-ai-studio"],
+                                           "allow_fallbacks": False}})
+    v = check_route(req, "SomeBrandNewProvider", EXPLICIT)
+    assert v["violation"] is False
+    assert v["result"] == "UNKNOWN_UNRECOGNISED"
+    assert "NOT silently compliant" in v["detail"]

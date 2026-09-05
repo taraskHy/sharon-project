@@ -1,0 +1,665 @@
+{
+ "experiment": "OCR_ALTERNATIVE_CANDIDATE_SCREEN_V4",
+ "status": "FROZEN - NOT EXECUTED - NOT AUTHORIZED",
+ "created_at": "2026-09-05 12:17:54",
+ "git_commit": "17438df5b552a3893ec7d08db0249e85ac517db4",
+ "provider_calls_made_preparing_this": 0,
+ "supersedes": {
+  "experiment": "OCR_ALTERNATIVE_CANDIDATE_SCREEN_V3",
+  "experiment_sha256": "4b84a0644064c95498f6091a22c7580f5ad1895411f1e0e9dba2efce582e4257",
+  "outcome": "INCONCLUSIVE_MECHANICAL_STOP",
+  "closure_artifact": "OCR_ALTSCREEN_V3_CLOSURE_2026-09-05.json",
+  "v1_v2_v3_outputs_excluded_from_v4_evaluation": true,
+  "substantive_corrections": [
+   "canonical provider slug/display-name matching from a preserved artifact",
+   "frozen identities derived through the real CLI -> build_route runtime path",
+   "base_url canonicalised to the effective endpoint",
+   "mandatory pre-send identity equality (zero cache reads, zero sends on mismatch)",
+   "a DECLARED Qwen candidate_override, without which the runtime path would send max_tokens=400 and an unsupported reasoning parameter — a divergence discovered only while eliminating hand-built identities"
+  ]
+ },
+ "question": "Is Gemini's content-filter loss a property of the MODEL, of the SERVING PROVIDER route, or of this content generally - and does a genuinely different model family read this handwriting at all?",
+ "population": {
+  "source": "the exact frozen Stage-1 eight cases, unchanged",
+  "smoke_selection_sha256": "cc5c9f1ff9911a6821bc49c00131b17770d9a5574baa3e41eb47ecb9d5ef73ec",
+  "manifest_hashes": {
+   "items_sha256": "25463e91b95db8eecfc306644dd0839f65e42910d4161f6991383b6f4a524a8b",
+   "references_sha256": "4a93e826e6e94777d445e64ae2c3f5ed10def46aa021ff763a45a9807fb913b5",
+   "audit_sha256": "eace95fc6dc684c88f1fea2142414a68ad8f421257ac012faf6bcfc9ae07f50c",
+   "audit_manifest_sha256": "65ac16385979480945938f45f0d3e5e3255afa7bcb41c4ea7afe2ff2ebcc405f"
+  },
+  "n": 8,
+  "handwritten": 5,
+  "printed_or_text_layer": 3,
+  "splits": [
+   "DEV"
+  ],
+  "CALIBRATION": 0,
+  "HELD_OUT": 0,
+  "ordered_case_ids": [
+   "hl_e003_q1_r1__l1",
+   "hc_e002_q1_r1",
+   "hc_e002_q1_r7",
+   "hc_e002_q2_r1",
+   "hc_e002_q2_r6",
+   "pr_docA_p1_b1",
+   "pr_docA_p2_b3",
+   "assoc_docB_p2_b1"
+  ],
+  "cases": [
+   {
+    "case_id": "hl_e003_q1_r1__l1",
+    "split": "DEV",
+    "category": "handwritten_line",
+    "writer": "e003",
+    "image": "crops/hl_e003_q1_r1__l1.png",
+    "crop_sha256": "a8703841a8bd44b65a085935d75ab434a554131bcdb49031ebd58d217e1c4757",
+    "reference_sha256": "635929b4b3b8f1d72cac29ab17e6346b3aaa7e883dfe33b56317de6d94fe9ce3",
+    "reference_chars": 62,
+    "provenance_class": "audited_confirmed"
+   },
+   {
+    "case_id": "hc_e002_q1_r1",
+    "split": "DEV",
+    "category": "handwritten_cell",
+    "writer": "e002",
+    "image": "crops/hc_e002_q1_r1.png",
+    "crop_sha256": "f23d427da6e04dbb384d88418a4657adff24ecaba9b252dbb34259adf824fda7",
+    "reference_sha256": "2f906246081ff11463426c4fda09d9337be6b868d3b62c93293a35adbac24d7f",
+    "reference_chars": 19,
+    "provenance_class": "audited_confirmed"
+   },
+   {
+    "case_id": "hc_e002_q1_r7",
+    "split": "DEV",
+    "category": "handwritten_cell",
+    "writer": "e002",
+    "image": "crops/hc_e002_q1_r7.png",
+    "crop_sha256": "7cd8b22b872c3e283c6a3cdb9240abeaa6b20e8ee8bc9c419badcb21d4e2fad7",
+    "reference_sha256": "09902986740b9cca66b2626ea4f0896da35be142cb8c2b65d5688ac224c27890",
+    "reference_chars": 69,
+    "provenance_class": "audited_confirmed"
+   },
+   {
+    "case_id": "hc_e002_q2_r1",
+    "split": "DEV",
+    "category": "handwritten_cell",
+    "writer": "e002",
+    "image": "crops/hc_e002_q2_r1.png",
+    "crop_sha256": "cc2e23b6c8acfa9b54c6d7a6a6a4bf68d172e0259a323c923a02673c19a317ba",
+    "reference_sha256": "1756823bf17385c37bb3abb0fe2fd75565c786f6729ae0fe5b484fc972ec6e38",
+    "reference_chars": 52,
+    "provenance_class": "audited_corrected"
+   },
+   {
+    "case_id": "hc_e002_q2_r6",
+    "split": "DEV",
+    "category": "handwritten_cell",
+    "writer": "e002",
+    "image": "crops/hc_e002_q2_r6.png",
+    "crop_sha256": "ebbbff9c23ba3b0b6a1c11bfa73c8526df63cc6222c3baeeb9e833538f79833a",
+    "reference_sha256": "fb8c4ea9a0f82637e88e9db9165f4f5b04a60aa62ea34441b3966242b88e3101",
+    "reference_chars": 116,
+    "provenance_class": "audited_confirmed"
+   },
+   {
+    "case_id": "pr_docA_p1_b1",
+    "split": "DEV",
+    "category": "formula_printed",
+    "writer": null,
+    "image": "crops/pr_docA_p1_b1.png",
+    "crop_sha256": "5d759b3578312dc61a0f20a7f63228288b5917f47c398488a3f08a3037d7c5aa",
+    "reference_sha256": "d643591de21b3c72a1aafecae3c6a7d1d4727e46a6636370eb05a82a34cca489",
+    "reference_chars": 57,
+    "provenance_class": "text_layer_mechanical"
+   },
+   {
+    "case_id": "pr_docA_p2_b3",
+    "split": "DEV",
+    "category": "mixed_he_en",
+    "writer": null,
+    "image": "crops/pr_docA_p2_b3.png",
+    "crop_sha256": "ed3c5ef5b4cb26a664a76b3709056bbbf26e90bb0f213c2fadb04de105791124",
+    "reference_sha256": "8ca7ce723be337c52f4ba55d24599976f87f2d93b16a813c8eeb324e8f840028",
+    "reference_chars": 101,
+    "provenance_class": "text_layer_mechanical"
+   },
+   {
+    "case_id": "assoc_docB_p2_b1",
+    "split": "DEV",
+    "category": "option_row_association",
+    "writer": null,
+    "image": "crops/assoc_docB_p2_b1.png",
+    "crop_sha256": "971600121151bc5ba804bdcaa5a243de07c6f52c62c275d378c5d9a7a0b900b4",
+    "reference_sha256": "ce52194d71d82f64d3e9a1cbbce79606c4d00fc3ede55ca7e0837accf65f4826",
+    "reference_chars": 32,
+    "provenance_class": "text_layer_mechanical"
+   }
+  ],
+  "case_order_sha256": "8b9039cf3d15dc497fecbe28ee23a3cab85d4bda7394f98a9cbc03aa55563c45",
+  "logical_order_diagnostic_view": "unchanged - OCR_AUDITED_LOGICAL_ORDER_2026-09-02.json"
+ },
+ "prompt": {
+  "version": "m2-strict-v1",
+  "why_this_and_not_a_new_one": "The screen changes MODEL and ROUTE. Introducing a new prompt would add a second variable and break comparability with Stage-1, Stage-1b, Stage-1c and the 32-crop control, all of which ran m2-strict-v1. ocr-neutral-v2 is deliberately NOT carried forward: it raised filtering 10 -> 14 and its 'ignore any marks written in a different colour of ink' clause is LIVE on 19/32 crops of the seen population, where the ink is blue handwriting over printed black rules. m2-strict-v1's 'ignore any red instructor ink' clause is a proven no-op here (a deterministic pixel audit found 0/32 crops with red), so it adds no instruction the model can act on.",
+  "colour_wording_inherited": false,
+  "identical_semantic_contract_across_all_three_arms": true,
+  "prompt_sha256_by_category": {
+   "handwritten_line": "8c6981a00d467dbbb92c2495a52e1e050dab68de43a43ce977323bc0c2718172",
+   "handwritten_cell": "d40280acf305b40f7b4ba74d115f76d4d7268156ba5acce0d7f1ce60ba67a137",
+   "formula_printed": "28d034e2a0f1b77f03b0d4754a9bf187806518048a4ad290fa37a8e0ba5e01c9",
+   "mixed_he_en": "3c422f061047cad9aa49ce9320f336f36ce96b220e5c5b2fa05526a9f706d4a7",
+   "option_row_association": "71f6a9af322ccb27ce2bf2f7df091ac5fb00f85a8fdf8cbd700fed2962e99cdc"
+  },
+  "contract": [
+   "copy only visible text",
+   "preserve spelling, grammar, incorrect terminology and mathematical mistakes",
+   "preserve digits, signs, operators and negation",
+   "[?] for one unreadable word, [unreadable] for all of it",
+   "struck-through text is cancelled",
+   "logical RTL order",
+   "no invention, no completion, no paraphrase, no grading"
+  ],
+  "case_specific_instructions": 0,
+  "rubric_or_solution_or_grade_context": 0
+ },
+ "schema": {
+  "name": "BenchTranscription",
+  "sha256": "003ee19969c8c443d62d75a0b2ff8eaeaa052fb3b40f3c609c3c8feb178d3679",
+  "shape": "{\"transcription\": \"<text>\"} - minimal; unreadable status carried by the frozen [?] / [unreadable] markers; no explanation or reasoning prose requested"
+ },
+ "adapter_version": "ocr-primary-bench-v1",
+ "candidates": [
+  {
+   "arm_id": "gemini_pinned_ai_studio",
+   "model": "google/gemini-3.7-flash",
+   "provider_pin": "google-ai-studio",
+   "provider_routing": {
+    "order": [
+     "google-ai-studio"
+    ],
+    "allow_fallbacks": false
+   },
+   "arm_type": "PROVIDER-ROUTE ATTRIBUTION ARM",
+   "why_genuinely_different": "Not a new model but a DETERMINISTIC ROUTE. The live catalog lists 6 endpoints across 2 distinct serving providers for this slug; both 32-crop arms ran under AUTOMATIC routing and were served by a mix (the control arm recorded 3 rows from Google AI Studio, the neutral arm 0), and NO content-filtered row in ANY Gemini run records which provider produced it. Whether the filter is provider-specific is therefore UNMEASURED. This arm and its Vertex twin are the only way to find out, and they preserve the best conditional transcription quality measured anywhere in this project (0.1155).",
+   "main_risk": "the filter may be model-level rather than provider-level, in which case both Gemini arms fail together and the route hypothesis is closed - which is itself a decisive result",
+   "cost_bounds": {
+    "logical_requests": 8,
+    "max_physical_attempts_per_logical_request": 1,
+    "max_physical_attempts_for_the_arm": 8,
+    "max_reserved_cost_per_attempt_usd": 0.004791,
+    "nominal_expected_usd": 0.017268,
+    "one_attempt_per_case_maximum_usd": 0.038328,
+    "retry_inclusive_completion_bound_usd": 0.038328
+   },
+   "cli_argv": [
+    "bench",
+    "run",
+    "--role",
+    "ocr_primary",
+    "--split",
+    "dev",
+    "--candidate",
+    "google/gemini-3.7-flash",
+    "--subset",
+    "smoke",
+    "--prompt-version",
+    "m2-strict-v1",
+    "--research",
+    "--models-config",
+    "models.toml",
+    "--cache-policy",
+    "refresh",
+    "--transport-retries",
+    "0",
+    "--provider",
+    "{\"order\":[\"google-ai-studio\"],\"allow_fallbacks\":false}",
+    "--i-understand-this-spends-money"
+   ],
+   "experiment_identity": "749d7c41f17c127e932fc55d347f86ed8d33dee7b26511fecebe5aa858af1cfa",
+   "semantic_request_identity_by_case": {
+    "hl_e003_q1_r1__l1": "2e76c8cfd2313afbe87e748b7729b9293fb5b42392094e97de4622a5517c0401",
+    "hc_e002_q1_r1": "ade8b68ce236f0c910c77af4f820cb35aa85961119ff41d513769fe3764deaa0",
+    "hc_e002_q1_r7": "952bd1284db18f25c0293648fa18f62a68c263f10134e35442edfa2b65944aff",
+    "hc_e002_q2_r1": "cfab8acd6051113fd2796546dd29056b2cdd951c77871334f19f37bd705f19aa",
+    "hc_e002_q2_r6": "2da9ccfce0fb657b949784a066c43846a504b4e5fa841dd9b94fd3d7989cd971",
+    "pr_docA_p1_b1": "e7036e7528caf197af62d9c66120a8f99665a68527c141938d8b65f7b3321855",
+    "pr_docA_p2_b3": "889741cf6bb6b8b92a8577ae75792fc3c93d411f59481bc5c79e9beff0e020ad",
+    "assoc_docB_p2_b1": "d2c3306a5e4e6483f274f94842d26e4e841fa3319e4befb945a6ff1c4c82d43e"
+   },
+   "effective_config": {
+    "backend": "openrouter",
+    "model": "google/gemini-3.7-flash",
+    "base_url": "https://openrouter.ai/api/v1",
+    "structured_mode": "json_schema",
+    "strict_schema": true,
+    "max_tokens": 1000,
+    "temperature": 0.0,
+    "extra_generation": {
+     "provider": {
+      "allow_fallbacks": false,
+      "order": [
+       "google-ai-studio"
+      ]
+     },
+     "reasoning": {
+      "effort": "low"
+     }
+    },
+    "transport_retries": 0,
+    "validation_retries": 2,
+    "timeout_s": 300.0,
+    "task": "ocr_primary",
+    "prompt_version": "m2-strict-v1"
+   },
+   "wire_response_format": {
+    "structured_mode": "json_schema",
+    "name": "BenchTranscription",
+    "schema": {
+     "description": "History-compatible output envelope of the hebrew_bench_v2 runs\n(scripts/m2_bench_run.py SCHEMA): {\"transcription\": str}.",
+     "properties": {
+      "transcription": {
+       "title": "Transcription",
+       "type": "string"
+      }
+     },
+     "required": [
+      "transcription"
+     ],
+     "title": "BenchTranscription",
+     "type": "object",
+     "additionalProperties": false
+    }
+   },
+   "provider_mapping": {
+    "requested_slug": "google-ai-studio",
+    "expected_display_names": [
+     "Google AI Studio"
+    ],
+    "slug_mapping_status": "VERIFIED",
+    "evidence": "OCR_PROVIDER_ROUTE_FORENSICS_2026-09-03.json distinct_providers entry 'Google AI Studio (google-ai-studio)'"
+   }
+  },
+  {
+   "arm_id": "gemini_pinned_vertex",
+   "model": "google/gemini-3.7-flash",
+   "provider_pin": "google-vertex",
+   "provider_routing": {
+    "order": [
+     "google-vertex"
+    ],
+    "allow_fallbacks": false
+   },
+   "arm_type": "PROVIDER-ROUTE ATTRIBUTION ARM",
+   "why_genuinely_different": "The paired half of the route question. Without both pins a filter count cannot be attributed to a provider, so this arm is what makes the other interpretable.",
+   "main_risk": "same as the AI Studio arm",
+   "cost_bounds": {
+    "logical_requests": 8,
+    "max_physical_attempts_per_logical_request": 1,
+    "max_physical_attempts_for_the_arm": 8,
+    "max_reserved_cost_per_attempt_usd": 0.004791,
+    "nominal_expected_usd": 0.017268,
+    "one_attempt_per_case_maximum_usd": 0.038328,
+    "retry_inclusive_completion_bound_usd": 0.038328
+   },
+   "cli_argv": [
+    "bench",
+    "run",
+    "--role",
+    "ocr_primary",
+    "--split",
+    "dev",
+    "--candidate",
+    "google/gemini-3.7-flash",
+    "--subset",
+    "smoke",
+    "--prompt-version",
+    "m2-strict-v1",
+    "--research",
+    "--models-config",
+    "models.toml",
+    "--cache-policy",
+    "refresh",
+    "--transport-retries",
+    "0",
+    "--provider",
+    "{\"order\":[\"google-vertex\"],\"allow_fallbacks\":false}",
+    "--i-understand-this-spends-money"
+   ],
+   "experiment_identity": "9a912512cd1e99de7fb7e3d00fb4fb0be072ace0c70eeff821b60e99fc1091ed",
+   "semantic_request_identity_by_case": {
+    "hl_e003_q1_r1__l1": "f6736a0b1efe999392d08132582f0f3d73a78dbf5c3d3e0294188b1fe23ee5ba",
+    "hc_e002_q1_r1": "5e39163e3945e7a08bbb7b57077b00ec514536b3c6cb46c483365bc16c3d3a80",
+    "hc_e002_q1_r7": "bbb1e9e3d7ec035612df9916d63b816fe2382ec3c4132ed29323888b1dfe003e",
+    "hc_e002_q2_r1": "5de706b7777cbdf463770718895c67b5477fbebde54364d809b8e060bc4b2d15",
+    "hc_e002_q2_r6": "e065e099c67804cc0a802adb8eaf1231e9021d12615ba338522fbe937f58cc02",
+    "pr_docA_p1_b1": "d04a271f03d3a96c02c52f2fffc894b17a5bd8e3bef25d93785457d966140a59",
+    "pr_docA_p2_b3": "96d28ebcfcd1a37c2cc0a10ea588aa1ed0ea6ecb401ee372d8824b7df6487cf9",
+    "assoc_docB_p2_b1": "f65fb6eba6883af73e9e6c13b4353adcadeb270d7f749624fe4b98463045398b"
+   },
+   "effective_config": {
+    "backend": "openrouter",
+    "model": "google/gemini-3.7-flash",
+    "base_url": "https://openrouter.ai/api/v1",
+    "structured_mode": "json_schema",
+    "strict_schema": true,
+    "max_tokens": 1000,
+    "temperature": 0.0,
+    "extra_generation": {
+     "provider": {
+      "allow_fallbacks": false,
+      "order": [
+       "google-vertex"
+      ]
+     },
+     "reasoning": {
+      "effort": "low"
+     }
+    },
+    "transport_retries": 0,
+    "validation_retries": 2,
+    "timeout_s": 300.0,
+    "task": "ocr_primary",
+    "prompt_version": "m2-strict-v1"
+   },
+   "wire_response_format": {
+    "structured_mode": "json_schema",
+    "name": "BenchTranscription",
+    "schema": {
+     "description": "History-compatible output envelope of the hebrew_bench_v2 runs\n(scripts/m2_bench_run.py SCHEMA): {\"transcription\": str}.",
+     "properties": {
+      "transcription": {
+       "title": "Transcription",
+       "type": "string"
+      }
+     },
+     "required": [
+      "transcription"
+     ],
+     "title": "BenchTranscription",
+     "type": "object",
+     "additionalProperties": false
+    }
+   },
+   "provider_mapping": {
+    "requested_slug": "google-vertex",
+    "expected_display_names": [
+     "Google"
+    ],
+    "slug_mapping_status": "VERIFIED",
+    "evidence": "OCR_PROVIDER_ROUTE_FORENSICS_2026-09-03.json distinct_providers entry 'Google (google-vertex)'"
+   }
+  },
+  {
+   "arm_id": "qwen3_vl_235b_pinned_alibaba",
+   "model": "qwen/qwen3-vl-235b-a22b-instruct",
+   "provider_pin": "alibaba",
+   "provider_routing": {
+    "order": [
+     "alibaba"
+    ],
+    "allow_fallbacks": false
+   },
+   "arm_type": "CROSS-FAMILY CANDIDATE ARM",
+   "why_genuinely_different": "A different model family, vendor and serving provider from every dropped arm. It is the ONLY model in the live catalog whose official description documents document parsing and chart/table extraction, and it is not moderated by OpenRouter. Pinned to Alibaba because the slug is served by 5 providers at differing quantisations (DeepInfra fp8, Venice fp8, Parasail fp8, Novita bf16), which would otherwise make the arm non-reproducible.",
+   "main_risk": "RECORDED AGAINST IT, NOT HIDDEN: this project measured the SAME FAMILY on this corpus locally in 2026-07 - qwen3-vl 8b (Q4_K_M and q8_0) and 30b-a3b, across 14 configurations including blue-channel isolation, text subtraction, line pre-segmentation and contrast preprocessing - at mean CER 1.0-1.6 with fluent hallucinated Hebrew. The 235b-a22b is a different capacity class (22B active, unquantised at Alibaba) and that is the hypothesis; it is NOT evidence the family works on this handwriting.",
+   "cost_bounds": {
+    "logical_requests": 8,
+    "max_physical_attempts_per_logical_request": 1,
+    "max_physical_attempts_for_the_arm": 8,
+    "max_reserved_cost_per_attempt_usd": 0.00253,
+    "nominal_expected_usd": 0.012822,
+    "one_attempt_per_case_maximum_usd": 0.02024,
+    "retry_inclusive_completion_bound_usd": 0.02024
+   },
+   "cli_argv": [
+    "bench",
+    "run",
+    "--role",
+    "ocr_primary",
+    "--split",
+    "dev",
+    "--candidate",
+    "qwen/qwen3-vl-235b-a22b-instruct",
+    "--subset",
+    "smoke",
+    "--prompt-version",
+    "m2-strict-v1",
+    "--research",
+    "--models-config",
+    "models.toml",
+    "--cache-policy",
+    "refresh",
+    "--transport-retries",
+    "0",
+    "--provider",
+    "{\"order\":[\"alibaba\"],\"allow_fallbacks\":false}",
+    "--i-understand-this-spends-money"
+   ],
+   "experiment_identity": "b22a1a20dc55809957d096aeb554caf4df55857bafd2045f9b4b1a5ec8ad41f7",
+   "semantic_request_identity_by_case": {
+    "hl_e003_q1_r1__l1": "d8c3cfc33653d467496ca05ff9f369e2ce9fc35d97c1454ad3943556bd776b9d",
+    "hc_e002_q1_r1": "92795e29d6cbfdbc9649b4c4c99539b5d86beb24834a7a234688524654cbeed9",
+    "hc_e002_q1_r7": "a5ffb14297e2e2a62b7fbbfbab6c02778eeccf67bead5440392bae89f5fd595d",
+    "hc_e002_q2_r1": "9a4b0e6bbf81b2c5366a5501bdb4b7ce7bb3dd7d25f9dec1ead9b035ea7df19e",
+    "hc_e002_q2_r6": "001737ddebb109af6768cb17ab13c2fd79d2fc8763056b4e1959d25bc15a15f6",
+    "pr_docA_p1_b1": "9377512fe57c41027cbee17ce7a267563029f2ae7d0ead9a1f79fd1dc7c4b7c8",
+    "pr_docA_p2_b3": "a54ec25f5bb4a8f688d8c9cc816fa3a8740b9fa4cfac026a2518097fe34420c8",
+    "assoc_docB_p2_b1": "07ac9100b743933d06f63730f7ef4ddab3d2a90e6b77fcb64f7da55187055739"
+   },
+   "effective_config": {
+    "backend": "openrouter",
+    "model": "qwen/qwen3-vl-235b-a22b-instruct",
+    "base_url": "https://openrouter.ai/api/v1",
+    "structured_mode": "json_schema",
+    "strict_schema": true,
+    "max_tokens": 1000,
+    "temperature": 0.0,
+    "extra_generation": {
+     "provider": {
+      "allow_fallbacks": false,
+      "order": [
+       "alibaba"
+      ]
+     }
+    },
+    "transport_retries": 0,
+    "validation_retries": 2,
+    "timeout_s": 300.0,
+    "task": "ocr_primary",
+    "prompt_version": "m2-strict-v1"
+   },
+   "wire_response_format": {
+    "structured_mode": "json_schema",
+    "name": "BenchTranscription",
+    "schema": {
+     "description": "History-compatible output envelope of the hebrew_bench_v2 runs\n(scripts/m2_bench_run.py SCHEMA): {\"transcription\": str}.",
+     "properties": {
+      "transcription": {
+       "title": "Transcription",
+       "type": "string"
+      }
+     },
+     "required": [
+      "transcription"
+     ],
+     "title": "BenchTranscription",
+     "type": "object",
+     "additionalProperties": false
+    }
+   },
+   "provider_mapping": {
+    "requested_slug": "alibaba",
+    "expected_display_names": [],
+    "slug_mapping_status": "UNVERIFIED",
+    "evidence": "no preserved artifact records this slug's display name. The 2026-09-03 discovery session read it from OpenRouter's /providers endpoint but never persisted the response; every surviving mention is prose in a freeze narrative, which is not evidence of the wire value."
+   }
+  }
+ ],
+ "candidate_count": 3,
+ "live_pricing_snapshot": {
+  "google/gemini-3.7-flash": {
+   "input_per_M": 0.75,
+   "output_per_M": 3.75,
+   "is_moderated": false,
+   "max_completion_tokens": 65536,
+   "context_length": 1048576
+  },
+  "qwen/qwen3-vl-235b-a22b-instruct": {
+   "input_per_M": 0.21,
+   "output_per_M": 1.9,
+   "is_moderated": false,
+   "max_completion_tokens": 32768,
+   "context_length": 262144
+  }
+ },
+ "advancement_and_drop_rules_stated_in_advance": {
+  "scope": "This is an ENGINEERING SCREEN on 8 cases. Passing authorizes ONE thing: the 32-crop seen experiment. It is not production proof and n=8 cannot establish a failure rate.",
+  "operational_coverage": {
+   "usable_total": ">= 7/8",
+   "usable_handwritten": ">= 4/5"
+  },
+  "reliability": {
+   "repeated_provider_filter_pattern": "not permitted",
+   "hard_provider_failures": "<= 1",
+   "repeated_model_text_refusal": "not permitted",
+   "fabrication": "0"
+  },
+  "handwriting_quality": {
+   "successful_only_handwritten_mean_cer": "<= 0.20",
+   "threshold_provenance": "the same 0.20 bar the OCR_PROMPT_V2 pre-registration used as its quality veto, so the screens stay comparable. It is materially below Sonnet's measured successful-output CER of 0.4718 and above Gemini's 0.1155, i.e. it separates the two.",
+   "total_line_loss": "0",
+   "labelled": "engineering screen, NOT production proof"
+  },
+  "critical_errors": {
+   "max_critical_among_usable_handwriting": 1,
+   "fabricated_mathematical_content": 0
+  },
+  "gates_are_frozen": "these thresholds are fixed before any output and must not be weakened after seeing results",
+  "passing_authorizes": "ADVANCE_TO_SEEN32 for that candidate only - the 32-crop seen experiment. Passing this screen CANNOT select a production winner.",
+  "passing_does_not_establish": "production readiness, a production winner, a route selection, or any claim about HELD_OUT. The only outcome a pass produces is ADVANCE_TO_SEEN32.",
+  "outcome_vocabulary": {
+   "pass": "ADVANCE_TO_SEEN32",
+   "fail": "DROP",
+   "between": "REPORT_ONLY (reported, not resolved)"
+  }
+ },
+ "prohibitions": [
+  "no HELD_OUT",
+  "no CALIBRATION",
+  "no grading on OCR output",
+  "no RAG",
+  "no OCR verification",
+  "no composite fallback",
+  "no reference edits",
+  "no prompt tuning after observing results",
+  "no candidate added after results"
+ ],
+ "provider_mapping_source": {
+  "artifact": "evaluation/model_selection/runs/ocr_primary/OCR_PROVIDER_ROUTE_FORENSICS_2026-09-03.json",
+  "artifact_sha256": "3ad46555b1a266edb21dd533b7d5b620f64135d1a1b67e36be1b804568f2ab84",
+  "recorded_content_sha256": "efdc242f95aa311088ade2ea065cb32e3dfc3b30b5cb80524dc904ed9c15bb61",
+  "captured_at": "2026-09-04 00:18:25",
+  "source": "OpenRouter GET /api/v1/providers, recorded during route forensics"
+ },
+ "provider_mapping_caveat": "the `alibaba` slug has NO preserved slug->display-name evidence; the 2026-09-03 discovery read it from OpenRouter's /providers endpoint but never persisted the response. Its attribution will therefore report UNKNOWN_UNVERIFIED_SLUG — never silently compliant and never a violation. Capturing and committing a provider catalogue (public metadata, no inference) is a PREREQUISITE for the Qwen arm's route attribution to mean anything.",
+ "identity_and_cache_policy": {
+  "derivation": "identities are produced by identities_from_argv(), which runs the FROZEN CLI argv through build_parser -> _spec_from_args -> load_registry -> build_route -> to_backend_config. No parallel hand-built TaskRoute exists.",
+  "experiment_only_fields": [
+   "transport_retries",
+   "validation_retries",
+   "timeout_s"
+  ],
+  "excluded_from_all_identities": [
+   "api_key",
+   "api_key_env",
+   "concurrency"
+  ],
+  "secret_free": "the API key is never read; api_key_env (a variable NAME) is dropped too",
+  "three_arms_hash_differently": true,
+  "cache_policy": "refresh",
+  "cache_policy_meaning": "bypass cache READS, perform the live request, still WRITE the correctly-versioned entry. A new --runs-root is NOT a substitute: the request cache is shared campaign state.",
+  "cache_hits_allowed": 0,
+  "cache_hit_consequence": "INCONCLUSIVE_MECHANICAL_STOP",
+  "historical_entries": "preserved on disk and unreachable by v2 keys; never deleted or rewritten",
+  "semantic_request_identity_fields": [
+   "backend",
+   "model",
+   "base_url",
+   "structured_mode",
+   "strict_schema",
+   "max_tokens",
+   "temperature",
+   "extra_generation",
+   "task",
+   "prompt_version"
+  ],
+  "response_schema_coverage": "the CANONICAL WIRE SCHEMA enters the semantic/cache identity: the response_format block as transmitted, i.e. the strict-transformed schema plus the schema name, not the raw model_json_schema(). Proven against the backend's own _build_payload output.",
+  "identity_version": 4,
+  "arm_identities": {
+   "gemini_pinned_ai_studio": "749d7c41f17c127e932fc55d347f86ed8d33dee7b26511fecebe5aa858af1cfa",
+   "gemini_pinned_vertex": "9a912512cd1e99de7fb7e3d00fb4fb0be072ace0c70eeff821b60e99fc1091ed",
+   "qwen3_vl_235b_pinned_alibaba": "b22a1a20dc55809957d096aeb554caf4df55857bafd2045f9b4b1a5ec8ad41f7"
+  },
+  "base_url_canonicalisation": "None and the explicit default resolve to the same effective endpoint and hash identically; a different endpoint does not."
+ },
+ "execution_requirements": {
+  "all_intended_logical_requests_live": 24,
+  "required_attempt_linkage_fields": [
+   "campaign_id",
+   "arm_id",
+   "case_id",
+   "logical_request_id",
+   "attempt_id",
+   "retry_index"
+  ],
+  "missing_linkage_consequence": "mechanical stop; the row is never usable",
+  "campaign_setup_failure": "FATAL - zero cache lookups and zero transport activity",
+  "retry_policy": {
+   "transport_retries": 0,
+   "validation_retries": 0,
+   "max_physical_attempts_per_logical_request": 1,
+   "max_physical_attempts_for_the_campaign": 24,
+   "changed_from_v2": "transport_retries 2 -> 0",
+   "why": "at transport_retries=2 the completion-guarantee bound is $0.290688, which is 2.47x the remaining hard headroom of $0.11747325. The campaign could not be funded to completion and would risk a second mid-campaign mechanical stop, which is how V1 ended. Retries are therefore disabled so the COMPLETE campaign fits.",
+   "accepted_cost_of_this_choice": "a transient transport failure (408/409/429/5xx) now FAILS that case instead of being retried. If that happens, the arm's coverage gate may fail for a TRANSPORT reason rather than a model reason. Such a failure MUST be reported as a transport failure and MUST NOT be counted as evidence about the model or the provider route.",
+   "every_physical_attempt_is_still_separately_budget_authorized": true
+  },
+  "budget_enforcement": "per PHYSICAL HTTP attempt at the send boundary, worst-case reservation",
+  "identity_equality_is_mandatory": "before ANY cache lookup and before ANY send, the runtime route's experiment identity must equal the frozen arm value (--expect-identity). A mismatch yields zero cache reads, zero requests, INCONCLUSIVE_MECHANICAL_STOP for the whole campaign, and a persisted field-level safe diff. No field may be judged harmless."
+ },
+ "cost_model": {
+  "billing_assumption": "every transmitted physical attempt is treated as POTENTIALLY BILLABLE. No empirical evidence and no authoritative contract establishes that a retryable attempt is free; 0 such attempts appear in 806 ledger rows, and 5 of 5 finish_reason=length rows DID bill.",
+  "nominal_expected_usd": 0.047358,
+  "single_attempt_maximum_usd": 0.096896,
+  "single_attempt_maximum_definition": "24 logical requests, exactly one physical attempt each",
+  "retry_inclusive_completion_bound_usd": 0.096896,
+  "retry_inclusive_definition": "24 logical requests x 1 physical attempts x the per-attempt reserved maximum = 24 physical attempts",
+  "enforced_absolute_hard_limit_usd": 0.82323229,
+  "what_the_hard_limiter_does_NOT_excuse": "the limiter stopping a campaign partway is NOT a reason to call an unaffordable campaign 'fitting'. V3 is funded to COMPLETION at its frozen retry policy; that is why the policy changed rather than the claim.",
+  "for_reference_only_at_transport_retries_2": {
+   "retry_inclusive_completion_bound_usd": 0.290688,
+   "fits": false,
+   "over_by_usd": 0.173215,
+   "note": "NOT the frozen policy; recorded so the tradeoff is visible."
+  },
+  "remaining_hard_headroom_usd": 0.10539975,
+  "complete_campaign_fits_under_the_hard_limit": true,
+  "headroom_after_the_completion_bound_usd": 0.00850375,
+  "recomputed_from_ledger_at": "2026-09-05 12:17:54"
+ },
+ "budget": {
+  "L0_verified_from_disk": 0.71783254,
+  "ledger_rows_at_freeze": 815,
+  "campaign_family_absolute_limits_preserved": {
+   "warning": 0.78323229,
+   "hard": 0.82323229
+  },
+  "prospective_warning_increment": 0.06539975,
+  "prospective_hard_increment": 0.10539975,
+  "v3_authorization_does_not_carry_over": true,
+  "v3_budget_manifest_not_reused": true,
+  "NOT_AUTHORIZED": "PROSPECTIVE limits. No V4 campaign budget manifest is created here and this freeze authorizes nothing."
+ },
+ "experiment_sha256": "e5e0fb05b1fcce0633e8dfd21c6ad31e66f9b56ddbcca91ffc78a40d7df85bf3"
+}

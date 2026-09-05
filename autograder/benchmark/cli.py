@@ -115,6 +115,7 @@ def _spec_from_args(args, dry_run: bool, *, final_evaluation: bool = False) -> R
         campaign_budget=getattr(args, "campaign_budget", None),
         cache_policy=getattr(args, "cache_policy", "use"),
         transport_retries=getattr(args, "transport_retries", None),
+        expect_identity=getattr(args, "expect_identity", None),
         provider=_provider_arg(getattr(args, "provider", None)),
         research=bool(getattr(args, "research", False)))
 
@@ -549,6 +550,10 @@ def add_bench_commands(sub) -> None:
                             "(computed once from L0) replace --warn-usd/--hard-usd for every "
                             "arm, so sequential arms share one envelope instead of each "
                             "receiving a fresh increment.")
+        p.add_argument("--expect-identity", default=None, metavar="SHA256",
+                       help="the frozen arm experiment_identity this run must equal. Checked "
+                            "BEFORE any cache lookup or send; a mismatch stops with zero reads "
+                            "and zero requests.")
         p.add_argument("--transport-retries", type=int, default=None,
                        help="pin physical transport retries (network/429/5xx). 0 = no retry; "
                             "each retry is a separately billable physical attempt, so a screen "

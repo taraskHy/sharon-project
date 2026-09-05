@@ -636,18 +636,18 @@ def test_v3_retry_policy_is_reachable_from_the_cli_and_is_identity_bearing(v3):
     assert experiment_identity(r) != experiment_identity(r2)
 
 
-def test_v3_arm_identities_match_the_frozen_retry_policy(v3):
-    from autograder.gateway import TaskRoute
-    from autograder.routeidentity import experiment_identity
+def test_v3_arm_identities_are_preserved_as_HISTORICAL_values(v3):
+    """V3 is closed and immutable. Its identities were computed under identity
+    version 3 from a hand-built route, and they deliberately do NOT recompute
+    under version 4 — that divergence is exactly why V3 was superseded. What
+    must hold is that the artifact still hashes to its frozen value."""
+    from autograder.routeidentity import CACHE_IDENTITY_VERSION
 
-    retries = v3["execution_requirements"]["retry_policy"]["transport_retries"]
-    for arm in v3["candidates"]:
-        r = TaskRoute(task="ocr_primary", backend="openrouter", model=arm["model"],
-                      base_url="https://openrouter.ai/api/v1", structured_mode="json_schema",
-                      max_tokens=1000, temperature=0.0, reasoning=arm["route"]["reasoning"],
-                      transport_retries=retries, provider=arm["provider_routing"],
-                      prompt_version="m2-strict-v1")
-        assert experiment_identity(r) == arm["experiment_identity"]
+    assert v3["identity_and_cache_policy"]["identity_version"] == 3 < CACHE_IDENTITY_VERSION
+    body = json.dumps({k: v for k, v in v3.items() if k != "experiment_sha256"},
+                      ensure_ascii=False, indent=1, sort_keys=True, default=str)
+    assert hashlib.sha256(body.encode()).hexdigest() == v3["experiment_sha256"]
+    assert len({a["experiment_identity"] for a in v3["candidates"]}) == 3
 
 
 def test_v3_keeps_gates_and_limits_unchanged(v3):

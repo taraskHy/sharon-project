@@ -193,13 +193,28 @@ def check_route(requested: dict[str, Any], observed_provider: str | None,
         verdict["detail"] = ("response did not name a provider; the pin cannot be "
                              "confirmed from this response (not treated as a violation)")
         return verdict
+
+    # CANONICAL MAPPING, never string normalisation. A slug and a display name
+    # are different namespaces: OpenRouter's `google-vertex` reports as
+    # `Google`, and normalising both sides declared a correctly honoured pin a
+    # violation, halting the V3 campaign. `google-ai-studio` / `Google AI Studio`
+    # matched only by coincidence.
+    from .providermap import (COMPLIANT, VIOLATION, load_provider_map, match_provider)
+
     want = requested.get("requested_provider")
-    if _norm(observed_provider) != _norm(want):
-        verdict["violation"] = True
-        verdict["detail"] = (f"pinned to {want!r} with allow_fallbacks=false but the response "
-                             f"reported {observed_provider!r}")
-    else:
-        verdict["detail"] = "observed provider matches the pin"
+    try:
+        m = match_provider(requested_slug=want, observed_provider=observed_provider,
+                           pmap=load_provider_map())
+    except Exception as e:  # noqa: BLE001 — a missing map must not silently pass a route
+        verdict["violation"] = False
+        verdict["result"] = "UNKNOWN_NO_PROVIDER_MAP"
+        verdict["detail"] = f"provider mapping unavailable ({type(e).__name__}: {e}); UNKNOWN"
+        return verdict
+    verdict["result"] = m["result"]
+    verdict["expected_display_names"] = m["expected_display_names"]
+    verdict["slug_mapping_status"] = m["slug_mapping_status"]
+    verdict["violation"] = (m["result"] == VIOLATION)
+    verdict["detail"] = m["detail"]
     return verdict
 
 

@@ -153,6 +153,10 @@ class RunSpec:
     provider: dict | None = None
     #: pin the physical transport-retry count (see TaskRoute.transport_retries)
     transport_retries: int | None = None
+    #: the frozen arm experiment_identity this run MUST equal. Checked before
+    #: any cache lookup and before any send; a mismatch stops the campaign with
+    #: zero reads and zero requests. See routeidentity.assert_identity_matches.
+    expect_identity: str | None = None
     warn_usd: float | None = None           # default: registry [budget] warn_usd (8.00)
     hard_usd: float | None = None           # default: registry [budget] experiment_total_usd (10.00)
     validation_retries: int = 0             # NEVER silently repair malformed output in a benchmark
@@ -780,6 +784,15 @@ def run_benchmark(spec: RunSpec, *, gateway=None, registry: CandidateRegistry | 
                               getattr(route, "prompt_version", None),
                               provider_pin_of(route),
                               authorized_experiment=spec.allow_dropped_config)
+        # ---- MANDATORY identity equality, BEFORE any cache read or send ----
+        # V3 continued past a frozen-vs-runtime identity mismatch because the
+        # differing field looked harmless. It was not the arm that was frozen.
+        # A mismatch is now a hard stop with zero cache reads and zero requests.
+        if spec.expect_identity:
+            from ..routeidentity import assert_identity_matches
+            assert_identity_matches(route=route,
+                                    frozen_experiment_identity=spec.expect_identity,
+                                    arm_id=run_id)
         ledger_baseline = len(gw.ledger.entries()) if getattr(gw, "ledger", None) is not None else 0
         # ---- live-call preflight (Part 7): credential -> key metadata (explicit)
         # -> checkpoint -> compare with ledger -> budget safe? -> allowed.
