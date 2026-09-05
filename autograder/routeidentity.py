@@ -50,9 +50,14 @@ import hashlib
 import json
 from typing import Any
 
-#: Bumped when the identity DERIVATION changes. v1 = the historical
-#: TaskRoute.fingerprint_fields() list that omitted `provider`.
-CACHE_IDENTITY_VERSION = 2
+#: Bumped when the identity DERIVATION changes.
+#:   v1 — the historical TaskRoute.fingerprint_fields() list, which omitted
+#:        `provider`; a pinned arm shared a key with the unpinned one.
+#:   v2 — derived from the effective backend config, but digesting the RAW
+#:        model_json_schema() rather than the schema actually transmitted.
+#:   v3 — digests the CANONICAL WIRE SCHEMA: the response_format block as sent,
+#:        including the strict transform and the schema name.
+CACHE_IDENTITY_VERSION = 3
 
 #: Effective-config fields that change WHAT the provider returns.
 #: `extra_generation` carries reasoning AND the provider routing object once
@@ -133,6 +138,31 @@ def route_semantic_fields(route: Any) -> dict[str, Any]:
     full = effective_config_fields(route)
     keep = set(SEMANTIC_FIELDS) | set(ROUTE_LEVEL_FIELDS)
     return {k: v for k, v in full.items() if k in keep}
+
+
+def wire_response_format(route: Any, output_model: Any) -> dict[str, Any]:
+    """The response_format block AS TRANSMITTED.
+
+    Identity must key on what actually goes on the wire, not on a proxy for it.
+    Hashing the RAW ``model_json_schema()`` was such a proxy: the backend sends
+    ``strict_json_schema(raw)`` under a ``name``, so a change to the strict
+    transform, or a differently-named model with identical fields, would alter
+    the transmitted payload while leaving a raw-schema digest unmoved. That is
+    the same class of defect as the omitted ``provider`` field, one level down.
+    """
+    from .strictschema import strict_json_schema
+
+    cfg = route.to_backend_config() if hasattr(route, "to_backend_config") else route
+    raw = output_model.model_json_schema() if hasattr(output_model, "model_json_schema") else output_model
+    strict = bool(getattr(cfg, "strict_schema", True))
+    mode = getattr(cfg, "structured_mode", "json_schema")
+    schema = strict_json_schema(raw) if strict else raw
+    return {
+        "structured_mode": mode,
+        # transmitted as response_format.json_schema.name
+        "name": getattr(output_model, "__name__", None),
+        "schema": schema,
+    }
 
 
 def semantic_request_identity(route: Any, *, system: str, content_blocks: list[dict],

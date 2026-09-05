@@ -74,6 +74,11 @@ class TaskRoute:
     max_tokens: int = 800
     temperature: float | None = 0.0
     timeout_s: float = 300.0
+    #: Physical transport retries (network / 408 / 409 / 429 / 5xx). None keeps
+    #: the BackendConfig default (2). A research screen whose COMPLETE
+    #: worst-case cost must fit a fixed budget pins this to 0, because each
+    #: retry is a separately billable physical attempt.
+    transport_retries: int | None = None
     reasoning: dict[str, Any] | None = None       # e.g. {"effort": "low"} (openrouter)
     provider: dict[str, Any] | None = None        # openrouter provider routing
     extra_generation: dict[str, Any] = field(default_factory=dict)
@@ -98,6 +103,8 @@ class TaskRoute:
             temperature=self.temperature,
             timeout_s=self.timeout_s,
             extra_generation=eg,
+            **({} if self.transport_retries is None
+               else {"transport_retries": self.transport_retries}),
         )
 
     def fingerprint_fields(self) -> dict[str, Any]:

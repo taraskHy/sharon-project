@@ -148,7 +148,10 @@ def test_identity_is_versioned_so_old_keys_cannot_collide():
         assert experiment_identity(r) != before
     finally:
         ri.CACHE_IDENTITY_VERSION = monkey
-    assert CACHE_IDENTITY_VERSION == 2
+    # v1 = the hand-listed fingerprint_fields that omitted `provider`
+    # v2 = derived from the effective config, but digesting the RAW schema
+    # v3 = digests the CANONICAL WIRE SCHEMA actually transmitted
+    assert CACHE_IDENTITY_VERSION == 3
 
 
 def test_identity_report_documents_the_fields_used():
@@ -420,3 +423,104 @@ def test_cli_to_wire_retry_budget_and_sticky_route_across_attempts(monkeypatch, 
     assert b.route_violation is not None
     assert b.route_violation["observed_provider"] == "Google"
     assert [r["route_check"]["violation"] for r in recs] == [True, False]
+
+
+# =============================================================================
+# 5. the CANONICAL WIRE SCHEMA is part of request identity
+# =============================================================================
+
+def _mk(name, fields):
+    from pydantic import create_model
+    return create_model(name, **fields)
+
+
+def test_changing_only_the_response_schema_changes_the_cache_identity():
+    """Route, prompt, image, max_tokens and every config field held constant —
+    only the response schema differs. Identity MUST move."""
+    from autograder.requestcache import fingerprint
+
+    r = _route(provider=AI)
+    blocks = [{"type": "image", "source": {"type": "base64", "media_type": "image/png",
+                                           "data": "aW1n"}}]
+    A = _mk("BenchTranscription", {"transcription": (str, ...)})
+    B = _mk("BenchTranscription", {"transcription": (str, ...), "confidence": (float, ...)})
+    assert fingerprint(r, "sys", blocks, A, 1000) != fingerprint(r, "sys", blocks, B, 1000)
+
+
+def test_a_changed_field_type_alone_changes_identity():
+    from autograder.requestcache import fingerprint
+
+    r = _route(provider=AI)
+    blocks = [{"type": "text", "text": "q"}]
+    A = _mk("M", {"transcription": (str, ...)})
+    B = _mk("M", {"transcription": (int, ...)})
+    assert fingerprint(r, "sys", blocks, A, 1000) != fingerprint(r, "sys", blocks, B, 1000)
+
+
+def test_semantically_identical_schemas_built_independently_share_an_identity():
+    """Two models constructed separately, same NAME and same fields, produce the
+    same transmitted response_format and therefore the same identity."""
+    from autograder.requestcache import fingerprint
+
+    r = _route(provider=AI)
+    blocks = [{"type": "text", "text": "q"}]
+    A = _mk("BenchTranscription", {"transcription": (str, ...)})
+    A2 = _mk("BenchTranscription", {"transcription": (str, ...)})
+    assert A is not A2
+    assert fingerprint(r, "sys", blocks, A, 1000) == fingerprint(r, "sys", blocks, A2, 1000)
+
+
+def test_the_transmitted_schema_name_is_part_of_identity():
+    """The name really is sent (response_format.json_schema.name), so two
+    identically-shaped models with DIFFERENT names are different requests."""
+    from autograder.requestcache import fingerprint
+
+    r = _route(provider=AI)
+    blocks = [{"type": "text", "text": "q"}]
+    A = _mk("BenchTranscription", {"transcription": (str, ...)})
+    B = _mk("SomethingElse", {"transcription": (str, ...)})
+    assert fingerprint(r, "sys", blocks, A, 1000) != fingerprint(r, "sys", blocks, B, 1000)
+
+
+def test_identity_uses_the_CANONICAL_WIRE_schema_not_the_raw_model_schema(monkeypatch):
+    """The digest must be of what is transmitted. Proof: the wire schema that
+    identity hashes is byte-identical to the response_format block the backend
+    actually builds."""
+    import json as _json
+
+    from autograder.backends.base import BackendConfig
+    from autograder.backends.openai_compat import OpenAICompatBackend
+    from autograder.routeidentity import wire_response_format
+
+    A = _mk("BenchTranscription", {"transcription": (str, ...)})
+    r = _route(provider=AI)
+    cfg = BackendConfig(backend="openai", model="m", base_url="http://x/v1",
+                        api_key_env="NOPE_NOT_SET")
+    be = OpenAICompatBackend(cfg)
+    payload = be._build_payload([{"role": "user", "content": "hi"}], A, 1000)
+    sent = payload["response_format"]["json_schema"]
+
+    ident = wire_response_format(r, A)
+    assert ident["name"] == sent["name"]
+    assert _json.dumps(ident["schema"], sort_keys=True) == _json.dumps(sent["schema"], sort_keys=True)
+    # and it is NOT merely the raw model schema
+    assert ident["schema"] != A.model_json_schema()
+    assert "additionalProperties" in ident["schema"]
+
+
+def test_strict_schema_flag_also_moves_identity():
+    import dataclasses
+
+    from autograder.routeidentity import experiment_identity
+
+    r = _route(provider=AI)
+    cfg = r.to_backend_config()
+
+    class _W:
+        def __init__(self, c):
+            self._c, self.task, self.prompt_version = c, r.task, r.prompt_version
+        def to_backend_config(self):
+            return self._c
+
+    assert experiment_identity(_W(cfg)) != experiment_identity(
+        _W(dataclasses.replace(cfg, strict_schema=False)))

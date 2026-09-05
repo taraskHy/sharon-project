@@ -1,0 +1,53 @@
+{
+ "artifact": "ocr_altscreen_v2_closure",
+ "created_at": "2026-09-05 03:44:23",
+ "git_commit": "d1dc01062e327eafc506fc620a03bc2bf4cfd7ed",
+ "provider_calls": 0,
+ "experiment": "OCR_ALTERNATIVE_CANDIDATE_SCREEN_V2",
+ "experiment_sha256": "6b454062dffdbd52388c70e90640195b08d1d7aa3a882f065e47a6dcbc7142a1",
+ "terminal_outcome": "SUPERSEDED_BEFORE_EXECUTION",
+ "executed": false,
+ "provider_requests_ever_made_under_v2": 0,
+ "immutability": "V2 is preserved byte-for-byte with its hash intact. It was NOT edited, NOT re-hashed and NOT executed. The correction lives in V3.",
+ "exact_reason": "V2's frozen cost field is materially false. `predicted_worst_case_usd` = 0.096896 is the sum of ONE attempt per logical request, and the per-arm fields are literally named `worst_case_usd`, but the frozen retry policy is transport_retries=2 — up to 3 physical attempts per logical request, 72 for the campaign. Treating every transmitted attempt as potentially billable (see billing_evidence), the true completion-guarantee bound is $0.290688, which is 2.47x the remaining hard headroom of $0.11747325. V2 additionally asserts `fits_under_remaining_hard_limit: true`, a claim of guaranteed completion under a budget that cannot fund it.",
+ "conditions_evaluated": {
+  "schema_covered_by_semantic_identity": {
+   "verdict": "MARGINAL AT FREEZE TIME, NOW CORRECTED",
+   "detail": "V2 froze identity_version 2, which digested the RAW model_json_schema() rather than the response_format block actually transmitted (the strict transform plus the schema name). Schema CONTENT did move the identity, so this was a proxy rather than a hole — but a change to the strict transform would have left the digest unmoved while changing the wire payload. Corrected in identity_version 3."
+  },
+  "frozen_cost_field_accurately_defined": {
+   "verdict": "FAIL",
+   "detail": "see exact_reason"
+  },
+  "retry_inclusive_bound_fits_or_is_preregistered": {
+   "verdict": "FAIL",
+   "detail": "$0.290688 does not fit under $0.11747325 and V2 contains NO preregistration that the hard cap may mechanically stop the campaign."
+  },
+  "no_claim_of_guaranteed_completion_under_insufficient_budget": {
+   "verdict": "FAIL",
+   "detail": "`fits_under_remaining_hard_limit: true` is exactly such a claim."
+  }
+ },
+ "billing_evidence": {
+  "retryable_attempts_observed_in_806_ledger_rows": 0,
+  "http_statuses_ever_seen": [
+   "200",
+   "400",
+   "null (pre-transport)"
+  ],
+  "conclusion": "there is NO empirical evidence and NO authoritative contract establishing that a 408/409/429/5xx attempt is free. Per the audit rule, every transmitted attempt is therefore treated as potentially billable.",
+  "counter_evidence_that_failed_attempts_can_bill": "5 of 5 rows with finish_reason=length carried a non-zero reported_cost — a response useless to us that was still billed. Failure does not imply free.",
+  "contrast": "27 content_filter rows billed nothing, so billing on failure is genuinely mixed."
+ },
+ "what_v2_got_right_and_is_carried_forward": [
+  "derived (not hand-listed) route identity",
+  "three arms with distinct experiment identities",
+  "refresh cache policy and cache_hits_allowed=0",
+  "required attempt-linkage fields",
+  "fail-closed campaign setup",
+  "the eight frozen Stage-1 cases, prompt, schema and advancement gates"
+ ],
+ "successor": "OCR_ALTERNATIVE_CANDIDATE_SCREEN_V3",
+ "ocr_primary_role_status": "UNSELECTED (unchanged)",
+ "content_sha256": "644415568682339baf88130eeba61c10f41653c3837dde138fd55c5c184d16cc"
+}

@@ -151,6 +151,8 @@ class RunSpec:
     max_tokens: int | None = None
     reasoning: dict | None = None
     provider: dict | None = None
+    #: pin the physical transport-retry count (see TaskRoute.transport_retries)
+    transport_retries: int | None = None
     warn_usd: float | None = None           # default: registry [budget] warn_usd (8.00)
     hard_usd: float | None = None           # default: registry [budget] experiment_total_usd (10.00)
     validation_retries: int = 0             # NEVER silently repair malformed output in a benchmark
@@ -441,6 +443,7 @@ def resolve_candidate(spec: RunSpec, registry: CandidateRegistry) -> str:
 #: under test is the one thing the benchmark is allowed to change.
 ROUTE_PARITY_FIELDS = ("structured_mode", "max_tokens", "temperature", "timeout_s",
                        "reasoning", "provider", "extra_generation")
+#: knobs a candidate override / CLI may pin, beyond ROUTE_PARITY_FIELDS
 
 
 def production_route_defaults(models_config, task: str) -> dict:
@@ -499,6 +502,7 @@ def build_route(spec: RunSpec, candidate: str, request_prompt_version: str, defa
         "temperature": 0.0,
         "reasoning": None,
         "provider": None,
+        "transport_retries": None,
     }
     knobs.update(prod)
     # declared per-candidate asymmetry beats the production file
@@ -519,6 +523,8 @@ def build_route(spec: RunSpec, candidate: str, request_prompt_version: str, defa
         knobs["reasoning"] = spec.reasoning
     if spec.provider is not None:
         knobs["provider"] = spec.provider
+    if spec.transport_retries is not None:
+        knobs["transport_retries"] = spec.transport_retries
     return TaskRoute(
         task=task, backend=spec.backend, model=candidate, base_url=spec.base_url,
         prompt_version=request_prompt_version, cacheable=True, enabled=True, **knobs)

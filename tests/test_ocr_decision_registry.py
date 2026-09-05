@@ -461,6 +461,10 @@ V1P = Path("evaluation/model_selection/experiments/"
            "OCR_ALTERNATIVE_CANDIDATE_SCREEN_V1_2026-09-03.json")
 V2P = Path("evaluation/model_selection/experiments/"
            "OCR_ALTERNATIVE_CANDIDATE_SCREEN_V2_2026-09-04.json")
+V3P = Path("evaluation/model_selection/experiments/"
+           "OCR_ALTERNATIVE_CANDIDATE_SCREEN_V3_2026-09-05.json")
+V2CLOSURE = Path("evaluation/model_selection/runs/ocr_primary/"
+                 "OCR_ALTSCREEN_V2_CLOSURE_2026-09-05.json")
 CLOSURE = Path("evaluation/model_selection/runs/ocr_primary/"
                "OCR_ALTSCREEN_V1_CLOSURE_2026-09-04.json")
 
@@ -545,3 +549,123 @@ def test_v2_is_frozen_but_not_authorized_and_not_executed(v2):
     assert hashlib.sha256(body.encode()).hexdigest() == v2["experiment_sha256"]
     assert not Path("evaluation/model_selection/policies/"
                     "OCR_ALTSCREEN_V2_CAMPAIGN_BUDGET.json").exists()
+
+
+# ---- V2 superseded before execution, V3 frozen --------------------------------
+
+@pytest.fixture(scope="module")
+def v3():
+    return json.loads(V3P.read_text(encoding="utf-8"))
+
+
+def test_v2_is_closed_superseded_before_execution_with_its_hash_intact():
+    c = json.loads(V2CLOSURE.read_text(encoding="utf-8"))
+    v2 = json.loads(V2P.read_text(encoding="utf-8"))
+    assert c["terminal_outcome"] == "SUPERSEDED_BEFORE_EXECUTION"
+    assert c["executed"] is False
+    assert c["provider_requests_ever_made_under_v2"] == 0
+    assert c["experiment_sha256"] == v2["experiment_sha256"], "V2's hash must be preserved"
+    # V2 itself is untouched: it still recomputes to its own frozen hash
+    body = json.dumps({k: v for k, v in v2.items() if k != "experiment_sha256"},
+                      ensure_ascii=False, indent=1, sort_keys=True, default=str)
+    assert hashlib.sha256(body.encode()).hexdigest() == v2["experiment_sha256"]
+
+
+def test_v2_closure_states_the_exact_cost_reason():
+    c = json.loads(V2CLOSURE.read_text(encoding="utf-8"))
+    ce = c["conditions_evaluated"]
+    assert ce["frozen_cost_field_accurately_defined"]["verdict"] == "FAIL"
+    assert ce["retry_inclusive_bound_fits_or_is_preregistered"]["verdict"] == "FAIL"
+    assert ce["no_claim_of_guaranteed_completion_under_insufficient_budget"]["verdict"] == "FAIL"
+    assert "0.290688" in c["exact_reason"]
+    assert c["billing_evidence"]["retryable_attempts_observed_in_806_ledger_rows"] == 0
+
+
+def test_v3_states_four_distinct_cost_bounds(v3):
+    cm = v3["cost_model"]
+    assert cm["nominal_expected_usd"] == 0.047358
+    assert cm["single_attempt_maximum_usd"] == 0.096896
+    assert cm["retry_inclusive_completion_bound_usd"] == 0.096896
+    assert cm["enforced_absolute_hard_limit_usd"] == 0.82323229
+    assert cm["remaining_hard_headroom_usd"] == 0.11747325
+    # the four are labelled, not conflated
+    assert "one physical attempt each" in cm["single_attempt_maximum_definition"]
+    assert "physical attempts" in cm["retry_inclusive_definition"]
+
+
+def test_v3_complete_campaign_is_conservatively_fundable(v3):
+    cm = v3["cost_model"]
+    L0 = v3["budget"]["L0_verified_from_disk"]
+    assert cm["complete_campaign_fits_under_the_hard_limit"] is True
+    assert L0 + cm["retry_inclusive_completion_bound_usd"] <= 0.82323229
+    # and the rejected alternative is on the record, not hidden
+    ref = cm["for_reference_only_at_transport_retries_2"]
+    assert ref["fits"] is False
+    assert ref["retry_inclusive_completion_bound_usd"] == 0.290688
+
+
+def test_v3_freezes_zero_transport_retries_and_says_what_that_costs(v3):
+    rp = v3["execution_requirements"]["retry_policy"]
+    assert rp["transport_retries"] == 0
+    assert rp["max_physical_attempts_per_logical_request"] == 1
+    assert rp["max_physical_attempts_for_the_campaign"] == 24
+    assert "MUST NOT be counted as evidence about the model" in rp["accepted_cost_of_this_choice"]
+    assert rp["every_physical_attempt_is_still_separately_budget_authorized"] is True
+
+
+def test_v3_retry_policy_is_reachable_from_the_cli_and_is_identity_bearing(v3):
+    """The frozen policy must be something the harness can actually produce."""
+    from autograder.benchmark.cli import _spec_from_args
+    from autograder.benchmark.runner import build_route
+    from autograder.cli import build_parser
+    from autograder.routeidentity import experiment_identity
+
+    argv = ("bench run --role ocr_primary --split dev --candidate " + GEM +
+            " --subset smoke --prompt-version m2-strict-v1 --research"
+            " --cache-policy refresh --transport-retries 0"
+            " --provider {\"order\":[\"google-ai-studio\"],\"allow_fallbacks\":false}"
+            " --i-understand-this-spends-money").split()
+    spec = _spec_from_args(build_parser().parse_args(argv), dry_run=False)
+    assert spec.transport_retries == 0
+    r = build_route(spec, GEM, "m2-strict-v1", 1000, registry=None)
+    assert r.to_backend_config().transport_retries == 0
+    import dataclasses
+    r2 = build_route(dataclasses.replace(spec, transport_retries=None), GEM,
+                     "m2-strict-v1", 1000, registry=None)
+    assert r2.to_backend_config().transport_retries == 2, "default is still 2"
+    assert experiment_identity(r) != experiment_identity(r2)
+
+
+def test_v3_arm_identities_match_the_frozen_retry_policy(v3):
+    from autograder.gateway import TaskRoute
+    from autograder.routeidentity import experiment_identity
+
+    retries = v3["execution_requirements"]["retry_policy"]["transport_retries"]
+    for arm in v3["candidates"]:
+        r = TaskRoute(task="ocr_primary", backend="openrouter", model=arm["model"],
+                      base_url="https://openrouter.ai/api/v1", structured_mode="json_schema",
+                      max_tokens=1000, temperature=0.0, reasoning=arm["route"]["reasoning"],
+                      transport_retries=retries, provider=arm["provider_routing"],
+                      prompt_version="m2-strict-v1")
+        assert experiment_identity(r) == arm["experiment_identity"]
+
+
+def test_v3_keeps_gates_and_limits_unchanged(v3):
+    v2 = json.loads(V2P.read_text(encoding="utf-8"))
+    assert v3["advancement_and_drop_rules_stated_in_advance"] == \
+        v2["advancement_and_drop_rules_stated_in_advance"], "gates must not be weakened"
+    assert v3["budget"]["campaign_family_absolute_limits_preserved"] == \
+        {"warning": 0.78323229, "hard": 0.82323229}, "family limits must not be raised"
+    assert v3["population"]["ordered_case_ids"] == v2["population"]["ordered_case_ids"]
+    assert v3["prompt"]["version"] == "m2-strict-v1"
+
+
+def test_v3_is_frozen_not_authorized_not_executed(v3):
+    assert v3["status"] == "FROZEN - NOT EXECUTED - NOT AUTHORIZED"
+    assert v3["provider_calls_made_preparing_this"] == 0
+    assert v3["identity_and_cache_policy"]["identity_version"] == 3
+    body = json.dumps({k: v for k, v in v3.items() if k != "experiment_sha256"},
+                      ensure_ascii=False, indent=1, sort_keys=True, default=str)
+    assert hashlib.sha256(body.encode()).hexdigest() == v3["experiment_sha256"]
+    assert not Path("evaluation/model_selection/policies/"
+                    "OCR_ALTSCREEN_V3_CAMPAIGN_BUDGET.json").exists()

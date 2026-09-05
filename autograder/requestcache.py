@@ -39,11 +39,14 @@ def fingerprint(route, system: str, content_blocks: list[dict],
     The identity is VERSIONED, so keys written under the old scheme can never
     be read by the corrected one. Historical entries stay on disk untouched.
     """
-    from .routeidentity import semantic_request_identity
+    from .routeidentity import semantic_request_identity, wire_response_format
 
+    # The CANONICAL WIRE SCHEMA — the response_format block as transmitted,
+    # including the strict transform and the schema name — not the raw
+    # model_json_schema(), which is only a proxy for it.
     base = semantic_request_identity(
         route, system=system, content_blocks=content_blocks,
-        schema=output_model.model_json_schema(), max_tokens=max_tokens)
+        schema=wire_response_format(route, output_model), max_tokens=max_tokens)
     pack = (meta or {}).get("pack_hash")
     return base if pack is None else _h(json.dumps({"base": base, "pack_hash": pack},
                                                    sort_keys=True))
